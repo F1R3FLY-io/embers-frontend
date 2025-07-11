@@ -1,4 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+
+import {
+  fromPrivateKeyHex,
+  signPayload,
+  type Signed,
+  type Wallet,
+} from "../../wallet";
+
 import {
   Agent,
   Agents,
@@ -12,12 +20,6 @@ import {
   DeploResp,
   DeploySignedTestResp,
 } from "./model";
-import {
-  fromPrivateKeyHex,
-  signPayload,
-  type Signed,
-  type Wallet,
-} from "../../wallet";
 
 export const FIREFLY_API_URL = `${
   import.meta.env.VITE_FIREFLY_API_URL
