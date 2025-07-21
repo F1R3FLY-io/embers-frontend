@@ -5,7 +5,7 @@ import {
   signPayload,
   type Signed,
   type Wallet,
-} from "../../wallet";
+} from "@/lib/wallet";
 
 import {
   Agent,
@@ -190,7 +190,7 @@ export function useDeployMutation(wallet: Wallet) {
           headers: new Headers({
             "Content-Type": "application/json",
           }),
-        }
+        },
       );
 
       const body = await resp.json();
@@ -205,7 +205,7 @@ export function useDeployMutation(wallet: Wallet) {
             "Content-Type": "application/json",
           }),
           body: JSON.stringify(signatureToBody(contract, signature)),
-        }
+        },
       );
     },
   });

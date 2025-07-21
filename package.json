@@ -7,32 +7,41 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit --project tsconfig.app.json",
+    "format": "prettier --write 'src/**/*.{ts,tsx,scss}'"
   },
   "dependencies": {
-    "@noble/curves": "^1.9.2",
+    "@codemirror/state": "^6.5.2",
+    "@noble/curves": "^1.9.4",
     "@scure/base": "^1.2.6",
-    "@tanstack/react-query": "^5.82.0",
+    "@tanstack/react-query": "^5.83.0",
     "blakejs": "^1.2.1",
+    "classnames": "^2.5.1",
+    "codemirror": "^6.0.2",
     "js-sha3": "^0.9.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.3",
-    "zod": "^4.0.2"
+    "react-router-dom": "^7.7.0",
+    "zod": "^4.0.5"
   },
   "devDependencies": {
-    "@eslint/js": "^9.30.1",
+    "@eslint/js": "^9.31.0",
+    "@types/node": "^24.0.15",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^4.6.0",
-    "eslint": "^9.30.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^9.31.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "prettier": "^3.6.2",
     "sass-embedded": "^1.89.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.3"
+    "typescript-eslint": "^8.37.0",
+    "vite": "^7.0.5",
+    "vite-plugin-sass-dts": "^1.3.31"
   }
 }

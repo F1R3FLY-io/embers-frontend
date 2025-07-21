@@ -10,6 +10,7 @@ export default tseslint.config([
   globalIgnores(["dist"]),
   {
     files: ["**/*.{ts,tsx}"],
+    ignores: ["**/*.module.scss.d.ts"],
     plugins: {
       import: importPlugin,
     },
@@ -24,6 +25,7 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
+      "import/no-unresolved": "error",
       "import/order": [
         "error",
         {
@@ -40,6 +42,14 @@ export default tseslint.config([
           "newlines-between": "always",
         },
       ],
+    },
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+        },
+      },
     },
   },
 ]);
