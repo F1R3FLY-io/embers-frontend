@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit --project tsconfig.app.json",
-    "format": "prettier --write 'src/**/*.{ts,tsx,scss}'"
+    "format": "prettier --write '**/*.{js,ts,tsx,scss}'"
   },
   "dependencies": {
     "@codemirror/state": "^6.5.2",
