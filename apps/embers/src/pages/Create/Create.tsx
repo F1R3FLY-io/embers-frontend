@@ -24,18 +24,19 @@ export default function Create() {
                 <svg width="50" height="36" viewBox="0 0 50 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M10 22 A10 10 0 0 1 20 12 L25 12 A10 10 0 0 1 35 22" stroke="#6a00ff" strokeWidth="3" fill="none"/>
                   <line x1="33.5" y1="22" x2="37" y2="22" stroke="#6a00ff" strokeWidth="3"/>
-                  <line x1="37" y1="22" x2="37" y2="27" stroke="#6a00ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                  <line x1="37" y1="27" x2="33.5" y2="27" stroke="#6a00ff" strokeWidth="3"/>
-                  <line x1="35" y1="27" x2="35" y2="31" stroke="#6a00ff" strokeWidth="3" />
-                  <line x1="10" y1="31" x2="35" y2="31" stroke="#6a00ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                  <line x1="10" y1="31" x2="10" y2="27" stroke="#6a00ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                  <line x1="11.5" y1="27" x2="8" y2="27" stroke="#6a00ff" strokeWidth="3"/>
-                  <line x1="8" y1="27" x2="8" y2="22" stroke="#6a00ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="37" y1="22" x2="37" y2="26" stroke="#6a00ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="37" y1="26" x2="33.5" y2="26" stroke="#6a00ff" strokeWidth="3"/>
+                  <line x1="35" y1="26" x2="35" y2="28.5" stroke="#6a00ff" strokeWidth="3" />
+                  <path d="M35 26 A3 3 0 0 1 33.5 30" stroke="#6a00ff" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="11.5" y1="30" x2="33.5" y2="30" stroke="#6a00ff" strokeWidth="3"/>
+                  <path d="M10 26 A3 3 0 0 0 11.5 30" stroke="#6a00ff" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  <line x1="11.5" y1="26" x2="8" y2="26" stroke="#6a00ff" strokeWidth="3"/>
+                  <line x1="8" y1="26" x2="8" y2="22" stroke="#6a00ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                   <line x1="8" y1="22" x2="11.5" y2="22" stroke="#6a00ff" strokeWidth="3"/>
                   <line x1="22.5" y1="12" x2="22.5" y2="6" stroke="#6a00ff" strokeWidth="3"/>
                   <circle cx="22.5" cy="6" r="3" fill="#6a00ff"/>
-                  <circle cx="17" cy="24" r="3" fill="#6a00ff"/>
-                  <circle cx="28" cy="24" r="3" fill="#6a00ff"/>
+                  <circle cx="17" cy="23" r="3" fill="#6a00ff"/>
+                  <circle cx="28" cy="23" r="3" fill="#6a00ff"/>
                 </svg>
               </div>
               <Text type="secondary">Create new Agent</Text>
