@@ -5,10 +5,6 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default tseslint.config([
   globalIgnores(["dist"]),
@@ -25,7 +21,7 @@ export default tseslint.config([
         languageOptions: {
           parserOptions: {
             projectService: true,
-            tsconfigRootDir: __dirname,
+            tsconfigRootDir: import.meta.url,
           },
         },
       },
@@ -60,7 +56,7 @@ export default tseslint.config([
       "import/resolver": {
         typescript: {
           alwaysTryTypes: true,
-          project: ["apps/*/tsconfig.json"],
+          project: ["apps/*/tsconfig.json", "packages/*/tsconfig.json"],
         },
       },
     },
