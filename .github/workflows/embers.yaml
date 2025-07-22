@@ -6,8 +6,18 @@ concurrency:
 
 on:
   push:
-    branches: [main]
+    branches: main
+    paths:
+      - ".github/workflows/embers.yaml"
+      - "apps/embers/**"
+      - "/*"
+      - "!**/*.md"
   pull_request:
+    paths:
+      - ".github/workflows/embers.yaml"
+      - "apps/embers/**"
+      - "/*"
+      - "!**/*.md"
 
 jobs:
   build:
