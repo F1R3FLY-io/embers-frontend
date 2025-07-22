@@ -54,6 +54,9 @@ jobs:
       - name: SCSS format check
         run: pnpm run ci:check:scss
 
+      - name: Lint
+        run: pnpm run lint
+
       - name: Build project
         run: pnpm run build
         continue-on-error: false
