@@ -16,7 +16,15 @@ export default tseslint.config([
     },
     extends: [
       js.configs.recommended,
-      tseslint.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
+      {
+        languageOptions: {
+          parserOptions: {
+            projectService: true,
+            tsconfigRootDir: import.meta.url,
+          },
+        },
+      },
       reactHooks.configs["recommended-latest"],
       reactRefresh.configs.vite,
     ],
@@ -42,12 +50,13 @@ export default tseslint.config([
           "newlines-between": "always",
         },
       ],
+      "@typescript-eslint/switch-exhaustiveness-check": "error",
     },
     settings: {
       "import/resolver": {
         typescript: {
           alwaysTryTypes: true,
-          project: "./tsconfig.json",
+          project: ["apps/*/tsconfig.json", "packages/*/tsconfig.json"],
         },
       },
     },
