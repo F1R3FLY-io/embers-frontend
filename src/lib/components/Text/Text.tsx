@@ -1,34 +1,31 @@
+import classNames from "classnames";
+
 import styles from "./Text.module.scss";
 
-type TextProps = { children: string } & (
-  | {
-      type: "text";
-      fontSize?: number;
-      fontWeight?: number;
-    }
-  | {
-      type: "title";
-    }
-);
+type TextProps = {
+  type?: "title" | "secondary";
+  children: string;
+  noColour?: boolean;
+  fontSize?: number;
+  fontWeight?: 400 | 600;
+};
 
-export default function Text(prop: TextProps) {
-  let fontSize = null;
-  let fontWeight = null;
-
-  switch (prop.type) {
-    case "text":
-      fontSize = prop.fontSize;
-      fontWeight = prop.fontWeight;
-      break;
-    case "title":
-      fontSize = 32;
-      fontWeight = 600;
-      break;
-  }
+export default function Text({
+  type,
+  children,
+  noColour,
+  fontSize,
+  fontWeight,
+}: TextProps) {
+  const textClass = classNames(styles.text, {
+    [styles.title]: type === "title",
+    [styles.secondary]: type === "secondary",
+    [styles["no-color"]]: noColour,
+  });
 
   return (
-    <div style={{ fontSize, fontWeight }} className={styles.text}>
-      {prop.children}
+    <div style={{ fontSize, fontWeight }} className={textClass}>
+      {children}
     </div>
   );
 }

@@ -11,8 +11,10 @@ type ContainerWithLogoProp = {
 export default function ContainerWithLogo({ children }: ContainerWithLogoProp) {
   return (
     <div className={styles.container}>
-      <img className={styles.logo} src={logo} />
-      <div>{children}</div>
+      <div className={styles.content}>
+        <img className={styles.logo} src={logo} />
+        {children}
+      </div>
     </div>
   );
 }

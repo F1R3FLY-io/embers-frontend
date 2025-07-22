@@ -1,4 +1,7 @@
 declare const classNames: {
-  readonly buttonsContainer: "buttonsContainer";
+  readonly container: "container";
+  readonly title: "title";
+  readonly buttons: "buttons";
+  readonly note: "note";
 };
 export = classNames;

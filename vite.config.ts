@@ -6,7 +6,12 @@ import sassDts from "vite-plugin-sass-dts";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), sassDts()],
+  plugins: [
+    react(),
+    sassDts({
+      enabledMode: ["development", "production"],
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

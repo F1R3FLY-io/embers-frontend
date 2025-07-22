@@ -70,7 +70,7 @@ export function useCreateAgentMutation(wallet: Wallet) {
         }),
       });
 
-      const body = await resp.json();
+      const body: unknown = await resp.json();
       const { id, version, contract } = CreateAgentResp.parse(body);
       const signature = signPayload(wallet.key, contract);
 
@@ -106,7 +106,7 @@ export function useSaveAgentMutation(wallet: Wallet, id: string) {
         }),
       });
 
-      const body = await resp.json();
+      const body: unknown = await resp.json();
       const { version, contract } = SaveAgentResp.parse(body);
       const signature = signPayload(wallet.key, contract);
 
@@ -157,7 +157,7 @@ export function useDeployTestMutation(wallet: Wallet) {
         }),
       });
 
-      const body = await resp.json();
+      const body: unknown = await resp.json();
       const { env_contract, test_contract } = DeployTestResp.parse(body);
 
       const envSignature =
@@ -193,7 +193,7 @@ export function useDeployMutation(wallet: Wallet) {
         },
       );
 
-      const body = await resp.json();
+      const body: unknown = await resp.json();
       const { contract } = DeploResp.parse(body);
       const signature = signPayload(wallet.key, contract);
 
