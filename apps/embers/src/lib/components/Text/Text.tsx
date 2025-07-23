@@ -9,7 +9,6 @@ type TextProps = {
   fontSize?: number;
   fontWeight?: 400 | 600;
   noColour?: boolean;
-  noOverflow?: boolean;
   type?: "title" | "secondary";
 };
 
@@ -18,14 +17,12 @@ export default function Text({
   fontSize,
   fontWeight,
   noColour,
-  noOverflow,
   type,
 }: TextProps) {
   const textClass = classNames(styles.text, {
     [styles.secondary]: type === "secondary",
     [styles.title]: type === "title",
     [styles["no-color"]]: noColour,
-    [styles["no-overflow"]]: noOverflow,
   });
 
   return (
