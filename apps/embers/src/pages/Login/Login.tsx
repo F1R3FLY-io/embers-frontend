@@ -10,15 +10,12 @@ import { useWallet, type WalletDummy } from "@/lib/providers/wallet/useWallet";
 
 import styles from "./Login.module.scss";
 
-type PageState =
-  | { state: "init" }
-  | { error?: boolean; file?: File; state: "signin" }
-  | { state: "creation" };
+type PageState = "init" | "signin" | "creation";
 
 export default function Login() {
-  const [pageState, setPageState] = useState<PageState>({ state: "init" });
-  const toSigning = useCallback(() => setPageState({ state: "signin" }), []);
-  const toCreating = useCallback(() => setPageState({ state: "creation" }), []);
+  const [pageState, setPageState] = useState<PageState>("init");
+  const toSigning = useCallback(() => setPageState("signin"), []);
+  const toCreating = useCallback(() => setPageState("creation"), []);
 
   const navigate = useNavigate();
   const { setWallet } = useWallet();
@@ -32,7 +29,7 @@ export default function Login() {
 
   let content;
 
-  switch (pageState.state) {
+  switch (pageState) {
     case "creation":
     case "init":
       content = (
