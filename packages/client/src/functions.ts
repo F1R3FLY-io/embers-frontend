@@ -83,7 +83,7 @@ export function getAddressFrom(publicKey: PublicKey): Address {
     .slice(0, 8)
     .toUpperCase();
 
-  return Address.fromString(base58.encode(base16.decode(payload + checksum)));
+  return Address.tryFrom(base58.encode(base16.decode(payload + checksum)));
 }
 
 /**
@@ -91,10 +91,8 @@ export function getAddressFrom(publicKey: PublicKey): Address {
  * @param key - The private key from which to derive the public key.
  * @returns The derived public key as a PublicKey object.
  */
-export function getPublicKeyFrom(key: PrivateKey): PublicKey {
-  return PublicKey.fromUint8Array(
-    secp256k1.publicKeyCreate(key.getValue(), false),
-  );
+export function getPublicKeyFrom(key: PrivateKey) {
+  return PublicKey.tryFrom(secp256k1.publicKeyCreate(key.getValue(), false));
 }
 
 /**
@@ -116,7 +114,7 @@ export async function getWalletState(address: Address, client?: WalletsApi) {
   return (
     client || new WalletsApi(new Configuration())
   ).apiWalletsAddressStateGet({
-    address: address.toString(),
+    address: address.getValue(),
   });
 }
 
@@ -159,8 +157,8 @@ export async function transferMoney(
 ) {
   const response = await preparePostCallback({
     transferReq: {
-      from: generateAddressFrom(privateKey).toString(),
-      to: toAddress.toString(),
+      from: generateAddressFrom(privateKey).getValue(),
+      to: toAddress.getValue(),
       amount: amount.getValue(),
       description: description.getValue(),
     },

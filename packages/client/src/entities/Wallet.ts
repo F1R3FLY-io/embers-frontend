@@ -52,7 +52,7 @@ export class Wallet {
     const address = generateAddressFrom(this.privateKey);
 
     return await this.wallet.apiWalletsAddressStateGet({
-      address: address.toString(),
+      address: address.getValue(),
     });
   }
 }

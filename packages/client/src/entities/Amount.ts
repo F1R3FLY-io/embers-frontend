@@ -4,14 +4,14 @@
 export class Amount {
   private constructor(private value: number) {}
 
-  public static tryFrom(value: number): Amount {
+  public static tryFrom(value: number) {
     if (value <= 0) {
       throw new Error("Amount cannot be negative or zero.");
     }
     return new Amount(value);
   }
 
-  public getValue(): number {
+  public getValue() {
     return this.value;
   }
 }

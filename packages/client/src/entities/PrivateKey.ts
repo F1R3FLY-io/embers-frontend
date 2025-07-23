@@ -16,7 +16,7 @@ export class PrivateKey {
 
   private constructor(private value: Uint8Array) {}
 
-  public static fromUint8Array(value: Uint8Array) {
+  public static tryFrom(value: Uint8Array) {
     secp256k1.privateKeyVerify(value);
     return new PrivateKey(value);
   }

@@ -2,15 +2,15 @@ import { Address } from "../src/entities/Address";
 
 describe("Address class", () => {
   test("Create Address", () => {
-    const address = Address.fromString(
+    const address = Address.tryFrom(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
-    expect(address.toString()).toBe(
+    expect(address.getValue()).toBe(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
   });
 
   test("Expect Address.fromString to throw error", () => {
-    expect(() => Address.fromString("invalid")).toThrow();
+    expect(() => Address.tryFrom("invalid")).toThrow();
   });
 });

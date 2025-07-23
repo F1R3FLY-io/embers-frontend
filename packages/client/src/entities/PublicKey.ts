@@ -4,7 +4,7 @@ import secp256k1 from "secp256k1";
 export class PublicKey {
   private constructor(private value: Uint8Array) {}
 
-  public static fromUint8Array(value: Uint8Array) {
+  public static tryFrom(value: Uint8Array) {
     secp256k1.publicKeyVerify(value);
     return new PublicKey(value);
   }

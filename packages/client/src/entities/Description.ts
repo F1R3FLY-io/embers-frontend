@@ -11,7 +11,7 @@ export class Description {
    * @param value - The description string.
    * @throws Error if the value exceeds 100 characters.
    */
-  public static tryFromString(value: string) {
+  public static tryFrom(value: string) {
     if (value.length <= MAX_DESCRIPTION_LENGTH) {
       return new Description(value);
     } else {

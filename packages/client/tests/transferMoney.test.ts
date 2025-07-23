@@ -19,11 +19,11 @@ beforeEach(() => {
 describe("Wallet Transfer Tests", () => {
   test("transferMoney function", async () => {
     const privateKey = PrivateKey.new();
-    const toAddress = Address.fromString(
+    const toAddress = Address.tryFrom(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
     const amount = Amount.tryFrom(1000);
-    const description = Description.tryFromString(
+    const description = Description.tryFrom(
       "This is a test transfer with a valid description.",
     );
 
@@ -87,11 +87,11 @@ describe("Wallet Transfer Tests", () => {
       headers: {} as HTTPHeaders,
     });
 
-    const address = Address.fromString(
+    const address = Address.tryFrom(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
     const amount = Amount.tryFrom(1000);
-    const description = Description.tryFromString(
+    const description = Description.tryFrom(
       "This is a test transfer with a valid description.",
     );
     const result = wallet.sendMoney(address, amount, description);
