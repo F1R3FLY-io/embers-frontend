@@ -1,4 +1,4 @@
-# f1r3sky-client-sdk
+# embers-client-sdk
 
 A client SDK for interacting with the f1r3sky platform.
 
