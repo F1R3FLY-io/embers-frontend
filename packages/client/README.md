@@ -35,8 +35,8 @@ const recipientAddress = Address.fromString("1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe
 const transferAmount = Amount.tryFrom(1000);
 const transferDescription = Description.tryFromString("This is a test transfer with a valid description.");
 
-// Send the money
-const result = client.sendMoney(recipientAddress, transferAmount, transferDescription);
+// Send the tokens
+const result = client.sendTokens(recipientAddress, transferAmount, transferDescription);
 ```
 
 ### Get wallet state example

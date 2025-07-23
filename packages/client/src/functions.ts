@@ -137,17 +137,17 @@ type TransferSendCallback = (value: {
 }) => Promise<void>;
 
 /**
- * Transfers money from one address to another.
+ * Transfers tokens from one address to another.
  * This function prepares a transfer contract, signs it with the provided private key,
  * and sends the signed contract to the wallet API.
  *
  * @param privateKey - The private key of the sender's wallet.
  * @param toAddress - The address of the recipient.
- * @param amount - The amount of money to transfer.
+ * @param amount - The amount of tokens to transfer.
  * @param description - A description of the transfer.
  * @returns A promise that resolves when the transfer is sent.
  */
-export async function transferMoney(
+export async function transferTokens(
   privateKey: PrivateKey,
   toAddress: Address,
   amount: Amount,

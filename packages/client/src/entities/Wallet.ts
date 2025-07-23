@@ -1,5 +1,8 @@
 import { Configuration, HTTPHeaders, WalletsApi } from "../api-client";
-import { generateAddressFrom, transferMoney } from "../functions";
+import {
+  generateAddressFrom,
+  transferTokens as transferTokens,
+} from "../functions";
 
 import { Address } from "./Address";
 import { Amount } from "./Amount";
@@ -29,14 +32,14 @@ export class Wallet {
   }
 
   /**
-   * Send money to another wallet.
+   * Send tokens to another wallet.
    * @param to Recipient address
    * @param amount Amount to send
    * @param description Description of the transaction
    * @returns A promise that resolves when the transfer is sent.
    */
-  async sendMoney(to: Address, amount: Amount, description: Description) {
-    return transferMoney(
+  async sendTokens(to: Address, amount: Amount, description: Description) {
+    return transferTokens(
       this.privateKey,
       to,
       amount,

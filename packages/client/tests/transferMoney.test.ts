@@ -9,7 +9,7 @@ import {
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
-import { getPublicKeyFrom, sign, transferMoney } from "../src/functions";
+import { getPublicKeyFrom, sign, transferTokens } from "../src/functions";
 import secp256k1 from "secp256k1";
 
 beforeEach(() => {
@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 
 describe("Wallet Transfer Tests", () => {
-  test("transferMoney function", async () => {
+  test("transferTokens function", async () => {
     const privateKey = PrivateKey.new();
     const toAddress = Address.tryFrom(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
@@ -33,7 +33,7 @@ describe("Wallet Transfer Tests", () => {
     });
     const mockTransferSendCallback = jest.fn();
 
-    let result = await transferMoney(
+    let result = await transferTokens(
       privateKey,
       toAddress,
       amount,
@@ -77,7 +77,7 @@ describe("Wallet Transfer Tests", () => {
     ).toBeTruthy();
   });
 
-  test("Wallet.sendMoney method", async () => {
+  test("Wallet.sendTokens method", async () => {
     const privateKey = PrivateKey.new();
 
     const wallet = new Wallet({
@@ -94,7 +94,7 @@ describe("Wallet Transfer Tests", () => {
     const description = Description.tryFrom(
       "This is a test transfer with a valid description.",
     );
-    const result = wallet.sendMoney(address, amount, description);
+    const result = wallet.sendTokens(address, amount, description);
 
     expect(result).resolves.toBeTruthy();
   });
