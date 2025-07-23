@@ -14,10 +14,9 @@
 }
 
 .buttons {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-rows: 1fr;
   gap: 8px;
-  justify-content: center;
 }
 
 .note {
@@ -25,4 +24,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }

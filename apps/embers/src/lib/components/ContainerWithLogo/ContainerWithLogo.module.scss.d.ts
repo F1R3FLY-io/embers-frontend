@@ -3,4 +3,4 @@ declare const classNames: {
   readonly content: "content";
   readonly logo: "logo";
 };
-export = classNames;
+export default classNames;

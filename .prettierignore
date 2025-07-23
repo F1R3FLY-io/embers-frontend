@@ -1,3 +1,3 @@
 **/*.d.ts
-dist/
-.tmp/
+dist
+.tmp

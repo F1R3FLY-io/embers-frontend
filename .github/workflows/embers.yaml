@@ -55,7 +55,7 @@ jobs:
         run: pnpm run ci:check:scss
 
       - name: Lint
-        run: pnpm run lint
+        run: pnpm run ci:lint
 
       - name: Build project
         run: pnpm run build

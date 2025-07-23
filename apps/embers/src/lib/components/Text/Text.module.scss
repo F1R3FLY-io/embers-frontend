@@ -1,19 +1,11 @@
-@font-face {
-  font-family: Manrope;
-  font-style: normal;
-  font-weight: normal;
-  src: url("@/public/fonts/manrope/Manrope-VariableFont_wght.ttf")
-    format("truetype");
-}
-
 .text {
   font-family: Manrope, sans-serif;
+  color: var(--text-color-primary);
 }
 
 .title {
   font-size: 32px;
   font-weight: 600;
-  color: var(--text-color-primary);
 }
 
 .secondary {
@@ -23,4 +15,8 @@
 
 .no-color {
   color: unset;
+}
+
+.no-overflow {
+  overflow: hidden;
 }

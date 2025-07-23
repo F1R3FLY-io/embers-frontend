@@ -2,9 +2,9 @@ import z from "zod";
 
 export const AgentHeader = z.object({
   id: z.string(),
-  version: z.string(),
   name: z.string(),
   shard: z.string().optional(),
+  version: z.string(),
 });
 export type AgentsHeader = z.infer<typeof AgentHeader>;
 
@@ -14,11 +14,11 @@ export const Agents = z.object({
 export type Agents = z.infer<typeof Agents>;
 
 export const Agent = z.object({
+  code: z.string().optional(),
   id: z.string(),
-  version: z.string(),
   name: z.string(),
   shard: z.string().optional(),
-  code: z.string().optional(),
+  version: z.string(),
 });
 export type Agent = z.infer<typeof Agent>;
 
@@ -26,21 +26,21 @@ const byte = z.number().int().min(0).max(255);
 const byteArray = z.array(byte).transform((array) => new Uint8Array(array));
 
 export type CreateAgentReq = {
+  code?: string;
   name: string;
   shard?: string;
-  code?: string;
 };
 
 export const CreateAgentResp = z.object({
+  contract: byteArray,
   id: z.string(),
   version: z.string(),
-  contract: byteArray,
 });
 export type CreateAgentResp = z.infer<typeof CreateAgentResp>;
 
 export const SaveAgentResp = z.object({
-  version: z.string(),
   contract: byteArray,
+  version: z.string(),
 });
 export type SaveAgentResp = z.infer<typeof SaveAgentResp>;
 
