@@ -18,7 +18,7 @@ export type WalletConfig = {
 
 export class Wallet {
   private privateKey: PrivateKey;
-  private wallet: WalletsApi;
+  private client: WalletsApi;
   private address: Address;
 
   constructor(config: WalletConfig) {
@@ -29,7 +29,7 @@ export class Wallet {
       headers: config.headers,
     });
 
-    this.wallet = new WalletsApi(configuration);
+    this.client = new WalletsApi(configuration);
     this.address = generateAddressFrom(this.privateKey);
   }
 
@@ -46,8 +46,8 @@ export class Wallet {
       to,
       amount,
       description,
-      (args) => this.wallet.apiWalletsTransferPreparePost(args),
-      (args) => this.wallet.apiWalletsTransferSendPost(args),
+      (args) => this.client.apiWalletsTransferPreparePost(args),
+      (args) => this.client.apiWalletsTransferSendPost(args),
     );
   }
 
@@ -56,7 +56,7 @@ export class Wallet {
    * @returns A promise that resolves with the wallet state.
    */
   async getWalletState() {
-    return await this.wallet.apiWalletsAddressStateGet({
+    return await this.client.apiWalletsAddressStateGet({
       address: this.address.getValue(),
     });
   }
