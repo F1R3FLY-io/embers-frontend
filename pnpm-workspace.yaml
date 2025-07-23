@@ -1,7 +1,9 @@
-onlyBuiltDependencies:
-  - esbuild
-  - unrs-resolver
-
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+onlyBuiltDependencies:
+  - counterfact
+  - esbuild
+  - keccak
+  - secp256k1
+  - unrs-resolver
