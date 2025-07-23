@@ -1,0 +1,59 @@
+{
+  "name": "f1r3sky-client-sdk",
+  "version": "0.0.1",
+  "private": false,
+  "main": "src/index.ts",
+  "description": "A set of functions for working with wallets and contracts on the blockchain",
+  "author": "Denys Bushualik <denys.b@devbrother.com>",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "F1r3Sky",
+    "Wallet",
+    "Blockchain",
+    "SmartContracts"
+  ],
+  "bugs": {
+    "url": "https://github.com/F1R3FLY-io/f1r3sky-client-sdk/issues"
+  },
+  "config": {
+    "doc_port": 3000
+  },
+  "scripts": {
+    "test": "node test-with-mocks.js",
+    "commit": "commit",
+    "coverage": "node test-with-mocks.js --coverage",
+    "mocks": "counterfact ./embers-api-schema.json mocks",
+    "gen-docs": "typedoc",
+    "docs": "npm run gen-docs && serve -l $npm_package_config_doc_port docs",
+    "fetch-api-schema": "curl -o packages/f1r3sky-client-sdk/embers-api-schema.json http://localhost:8080/swagger-ui/openapi.json",
+    "clean-api-client": "rm -rf packages/f1r3sky-client-sdk/src/api-client",
+    "generate-api-client": "docker run -v $(PWD):/local openapitools/openapi-generator-cli generate -i /local/packages/f1r3sky-client-sdk/embers-api-schema.json -g typescript-fetch -o /local/packages/f1r3sky-client-sdk/src/api-client"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@jest/globals": "^30.0.4",
+    "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/keccak": "^3.0.5",
+    "@types/node": "^24.0.14",
+    "@types/secp256k1": "^4.0.6",
+    "counterfact": "^1.4.1",
+    "express": "^5.1.0",
+    "husky": "^9.1.7",
+    "jest": "30.0.4",
+    "openapi-backend": "^5.13.0",
+    "serve": "^10.0.2",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.28.7",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@scure/base": "1.2.6",
+    "blakejs": "1.2.1",
+    "keccak": "^3.0.4",
+    "secp256k1": "^5.0.1"
+  }
+}

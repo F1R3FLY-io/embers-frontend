@@ -7,7 +7,12 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config([
-  globalIgnores(["dist"]),
+  globalIgnores([
+    "dist",
+    "**/docs/**",
+    "**/mocks/**",
+    "packages/client/tests/**",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
     ignores: ["**/*.module.scss.d.ts"],
