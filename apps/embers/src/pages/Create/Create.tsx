@@ -13,6 +13,7 @@ export default function Create() {
       <div className={styles.mainContent}>
         <div className={styles.dashboard}>
           {/* Dashboard content will be added here */}
+          <div className={styles.dashboardDivider}></div>
         </div>
         <div className={styles.contentArea}>
           <div className={styles.contentHeader}>

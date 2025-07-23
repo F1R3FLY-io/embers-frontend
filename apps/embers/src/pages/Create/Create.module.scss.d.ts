@@ -10,5 +10,6 @@ declare const classNames: {
   readonly gridBox: "gridBox";
   readonly createBox: "createBox";
   readonly robotIcon: "robotIcon";
+  readonly dashboardDivider: "dashboardDivider";
 };
 export = classNames;
