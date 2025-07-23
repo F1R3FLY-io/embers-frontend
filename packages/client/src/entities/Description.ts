@@ -1,4 +1,4 @@
-const MAX_DESCRIPTION_LENGTH = 100;
+export const MAX_DESCRIPTION_LENGTH = 100;
 
 /**
  * Description entity for handling string values with a maximum length.

@@ -6,16 +6,18 @@ import { Amount } from "./Amount";
 import { Description } from "./Description";
 import { PrivateKey } from "./PrivateKey";
 
+export type WalletConfig = {
+  host: string;
+  port: number;
+  privateKey: PrivateKey;
+  headers: HTTPHeaders;
+};
+
 export class Wallet {
   private privateKey: PrivateKey;
   private wallet: WalletsApi;
 
-  constructor(config: {
-    host: string;
-    port: number;
-    privateKey: PrivateKey;
-    headers: HTTPHeaders;
-  }) {
+  constructor(config: WalletConfig) {
     this.privateKey = config.privateKey;
 
     const configuration = new Configuration({

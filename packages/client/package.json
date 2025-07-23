@@ -41,13 +41,11 @@
     "@types/secp256k1": "^4.0.6",
     "counterfact": "^1.4.1",
     "express": "^5.1.0",
-    "jest": "30.0.4",
     "openapi-backend": "^5.13.0",
     "serve": "^10.0.2",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.7",
-    "typescript": "^5.8.3"
+    "typedoc": "^0.28.7"
   },
   "dependencies": {
     "@scure/base": "1.2.6",
