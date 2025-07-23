@@ -1,4 +1,4 @@
-import { verify } from "../functions";
+import { verifyAddress } from "../functions";
 
 /**
  * Address entity representing a blockchain address.
@@ -17,7 +17,7 @@ export class Address {
    * @throws Error if the address is invalid
    */
   static tryFrom(address: string) {
-    if (verify(address)) {
+    if (verifyAddress(address)) {
       return new Address(address);
     } else {
       throw new Error("Invalid address");

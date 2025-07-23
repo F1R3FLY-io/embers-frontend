@@ -16,12 +16,12 @@ export const F1R3CAP_VERSION = "00";
 /**
  * Verifies F1R3Cap an address by checking its checksum.
  *
- * @param address - The address to verify, encoded in base58.
+ * @param value - The address to verify, encoded in base58.
  * @returns A boolean indicating whether the address is valid.
  */
-export function verify(address: string): boolean {
+export function verifyAddress(value: string): boolean {
   try {
-    const revBytes = base58.decode(address);
+    const revBytes = base58.decode(value);
 
     const payload = revBytes.slice(0, -4);
     const checksum = revBytes.slice(-4);
