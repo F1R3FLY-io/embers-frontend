@@ -4,12 +4,17 @@ declare const classNames: {
   readonly appTitle: "appTitle";
   readonly mainContent: "mainContent";
   readonly dashboard: "dashboard";
+  readonly dashboardTop: "dashboardTop";
+  readonly agentsButton: "agentsButton";
   readonly contentArea: "contentArea";
   readonly contentHeader: "contentHeader";
   readonly gridContainer: "gridContainer";
   readonly gridBox: "gridBox";
   readonly createBox: "createBox";
   readonly robotIcon: "robotIcon";
+  readonly dashboardColumn: "dashboardColumn";
   readonly dashboardDivider: "dashboardDivider";
+  readonly dashboardButtons: "dashboardButtons";
+  readonly iconButton: "iconButton";
 };
 export = classNames;

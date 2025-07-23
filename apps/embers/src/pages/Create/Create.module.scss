@@ -33,12 +33,32 @@
 }
 
 .dashboard {
-  width: 200px;
+  width: 220px;
   background-color: var(--background-neutral-overlay);
   border-right: 1px solid var(--border-color);
   padding: 24px;
   min-height: 100%;
   position: relative;
+}
+
+.dashboardTop {
+  margin-bottom: 24px;
+}
+
+.agentsButton {
+  background-color: #6a00ff !important;
+  padding: 12px !important;
+  color: white !important;
+  width: 100% !important;
+  
+  &:hover {
+    background-color: #5a00e6 !important;
+    color: white !important;
+  }
+  
+  svg {
+    stroke: white !important;
+  }
 }
 
 .contentArea {
@@ -55,7 +75,8 @@
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
+  grid-template-rows: repeat(3, minmax(150px, 1fr));
   gap: 16px;
   flex: 1;
 }
@@ -94,11 +115,48 @@
   justify-content: center;
 }
 
-.dashboardDivider {
+.dashboardColumn {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboardDivider {
+  width: 100%;
   height: 1px;
   background-color: var(--border-color);
+}
+
+.dashboardButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px;
+  background: none;
+  border: none;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.iconButton:hover {
+  background-color: var(--background-neutral-overlay);
+  color: var(--text-color-primary);
+  
+  svg {
+    stroke: white;
+  }
 }
