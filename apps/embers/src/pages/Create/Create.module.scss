@@ -50,12 +50,14 @@
   padding: 12px !important;
   color: white !important;
   width: 100% !important;
-  
+
+
+
   &:hover {
     background-color: #5a00e6 !important;
     color: white !important;
   }
-  
+
   svg {
     stroke: white !important;
   }
@@ -115,6 +117,12 @@
   justify-content: center;
 }
 
+.smallRobotIcon {
+  width: 24px;
+  height: 24px;
+  padding: 0px !important;
+}
+
 .dashboardColumn {
   position: absolute;
   bottom: 0;
@@ -155,7 +163,7 @@
 .iconButton:hover {
   background-color: var(--background-neutral-overlay);
   color: var(--text-color-primary);
-  
+
   svg {
     stroke: white;
   }

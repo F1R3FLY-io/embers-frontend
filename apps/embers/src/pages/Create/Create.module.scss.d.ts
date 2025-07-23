@@ -12,6 +12,7 @@ declare const classNames: {
   readonly gridBox: "gridBox";
   readonly createBox: "createBox";
   readonly robotIcon: "robotIcon";
+  readonly smallRobotIcon: "smallRobotIcon";
   readonly dashboardColumn: "dashboardColumn";
   readonly dashboardDivider: "dashboardDivider";
   readonly dashboardButtons: "dashboardButtons";
