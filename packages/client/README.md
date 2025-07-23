@@ -19,7 +19,7 @@ yarn add f1r3sky-client-sdk
 ```
 
 ## Usage
-### send money example
+### send tokens example
 ```typescript
 // Initialize a new wallet with a private key
 const privateKey = PrivateKey.new();
