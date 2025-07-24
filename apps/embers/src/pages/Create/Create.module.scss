@@ -34,7 +34,7 @@
 
 .languageDropdown {
   position: relative;
-  
+
   .dropdown {
     background-color: transparent;
     border: none;
@@ -91,7 +91,7 @@
     left: 6px;
     right: 6px;
     bottom: 6px;
-    
+
     background-color: var(--border-color);
     transition: all 0.3s ease;
     border-radius: 12px;
@@ -189,8 +189,6 @@
   padding: 12px !important;
   color: white !important;
   width: 100% !important;
-
-
 
   &:hover {
     background-color: #5a00e6 !important;
