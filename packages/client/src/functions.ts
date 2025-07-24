@@ -1,9 +1,9 @@
 import { base16, base58 } from "@scure/base";
 import { blake2b, blake2bHex } from "blakejs";
-import creawteKeccakHash from "keccak";
-import secp256k1 from "secp256k1";
+import createKeccakHash from "keccak";
+import * as secp256k1 from "secp256k1";
 
-import { WalletsApi } from "./api-client";
+import { WalletsApi } from "./api-client/index";
 import { Address } from "./entities/Address";
 import { Amount } from "./entities/Amount";
 import { Description } from "./entities/Description";
@@ -28,7 +28,9 @@ export function verifyAddress(value: string): boolean {
 
     const checksumCalc = blake2b(payload, undefined, 32).slice(0, 4);
 
-    return checksum.every((byte, index) => byte === checksumCalc[index]);
+    return checksum.every(
+      (byte: unknown, index: number) => byte === checksumCalc?.[index],
+    );
   } catch {
     return false;
   }
@@ -46,17 +48,15 @@ export function sign(
   key: PrivateKey,
 ): {
   sigAlgorithm: "secp256k1";
-  deployer: Uint8Array<ArrayBufferLike>;
-  signature: Uint8Array<ArrayBufferLike>;
+  sig: Uint8Array<ArrayBufferLike>;
 } {
-  const { signature } = secp256k1.ecdsaSign(payload, key.getValue());
-
-  const deployer = secp256k1.publicKeyCreate(key.getValue(), false);
+  const sig = secp256k1.signatureExport(
+    secp256k1.ecdsaSign(payload, key.getValue()).signature,
+  );
 
   return {
     sigAlgorithm: "secp256k1",
-    deployer,
-    signature,
+    sig,
   };
 }
 
@@ -69,9 +69,14 @@ export function sign(
  * @returns The derived F1R3Cap address as an Address object.
  */
 export function getAddressFrom(publicKey: PublicKey): Address {
-  const publicKeyHash = publicKey.getHash();
+  const value = publicKey.getValue().slice(1, -40);
+  const publicKeyHash = createKeccakHash("keccak256")
+    .update(Buffer.from(value))
+    .digest("hex")
+    .toUpperCase();
+
   const decodedPublicKeysHash = base16.decode(publicKeyHash);
-  const ethHash = creawteKeccakHash("keccak256")
+  const ethHash = createKeccakHash("keccak256")
     .update(Buffer.from(decodedPublicKeysHash))
     .digest("hex")
     .toUpperCase();
@@ -116,22 +121,17 @@ export async function getWalletState(address: Address, client: WalletsApi) {
   });
 }
 
-type PreparePostCallback = (value: {
-  transferReq: {
-    from: string;
-    to: string;
-    amount: number;
-    description: string;
-  };
+export type GetContractCallback = (value: {
+  from: Address;
+  to: Address;
+  amount: Amount;
+  description: Description;
 }) => Promise<{ contract: Array<number> }>;
 
-type TransferSendCallback = (value: {
-  signedContract: {
-    contract: Array<number>;
-    sig: Array<number>;
-    sigAlgorithm: string;
-    deployer: Array<number>;
-  };
+export type TransferTokensCallback = (value: {
+  contract: Uint8Array<ArrayBufferLike>;
+  sig: Uint8Array<ArrayBufferLike>;
+  sigAlgorithm: string;
 }) => Promise<void>;
 
 /**
@@ -150,30 +150,25 @@ export async function transferTokens(
   toAddress: Address,
   amount: Amount,
   description: Description,
-  preparePostCallback: PreparePostCallback,
-  transferSendCallback: TransferSendCallback,
+  getContractCallback: GetContractCallback,
+  transferTokensCallback: TransferTokensCallback,
 ) {
-  const response = await preparePostCallback({
-    transferReq: {
-      from: generateAddressFrom(privateKey).getValue(),
-      to: toAddress.getValue(),
-      amount: amount.getValue(),
-      description: description.getValue(),
-    },
+  const response = await getContractCallback({
+    from: privateKey.getPublicKeyFrom().getAddressFrom(),
+    to: toAddress,
+    amount: amount,
+    description: description,
   });
 
   const contract = new Uint8Array(response.contract);
   const payload = blake2b(contract, undefined, 32);
 
-  const signedContract = sign(payload, privateKey);
+  const { sig, sigAlgorithm } = sign(payload, privateKey);
 
-  await transferSendCallback({
-    signedContract: {
-      contract: Array.from(contract),
-      sig: Array.from(signedContract.signature),
-      sigAlgorithm: signedContract.sigAlgorithm,
-      deployer: Array.from(signedContract.deployer),
-    },
+  await transferTokensCallback({
+    contract,
+    sig,
+    sigAlgorithm,
   });
 
   return true;

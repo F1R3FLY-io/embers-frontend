@@ -1,10 +1,16 @@
-import { randomBytes } from "crypto";
-import { PublicKey } from "../src";
+import secp256k1 from "secp256k1";
+
+import { PrivateKey, PublicKey } from "../src/index";
 
 describe("PublicKey class", () => {
   test("should create a new PublicKey", () => {
-    const publicKey = PublicKey.tryFrom(Uint8Array.from(randomBytes(33)));
+    const privateKey = PrivateKey.new();
+    const publicKey = PublicKey.tryFrom(
+      privateKey.getPublicKeyFrom().getValue(),
+    );
+
     expect(publicKey).toBeInstanceOf(PublicKey);
+    expect(secp256k1.publicKeyVerify(publicKey.getValue())).toBe(true);
   });
 
   test("should throw an error", () => {

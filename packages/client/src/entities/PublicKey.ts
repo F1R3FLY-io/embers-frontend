@@ -1,11 +1,16 @@
-import createKeccakHash from "keccak";
-import secp256k1 from "secp256k1";
+import * as secp256k1 from "secp256k1";
+
+import { getAddressFrom } from "../functions";
+
+import { Address } from "./Address";
 
 export class PublicKey {
   private constructor(private value: Uint8Array) {}
 
   public static tryFrom(value: Uint8Array) {
-    secp256k1.publicKeyVerify(value);
+    if (!secp256k1.publicKeyVerify(value)) {
+      throw new Error("Invalid public key");
+    }
     return new PublicKey(value);
   }
 
@@ -13,11 +18,7 @@ export class PublicKey {
     return this.value;
   }
 
-  public getHash(): string {
-    const value = this.value.slice(1, -40);
-    const newLocal = createKeccakHash("keccak256")
-      .update(Buffer.from(value))
-      .digest("hex");
-    return newLocal.toUpperCase();
+  public getAddressFrom(): Address {
+    return getAddressFrom(this);
   }
 }

@@ -1,11 +1,13 @@
 import js from "@eslint/js";
 import { globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config([
-  globalIgnores(["docs/**", "mocks/**", "tests/**", "coverage/**"]),
+  globalIgnores(["dist", "api-client", "coverage", "docs", "mocks"]),
   {
     files: ["**/*.{ts,tsx}"],
     ignores: ["**/*.module.scss.d.ts"],
@@ -23,6 +25,8 @@ export default tseslint.config([
           },
         },
       },
+      reactHooks.configs["recommended-latest"],
+      reactRefresh.configs.vite,
     ],
     languageOptions: {
       ecmaVersion: 2020,

@@ -1,14 +1,16 @@
 import { randomBytes } from "crypto";
 
+import secp256k1 from "secp256k1";
+
 import { PrivateKey } from "../src/entities/PrivateKey";
 
 describe("PrivateKey class", () => {
-  test("should create a valid private key", () => {
+  test("should check if private key is valid", () => {
     const privateKey = PrivateKey.new();
-    expect(privateKey).toBeInstanceOf(PrivateKey);
+    expect(secp256k1.privateKeyVerify(privateKey.getValue())).toBe(true);
   });
 
-  test("should create a valid private key from a string", () => {
+  test("should create a valid private key from a Uint8Array", () => {
     const privateKey = PrivateKey.tryFrom(randomBytes(32));
     expect(privateKey).toBeInstanceOf(PrivateKey);
   });

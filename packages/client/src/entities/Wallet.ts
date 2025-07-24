@@ -2,6 +2,8 @@ import { Configuration, HTTPHeaders, WalletsApi } from "../api-client";
 import {
   generateAddressFrom,
   getWalletState,
+  GetContractCallback,
+  TransferTokensCallback,
   transferTokens as transferTokens,
 } from "../functions";
 
@@ -42,13 +44,42 @@ export class Wallet {
    * @returns A promise that resolves when the transfer is sent.
    */
   async sendTokens(to: Address, amount: Amount, description: Description) {
+    const preparePostCallback: GetContractCallback = ({
+      from,
+      to,
+      amount,
+      description,
+    }) =>
+      this.client.apiWalletsTransferPreparePost({
+        transferReq: {
+          from: from.getValue(),
+          to: to.getValue(),
+          amount: Number(amount.getValue()),
+          description: description.getValue(),
+        },
+      });
+
+    const transferSendCallback: TransferTokensCallback = ({
+      contract,
+      sig,
+      sigAlgorithm,
+    }) =>
+      this.client.apiWalletsTransferSendPost({
+        signedContract: {
+          contract: Array.from(contract),
+          sig: Array.from(sig),
+          sigAlgorithm,
+          deployer: Array.from(this.privateKey.getPublicKeyFrom().getValue()),
+        },
+      });
+
     return transferTokens(
       this.privateKey,
       to,
       amount,
       description,
-      (args) => this.client.apiWalletsTransferPreparePost(args),
-      (args) => this.client.apiWalletsTransferSendPost(args),
+      preparePostCallback,
+      transferSendCallback,
     );
   }
 
