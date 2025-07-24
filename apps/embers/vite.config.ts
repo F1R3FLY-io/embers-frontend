@@ -1,6 +1,5 @@
-import path from "path";
-
 import react from "@vitejs/plugin-react";
+import path from "path";
 import { defineConfig } from "vite";
 import sassDts from "vite-plugin-sass-dts";
 
@@ -10,6 +9,7 @@ export default defineConfig({
     react(),
     sassDts({
       enabledMode: ["development", "production"],
+      esmExport: true,
     }),
   ],
   resolve: {

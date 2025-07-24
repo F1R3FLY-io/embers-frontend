@@ -3,5 +3,6 @@ declare const classNames: {
   readonly title: "title";
   readonly buttons: "buttons";
   readonly note: "note";
+  readonly "picker-container": "picker-container";
 };
-export = classNames;
+export default classNames;

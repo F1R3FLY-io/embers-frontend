@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly background: "background";
+  readonly pointer: "pointer";
 };
 export default classNames;

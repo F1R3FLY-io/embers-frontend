@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import logo from "@/public/firefly-io.png";
+import logo from "@/public/icons/firefly-io.png";
 
 import styles from "./ContainerWithLogo.module.scss";
 

@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit --project tsconfig.app.json",
     "format:code": "prettier --write '**/*.{js,ts,tsx,scss}' --ignore-path ../../.prettierignore",
     "format:scss": "stylelint --fix '**/*.scss'",
+    "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,ts,tsx,scss}' --ignore-path ../../.prettierignore",
     "ci:check:scss": "stylelint '**/*.scss'"
   },
@@ -23,6 +24,7 @@
     "js-sha3": "^0.9.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-dropzone": "^14.3.8",
     "react-router-dom": "^7.7.0",
     "zod": "^4.0.5"
   }

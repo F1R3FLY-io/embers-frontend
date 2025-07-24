@@ -5,12 +5,12 @@ import { Text } from "@/lib/components/Text";
 import styles from "./Button.module.scss";
 
 type ButtonProps = {
-  type: "primary" | "secondary";
-  onClick: () => void;
   children?: string;
+  onClick: () => void;
+  type: "primary" | "secondary";
 };
 
-export default function Button({ type, onClick, children }: ButtonProps) {
+export default function Button({ children, onClick, type }: ButtonProps) {
   const btnClass = classNames(styles.button, {
     [styles.primary]: type === "primary",
     [styles.secondary]: type === "secondary",
