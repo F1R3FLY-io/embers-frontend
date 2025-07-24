@@ -8,10 +8,11 @@
 .headerBar {
   width: 100%;
   height: 60px;
-  background-color: var(--background-neutral-overlay);
+  background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 24px;
   position: sticky;
   top: 0;
@@ -25,6 +26,144 @@
   margin: 0;
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.languageDropdown {
+  position: relative;
+  
+  .dropdown {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 24px 6px 12px;
+    color: var(--text-color-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text-color-primary);
+    }
+  }
+
+  .chevron {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: var(--text-color-secondary);
+  }
+
+  &:hover .chevron {
+    color: var(--text-color-primary);
+  }
+}
+
+.themeSwitch {
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    
+    background-color: var(--border-color);
+    transition: all 0.3s ease;
+    border-radius: 12px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: -3px;
+      top: -4px;
+      background-color: white;
+      transition: all 0.3s ease;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    &:after {
+      position: absolute;
+      content: "🌙";
+      font-size: 10px;
+      left: -1.5px;
+      top: -2px;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: #4a4a4a;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(20px);
+    background-color: #6a00ff;
+  }
+
+  input:checked + .slider:after {
+    transform: translateX(20px);
+    filter: brightness(0) invert(1);
+  }
+}
+
+.settingsIcon {
+  background: none;
+  border: none;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
 .mainContent {
   flex: 1;
   display: flex;
@@ -34,7 +173,7 @@
 
 .dashboard {
   width: 220px;
-  background-color: var(--background-neutral-overlay);
+  background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
   padding: 24px;
   min-height: 100%;
@@ -84,7 +223,7 @@
 }
 
 .gridBox {
-  background-color: var(--background-neutral-overlay);
+  background-color: var(--background-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
@@ -92,7 +231,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .gridBox:hover {
@@ -156,12 +295,12 @@
   color: var(--text-color-secondary);
   cursor: pointer;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   font-size: 14px;
 }
 
 .iconButton:hover {
-  background-color: var(--background-neutral-overlay);
+  background-color: rgba(255, 255, 255, 0.05);
   color: var(--text-color-primary);
 
   svg {

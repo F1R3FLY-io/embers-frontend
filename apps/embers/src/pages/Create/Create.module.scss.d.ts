@@ -2,6 +2,14 @@ declare const classNames: {
   readonly page: "page";
   readonly headerBar: "headerBar";
   readonly appTitle: "appTitle";
+  readonly headerRight: "headerRight";
+  readonly languageDropdown: "languageDropdown";
+  readonly dropdown: "dropdown";
+  readonly chevron: "chevron";
+  readonly themeSwitch: "themeSwitch";
+  readonly switch: "switch";
+  readonly slider: "slider";
+  readonly settingsIcon: "settingsIcon";
   readonly mainContent: "mainContent";
   readonly dashboard: "dashboard";
   readonly dashboardTop: "dashboardTop";
