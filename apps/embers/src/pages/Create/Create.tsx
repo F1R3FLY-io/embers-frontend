@@ -33,14 +33,14 @@ export default function Create() {
   };
   return (
     <div className={styles.page}>
-      <div className={styles.headerBar}>
-        <div className={styles.appTitle}>
+      <div className={styles["header-bar"]}>
+        <div className={styles["app-title"]}>
           <Text type="title" fontSize={18}>
             F1R3FLY
           </Text>
         </div>
-        <div className={styles.headerRight}>
-          <div className={styles.languageDropdown}>
+        <div className={styles["header-right"]}>
+          <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
               <option value="en">English</option>
               <option value="es">Español</option>
@@ -64,7 +64,7 @@ export default function Create() {
               />
             </svg>
           </div>
-          <div className={styles.themeSwitch}>
+          <div className={styles["theme-switch"]}>
             <label className={styles.switch}>
               <input
                 type="checkbox"
@@ -74,7 +74,7 @@ export default function Create() {
               <span className={styles.slider}></span>
             </label>
           </div>
-          <button className={styles.settingsIcon}>
+          <button className={styles["settings-icon"]}>
             <svg
               width="20"
               height="20"
@@ -93,13 +93,15 @@ export default function Create() {
           </button>
         </div>
       </div>
-      <div className={styles.mainContent}>
+      <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           {/* Dashboard content will be added here */}
-          <div className={styles.dashboardTop}>
-            <button className={`${styles.iconButton} ${styles.agentsButton}`}>
+          <div className={styles["dashboard-top"]}>
+            <button
+              className={`${styles["icon-button"]} ${styles["agents-button"]}`}
+            >
               <svg
-                className={styles.smallRobotIcon}
+                className={styles["small-robot-icon"]}
                 width="25"
                 height="13"
                 viewBox="0 0 50 36"
@@ -211,10 +213,10 @@ export default function Create() {
               <span>Agents</span>
             </button>
           </div>
-          <div className={styles.dashboardColumn}>
-            <div className={styles.dashboardDivider}></div>
-            <div className={styles.dashboardButtons}>
-              <button className={styles.iconButton}>
+          <div className={styles["dashboard-column"]}>
+            <div className={styles["dashboard-divider"]}></div>
+            <div className={styles["dashboard-buttons"]}>
+              <button className={styles["icon-button"]}>
                 <svg
                   width="16"
                   height="16"
@@ -250,7 +252,7 @@ export default function Create() {
                 </svg>
                 <span>Documentation</span>
               </button>
-              <button className={styles.iconButton}>
+              <button className={styles["icon-button"]}>
                 <svg
                   width="16"
                   height="16"
@@ -285,15 +287,15 @@ export default function Create() {
             </div>
           </div>
         </div>
-        <div className={styles.contentArea}>
-          <div className={styles.contentHeader}>
+        <div className={styles["content-area"]}>
+          <div className={styles["content-header"]}>
             <Text type="title" fontSize={26}>
               Agents
             </Text>
           </div>
-          <div className={styles.gridContainer}>
-            <div className={`${styles.gridBox} ${styles.createBox}`}>
-              <div className={styles.robotIcon}>
+          <div className={styles["grid-container"]}>
+            <div className={`${styles["grid-box"]} ${styles["create-box"]}`}>
+              <div className={styles["robot-icon"]}>
                 <svg
                   width="50"
                   height="36"
@@ -407,7 +409,7 @@ export default function Create() {
               <Text type="secondary">Create new Agent</Text>
             </div>
             {Array.from({ length: 0 }, (_, index) => (
-              <div key={index + 1} className={styles.gridBox}>
+              <div key={index + 1} className={styles["grid-box"]}>
                 <Text type="secondary">{"Agent " + (index + 2)}</Text>
               </div>
             ))}
