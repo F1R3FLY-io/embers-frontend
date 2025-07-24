@@ -3,7 +3,7 @@ import { blake2b, blake2bHex } from "blakejs";
 import creawteKeccakHash from "keccak";
 import secp256k1 from "secp256k1";
 
-import { Configuration, WalletsApi } from "./api-client";
+import { WalletsApi } from "./api-client";
 import { Address } from "./entities/Address";
 import { Amount } from "./entities/Amount";
 import { Description } from "./entities/Description";
@@ -110,10 +110,8 @@ export function generateAddressFrom(key: PrivateKey): Address {
  * @param address - The address to check the wallet state for.
  * @returns A promise that resolves to the wallet state.
  */
-export async function getWalletState(address: Address, client?: WalletsApi) {
-  return (
-    client || new WalletsApi(new Configuration())
-  ).apiWalletsAddressStateGet({
+export async function getWalletState(address: Address, client: WalletsApi) {
+  return client.apiWalletsAddressStateGet({
     address: address.getValue(),
   });
 }
