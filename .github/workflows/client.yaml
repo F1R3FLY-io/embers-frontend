@@ -6,7 +6,7 @@ concurrency:
 
 on:
   push:
-    branches: main
+    branches: [main]
     paths:
       - ".github/workflows/client.yaml"
       - "packages/client/**"
