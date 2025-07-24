@@ -1,8 +1,40 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--background-color);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+#root {
+  height: 100vh;
+  background-color: var(--background-color);
+}
+
 :root {
   --background-color: #161e27;
   --text-color-primary: #f1f3f5;
   --text-color-secondary: #93a5b7;
   --background-neutral-overlay: #161e27e5;
+  --border-color: #6b7280;
 }
 
 .light-theme {
@@ -10,4 +42,5 @@
   --text-color-primary: #0b0f14;
   --text-color-secondary: #42576c;
   --background-neutral-overlay: #faf7ffe5;
+  --border-color: #d4dbe2;
 }
