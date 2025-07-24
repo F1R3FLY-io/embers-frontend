@@ -17,7 +17,7 @@
     "doc_port": 3000
   },
   "scripts": {
-    "typecheck": "tsc --noEmit --project tsconfig.app.json",
+    "typecheck": "tsc --noEmit --project tsconfig.json",
     "ci:check:code": "prettier --check '**/*.{js,ts,tsx,scss}' --ignore-path ../../.prettierignore",
     "test": "node test-with-mocks.js",
     "lint": "eslint",
