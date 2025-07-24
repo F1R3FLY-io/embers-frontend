@@ -24,6 +24,4 @@ export class PrivateKey {
   public getValue(): Uint8Array {
     return this.value;
   }
-
-  private toString() {}
 }

@@ -20,6 +20,4 @@ export class PublicKey {
       .digest("hex");
     return newLocal.toUpperCase();
   }
-
-  private toString() {}
 }
