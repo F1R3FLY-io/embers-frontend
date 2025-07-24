@@ -6,8 +6,16 @@
     "apps/*",
     "packages/*"
   ],
+  "scripts": {
+    "prepare": "husky",
+    "lint": "eslint",
+    "test": "jest"
+  },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.31.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
@@ -22,6 +30,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.5",
     "prettier": "^3.6.2",
     "sass-embedded": "^1.89.2",
     "stylelint": "^16.22.0",
