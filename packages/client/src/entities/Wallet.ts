@@ -1,6 +1,7 @@
 import { Configuration, HTTPHeaders, WalletsApi } from "../api-client";
 import {
   generateAddressFrom,
+  getWalletState,
   transferTokens as transferTokens,
 } from "../functions";
 
@@ -56,8 +57,6 @@ export class Wallet {
    * @returns A promise that resolves with the wallet state.
    */
   async getWalletState() {
-    return await this.client.apiWalletsAddressStateGet({
-      address: this.address.getValue(),
-    });
+    return getWalletState(this.address, this.client);
   }
 }
