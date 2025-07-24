@@ -4,8 +4,8 @@ import { blake2b, blake2bHex } from "blakejs";
 import { keccak256 } from "js-sha3";
 
 export type Wallet = {
-  key: Uint8Array;
   address: string;
+  key: Uint8Array;
 };
 
 export const TOKENS = {
@@ -33,8 +33,8 @@ export function fromPrivateKey(key: Uint8Array): Wallet {
   const address = base58.encode(base16.decode(payload + checksum));
 
   return {
-    key,
     address,
+    key,
   };
 }
 
@@ -43,8 +43,8 @@ export function fromPrivateKeyHex(key: string): Wallet {
 }
 
 export type Signed = {
-  sigAlgorithm: string;
   deployer: Uint8Array;
+  sigAlgorithm: string;
   signature: Uint8Array;
 };
 
@@ -56,8 +56,8 @@ export function signPayload(key: Uint8Array, payload: Uint8Array): Signed {
   const deployer = secp256k1.getPublicKey(key, false);
 
   return {
-    sigAlgorithm: "secp256k1",
     deployer,
+    sigAlgorithm: "secp256k1",
     signature,
   };
 }

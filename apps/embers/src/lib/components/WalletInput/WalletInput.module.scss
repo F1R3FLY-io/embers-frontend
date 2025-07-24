@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.input-area {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 9px 12px;
+  background-color: var(--background-neutral-hover);
+  border-radius: 8px;
+}
+
+.input {
+  all: unset;
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+}
+
+.icon {
+  display: flex;
+}
+
+.error {
+  border: 2px solid #f52958;
+}

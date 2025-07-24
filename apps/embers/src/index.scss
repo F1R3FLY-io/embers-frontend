@@ -1,8 +1,18 @@
+@font-face {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: normal;
+  src: url("@/public/fonts/manrope/Manrope-VariableFont_wght.ttf")
+    format("truetype");
+}
+
 :root {
   --background-color: #161e27;
   --text-color-primary: #f1f3f5;
   --text-color-secondary: #93a5b7;
   --background-neutral-overlay: #161e27e5;
+  --text-link-color: #208bfe;
+  --background-neutral-hover: #1e2936;
 }
 
 .light-theme {
@@ -10,4 +20,6 @@
   --text-color-primary: #0b0f14;
   --text-color-secondary: #42576c;
   --background-neutral-overlay: #faf7ffe5;
+  --text-link-color: #1083fe;
+  --background-neutral-hover: #f1f3f5;
 }

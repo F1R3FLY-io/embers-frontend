@@ -4,4 +4,4 @@ declare const classNames: {
   readonly secondary: "secondary";
   readonly "no-color": "no-color";
 };
-export = classNames;
+export default classNames;
