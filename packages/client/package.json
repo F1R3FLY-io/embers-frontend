@@ -1,5 +1,5 @@
 {
-  "name": "f1r3sky-client-sdk",
+  "name": "embers-client-sdk",
   "version": "0.0.1",
   "private": false,
   "main": "src/index.ts",
@@ -23,9 +23,9 @@
     "mocks": "counterfact ./embers-api-schema.json mocks",
     "gen-docs": "typedoc",
     "docs": "npm run gen-docs && serve -l $npm_package_config_doc_port docs",
-    "fetch-api-schema": "curl -o packages/f1r3sky-client-sdk/embers-api-schema.json http://localhost:8080/swagger-ui/openapi.json",
-    "clean-api-client": "rm -rf packages/f1r3sky-client-sdk/src/api-client",
-    "generate-api-client": "docker run -v $(PWD):/local openapitools/openapi-generator-cli generate -i /local/packages/f1r3sky-client-sdk/embers-api-schema.json -g typescript-fetch -o /local/packages/f1r3sky-client-sdk/src/api-client"
+    "fetch-api-schema": "curl -o packages/client/embers-api-schema.json http://localhost:8080/swagger-ui/openapi.json",
+    "clean-api-client": "rm -rf packages/client/src/api-client",
+    "generate-api-client": "docker run -v $(PWD):/local openapitools/openapi-generator-cli generate -i /local/packages/client/embers-api-schema.json -g typescript-fetch -o /local/packages/client/src/api-client"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

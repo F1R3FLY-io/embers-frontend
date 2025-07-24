@@ -8,15 +8,8 @@ A client SDK for interacting with the f1r3sky platform.
 
 ## Installation
 
-```bash
-npm install f1r3sky-client-sdk
-```
 
 Or, if using yarn:
-
-```bash
-yarn add f1r3sky-client-sdk
-```
 
 ## Usage
 ### send tokens example
@@ -71,10 +64,6 @@ npm run lint
 ## Contributing
 
 1. Fork the repository.
-2. Clone your fork:
-    ```bash
-    git clone https://github.com/your-username/f1r3sky-client-sdk.git
-    ```
 3. Install dependencies:
     ```bash
     npm install
