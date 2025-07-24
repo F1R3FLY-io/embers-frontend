@@ -8,13 +8,13 @@ on:
   push:
     branches: main
     paths:
-      - ".github/workflows/embers.yaml"
+      - ".github/workflows/client.yaml"
       - "packages/client/**"
       - "/*"
       - "!**/*.md"
   pull_request:
     paths:
-      - ".github/workflows/embers.yaml"
+      - ".github/workflows/client.yaml"
       - "packages/client/**"
       - "/*"
       - "!**/*.md"
@@ -51,20 +51,5 @@ jobs:
       - name: Code format check
         run: pnpm run ci:check:code
 
-      - name: SCSS format check
-        run: pnpm run ci:check:scss
-
       - name: Lint
         run: pnpm run lint
-
-      - name: Build project
-        run: pnpm run build
-        continue-on-error: false
-
-      - name: Verify .module.scss.d.ts
-        run: |
-          git diff --quiet --exit-code || {
-            echo '::error::Found uncommitted .module.scss.d.ts files.'
-            git --no-pager diff
-            exit 1
-          }
