@@ -94,4 +94,4 @@ Please ensure your code passes all tests and follows the project's linting rules
 
 ## License
 
-See [LICENSE](./LICENSE) for details.
+UNLICENSED

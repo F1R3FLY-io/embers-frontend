@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "description": "A set of functions for working with wallets and contracts on the blockchain",
   "author": "Denys Bushualik <denys.b@devbrother.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "type": "module",
   "keywords": [
     "F1r3Sky",
@@ -13,9 +13,6 @@
     "Blockchain",
     "SmartContracts"
   ],
-  "bugs": {
-    "url": "https://github.com/F1R3FLY-io/f1r3sky-client-sdk/issues"
-  },
   "config": {
     "doc_port": 3000
   },
