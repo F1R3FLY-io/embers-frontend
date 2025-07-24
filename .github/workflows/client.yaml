@@ -1,5 +1,5 @@
 name: Client
-run-name: Embers ${{ github.event_name == 'push' && 'main' || format('MR {0}', github.event.pull_request.title) }}
+run-name: Client ${{ github.event_name == 'push' && 'main' || format('MR {0}', github.event.pull_request.title) }}
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -9,13 +9,13 @@ on:
     branches: main
     paths:
       - ".github/workflows/embers.yaml"
-      - "apps/embers/**"
+      - "packages/client/**"
       - "/*"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/embers.yaml"
-      - "apps/embers/**"
+      - "packages/client/**"
       - "/*"
       - "!**/*.md"
 
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/embers
+        working-directory: packages/client
 
     steps:
       - name: Checkout code

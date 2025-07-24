@@ -1,0 +1,179 @@
+[33mcommit 8915c3b09165624657a35a772fb92862b837f330[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeatures/embers-client[m[33m)[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 15:50:15 2025 +0000
+
+    refactor: test and entities
+
+[33mcommit 760c9954719afbfa13b7527f80330a4eabf6ee75[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 10:54:10 2025 +0000
+
+    refactor: remove unused `toString` methods from entity classes
+
+[33mcommit c9adc408c7b492035d9122aa164ca9ab753a9c9f[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 10:52:21 2025 +0000
+
+    ci: lint
+
+[33mcommit aa8126b5ad2b0ee3ce6079b9341175fa336fea2f[m[33m ([m[1;31morigin/features/embers-client[m[33m)[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 10:36:21 2025 +0000
+
+    refactor: getWalletState
+
+[33mcommit ffa715e0194f5fb5262138ffc983769260a08891[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 08:43:43 2025 +0000
+
+    refactor: getWalletState method
+
+[33mcommit 41493d21533152d031953b6889bd894a051ef535[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 08:37:24 2025 +0000
+
+    chore: renaming package
+
+[33mcommit a609334cdfa47ce5ed062395c78f052856f3d1cb[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 08:35:00 2025 +0000
+
+    chore: remove MIT License and update
+
+[33mcommit 643a60483430e3f5b9b312350873fd0fea865ce2[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Thu Jul 24 08:29:54 2025 +0000
+
+    ci: add pnpm dependency update to dependabot workflow
+
+[33mcommit 7980d1514c0857c70cc6e7f494778b36259da331[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:35:51 2025 +0000
+
+    chore: remove npm-publish-github-packages.yml
+
+[33mcommit 816e74324f0b9407ca968108cb04f9219cc34701[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:23:15 2025 +0000
+
+    refactor: rename verify on verifyAddress
+
+[33mcommit 6fa579ab020d7aff303dde33e11d930957b71929[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:20:51 2025 +0000
+
+    refactor: class Wallet
+
+[33mcommit fc7543a34a7d21c8af011a00cc3da1d4555c56bc[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:19:50 2025 +0000
+
+    refactor: class Wallet
+
+[33mcommit a9ca68b6f3bb4c07567ff39b6ffe32c2717875ff[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:17:56 2025 +0000
+
+    refactor: replace money on tokens
+
+[33mcommit d4453076707a875e14703cdc4edd040823c6a61d[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:15:12 2025 +0000
+
+    refactor: cosmetic and interfaces
+
+[33mcommit 7d15e307705e848a94535e588ccc1faa75610065[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 19:03:37 2025 +0000
+
+    refactor: rename methods of Single Value Entities
+
+[33mcommit 2e2f92f168a2f9f8b44247a839bdf9d2c3eda35e[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 18:56:07 2025 +0000
+
+    fix: formating
+
+[33mcommit 7135a9c8c867c52fabdec951c2e398913ced4e15[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 20:51:02 2025 +0200
+
+    Update packages/client/README.md
+    
+    Co-authored-by: IhorR-DevBrother <ihor.r@devbrother.com>
+
+[33mcommit 8b5db55e5193e1531a5f450e312390ea6c1c1120[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 20:50:27 2025 +0200
+
+    Update packages/client/README.md
+    
+    Co-authored-by: IhorR-DevBrother <ihor.r@devbrother.com>
+
+[33mcommit 2e71334fc3371460faf01faaa69878c5a9ee4f13[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 17:59:25 2025 +0000
+
+    ci: add dependencies and update ESLint configuration
+
+[33mcommit 1f3fabe3684c79acf32155099b50979dfb177640[m
+Author: Denys Bushuliak <denys.b@devbrother.com>
+Date:   Wed Jul 23 17:06:02 2025 +0000
+
+    feat: wallet api wallet
+
+[33mcommit b0dd19668f84f39ded2c8b2e04bb4ac2a9d84263[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: IhorR-DevBrother <ihor.r@devbrother.com>
+Date:   Tue Jul 22 17:07:44 2025 +0200
+
+    finish login page (#4)
+    
+    finish login page
+
+[33mcommit de457cd217d309452f028ffe46aa8c8d2e70fc6d[m
+Merge: 4bb4bbf cc6df63
+Author: IhorR-DevBrother <ihor.r@devbrother.com>
+Date:   Tue Jul 22 09:43:03 2025 +0200
+
+    Merge pull request #3 from F1R3FLY-io/more-init-stuff
+    
+    add some basic stuff and part of login page
+
+[33mcommit cc6df63d14cb27bf66e2b009583a04dab437fc25[m
+Author: ihor.r <ihor.r@devbrother.com>
+Date:   Mon Jul 21 19:26:34 2025 +0200
+
+    fix format
+
+[33mcommit 3fd279e337ffb89a9364adacb646035747403627[m
+Author: ihor.r <ihor.r@devbrother.com>
+Date:   Mon Jul 21 18:02:56 2025 +0200
+
+    add some basic stuff and part of login page
+
+[33mcommit 4bb4bbf205e9e5a257261e43deaa81b05f887170[m
+Merge: d92fa54 1229b24
+Author: IhorR-DevBrother <ihor.r@devbrother.com>
+Date:   Fri Jul 11 15:45:17 2025 +0200
+
+    Merge pull request #1 from F1R3FLY-io/init-project
+    
+    init project
+
+[33mcommit 1229b2494833ec7346be600e8bb88ac5df5a977f[m
+Author: ihor.r <ihor.r@devbrother.com>
+Date:   Fri Jul 11 15:41:14 2025 +0200
+
+    add some stuff
+
+[33mcommit b833f6429b2a02f1283292593b7f6ccf67f640c5[m
+Author: ihor.r <ihor.r@devbrother.com>
+Date:   Thu Jul 10 13:34:04 2025 +0200
+
+    init project
+
+[33mcommit d92fa5460913ed728fdbe2307f52332917f6f0ec[m
+Author: IhorR-DevBrother <ihor.r@devbrother.com>
+Date:   Thu Jul 10 08:44:29 2025 +0200
+
+    Initial commit
