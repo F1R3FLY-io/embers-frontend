@@ -16,7 +16,7 @@
     "ci:check:scss": "stylelint '**/*.scss'"
   },
   "dependencies": {
-    "@noble/curves": "^1.0.0",
+    "@noble/curves": "^1.9.4",
     "@scure/base": "^1.2.6",
     "@tanstack/react-query": "^5.83.0",
     "blakejs": "^1.2.1",
