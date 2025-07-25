@@ -1,1 +1,1 @@
-pnpm run -r format:code
+pnpm run -r ci:check:code
