@@ -16,7 +16,7 @@ export class Address {
    * @returns Address Address instance created from the string
    * @throws Error if the address is invalid
    */
-  static tryFrom(address: string) {
+  static tryFrom(address: string): Address {
     if (verifyAddress(address)) {
       return new Address(address);
     } else {
@@ -28,7 +28,7 @@ export class Address {
    * Convert the address to a string.
    * @returns string String representation of the address
    */
-  getValue() {
+  getValue(): string {
     return this.value;
   }
 }

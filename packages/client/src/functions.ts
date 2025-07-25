@@ -1,17 +1,18 @@
-import { base16, base58 } from "@scure/base";
-import { blake2b, blake2bHex } from "blakejs";
-import createKeccakHash from "keccak";
-import * as secp256k1 from "secp256k1";
+import { base58 } from "@scure/base";
+import { blake2b } from "blakejs";
+import { keccak256 } from "js-sha3";
+import secp256k1 from "secp256k1";
 
-import { WalletsApi } from "./api-client/index";
+import type { WalletsApi } from "./api-client/index";
+import type { Amount } from "./entities/Amount";
+import type { Description } from "./entities/Description";
+import type { PrivateKey } from "./entities/PrivateKey";
+
 import { Address } from "./entities/Address";
-import { Amount } from "./entities/Amount";
-import { Description } from "./entities/Description";
-import { PrivateKey } from "./entities/PrivateKey";
 import { PublicKey } from "./entities/PublicKey";
 
-export const F1R3CAP_TOKE_ID = "000000";
-export const F1R3CAP_VERSION = "00";
+export const F1R3CAP_TOKE_ID = [0, 0, 0];
+export const F1R3CAP_VERSION = [0];
 
 /**
  * Verifies F1R3Cap an address by checking its checksum.
@@ -50,9 +51,8 @@ export function sign(
   sig: Uint8Array<ArrayBufferLike>;
   sigAlgorithm: "secp256k1";
 } {
-  const sig = secp256k1.signatureExport(
-    secp256k1.ecdsaSign(payload, key.getValue()).signature,
-  );
+  const { signature } = secp256k1.ecdsaSign(payload, key.getValue());
+  const sig = secp256k1.signatureExport(signature);
 
   return {
     sig,
@@ -69,26 +69,19 @@ export function sign(
  * @returns The derived F1R3Cap address as an Address object.
  */
 export function getAddressFrom(publicKey: PublicKey): Address {
-  const value = publicKey.getValue().slice(1, -40);
-  const publicKeyHash = createKeccakHash("keccak256")
-    .update(Buffer.from(value))
-    .digest("hex")
-    .toUpperCase();
+  const value = publicKey.getValue().slice(1);
+  const publicKeyHash = keccak256.digest(value).slice(-20);
+  const ethHash = keccak256.digest(publicKeyHash);
 
-  const decodedPublicKeysHash = base16.decode(publicKeyHash);
-  const ethHash = createKeccakHash("keccak256")
-    .update(Buffer.from(decodedPublicKeysHash))
-    .digest("hex")
-    .toUpperCase();
+  const payloadBytes = new Uint8Array(
+    [F1R3CAP_TOKE_ID, F1R3CAP_VERSION, ethHash].flat(),
+  );
+  const checksum = blake2b(payloadBytes, undefined, 32).slice(0, 4);
 
-  const payload = `${F1R3CAP_TOKE_ID}${F1R3CAP_VERSION}${ethHash}`;
-
-  const payloadBytes = base16.decode(payload);
-  const checksum = blake2bHex(payloadBytes, undefined, 32)
-    .slice(0, 8)
-    .toUpperCase();
-
-  return Address.tryFrom(base58.encode(base16.decode(payload + checksum)));
+  const addressBytes = new Uint8Array(
+    [Array.from(payloadBytes), Array.from(checksum)].flat(),
+  );
+  return Address.tryFrom(base58.encode(addressBytes));
 }
 
 /**
@@ -156,7 +149,7 @@ export async function transferTokens(
   const response = await getContractCallback({
     amount: amount,
     description: description,
-    from: privateKey.getPublicKeyFrom().getAddressFrom(),
+    from: privateKey.getPublicKey().getAddress(),
     to: toAddress,
   });
 

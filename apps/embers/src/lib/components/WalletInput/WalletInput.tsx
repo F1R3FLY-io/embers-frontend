@@ -1,27 +1,41 @@
 import classNames from "classnames";
-import { type ChangeEvent, useCallback, useState } from "react";
-
-import type { WalletDummy } from "@/lib/providers/wallet/useWallet";
+import { PrivateKey } from "embers-client-sdk";
+import { type ChangeEvent, useCallback, useEffect, useState } from "react";
 
 import { FilePicker } from "@/lib/components/FilePicker";
 import { Text } from "@/lib/components/Text";
+import { type Wallet } from "@/lib/providers/wallet/useWallet";
 import UploadIcon from "@/public/icons/upload-icon.svg";
 
 import styles from "./WalletInput.module.scss";
 
 type WalletInputProps = {
   error?: boolean;
-  onChange: (wallet?: WalletDummy) => void;
+  onChange: (wallet?: Wallet) => void;
 };
 
 export default function WalletInput({ error, onChange }: WalletInputProps) {
-  const [errorState, setErrorState] = useState(error);
+  const [errorState, setErrorState] = useState(false);
+  useEffect(() => {
+    if (error) {
+      setErrorState(error);
+    }
+  }, [error]);
+
   const [content, setContent] = useState("");
 
   const setWallet = useCallback(
     (content: string) => {
       setContent(content);
-      onChange(null);
+      try {
+        onChange({
+          privateKey: PrivateKey.tryFromHex(content),
+        });
+        setErrorState(false);
+      } catch {
+        onChange(undefined);
+        setErrorState(true);
+      }
     },
     [onChange],
   );

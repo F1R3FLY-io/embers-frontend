@@ -1,8 +1,7 @@
 import { blake2b } from "blakejs";
 import secp256k1 from "secp256k1";
 
-import { PrivateKey } from "../src";
-import {
+import type {
   Boost,
   Direction,
   HTTPHeaders,
@@ -11,6 +10,8 @@ import {
   Transfer,
   WalletStateAndHistory,
 } from "../src/api-client";
+
+import { PrivateKey } from "../src";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
@@ -23,10 +24,8 @@ beforeEach(() => {
 describe("Wallet Transfer Tests", () => {
   test("transferTokens function", async () => {
     const senderPrivateKey = PrivateKey.new();
-    const senderPublicKey = senderPrivateKey.getPublicKeyFrom();
-    const receiverAddress = PrivateKey.new()
-      .getPublicKeyFrom()
-      .getAddressFrom();
+    const senderPublicKey = senderPrivateKey.getPublicKey();
+    const receiverAddress = PrivateKey.new().getPublicKey().getAddress();
 
     const amount = Amount.tryFrom(1000n);
     const description = Description.tryFrom(
@@ -59,7 +58,7 @@ describe("Wallet Transfer Tests", () => {
     expect(mockPreparePostCallback).toHaveBeenCalledWith({
       amount,
       description,
-      from: senderPublicKey.getAddressFrom(),
+      from: senderPublicKey.getAddress(),
       to: receiverAddress,
     });
 
@@ -86,7 +85,7 @@ describe("Wallet Transfer Tests", () => {
 
   test("Wallet.sendTokens method", async () => {
     const privateKey = PrivateKey.new();
-    const address = privateKey.getPublicKeyFrom().getAddressFrom();
+    const address = privateKey.getPublicKey().getAddress();
     const amount = Amount.tryFrom(1000n);
     const description = Description.tryFrom(
       "This is a test transfer with a valid description.",
@@ -124,41 +123,35 @@ describe("Wallet Transfer Tests", () => {
     );
 
     // Additional type-safe checks for array elements if they exist
-    if (result.requests.length > 0) {
-      expect(result.requests[0]).toEqual(
-        expect.objectContaining<Request>({
-          amount: expect.any(Number) as number,
-          date: expect.any(Date) as Date,
-          id: expect.any(String) as string,
-          status: expect.any(String) as RequestStatus,
-        }),
-      );
-    }
+    expect(result.requests).toEqual(
+      expect.arrayOf<Request>({
+        amount: expect.any(Number) as number,
+        date: expect.any(Date) as Date,
+        id: expect.any(String) as string,
+        status: expect.any(String) as RequestStatus,
+      }),
+    );
 
-    if (result.boosts.length > 0) {
-      expect(result.boosts[0]).toEqual(
-        expect.objectContaining<Boost>({
-          amount: expect.any(Number) as number,
-          date: expect.any(Date) as Date,
-          direction: expect.any(String) as Direction,
-          id: expect.any(String) as string,
-          post: expect.any(String) as string,
-          username: expect.any(String) as string,
-        }),
-      );
-    }
+    expect(result.boosts).toEqual(
+      expect.arrayOf<Boost>({
+        amount: expect.any(Number) as number,
+        date: expect.any(Date) as Date,
+        direction: expect.any(String) as Direction,
+        id: expect.any(String) as string,
+        post: expect.any(String) as string,
+        username: expect.any(String) as string,
+      }),
+    );
 
-    if (result.transfers.length > 0) {
-      expect(result.transfers[0]).toEqual(
-        expect.objectContaining<Transfer>({
-          amount: expect.any(Number) as number,
-          cost: expect.any(Number) as number,
-          date: expect.any(Date) as Date,
-          direction: expect.any(String) as Direction,
-          id: expect.any(String) as string,
-          toAddress: expect.any(String) as string,
-        }),
-      );
-    }
+    expect(result.transfers).toEqual(
+      expect.arrayOf<Transfer>({
+        amount: expect.any(Number) as number,
+        cost: expect.any(Number) as number,
+        date: expect.any(Date) as Date,
+        direction: expect.any(String) as Direction,
+        id: expect.any(String) as string,
+        toAddress: expect.any(String) as string,
+      }),
+    );
   });
 });

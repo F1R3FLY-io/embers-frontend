@@ -5,11 +5,7 @@ import { PrivateKey, PublicKey } from "../src/index";
 describe("PublicKey class", () => {
   test("should create a new PublicKey", () => {
     const privateKey = PrivateKey.new();
-    const publicKey = PublicKey.tryFrom(
-      privateKey.getPublicKeyFrom().getValue(),
-    );
-
-    expect(publicKey).toBeInstanceOf(PublicKey);
+    const publicKey = PublicKey.tryFrom(privateKey.getPublicKey().getValue());
     expect(secp256k1.publicKeyVerify(publicKey.getValue())).toBe(true);
   });
 

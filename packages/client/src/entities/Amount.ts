@@ -6,7 +6,7 @@ export class Amount {
 
   public static tryFrom(value: bigint): Amount {
     if (value <= 0) {
-      throw new Error("Amount cannot be negative or zero.");
+      throw new Error("Amount cannot be negative or zero");
     }
     return new Amount(value);
   }

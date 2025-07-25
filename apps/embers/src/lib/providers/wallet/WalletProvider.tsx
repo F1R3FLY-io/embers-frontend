@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { WalletContext, type WalletDummy } from "./useWallet";
+import { type Wallet, WalletContext } from "./useWallet";
 
 export function WalletProvider({ children }: React.PropsWithChildren) {
-  const [wallet, setWallet] = useState<WalletDummy>();
+  const [wallet, setWallet] = useState<Wallet>();
 
   return (
     <WalletContext.Provider

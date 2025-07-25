@@ -10,8 +10,9 @@ describe("PrivateKey class", () => {
   });
 
   test("should create a valid private key from a Uint8Array", () => {
-    const privateKey = PrivateKey.tryFrom(randomBytes(32));
-    expect(privateKey).toBeInstanceOf(PrivateKey);
+    const validKey = PrivateKey.new();
+    const privateKey = PrivateKey.tryFrom(validKey.getValue());
+    expect(secp256k1.privateKeyVerify(privateKey.getValue())).toBe(true);
   });
 
   test("should throw error", () => {

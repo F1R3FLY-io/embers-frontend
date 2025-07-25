@@ -14,12 +14,12 @@ function waitForServer(port, timeout = 30000) {
       const req = http.request(
         {
           hostname: "localhost",
-          port: port,
-          path: "/",
           method: "GET",
+          path: "/",
+          port: port,
           timeout: 1000,
         },
-        (res) => {
+        () => {
           console.log("✅ Mock server is ready");
           resolve();
         },
