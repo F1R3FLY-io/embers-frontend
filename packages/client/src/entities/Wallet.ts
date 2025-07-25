@@ -1,15 +1,16 @@
-import { Configuration, HTTPHeaders, WalletsApi } from "../api-client";
+import type { HTTPHeaders } from "../api-client";
+import type { GetContractCallback, TransferTokensCallback } from "../functions";
+import type { Address } from "./Address";
+import type { Amount } from "./Amount";
+import type { Description } from "./Description";
+import type { PrivateKey } from "./PrivateKey";
+
+import { Configuration, WalletsApi } from "../api-client";
 import {
   generateAddressFrom,
-  GetContractCallback,
   getWalletState,
   transferTokens as transferTokens,
-  TransferTokensCallback,
 } from "../functions";
-import { Address } from "./Address";
-import { Amount } from "./Amount";
-import { Description } from "./Description";
-import { PrivateKey } from "./PrivateKey";
 
 export type WalletConfig = {
   headers: HTTPHeaders;
@@ -51,7 +52,7 @@ export class Wallet {
     }) =>
       this.client.apiWalletsTransferPreparePost({
         transferReq: {
-          amount: Number(amount.getValue()),
+          amount: amount.getValue().toString(),
           description: description.getValue(),
           from: from.getValue(),
           to: to.getValue(),
@@ -66,7 +67,7 @@ export class Wallet {
       this.client.apiWalletsTransferSendPost({
         signedContract: {
           contract: Array.from(contract),
-          deployer: Array.from(this.privateKey.getPublicKeyFrom().getValue()),
+          deployer: Array.from(this.privateKey.getPublicKey().getValue()),
           sig: Array.from(sig),
           sigAlgorithm,
         },

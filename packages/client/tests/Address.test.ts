@@ -1,7 +1,7 @@
 import { Address } from "../src/entities/Address";
 
 describe("Address class", () => {
-  test("Create Address", () => {
+  test("should create an Address", () => {
     const address = Address.tryFrom(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
@@ -10,7 +10,7 @@ describe("Address class", () => {
     );
   });
 
-  test("Expect Address.fromString to throw error", () => {
+  test("should throw error", () => {
     expect(() => Address.tryFrom("invalid")).toThrow();
   });
 });

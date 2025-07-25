@@ -1,4 +1,7 @@
-import { Description } from "../src/entities/Description";
+import {
+  Description,
+  MAX_DESCRIPTION_LENGTH,
+} from "../src/entities/Description";
 
 describe("Description class", () => {
   test("should create a Description", () => {
@@ -9,9 +12,7 @@ describe("Description class", () => {
 
   test("should throw error", () => {
     expect(() =>
-      Description.tryFrom(
-        "ABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDEABCDE",
-      ),
+      Description.tryFrom("A".repeat(MAX_DESCRIPTION_LENGTH + 1)),
     ).toThrow();
   });
 });

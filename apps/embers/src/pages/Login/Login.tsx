@@ -6,31 +6,44 @@ import { ContainerWithLogo } from "@/lib/components/ContainerWithLogo";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
-import { useWallet, type WalletDummy } from "@/lib/providers/wallet/useWallet";
+import { useWallet, type Wallet } from "@/lib/providers/wallet/useWallet";
 
 import styles from "./Login.module.scss";
 
-type PageState = "init" | "signin" | "creation";
+type PageState = "init" | "signin";
+type WalletControlState = {
+  touched: boolean;
+  wallet: Wallet | undefined;
+};
 
 export default function Login() {
   const [pageState, setPageState] = useState<PageState>("init");
   const toSigning = useCallback(() => setPageState("signin"), []);
-  const toCreating = useCallback(() => setPageState("creation"), []);
+  const redirectToFiresky = useCallback(() => {}, []);
 
   const navigate = useNavigate();
   const { setWallet } = useWallet();
-  const [newWallet, setNewWallet] = useState<WalletDummy>();
+  const [walletInputState, setWalletInputState] = useState<WalletControlState>({
+    touched: false,
+    wallet: undefined,
+  });
+
+  const updateWallet = useCallback((wallet?: Wallet) => {
+    setWalletInputState((state) => ({ ...state, wallet }));
+  }, []);
+
   const signin = useCallback(() => {
-    if (newWallet) {
-      setWallet(newWallet);
+    if (walletInputState.wallet) {
+      setWallet(walletInputState.wallet);
       void navigate("/home");
+    } else {
+      setWalletInputState((state) => ({ ...state, touched: true }));
     }
-  }, [newWallet, setWallet, navigate]);
+  }, [walletInputState, setWallet, navigate]);
 
   let content;
 
   switch (pageState) {
-    case "creation":
     case "init":
       content = (
         <>
@@ -41,7 +54,7 @@ export default function Login() {
             <Button type="primary" onClick={toSigning}>
               Sign In with F1R3SKY Wallet
             </Button>
-            <Button type="secondary" onClick={toCreating}>
+            <Button type="secondary" onClick={redirectToFiresky}>
               Create Wallet
             </Button>
           </div>
@@ -68,7 +81,13 @@ export default function Login() {
                 Make sure you’re using the correct and secure credentials.
               </Text>
             </div>
-            <WalletInput onChange={setNewWallet} />
+            <WalletInput
+              error={
+                walletInputState.touched &&
+                walletInputState.wallet === undefined
+              }
+              onChange={updateWallet}
+            />
           </div>
           <div className={styles.buttons}>
             <Button type="primary" onClick={signin}>
@@ -77,7 +96,7 @@ export default function Login() {
             <div className={styles.note}>
               <Text type="secondary">
                 Don’t have F1R3SKY Wallet?{" "}
-                <TextLink onClick={toCreating}>Create one</TextLink>
+                <TextLink onClick={redirectToFiresky}>Create one</TextLink>
               </Text>
             </div>
           </div>
