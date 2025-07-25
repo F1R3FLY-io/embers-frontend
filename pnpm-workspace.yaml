@@ -3,5 +3,8 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - counterfact
   - esbuild
+  - keccak
+  - secp256k1
   - unrs-resolver

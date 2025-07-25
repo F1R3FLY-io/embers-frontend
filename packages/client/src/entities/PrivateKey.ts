@@ -1,9 +1,7 @@
 import { randomBytes } from "crypto";
-
 import * as secp256k1 from "secp256k1";
 
 import { getPublicKeyFrom } from "../functions";
-
 import { PublicKey } from "./PublicKey";
 
 const RANDOM_BYTES_LENGTH = 32;

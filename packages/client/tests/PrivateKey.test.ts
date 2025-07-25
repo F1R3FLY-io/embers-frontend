@@ -1,5 +1,4 @@
 import { randomBytes } from "crypto";
-
 import secp256k1 from "secp256k1";
 
 import { PrivateKey } from "../src/entities/PrivateKey";

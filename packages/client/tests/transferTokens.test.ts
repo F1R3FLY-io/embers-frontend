@@ -3,13 +3,13 @@ import secp256k1 from "secp256k1";
 
 import { PrivateKey } from "../src";
 import {
-  HTTPHeaders,
-  WalletStateAndHistory,
-  Transfer,
-  Request,
   Boost,
-  RequestStatus,
   Direction,
+  HTTPHeaders,
+  Request,
+  RequestStatus,
+  Transfer,
+  WalletStateAndHistory,
 } from "../src/api-client";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
@@ -64,9 +64,9 @@ describe("Wallet Transfer Tests", () => {
     });
 
     expect(mockTransferSendCallback).toHaveBeenCalledWith({
-      sigAlgorithm: "secp256k1",
       contract,
       sig: expectedSignature,
+      sigAlgorithm: "secp256k1",
     });
 
     expect(
@@ -92,10 +92,10 @@ describe("Wallet Transfer Tests", () => {
       "This is a test transfer with a valid description.",
     );
     const wallet = new Wallet({
+      headers: {} as HTTPHeaders,
       host: "http://localhost",
       port: 3100,
       privateKey: privateKey,
-      headers: {} as HTTPHeaders,
     });
 
     const result = await wallet.sendTokens(address, amount, description);
@@ -105,10 +105,10 @@ describe("Wallet Transfer Tests", () => {
 
   test("Wallet.getWalletState method", async () => {
     const client = new Wallet({
+      headers: {} as HTTPHeaders,
       host: "http://localhost",
       port: 3100,
       privateKey: PrivateKey.new(),
-      headers: {} as HTTPHeaders,
     });
 
     const result = await client.getWalletState();
@@ -116,9 +116,9 @@ describe("Wallet Transfer Tests", () => {
     expect(result).toEqual(
       expect.objectContaining<WalletStateAndHistory>({
         balance: expect.any(Number) as number,
-        requests: expect.any(Array) as Request[],
-        exchanges: expect.any(Array) as object[],
         boosts: expect.any(Array) as Boost[],
+        exchanges: expect.any(Array) as object[],
+        requests: expect.any(Array) as Request[],
         transfers: expect.any(Array) as Transfer[],
       }),
     );
@@ -127,9 +127,9 @@ describe("Wallet Transfer Tests", () => {
     if (result.requests.length > 0) {
       expect(result.requests[0]).toEqual(
         expect.objectContaining<Request>({
-          id: expect.any(String) as string,
-          date: expect.any(Date) as Date,
           amount: expect.any(Number) as number,
+          date: expect.any(Date) as Date,
+          id: expect.any(String) as string,
           status: expect.any(String) as RequestStatus,
         }),
       );
@@ -138,12 +138,12 @@ describe("Wallet Transfer Tests", () => {
     if (result.boosts.length > 0) {
       expect(result.boosts[0]).toEqual(
         expect.objectContaining<Boost>({
-          id: expect.any(String) as string,
-          username: expect.any(String) as string,
-          direction: expect.any(String) as Direction,
-          date: expect.any(Date) as Date,
           amount: expect.any(Number) as number,
+          date: expect.any(Date) as Date,
+          direction: expect.any(String) as Direction,
+          id: expect.any(String) as string,
           post: expect.any(String) as string,
+          username: expect.any(String) as string,
         }),
       );
     }
@@ -151,12 +151,12 @@ describe("Wallet Transfer Tests", () => {
     if (result.transfers.length > 0) {
       expect(result.transfers[0]).toEqual(
         expect.objectContaining<Transfer>({
-          id: expect.any(String) as string,
-          direction: expect.any(String) as Direction,
-          date: expect.any(Date) as Date,
           amount: expect.any(Number) as number,
-          toAddress: expect.any(String) as string,
           cost: expect.any(Number) as number,
+          date: expect.any(Date) as Date,
+          direction: expect.any(String) as Direction,
+          id: expect.any(String) as string,
+          toAddress: expect.any(String) as string,
         }),
       );
     }

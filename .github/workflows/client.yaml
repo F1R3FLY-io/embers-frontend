@@ -52,4 +52,10 @@ jobs:
         run: pnpm run ci:check:code
 
       - name: Lint
-        run: pnpm run lint
+        run: pnpm run ci:lint
+
+      - name: Test
+        run: pnpm run test
+
+      - name: Test e2e
+        run: pnpm run test:e2e
