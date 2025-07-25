@@ -55,11 +55,11 @@ function startMockServer() {
     console.log("🚀 Starting Counterfact mock server...");
 
     mockServer = spawn(
-      "npx",
+      "counterfact",
       [
-        "counterfact",
         "./embers-api-schema.json",
         "mocks",
+        "--generate",
         "--serve",
         "--port",
         "3100",
@@ -115,7 +115,7 @@ function runTests() {
 
     const coverage = process.argv[2] === "--coverage" ? "--coverage" : "";
 
-    const testProcess = spawn("npx", ["jest", coverage], {
+    const testProcess = spawn("jest", [coverage], {
       stdio: "inherit",
     });
 

@@ -1,7 +1,6 @@
 import * as secp256k1 from "secp256k1";
 
 import { getAddressFrom } from "../functions";
-
 import { Address } from "./Address";
 
 export class PublicKey {

@@ -63,13 +63,13 @@ const walletState = await client.getWalletState();
 To run tests:
 
 ```bash
-npm test
+pnpm test
 ```
 
 Lint the code with:
 
 ```bash
-npm run lint
+pnpm run lint
 ```
 
 ## Contributing
@@ -77,7 +77,7 @@ npm run lint
 1. Fork the repository.
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 3. Create a new branch for your feature or fix:
    ```bash

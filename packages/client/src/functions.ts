@@ -47,16 +47,16 @@ export function sign(
   payload: Uint8Array,
   key: PrivateKey,
 ): {
-  sigAlgorithm: "secp256k1";
   sig: Uint8Array<ArrayBufferLike>;
+  sigAlgorithm: "secp256k1";
 } {
   const sig = secp256k1.signatureExport(
     secp256k1.ecdsaSign(payload, key.getValue()).signature,
   );
 
   return {
-    sigAlgorithm: "secp256k1",
     sig,
+    sigAlgorithm: "secp256k1",
   };
 }
 
@@ -122,10 +122,10 @@ export async function getWalletState(address: Address, client: WalletsApi) {
 }
 
 export type GetContractCallback = (value: {
-  from: Address;
-  to: Address;
   amount: Amount;
   description: Description;
+  from: Address;
+  to: Address;
 }) => Promise<{ contract: Array<number> }>;
 
 export type TransferTokensCallback = (value: {
@@ -154,10 +154,10 @@ export async function transferTokens(
   transferTokensCallback: TransferTokensCallback,
 ) {
   const response = await getContractCallback({
-    from: privateKey.getPublicKeyFrom().getAddressFrom(),
-    to: toAddress,
     amount: amount,
     description: description,
+    from: privateKey.getPublicKeyFrom().getAddressFrom(),
+    to: toAddress,
   });
 
   const contract = new Uint8Array(response.contract);
