@@ -17,8 +17,7 @@
     "doc_port": 3000
   },
   "scripts": {
-    "test": "jest",
-    "test:e2e": "node test-with-mocks.js",
+    "test": "node test-with-mocks.js",
     "coverage": "node test-with-mocks.js --coverage",
     "lint": "eslint --fix .",
     "typecheck": "tsc --noEmit --project tsconfig.json",
