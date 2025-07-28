@@ -1,15 +1,19 @@
+import { globalIgnores } from "eslint/config";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+
 import baseConfig from "../../eslint.config.js";
 
-export default [
-  ...baseConfig,
+export default tseslint.config(
+  baseConfig,
+  globalIgnores(["coverage", "docs", "mocks"]),
   {
-    ignores: [
-      "dist/**",
-      "src/api-client/**",
-      "coverage/**",
-      "docs/**",
-      "mocks/**",
-      "node_modules/**",
-    ],
+    files: ["test-with-mocks.js"],
+    languageOptions: {
+      globals: globals.node,
+    },
+    rules: {
+      "no-console": "off",
+    },
   },
-];
+);

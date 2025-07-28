@@ -1,63 +1,127 @@
 import js from "@eslint/js";
-import { globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
-import reactHooks from "eslint-plugin-react-hooks";
+import jest from "eslint-plugin-jest";
+import perfectionist from "eslint-plugin-perfectionist";
 import reactPlugin from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import { globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import perfectionist from "eslint-plugin-perfectionist";
 
-export default tseslint.config([
-  globalIgnores(["**/dist/**", "**/*.module.scss.d.ts"]),
+export const JS_FILES = "**/*.{js,jsx}";
+export const TS_FILES = "**/*.{ts,tsx}";
+
+export default tseslint.config(
+  globalIgnores(["dist", "node_modules"]),
   {
-    files: ["**/*.{ts,tsx}"],
-    plugins: {
-      reactPlugin,
-      reactHooks,
-      reactRefresh,
-      import: importPlugin,
-      perfectionist,
-    },
     extends: [
       js.configs.recommended,
-      tseslint.configs.recommendedTypeChecked,
-      {
-        languageOptions: {
-          parserOptions: {
-            projectService: true,
-            tsconfigRootDir: import.meta.url,
-          },
-        },
-      },
       reactPlugin.configs.flat.recommended,
       reactPlugin.configs.flat["jsx-runtime"],
       reactHooks.configs["recommended-latest"],
+      reactRefresh.configs.recommended,
       reactRefresh.configs.vite,
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
+      importPlugin.flatConfigs.react,
     ],
+    files: [JS_FILES, TS_FILES],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: process.cwd(),
+      },
     },
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
+      reportUnusedInlineConfigs: "error",
+    },
+    plugins: { perfectionist },
     rules: {
-      "@typescript-eslint/switch-exhaustiveness-check": "error",
-      "@typescript-eslint/no-unused-vars": [
+      "arrow-body-style": "error",
+      "class-methods-use-this": "error",
+      curly: ["error", "all"],
+      "default-case-last": "error",
+      "default-param-last": "error",
+      "dot-notation": ["error", { allowKeywords: true }],
+      eqeqeq: "error",
+      "func-style": ["error", "declaration", { allowArrowFunctions: true }],
+      "grouped-accessor-pairs": [
+        "error",
+        "getBeforeSet",
+        { enforceForTSTypes: true },
+      ],
+      "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+      "import/no-named-as-default": "off",
+      "import/no-named-as-default-member": "off",
+      "import/no-unresolved": "error",
+      "logical-assignment-operators": "error",
+      "no-alert": "error",
+      "no-await-in-loop": "error",
+      "no-console": "error",
+      "no-constructor-return": "error",
+      "no-else-return": "error",
+      "no-empty-function": ["error", { allow: ["arrowFunctions"] }],
+      "no-eval": "error",
+      "no-extend-native": "error",
+      "no-extra-label": "error",
+      "no-implied-eval": "error",
+      "no-invalid-this": "error",
+      "no-label-var": "error",
+      "no-lone-blocks": "error",
+      "no-lonely-if": "error",
+      "no-loop-func": "error",
+      "no-multi-assign": "error",
+      "no-new": "error",
+      "no-new-wrappers": "error",
+      "no-object-constructor": "error",
+      "no-promise-executor-return": "error",
+      "no-return-assign": "error",
+      "no-script-url": "error",
+      "no-self-compare": "error",
+      "no-sequences": "error",
+      "no-template-curly-in-string": "error",
+      "no-throw-literal": "error",
+      "no-unassigned-vars": "error",
+      "no-unmodified-loop-condition": "error",
+      "no-unneeded-ternary": "error",
+      "no-unreachable-loop": "error",
+      "no-unused-expressions": [
+        "error",
+        { allowShortCircuit: true, enforceForJSX: true },
+      ],
+      "no-unused-vars": [
         "error",
         {
-          varsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           reportUsedIgnorePattern: true,
+          varsIgnorePattern: "^_",
         },
       ],
-      "import/no-unresolved": "error",
-      "react/jsx-sort-props": [
+      "no-use-before-define": [
+        "error",
+        { classes: false, enums: false, functions: false, variables: true },
+      ],
+      "no-useless-assignment": "error",
+      "no-useless-call": "error",
+      "no-useless-computed-key": "error",
+      "no-useless-concat": "error",
+      "no-useless-constructor": "error",
+      "no-useless-rename": "error",
+      "no-useless-return": "error",
+      "no-var": "error",
+      "object-shorthand": "error",
+      "perfectionist/sort-array-includes": [
         "error",
         {
-          callbacksLast: true,
-          shorthandFirst: true,
-          ignoreCase: true,
-          noSortAlphabetically: false,
-          reservedFirst: true,
+          type: "natural",
+        },
+      ],
+      "perfectionist/sort-enums": [
+        "error",
+        {
+          type: "natural",
         },
       ],
       "perfectionist/sort-exports": [
@@ -69,10 +133,23 @@ export default tseslint.config([
       "perfectionist/sort-imports": [
         "error",
         {
+          groups: [
+            ["builtin", "external"],
+            "internal",
+            ["parent", "sibling", "index"],
+            "style",
+            "unknown",
+          ],
           type: "natural",
         },
       ],
       "perfectionist/sort-interfaces": [
+        "error",
+        {
+          type: "natural",
+        },
+      ],
+      "perfectionist/sort-maps": [
         "error",
         {
           type: "natural",
@@ -102,15 +179,79 @@ export default tseslint.config([
           type: "natural",
         },
       ],
+      "perfectionist/sort-sets": [
+        "error",
+        {
+          type: "natural",
+        },
+      ],
+      "prefer-arrow-callback": "error",
+      "prefer-const": "error",
+      "prefer-promise-reject-errors": "error",
+      "prefer-template": "error",
+      "react/jsx-sort-props": [
+        "error",
+        {
+          callbacksLast: true,
+          ignoreCase: true,
+          noSortAlphabetically: false,
+          reservedFirst: true,
+          shorthandFirst: true,
+        },
+      ],
+      "require-await": "error",
+      yoda: "error",
     },
     settings: {
-      react: { version: "detect" },
       "import/resolver": {
         typescript: {
           alwaysTryTypes: true,
-          project: ["apps/*/tsconfig.json", "packages/*/tsconfig.json"],
+          project: "**/tsconfig.json",
         },
       },
+      react: { version: "detect" },
     },
   },
-]);
+  {
+    extends: [
+      tseslint.configs.eslintRecommended,
+      tseslint.configs.recommendedTypeChecked,
+    ],
+    files: [TS_FILES],
+    rules: {
+      "@typescript-eslint/consistent-type-exports": "error",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          fixStyle: "inline-type-imports",
+          prefer: "type-imports",
+        },
+      ],
+      "@typescript-eslint/dot-notation": ["error", { allowKeywords: true }],
+      "@typescript-eslint/explicit-member-accessibility": [
+        "error",
+        { accessibility: "explicit" },
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          destructuredArrayIgnorePattern: "^_",
+          reportUsedIgnorePattern: true,
+          varsIgnorePattern: "^_",
+        },
+      ],
+      "@typescript-eslint/switch-exhaustiveness-check": "error",
+      "dot-notation": "off",
+    },
+  },
+  {
+    extends: [jest.configs["flat/recommended"], jest.configs["flat/style"]],
+    files: ["**/*.test.{js,jsx,ts,tsx}"],
+  },
+  {
+    files: ["**/eslint.config.{js,ts}"],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+);

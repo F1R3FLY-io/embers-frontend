@@ -41,6 +41,14 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
+      - name: Install dependencies for client
+        run: pnpm install
+        working-directory: packages/client
+
+      - name: Build client
+        run: pnpm build
+        working-directory: packages/client
+
       - name: Install dependencies
         run: pnpm install
 

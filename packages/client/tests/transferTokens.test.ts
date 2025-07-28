@@ -1,20 +1,23 @@
+import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
-import secp256k1 from "secp256k1";
 
 import { PrivateKey } from "../src";
 import {
-  Boost,
-  Direction,
-  HTTPHeaders,
-  Request,
-  RequestStatus,
-  Transfer,
-  WalletStateAndHistory,
+  type Boost,
+  type Direction,
+  type Request,
+  type RequestStatus,
+  type Transfer,
+  type WalletStateAndHistory,
 } from "../src/api-client";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
-import { transferTokens } from "../src/functions";
+import {
+  type GetContractCallback,
+  transferTokens,
+  type TransferTokensCallback,
+} from "../src/functions";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -23,10 +26,8 @@ beforeEach(() => {
 describe("Wallet Transfer Tests", () => {
   test("transferTokens function", async () => {
     const senderPrivateKey = PrivateKey.new();
-    const senderPublicKey = senderPrivateKey.getPublicKeyFrom();
-    const receiverAddress = PrivateKey.new()
-      .getPublicKeyFrom()
-      .getAddressFrom();
+    const senderPublicKey = senderPrivateKey.getPublicKey();
+    const receiverAddress = PrivateKey.new().getPublicKey().getAddress();
 
     const amount = Amount.tryFrom(1000n);
     const description = Description.tryFrom(
@@ -34,16 +35,18 @@ describe("Wallet Transfer Tests", () => {
     );
 
     const contract = new Uint8Array(32);
-    const expectedSignature = secp256k1.signatureExport(
-      secp256k1.ecdsaSign(
-        blake2b(contract, undefined, 32),
-        senderPrivateKey.getValue(),
-      ).signature,
-    );
-    const mockPreparePostCallback = jest.fn().mockResolvedValueOnce({
-      contract,
-    });
-    const mockTransferSendCallback = jest.fn();
+    const expectedSignature = secp256k1
+      .sign(blake2b(contract, undefined, 32), senderPrivateKey.value)
+      .toBytes("der");
+    const mockPreparePostCallback = jest
+      .fn<ReturnType<GetContractCallback>, Parameters<GetContractCallback>>()
+      .mockResolvedValueOnce({
+        contract: Array.from(contract),
+      });
+    const mockTransferSendCallback = jest.fn<
+      ReturnType<TransferTokensCallback>,
+      Parameters<TransferTokensCallback>
+    >();
 
     const result = await transferTokens(
       senderPrivateKey,
@@ -59,7 +62,7 @@ describe("Wallet Transfer Tests", () => {
     expect(mockPreparePostCallback).toHaveBeenCalledWith({
       amount,
       description,
-      from: senderPublicKey.getAddressFrom(),
+      from: senderPublicKey.getAddress(),
       to: receiverAddress,
     });
 
@@ -70,14 +73,11 @@ describe("Wallet Transfer Tests", () => {
     });
 
     expect(
-      secp256k1.ecdsaVerify(
-        secp256k1.signatureImport(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          mockTransferSendCallback.mock.calls[0][0][
-            "sig"
-          ] as unknown as Uint8Array,
+      secp256k1.verify(
+        secp256k1.Signature.fromBytes(
+          mockTransferSendCallback.mock.calls[0][0].sig,
+          "der",
         ),
-
         blake2b(contract, undefined, 32),
         senderPublicKey.getValue(),
       ),
@@ -86,16 +86,15 @@ describe("Wallet Transfer Tests", () => {
 
   test("Wallet.sendTokens method", async () => {
     const privateKey = PrivateKey.new();
-    const address = privateKey.getPublicKeyFrom().getAddressFrom();
+    const address = privateKey.getPublicKey().getAddress();
     const amount = Amount.tryFrom(1000n);
     const description = Description.tryFrom(
       "This is a test transfer with a valid description.",
     );
     const wallet = new Wallet({
-      headers: {} as HTTPHeaders,
-      host: "http://localhost",
-      port: 3100,
-      privateKey: privateKey,
+      basePath: "http://localhost:3100",
+      headers: {},
+      privateKey,
     });
 
     const result = await wallet.sendTokens(address, amount, description);
@@ -105,9 +104,8 @@ describe("Wallet Transfer Tests", () => {
 
   test("Wallet.getWalletState method", async () => {
     const client = new Wallet({
-      headers: {} as HTTPHeaders,
-      host: "http://localhost",
-      port: 3100,
+      basePath: "http://localhost:3100",
+      headers: {},
       privateKey: PrivateKey.new(),
     });
 
@@ -124,41 +122,35 @@ describe("Wallet Transfer Tests", () => {
     );
 
     // Additional type-safe checks for array elements if they exist
-    if (result.requests.length > 0) {
-      expect(result.requests[0]).toEqual(
-        expect.objectContaining<Request>({
-          amount: expect.any(Number) as number,
-          date: expect.any(Date) as Date,
-          id: expect.any(String) as string,
-          status: expect.any(String) as RequestStatus,
-        }),
-      );
-    }
+    expect(result.requests).toEqual(
+      expect.arrayOf<Request>({
+        amount: expect.any(Number) as number,
+        date: expect.any(Date) as Date,
+        id: expect.any(String) as string,
+        status: expect.any(String) as RequestStatus,
+      }),
+    );
 
-    if (result.boosts.length > 0) {
-      expect(result.boosts[0]).toEqual(
-        expect.objectContaining<Boost>({
-          amount: expect.any(Number) as number,
-          date: expect.any(Date) as Date,
-          direction: expect.any(String) as Direction,
-          id: expect.any(String) as string,
-          post: expect.any(String) as string,
-          username: expect.any(String) as string,
-        }),
-      );
-    }
+    expect(result.boosts).toEqual(
+      expect.arrayOf<Boost>({
+        amount: expect.any(Number) as number,
+        date: expect.any(Date) as Date,
+        direction: expect.any(String) as Direction,
+        id: expect.any(String) as string,
+        post: expect.any(String) as string,
+        username: expect.any(String) as string,
+      }),
+    );
 
-    if (result.transfers.length > 0) {
-      expect(result.transfers[0]).toEqual(
-        expect.objectContaining<Transfer>({
-          amount: expect.any(Number) as number,
-          cost: expect.any(Number) as number,
-          date: expect.any(Date) as Date,
-          direction: expect.any(String) as Direction,
-          id: expect.any(String) as string,
-          toAddress: expect.any(String) as string,
-        }),
-      );
-    }
+    expect(result.transfers).toEqual(
+      expect.arrayOf<Transfer>({
+        amount: expect.any(Number) as number,
+        cost: expect.any(Number) as number,
+        date: expect.any(Date) as Date,
+        direction: expect.any(String) as Direction,
+        id: expect.any(String) as string,
+        toAddress: expect.any(String) as string,
+      }),
+    );
   });
 });

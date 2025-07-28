@@ -1,11 +1,11 @@
 import { Amount } from "../src/entities/Amount";
 
-describe("should create a Amount", () => {
-  test("Amount tryFrom", () => {
+describe("Amount class", () => {
+  test("should create an Amount", () => {
     const amount = Amount.tryFrom(100n);
 
     expect(amount).toBeDefined();
-    expect(amount.getValue()).toBe(100n);
+    expect(amount.value).toBe(100n);
   });
 
   test("should throw error", () => {

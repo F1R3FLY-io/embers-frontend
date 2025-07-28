@@ -8,11 +8,11 @@
     "build": "tsc -b && vite build",
     "lint": "eslint --fix .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit --project tsconfig.app.json",
-    "format:code": "prettier --write '**/*.{js,ts,tsx,scss}' --ignore-path ../../.prettierignore",
+    "typecheck": "tsc -b --noEmit",
+    "format:code": "prettier --write '**/*.{js,ts,tsx,scss}'",
     "format:scss": "stylelint --fix '**/*.scss'",
     "ci:lint": "eslint .",
-    "ci:check:code": "prettier --check '**/*.{js,ts,tsx,scss}' --ignore-path ../../.prettierignore",
+    "ci:check:code": "prettier --check '**/*.{js,ts,tsx,scss}'",
     "ci:check:scss": "stylelint '**/*.scss'"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "@tanstack/react-query": "^5.83.0",
     "blakejs": "^1.2.1",
     "classnames": "^2.5.1",
+    "embers-client-sdk": "workspace:*",
     "js-sha3": "^0.9.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

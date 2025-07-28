@@ -1,17 +1,12 @@
-import { base16, base58 } from "@scure/base";
-import { blake2b, blake2bHex } from "blakejs";
-import createKeccakHash from "keccak";
-import * as secp256k1 from "secp256k1";
+import { secp256k1 } from "@noble/curves/secp256k1";
+import { base58 } from "@scure/base";
+import { blake2b } from "blakejs";
 
-import { WalletsApi } from "./api-client/index";
-import { Address } from "./entities/Address";
-import { Amount } from "./entities/Amount";
-import { Description } from "./entities/Description";
-import { PrivateKey } from "./entities/PrivateKey";
-import { PublicKey } from "./entities/PublicKey";
-
-export const F1R3CAP_TOKE_ID = "000000";
-export const F1R3CAP_VERSION = "00";
+import { type WalletsApi } from "./api-client/index";
+import { type Address } from "./entities/Address";
+import { type Amount } from "./entities/Amount";
+import { type Description } from "./entities/Description";
+import { type PrivateKey } from "./entities/PrivateKey";
 
 /**
  * Verifies F1R3Cap an address by checking its checksum.
@@ -50,9 +45,7 @@ export function sign(
   sig: Uint8Array<ArrayBufferLike>;
   sigAlgorithm: "secp256k1";
 } {
-  const sig = secp256k1.signatureExport(
-    secp256k1.ecdsaSign(payload, key.getValue()).signature,
-  );
+  const sig = secp256k1.sign(payload, key.value).toBytes("der");
 
   return {
     sig,
@@ -61,63 +54,13 @@ export function sign(
 }
 
 /**
- * Derives an F1R3Cap address from a public key.
- * The address is constructed using a specific token ID, version, and the public key hash.
- * It also includes a checksum for validation.
- *
- * @param publicKey - The public key from which to derive the address.
- * @returns The derived F1R3Cap address as an Address object.
- */
-export function getAddressFrom(publicKey: PublicKey): Address {
-  const value = publicKey.getValue().slice(1, -40);
-  const publicKeyHash = createKeccakHash("keccak256")
-    .update(Buffer.from(value))
-    .digest("hex")
-    .toUpperCase();
-
-  const decodedPublicKeysHash = base16.decode(publicKeyHash);
-  const ethHash = createKeccakHash("keccak256")
-    .update(Buffer.from(decodedPublicKeysHash))
-    .digest("hex")
-    .toUpperCase();
-
-  const payload = `${F1R3CAP_TOKE_ID}${F1R3CAP_VERSION}${ethHash}`;
-
-  const payloadBytes = base16.decode(payload);
-  const checksum = blake2bHex(payloadBytes, undefined, 32)
-    .slice(0, 8)
-    .toUpperCase();
-
-  return Address.tryFrom(base58.encode(base16.decode(payload + checksum)));
-}
-
-/**
- * Derives a public key from a private key using the secp256k1 algorithm.
- * @param key - The private key from which to derive the public key.
- * @returns The derived public key as a PublicKey object.
- */
-export function getPublicKeyFrom(key: PrivateKey) {
-  return PublicKey.tryFrom(secp256k1.publicKeyCreate(key.getValue(), false));
-}
-
-/**
- * Generates an F1R3Cap address directly from a private key.
- * @param key - The private key from which to generate the address.
- * @returns The derived F1R3Cap address as an Address object.
- */
-export function generateAddressFrom(key: PrivateKey): Address {
-  const publicKey = getPublicKeyFrom(key);
-  return getAddressFrom(publicKey);
-}
-
-/**
  * Return Wallet State for a given address.
  * @param address - The address to check the wallet state for.
  * @returns A promise that resolves to the wallet state.
  */
-export async function getWalletState(address: Address, client: WalletsApi) {
+export function getWalletState(address: Address, client: WalletsApi) {
   return client.apiWalletsAddressStateGet({
-    address: address.getValue(),
+    address: address.value,
   });
 }
 
@@ -154,9 +97,9 @@ export async function transferTokens(
   transferTokensCallback: TransferTokensCallback,
 ) {
   const response = await getContractCallback({
-    amount: amount,
-    description: description,
-    from: privateKey.getPublicKeyFrom().getAddressFrom(),
+    amount,
+    description,
+    from: privateKey.getPublicKey().getAddress(),
     to: toAddress,
   });
 
