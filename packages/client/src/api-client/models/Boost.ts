@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from "../runtime";
+import type { UnixTimestamp } from "./UnixTimestamp";
+import {
+  UnixTimestampFromJSON,
+  UnixTimestampFromJSONTyped,
+  UnixTimestampToJSON,
+  UnixTimestampToJSONTyped,
+} from "./UnixTimestamp";
 import type { Direction } from "./Direction";
 import {
   DirectionFromJSON,
@@ -47,16 +54,16 @@ export interface Boost {
   direction: Direction;
   /**
    *
-   * @type {Date}
+   * @type {UnixTimestamp}
    * @memberof Boost
    */
-  date: Date;
+  date: UnixTimestamp;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof Boost
    */
-  amount: number;
+  amount: string;
   /**
    *
    * @type {string}
@@ -93,7 +100,7 @@ export function BoostFromJSONTyped(
     id: json["id"],
     username: json["username"],
     direction: DirectionFromJSON(json["direction"]),
-    date: new Date(json["date"]),
+    date: UnixTimestampFromJSON(json["date"]),
     amount: json["amount"],
     post: json["post"],
   };
@@ -115,7 +122,7 @@ export function BoostToJSONTyped(
     id: value["id"],
     username: value["username"],
     direction: DirectionToJSON(value["direction"]),
-    date: value["date"].toISOString(),
+    date: UnixTimestampToJSON(value["date"]),
     amount: value["amount"],
     post: value["post"],
   };

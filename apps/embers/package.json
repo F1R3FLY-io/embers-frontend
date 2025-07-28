@@ -9,11 +9,11 @@
     "lint": "eslint --fix .",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
-    "format:code": "prettier --write '**/*.{js,ts,tsx,scss}'",
-    "format:scss": "stylelint --fix '**/*.scss'",
+    "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
+    "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
-    "ci:check:code": "prettier --check '**/*.{js,ts,tsx,scss}'",
-    "ci:check:scss": "stylelint '**/*.scss'"
+    "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json}'",
+    "ci:check:css": "stylelint '**/*.{css,scss}'"
   },
   "dependencies": {
     "@noble/curves": "^1.9.4",

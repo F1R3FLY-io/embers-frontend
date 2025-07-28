@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from "../runtime";
+import type { UnixTimestamp } from "./UnixTimestamp";
+import {
+  UnixTimestampFromJSON,
+  UnixTimestampFromJSONTyped,
+  UnixTimestampToJSON,
+  UnixTimestampToJSONTyped,
+} from "./UnixTimestamp";
 import type { Direction } from "./Direction";
 import {
   DirectionFromJSON,
@@ -41,16 +48,16 @@ export interface Transfer {
   direction: Direction;
   /**
    *
-   * @type {Date}
+   * @type {UnixTimestamp}
    * @memberof Transfer
    */
-  date: Date;
+  date: UnixTimestamp;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof Transfer
    */
-  amount: number;
+  amount: string;
   /**
    *
    * @type {string}
@@ -59,10 +66,10 @@ export interface Transfer {
   toAddress: string;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof Transfer
    */
-  cost: number;
+  cost: string;
 }
 
 /**
@@ -92,7 +99,7 @@ export function TransferFromJSONTyped(
   return {
     id: json["id"],
     direction: DirectionFromJSON(json["direction"]),
-    date: new Date(json["date"]),
+    date: UnixTimestampFromJSON(json["date"]),
     amount: json["amount"],
     toAddress: json["to_address"],
     cost: json["cost"],
@@ -114,7 +121,7 @@ export function TransferToJSONTyped(
   return {
     id: value["id"],
     direction: DirectionToJSON(value["direction"]),
-    date: value["date"].toISOString(),
+    date: UnixTimestampToJSON(value["date"]),
     amount: value["amount"],
     to_address: value["toAddress"],
     cost: value["cost"],

@@ -43,10 +43,10 @@ import {
 export interface WalletStateAndHistory {
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof WalletStateAndHistory
    */
-  balance: number;
+  balance: string;
   /**
    *
    * @type {Array<Request>}

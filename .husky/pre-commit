@@ -1,1 +1,1 @@
-pnpm run -r ci:check:code
+pnpm run --include-workspace-root -r ci:check:code

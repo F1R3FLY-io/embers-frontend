@@ -94,6 +94,7 @@ export default tseslint.config(
       "no-unused-vars": [
         "error",
         {
+          argsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           reportUsedIgnorePattern: true,
           varsIgnorePattern: "^_",
@@ -235,6 +236,7 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
+          argsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           reportUsedIgnorePattern: true,
           varsIgnorePattern: "^_",

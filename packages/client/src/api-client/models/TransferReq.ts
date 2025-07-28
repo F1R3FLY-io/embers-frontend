@@ -33,10 +33,10 @@ export interface TransferReq {
   to: string;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof TransferReq
    */
-  amount: number;
+  amount: string;
   /**
    *
    * @type {string}

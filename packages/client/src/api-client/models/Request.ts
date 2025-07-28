@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from "../runtime";
+import type { UnixTimestamp } from "./UnixTimestamp";
+import {
+  UnixTimestampFromJSON,
+  UnixTimestampFromJSONTyped,
+  UnixTimestampToJSON,
+  UnixTimestampToJSONTyped,
+} from "./UnixTimestamp";
 import type { RequestStatus } from "./RequestStatus";
 import {
   RequestStatusFromJSON,
@@ -35,16 +42,16 @@ export interface Request {
   id: string;
   /**
    *
-   * @type {Date}
+   * @type {UnixTimestamp}
    * @memberof Request
    */
-  date: Date;
+  date: UnixTimestamp;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof Request
    */
-  amount: number;
+  amount: string;
   /**
    *
    * @type {RequestStatus}
@@ -77,7 +84,7 @@ export function RequestFromJSONTyped(
   }
   return {
     id: json["id"],
-    date: new Date(json["date"]),
+    date: UnixTimestampFromJSON(json["date"]),
     amount: json["amount"],
     status: RequestStatusFromJSON(json["status"]),
   };
@@ -97,7 +104,7 @@ export function RequestToJSONTyped(
 
   return {
     id: value["id"],
-    date: value["date"].toISOString(),
+    date: UnixTimestampToJSON(value["date"]),
     amount: value["amount"],
     status: RequestStatusToJSON(value["status"]),
   };

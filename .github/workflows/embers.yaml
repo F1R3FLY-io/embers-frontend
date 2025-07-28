@@ -6,16 +6,18 @@ concurrency:
 
 on:
   push:
-    branches: main
+    branches: [main]
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
+      - "packages/client/**"
       - "/*"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
+      - "packages/client/**"
       - "/*"
       - "!**/*.md"
 
@@ -59,8 +61,8 @@ jobs:
       - name: Code format check
         run: pnpm run ci:check:code
 
-      - name: SCSS format check
-        run: pnpm run ci:check:scss
+      - name: CSS format check
+        run: pnpm run ci:check:css
 
       - name: Lint
         run: pnpm run ci:lint

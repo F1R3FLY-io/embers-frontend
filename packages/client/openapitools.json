@@ -1,0 +1,6 @@
+{
+  "generatorName": "typescript-fetch",
+  "typeMappings": {
+    "string+unix-timestamp": "UnixTimestamp"
+  }
+}
