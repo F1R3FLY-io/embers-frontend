@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "@/lib/components/ProtectedRoute";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
-import { Create } from "@/pages/Create";
+import { CreateDashboard } from "@/pages/CreateDashboard";
 import Edit from "@/pages/Edit";
 import Home from "@/pages/Home";
 import { Login } from "@/pages/Login";
@@ -24,7 +24,7 @@ export default function App() {
               <Route element={<Home />} path="/" />
               <Route element={<Login />} path="/login" />
               <Route element={<ProtectedRoute />}>
-                <Route element={<Create />} path="/create" />
+                <Route element={<CreateDashboard />} path="/create" />
                 <Route element={<Edit />} path="/edit" />
               </Route>
             </Routes>
