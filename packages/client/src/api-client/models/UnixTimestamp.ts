@@ -26,5 +26,5 @@ export function UnixTimestampToJSONTyped(
     return value;
   }
 
-  Math.floor(value.getTime() / 1000).toString();
+  return Math.floor(value.getTime() / 1000).toString();
 }
