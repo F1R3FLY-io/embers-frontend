@@ -1,17 +1,19 @@
+import { globalIgnores } from "eslint/config";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
 import baseConfig from "../../eslint.config.js";
 
-export default [
-  ...baseConfig,
-  {
-    ignores: ["coverage/**", "docs/**", "mocks/**"],
-  },
+export default tseslint.config(
+  baseConfig,
+  globalIgnores(["coverage", "docs", "mocks"]),
   {
     files: ["test-with-mocks.js"],
     languageOptions: {
-      ecmaVersion: 2020,
       globals: globals.node,
     },
+    rules: {
+      "no-console": "off",
+    },
   },
-];
+);

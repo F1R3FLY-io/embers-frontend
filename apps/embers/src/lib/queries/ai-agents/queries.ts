@@ -129,8 +129,8 @@ export function useSaveAgentMutation(wallet: Wallet, id: string) {
 
 export function useCreateTestWalletMutation() {
   return useMutation({
-    mutationFn: async () => {
-      return await fetch(`${FIREFLY_API_URL}/test/wallet`, {
+    mutationFn: async () =>
+      await fetch(`${FIREFLY_API_URL}/test/wallet`, {
         headers: new Headers({
           "Content-Type": "application/json",
         }),
@@ -138,8 +138,7 @@ export function useCreateTestWalletMutation() {
       })
         .then((req) => req.json())
         .then((json) => CreateTestwalletResp.parse(json))
-        .then(({ key }) => fromPrivateKeyHex(key));
-    },
+        .then(({ key }) => fromPrivateKeyHex(key)),
   });
 }
 

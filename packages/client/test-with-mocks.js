@@ -16,7 +16,7 @@ function waitForServer(port, timeout = 30000) {
           hostname: "localhost",
           method: "GET",
           path: "/",
-          port: port,
+          port,
           timeout: 1000,
         },
         () => {

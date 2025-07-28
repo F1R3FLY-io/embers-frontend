@@ -5,7 +5,7 @@ describe("Amount class", () => {
     const amount = Amount.tryFrom(100n);
 
     expect(amount).toBeDefined();
-    expect(amount.getValue()).toBe(100n);
+    expect(amount.value).toBe(100n);
   });
 
   test("should throw error", () => {

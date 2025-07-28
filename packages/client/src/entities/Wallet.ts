@@ -1,39 +1,37 @@
-import type { HTTPHeaders } from "../api-client";
-import type { GetContractCallback, TransferTokensCallback } from "../functions";
-import type { Address } from "./Address";
-import type { Amount } from "./Amount";
-import type { Description } from "./Description";
-import type { PrivateKey } from "./PrivateKey";
-
-import { Configuration, WalletsApi } from "../api-client";
+import { Configuration, type HTTPHeaders, WalletsApi } from "../api-client";
 import {
-  generateAddressFrom,
+  type GetContractCallback,
   getWalletState,
-  transferTokens as transferTokens,
+  transferTokens,
+  type TransferTokensCallback,
 } from "../functions";
+import { type Address } from "./Address";
+import { type Amount } from "./Amount";
+import { type Description } from "./Description";
+import { type PrivateKey } from "./PrivateKey";
 
 export type WalletConfig = {
+  basePath: string;
   headers: HTTPHeaders;
-  host: string;
-  port: number;
   privateKey: PrivateKey;
 };
 
 export class Wallet {
-  private privateKey: PrivateKey;
   private client: WalletsApi;
-  private address: Address;
 
-  constructor(config: WalletConfig) {
+  public readonly privateKey: PrivateKey;
+  public readonly address: Address;
+
+  public constructor(config: WalletConfig) {
     this.privateKey = config.privateKey;
 
     const configuration = new Configuration({
-      basePath: `${config.host}:${config.port}`,
+      basePath: config.basePath,
       headers: config.headers,
     });
 
     this.client = new WalletsApi(configuration);
-    this.address = generateAddressFrom(this.privateKey);
+    this.address = this.privateKey.getPublicKey().getAddress();
   }
 
   /**
@@ -43,7 +41,7 @@ export class Wallet {
    * @param description Description of the transaction
    * @returns A promise that resolves when the transfer is sent.
    */
-  async sendTokens(to: Address, amount: Amount, description: Description) {
+  public sendTokens(to: Address, amount: Amount, description: Description) {
     const preparePostCallback: GetContractCallback = ({
       amount,
       description,
@@ -52,10 +50,10 @@ export class Wallet {
     }) =>
       this.client.apiWalletsTransferPreparePost({
         transferReq: {
-          amount: amount.getValue().toString(),
-          description: description.getValue(),
-          from: from.getValue(),
-          to: to.getValue(),
+          amount: Number(amount.value),
+          description: description.value,
+          from: from.value,
+          to: to.value,
         },
       });
 
@@ -87,7 +85,7 @@ export class Wallet {
    * Get the state of the wallet.
    * @returns A promise that resolves with the wallet state.
    */
-  async getWalletState() {
+  public getWalletState() {
     return getWalletState(this.address, this.client);
   }
 }

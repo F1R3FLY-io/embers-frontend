@@ -1,8 +1,9 @@
+import { globalIgnores } from "eslint/config";
+import tseslint from "typescript-eslint";
+
 import baseConfig from "../../eslint.config.js";
 
-export default [
-  ...baseConfig,
-  {
-    ignores: ["**/*.module.scss.d.ts"],
-  },
-];
+export default tseslint.config(
+  baseConfig,
+  globalIgnores(["**/*.module.scss.d.ts"]),
+);

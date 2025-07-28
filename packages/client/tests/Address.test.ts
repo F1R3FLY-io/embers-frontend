@@ -5,7 +5,7 @@ describe("Address class", () => {
     const address = Address.tryFrom(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
-    expect(address.getValue()).toBe(
+    expect(address.value).toBe(
       "1111NypGkNrhxpLKFwiZ8gLKmiwLQUyzuEe1p3nEKQCSKMvd1YHY3",
     );
   });

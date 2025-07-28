@@ -7,7 +7,7 @@ describe("Description class", () => {
   test("should create a Description", () => {
     const description = Description.tryFrom("test");
     expect(description).toBeDefined();
-    expect(description.getValue()).toBe("test");
+    expect(description.value).toBe("test");
   });
 
   test("should throw error", () => {

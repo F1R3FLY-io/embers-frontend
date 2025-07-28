@@ -1,23 +1,23 @@
+import { secp256k1 } from "@noble/curves/secp256k1";
 import { randomBytes } from "crypto";
-import secp256k1 from "secp256k1";
 
 import { PrivateKey } from "../src/entities/PrivateKey";
 
 describe("PrivateKey class", () => {
   test("should check if private key is valid", () => {
     const privateKey = PrivateKey.new();
-    expect(secp256k1.privateKeyVerify(privateKey.getValue())).toBe(true);
+    expect(secp256k1.utils.isValidSecretKey(privateKey.value)).toBe(true);
   });
 
   test("should create a valid private key from a Uint8Array", () => {
     const validKey = PrivateKey.new();
-    const privateKey = PrivateKey.tryFrom(validKey.getValue());
-    expect(secp256k1.privateKeyVerify(privateKey.getValue())).toBe(true);
+    const privateKey = PrivateKey.tryFrom(validKey.value);
+    expect(secp256k1.utils.isValidSecretKey(privateKey.value)).toBe(true);
   });
 
   test("should throw error", () => {
     expect(() => PrivateKey.tryFrom(randomBytes(0))).toThrow(
-      "Expected private key to be an Uint8Array with length 32",
+      "Invalid private key",
     );
   });
 });

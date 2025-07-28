@@ -1,25 +1,17 @@
+import { secp256k1 } from "@noble/curves/secp256k1";
 import { base16 } from "@scure/base";
-import secp256k1 from "secp256k1";
 
-import { getPublicKeyFrom } from "../functions";
-import { type PublicKey } from "./PublicKey";
-
-const RANDOM_BYTES_LENGTH = 32;
+import { PublicKey } from "./PublicKey";
 
 export class PrivateKey {
-  static new(): PrivateKey {
-    let privateKey = new Uint8Array(RANDOM_BYTES_LENGTH);
-    do {
-      privateKey = crypto.getRandomValues(privateKey);
-    } while (!secp256k1.privateKeyVerify(privateKey));
-
-    return new PrivateKey(privateKey);
+  public static new(): PrivateKey {
+    return new PrivateKey(secp256k1.utils.randomSecretKey());
   }
 
-  private constructor(private value: Uint8Array) {}
+  private constructor(public readonly value: Uint8Array) {}
 
   public static tryFrom(value: Uint8Array): PrivateKey {
-    if (!secp256k1.privateKeyVerify(value)) {
+    if (!secp256k1.utils.isValidSecretKey(value)) {
       throw new Error("Invalid private key");
     }
     return new PrivateKey(value);
@@ -30,11 +22,7 @@ export class PrivateKey {
     return PrivateKey.tryFrom(bytes);
   }
 
-  public getValue(): Uint8Array {
-    return this.value;
-  }
-
   public getPublicKey(): PublicKey {
-    return getPublicKeyFrom(this);
+    return PublicKey.fromPrivateKey(this);
   }
 }

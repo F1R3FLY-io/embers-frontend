@@ -1,15 +1,19 @@
+import { secp256k1 } from "@noble/curves/secp256k1";
 import { base16 } from "@scure/base";
-import secp256k1 from "secp256k1";
 
-import type { Address } from "./Address";
-
-import { getAddressFrom } from "../functions";
+import { Address } from "./Address";
+import { type PrivateKey } from "./PrivateKey";
 
 export class PublicKey {
-  private constructor(private value: Uint8Array) {}
+  private constructor(public readonly value: Uint8Array) {}
+
+  public static fromPrivateKey(key: PrivateKey): PublicKey {
+    const publicKey = secp256k1.getPublicKey(key.value, false);
+    return new PublicKey(publicKey);
+  }
 
   public static tryFrom(value: Uint8Array): PublicKey {
-    if (!secp256k1.publicKeyVerify(value)) {
+    if (!secp256k1.utils.isValidPublicKey(value, false)) {
       throw new Error("Invalid public key");
     }
     return new PublicKey(value);
@@ -25,6 +29,6 @@ export class PublicKey {
   }
 
   public getAddress(): Address {
-    return getAddressFrom(this);
+    return Address.fromPublicKey(this);
   }
 }

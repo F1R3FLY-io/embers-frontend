@@ -1,5 +1,4 @@
-import type { PrivateKey } from "embers-client-sdk";
-
+import { type PrivateKey } from "embers-client-sdk";
 import { createContext, useContext } from "react";
 
 export type Wallet = {

@@ -6,13 +6,13 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     // "verbatimModuleSyntax": true,
+    "isolatedModules": true,
     "moduleDetection": "force",
+    "esModuleInterop": true,
     "noEmitOnError": true,
 
     /* Linting */
@@ -22,8 +22,9 @@
     // "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "forceConsistentCasingInFileNames": true
-    // "exactOptionalPropertyTypes": true
+    "forceConsistentCasingInFileNames": true,
+    // "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true
   },
   "include": ["tests"]
 }
