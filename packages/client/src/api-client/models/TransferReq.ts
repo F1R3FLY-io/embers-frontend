@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from "../runtime";
+import type { Int64 } from "./Int64";
+import {
+  Int64FromJSON,
+  Int64FromJSONTyped,
+  Int64ToJSON,
+  Int64ToJSONTyped,
+} from "./Int64";
+
 /**
  *
  * @export
@@ -33,10 +41,10 @@ export interface TransferReq {
   to: string;
   /**
    *
-   * @type {string}
+   * @type {Int64}
    * @memberof TransferReq
    */
-  amount: string;
+  amount: Int64;
   /**
    *
    * @type {string}
@@ -69,7 +77,7 @@ export function TransferReqFromJSONTyped(
   return {
     from: json["from"],
     to: json["to"],
-    amount: json["amount"],
+    amount: Int64FromJSON(json["amount"]),
     description: json["description"] == null ? undefined : json["description"],
   };
 }
@@ -89,7 +97,7 @@ export function TransferReqToJSONTyped(
   return {
     from: value["from"],
     to: value["to"],
-    amount: value["amount"],
+    amount: Int64ToJSON(value["amount"]),
     description: value["description"],
   };
 }

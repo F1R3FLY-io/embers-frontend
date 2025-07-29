@@ -20,6 +20,13 @@ import {
   UnixTimestampToJSON,
   UnixTimestampToJSONTyped,
 } from "./UnixTimestamp";
+import type { UInt64 } from "./UInt64";
+import {
+  UInt64FromJSON,
+  UInt64FromJSONTyped,
+  UInt64ToJSON,
+  UInt64ToJSONTyped,
+} from "./UInt64";
 import type { Direction } from "./Direction";
 import {
   DirectionFromJSON,
@@ -54,10 +61,10 @@ export interface Transfer {
   date: UnixTimestamp;
   /**
    *
-   * @type {string}
+   * @type {UInt64}
    * @memberof Transfer
    */
-  amount: string;
+  amount: UInt64;
   /**
    *
    * @type {string}
@@ -66,10 +73,10 @@ export interface Transfer {
   toAddress: string;
   /**
    *
-   * @type {string}
+   * @type {UInt64}
    * @memberof Transfer
    */
-  cost: string;
+  cost: UInt64;
 }
 
 /**
@@ -100,9 +107,9 @@ export function TransferFromJSONTyped(
     id: json["id"],
     direction: DirectionFromJSON(json["direction"]),
     date: UnixTimestampFromJSON(json["date"]),
-    amount: json["amount"],
+    amount: UInt64FromJSON(json["amount"]),
     toAddress: json["to_address"],
-    cost: json["cost"],
+    cost: UInt64FromJSON(json["cost"]),
   };
 }
 
@@ -122,8 +129,8 @@ export function TransferToJSONTyped(
     id: value["id"],
     direction: DirectionToJSON(value["direction"]),
     date: UnixTimestampToJSON(value["date"]),
-    amount: value["amount"],
+    amount: UInt64ToJSON(value["amount"]),
     to_address: value["toAddress"],
-    cost: value["cost"],
+    cost: UInt64ToJSON(value["cost"]),
   };
 }

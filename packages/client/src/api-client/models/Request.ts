@@ -20,6 +20,13 @@ import {
   UnixTimestampToJSON,
   UnixTimestampToJSONTyped,
 } from "./UnixTimestamp";
+import type { UInt64 } from "./UInt64";
+import {
+  UInt64FromJSON,
+  UInt64FromJSONTyped,
+  UInt64ToJSON,
+  UInt64ToJSONTyped,
+} from "./UInt64";
 import type { RequestStatus } from "./RequestStatus";
 import {
   RequestStatusFromJSON,
@@ -48,10 +55,10 @@ export interface Request {
   date: UnixTimestamp;
   /**
    *
-   * @type {string}
+   * @type {UInt64}
    * @memberof Request
    */
-  amount: string;
+  amount: UInt64;
   /**
    *
    * @type {RequestStatus}
@@ -85,7 +92,7 @@ export function RequestFromJSONTyped(
   return {
     id: json["id"],
     date: UnixTimestampFromJSON(json["date"]),
-    amount: json["amount"],
+    amount: UInt64FromJSON(json["amount"]),
     status: RequestStatusFromJSON(json["status"]),
   };
 }
@@ -105,7 +112,7 @@ export function RequestToJSONTyped(
   return {
     id: value["id"],
     date: UnixTimestampToJSON(value["date"]),
-    amount: value["amount"],
+    amount: UInt64ToJSON(value["amount"]),
     status: RequestStatusToJSON(value["status"]),
   };
 }
