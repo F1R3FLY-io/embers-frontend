@@ -18,15 +18,15 @@ export function UInt64FromJSONTyped(
   return bigInt;
 }
 
-export function UInt64ToJSON(value?: UInt64 | null) {
+export function UInt64ToJSON(value?: UInt64 | null): string | null | undefined {
   return UInt64ToJSONTyped(value, false);
 }
 
 export function UInt64ToJSONTyped(
   value?: UInt64 | null,
   _ignoreDiscriminator: boolean = false,
-) {
-  if (!value) {
+): string | null | undefined {
+  if (value === null || value === undefined) {
     return value;
   }
 

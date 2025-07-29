@@ -13,15 +13,15 @@ export function Int64FromJSONTyped(
   return BigInt(json);
 }
 
-export function Int64ToJSON(value?: Int64 | null) {
+export function Int64ToJSON(value?: Int64 | null): string | null | undefined {
   return Int64ToJSONTyped(value, false);
 }
 
 export function Int64ToJSONTyped(
   value?: Int64 | null,
   _ignoreDiscriminator: boolean = false,
-) {
-  if (!value) {
+): string | null | undefined {
+  if (value === null || value === undefined) {
     return value;
   }
 
