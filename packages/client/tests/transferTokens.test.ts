@@ -77,7 +77,7 @@ describe("Wallet Transfer Tests", () => {
         secp256k1.Signature.fromBytes(
           mockTransferSendCallback.mock.calls[0][0].sig,
           "der",
-        ),
+        ).toBytes(),
         blake2b(contract, undefined, 32),
         senderPublicKey.getValue(),
       ),
