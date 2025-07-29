@@ -27,7 +27,7 @@ export class Address {
    * @returns The derived F1R3Cap address as an Address object.
    */
   public static fromPublicKey(publicKey: PublicKey): Address {
-    const value = publicKey.getValue().slice(1);
+    const value = publicKey.value.slice(1);
     const publicKeyHash = keccak256.digest(value).slice(-20);
     const ethHash = keccak256.digest(publicKeyHash);
 

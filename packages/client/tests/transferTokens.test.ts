@@ -81,7 +81,7 @@ describe("Wallet Transfer Tests", () => {
       secp256k1.verify(
         signature,
         blake2b(contract, undefined, 32),
-        senderPublicKey.getValue(),
+        senderPublicKey.value,
       ),
     ).toBe(true);
   });

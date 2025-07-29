@@ -24,10 +24,6 @@ export class PublicKey {
     return PublicKey.tryFrom(bytes);
   }
 
-  public getValue(): Uint8Array {
-    return this.value;
-  }
-
   public getAddress(): Address {
     return Address.fromPublicKey(this);
   }

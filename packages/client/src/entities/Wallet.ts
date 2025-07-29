@@ -65,7 +65,7 @@ export class Wallet {
       this.client.apiWalletsTransferSendPost({
         signedContract: {
           contract: Array.from(contract),
-          deployer: Array.from(this.privateKey.getPublicKey().getValue()),
+          deployer: Array.from(this.privateKey.getPublicKey().value),
           sig: Array.from(sig),
           sigAlgorithm,
         },
