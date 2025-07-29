@@ -50,7 +50,7 @@ export class Wallet {
     }) =>
       this.client.apiWalletsTransferPreparePost({
         transferReq: {
-          amount: amount.value.toString(),
+          amount: amount.value,
           description: description.value,
           from: from.value,
           to: to.value,

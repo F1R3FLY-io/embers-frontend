@@ -113,7 +113,7 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result).toEqual(
       expect.objectContaining<WalletStateAndHistory>({
-        balance: expect.any(String) as string,
+        balance: expect.any(BigInt) as bigint,
         boosts: expect.any(Array) as Boost[],
         exchanges: expect.any(Array) as object[],
         requests: expect.any(Array) as Request[],
@@ -124,7 +124,7 @@ describe("Wallet Transfer Tests", () => {
     // Additional type-safe checks for array elements if they exist
     expect(result.requests).toEqual(
       expect.arrayOf<Request>({
-        amount: expect.any(String) as string,
+        amount: expect.any(BigInt) as bigint,
         date: expect.any(Date) as Date,
         id: expect.any(String) as string,
         status: expect.any(String) as RequestStatus,
@@ -133,7 +133,7 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result.boosts).toEqual(
       expect.arrayOf<Boost>({
-        amount: expect.any(String) as string,
+        amount: expect.any(BigInt) as bigint,
         date: expect.any(Date) as Date,
         direction: expect.any(String) as Direction,
         id: expect.any(String) as string,
@@ -144,8 +144,8 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result.transfers).toEqual(
       expect.arrayOf<Transfer>({
-        amount: expect.any(String) as string,
-        cost: expect.any(String) as string,
+        amount: expect.any(BigInt) as bigint,
+        cost: expect.any(BigInt) as bigint,
         date: expect.any(Date) as Date,
         direction: expect.any(String) as Direction,
         id: expect.any(String) as string,
