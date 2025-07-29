@@ -72,12 +72,14 @@ describe("Wallet Transfer Tests", () => {
       sigAlgorithm: "secp256k1",
     });
 
+    const signature = secp256k1.Signature.fromBytes(
+      mockTransferSendCallback.mock.calls[0][0].sig,
+      "der",
+    ).toBytes();
+
     expect(
       secp256k1.verify(
-        secp256k1.Signature.fromBytes(
-          mockTransferSendCallback.mock.calls[0][0].sig,
-          "der",
-        ).toBytes(),
+        signature,
         blake2b(contract, undefined, 32),
         senderPublicKey.getValue(),
       ),
