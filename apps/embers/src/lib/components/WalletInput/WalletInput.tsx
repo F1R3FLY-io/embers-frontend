@@ -60,9 +60,7 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
           setErrorState(true);
         }
       };
-      reader.onerror = () => {
-        setErrorState(true);
-      };
+      reader.onerror = () => setErrorState(true);
       reader.readAsText(file);
     },
     [onChange],

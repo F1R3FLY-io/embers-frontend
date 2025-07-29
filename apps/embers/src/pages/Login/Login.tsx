@@ -20,9 +20,7 @@ type WalletControlState = {
 
 export default function Login() {
   const [pageState, setPageState] = useState<PageState>("init");
-  const toSigning = useCallback(() => {
-    setPageState("signin");
-  }, []);
+  const toSigning = useCallback(() => setPageState("signin"), []);
   const redirectToFiresky = useCallback(() => {}, []);
 
   const navigate = useNavigate();

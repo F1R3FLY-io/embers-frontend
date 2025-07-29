@@ -226,7 +226,11 @@ export default tseslint.config(
         "error",
         { accessibility: "explicit" },
       ],
-      "@typescript-eslint/no-confusing-void-expression": "error",
+      "@typescript-eslint/method-signature-style": "error",
+      "@typescript-eslint/no-confusing-void-expression": [
+        "error",
+        { ignoreArrowShorthand: true },
+      ],
       "@typescript-eslint/no-deprecated": "error",
       "@typescript-eslint/no-dynamic-delete": "error",
       "@typescript-eslint/no-extraneous-class": "error",
