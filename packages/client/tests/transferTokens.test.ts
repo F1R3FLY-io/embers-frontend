@@ -1,23 +1,24 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
 
-import { PrivateKey } from "../src";
-import {
-  type Boost,
-  type Direction,
-  type Request,
-  type RequestStatus,
-  type Transfer,
-  type WalletStateAndHistory,
+import type {
+  Boost,
+  Direction,
+  Request,
+  RequestStatus,
+  Transfer,
+  WalletStateAndHistory,
 } from "../src/api-client";
+import type {
+  GetContractCallback,
+  TransferTokensCallback,
+} from "../src/functions";
+
+import { PrivateKey } from "../src";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
-import {
-  type GetContractCallback,
-  transferTokens,
-  type TransferTokensCallback,
-} from "../src/functions";
+import { transferTokens } from "../src/functions";
 
 beforeEach(() => {
   jest.clearAllMocks();

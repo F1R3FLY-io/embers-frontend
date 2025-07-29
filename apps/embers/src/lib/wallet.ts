@@ -51,7 +51,7 @@ export type Signed = {
 export function signPayload(key: Uint8Array, payload: Uint8Array): Signed {
   const signature = secp256k1
     .sign(blake2b(payload, undefined, 32), key)
-    .toDERRawBytes();
+    .toBytes("der");
 
   const deployer = secp256k1.getPublicKey(key, false);
 

@@ -1,11 +1,14 @@
+import type { ChangeEvent } from "react";
+
 import { base16 } from "@scure/base";
 import classNames from "classnames";
 import { deserializeKey, PrivateKey } from "embers-client-sdk";
-import { type ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import type { Wallet } from "@/lib/providers/wallet/useWallet";
 
 import { FilePicker } from "@/lib/components/FilePicker";
 import { Text } from "@/lib/components/Text";
-import { type Wallet } from "@/lib/providers/wallet/useWallet";
 import UploadIcon from "@/public/icons/upload-icon.svg";
 
 import styles from "./WalletInput.module.scss";
@@ -57,7 +60,9 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
           setErrorState(true);
         }
       };
-      reader.onerror = () => setErrorState(true);
+      reader.onerror = () => {
+        setErrorState(true);
+      };
       reader.readAsText(file);
     },
     [onChange],

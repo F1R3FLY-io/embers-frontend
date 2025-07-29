@@ -1,22 +1,18 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import {
-  fromPrivateKeyHex,
-  type Signed,
-  signPayload,
-  type Wallet,
-} from "@/lib/wallet";
+import type { Signed, Wallet } from "@/lib/wallet";
+
+import { fromPrivateKeyHex, signPayload } from "@/lib/wallet";
+
+import type { CreateAgentReq, DeployReq, DeployTestReq } from "./model";
 
 import {
   Agent,
   Agents,
-  type CreateAgentReq,
   CreateAgentResp,
   CreateTestwalletResp,
   DeploResp,
-  type DeployReq,
   DeploySignedTestResp,
-  type DeployTestReq,
   DeployTestResp,
   SaveAgentResp,
 } from "./model";
@@ -27,9 +23,9 @@ export const FIREFLY_API_URL = `${
 
 export function useAgents(address: string) {
   return useQuery({
-    queryFn: () =>
+    queryFn: async () =>
       fetch(`${FIREFLY_API_URL}/${address}`)
-        .then((req) => req.json())
+        .then(async (resp) => resp.json() as Promise<unknown>)
         .then((json) => Agents.parse(json)),
     queryKey: ["ai-agents", address],
   });
@@ -37,9 +33,9 @@ export function useAgents(address: string) {
 
 export function useAgentVersions(address: string, id: string) {
   return useQuery({
-    queryFn: () =>
+    queryFn: async () =>
       fetch(`${FIREFLY_API_URL}/${address}/${id}/versions`)
-        .then((req) => req.json())
+        .then(async (resp) => resp.json() as Promise<unknown>)
         .then((json) => Agents.parse(json)),
     queryKey: ["ai-agents", address, id],
   });
@@ -47,9 +43,9 @@ export function useAgentVersions(address: string, id: string) {
 
 export function useAgent(address: string, id: string, version: string) {
   return useQuery({
-    queryFn: () =>
+    queryFn: async () =>
       fetch(`${FIREFLY_API_URL}/${address}/${id}/${version}`)
-        .then((req) => req.json())
+        .then(async (resp) => resp.json() as Promise<unknown>)
         .then((json) => Agent.parse(json)),
     queryKey: ["ai-agents", address, id, version],
   });
@@ -74,7 +70,7 @@ export function useCreateAgentMutation(wallet: Wallet) {
       const { contract, id, version } = CreateAgentResp.parse(body);
       const signature = signPayload(wallet.key, contract);
 
-      return await fetch(`${FIREFLY_API_URL}/create/send`, {
+      return fetch(`${FIREFLY_API_URL}/create/send`, {
         body: JSON.stringify(signatureToBody(contract, signature)),
         headers: new Headers({
           "Content-Type": "application/json",
@@ -110,7 +106,7 @@ export function useSaveAgentMutation(wallet: Wallet, id: string) {
       const { contract, version } = SaveAgentResp.parse(body);
       const signature = signPayload(wallet.key, contract);
 
-      return await fetch(`${FIREFLY_API_URL}/${id}/save/send`, {
+      return fetch(`${FIREFLY_API_URL}/${id}/save/send`, {
         body: JSON.stringify(signatureToBody(contract, signature)),
         headers: new Headers({
           "Content-Type": "application/json",
@@ -130,13 +126,13 @@ export function useSaveAgentMutation(wallet: Wallet, id: string) {
 export function useCreateTestWalletMutation() {
   return useMutation({
     mutationFn: async () =>
-      await fetch(`${FIREFLY_API_URL}/test/wallet`, {
+      fetch(`${FIREFLY_API_URL}/test/wallet`, {
         headers: new Headers({
           "Content-Type": "application/json",
         }),
         method: "POST",
       })
-        .then((req) => req.json())
+        .then(async (resp) => resp.json() as Promise<unknown>)
         .then((json) => CreateTestwalletResp.parse(json))
         .then(({ key }) => fromPrivateKeyHex(key)),
   });
@@ -163,7 +159,7 @@ export function useDeployTestMutation(wallet: Wallet) {
         env_contract && signPayload(wallet.key, env_contract);
       const testSignature = signPayload(wallet.key, test_contract);
 
-      return await fetch(`${FIREFLY_API_URL}/test/deploy/send`, {
+      return fetch(`${FIREFLY_API_URL}/test/deploy/send`, {
         body: JSON.stringify({
           env: envSignature && signatureToBody(env_contract, envSignature),
           test: signatureToBody(test_contract, testSignature),
@@ -173,7 +169,7 @@ export function useDeployTestMutation(wallet: Wallet) {
         }),
         method: "POST",
       })
-        .then((req) => req.json())
+        .then(async (resp) => resp.json() as Promise<unknown>)
         .then((json) => DeploySignedTestResp.parse(json));
     },
   });
@@ -196,7 +192,7 @@ export function useDeployMutation(wallet: Wallet) {
       const { contract } = DeploResp.parse(body);
       const signature = signPayload(wallet.key, contract);
 
-      return await fetch(
+      return fetch(
         `${FIREFLY_API_URL}/${wallet.address}/${id}/${version}/deploy/send`,
         {
           body: JSON.stringify(signatureToBody(contract, signature)),

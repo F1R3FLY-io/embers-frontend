@@ -1,5 +1,6 @@
+import type { ReactNode } from "react";
+
 import classNames from "classnames";
-import { type ReactNode } from "react";
 
 import styles from "./Text.module.scss";
 

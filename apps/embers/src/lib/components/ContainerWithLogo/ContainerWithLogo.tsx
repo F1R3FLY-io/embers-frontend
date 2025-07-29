@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import logo from "@/public/icons/firefly-io.png";
 

@@ -2,11 +2,11 @@ import { secp256k1 } from "@noble/curves/secp256k1";
 import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 
-import { type WalletsApi } from "./api-client/index";
-import { type Address } from "./entities/Address";
-import { type Amount } from "./entities/Amount";
-import { type Description } from "./entities/Description";
-import { type PrivateKey } from "./entities/PrivateKey";
+import type { WalletsApi } from "./api-client/index";
+import type { Address } from "./entities/Address";
+import type { Amount } from "./entities/Amount";
+import type { Description } from "./entities/Description";
+import type { PrivateKey } from "./entities/PrivateKey";
 
 /**
  * Verifies F1R3Cap an address by checking its checksum.
@@ -24,7 +24,7 @@ export function verifyAddress(value: string): boolean {
     const checksumCalc = blake2b(payload, undefined, 32).slice(0, 4);
 
     return checksum.every(
-      (byte: unknown, index: number) => byte === checksumCalc?.[index],
+      (byte: unknown, index: number) => byte === checksumCalc[index],
     );
   } catch {
     return false;
@@ -42,7 +42,7 @@ export function sign(
   payload: Uint8Array,
   key: PrivateKey,
 ): {
-  sig: Uint8Array<ArrayBufferLike>;
+  sig: Uint8Array;
   sigAlgorithm: "secp256k1";
 } {
   const sig = secp256k1.sign(payload, key.value).toBytes("der");
@@ -58,7 +58,7 @@ export function sign(
  * @param address - The address to check the wallet state for.
  * @returns A promise that resolves to the wallet state.
  */
-export function getWalletState(address: Address, client: WalletsApi) {
+export async function getWalletState(address: Address, client: WalletsApi) {
   return client.apiWalletsAddressStateGet({
     address: address.value,
   });
@@ -72,8 +72,8 @@ export type GetContractCallback = (value: {
 }) => Promise<{ contract: Array<number> }>;
 
 export type TransferTokensCallback = (value: {
-  contract: Uint8Array<ArrayBufferLike>;
-  sig: Uint8Array<ArrayBufferLike>;
+  contract: Uint8Array;
+  sig: Uint8Array;
   sigAlgorithm: string;
 }) => Promise<void>;
 
