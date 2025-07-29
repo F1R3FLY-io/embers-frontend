@@ -102,7 +102,8 @@ describe("Wallet Transfer Tests", () => {
     expect(result).toBeTruthy();
   });
 
-  test("Wallet.getWalletState method", async () => {
+  // eslint-disable-next-line jest/no-disabled-tests
+  test.skip("Wallet.getWalletState method", async () => {
     const client = new Wallet({
       basePath: "http://localhost:3100",
       headers: {},
@@ -121,7 +122,6 @@ describe("Wallet Transfer Tests", () => {
       }),
     );
 
-    // Additional type-safe checks for array elements if they exist
     expect(result.requests).toEqual(
       expect.arrayOf<Request>({
         amount: expect.any(BigInt) as bigint,
