@@ -112,4 +112,4 @@ embers-frontend/
 
 ## License
 
-[![License: Apache 2.0](https://www.apache.org/img/asf-estd-1999-logo.jpg](https://www.apache.org/licenses/LICENSE-2.0)
+[![License: Apache 2.0](https://img.shields.io/github/license/saltstack/salt](https://www.apache.org/licenses/LICENSE-2.0)
