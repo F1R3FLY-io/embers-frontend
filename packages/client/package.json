@@ -1,7 +1,7 @@
 {
   "name": "@f1r3fly-io/embers-client-sdk",
   "version": "0.0.1",
-  "main": "src/index.ts",
+  "main": "dist/embers-client-sdk.cjs.js",
   "module": "dist/embers-client-sdk.es.js",
   "browser": "dist/embers-client-sdk.umd.js",
   "types": "dist/index.d.ts",
