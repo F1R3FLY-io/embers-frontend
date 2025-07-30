@@ -23,11 +23,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     defaults:
       run:
         working-directory: packages/client
-      env:
-        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -69,11 +70,12 @@ jobs:
       contents: write
       packages: write
 
+    env:
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     defaults:
       run:
         working-directory: packages/client
-      env:
-        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
