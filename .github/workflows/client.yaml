@@ -111,4 +111,4 @@ jobs:
       - name: Update package.json
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          commit_message: "[skip ci] Automated Change"
+          commit_message: Apply package.json changes
