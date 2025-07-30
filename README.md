@@ -112,4 +112,4 @@ embers-frontend/
 
 ## License
 
-[![License: Apache 2.0](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Apache_Software_Foundation_Logo.svg/424px-Apache_Software_Foundation_Logo.svg.png?20100119163455](https://www.apache.org/licenses/LICENSE-2.0)
+[![License: Apache 2.0](https://www.apache.org/img/asf-estd-1999-logo.jpg](https://www.apache.org/licenses/LICENSE-2.0)
