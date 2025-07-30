@@ -64,7 +64,7 @@ jobs:
     needs: build
 
     permissions:
-      contents: [read, write]
+      contents: write
       packages: write
 
     defaults:
