@@ -40,10 +40,10 @@ Our project follows a documentation-first approach designed for both human contr
 
 ### For LLM Assistance
 When using LLM tools, start by providing context from:
-1. Relevant requirements from `docs/requirements/`
-2. Technical specifications from `docs/specifications/`
-3. Architecture constraints from `docs/architecture/`
-4. Current priorities from `docs/ToDos.md`
+1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
+2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
+3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
+4. Current priorities from [`docs/ToDos.md`](./docs/ToDos.md)
 5. Source code context from directory-level READMEs
 
 ## Project Structure
