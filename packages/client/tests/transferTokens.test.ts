@@ -105,8 +105,7 @@ describe("Wallet Transfer Tests", () => {
     expect(result).toBeTruthy();
   });
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  test.skip("Wallet.getWalletState method", async () => {
+  test("Wallet.getWalletState method", async () => {
     const client = new Wallet({
       basePath: "http://localhost:3100",
       headers: {},
