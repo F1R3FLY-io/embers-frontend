@@ -1,5 +1,5 @@
 {
-  "name": "embers-client-sdk",
+  "name": "@f1r3fly-io/embers-client-sdk",
   "version": "0.0.1",
   "private": true,
   "main": "src/index.ts",
@@ -21,6 +21,9 @@
     "Blockchain",
     "SmartContracts"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "config": {
     "doc_port": 3000
   },
@@ -49,10 +52,10 @@
     "typedoc": "^0.28.8"
   },
   "dependencies": {
-    "@noble/curves": "^1.9.5",
+    "@noble/curves": "^1.9.6",
     "@scure/base": "^1.2.6",
     "blakejs": "^1.2.1",
     "js-sha3": "^0.9.3",
-    "zod": "^4.0.13"
+    "zod": "^4.0.14"
   }
 }

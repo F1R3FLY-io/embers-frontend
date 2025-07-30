@@ -1,4 +1,4 @@
-import type { PrivateKey } from "embers-client-sdk";
+import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
 import { createContext, useContext } from "react";
 

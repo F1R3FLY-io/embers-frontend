@@ -10,7 +10,21 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-  - package-ecosystem: "pnpm"
+
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: weekly
+    versioning-strategy: increase
+
+  - package-ecosystem: "npm"
+    directory: "/apps/embers"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase
+
+  - package-ecosystem: "npm"
+    directory: "/packages/client"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase
