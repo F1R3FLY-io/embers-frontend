@@ -49,6 +49,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build
+        run: pnpm run build
+        continue-on-error: false
+
       - name: Type check
         run: pnpm run typecheck
         continue-on-error: false
