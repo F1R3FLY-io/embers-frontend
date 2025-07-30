@@ -27,6 +27,8 @@ jobs:
     defaults:
       run:
         working-directory: apps/embers
+      env:
+        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code

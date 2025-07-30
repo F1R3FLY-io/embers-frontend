@@ -26,6 +26,8 @@ jobs:
     defaults:
       run:
         working-directory: packages/client
+      env:
+        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -70,6 +72,8 @@ jobs:
     defaults:
       run:
         working-directory: packages/client
+      env:
+        NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -93,7 +97,7 @@ jobs:
         run: pnpm run build
 
       - name: Bump version
-        run: pnpm version patch --no-git-tag-version --no-commit-hooks --no-workspaces-update
+        run: pnpm version patch --no-git-tag-version --no-commit-hooks --no-workspaces-update --no-git-checks
 
       - name: Publish
         run: pnpm publish --access public
