@@ -13,6 +13,20 @@
  */
 
 import { mapValues } from "../runtime";
+import type { UnixTimestamp } from "./UnixTimestamp";
+import {
+  UnixTimestampFromJSON,
+  UnixTimestampFromJSONTyped,
+  UnixTimestampToJSON,
+  UnixTimestampToJSONTyped,
+} from "./UnixTimestamp";
+import type { UInt64 } from "./UInt64";
+import {
+  UInt64FromJSON,
+  UInt64FromJSONTyped,
+  UInt64ToJSON,
+  UInt64ToJSONTyped,
+} from "./UInt64";
 import type { Direction } from "./Direction";
 import {
   DirectionFromJSON,
@@ -41,16 +55,16 @@ export interface Transfer {
   direction: Direction;
   /**
    *
-   * @type {Date}
+   * @type {UnixTimestamp}
    * @memberof Transfer
    */
-  date: Date;
+  date: UnixTimestamp;
   /**
    *
-   * @type {number}
+   * @type {UInt64}
    * @memberof Transfer
    */
-  amount: number;
+  amount: UInt64;
   /**
    *
    * @type {string}
@@ -59,10 +73,10 @@ export interface Transfer {
   toAddress: string;
   /**
    *
-   * @type {number}
+   * @type {UInt64}
    * @memberof Transfer
    */
-  cost: number;
+  cost: UInt64;
 }
 
 /**
@@ -92,10 +106,10 @@ export function TransferFromJSONTyped(
   return {
     id: json["id"],
     direction: DirectionFromJSON(json["direction"]),
-    date: new Date(json["date"]),
-    amount: json["amount"],
+    date: UnixTimestampFromJSON(json["date"]),
+    amount: UInt64FromJSON(json["amount"]),
     toAddress: json["to_address"],
-    cost: json["cost"],
+    cost: UInt64FromJSON(json["cost"]),
   };
 }
 
@@ -114,9 +128,9 @@ export function TransferToJSONTyped(
   return {
     id: value["id"],
     direction: DirectionToJSON(value["direction"]),
-    date: value["date"].toISOString(),
-    amount: value["amount"],
+    date: UnixTimestampToJSON(value["date"]),
+    amount: UInt64ToJSON(value["amount"]),
     to_address: value["toAddress"],
-    cost: value["cost"],
+    cost: UInt64ToJSON(value["cost"]),
   };
 }

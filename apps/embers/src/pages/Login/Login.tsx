@@ -1,12 +1,14 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import type { Wallet } from "@/lib/providers/wallet/useWallet";
+
 import { Button } from "@/lib/components/Button";
 import { ContainerWithLogo } from "@/lib/components/ContainerWithLogo";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
-import { useWallet, type Wallet } from "@/lib/providers/wallet/useWallet";
+import { useWallet } from "@/lib/providers/wallet/useWallet";
 
 import styles from "./Login.module.scss";
 

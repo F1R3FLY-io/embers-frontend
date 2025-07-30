@@ -1,10 +1,14 @@
+import type { ChangeEvent } from "react";
+
+import { base16 } from "@scure/base";
 import classNames from "classnames";
-import { PrivateKey } from "embers-client-sdk";
-import { type ChangeEvent, useCallback, useEffect, useState } from "react";
+import { deserializeKey, PrivateKey } from "embers-client-sdk";
+import { useCallback, useEffect, useState } from "react";
+
+import type { Wallet } from "@/lib/providers/wallet/useWallet";
 
 import { FilePicker } from "@/lib/components/FilePicker";
 import { Text } from "@/lib/components/Text";
-import { type Wallet } from "@/lib/providers/wallet/useWallet";
 import UploadIcon from "@/public/icons/upload-icon.svg";
 
 import styles from "./WalletInput.module.scss";
@@ -24,13 +28,16 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
 
   const [content, setContent] = useState("");
 
-  const setWallet = useCallback(
-    (content: string) => {
+  const setWalletFromInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const content = e.target.value;
+
       setContent(content);
       try {
-        onChange({
-          privateKey: PrivateKey.tryFromHex(content),
-        });
+        onChange({ privateKey: PrivateKey.tryFromHex(content) });
         setErrorState(false);
       } catch {
         onChange(undefined);
@@ -40,23 +47,23 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
     [onChange],
   );
 
-  const setWalletFromInput = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      e.stopPropagation();
-      e.preventDefault();
-      setWallet(e.target.value);
-    },
-    [setWallet],
-  );
-
   const setWalletFromFile = useCallback(
     (file: File) => {
       const reader = new FileReader();
-      reader.onload = () => setWallet(reader.result as string);
+      reader.onload = () => {
+        try {
+          const privateKey = deserializeKey(reader.result as string);
+          onChange({ privateKey });
+          setContent(base16.encode(privateKey.value));
+          setErrorState(false);
+        } catch {
+          setErrorState(true);
+        }
+      };
       reader.onerror = () => setErrorState(true);
       reader.readAsText(file);
     },
-    [setWallet],
+    [onChange],
   );
 
   const inputAreaClass = classNames(styles["input-area"], {

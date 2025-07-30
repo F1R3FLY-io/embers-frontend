@@ -1,8 +1,9 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { base16 } from "@scure/base";
 
+import type { PrivateKey } from "./PrivateKey";
+
 import { Address } from "./Address";
-import { type PrivateKey } from "./PrivateKey";
 
 export class PublicKey {
   private constructor(public readonly value: Uint8Array) {}
@@ -22,10 +23,6 @@ export class PublicKey {
   public static tryFromHex(value: string): PublicKey {
     const bytes = base16.decode(value.toUpperCase());
     return PublicKey.tryFrom(bytes);
-  }
-
-  public getValue(): Uint8Array {
-    return this.value;
   }
 
   public getAddress(): Address {

@@ -52,7 +52,7 @@ export default tseslint.config(
         "getBeforeSet",
         { enforceForTSTypes: true },
       ],
-      "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+      "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
       "import/no-unresolved": "error",
@@ -94,6 +94,7 @@ export default tseslint.config(
       "no-unused-vars": [
         "error",
         {
+          argsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           reportUsedIgnorePattern: true,
           varsIgnorePattern: "^_",
@@ -133,13 +134,6 @@ export default tseslint.config(
       "perfectionist/sort-imports": [
         "error",
         {
-          groups: [
-            ["builtin", "external"],
-            "internal",
-            ["parent", "sibling", "index"],
-            "style",
-            "unknown",
-          ],
           type: "natural",
         },
       ],
@@ -223,7 +217,7 @@ export default tseslint.config(
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
-          fixStyle: "inline-type-imports",
+          fixStyle: "separate-type-imports",
           prefer: "type-imports",
         },
       ],
@@ -232,13 +226,48 @@ export default tseslint.config(
         "error",
         { accessibility: "explicit" },
       ],
+      "@typescript-eslint/method-signature-style": "error",
+      "@typescript-eslint/no-confusing-void-expression": [
+        "error",
+        { ignoreArrowShorthand: true },
+      ],
+      "@typescript-eslint/no-deprecated": "error",
+      "@typescript-eslint/no-dynamic-delete": "error",
+      "@typescript-eslint/no-extraneous-class": "error",
+      "@typescript-eslint/no-import-type-side-effects": "error",
+      "@typescript-eslint/no-invalid-void-type": "error",
+      "@typescript-eslint/no-meaningless-void-operator": "error",
+      "@typescript-eslint/no-misused-spread": "error",
+      "@typescript-eslint/no-mixed-enums": "error",
+      "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "error",
+      "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+      "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-unnecessary-parameter-property-assignment":
+        "error",
+      "@typescript-eslint/no-unnecessary-qualifier": "error",
+      "@typescript-eslint/no-unnecessary-template-expression": "error",
+      "@typescript-eslint/no-unnecessary-type-arguments": "error",
+      "@typescript-eslint/no-unnecessary-type-conversion": "error",
+      "@typescript-eslint/no-unnecessary-type-parameters": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
+          argsIgnorePattern: "^_",
           destructuredArrayIgnorePattern: "^_",
           reportUsedIgnorePattern: true,
           varsIgnorePattern: "^_",
         },
+      ],
+      "@typescript-eslint/no-useless-empty-export": "error",
+      "@typescript-eslint/prefer-literal-enum-member": "error",
+      "@typescript-eslint/prefer-reduce-type-parameter": "error",
+      "@typescript-eslint/prefer-return-this-type": "error",
+      "@typescript-eslint/promise-function-async": "error",
+      "@typescript-eslint/related-getter-setter-pairs": "error",
+      "@typescript-eslint/return-await": "error",
+      "@typescript-eslint/strict-boolean-expressions": [
+        "error",
+        { allowNullableBoolean: true },
       ],
       "@typescript-eslint/switch-exhaustiveness-check": "error",
       "dot-notation": "off",

@@ -13,6 +13,20 @@
  */
 
 import { mapValues } from "../runtime";
+import type { UnixTimestamp } from "./UnixTimestamp";
+import {
+  UnixTimestampFromJSON,
+  UnixTimestampFromJSONTyped,
+  UnixTimestampToJSON,
+  UnixTimestampToJSONTyped,
+} from "./UnixTimestamp";
+import type { UInt64 } from "./UInt64";
+import {
+  UInt64FromJSON,
+  UInt64FromJSONTyped,
+  UInt64ToJSON,
+  UInt64ToJSONTyped,
+} from "./UInt64";
 import type { Direction } from "./Direction";
 import {
   DirectionFromJSON,
@@ -47,16 +61,16 @@ export interface Boost {
   direction: Direction;
   /**
    *
-   * @type {Date}
+   * @type {UnixTimestamp}
    * @memberof Boost
    */
-  date: Date;
+  date: UnixTimestamp;
   /**
    *
-   * @type {number}
+   * @type {UInt64}
    * @memberof Boost
    */
-  amount: number;
+  amount: UInt64;
   /**
    *
    * @type {string}
@@ -93,8 +107,8 @@ export function BoostFromJSONTyped(
     id: json["id"],
     username: json["username"],
     direction: DirectionFromJSON(json["direction"]),
-    date: new Date(json["date"]),
-    amount: json["amount"],
+    date: UnixTimestampFromJSON(json["date"]),
+    amount: UInt64FromJSON(json["amount"]),
     post: json["post"],
   };
 }
@@ -115,8 +129,8 @@ export function BoostToJSONTyped(
     id: value["id"],
     username: value["username"],
     direction: DirectionToJSON(value["direction"]),
-    date: value["date"].toISOString(),
-    amount: value["amount"],
+    date: UnixTimestampToJSON(value["date"]),
+    amount: UInt64ToJSON(value["amount"]),
     post: value["post"],
   };
 }

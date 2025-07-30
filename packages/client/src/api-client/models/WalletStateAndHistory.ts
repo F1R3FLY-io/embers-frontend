@@ -34,6 +34,13 @@ import {
   TransferToJSON,
   TransferToJSONTyped,
 } from "./Transfer";
+import type { UInt64 } from "./UInt64";
+import {
+  UInt64FromJSON,
+  UInt64FromJSONTyped,
+  UInt64ToJSON,
+  UInt64ToJSONTyped,
+} from "./UInt64";
 
 /**
  *
@@ -43,10 +50,10 @@ import {
 export interface WalletStateAndHistory {
   /**
    *
-   * @type {number}
+   * @type {UInt64}
    * @memberof WalletStateAndHistory
    */
-  balance: number;
+  balance: UInt64;
   /**
    *
    * @type {Array<Request>}
@@ -101,7 +108,7 @@ export function WalletStateAndHistoryFromJSONTyped(
     return json;
   }
   return {
-    balance: json["balance"],
+    balance: UInt64FromJSON(json["balance"]),
     requests: (json["requests"] as Array<any>).map(RequestFromJSON),
     exchanges: json["exchanges"],
     boosts: (json["boosts"] as Array<any>).map(BoostFromJSON),
@@ -122,7 +129,7 @@ export function WalletStateAndHistoryToJSONTyped(
   }
 
   return {
-    balance: value["balance"],
+    balance: UInt64ToJSON(value["balance"]),
     requests: (value["requests"] as Array<any>).map(RequestToJSON),
     exchanges: value["exchanges"],
     boosts: (value["boosts"] as Array<any>).map(BoostToJSON),

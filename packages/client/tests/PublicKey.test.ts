@@ -5,8 +5,8 @@ import { PrivateKey, PublicKey } from "../src/index";
 describe("PublicKey class", () => {
   test("should create a new PublicKey", () => {
     const privateKey = PrivateKey.new();
-    const publicKey = PublicKey.tryFrom(privateKey.getPublicKey().getValue());
-    expect(secp256k1.utils.isValidPublicKey(publicKey.getValue())).toBe(true);
+    const publicKey = PublicKey.tryFrom(privateKey.getPublicKey().value);
+    expect(secp256k1.utils.isValidPublicKey(publicKey.value)).toBe(true);
   });
 
   test("should throw an error", () => {

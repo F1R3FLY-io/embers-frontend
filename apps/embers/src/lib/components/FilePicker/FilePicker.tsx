@@ -1,4 +1,6 @@
-import { type ReactNode, useCallback } from "react";
+import type { ReactNode } from "react";
+
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import styles from "./FilePicker.module.scss";

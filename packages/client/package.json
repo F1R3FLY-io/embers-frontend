@@ -34,10 +34,10 @@
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
     "fetch-api-schema": "curl -o embers-api-schema.json http://localhost:8080/swagger-ui/openapi.json",
     "clean-api-client": "rm -rf src/api-client",
-    "generate-api-client": "docker run -v $(PWD):/local openapitools/openapi-generator-cli generate -i /local/embers-api-schema.json -g typescript-fetch -o /local/src/api-client",
-    "format:code": "prettier --write '**/*.{js,ts,tsx}'",
+    "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/embers-api-schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
+    "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
     "ci:lint": "eslint .",
-    "ci:check:code": "prettier --check '**/*.{js,ts,tsx}'"
+    "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json}'"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
@@ -49,9 +49,10 @@
     "typedoc": "^0.28.8"
   },
   "dependencies": {
-    "@noble/curves": "^1.9.4",
+    "@noble/curves": "^1.9.5",
     "@scure/base": "^1.2.6",
     "blakejs": "^1.2.1",
-    "js-sha3": "^0.9.3"
+    "js-sha3": "^0.9.3",
+    "zod": "^4.0.13"
   }
 }

@@ -1,23 +1,24 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
 
-import { PrivateKey } from "../src";
-import {
-  type Boost,
-  type Direction,
-  type Request,
-  type RequestStatus,
-  type Transfer,
-  type WalletStateAndHistory,
+import type {
+  Boost,
+  Direction,
+  Request,
+  RequestStatus,
+  Transfer,
+  WalletStateAndHistory,
 } from "../src/api-client";
+import type {
+  GetContractCallback,
+  TransferTokensCallback,
+} from "../src/functions";
+
+import { PrivateKey } from "../src";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
-import {
-  type GetContractCallback,
-  transferTokens,
-  type TransferTokensCallback,
-} from "../src/functions";
+import { transferTokens } from "../src/functions";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -72,14 +73,16 @@ describe("Wallet Transfer Tests", () => {
       sigAlgorithm: "secp256k1",
     });
 
+    const signature = secp256k1.Signature.fromBytes(
+      mockTransferSendCallback.mock.calls[0][0].sig,
+      "der",
+    ).toBytes();
+
     expect(
       secp256k1.verify(
-        secp256k1.Signature.fromBytes(
-          mockTransferSendCallback.mock.calls[0][0].sig,
-          "der",
-        ),
+        signature,
         blake2b(contract, undefined, 32),
-        senderPublicKey.getValue(),
+        senderPublicKey.value,
       ),
     ).toBe(true);
   });
@@ -113,7 +116,7 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result).toEqual(
       expect.objectContaining<WalletStateAndHistory>({
-        balance: expect.any(Number) as number,
+        balance: expect.any(BigInt) as bigint,
         boosts: expect.any(Array) as Boost[],
         exchanges: expect.any(Array) as object[],
         requests: expect.any(Array) as Request[],
@@ -121,10 +124,9 @@ describe("Wallet Transfer Tests", () => {
       }),
     );
 
-    // Additional type-safe checks for array elements if they exist
     expect(result.requests).toEqual(
       expect.arrayOf<Request>({
-        amount: expect.any(Number) as number,
+        amount: expect.any(BigInt) as bigint,
         date: expect.any(Date) as Date,
         id: expect.any(String) as string,
         status: expect.any(String) as RequestStatus,
@@ -133,7 +135,7 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result.boosts).toEqual(
       expect.arrayOf<Boost>({
-        amount: expect.any(Number) as number,
+        amount: expect.any(BigInt) as bigint,
         date: expect.any(Date) as Date,
         direction: expect.any(String) as Direction,
         id: expect.any(String) as string,
@@ -144,8 +146,8 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result.transfers).toEqual(
       expect.arrayOf<Transfer>({
-        amount: expect.any(Number) as number,
-        cost: expect.any(Number) as number,
+        amount: expect.any(BigInt) as bigint,
+        cost: expect.any(BigInt) as bigint,
         date: expect.any(Date) as Date,
         direction: expect.any(String) as Direction,
         id: expect.any(String) as string,
