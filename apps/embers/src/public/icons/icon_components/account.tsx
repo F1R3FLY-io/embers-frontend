@@ -1,4 +1,5 @@
-import * as React from "react"; const SvgAccount = props =>
+import type { SVGProps } from "react";
+const SvgAccount = (props: SVGProps<SVGSVGElement>) => (
 <svg
   xmlns="http://www.w3.org/2000/svg"
   width="{24}"
@@ -16,5 +17,4 @@ import * as React from "react"; const SvgAccount = props =>
     strokeLinejoin="round"
     strokeWidth="{2}"
     d="M12 11.486a4.16 4.16 0 0 0 2.933-7.096 4.15 4.15 0 0 0-7.086 2.935 4.16 4.16 0 0 0 4.151 4.16m5.686 9.343a1.908 1.908 0 0 0 1.537-3.035 8 8 0 0 0-2.745-2.311c-1.077-.554-3.266-.856-4.477-.885-1.211.029-3.4.332-4.477.885a8 8 0 0 0-2.745 2.312 1.91 1.91 0 0 0 1.536 3.034z"
-  /></svg
->; export default SvgAccount;
+  /></svg>); export default SvgAccount;
