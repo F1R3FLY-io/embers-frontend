@@ -6,10 +6,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "@/lib/components/ProtectedRoute";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
-
 import styles from "./App.module.scss";
 
-const Create = lazy(async () => import("@/pages/Create"));
+const CreateDashboard = lazy(async () => import("@/pages/CreateDashboard"));
 const Edit = lazy(async () => import("@/pages/Edit"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
@@ -25,8 +24,8 @@ export default function App() {
             <Routes>
               <Route element={<Home />} path="/" />
               <Route element={<Login />} path="/login" />
+              <Route element={<CreateDashboard />} path="/create_dashboard" />
               <Route element={<ProtectedRoute />}>
-                <Route element={<Create />} path="/create" />
                 <Route element={<Edit />} path="/edit" />
               </Route>
             </Routes>

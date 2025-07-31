@@ -1,8 +1,8 @@
 declare const classNames: {
   readonly container: "container";
-  readonly "input-area": "input-area";
-  readonly input: "input";
-  readonly icon: "icon";
   readonly error: "error";
+  readonly icon: "icon";
+  readonly input: "input";
+  readonly "input-area": "input-area";
 };
 export default classNames;

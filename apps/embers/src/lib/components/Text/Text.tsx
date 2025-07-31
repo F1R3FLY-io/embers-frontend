@@ -10,6 +10,8 @@ type TextProps = {
   fontWeight?: 400 | 600;
   noColour?: boolean;
   type?: "title" | "secondary";
+  color?: string;
+  hoverColor?: string;
 };
 
 export default function Text({
@@ -18,6 +20,8 @@ export default function Text({
   fontWeight,
   noColour,
   type,
+  color,
+  hoverColor,
 }: TextProps) {
   const textClass = classNames(styles.text, {
     [styles.secondary]: type === "secondary",
@@ -25,8 +29,13 @@ export default function Text({
     [styles["no-color"]]: noColour,
   });
 
+  const customStyle = {
+    fontSize,
+    fontWeight,
+  };
+
   return (
-    <span className={textClass} style={{ fontSize, fontWeight }}>
+    <span className={textClass} style={customStyle}>
       {children}
     </span>
   );
