@@ -5,7 +5,7 @@
 #161E27 background
 #6A00FF button
 #9A52FF button-hover
-#48247A  button-disabled
+#48247A button-disabled
 #F52958 button-danger
 
 **Text**
