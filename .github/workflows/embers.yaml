@@ -11,14 +11,14 @@ on:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
       - "packages/client/**"
-      - "/*"
+      - "*"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
       - "packages/client/**"
-      - "/*"
+      - "*"
       - "!**/*.md"
 
 jobs:
