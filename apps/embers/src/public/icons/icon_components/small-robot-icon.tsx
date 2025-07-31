@@ -69,4 +69,4 @@ export default function SmallRobotIcon() {
       <circle cx="28" cy="23" fill="white" r="2" />
     </svg>
   );
-} 
+}
