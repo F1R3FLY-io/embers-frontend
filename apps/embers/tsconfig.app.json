@@ -4,6 +4,7 @@
     "incremental": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
+    "types": [],
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "paths": {

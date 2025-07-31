@@ -1,3 +1,1 @@
-import Create from "./Create";
-
-export { Create };
+export { default } from "./Create";
