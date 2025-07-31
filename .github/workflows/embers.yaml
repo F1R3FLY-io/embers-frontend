@@ -24,6 +24,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     defaults:
       run:
         working-directory: apps/embers

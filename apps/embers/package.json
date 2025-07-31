@@ -1,8 +1,14 @@
 {
-  "name": "embers-frontend",
+  "name": "@f1r3fly-io/embers-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -16,17 +22,17 @@
     "ci:check:css": "stylelint '**/*.{css,scss}'"
   },
   "dependencies": {
-    "@noble/curves": "^1.9.5",
+    "@f1r3fly-io/embers-client-sdk": "workspace:*",
+    "@noble/curves": "^1.9.6",
     "@scure/base": "^1.2.6",
     "@tanstack/react-query": "^5.83.0",
     "blakejs": "^1.2.1",
     "classnames": "^2.5.1",
-    "embers-client-sdk": "workspace:*",
     "js-sha3": "^0.9.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
     "react-router-dom": "^7.7.1",
-    "zod": "^4.0.13"
+    "zod": "^4.0.14"
   }
 }
