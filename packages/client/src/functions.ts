@@ -66,7 +66,7 @@ export async function getWalletState(address: Address, client: WalletsApi) {
 
 export type GetContractCallback = (value: {
   amount: Amount;
-  description: Description;
+  description: Description | undefined;
   from: Address;
   to: Address;
 }) => Promise<{ contract: Array<number> }>;
@@ -92,7 +92,7 @@ export async function transferTokens(
   privateKey: PrivateKey,
   toAddress: Address,
   amount: Amount,
-  description: Description,
+  description: Description | undefined,
   getContractCallback: GetContractCallback,
   transferTokensCallback: TransferTokensCallback,
 ) {

@@ -42,7 +42,7 @@ export class Wallet {
   public async sendTokens(
     to: Address,
     amount: Amount,
-    description: Description,
+    description?: Description,
   ) {
     const preparePostCallback: GetContractCallback = async ({
       amount,
@@ -53,7 +53,7 @@ export class Wallet {
       this.client.apiWalletsTransferPreparePost({
         transferReq: {
           amount: amount.value,
-          description: description.value,
+          description: description?.value,
           from: from.value,
           to: to.value,
         },
