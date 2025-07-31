@@ -1,15 +1,18 @@
 import type { SVGProps } from "react";
 const SvgNameListsColorLightStyleSolid = (props: SVGProps<SVGSVGElement>) => (
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="{28}"
-  height="{28}"
-  fill="none"
-  {...props}
->
-  <path
-    fill="#F1F3F5"
-    stroke="#F1F3F5"
-    strokeWidth="{1.167}"
-    d="M7 16.918a2.917 2.917 0 1 1 0 5.834 2.917 2.917 0 0 1 0-5.834Zm8.167 2.333h8.166a.585.585 0 0 1 .413.996.59.59 0 0 1-.413.171h-8.166a.585.585 0 0 1-.413-.996c.11-.11.258-.171.413-.171ZM7 5.251a2.917 2.917 0 1 1-2.917 2.917l.015-.288a2.92 2.92 0 0 1 2.614-2.614zm8.167 2.334h8.166a.585.585 0 0 1 .584.583.584.584 0 0 1-.584.583h-8.166a.585.585 0 0 1-.584-.583.584.584 0 0 1 .584-.583Z"
-  /></svg>); export default SvgNameListsColorLightStyleSolid;
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="{28}"
+    height="{28}"
+    fill="none"
+    {...props}
+  >
+    <path
+      fill="#F1F3F5"
+      stroke="#F1F3F5"
+      strokeWidth="{1.167}"
+      d="M7 16.918a2.917 2.917 0 1 1 0 5.834 2.917 2.917 0 0 1 0-5.834Zm8.167 2.333h8.166a.585.585 0 0 1 .413.996.59.59 0 0 1-.413.171h-8.166a.585.585 0 0 1-.413-.996c.11-.11.258-.171.413-.171ZM7 5.251a2.917 2.917 0 1 1-2.917 2.917l.015-.288a2.92 2.92 0 0 1 2.614-2.614zm8.167 2.334h8.166a.585.585 0 0 1 .584.583.584.584 0 0 1-.584.583h-8.166a.585.585 0 0 1-.584-.583.584.584 0 0 1 .584-.583Z"
+    />
+  </svg>
+);
+export default SvgNameListsColorLightStyleSolid;
