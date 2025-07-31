@@ -6,7 +6,7 @@ This directory contains architectural documentation for the Embers Platform, inc
 
 ## Documentation Index
 
-### =Ë Architecture Decision Records (ADRs)
+### Architecture Decision Records (ADRs)
 
 Decision records documenting important architectural choices and their rationale:
 
@@ -20,7 +20,7 @@ Decision records documenting important architectural choices and their rationale
   - React 19, TypeScript, Vite, and SCSS Modules integration
   - Component architecture and state management strategy
 
-### <× Design Patterns
+### Design Patterns
 
 Established patterns and conventions for consistent development:
 
@@ -30,7 +30,7 @@ Established patterns and conventions for consistent development:
   - State management, error handling, and performance patterns
   - Testing patterns and accessibility guidelines
 
-### =Ð System Architecture (Planned)
+### System Architecture (Planned)
 
 High-level system design documentation:
 
@@ -44,20 +44,22 @@ High-level system design documentation:
 When working with Embers Platform architecture:
 
 ### Key Architectural Constraints
+
 1. **Client-Side Security**: All private key operations must remain client-side
 2. **Type Safety**: Full TypeScript coverage for blockchain operations
 3. **Performance**: Bundle size <1.5MB, page loads <2s
 4. **Accessibility**: WCAG 2.1 AA compliance throughout
 
-### Architectural Principles  
+### Architectural Principles
+
 1. **Separation of Concerns**: Clear boundaries between UI, business logic, and data access
 2. **Immutable Data**: Blockchain entities are immutable with validation
 3. **Error Boundaries**: Comprehensive error handling at component and API levels
-4. **Responsive Design**: Mobile-first approach with progressive enhancement
 
 ### Technology Stack Decisions
+
 - **Frontend**: React 19 + TypeScript + Vite for modern development experience
-- **Styling**: SCSS Modules for component isolation and maintainability  
+- **Styling**: SCSS Modules for component isolation and maintainability
 - **State Management**: React Query for server state, Context for global client state
 - **Blockchain**: Noble curves and Web Crypto API for secure operations
 - **Build System**: pnpm workspaces for monorepo management
@@ -65,46 +67,46 @@ When working with Embers Platform architecture:
 ## Contributing to Architecture
 
 ### Adding New ADRs
+
 1. Use the format: `###-descriptive-title.md`
 2. Include Status, Context, Decision, Rationale, Consequences, and Alternatives
 3. Reference related ADRs and update this index
 4. Review with architecture team before merging
 
 ### Proposing Pattern Changes
+
 1. Document current pattern limitations or issues
 2. Propose new pattern with examples and benefits
 3. Update component pattern documentation
 4. Provide migration guide for existing code
 
 ### Architecture Review Process
+
 1. **Technical RFC**: For major architectural changes
-2. **Team Review**: All ADRs reviewed by development team  
+2. **Team Review**: All ADRs reviewed by development team
 3. **Documentation Update**: Keep patterns and guidelines current
 4. **Implementation Tracking**: Monitor adoption of new patterns
 
 ## Related Documentation
 
 - **[Requirements](../requirements/)** - Business and user requirements driving architectural decisions
-- **[Technical Specifications](../specifications/technical/)** - Detailed technical implementation specs
-- **[Visual Design](../specifications/visual-design/)** - UI/UX specifications affecting component architecture
-- **[Current Status](../ToDos.md)** - Active architectural work and technical debt
 
 ## Quick Reference
 
 ### Common Architecture Questions
 
-**Q: Why use a monorepo structure?**  
+**Q: Why use a monorepo structure?**
 A: See [ADR-001](./decisions/001-monorepo-structure.md) - enables shared tooling, consistent versioning, and simplified cross-package development.
 
-**Q: Why React 19 over other frameworks?**  
+**Q: Why React 19 over other frameworks?**
 A: See [ADR-002](./decisions/002-react-19-typescript.md) - provides concurrent features, excellent TypeScript integration, and mature ecosystem.
 
-**Q: How should I structure new components?**  
+**Q: How should I structure new components?**
 A: Follow patterns in [Component Patterns](./patterns/component-patterns.md) - use SCSS modules, TypeScript interfaces, and established testing approaches.
 
-**Q: What are the security requirements?**  
+**Q: What are the security requirements?**
 A: Private keys must never leave client-side, all addresses validated with checksums, amounts use BigInt for precision.
 
 ---
 
-*This architecture documentation follows Smart-Assets.io SSL documentation standards for LLM-enhanced development.*
+_This architecture documentation follows Smart-Assets.io SSL documentation standards for LLM-enhanced development._

@@ -1,17 +1,21 @@
 # ADR-002: React 19 with TypeScript Frontend Stack
 
 ## Status
+
 Accepted
 
 ## Context
+
 We need to select a frontend technology stack for the Embers Platform that supports modern development practices, provides excellent developer experience, and can handle complex blockchain interactions with type safety.
 
 ## Decision
+
 We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules for styling.
 
 ## Rationale
 
 ### React 19 Benefits
+
 1. **Concurrent Features**: Built-in support for concurrent rendering and automatic batching
 2. **Server Components**: Future-ready for potential SSR implementation
 3. **React Compiler**: Automatic optimization without manual memoization
@@ -19,6 +23,7 @@ We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules f
 5. **Community Support**: Largest ecosystem and community in frontend development
 
 ### TypeScript Benefits
+
 1. **Type Safety**: Compile-time error detection for blockchain address validation, amount calculations
 2. **Developer Experience**: IntelliSense, refactoring support, and documentation through types
 3. **API Integration**: Strong typing for auto-generated API clients from OpenAPI schema
@@ -26,6 +31,7 @@ We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules f
 5. **Team Collaboration**: Self-documenting code with interface definitions
 
 ### Vite Build Tool
+
 1. **Fast Development**: Hot module replacement with instant updates
 2. **Modern Defaults**: ES modules, optimized builds, code splitting
 3. **Plugin Ecosystem**: Rich plugin system for TypeScript, React, and CSS processing
@@ -33,6 +39,7 @@ We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules f
 5. **TypeScript Integration**: First-class TypeScript support without configuration
 
 ### SCSS Modules
+
 1. **Scoped Styles**: Automatic CSS class scoping prevents style conflicts
 2. **TypeScript Integration**: Generated type definitions for CSS classes
 3. **SCSS Features**: Variables, mixins, and functions for maintainable styles
@@ -42,6 +49,7 @@ We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules f
 ## Implementation
 
 ### Package Dependencies
+
 ```json
 {
   "dependencies": {
@@ -63,6 +71,7 @@ We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules f
 ```
 
 ### TypeScript Configuration
+
 ```json
 {
   "compilerOptions": {
@@ -86,29 +95,28 @@ We will use React 19 with TypeScript, Vite as the build tool, and SCSS Modules f
 ```
 
 ### Vite Configuration
+
 ```typescript
 export default defineConfig({
   plugins: [
     react(),
     sassDts({
-      enabledMode: ['development', 'production'],
-      global: {
-        generate: true,
-        outputFilePath: path.resolve(__dirname, './src/global.scss.d.ts')
-      }
-    })
+      enabledMode: ["development", "production"],
+      esmExport: true,
+    }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  }
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 });
 ```
 
 ## Component Architecture
 
 ### Component Structure
+
 ```typescript
 // Button/Button.tsx
 interface ButtonProps {
@@ -118,14 +126,14 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-export default function Button({ 
-  variant = 'primary', 
-  size = 'md', 
-  children, 
-  onClick 
+export default function Button({
+  variant = 'primary',
+  size = 'md',
+  children,
+  onClick
 }: ButtonProps) {
   return (
-    <button 
+    <button
       className={classNames(styles.button, styles[variant], styles[size])}
       onClick={onClick}
     >
@@ -136,22 +144,23 @@ export default function Button({
 ```
 
 ### SCSS Module Structure
+
 ```scss
 // Button/Button.module.scss
 .button {
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   border-radius: 0.5rem;
   transition: all 0.2s ease-in-out;
-  
+
   &.primary {
     background-color: #2563eb;
     color: white;
-    
+
     &:hover {
       background-color: #1d4ed8;
     }
   }
-  
+
   &.sm {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
@@ -162,11 +171,12 @@ export default function Button({
 ## State Management Strategy
 
 ### React Query for Server State
+
 ```typescript
 // queries/ai-agents/queries.ts
 export function useAgents() {
   return useQuery({
-    queryKey: ['agents'],
+    queryKey: ["agents"],
     queryFn: () => apiClient.getAgents(),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -174,25 +184,28 @@ export function useAgents() {
 
 export function useCreateAgent() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (agent: CreateAgentRequest) => apiClient.createAgent(agent),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['agents'] });
+      queryClient.invalidateQueries({ queryKey: ["agents"] });
     },
   });
 }
 ```
 
 ### Context for Global State
+
 ```typescript
 // providers/wallet/WalletProvider.tsx
 interface WalletContextType {
-  address: string | null;
-  isConnected: boolean;
-  balance: string;
-  connect: () => Promise<void>;
-  disconnect: () => void;
+  readonly privateKey: Uint8Array;
+  readonly address: string;
+  sendTokens: (
+    to: string,
+    amount: bigint,
+    description?: string,
+  ) => Promise<void>;
 }
 
 export const WalletContext = createContext<WalletContextType | null>(null);
@@ -200,7 +213,7 @@ export const WalletContext = createContext<WalletContextType | null>(null);
 export function useWallet() {
   const context = useContext(WalletContext);
   if (!context) {
-    throw new Error('useWallet must be used within WalletProvider');
+    throw new Error("useWallet must be used within WalletProvider");
   }
   return context;
 }
@@ -209,6 +222,7 @@ export function useWallet() {
 ## Consequences
 
 ### Positive
+
 - **Type Safety**: Compile-time error detection prevents runtime errors in financial operations
 - **Developer Productivity**: Excellent tooling and development experience
 - **Performance**: React 19 optimizations and Vite's fast builds
@@ -216,11 +230,13 @@ export function useWallet() {
 - **Future-Proof**: Latest versions with long-term support and migration paths
 
 ### Negative
+
 - **Learning Curve**: Team needs familiarity with React 19 features and TypeScript
 - **Build Complexity**: Additional configuration for TypeScript and SCSS modules
 - **Bundle Size**: React and TypeScript add to the initial bundle size
 
 ### Mitigation Strategies
+
 1. **Training**: Team onboarding for React 19 and TypeScript best practices
 2. **Documentation**: Clear examples and patterns for component development
 3. **Code Splitting**: Dynamic imports and route-based splitting for performance
@@ -229,22 +245,27 @@ export function useWallet() {
 ## Alternatives Considered
 
 ### Vue.js with TypeScript
+
 - **Pros**: Excellent TypeScript integration, simpler learning curve
 - **Cons**: Smaller ecosystem, less team expertise
 
 ### Svelte/SvelteKit
+
 - **Pros**: Smaller bundle sizes, compile-time optimizations
 - **Cons**: Smaller ecosystem, less mature TypeScript support
 
 ### Angular
+
 - **Pros**: Full TypeScript framework, enterprise features
 - **Cons**: Heavy framework, steeper learning curve, overkill for this project
 
 ### Plain JavaScript
+
 - **Pros**: Simpler setup, faster initial development
 - **Cons**: No type safety for blockchain operations, harder to maintain
 
 ## References
+
 - [React 19 Documentation](https://react.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Vite Guide](https://vitejs.dev/guide/)
