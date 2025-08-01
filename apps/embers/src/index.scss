@@ -23,3 +23,8 @@
   --text-link-color: #1083fe;
   --background-neutral-hover: #f1f3f5;
 }
+
+.placeholder-secondary::placeholder {
+  color: var(--text-color-secondary);
+  opacity: 1;
+}
