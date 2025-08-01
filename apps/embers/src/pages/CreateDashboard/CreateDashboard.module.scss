@@ -117,16 +117,16 @@
     }
   }
 
-  input:checked + .slider {
+  input:checked+.slider {
     background-color: #4a4a4a;
   }
 
-  input:checked + .slider::before {
+  input:checked+.slider::before {
     background-color: #6a00ff;
     transform: translateX(20px);
   }
 
-  input:checked + .slider::after {
+  input:checked+.slider::after {
     filter: brightness(0) invert(1);
     transform: translateX(20px);
   }
@@ -245,25 +245,7 @@
   }
 }
 
-.create-box:hover {
-  span {
-    color: var(--text-color-primary);
-  }
 
-  svg {
-    path,
-    line {
-      stroke: #5a00e6 !important;
-      stroke-width: 3 !important;
-      transition: all 0.3s ease;
-    }
-
-    circle {
-      stroke: #5a00e6 !important;
-      transition: all 0.3s ease;
-    }
-  }
-}
 
 .create-robot-icon {
   display: flex;
@@ -335,5 +317,25 @@
   svg path {
     stroke: var(--text-color-primary);
     transition: stroke 0.2s ease;
+  }
+}
+
+.create-box:hover {
+  span {
+    color: var(--text-color-primary);
+  }
+
+  svg {
+    path,
+    line {
+      stroke: #5a00e6 !important;
+      stroke-width: 3 !important;
+      transition: all 0.3s ease;
+    }
+
+    circle {
+      stroke: #5a00e6 !important;
+      transition: all 0.3s ease;
+    }
   }
 }
