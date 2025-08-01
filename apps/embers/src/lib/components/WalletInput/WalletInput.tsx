@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 
-import { deserializeKey , PrivateKey } from "@f1r3fly-io/embers-client-sdk";
+import { deserializeKey, PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import { base16 } from "@scure/base";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
