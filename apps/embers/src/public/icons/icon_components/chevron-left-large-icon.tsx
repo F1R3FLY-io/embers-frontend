@@ -1,16 +1,16 @@
 import type { SVGProps } from "react";
 const SvgChevronLeftLargeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="{25}"
-    height="{24}"
     fill="none"
+    height="{24}"
+    width="{25}"
+    xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
     <path
+      d="M14.36 6.605a.49.49 0 0 1 .344.84l-.003.004-3.9 3.9-.354.353 4.25 4.25.06.075a.49.49 0 0 1-.678.678l-.075-.06-4.59-4.588a.5.5 0 0 1 0-.707l.147-.147 4.447-4.447.004-.003a.5.5 0 0 1 .347-.148Z"
       fill="#F1F3F5"
       stroke="#F1F3F5"
-      d="M14.36 6.605a.49.49 0 0 1 .344.84l-.003.004-3.9 3.9-.354.353 4.25 4.25.06.075a.49.49 0 0 1-.678.678l-.075-.06-4.59-4.588a.5.5 0 0 1 0-.707l.147-.147 4.447-4.447.004-.003a.5.5 0 0 1 .347-.148Z"
     />
   </svg>
 );
