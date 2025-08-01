@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "@/lib/components/ProtectedRoute";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
+
 import styles from "./App.module.scss";
 
 const CreateDashboard = lazy(async () => import("@/pages/CreateDashboard"));

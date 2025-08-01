@@ -7,7 +7,6 @@ import LogoutIcon from "../../public/icons/icon_components/logout-icon";
 import RobotIcon from "../../public/icons/icon_components/robot-icon";
 import SettingsIcon from "../../public/icons/icon_components/settings-icon";
 import SmallRobotIcon from "../../public/icons/icon_components/small-robot-icon";
-
 import styles from "./CreateDashboard.module.scss";
 
 export default function CreateDashboard() {
