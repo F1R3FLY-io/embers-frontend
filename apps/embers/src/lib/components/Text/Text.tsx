@@ -30,7 +30,10 @@ export default function Text({
   });
 
   return (
-    <span className={textClass} style={{ color, fontSize, fontWeight, ...style }}>
+    <span
+      className={textClass}
+      style={{ color, fontSize, fontWeight, ...style }}
+    >
       {children}
     </span>
   );
