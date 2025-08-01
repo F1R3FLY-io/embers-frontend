@@ -14,8 +14,8 @@ export default function Stepper({
   return (
     <div className={styles.stepper}>
       {Array.from({ length: steps }, (_, index) => (
-        <div key={index} className={styles.stepContainer}>
-          <div className={styles.stepContent}>
+        <div key={index} className={styles["step-container"]}>
+          <div className={styles["step-content"]}>
             <svg
               className={styles.circle}
               fill="none"
