@@ -16,3 +16,11 @@
 .no-color {
   color: unset;
 }
+
+.custom-hover {
+  transition: color 0.3s ease;
+}
+
+.custom-hover:hover {
+  color: var(--hover-color) !important;
+}

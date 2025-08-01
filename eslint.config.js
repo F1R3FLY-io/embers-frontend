@@ -53,6 +53,7 @@ export default tseslint.config(
         { enforceForTSTypes: true },
       ],
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "import/no-duplicates": "error",
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
       "import/no-unresolved": "error",

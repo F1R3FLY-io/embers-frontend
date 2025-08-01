@@ -25,8 +25,13 @@ export default function Text({
     [styles["no-color"]]: noColour,
   });
 
+  const customStyle = {
+    fontSize,
+    fontWeight,
+  };
+
   return (
-    <span className={textClass} style={{ fontSize, fontWeight }}>
+    <span className={textClass} style={customStyle}>
       {children}
     </span>
   );
