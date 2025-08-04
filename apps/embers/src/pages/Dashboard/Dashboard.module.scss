@@ -44,7 +44,7 @@
     background-color: var(--background-color);
     border: none;
     border-radius: 6px;
-    transition: none;
+    transition: background-color 0.3s ease;
   }
 
   .chevron {
@@ -69,73 +69,6 @@
   }
 }
 
-.theme-switch {
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-  }
-
-  .switch input {
-    width: 0;
-    height: 0;
-    opacity: 0;
-  }
-
-  .slider {
-    position: absolute;
-    inset: 6px;
-    cursor: pointer;
-    background-color: var(--border-color);
-    border-radius: 12px;
-    transition: all 0.3s ease;
-
-    &::before {
-      position: absolute;
-      top: -4px;
-      left: -3px;
-      width: 20px;
-      height: 20px;
-      content: "";
-      background-color: white;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
-      transition: all 0.3s ease;
-    }
-
-    &::after {
-      position: absolute;
-      top: -2px;
-      left: -1.5px;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      font-size: 10px;
-      pointer-events: none;
-      content: "🌙";
-      transition: all 0.3s ease;
-    }
-  }
-
-  input:checked + .slider {
-    background-color: #4a4a4a;
-  }
-
-  input:checked + .slider::before {
-    background-color: #6a00ff;
-    transform: translateX(20px);
-  }
-
-  input:checked + .slider::after {
-    filter: brightness(0) invert(1);
-    transform: translateX(20px);
-  }
-}
-
 .settings-icon {
   display: flex;
   align-items: center;
@@ -143,13 +76,14 @@
   padding: 8px;
   color: var(--text-color-secondary);
   cursor: pointer;
-  background: none;
+  background: transparent;
   border: none;
   border-radius: 6px;
   transition: all 0.3s ease;
 
   &:hover {
     color: var(--text-color-primary);
+    background-color: var(--background-neutral-hover);
   }
 
   svg {
@@ -189,11 +123,22 @@
   }
 
   svg {
-    stroke: white !important;
+    path,
+    line {
+      stroke: white !important;
+    }
   }
 
   &:hover {
     background-color: #5a00e6 !important;
+
+    svg {
+      circle,
+      line,
+      path {
+        stroke: white !important;
+      }
+    }
   }
 }
 
@@ -331,7 +276,6 @@
     path,
     line {
       stroke: #5a00e6 !important;
-      stroke-width: 3 !important;
       transition: all 0.3s ease;
     }
 

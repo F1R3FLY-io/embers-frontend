@@ -6,9 +6,6 @@ declare const classNames: {
   readonly "language-dropdown": "language-dropdown";
   readonly dropdown: "dropdown";
   readonly chevron: "chevron";
-  readonly "theme-switch": "theme-switch";
-  readonly switch: "switch";
-  readonly slider: "slider";
   readonly "settings-icon": "settings-icon";
   readonly "main-content": "main-content";
   readonly dashboard: "dashboard";

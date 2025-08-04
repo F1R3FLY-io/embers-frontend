@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 
 import styles from "./ThemeSwitch.module.scss";
+import classNames from "classnames";
+
+const updateTheme = (dark: boolean) => {
+  if (dark) {
+    document.documentElement.classList.remove("light-theme");
+  } else {
+    document.documentElement.classList.add("light-theme");
+  }
+  localStorage.setItem("theme", dark ? "dark" : "light");
+};
 
 interface ThemeSwitchProps {
   className?: string;
@@ -8,15 +18,6 @@ interface ThemeSwitchProps {
 
 export function ThemeSwitch({ className }: ThemeSwitchProps) {
   const [isDarkMode, setIsDarkMode] = useState(true);
-
-  const updateTheme = (dark: boolean) => {
-    if (dark) {
-      document.documentElement.classList.remove("light-theme");
-    } else {
-      document.documentElement.classList.add("light-theme");
-    }
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  };
 
   useEffect(() => {
     // Check for saved theme preference or default to dark
@@ -39,7 +40,7 @@ export function ThemeSwitch({ className }: ThemeSwitchProps) {
   };
 
   return (
-    <div className={`${styles["theme-switch"]} ${className ?? ""}`}>
+    <div className={classNames(styles["theme-switch"], className)}>
       <label className={styles.switch}>
         <input checked={isDarkMode} type="checkbox" onChange={toggleTheme} />
         <span className={styles.slider}></span>
