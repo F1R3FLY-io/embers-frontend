@@ -1,15 +1,15 @@
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import ChevronIcon from "@/public/icons/icon_components/chevron-icon";
-
 import DocumentationIcon from "@/public/icons/icon_components/documentation-icon";
 import LogoutIcon from "@/public/icons/icon_components/logout-icon";
 import RobotIcon from "@/public/icons/icon_components/robot-icon";
 import SettingsIcon from "@/public/icons/icon_components/settings-icon";
 import SmallRobotIcon from "@/public/icons/icon_components/small-robot-icon";
+
 import styles from "./Dashboard.module.scss";
 
-export default function CreateDashboard() {
+export default function Dashboard() {
   return (
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
