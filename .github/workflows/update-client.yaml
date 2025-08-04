@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "Value "${{ toJson(github.event) }} ${{ github.event.client_payload.schema_url }}"
+      - run: echo "Value ${{ toJson(github.event) }} ${{ github.event.client_payload.schema_url }}"
