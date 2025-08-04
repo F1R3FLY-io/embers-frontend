@@ -1,5 +1,5 @@
 name: Update client
-run-name: Update client ${{ github.event_name == 'push' && 'main' || format('MR {0}', github.event.pull_request.title) }}
+run-name: Update client
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
