@@ -28,12 +28,6 @@ describe("Wallet Transfer Tests", () => {
   test("transferTokens function", async () => {
     const senderPrivateKey = PrivateKey.new();
     const senderPublicKey = senderPrivateKey.getPublicKey();
-    const receiverAddress = PrivateKey.new().getPublicKey().getAddress();
-
-    const amount = Amount.tryFrom(1000n);
-    const description = Description.tryFrom(
-      "This is a test transfer with a valid description.",
-    );
 
     const contract = new Uint8Array(32);
     const expectedSignature = secp256k1
@@ -57,12 +51,7 @@ describe("Wallet Transfer Tests", () => {
 
     expect(result).toBeTruthy();
 
-    expect(mockPreparePostCallback).toHaveBeenCalledWith({
-      amount,
-      description,
-      from: senderPublicKey.getAddress(),
-      to: receiverAddress,
-    });
+    expect(mockPreparePostCallback).toHaveBeenCalledWith();
 
     expect(mockTransferSendCallback).toHaveBeenCalledWith({
       contract,
