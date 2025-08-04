@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # Documentation
 docs
+
+# Api Client generated files
+api-client

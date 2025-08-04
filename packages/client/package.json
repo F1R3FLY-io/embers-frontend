@@ -37,9 +37,8 @@
     "typecheck": "tsc -b --noEmit",
     "gen-docs": "typedoc",
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
-    "fetch-api-schema": "curl -o embers-api-schema.json http://localhost:8080/swagger-ui/openapi.json",
     "clean-api-client": "rm -rf src/api-client",
-    "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/embers-api-schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
+    "generate-api-client": "docker run -v $PWD/../../embers:/embers -v $PWD:/local openapitools/openapi-generator-cli generate -i /embers/schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
     "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json}'"

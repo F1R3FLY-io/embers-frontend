@@ -10,15 +10,15 @@ import type {
   WalletStateAndHistory,
 } from "../src/api-client";
 import type {
+  DeployContractCallback,
   GetContractCallback,
-  TransferTokensCallback,
 } from "../src/functions";
 
 import { PrivateKey } from "../src";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
-import { transferTokens } from "../src/functions";
+import { deployContract } from "../src/functions";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -41,19 +41,16 @@ describe("Wallet Transfer Tests", () => {
       .toBytes("der");
     const mockPreparePostCallback = jest
       .fn<ReturnType<GetContractCallback>, Parameters<GetContractCallback>>()
-      .mockResolvedValueOnce({
-        contract: Array.from(contract),
-      });
+      .mockResolvedValueOnce(
+        contract,
+      );
     const mockTransferSendCallback = jest.fn<
-      ReturnType<TransferTokensCallback>,
-      Parameters<TransferTokensCallback>
+      ReturnType<DeployContractCallback>,
+      Parameters<DeployContractCallback>
     >();
 
-    const result = await transferTokens(
+    const result = await deployContract(
       senderPrivateKey,
-      receiverAddress,
-      amount,
-      description,
       mockPreparePostCallback,
       mockTransferSendCallback,
     );

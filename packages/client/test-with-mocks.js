@@ -57,7 +57,7 @@ function startMockServer() {
     mockServer = spawn(
       "counterfact",
       [
-        "./embers-api-schema.json",
+        "./schema.json",
         "mocks",
         "--generate",
         "--serve",
