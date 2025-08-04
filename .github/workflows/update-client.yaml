@@ -12,10 +12,6 @@ jobs:
   update-client:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
-
     defaults:
       run:
         working-directory: packages/client
@@ -23,6 +19,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Update schema.json
+        run: |
+          curl -L -o schema.zip -H "Authorization: Bearer ${{ secrets.EMBERS_TOKEN }}" ${{ github.event.client_payload.schema_url }}
+          unzip schema.zip -d output/
+          mv -f output/schema.json embers-api-schema.json
+          rm -rf schema.zip output/
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v3
@@ -35,35 +38,23 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies for client
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Update schema.json
-        run: |
-          curl -L -o schema.zip -H "Authorization: Bearer ${{ secrets.EMBERS_TOKEN }}" https://api.github.com/repos/F1R3FLY-io/embers/actions/artifacts/3682303324/zip
-          unzip schema.zip -d output/
-          mv -f output/schema.json embers-api-schema.json
-          rm -rf schema.zip output/
+      - name: Generate bindings
+        run: pnpm run generate-api-client
 
-      - name: Format schema.json
-        run: pnpm run format:code
+      - name: Format code
+        run: |
+          pnpm run lint
+          pnpm run format:code
 
       - name: Stop if no changes
         run: |
           if git diff --quiet --exit-code; then
             echo '::debug::No changes found. Skipping all remaning steps'
+            exit 1
           fi
-
-      - name: Generate bindings
-        run: pnpm run generate-api-client
-
-      # - name: Format code
-      #   run: |
-      #     pnpm run lint
-      #     pnpm run format:code
-
-      - name: Debug changes
-        run: git diff
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7

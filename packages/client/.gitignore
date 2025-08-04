@@ -140,3 +140,5 @@ vite.config.ts.timestamp-*
 
 # Documentation
 docs
+
+embers-api-schema.json
