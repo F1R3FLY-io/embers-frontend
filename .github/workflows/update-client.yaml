@@ -49,16 +49,24 @@ jobs:
         run: |
           if git diff --quiet --exit-code; then
             echo '::debug::No changes found. Skipping all remaning steps'
-            exit 78
           fi
 
       - name: Generate bindings
         run: pnpm run generate-api-client
 
-      - name: Format code
-        run: |
-          pnpm run lint
-          pnpm run format:code
+      # - name: Format code
+      #   run: |
+      #     pnpm run lint
+      #     pnpm run format:code
 
       - name: Debug changes
         run: git diff
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Automated client update"
+          branch: "auto/update-client-${{ github.run_id }}"
+          base: "main"
+          title: "Automated client update"
