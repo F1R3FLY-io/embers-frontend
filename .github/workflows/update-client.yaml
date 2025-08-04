@@ -11,5 +11,6 @@ on:
 jobs:
   update-client:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "Value: ${{ github.event.update-schema.my_value }}"
+      - run: echo "Value ${{ github.event.update-schema.schema_url }}"
