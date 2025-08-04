@@ -1,7 +1,7 @@
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 
 import styles from "./ThemeSwitch.module.scss";
-import classNames from "classnames";
 
 const updateTheme = (dark: boolean) => {
   if (dark) {
