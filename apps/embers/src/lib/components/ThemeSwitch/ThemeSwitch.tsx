@@ -31,9 +31,11 @@ export function ThemeSwitch({ className }: ThemeSwitchProps) {
   }, []);
 
   const toggleTheme = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    updateTheme(newDarkMode);
+    setIsDarkMode((isDarkMode) => {
+      const newIsDarkMode = !isDarkMode;
+      updateTheme(newIsDarkMode);
+      return newIsDarkMode;
+    });
   };
 
   return (
