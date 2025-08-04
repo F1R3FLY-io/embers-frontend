@@ -51,3 +51,6 @@ jobs:
 
       - name: Generate bindings
         run: pnpm run generate-api-client
+
+      - name: Debug changes
+        run: git diff
