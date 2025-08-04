@@ -1,0 +1,15 @@
+name: Update client
+run-name: Update client ${{ github.event_name == 'push' && 'main' || format('MR {0}', github.event.pull_request.title) }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  repository_dispatch:
+    types: [update-schema]
+
+jobs:
+  update-client:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Value: ${{ github.event.update-schema.my_value }}"
