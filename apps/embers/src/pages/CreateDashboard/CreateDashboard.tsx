@@ -1,7 +1,7 @@
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
-
 import ChevronIcon from "@/public/icons/icon_components/chevron-icon";
+
 import DocumentationIcon from "../../public/icons/icon_components/documentation-icon";
 import LogoutIcon from "../../public/icons/icon_components/logout-icon";
 import RobotIcon from "../../public/icons/icon_components/robot-icon";
