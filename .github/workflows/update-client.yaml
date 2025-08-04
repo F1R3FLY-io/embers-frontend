@@ -7,10 +7,70 @@ concurrency:
 on:
   repository_dispatch:
     types: [update-schema]
+  pull_request:
 
 jobs:
   update-client:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      pull-requests: write
+
+    defaults:
+      run:
+        working-directory: packages/client
+
     steps:
-      - run: echo "Value ${{ toJson(github.event) }} ${{ github.event.client_payload.schema_url }}"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies for client
+        run: pnpm install
+
+      - name: Update schema.json
+        run: |
+          curl -L -o schema.zip -H "Authorization: Bearer ${{ secrets.EMBERS_TOKEN }}" "https://api.github.com/repos/F1R3FLY-io/embers/actions/artifacts/3682303324/zip"
+          unzip schema.zip -d output/
+          mv -f output/schema.json embers-api-schema.json
+          rm -rf schema.zip output/
+
+      - name: Format schema.json
+        run: pnpm run format:code
+
+      - name: Stop if no changes
+        run: |
+          if git diff --quiet --exit-code; then
+            echo '::debug::No changes found. Skipping all remaning steps'
+          fi
+
+      - name: Generate bindings
+        run: pnpm run generate-api-client
+
+      # - name: Format code
+      #   run: |
+      #     pnpm run lint
+      #     pnpm run format:code
+
+      - name: Debug changes
+        run: git diff
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Automated client update"
+          branch: "auto/update-client-${{ github.run_id }}"
+          base: "main"
+          title: "Automated client update"
