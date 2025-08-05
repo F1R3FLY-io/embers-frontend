@@ -1,3 +1,5 @@
+import type { AgentHeader } from "../src/api-client";
+
 import { AiAgent, PrivateKey } from "../src";
 
 beforeEach(() => {
