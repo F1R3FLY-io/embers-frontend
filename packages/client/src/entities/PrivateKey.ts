@@ -8,7 +8,7 @@ export class PrivateKey {
     return new PrivateKey(secp256k1.utils.randomSecretKey());
   }
 
-  private constructor(public readonly value: Uint8Array) {}
+  private constructor(public readonly value: Uint8Array) { }
 
   public static tryFrom(value: Uint8Array): PrivateKey {
     if (!secp256k1.utils.isValidSecretKey(value)) {
@@ -24,5 +24,9 @@ export class PrivateKey {
 
   public getPublicKey(): PublicKey {
     return PublicKey.fromPrivateKey(this);
+  }
+
+  public toHex(): string {
+    return base16.encode(this.value);
   }
 }

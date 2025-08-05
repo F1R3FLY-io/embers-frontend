@@ -20,4 +20,10 @@ describe("PrivateKey class", () => {
       "Invalid private key",
     );
   });
+
+  test("should create a private key from a hex string", () => {
+    const validKey = PrivateKey.new();
+    const privateKey = PrivateKey.tryFromHex(validKey.toHex());
+    expect(secp256k1.utils.isValidSecretKey(privateKey.value)).toBe(true);
+  });
 });
