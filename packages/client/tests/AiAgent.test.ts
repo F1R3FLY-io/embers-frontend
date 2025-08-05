@@ -80,8 +80,8 @@ describe("AiAgent", () => {
     });
 
     const { agents } = await agent.getAgentVersions("fake agent id");
-    expect(agents).toContainEqual(
-      expect.objectContaining<AgentHeader>({
+    expect(agents).toEqual(
+      expect.arrayOf<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
