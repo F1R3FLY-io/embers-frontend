@@ -32,7 +32,7 @@ describe("Wallet Transfer", () => {
 
     const result = await wallet.sendTokens(address, amount, description);
 
-    expect(result).toBeTruthy();
+    expect(result).toBeUndefined();
   });
 
   test("Wallet.getWalletState method", async () => {

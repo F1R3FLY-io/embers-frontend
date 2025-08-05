@@ -20,10 +20,12 @@ test("deployContract function", async () => {
   const mockPreparePostCallback = jest
     .fn<ReturnType<GetContractCallback>, Parameters<GetContractCallback>>()
     .mockResolvedValueOnce(contract);
-  const mockTransferSendCallback = jest.fn<
-    ReturnType<DeployContractCallback>,
-    Parameters<DeployContractCallback>
-  >();
+  const mockTransferSendCallback = jest
+    .fn<
+      ReturnType<DeployContractCallback>,
+      Parameters<DeployContractCallback>
+    >()
+    .mockResolvedValueOnce(true);
 
   const result = await deployContract(
     senderPrivateKey,

@@ -64,11 +64,11 @@ export async function getWalletState(address: Address, client: WalletsApi) {
 
 export type GetContractCallback = () => Promise<Uint8Array>;
 
-export type DeployContractCallback = (value: {
+export type DeployContractCallback<T = unknown> = (value: {
   contract: Uint8Array;
   sig: Uint8Array;
   sigAlgorithm: string;
-}) => Promise<void>;
+}) => Promise<T>;
 
 /**
  * Transfers tokens from one address to another.
@@ -83,7 +83,7 @@ export async function deployContract(
   privateKey: PrivateKey,
   getContractCallback: GetContractCallback,
   transferTokensCallback: DeployContractCallback,
-) {
+): ReturnType<DeployContractCallback> {
   const contract = await getContractCallback();
 
   const payload = blake2b(contract, undefined, 32);

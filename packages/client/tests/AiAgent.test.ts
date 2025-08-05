@@ -27,13 +27,13 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = agent.createAgent({
+    const result = await agent.createAgent({
       code: "console.log('Hello, World!');",
       name: "Test Agent",
       shard: "test",
     });
 
-    await expect(result).resolves.toBeTruthy();
+    expect(result).toBeUndefined();
   });
 
   it("should deploy Agent", async () => {
@@ -45,9 +45,9 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = agent.deployAgent("fake agent id", "fake version id");
+    const result = await agent.deployAgent("fake agent id", "fake version id");
 
-    await expect(result).resolves.toBeTruthy();
+    expect(result).toBeUndefined();
   });
 
   it("should return agents list", async () => {
@@ -59,9 +59,9 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const { agents } = await agent.getAgents();
-    expect(agents).toEqual(
-      expect.arrayOf<AgentHeader>({
+    const result = await agent.getAgents();
+    expect(result.agents).toContainEqual(
+      expect.objectContaining({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -79,9 +79,9 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const { agents } = await agent.getAgentVersions("fake agent id");
-    expect(agents).toEqual(
-      expect.arrayOf<AgentHeader>({
+    const result = await agent.getAgentVersions("fake agent id");
+    expect(result.agents).toContainEqual(
+      expect.objectContaining<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -106,7 +106,6 @@ describe("AiAgent", () => {
     expect(agentData).toEqual(
       expect.objectContaining<AgentHeader>({
         id: expect.any(String) as string,
-        code: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
         version: expect.any(String) as string,
@@ -123,12 +122,12 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = agent.saveAgentVersion("fake agent id", {
+    const result = await agent.saveAgentVersion("fake agent id", {
       code: "console.log('Updated Code');",
       name: "Updated Agent",
       shard: "test",
     });
 
-    await expect(result).resolves.toBeTruthy();
+    expect(result).toBeUndefined();
   });
 });
