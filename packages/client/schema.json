@@ -16,9 +16,7 @@
   "paths": {
     "/api/wallets/{address}/state": {
       "get": {
-        "tags": [
-          "Wallets"
-        ],
+        "tags": ["Wallets"],
         "parameters": [
           {
             "name": "address",
@@ -47,9 +45,7 @@
     },
     "/api/wallets/transfer/prepare": {
       "post": {
-        "tags": [
-          "Wallets"
-        ],
+        "tags": ["Wallets"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -76,9 +72,7 @@
     },
     "/api/wallets/transfer/send": {
       "post": {
-        "tags": [
-          "Wallets"
-        ],
+        "tags": ["Wallets"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -98,9 +92,7 @@
     },
     "/api/ai-agents/{address}": {
       "get": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "address",
@@ -129,9 +121,7 @@
     },
     "/api/ai-agents/{address}/{id}/versions": {
       "get": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "address",
@@ -183,9 +173,7 @@
     },
     "/api/ai-agents/{address}/{id}/{version}": {
       "get": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "address",
@@ -247,9 +235,7 @@
     },
     "/api/ai-agents/create/prepare": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -276,9 +262,7 @@
     },
     "/api/ai-agents/create/send": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -298,9 +282,7 @@
     },
     "/api/ai-agents/test/wallet": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "responses": {
           "200": {
             "description": "",
@@ -317,9 +299,7 @@
     },
     "/api/ai-agents/test/deploy/prepare": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -346,9 +326,7 @@
     },
     "/api/ai-agents/test/deploy/send": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -375,9 +353,7 @@
     },
     "/api/ai-agents/{id}/save/prepare": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "id",
@@ -416,9 +392,7 @@
     },
     "/api/ai-agents/{id}/save/send": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "id",
@@ -450,9 +424,7 @@
     },
     "/api/ai-agents/{address}/{id}/{version}/deploy/prepare": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "address",
@@ -501,9 +473,7 @@
     },
     "/api/ai-agents/{address}/{id}/{version}/deploy/send": {
       "post": {
-        "tags": [
-          "AIAgents"
-        ],
+        "tags": ["AIAgents"],
         "parameters": [
           {
             "name": "address",
@@ -559,11 +529,7 @@
       "Agent": {
         "type": "object",
         "title": "Agent",
-        "required": [
-          "id",
-          "version",
-          "name"
-        ],
+        "required": ["id", "version", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -585,11 +551,7 @@
       "AgentHeader": {
         "type": "object",
         "title": "AgentHeader",
-        "required": [
-          "id",
-          "version",
-          "name"
-        ],
+        "required": ["id", "version", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -608,9 +570,7 @@
       "Agents": {
         "type": "object",
         "title": "Agents",
-        "required": [
-          "agents"
-        ],
+        "required": ["agents"],
         "properties": {
           "agents": {
             "type": "array",
@@ -623,14 +583,7 @@
       "Boost": {
         "type": "object",
         "title": "Boost",
-        "required": [
-          "id",
-          "username",
-          "direction",
-          "date",
-          "amount",
-          "post"
-        ],
+        "required": ["id", "username", "direction", "date", "amount", "post"],
         "properties": {
           "id": {
             "type": "string"
@@ -657,9 +610,7 @@
       "CreateAgentReq": {
         "type": "object",
         "title": "CreateAgentReq",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string"
@@ -675,11 +626,7 @@
       "CreateAgentResp": {
         "type": "object",
         "title": "CreateAgentResp",
-        "required": [
-          "id",
-          "version",
-          "contract"
-        ],
+        "required": ["id", "version", "contract"],
         "properties": {
           "id": {
             "type": "string"
@@ -699,9 +646,7 @@
       "CreateTestwalletResp": {
         "type": "object",
         "title": "CreateTestwalletResp",
-        "required": [
-          "key"
-        ],
+        "required": ["key"],
         "properties": {
           "key": {
             "type": "string"
@@ -711,9 +656,7 @@
       "DeployAgentResp": {
         "type": "object",
         "title": "DeployAgentResp",
-        "required": [
-          "contract"
-        ],
+        "required": ["contract"],
         "properties": {
           "contract": {
             "type": "array",
@@ -727,9 +670,7 @@
       "DeploySignedTestReq": {
         "type": "object",
         "title": "DeploySignedTestReq",
-        "required": [
-          "test"
-        ],
+        "required": ["test"],
         "properties": {
           "env": {
             "$ref": "#/components/schemas/SignedContract"
@@ -756,9 +697,7 @@
       "DeployTestReq": {
         "type": "object",
         "title": "DeployTestReq",
-        "required": [
-          "test"
-        ],
+        "required": ["test"],
         "properties": {
           "env": {
             "type": "string"
@@ -771,9 +710,7 @@
       "DeployTestResp": {
         "type": "object",
         "title": "DeployTestResp",
-        "required": [
-          "test_contract"
-        ],
+        "required": ["test_contract"],
         "properties": {
           "env_contract": {
             "type": "array",
@@ -793,10 +730,7 @@
       },
       "Direction": {
         "type": "string",
-        "enum": [
-          "incoming",
-          "outgoing"
-        ]
+        "enum": ["incoming", "outgoing"]
       },
       "Exchange": {
         "type": "object",
@@ -805,9 +739,7 @@
       "InternalError": {
         "type": "object",
         "title": "InternalError",
-        "required": [
-          "description"
-        ],
+        "required": ["description"],
         "properties": {
           "description": {
             "type": "string"
@@ -817,10 +749,7 @@
       "Log": {
         "type": "object",
         "title": "Log",
-        "required": [
-          "level",
-          "message"
-        ],
+        "required": ["level", "message"],
         "properties": {
           "level": {
             "$ref": "#/components/schemas/LogLevel"
@@ -832,21 +761,12 @@
       },
       "LogLevel": {
         "type": "string",
-        "enum": [
-          "debug",
-          "info",
-          "error"
-        ]
+        "enum": ["debug", "info", "error"]
       },
       "Request": {
         "type": "object",
         "title": "Request",
-        "required": [
-          "id",
-          "date",
-          "amount",
-          "status"
-        ],
+        "required": ["id", "date", "amount", "status"],
         "properties": {
           "id": {
             "type": "string"
@@ -866,19 +786,12 @@
       },
       "RequestStatus": {
         "type": "string",
-        "enum": [
-          "done",
-          "ongoing",
-          "cancelled"
-        ]
+        "enum": ["done", "ongoing", "cancelled"]
       },
       "SaveAgentResp": {
         "type": "object",
         "title": "SaveAgentResp",
-        "required": [
-          "version",
-          "contract"
-        ],
+        "required": ["version", "contract"],
         "properties": {
           "version": {
             "type": "string"
@@ -895,12 +808,7 @@
       "SignedContract": {
         "type": "object",
         "title": "SignedContract",
-        "required": [
-          "contract",
-          "sig",
-          "sig_algorithm",
-          "deployer"
-        ],
+        "required": ["contract", "sig", "sig_algorithm", "deployer"],
         "properties": {
           "contract": {
             "type": "array",
@@ -931,9 +839,7 @@
       "SignedTestDeplotError": {
         "type": "object",
         "title": "SignedTestDeplotError",
-        "required": [
-          "error"
-        ],
+        "required": ["error"],
         "properties": {
           "error": {
             "type": "string"
@@ -943,9 +849,7 @@
       "SignedTestDeplotLogs": {
         "type": "object",
         "title": "SignedTestDeplotLogs",
-        "required": [
-          "logs"
-        ],
+        "required": ["logs"],
         "properties": {
           "logs": {
             "type": "array",
@@ -958,14 +862,7 @@
       "Transfer": {
         "type": "object",
         "title": "Transfer",
-        "required": [
-          "id",
-          "direction",
-          "date",
-          "amount",
-          "to_address",
-          "cost"
-        ],
+        "required": ["id", "direction", "date", "amount", "to_address", "cost"],
         "properties": {
           "id": {
             "type": "string"
@@ -993,11 +890,7 @@
       "TransferReq": {
         "type": "object",
         "title": "TransferReq",
-        "required": [
-          "from",
-          "to",
-          "amount"
-        ],
+        "required": ["from", "to", "amount"],
         "properties": {
           "from": {
             "type": "string"
@@ -1017,9 +910,7 @@
       "TransferResp": {
         "type": "object",
         "title": "TransferResp",
-        "required": [
-          "contract"
-        ],
+        "required": ["contract"],
         "properties": {
           "contract": {
             "type": "array",
@@ -1033,13 +924,7 @@
       "WalletStateAndHistory": {
         "type": "object",
         "title": "WalletStateAndHistory",
-        "required": [
-          "balance",
-          "requests",
-          "exchanges",
-          "boosts",
-          "transfers"
-        ],
+        "required": ["balance", "requests", "exchanges", "boosts", "transfers"],
         "properties": {
           "balance": {
             "type": "string",

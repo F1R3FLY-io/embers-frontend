@@ -10,9 +10,9 @@ import { PrivateKey } from "./entities/PrivateKey";
  * @property {string} valueFormat - The format in which the value is stored. Currently only supports 'hex'.
  */
 type WalletFileFormat = {
-  keyType: 'secp256k1';
+  keyType: "secp256k1";
   value: string;
-  valueFormat: 'hex';
+  valueFormat: "hex";
 };
 
 /**
@@ -21,9 +21,9 @@ type WalletFileFormat = {
  * @returns The string literal 'secp256k1' if the key type matches
  * @throws {Error} If the key type is not 'secp256k1'
  */
-export function getSecp256k1(file: Partial<WalletFileFormat>): 'secp256k1' {
-  if (file.keyType === 'secp256k1') {
-    return 'secp256k1';
+export function getSecp256k1(file: Partial<WalletFileFormat>): "secp256k1" {
+  if (file.keyType === "secp256k1") {
+    return "secp256k1";
   }
   throw new Error("Unsupported key type");
 }
@@ -34,9 +34,9 @@ export function getSecp256k1(file: Partial<WalletFileFormat>): 'secp256k1' {
  * @returns The string literal 'hex' if the value format matches
  * @throws {Error} If the value format is not 'hex'
  */
-export function getHexFormat(file: Partial<WalletFileFormat>): 'hex' {
-  if (file.valueFormat === 'hex') {
-    return 'hex';
+export function getHexFormat(file: Partial<WalletFileFormat>): "hex" {
+  if (file.valueFormat === "hex") {
+    return "hex";
   }
   throw new Error("Unsupported value format");
 }
@@ -69,10 +69,10 @@ export class WalletFile {
    * @param valueFormat - Value format (always 'hex')
    */
   private constructor(
-    private readonly keyType: 'secp256k1',
+    private readonly keyType: "secp256k1",
     public readonly value: string,
-    private readonly valueFormat: 'hex'
-  ) { }
+    private readonly valueFormat: "hex",
+  ) {}
 
   /**
    * Creates a WalletFile instance from a PrivateKey object
@@ -80,7 +80,7 @@ export class WalletFile {
    * @returns WalletFile containing the encoded private key
    */
   public static fromPrivateKey(key: PrivateKey): WalletFile {
-    return new WalletFile('secp256k1', base16.encode(key.value), 'hex');
+    return new WalletFile("secp256k1", base16.encode(key.value), "hex");
   }
 
   /**

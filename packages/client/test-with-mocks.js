@@ -56,14 +56,7 @@ function startMockServer() {
 
     mockServer = spawn(
       "counterfact",
-      [
-        "./schema.json",
-        "mocks",
-        "--generate",
-        "--serve",
-        "--port",
-        "3100",
-      ],
+      ["./schema.json", "mocks", "--generate", "--serve", "--port", "3100"],
       {
         stdio: ["ignore", "pipe", "pipe"],
       },

@@ -6,7 +6,7 @@ import type { PrivateKey } from "./PrivateKey";
 import { Address } from "./Address";
 
 export class PublicKey {
-  private constructor(public readonly value: Uint8Array) { }
+  private constructor(public readonly value: Uint8Array) {}
 
   public static fromPrivateKey(key: PrivateKey): PublicKey {
     const publicKey = secp256k1.getPublicKey(key.value, false);

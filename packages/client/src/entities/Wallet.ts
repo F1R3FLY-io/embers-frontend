@@ -6,7 +6,7 @@ import type { Description } from "./Description";
 import type { PrivateKey } from "./PrivateKey";
 
 import { Configuration, WalletsApi } from "../api-client";
-import { deployContract, getWalletState, } from "../functions";
+import { deployContract, getWalletState } from "../functions";
 
 export type WalletConfig = {
   basePath: string;
@@ -45,20 +45,22 @@ export class Wallet {
     description?: Description,
   ) {
     const preparePostCallback: GetContractCallback = async () =>
-      this.client.apiWalletsTransferPreparePost({
-        transferReq: {
-          amount: amount.value,
-          description: description?.value,
-          from: this.privateKey.getPublicKey().getAddress().value,
-          to: to.value,
-        },
-      }).then((response) => new Uint8Array(response.contract));
+      this.client
+        .apiWalletsTransferPreparePost({
+          transferReq: {
+            amount: amount.value,
+            description: description?.value,
+            from: this.privateKey.getPublicKey().getAddress().value,
+            to: to.value,
+          },
+        })
+        .then((response) => new Uint8Array(response.contract));
 
-    const transferSendCallback: DeployContractCallback = async (
-      { contract,
-        sig,
-        sigAlgorithm }
-    ) =>
+    const transferSendCallback: DeployContractCallback = async ({
+      contract,
+      sig,
+      sigAlgorithm,
+    }) =>
       this.client.apiWalletsTransferSendPost({
         signedContract: {
           contract: Array.from(contract),
