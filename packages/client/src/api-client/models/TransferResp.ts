@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from "../runtime";
+import type { Base64 } from "./Base64";
+import {
+  Base64FromJSON,
+  Base64FromJSONTyped,
+  Base64ToJSON,
+  Base64ToJSONTyped,
+} from "./Base64";
+
 /**
  *
  * @export
@@ -21,10 +29,10 @@ import { mapValues } from "../runtime";
 export interface TransferResp {
   /**
    *
-   * @type {Array<number>}
+   * @type {Base64}
    * @memberof TransferResp
    */
-  contract: Array<number>;
+  contract: Base64;
 }
 
 /**
@@ -47,7 +55,7 @@ export function TransferRespFromJSONTyped(
     return json;
   }
   return {
-    contract: json["contract"],
+    contract: Base64FromJSON(json["contract"]),
   };
 }
 
@@ -64,6 +72,6 @@ export function TransferRespToJSONTyped(
   }
 
   return {
-    contract: value["contract"],
+    contract: Base64ToJSON(value["contract"]),
   };
 }

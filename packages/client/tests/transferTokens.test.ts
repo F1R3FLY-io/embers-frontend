@@ -42,7 +42,7 @@ describe("Wallet Transfer Tests", () => {
     const mockPreparePostCallback = jest
       .fn<ReturnType<GetContractCallback>, Parameters<GetContractCallback>>()
       .mockResolvedValueOnce({
-        contract: Array.from(contract),
+        contract,
       });
     const mockTransferSendCallback = jest.fn<
       ReturnType<TransferTokensCallback>,

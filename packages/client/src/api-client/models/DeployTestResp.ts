@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from "../runtime";
+import type { Base64 } from "./Base64";
+import {
+  Base64FromJSON,
+  Base64FromJSONTyped,
+  Base64ToJSON,
+  Base64ToJSONTyped,
+} from "./Base64";
+
 /**
  *
  * @export
@@ -21,16 +29,16 @@ import { mapValues } from "../runtime";
 export interface DeployTestResp {
   /**
    *
-   * @type {Array<number>}
+   * @type {Base64}
    * @memberof DeployTestResp
    */
-  envContract?: Array<number>;
+  envContract?: Base64;
   /**
    *
-   * @type {Array<number>}
+   * @type {Base64}
    * @memberof DeployTestResp
    */
-  testContract: Array<number>;
+  testContract: Base64;
 }
 
 /**
@@ -57,8 +65,10 @@ export function DeployTestRespFromJSONTyped(
   }
   return {
     envContract:
-      json["env_contract"] == null ? undefined : json["env_contract"],
-    testContract: json["test_contract"],
+      json["env_contract"] == null
+        ? undefined
+        : Base64FromJSON(json["env_contract"]),
+    testContract: Base64FromJSON(json["test_contract"]),
   };
 }
 
@@ -75,7 +85,7 @@ export function DeployTestRespToJSONTyped(
   }
 
   return {
-    env_contract: value["envContract"],
-    test_contract: value["testContract"],
+    env_contract: Base64ToJSON(value["envContract"]),
+    test_contract: Base64ToJSON(value["testContract"]),
   };
 }

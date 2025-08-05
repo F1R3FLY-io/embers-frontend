@@ -69,7 +69,7 @@ export type GetContractCallback = (value: {
   description: Description | undefined;
   from: Address;
   to: Address;
-}) => Promise<{ contract: Array<number> }>;
+}) => Promise<{ contract: Uint8Array }>;
 
 export type TransferTokensCallback = (value: {
   contract: Uint8Array;
@@ -96,14 +96,13 @@ export async function transferTokens(
   getContractCallback: GetContractCallback,
   transferTokensCallback: TransferTokensCallback,
 ) {
-  const response = await getContractCallback({
+  const { contract } = await getContractCallback({
     amount,
     description,
     from: privateKey.getPublicKey().getAddress(),
     to: toAddress,
   });
 
-  const contract = new Uint8Array(response.contract);
   const payload = blake2b(contract, undefined, 32);
 
   const { sig, sigAlgorithm } = sign(payload, privateKey);
