@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from "../runtime";
+import type { Base64 } from "./Base64";
+import {
+  Base64FromJSON,
+  Base64FromJSONTyped,
+  Base64ToJSON,
+  Base64ToJSONTyped,
+} from "./Base64";
+
 /**
  *
  * @export
@@ -27,10 +35,10 @@ export interface SaveAgentResp {
   version: string;
   /**
    *
-   * @type {string}
+   * @type {Base64}
    * @memberof SaveAgentResp
    */
-  contract: string;
+  contract: Base64;
 }
 
 /**
@@ -55,7 +63,7 @@ export function SaveAgentRespFromJSONTyped(
   }
   return {
     version: json["version"],
-    contract: json["contract"],
+    contract: Base64FromJSON(json["contract"]),
   };
 }
 
@@ -73,6 +81,6 @@ export function SaveAgentRespToJSONTyped(
 
   return {
     version: value["version"],
-    contract: value["contract"],
+    contract: Base64ToJSON(value["contract"]),
   };
 }

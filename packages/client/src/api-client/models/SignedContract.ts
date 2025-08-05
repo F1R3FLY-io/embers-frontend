@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from "../runtime";
+import type { Base64 } from "./Base64";
+import {
+  Base64FromJSON,
+  Base64FromJSONTyped,
+  Base64ToJSON,
+  Base64ToJSONTyped,
+} from "./Base64";
+
 /**
  *
  * @export
@@ -21,16 +29,16 @@ import { mapValues } from "../runtime";
 export interface SignedContract {
   /**
    *
-   * @type {string}
+   * @type {Base64}
    * @memberof SignedContract
    */
-  contract: string;
+  contract: Base64;
   /**
    *
-   * @type {string}
+   * @type {Base64}
    * @memberof SignedContract
    */
-  sig: string;
+  sig: Base64;
   /**
    *
    * @type {string}
@@ -39,10 +47,10 @@ export interface SignedContract {
   sigAlgorithm: string;
   /**
    *
-   * @type {string}
+   * @type {Base64}
    * @memberof SignedContract
    */
-  deployer: string;
+  deployer: Base64;
 }
 
 /**
@@ -71,10 +79,10 @@ export function SignedContractFromJSONTyped(
     return json;
   }
   return {
-    contract: json["contract"],
-    sig: json["sig"],
+    contract: Base64FromJSON(json["contract"]),
+    sig: Base64FromJSON(json["sig"]),
     sigAlgorithm: json["sig_algorithm"],
-    deployer: json["deployer"],
+    deployer: Base64FromJSON(json["deployer"]),
   };
 }
 
@@ -91,9 +99,9 @@ export function SignedContractToJSONTyped(
   }
 
   return {
-    contract: value["contract"],
-    sig: value["sig"],
+    contract: Base64ToJSON(value["contract"]),
+    sig: Base64ToJSON(value["sig"]),
     sig_algorithm: value["sigAlgorithm"],
-    deployer: value["deployer"],
+    deployer: Base64ToJSON(value["deployer"]),
   };
 }

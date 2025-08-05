@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from "../runtime";
+import type { Base64 } from "./Base64";
+import {
+  Base64FromJSON,
+  Base64FromJSONTyped,
+  Base64ToJSON,
+  Base64ToJSONTyped,
+} from "./Base64";
+
 /**
  *
  * @export
@@ -21,10 +29,10 @@ import { mapValues } from "../runtime";
 export interface DeployAgentResp {
   /**
    *
-   * @type {string}
+   * @type {Base64}
    * @memberof DeployAgentResp
    */
-  contract: string;
+  contract: Base64;
 }
 
 /**
@@ -49,7 +57,7 @@ export function DeployAgentRespFromJSONTyped(
     return json;
   }
   return {
-    contract: json["contract"],
+    contract: Base64FromJSON(json["contract"]),
   };
 }
 
@@ -66,6 +74,6 @@ export function DeployAgentRespToJSONTyped(
   }
 
   return {
-    contract: value["contract"],
+    contract: Base64ToJSON(value["contract"]),
   };
 }
