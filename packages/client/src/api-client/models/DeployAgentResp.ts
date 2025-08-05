@@ -21,10 +21,10 @@ import { mapValues } from "../runtime";
 export interface DeployAgentResp {
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof DeployAgentResp
    */
-  contract: Array<number>;
+  contract: string;
 }
 
 /**

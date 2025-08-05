@@ -27,10 +27,10 @@ export interface SaveAgentResp {
   version: string;
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof SaveAgentResp
    */
-  contract: Array<number>;
+  contract: string;
 }
 
 /**

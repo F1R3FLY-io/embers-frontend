@@ -33,10 +33,10 @@ export interface CreateAgentResp {
   version: string;
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof CreateAgentResp
    */
-  contract: Array<number>;
+  contract: string;
 }
 
 /**

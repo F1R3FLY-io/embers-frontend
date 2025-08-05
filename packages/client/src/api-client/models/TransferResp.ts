@@ -21,10 +21,10 @@ import { mapValues } from "../runtime";
 export interface TransferResp {
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof TransferResp
    */
-  contract: Array<number>;
+  contract: string;
 }
 
 /**

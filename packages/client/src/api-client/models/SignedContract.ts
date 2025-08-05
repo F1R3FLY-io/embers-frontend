@@ -21,16 +21,16 @@ import { mapValues } from "../runtime";
 export interface SignedContract {
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof SignedContract
    */
-  contract: Array<number>;
+  contract: string;
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof SignedContract
    */
-  sig: Array<number>;
+  sig: string;
   /**
    *
    * @type {string}
@@ -39,10 +39,10 @@ export interface SignedContract {
   sigAlgorithm: string;
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof SignedContract
    */
-  deployer: Array<number>;
+  deployer: string;
 }
 
 /**

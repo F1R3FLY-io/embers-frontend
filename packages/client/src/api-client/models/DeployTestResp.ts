@@ -21,16 +21,16 @@ import { mapValues } from "../runtime";
 export interface DeployTestResp {
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof DeployTestResp
    */
-  envContract?: Array<number>;
+  envContract?: string;
   /**
    *
-   * @type {Array<number>}
+   * @type {string}
    * @memberof DeployTestResp
    */
-  testContract: Array<number>;
+  testContract: string;
 }
 
 /**
