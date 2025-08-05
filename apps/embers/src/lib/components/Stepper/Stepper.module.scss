@@ -1,0 +1,36 @@
+.stepper {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.step-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.step-content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.circle {
+  flex-shrink: 0;
+}
+
+.line {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.label {
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  color: var(--text-color-secondary);
+  text-align: left;
+  white-space: nowrap;
+}
