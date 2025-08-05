@@ -47,7 +47,7 @@
     "counterfact": "^1.4.1",
     "express": "^5.1.0",
     "serve": "^14.2.4",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typedoc": "^0.28.8"
   },
