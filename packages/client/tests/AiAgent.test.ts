@@ -106,6 +106,7 @@ describe("AiAgent", () => {
     expect(agentData).toEqual(
       expect.objectContaining<AgentHeader>({
         id: expect.any(String) as string,
+        code: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
         version: expect.any(String) as string,

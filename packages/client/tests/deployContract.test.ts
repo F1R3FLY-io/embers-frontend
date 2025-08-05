@@ -9,7 +9,7 @@ import type {
 import { PrivateKey } from "../src";
 import { deployContract } from "../src/functions";
 
-test("transferTokens function", async () => {
+test("deployContract function", async () => {
   const senderPrivateKey = PrivateKey.new();
   const senderPublicKey = senderPrivateKey.getPublicKey();
 

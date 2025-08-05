@@ -8,7 +8,7 @@ import type { Address } from "./Address";
 import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
-import { deployContract } from "../functions";
+import { deployContract, sign } from "../functions";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -51,17 +51,13 @@ export class AiAgent {
       return Uint8Array.from(response.contract);
     };
 
-    const sendContract: DeployContractCallback = async ({
-      contract,
-      sig,
-      sigAlgorithm,
-    }) => {
+    const sendContract: DeployContractCallback = async (value) => {
       // Send the signed contract
       const signedContract: SignedContract = {
-        contract: Array.from(contract),
+        contract: Array.from(value.contract),
         deployer: Array.from(this.privateKey.getPublicKey().value),
-        sig: Array.from(sig),
-        sigAlgorithm,
+        sig: Array.from(value.sig),
+        sigAlgorithm: value.sigAlgorithm,
       };
       return this.client.apiAiAgentsCreateSendPost({ signedContract });
     };
@@ -177,9 +173,60 @@ export class AiAgent {
         sigAlgorithm,
       };
 
-      return this.client.apiAiAgentsCreateSendPost({ signedContract });
+      return this.client.apiAiAgentsIdSaveSendPost({
+        id: agentId,
+        signedContract,
+      });
     };
 
     return deployContract(this.privateKey, generateContract, sendContract);
+  }
+
+  /**
+   * Deploys an AI agent version.
+   * @param agentId The ID of the agent
+   * @param version The version to deploy
+   * @param test The testnet name
+   * @returns A promise that resolves when the agent version is deployed
+   */
+  public async testDeployAgent(agentId: string, version: string, test: string) {
+    // Get the contract and sign it
+    // First prepare the contract for deployment
+    const prepareResponse = await this.client.apiAiAgentsTestDeployPreparePost({
+      deployTestReq: {
+        test,
+      },
+    });
+
+    const testContract: Uint8Array = Uint8Array.from(
+      prepareResponse.testContract,
+    );
+    const signedTestContract = sign(testContract, this.privateKey);
+
+    const envContract: Uint8Array | undefined =
+      prepareResponse.envContract &&
+      Uint8Array.from(prepareResponse.envContract);
+    const signedEnvContract = envContract && sign(envContract, this.privateKey);
+
+    return this.client.apiAiAgentsTestDeploySendPost({
+      deploySignedTestReq: {
+        env: signedEnvContract && {
+          contract: Array.from(envContract),
+          deployer: Array.from(this.privateKey.getPublicKey().value),
+          sig: Array.from(signedEnvContract.sig),
+          sigAlgorithm: signedEnvContract.sigAlgorithm,
+        },
+        test: {
+          contract: Array.from(testContract),
+          deployer: Array.from(this.privateKey.getPublicKey().value),
+          sig: Array.from(signedTestContract.sig),
+          sigAlgorithm: signedTestContract.sigAlgorithm,
+        },
+      },
+    });
+  }
+
+  public async apiAiAgentsTestWalletPost() {
+    return this.client.apiAiAgentsTestWalletPost();
   }
 }

@@ -90,11 +90,9 @@ export async function deployContract(
 
   const { sig, sigAlgorithm } = sign(payload, privateKey);
 
-  await transferTokensCallback({
+  return transferTokensCallback({
     contract,
     sig,
     sigAlgorithm,
   });
-
-  return true;
 }
