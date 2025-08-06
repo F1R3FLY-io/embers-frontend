@@ -45,6 +45,7 @@
   "devDependencies": {
     "@types/express": "^5.0.3",
     "counterfact": "^1.4.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "express": "^5.1.0",
     "serve": "^14.2.4",
     "ts-jest": "^29.4.1",
@@ -56,6 +57,6 @@
     "@scure/base": "^1.2.6",
     "blakejs": "^1.2.1",
     "js-sha3": "^0.9.3",
-    "zod": "^4.0.14"
+    "zod": "^4.0.15"
   }
 }
