@@ -15,10 +15,10 @@
     "lint": "eslint --fix .",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
-    "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
+    "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
     "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
-    "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json}'",
+    "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
     "ci:check:css": "stylelint '**/*.{css,scss}'"
   },
   "dependencies": {

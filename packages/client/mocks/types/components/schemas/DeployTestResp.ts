@@ -1,4 +1,1 @@
-export type DeployTestResp = {
-  env_contract?: Array<number>;
-  test_contract: Array<number>;
-};
+export type DeployTestResp = { env_contract?: string; test_contract: string };

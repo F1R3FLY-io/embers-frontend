@@ -9,7 +9,7 @@ import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
 import styles from "./App.module.scss";
 
-const Create = lazy(async () => import("@/pages/Create"));
+const Dashboard = lazy(async () => import("@/pages/Dashboard"));
 const Edit = lazy(async () => import("@/pages/Edit"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
@@ -26,7 +26,7 @@ export default function App() {
               <Route element={<Home />} path="/" />
               <Route element={<Login />} path="/login" />
               <Route element={<ProtectedRoute />}>
-                <Route element={<Create />} path="/create" />
+                <Route element={<Dashboard />} path="/dashboard" />
                 <Route element={<Edit />} path="/edit" />
               </Route>
             </Routes>

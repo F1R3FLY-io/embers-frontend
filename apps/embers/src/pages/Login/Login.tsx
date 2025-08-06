@@ -37,7 +37,7 @@ export default function Login() {
   const signin = useCallback(() => {
     if (walletInputState.wallet) {
       setWallet(walletInputState.wallet);
-      void navigate("/home");
+      void navigate("/dashboard");
     } else {
       setWalletInputState((state) => ({ ...state, touched: true }));
     }
