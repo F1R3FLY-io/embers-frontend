@@ -5,6 +5,7 @@ import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "@/lib/components/ProtectedRoute";
+import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
 import styles from "./App.module.scss";
@@ -20,18 +21,20 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <WalletProvider>
-        <BrowserRouter>
-          <div className={styles.background}>
-            <Routes>
-              <Route element={<Home />} path="/" />
-              <Route element={<Login />} path="/login" />
-              <Route element={<ProtectedRoute />}>
-                <Route element={<Dashboard />} path="/dashboard" />
-                <Route element={<Edit />} path="/edit" />
-              </Route>
-            </Routes>
-          </div>
-        </BrowserRouter>
+        <ThemeProvider>
+          <BrowserRouter>
+            <div className={styles.background}>
+              <Routes>
+                <Route element={<Home />} path="/" />
+                <Route element={<Login />} path="/login" />
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<Dashboard />} path="/dashboard" />
+                  <Route element={<Edit />} path="/edit" />
+                </Route>
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </ThemeProvider>
       </WalletProvider>
     </QueryClientProvider>
   );

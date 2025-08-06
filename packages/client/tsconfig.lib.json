@@ -13,7 +13,7 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    // "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "esModuleInterop": true,
@@ -24,9 +24,8 @@
 
     /* Linting */
     "strict": true,
-    // "noUnusedLocals": true,
+    "noUnusedLocals": true,
     // "noUnusedParameters": true,
-    // "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true,

@@ -1,5 +1,7 @@
+import type { Location } from "react-router-dom";
+
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import type { Wallet } from "@/lib/providers/wallet/useWallet";
 
@@ -24,6 +26,7 @@ export default function Login() {
   const redirectToFiresky = useCallback(() => {}, []);
 
   const navigate = useNavigate();
+  const location = useLocation() as Location<{ from?: string } | undefined>;
   const { setWallet } = useWallet();
   const [walletInputState, setWalletInputState] = useState<WalletControlState>({
     touched: false,
@@ -37,11 +40,11 @@ export default function Login() {
   const signin = useCallback(() => {
     if (walletInputState.wallet) {
       setWallet(walletInputState.wallet);
-      void navigate("/dashboard");
+      void navigate(location.state?.from ?? "/dashboard");
     } else {
       setWalletInputState((state) => ({ ...state, touched: true }));
     }
-  }, [walletInputState, setWallet, navigate]);
+  }, [walletInputState.wallet, setWallet, navigate, location.state?.from]);
 
   let content;
 
