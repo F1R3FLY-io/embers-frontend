@@ -1,1 +1,1 @@
-export type SaveAgentResp = { version: string; contract: string };
+export type SaveAgentResp = { version: string; contract: Array<number> };

@@ -2,6 +2,6 @@ import type { HTTP_POST } from "../../../../types/paths/api/wallets/transfer/pre
 
 export const POST: HTTP_POST = ($) => {
   return $.response[200].json({
-    contract: "c29tZSByYW5kb20gZGF0YQ==",
+    contract: Buffer.from("some random data").toString("base64"),
   });
 };

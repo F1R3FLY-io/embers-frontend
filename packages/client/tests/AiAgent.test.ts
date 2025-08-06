@@ -127,13 +127,13 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const deploymentResult = agent.testDeployAgent(
+    const result = agent.testDeployAgent(
       "fake agent id",
       "fake version id",
       "fake test",
     );
 
-    await expect(deploymentResult).resolves.toEqual(
+    await expect(result).resolves.toEqual(
       expect.objectContaining({
         error: expect.anything() as unknown,
         logs: expect.arrayOf<Log>({

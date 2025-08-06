@@ -1,7 +1,8 @@
 import type { HTTP_POST } from "../../../../../types/paths/api/ai-agents/test/deploy/prepare.types.js";
 
 export const POST: HTTP_POST = ($) => {
-  return $.response[200].random({
-    contract: Buffer.from("Hello, world!").toString("base64"),
+  return $.response[200].json({
+    envContract: Buffer.from("Hello, world!").toString("base64"),
+    testContract: Buffer.from("Hello, world!").toString("base64"),
   });
 };

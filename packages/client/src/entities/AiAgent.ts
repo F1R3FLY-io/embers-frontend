@@ -190,25 +190,22 @@ export class AiAgent {
       },
     });
 
-    const testContract: Uint8Array = Uint8Array.from(response.testContract);
-    const signedTestContract = sign(testContract, this.privateKey);
-
-    const envContract: Uint8Array | undefined =
-      response.envContract && Uint8Array.from(response.envContract);
-    const signedEnvContract = envContract && sign(envContract, this.privateKey);
+    const signedTestContract = sign(response.testContract, this.privateKey);
+    const signedEnvContract =
+      response.envContract && sign(response.envContract, this.privateKey);
 
     return this.client.apiAiAgentsTestDeploySendPost({
       deploySignedTestReq: {
         env:
           signedEnvContract &&
           ({
-            contract: envContract,
+            contract: response.envContract,
             deployer: this.privateKey.getPublicKey().value,
             sig: signedEnvContract.sig,
             sigAlgorithm: signedEnvContract.sigAlgorithm,
           } as SignedContract),
         test: {
-          contract: testContract,
+          contract: response.testContract,
           deployer: this.privateKey.getPublicKey().value,
           sig: signedTestContract.sig,
           sigAlgorithm: signedTestContract.sigAlgorithm,

@@ -1,1 +1,1 @@
-export type DeployAgentResp = { contract: string };
+export type DeployAgentResp = { contract: Array<number> };

@@ -1,1 +1,1 @@
-export type TransferResp = { contract: string };
+export type TransferResp = { contract: Array<number> };
