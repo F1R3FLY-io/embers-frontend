@@ -11,6 +11,7 @@ declare const classNames: {
   readonly dashboard: "dashboard";
   readonly "dashboard-top": "dashboard-top";
   readonly "agents-button": "agents-button";
+  readonly selected: "selected";
   readonly "content-area": "content-area";
   readonly "content-header": "content-header";
   readonly "grid-container": "grid-container";

@@ -45,6 +45,12 @@ export default function Dashboard() {
               <SmallRobotIcon />
               <Text fontSize={14}>Agents</Text>
             </button>
+            <button
+              className={`${styles["icon-button"]} ${styles["agents-button"]}`}
+            >
+              <SmallRobotIcon />
+              <Text fontSize={14}>Agent Teams</Text>
+            </button>
           </div>
           <div className={styles["dashboard-column"]}>
             <div className={styles["dashboard-divider"]}></div>

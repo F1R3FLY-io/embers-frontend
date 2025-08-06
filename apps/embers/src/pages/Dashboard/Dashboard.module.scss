@@ -115,27 +115,58 @@
   gap: 0 !important;
   width: 100% !important;
   padding: 12px !important;
-  background-color: #6a00ff !important;
+  background-color: transparent !important;
 
   span {
-    color: white !important;
+    color: var(--text-color-secondary) !important;
   }
 
   svg {
     path,
     line {
-      stroke: white !important;
+      stroke: var(--text-color-secondary) !important;
     }
   }
 
   &:hover {
-    background-color: #5a00e6 !important;
+    background-color: rgb(255 255 255 / 5%) !important;
+
+    span {
+      color: var(--text-color-primary) !important;
+    }
 
     svg {
       circle,
       line,
       path {
+        stroke: var(--text-color-primary) !important;
+      }
+    }
+  }
+
+  &.selected {
+    background-color: #6a00ff !important;
+
+    span {
+      color: white !important;
+    }
+
+    svg {
+      path,
+      line {
         stroke: white !important;
+      }
+    }
+
+    &:hover {
+      background-color: #5a00e6 !important;
+
+      svg {
+        circle,
+        line,
+        path {
+          stroke: white !important;
+        }
       }
     }
   }
