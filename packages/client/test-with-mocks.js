@@ -108,7 +108,7 @@ function runTests() {
 
     const coverage = process.argv[2] === "--coverage" ? "--coverage" : "";
 
-    const testProcess = spawn("jest", [coverage], {
+    const testProcess = spawn("jest", [coverage, "--no-cache"], {
       stdio: "inherit",
     });
 

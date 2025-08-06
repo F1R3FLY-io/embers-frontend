@@ -149,11 +149,11 @@ export class AiAgent {
    */
   public async saveAgentVersion(agentId: string, agentReq: CreateAgentReq) {
     const generateContract: GetContractCallback = async () => {
-      const prepareResponse = await this.client.apiAiAgentsIdSavePreparePost({
+      const response = await this.client.apiAiAgentsIdSavePreparePost({
         createAgentReq: agentReq,
         id: agentId,
       });
-      return Uint8Array.from(prepareResponse.contract);
+      return Uint8Array.from(response.contract);
     };
 
     const sendContract: DeployContractCallback<
@@ -183,22 +183,17 @@ export class AiAgent {
    * @param test The testnet name
    */
   public async testDeployAgent(agentId: string, version: string, test: string) {
-    // Get the contract and sign it
-    // First prepare the contract for deployment
-    const prepareResponse = await this.client.apiAiAgentsTestDeployPreparePost({
+    const response = await this.client.apiAiAgentsTestDeployPreparePost({
       deployTestReq: {
         test,
       },
     });
 
-    const testContract: Uint8Array = Uint8Array.from(
-      prepareResponse.testContract,
-    );
+    const testContract: Uint8Array = Uint8Array.from(response.testContract);
     const signedTestContract = sign(testContract, this.privateKey);
 
     const envContract: Uint8Array | undefined =
-      prepareResponse.envContract &&
-      Uint8Array.from(prepareResponse.envContract);
+      response.envContract && Uint8Array.from(response.envContract);
     const signedEnvContract = envContract && sign(envContract, this.privateKey);
 
     return this.client.apiAiAgentsTestDeploySendPost({
@@ -219,7 +214,7 @@ export class AiAgent {
     });
   }
 
-  public async apiAiAgentsTestWalletPost() {
+  public async testWallet() {
     return this.client.apiAiAgentsTestWalletPost();
   }
 }

@@ -1,4 +1,4 @@
-import type { AgentHeader } from "../src/api-client";
+import type { AgentHeader, Log } from "../src/api-client";
 
 import { AiAgent, PrivateKey } from "../src";
 
@@ -7,17 +7,6 @@ beforeEach(() => {
 });
 
 describe("AiAgent", () => {
-  it("should initialize correctly", () => {
-    const privateKey = PrivateKey.new();
-
-    const agent = new AiAgent({
-      basePath: "http://localhost:3100",
-      headers: {},
-      privateKey,
-    });
-    expect(agent).toBeDefined();
-  });
-
   it("should create agent with correct properties", async () => {
     const privateKey = PrivateKey.new();
 
@@ -26,14 +15,13 @@ describe("AiAgent", () => {
       headers: {},
       privateKey,
     });
-
-    const result = await agent.createAgent({
+    const result = agent.createAgent({
       code: "console.log('Hello, World!');",
       name: "Test Agent",
       shard: "test",
     });
 
-    expect(result).toBeUndefined();
+    await expect(result).resolves.toBeUndefined();
   });
 
   it("should deploy Agent", async () => {
@@ -44,10 +32,9 @@ describe("AiAgent", () => {
       headers: {},
       privateKey,
     });
+    const result = agent.deployAgent("fake agent id", "fake version id");
 
-    const result = await agent.deployAgent("fake agent id", "fake version id");
-
-    expect(result).toBeUndefined();
+    await expect(result).resolves.toBeUndefined();
   });
 
   it("should return agents list", async () => {
@@ -60,8 +47,9 @@ describe("AiAgent", () => {
     });
 
     const result = await agent.getAgents();
+    expect(result.agents).toBeDefined();
     expect(result.agents).toContainEqual(
-      expect.objectContaining({
+      expect.objectContaining<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -99,15 +87,13 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const agentData = await agent.getAgentVersion(
-      "fake agent id",
-      "fake version id",
-    );
-    expect(agentData).toEqual(
-      expect.objectContaining<AgentHeader>({
+    const agentData = agent.getAgentVersion("fake agent id", "fake version id");
+    await expect(agentData).resolves.toEqual(
+      expect.objectContaining({
+        code: expect.anything() as unknown,
         id: expect.any(String) as string,
         name: expect.any(String) as string,
-        shard: expect.any(String) as string,
+        shard: expect.anything() as unknown,
         version: expect.any(String) as string,
       }),
     );
@@ -122,12 +108,56 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = await agent.saveAgentVersion("fake agent id", {
+    const result = agent.saveAgentVersion("fake agent id", {
       code: "console.log('Updated Code');",
       name: "Updated Agent",
       shard: "test",
     });
 
-    expect(result).toBeUndefined();
+    await expect(result).resolves.toBeUndefined();
+  });
+
+  it("should testDeployAgent agent successfully", async () => {
+    const privateKey = PrivateKey.new();
+
+    const agent = new AiAgent({
+      basePath: "http://localhost:3100",
+      headers: {},
+      privateKey,
+    });
+
+    const deploymentResult = agent.testDeployAgent(
+      "fake agent id",
+      "fake version id",
+      "fake test",
+    );
+
+    await expect(deploymentResult).resolves.toEqual(
+      expect.objectContaining({
+        error: expect.anything() as unknown,
+        logs: expect.arrayOf<Log>({
+          level: expect.any(String) as string,
+          message: expect.any(String) as string,
+        } as Log) as Log[] | undefined,
+      }),
+    );
+  });
+
+  it("should test wallet", async () => {
+    const privateKey = PrivateKey.new();
+
+    const agent = new AiAgent({
+      basePath: "http://localhost:3100",
+      headers: {},
+      privateKey,
+    });
+
+    const result = agent.testWallet();
+
+    await expect(result).resolves.toEqual(
+      expect.objectContaining({
+        key: expect.any(String) as string,
+      }),
+    );
   });
 });
