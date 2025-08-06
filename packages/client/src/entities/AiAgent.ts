@@ -51,7 +51,9 @@ export class AiAgent {
       return Uint8Array.from(response.contract);
     };
 
-    const sendContract: DeployContractCallback = async (value) => {
+    const sendContract: DeployContractCallback<
+      Awaited<ReturnType<typeof this.client.apiAiAgentsCreateSendPost>>
+    > = async (value) => {
       // Send the signed contract
       const signedContract: SignedContract = {
         contract: Array.from(value.contract),
@@ -86,11 +88,11 @@ export class AiAgent {
     };
 
     // Send the signed contract
-    const sendConract: DeployContractCallback = async ({
-      contract,
-      sig,
-      sigAlgorithm,
-    }) => {
+    const sendContract: DeployContractCallback<
+      Awaited<
+        ReturnType<typeof this.client.apiAiAgentsAddressIdVersionDeploySendPost>
+      >
+    > = async ({ contract, sig, sigAlgorithm }) => {
       const signedContract: SignedContract = {
         contract: Array.from(contract),
         deployer: Array.from(this.privateKey.getPublicKey().value),
@@ -106,7 +108,7 @@ export class AiAgent {
       });
     };
 
-    return deployContract(this.privateKey, contract, sendConract);
+    return deployContract(this.privateKey, contract, sendContract);
   }
 
   /**
@@ -160,11 +162,9 @@ export class AiAgent {
       return Uint8Array.from(prepareResponse.contract);
     };
 
-    const sendContract: DeployContractCallback = async ({
-      contract,
-      sig,
-      sigAlgorithm,
-    }) => {
+    const sendContract: DeployContractCallback<
+      Awaited<ReturnType<typeof this.client.apiAiAgentsIdSaveSendPost>>
+    > = async ({ contract, sig, sigAlgorithm }) => {
       // Send the signed contract
       const signedContract: SignedContract = {
         contract: Array.from(contract),
