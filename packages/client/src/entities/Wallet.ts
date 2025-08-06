@@ -56,11 +56,9 @@ export class Wallet {
         })
         .then((response) => new Uint8Array(response.contract));
 
-    const transferSendCallback: DeployContractCallback = async ({
-      contract,
-      sig,
-      sigAlgorithm,
-    }) =>
+    const transferSendCallback: DeployContractCallback<
+      Awaited<ReturnType<typeof this.client.apiWalletsTransferSendPost>>
+    > = async ({ contract, sig, sigAlgorithm }) =>
       this.client.apiWalletsTransferSendPost({
         signedContract: {
           contract,

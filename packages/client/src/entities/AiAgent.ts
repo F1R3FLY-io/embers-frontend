@@ -52,14 +52,15 @@ export class AiAgent {
 
     const sendContract: DeployContractCallback<
       Awaited<ReturnType<typeof this.client.apiAiAgentsCreateSendPost>>
-    > = async (value) => {
+    > = async ({ contract, sig, sigAlgorithm }) => {
       // Send the signed contract
       const signedContract: SignedContract = {
-        contract: Array.from(value.contract),
-        deployer: Array.from(this.privateKey.getPublicKey().value),
-        sig: Array.from(value.sig),
-        sigAlgorithm: value.sigAlgorithm,
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
+        sigAlgorithm,
       };
+
       return this.client.apiAiAgentsCreateSendPost({ signedContract });
     };
 
@@ -92,9 +93,9 @@ export class AiAgent {
       >
     > = async ({ contract, sig, sigAlgorithm }) => {
       const signedContract: SignedContract = {
-        contract: Array.from(contract),
-        deployer: Array.from(this.privateKey.getPublicKey().value),
-        sig: Array.from(sig),
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
         sigAlgorithm,
       };
 
@@ -161,9 +162,9 @@ export class AiAgent {
     > = async ({ contract, sig, sigAlgorithm }) => {
       // Send the signed contract
       const signedContract: SignedContract = {
-        contract: Array.from(contract),
-        deployer: Array.from(this.privateKey.getPublicKey().value),
-        sig: Array.from(sig),
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
         sigAlgorithm,
       };
 
@@ -198,16 +199,18 @@ export class AiAgent {
 
     return this.client.apiAiAgentsTestDeploySendPost({
       deploySignedTestReq: {
-        env: signedEnvContract && {
-          contract: Array.from(envContract),
-          deployer: Array.from(this.privateKey.getPublicKey().value),
-          sig: Array.from(signedEnvContract.sig),
-          sigAlgorithm: signedEnvContract.sigAlgorithm,
-        },
+        env:
+          signedEnvContract &&
+          ({
+            contract: envContract,
+            deployer: this.privateKey.getPublicKey().value,
+            sig: signedEnvContract.sig,
+            sigAlgorithm: signedEnvContract.sigAlgorithm,
+          } as SignedContract),
         test: {
-          contract: Array.from(testContract),
-          deployer: Array.from(this.privateKey.getPublicKey().value),
-          sig: Array.from(signedTestContract.sig),
+          contract: testContract,
+          deployer: this.privateKey.getPublicKey().value,
+          sig: signedTestContract.sig,
           sigAlgorithm: signedTestContract.sigAlgorithm,
         },
       },

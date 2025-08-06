@@ -1,6 +1,7 @@
 import type { AgentHeader, Log } from "../src/api-client";
 
 import { AiAgent, PrivateKey } from "../src";
+import { LogLevel } from "../src/api-client";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -136,7 +137,7 @@ describe("AiAgent", () => {
       expect.objectContaining({
         error: expect.anything() as unknown,
         logs: expect.arrayOf<Log>({
-          level: expect.any(String) as string,
+          level: expect.any(LogLevel) as LogLevel,
           message: expect.any(String) as string,
         } as Log) as Log[] | undefined,
       }),

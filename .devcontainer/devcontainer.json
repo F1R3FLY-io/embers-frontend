@@ -5,16 +5,10 @@
     "ghcr.io/devcontainers/features/rust:1": {},
     "ghcr.io/devcontainers-extra/features/protoc:1": {}
   },
-  "forwardPorts": [
-    3000,
-    3100
-  ],
+  "forwardPorts": [3000, 3100],
   "customizations": {
     "vscode": {
-      "extensions": [
-        "mhutchie.git-graph",
-        "Orta.vscode-jest"
-      ]
+      "extensions": ["mhutchie.git-graph", "Orta.vscode-jest"]
     }
   }
 }
