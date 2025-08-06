@@ -40,7 +40,6 @@ export class AiAgent {
   /**
    * Creates a new AI agent.
    * @param agentReq The agent creation request
-   * @returns A promise that resolves when the agent is created
    */
   public async createAgent(agentReq: CreateAgentReq) {
     // First prepare the contract for creating an agent
@@ -71,7 +70,6 @@ export class AiAgent {
    * Deploys an AI agent version.
    * @param agentId The ID of the agent
    * @param version The version to deploy
-   * @returns A promise that resolves when the agent version is deployed
    */
   public async deployAgent(agentId: string, version: string) {
     // Get the contract and sign it
@@ -113,7 +111,6 @@ export class AiAgent {
 
   /**
    * Gets all agents owned by the current address.
-   * @returns A promise that resolves with the list of agents
    */
   public async getAgents() {
     return this.client.apiAiAgentsAddressGet({
@@ -125,7 +122,6 @@ export class AiAgent {
    * Gets a specific agent version.
    * @param agentId The ID of the agent
    * @param version The version to retrieve
-   * @returns A promise that resolves with the agent version details
    */
   public async getAgentVersion(agentId: string, version: string) {
     return this.client.apiAiAgentsAddressIdVersionGet({
@@ -138,7 +134,6 @@ export class AiAgent {
   /**
    * Gets all versions of a specific agent.
    * @param agentId The ID of the agent
-   * @returns A promise that resolves with the list of agent versions
    */
   public async getAgentVersions(agentId: string) {
     return this.client.apiAiAgentsAddressIdVersionsGet({
@@ -151,7 +146,6 @@ export class AiAgent {
    * Saves a new version of an existing agent.
    * @param agentId The ID of the agent
    * @param agentReq The agent update request
-   * @returns A promise that resolves when the agent version is saved
    */
   public async saveAgentVersion(agentId: string, agentReq: CreateAgentReq) {
     const generateContract: GetContractCallback = async () => {
@@ -187,7 +181,6 @@ export class AiAgent {
    * @param agentId The ID of the agent
    * @param version The version to deploy
    * @param test The testnet name
-   * @returns A promise that resolves when the agent version is deployed
    */
   public async testDeployAgent(agentId: string, version: string, test: string) {
     // Get the contract and sign it
