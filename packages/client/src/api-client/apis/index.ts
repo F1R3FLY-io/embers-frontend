@@ -1,4 +1,4 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './AIAgentsApi';
-export * from './WalletsApi';
+export * from "./AIAgentsApi";
+export * from "./WalletsApi";
