@@ -1,7 +1,6 @@
-import type { AgentHeader, Log } from "../src/api-client";
+import type { AgentHeader } from "../src/api-client";
 
 import { AiAgent, PrivateKey } from "../src";
-import { LogLevel } from "../src/api-client";
 
 beforeEach(() => {
   jest.clearAllMocks();

@@ -30,9 +30,9 @@ describe("Wallet Transfer", () => {
       privateKey,
     });
 
-    const result = await wallet.sendTokens(address, amount, description);
+    const result = wallet.sendTokens(address, amount, description);
 
-    expect(result).toBeUndefined();
+    await expect(result).resolves.toBeUndefined();
   });
 
   test("Wallet.getWalletState method", async () => {
