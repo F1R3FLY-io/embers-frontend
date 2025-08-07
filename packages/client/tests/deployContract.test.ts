@@ -22,8 +22,8 @@ test("deployContract function", async () => {
     .mockResolvedValueOnce(contract);
   const mockTransferSendCallback = jest
     .fn<
-      ReturnType<DeployContractCallback>,
-      Parameters<DeployContractCallback>
+      ReturnType<DeployContractCallback<boolean>>,
+      Parameters<DeployContractCallback<boolean>>
     >()
     .mockResolvedValueOnce(true);
 
