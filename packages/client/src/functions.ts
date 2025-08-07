@@ -78,11 +78,11 @@ export type DeployContractCallback<T> = (value: {
  * @param privateKey - The private key of the sender's wallet.
  * @returns A promise that resolves when the transfer is sent.
  */
-export async function deployContract<T>(
+export async function deployContract<R>(
   privateKey: PrivateKey,
   getContractCallback: GetContractCallback,
-  transferTokensCallback: DeployContractCallback<T>,
-): ReturnType<DeployContractCallback<T>> {
+  transferTokensCallback: DeployContractCallback<R>,
+): ReturnType<DeployContractCallback<R>> {
   const contract = await getContractCallback();
 
   const payload = blake2b(contract, undefined, 32);

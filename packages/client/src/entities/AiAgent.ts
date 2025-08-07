@@ -5,9 +5,11 @@ import type {
 } from "../api-client";
 import type { DeployContractCallback, GetContractCallback } from "../functions";
 import type { Address } from "./Address";
+import type { AgentId } from "./Agent";
 
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
+import { Agent } from "./Agent";
 import { PrivateKey } from "./PrivateKey";
 
 export type AiAgentConfig = {
@@ -40,13 +42,19 @@ export class AiAgent {
   /**
    * Creates a new AI agent.
    * @param agentReq The agent creation request
+   * @return Promise with Agent enitity or reject with error
    */
   public async createAgent(agentReq: CreateAgentReq) {
+    let agent = Agent.empty();
+
     // First prepare the contract for creating an agent
     const prepareContract: GetContractCallback = async () => {
       const response = await this.client.apiAiAgentsCreatePreparePost({
         createAgentReq: agentReq,
       });
+
+      agent = new Agent(response.id, response.version);
+
       return Uint8Array.from(response.contract);
     };
 
@@ -64,7 +72,9 @@ export class AiAgent {
       return this.client.apiAiAgentsCreateSendPost({ signedContract });
     };
 
-    return deployContract(this.privateKey, prepareContract, sendContract);
+    return deployContract(this.privateKey, prepareContract, sendContract).then(
+      () => agent,
+    );
   }
 
   /**
@@ -147,13 +157,19 @@ export class AiAgent {
    * Saves a new version of an existing agent.
    * @param agentId The ID of the agent
    * @param agentReq The agent update request
+   * @return Promise with Agent enitity or reject with error
    */
-  public async saveAgentVersion(agentId: string, agentReq: CreateAgentReq) {
+  public async saveAgentVersion(agentId: AgentId, agentReq: CreateAgentReq) {
+    let agent: Agent = new Agent(agentId);
+
     const generateContract: GetContractCallback = async () => {
       const response = await this.client.apiAiAgentsIdSavePreparePost({
         createAgentReq: agentReq,
         id: agentId,
       });
+
+      agent = agent.newWithVersion(response.version);
+
       return Uint8Array.from(response.contract);
     };
 
@@ -174,7 +190,9 @@ export class AiAgent {
       });
     };
 
-    return deployContract(this.privateKey, generateContract, sendContract);
+    return deployContract(this.privateKey, generateContract, sendContract).then(
+      () => agent,
+    );
   }
 
   /**
@@ -224,7 +242,11 @@ export class AiAgent {
     });
   }
 
-  public async testWallet() {
-    return this.client.apiAiAgentsTestWalletPost();
+  /**
+   * Generate new test wallet private key
+   * @returns Wallet key
+   */
+  public async getTestWalletKey() {
+    return (await this.client.apiAiAgentsTestWalletPost()).key;
   }
 }

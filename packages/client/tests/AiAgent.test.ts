@@ -6,6 +6,7 @@ import type {
 
 import { AiAgent, PrivateKey } from "../src";
 import { LogLevel } from "../src/api-client";
+import { Agent } from "../src/entities/Agent";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -20,13 +21,14 @@ describe("AiAgent", () => {
       headers: {},
       privateKey,
     });
+
     const result = agent.createAgent({
       code: "console.log('Hello, World!');",
       name: "Test Agent",
       shard: "test",
     });
 
-    await expect(result).resolves.toBeUndefined();
+    await expect(result).resolves.toEqual(new Agent("fake id", "fake version"));
   });
 
   it("should deploy Agent", async () => {
@@ -119,7 +121,9 @@ describe("AiAgent", () => {
       shard: "test",
     });
 
-    await expect(result).resolves.toBeUndefined();
+    await expect(result).resolves.toEqual(
+      new Agent("fake agent id", "fake version"),
+    );
   });
 
   it("should testDeployAgent agent with error", async () => {
@@ -180,12 +184,8 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = agent.testWallet();
+    const result = agent.getTestWalletKey();
 
-    await expect(result).resolves.toEqual(
-      expect.objectContaining({
-        key: expect.any(String) as string,
-      }),
-    );
+    await expect(result).resolves.toEqual(expect.any(String));
   });
 });
