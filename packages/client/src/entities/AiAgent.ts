@@ -6,11 +6,11 @@ import type {
 import type { DeployContractCallback, GetContractCallback } from "../functions";
 import type { Address } from "./Address";
 import type { AgentId } from "./Agent";
+import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
 import { Agent } from "./Agent";
-import { PrivateKey } from "./PrivateKey";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -52,10 +52,9 @@ export class AiAgent {
       const response = await this.client.apiAiAgentsCreatePreparePost({
         createAgentReq: agentReq,
       });
-
       agent = new Agent(response.id, response.version);
 
-      return Uint8Array.from(response.contract);
+      return response.contract;
     };
 
     const sendContract: DeployContractCallback<
@@ -93,7 +92,7 @@ export class AiAgent {
           version,
         });
 
-      return Uint8Array.from(prepareResponse.contract);
+      return prepareResponse.contract;
     };
 
     // Send the signed contract
@@ -170,7 +169,7 @@ export class AiAgent {
 
       agent = agent.newWithVersion(response.version);
 
-      return Uint8Array.from(response.contract);
+      return response.contract;
     };
 
     const sendContract: DeployContractCallback<
@@ -196,14 +195,13 @@ export class AiAgent {
   }
 
   /**
-   * Deploys an AI agent version.
-   * @param agentId The ID of the agent
-   * @param version The version to deploy
-   * @param test The testnet name
+   * Deploys an AI agent test.
+   * @param testKey The private key for testnet
+   * @param test The testcase
+   * @param env The code that being tested
    */
   public async testDeployAgent(
-    agentId: string,
-    version: string,
+    testKey: PrivateKey,
     test: string,
     env?: string,
   ) {
@@ -214,24 +212,18 @@ export class AiAgent {
       },
     });
 
-    const { key } = await this.client.apiAiAgentsTestWalletPost();
-
-    const testPrivateKey = PrivateKey.tryFromHex(key);
-
-    const signedTestContract = sign(response.testContract, testPrivateKey);
+    const signedTestContract = sign(response.testContract, testKey);
     const signedEnvContract =
-      response.envContract && sign(response.envContract, testPrivateKey);
+      response.envContract && sign(response.envContract, testKey);
 
     return this.client.apiAiAgentsTestDeploySendPost({
       deploySignedTestReq: {
-        env:
-          signedEnvContract &&
-          ({
-            contract: response.envContract,
-            deployer: this.privateKey.getPublicKey().value,
-            sig: signedEnvContract.sig,
-            sigAlgorithm: signedEnvContract.sigAlgorithm,
-          } as SignedContract),
+        env: signedEnvContract && {
+          contract: response.envContract!,
+          deployer: this.privateKey.getPublicKey().value,
+          sig: signedEnvContract.sig,
+          sigAlgorithm: signedEnvContract.sigAlgorithm,
+        },
         test: {
           contract: response.testContract,
           deployer: this.privateKey.getPublicKey().value,

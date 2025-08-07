@@ -137,11 +137,8 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = agent.testDeployAgent(
-      "fake agent id",
-      "fake version id",
-      "fake test",
-    );
+    const testnetPrivateKey = PrivateKey.new();
+    const result = agent.testDeployAgent(testnetPrivateKey, "fake test");
 
     await expect(result).resolves.toEqual<SignedTestDeplotError>({
       error: expect.any(String) as string,
@@ -159,11 +156,8 @@ describe("AiAgent", () => {
       privateKey,
     });
 
-    const result = agent.testDeployAgent(
-      "fake agent id",
-      "fake version id",
-      "fake test",
-    );
+    const testnetPrivateKey = PrivateKey.new();
+    const result = agent.testDeployAgent(testnetPrivateKey, "fake test");
 
     await expect(result).resolves.toEqual<SignedTestDeplotLogs>({
       logs: [
