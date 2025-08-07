@@ -1,12 +1,11 @@
-import {
-  LogLevel,
-  type AgentHeader,
-  type SignedTestDeplotError,
-  type SignedTestDeplotLogs,
+import type {
+  AgentHeader,
+  SignedTestDeplotError,
+  SignedTestDeplotLogs,
 } from "../src/api-client";
 
 import { AiAgent, PrivateKey } from "../src";
-import { UnknownKeysParam } from "zod/v3";
+import { LogLevel } from "../src/api-client";
 
 beforeEach(() => {
   jest.clearAllMocks();

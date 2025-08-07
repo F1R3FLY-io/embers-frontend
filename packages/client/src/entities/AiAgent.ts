@@ -5,10 +5,10 @@ import type {
 } from "../api-client";
 import type { DeployContractCallback, GetContractCallback } from "../functions";
 import type { Address } from "./Address";
-import { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
+import { PrivateKey } from "./PrivateKey";
 
 export type AiAgentConfig = {
   basePath: string;
