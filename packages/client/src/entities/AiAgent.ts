@@ -5,7 +5,7 @@ import type {
 } from "../api-client";
 import type { DeployContractCallback, GetContractCallback } from "../functions";
 import type { Address } from "./Address";
-import type { PrivateKey } from "./PrivateKey";
+import { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
@@ -196,9 +196,13 @@ export class AiAgent {
       },
     });
 
-    const signedTestContract = sign(response.testContract, this.privateKey);
+    const { key } = await this.client.apiAiAgentsTestWalletPost();
+
+    const testPrivateKey = PrivateKey.tryFromHex(key);
+
+    const signedTestContract = sign(response.testContract, testPrivateKey);
     const signedEnvContract =
-      response.envContract && sign(response.envContract, this.privateKey);
+      response.envContract && sign(response.envContract, testPrivateKey);
 
     return this.client.apiAiAgentsTestDeploySendPost({
       deploySignedTestReq: {

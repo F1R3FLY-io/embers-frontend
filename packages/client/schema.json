@@ -635,11 +635,8 @@
             "type": "string"
           },
           "contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -659,11 +656,8 @@
         "required": ["contract"],
         "properties": {
           "contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -682,7 +676,7 @@
       },
       "DeploySignedTestResp": {
         "type": "object",
-        "anyOf": [
+        "oneOf": [
           {
             "$ref": "#/components/schemas/SignedTestDeplotError"
           },
@@ -713,18 +707,12 @@
         "required": ["test_contract"],
         "properties": {
           "env_contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           },
           "test_contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -797,11 +785,8 @@
             "type": "string"
           },
           "contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -811,28 +796,19 @@
         "required": ["contract", "sig", "sig_algorithm", "deployer"],
         "properties": {
           "contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           },
           "sig": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           },
           "sig_algorithm": {
             "type": "string"
           },
           "deployer": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -913,11 +889,8 @@
         "required": ["contract"],
         "properties": {
           "contract": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
+            "type": "string",
+            "format": "bytes"
           }
         }
       },

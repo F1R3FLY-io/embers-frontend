@@ -1,6 +1,12 @@
-import type { AgentHeader } from "../src/api-client";
+import {
+  LogLevel,
+  type AgentHeader,
+  type SignedTestDeplotError,
+  type SignedTestDeplotLogs,
+} from "../src/api-client";
 
 import { AiAgent, PrivateKey } from "../src";
+import { UnknownKeysParam } from "zod/v3";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -117,12 +123,14 @@ describe("AiAgent", () => {
     await expect(result).resolves.toBeUndefined();
   });
 
-  it("should testDeployAgent agent successfully", async () => {
+  it("should testDeployAgent agent with error", async () => {
     const privateKey = PrivateKey.new();
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
+      headers: {
+        "x-test-response": "with_error",
+      },
       privateKey,
     });
 
@@ -132,12 +140,33 @@ describe("AiAgent", () => {
       "fake test",
     );
 
-    await expect(result).resolves.toEqual({
-      error: expect.anything() as unknown,
+    await expect(result).resolves.toEqual<SignedTestDeplotError>({
+      error: expect.any(String) as string,
+    });
+  });
+
+  it("should testDeployAgent agent with success", async () => {
+    const privateKey = PrivateKey.new();
+
+    const agent = new AiAgent({
+      basePath: "http://localhost:3100",
+      headers: {
+        "x-test-response": "with_logs",
+      },
+      privateKey,
+    });
+
+    const result = agent.testDeployAgent(
+      "fake agent id",
+      "fake version id",
+      "fake test",
+    );
+
+    await expect(result).resolves.toEqual<SignedTestDeplotLogs>({
       logs: [
         {
-          level: expect.any(String) as string,
-          message: expect.any(String) as string,
+          level: LogLevel.Info,
+          message: "Hello, World!",
         },
       ],
     });
