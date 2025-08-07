@@ -12,24 +12,24 @@
  * Do not edit the class manually.
  */
 
-import type { SignedTestDeplotError } from './SignedTestDeplotError';
+import type { SignedTestDeplotError } from "./SignedTestDeplotError";
 import {
-    instanceOfSignedTestDeplotError,
-    SignedTestDeplotErrorFromJSON,
-    SignedTestDeplotErrorFromJSONTyped,
-    SignedTestDeplotErrorToJSON,
-} from './SignedTestDeplotError';
-import type { SignedTestDeplotLogs } from './SignedTestDeplotLogs';
+  instanceOfSignedTestDeplotError,
+  SignedTestDeplotErrorFromJSON,
+  SignedTestDeplotErrorFromJSONTyped,
+  SignedTestDeplotErrorToJSON,
+} from "./SignedTestDeplotError";
+import type { SignedTestDeplotLogs } from "./SignedTestDeplotLogs";
 import {
-    instanceOfSignedTestDeplotLogs,
-    SignedTestDeplotLogsFromJSON,
-    SignedTestDeplotLogsFromJSONTyped,
-    SignedTestDeplotLogsToJSON,
-} from './SignedTestDeplotLogs';
+  instanceOfSignedTestDeplotLogs,
+  SignedTestDeplotLogsFromJSON,
+  SignedTestDeplotLogsFromJSONTyped,
+  SignedTestDeplotLogsToJSON,
+} from "./SignedTestDeplotLogs";
 
 /**
  * @type DeploySignedTestResp
- * 
+ *
  * @export
  */
 export type DeploySignedTestResp = SignedTestDeplotError | SignedTestDeplotLogs;
@@ -38,41 +38,47 @@ export function DeploySignedTestRespFromJSON(json: any): DeploySignedTestResp {
     return DeploySignedTestRespFromJSONTyped(json, false);
 }
 
-export function DeploySignedTestRespFromJSONTyped(json: any, ignoreDiscriminator: boolean): DeploySignedTestResp {
-    if (json == null) {
-        return json;
-    }
-    if (typeof json !== 'object') {
-        return json;
-    }
-    if (instanceOfSignedTestDeplotError(json)) {
-        return SignedTestDeplotErrorFromJSONTyped(json, true);
-    }
-    if (instanceOfSignedTestDeplotLogs(json)) {
-        return SignedTestDeplotLogsFromJSONTyped(json, true);
-    }
+export function DeploySignedTestRespFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean,
+): DeploySignedTestResp {
+  if (json == null) {
+    return json;
+  }
+  if (typeof json !== "object") {
+    return json;
+  }
+  if (instanceOfSignedTestDeplotError(json)) {
+    return SignedTestDeplotErrorFromJSONTyped(json, true);
+  }
+  if (instanceOfSignedTestDeplotLogs(json)) {
+    return SignedTestDeplotLogsFromJSONTyped(json, true);
+  }
 
-    return {} as any;
+  return {} as any;
 }
 
 export function DeploySignedTestRespToJSON(json: any): any {
-    return DeploySignedTestRespToJSONTyped(json, false);
+  return DeploySignedTestRespToJSONTyped(json, false);
 }
 
-export function DeploySignedTestRespToJSONTyped(value?: DeploySignedTestResp | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
-    }
-    if (typeof value !== 'object') {
-        return value;
-    }
-    if (instanceOfSignedTestDeplotError(value)) {
-        return SignedTestDeplotErrorToJSON(value as SignedTestDeplotError);
-    }
-    if (instanceOfSignedTestDeplotLogs(value)) {
-        return SignedTestDeplotLogsToJSON(value as SignedTestDeplotLogs);
-    }
+export function DeploySignedTestRespToJSONTyped(
+  value?: DeploySignedTestResp | null,
+  ignoreDiscriminator: boolean = false,
+): any {
+  if (value == null) {
+    return value;
+  }
+  if (typeof value !== "object") {
+    return value;
+  }
+  if (instanceOfSignedTestDeplotError(value)) {
+    return SignedTestDeplotErrorToJSON(value as SignedTestDeplotError);
+  }
+  if (instanceOfSignedTestDeplotLogs(value)) {
+    return SignedTestDeplotLogsToJSON(value as SignedTestDeplotLogs);
+  }
 
-    return {};
+  return {};
 }
 
