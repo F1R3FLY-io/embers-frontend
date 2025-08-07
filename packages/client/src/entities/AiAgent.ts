@@ -183,9 +183,15 @@ export class AiAgent {
    * @param version The version to deploy
    * @param test The testnet name
    */
-  public async testDeployAgent(agentId: string, version: string, test: string) {
+  public async testDeployAgent(
+    agentId: string,
+    version: string,
+    test: string,
+    env?: string,
+  ) {
     const response = await this.client.apiAiAgentsTestDeployPreparePost({
       deployTestReq: {
+        env,
         test,
       },
     });

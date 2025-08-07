@@ -133,15 +133,15 @@ describe("AiAgent", () => {
       "fake test",
     );
 
-    await expect(result).resolves.toEqual(
-      expect.objectContaining({
-        error: expect.anything() as unknown,
-        logs: expect.arrayOf<Log>({
-          level: expect.any(LogLevel) as LogLevel,
+    await expect(result).resolves.toEqual({
+      error: expect.anything() as unknown,
+      logs: [
+        {
+          level: expect.any(String) as string,
           message: expect.any(String) as string,
-        } as Log) as Log[] | undefined,
-      }),
-    );
+        },
+      ],
+    });
   });
 
   it("should test wallet", async () => {

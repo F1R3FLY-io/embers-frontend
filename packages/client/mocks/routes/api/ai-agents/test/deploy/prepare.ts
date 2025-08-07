@@ -2,7 +2,7 @@ import type { HTTP_POST } from "../../../../../types/paths/api/ai-agents/test/de
 
 export const POST: HTTP_POST = ($) => {
   return $.response[200].json({
-    envContract: Buffer.from("Hello, world!").toString("base64"),
-    testContract: Buffer.from("Hello, world!").toString("base64"),
+    env_contract: Buffer.from("Hello, world!").toString("base64"),
+    test_contract: Buffer.from("Hello, world!").toString("base64"),
   });
 };

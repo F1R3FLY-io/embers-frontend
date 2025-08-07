@@ -2,11 +2,10 @@ import type { HTTP_GET } from "../../../../../types/paths/api/ai-agents/{address
 
 export const GET: HTTP_GET = ($) => {
   return $.response[200].json({
-    "code": 123,
-    "id": "officia",
-    "name": "incididunt nostrud",
-    "shard": "test shard",
-    "version": "ullamco",
-
+    code: 123,
+    id: "officia",
+    name: "incididunt nostrud",
+    shard: "test shard",
+    version: "ullamco",
   });
 };
