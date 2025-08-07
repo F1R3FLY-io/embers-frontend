@@ -47,7 +47,7 @@ export class AiAgent {
       const response = await this.client.apiAiAgentsCreatePreparePost({
         createAgentReq: agentReq,
       });
-      return Uint8Array.from(response.contract);
+      return response.contract;
     };
 
     const sendContract: DeployContractCallback<
@@ -83,7 +83,7 @@ export class AiAgent {
           version,
         });
 
-      return Uint8Array.from(prepareResponse.contract);
+      return prepareResponse.contract;
     };
 
     // Send the signed contract
@@ -154,7 +154,7 @@ export class AiAgent {
         createAgentReq: agentReq,
         id: agentId,
       });
-      return Uint8Array.from(response.contract);
+      return response.contract;
     };
 
     const sendContract: DeployContractCallback<
