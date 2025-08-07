@@ -32,3 +32,4 @@ CLAUDE.md
 
 # location to store LLM artifacts
 tmp/
+.env
