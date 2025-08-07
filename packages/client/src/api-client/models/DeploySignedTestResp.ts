@@ -12,59 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from "../runtime";
-import type { Log } from "./Log";
-import {
-  LogFromJSON,
-  LogFromJSONTyped,
-  LogToJSON,
-  LogToJSONTyped,
-} from "./Log";
 import type { SignedTestDeplotError } from "./SignedTestDeplotError";
 import {
+  instanceOfSignedTestDeplotError,
   SignedTestDeplotErrorFromJSON,
   SignedTestDeplotErrorFromJSONTyped,
   SignedTestDeplotErrorToJSON,
-  SignedTestDeplotErrorToJSONTyped,
 } from "./SignedTestDeplotError";
 import type { SignedTestDeplotLogs } from "./SignedTestDeplotLogs";
 import {
+  instanceOfSignedTestDeplotLogs,
   SignedTestDeplotLogsFromJSON,
   SignedTestDeplotLogsFromJSONTyped,
   SignedTestDeplotLogsToJSON,
-  SignedTestDeplotLogsToJSONTyped,
 } from "./SignedTestDeplotLogs";
 
 /**
+ * @type DeploySignedTestResp
  *
  * @export
- * @interface DeploySignedTestResp
  */
-export interface DeploySignedTestResp {
-  /**
-   *
-   * @type {string}
-   * @memberof DeploySignedTestResp
-   */
-  error: string;
-  /**
-   *
-   * @type {Array<Log>}
-   * @memberof DeploySignedTestResp
-   */
-  logs: Array<Log>;
-}
-
-/**
- * Check if a given object implements the DeploySignedTestResp interface.
- */
-export function instanceOfDeploySignedTestResp(
-  value: object,
-): value is DeploySignedTestResp {
-  if (!("error" in value) || value["error"] === undefined) return false;
-  if (!("logs" in value) || value["logs"] === undefined) return false;
-  return true;
-}
+export type DeploySignedTestResp = SignedTestDeplotError | SignedTestDeplotLogs;
 
 export function DeploySignedTestRespFromJSON(json: any): DeploySignedTestResp {
   return DeploySignedTestRespFromJSONTyped(json, false);
@@ -77,13 +45,20 @@ export function DeploySignedTestRespFromJSONTyped(
   if (json == null) {
     return json;
   }
-  return {
-    error: json["error"],
-    logs: (json["logs"] as Array<any>).map(LogFromJSON),
-  };
+  if (typeof json !== "object") {
+    return json;
+  }
+  if (instanceOfSignedTestDeplotError(json)) {
+    return SignedTestDeplotErrorFromJSONTyped(json, true);
+  }
+  if (instanceOfSignedTestDeplotLogs(json)) {
+    return SignedTestDeplotLogsFromJSONTyped(json, true);
+  }
+
+  return {} as any;
 }
 
-export function DeploySignedTestRespToJSON(json: any): DeploySignedTestResp {
+export function DeploySignedTestRespToJSON(json: any): any {
   return DeploySignedTestRespToJSONTyped(json, false);
 }
 
@@ -94,9 +69,15 @@ export function DeploySignedTestRespToJSONTyped(
   if (value == null) {
     return value;
   }
+  if (typeof value !== "object") {
+    return value;
+  }
+  if (instanceOfSignedTestDeplotError(value)) {
+    return SignedTestDeplotErrorToJSON(value as SignedTestDeplotError);
+  }
+  if (instanceOfSignedTestDeplotLogs(value)) {
+    return SignedTestDeplotLogsToJSON(value as SignedTestDeplotLogs);
+  }
 
-  return {
-    error: value["error"],
-    logs: (value["logs"] as Array<any>).map(LogToJSON),
-  };
+  return {};
 }
