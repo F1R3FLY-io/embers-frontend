@@ -12,33 +12,22 @@ function updateTheme(dark: boolean) {
 
 export function ThemeProvider({ children }: React.PropsWithChildren) {
   const [isDark, setIsDark] = useState(true);
+  
   useEffect(() => {
-    let shouldBeDark = true;
     const savedTheme = localStorage.getItem("theme");
+    let isDarkMode;
 
-    switch (savedTheme) {
-      case "dark": {
-        shouldBeDark = true;
-        break;
-      }
-      case "light": {
-        shouldBeDark = false;
-        break;
-      }
-      case null:
-      default: {
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          shouldBeDark = true;
-        } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-          shouldBeDark = false;
-        }
-        break;
-      }
+    if (savedTheme === "dark") {
+      isDarkMode = true;
+    } else if (savedTheme === "light") {
+      isDarkMode = false;
+    } else {
+      isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
 
-    setIsDark(shouldBeDark);
-    updateTheme(shouldBeDark);
-  }, []);
+    setIsDark(isDarkMode);
+    updateTheme(isDarkMode);
+}, []);
 
   const toggle = useCallback(() => {
     setIsDark((isDark) => {
