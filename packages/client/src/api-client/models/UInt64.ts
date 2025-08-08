@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type UInt64 = bigint;
 
 export function UInt64FromJSON(json: any): UInt64 {

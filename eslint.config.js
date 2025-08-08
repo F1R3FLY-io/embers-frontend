@@ -194,6 +194,7 @@ export default tseslint.config(
           shorthandFirst: true,
         },
       ],
+      "react/self-closing-comp": "error",
       "require-await": "error",
       yoda: "error",
     },

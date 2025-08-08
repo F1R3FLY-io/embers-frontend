@@ -6,7 +6,6 @@ import type {
 
 import { AiAgent, PrivateKey } from "../src";
 import { LogLevel } from "../src/api-client";
-import { Agent } from "../src/entities/Agent";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -28,7 +27,10 @@ describe("AiAgent", () => {
       shard: "test",
     });
 
-    await expect(result).resolves.toEqual(new Agent("fake id", "fake version"));
+    await expect(result).resolves.toEqual({
+      id: "fake id",
+      version: "fake version",
+    });
   });
 
   it("should deploy Agent", async () => {
@@ -49,14 +51,16 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
+      headers: {
+        "x-test-response": "all-props",
+      },
       privateKey,
     });
 
     const result = await agent.getAgents();
     expect(result.agents).toBeDefined();
-    expect(result.agents).toContainEqual(
-      expect.objectContaining<AgentHeader>({
+    expect(result.agents).toEqual(
+      expect.arrayOf<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -70,13 +74,15 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
+      headers: {
+        "x-test-response": "all-props",
+      },
       privateKey,
     });
 
     const result = await agent.getAgentVersions("fake agent id");
-    expect(result.agents).toContainEqual(
-      expect.objectContaining<AgentHeader>({
+    expect(result.agents).toEqual(
+      expect.arrayOf<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -121,9 +127,9 @@ describe("AiAgent", () => {
       shard: "test",
     });
 
-    await expect(result).resolves.toEqual(
-      new Agent("fake agent id", "fake version"),
-    );
+    await expect(result).resolves.toEqual({
+      version: "fake version",
+    });
   });
 
   it("should testDeployAgent agent with error", async () => {

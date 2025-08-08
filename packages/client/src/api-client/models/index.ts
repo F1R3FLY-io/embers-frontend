@@ -1,4 +1,3 @@
-/* tslint:disable */
 export * from "./Agent";
 export * from "./AgentHeader";
 export * from "./Agents";

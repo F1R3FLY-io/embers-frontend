@@ -1,5 +1,7 @@
+import type { Location } from "react-router-dom";
+
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import type { Wallet } from "@/lib/providers/wallet/useWallet";
 
@@ -8,7 +10,7 @@ import { ContainerWithLogo } from "@/lib/components/ContainerWithLogo";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
-import { useWallet } from "@/lib/providers/wallet/useWallet";
+import { useWalletState } from "@/lib/providers/wallet/useWallet";
 
 import styles from "./Login.module.scss";
 
@@ -24,7 +26,8 @@ export default function Login() {
   const redirectToFiresky = useCallback(() => {}, []);
 
   const navigate = useNavigate();
-  const { setWallet } = useWallet();
+  const location = useLocation() as Location<{ from?: string } | undefined>;
+  const { setWallet } = useWalletState();
   const [walletInputState, setWalletInputState] = useState<WalletControlState>({
     touched: false,
     wallet: undefined,
@@ -37,11 +40,11 @@ export default function Login() {
   const signin = useCallback(() => {
     if (walletInputState.wallet) {
       setWallet(walletInputState.wallet);
-      void navigate("/dashboard");
+      void navigate(location.state?.from ?? "/dashboard");
     } else {
       setWalletInputState((state) => ({ ...state, touched: true }));
     }
-  }, [walletInputState, setWallet, navigate]);
+  }, [walletInputState.wallet, setWallet, navigate, location.state?.from]);
 
   let content;
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type UnixTimestamp = Date;
 
 export function UnixTimestampFromJSON(json: any): UnixTimestamp {

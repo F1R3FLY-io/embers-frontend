@@ -9,10 +9,18 @@ export function WalletProvider({ children }: React.PropsWithChildren) {
 
   return (
     <WalletContext.Provider
-      value={{
-        setWallet,
-        wallet,
-      }}
+      value={
+        wallet === undefined
+          ? {
+              ready: false,
+              setWallet,
+            }
+          : {
+              ready: true,
+              setWallet,
+              wallet,
+            }
+      }
     >
       {children}
     </WalletContext.Provider>

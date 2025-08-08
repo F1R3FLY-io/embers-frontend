@@ -3,14 +3,11 @@ import type {
   HTTPHeaders,
   SignedContract,
 } from "../api-client";
-import type { DeployContractCallback, GetContractCallback } from "../functions";
 import type { Address } from "./Address";
-import type { AgentId } from "./Agent";
 import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
-import { Agent } from "./Agent";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -42,24 +39,20 @@ export class AiAgent {
   /**
    * Creates a new AI agent.
    * @param agentReq The agent creation request
-   * @return Promise with Agent enitity or reject with error
+   * @return Promise with Agent entity or reject with error
    */
   public async createAgent(agentReq: CreateAgentReq) {
-    let agent = Agent.empty();
-
     // First prepare the contract for creating an agent
-    const prepareContract: GetContractCallback = async () => {
-      const response = await this.client.apiAiAgentsCreatePreparePost({
+    const prepareContract = async () =>
+      this.client.apiAiAgentsCreatePreparePost({
         createAgentReq: agentReq,
       });
-      agent = new Agent(response.id, response.version);
 
-      return response.contract;
-    };
-
-    const sendContract: DeployContractCallback<
-      Awaited<ReturnType<typeof this.client.apiAiAgentsCreateSendPost>>
-    > = async ({ contract, sig, sigAlgorithm }) => {
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
       // Send the signed contract
       const signedContract: SignedContract = {
         contract,
@@ -72,7 +65,10 @@ export class AiAgent {
     };
 
     return deployContract(this.privateKey, prepareContract, sendContract).then(
-      () => agent,
+      (result) => {
+        const { contract: _, ...rest } = result.generateModel;
+        return rest;
+      },
     );
   }
 
@@ -83,24 +79,19 @@ export class AiAgent {
    */
   public async deployAgent(agentId: string, version: string) {
     // Get the contract and sign it
-    const contract: GetContractCallback = async () => {
-      // First prepare the contract for deployment
-      const prepareResponse =
-        await this.client.apiAiAgentsAddressIdVersionDeployPreparePost({
-          address: this.address.value,
-          id: agentId,
-          version,
-        });
-
-      return prepareResponse.contract;
-    };
+    const contract = async () =>
+      this.client.apiAiAgentsAddressIdVersionDeployPreparePost({
+        address: this.address.value,
+        id: agentId,
+        version,
+      });
 
     // Send the signed contract
-    const sendContract: DeployContractCallback<
-      Awaited<
-        ReturnType<typeof this.client.apiAiAgentsAddressIdVersionDeploySendPost>
-      >
-    > = async ({ contract, sig, sigAlgorithm }) => {
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
       const signedContract: SignedContract = {
         contract,
         deployer: this.privateKey.getPublicKey().value,
@@ -116,7 +107,7 @@ export class AiAgent {
       });
     };
 
-    return deployContract(this.privateKey, contract, sendContract);
+    await deployContract(this.privateKey, contract, sendContract);
   }
 
   /**
@@ -156,25 +147,20 @@ export class AiAgent {
    * Saves a new version of an existing agent.
    * @param agentId The ID of the agent
    * @param agentReq The agent update request
-   * @return Promise with Agent enitity or reject with error
+   * @return Promise with Agent entity or reject with error
    */
-  public async saveAgentVersion(agentId: AgentId, agentReq: CreateAgentReq) {
-    let agent: Agent = new Agent(agentId);
-
-    const generateContract: GetContractCallback = async () => {
-      const response = await this.client.apiAiAgentsIdSavePreparePost({
+  public async saveAgentVersion(agentId: string, agentReq: CreateAgentReq) {
+    const generateContract = async () =>
+      this.client.apiAiAgentsIdSavePreparePost({
         createAgentReq: agentReq,
         id: agentId,
       });
 
-      agent = agent.newWithVersion(response.version);
-
-      return response.contract;
-    };
-
-    const sendContract: DeployContractCallback<
-      Awaited<ReturnType<typeof this.client.apiAiAgentsIdSaveSendPost>>
-    > = async ({ contract, sig, sigAlgorithm }) => {
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
       // Send the signed contract
       const signedContract: SignedContract = {
         contract,
@@ -190,7 +176,10 @@ export class AiAgent {
     };
 
     return deployContract(this.privateKey, generateContract, sendContract).then(
-      () => agent,
+      (result) => {
+        const { contract: _, ...rest } = result.generateModel;
+        return rest;
+      },
     );
   }
 

@@ -1,3 +1,13 @@
+import { Navigate } from "react-router-dom";
+
+import { useWalletState } from "@/lib/providers/wallet/useWallet";
+
 export default function Home() {
-  return <div>Home</div>;
+  const state = useWalletState();
+
+  if (state.ready) {
+    return <Navigate replace to="/login" />;
+  }
+
+  return <Navigate replace to="/dashboard" />;
 }
