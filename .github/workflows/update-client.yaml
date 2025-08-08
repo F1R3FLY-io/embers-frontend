@@ -24,7 +24,7 @@ jobs:
         run: |
           curl -L -o schema.zip -H "Authorization: Bearer ${{ secrets.EMBERS_TOKEN }}" ${{ github.event.client_payload.schema_url }}
           unzip schema.zip -d output/
-          mv -f output/schema.json embers-api-schema.json
+          mv -f output/schema.json schema.json
           rm -rf schema.zip output/
 
       - name: Set up pnpm

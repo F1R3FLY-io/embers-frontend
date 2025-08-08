@@ -14,4 +14,10 @@ describe("PublicKey class", () => {
       "Invalid public key",
     );
   });
+
+  test("should create a PublicKey from a hex string", () => {
+    const privateKey = PrivateKey.new();
+    const publicKey = PublicKey.tryFromHex(privateKey.getPublicKey().toHex());
+    expect(secp256k1.utils.isValidPublicKey(publicKey.value)).toBe(true);
+  });
 });

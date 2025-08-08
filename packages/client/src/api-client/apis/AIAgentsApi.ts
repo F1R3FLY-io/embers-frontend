@@ -798,6 +798,6 @@ export class AIAgentsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<CreateTestwalletResp> {
     const response = await this.apiAiAgentsTestWalletPostRaw(initOverrides);
-    return await response.value();
+    return response.value();
   }
 }

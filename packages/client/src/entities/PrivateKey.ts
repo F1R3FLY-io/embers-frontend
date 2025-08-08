@@ -25,4 +25,8 @@ export class PrivateKey {
   public getPublicKey(): PublicKey {
     return PublicKey.fromPrivateKey(this);
   }
+
+  public toHex(): string {
+    return base16.encode(this.value);
+  }
 }

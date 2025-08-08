@@ -1,12 +1,12 @@
 import type { HTTPHeaders } from "../api-client";
-import type { GetContractCallback, TransferTokensCallback } from "../functions";
+import type { DeployContractCallback, GetContractCallback } from "../functions";
 import type { Address } from "./Address";
 import type { Amount } from "./Amount";
 import type { Description } from "./Description";
 import type { PrivateKey } from "./PrivateKey";
 
 import { Configuration, WalletsApi } from "../api-client";
-import { getWalletState, transferTokens } from "../functions";
+import { deployContract, getWalletState } from "../functions";
 
 export type WalletConfig = {
   basePath: string;
@@ -44,26 +44,21 @@ export class Wallet {
     amount: Amount,
     description?: Description,
   ) {
-    const preparePostCallback: GetContractCallback = async ({
-      amount,
-      description,
-      from,
-      to,
-    }) =>
-      this.client.apiWalletsTransferPreparePost({
-        transferReq: {
-          amount: amount.value,
-          description: description?.value,
-          from: from.value,
-          to: to.value,
-        },
-      });
+    const preparePostCallback: GetContractCallback = async () =>
+      this.client
+        .apiWalletsTransferPreparePost({
+          transferReq: {
+            amount: amount.value,
+            description: description?.value,
+            from: this.privateKey.getPublicKey().getAddress().value,
+            to: to.value,
+          },
+        })
+        .then((response) => new Uint8Array(response.contract));
 
-    const transferSendCallback: TransferTokensCallback = async ({
-      contract,
-      sig,
-      sigAlgorithm,
-    }) =>
+    const transferSendCallback: DeployContractCallback<
+      Awaited<ReturnType<typeof this.client.apiWalletsTransferSendPost>>
+    > = async ({ contract, sig, sigAlgorithm }) =>
       this.client.apiWalletsTransferSendPost({
         signedContract: {
           contract,
@@ -73,11 +68,8 @@ export class Wallet {
         },
       });
 
-    return transferTokens(
+    return deployContract(
       this.privateKey,
-      to,
-      amount,
-      description,
       preparePostCallback,
       transferSendCallback,
     );

@@ -56,14 +56,7 @@ function startMockServer() {
 
     mockServer = spawn(
       "counterfact",
-      [
-        "./embers-api-schema.json",
-        "mocks",
-        "--generate",
-        "--serve",
-        "--port",
-        "3100",
-      ],
+      ["./schema.json", "mocks", "--generate", "--serve", "--port", "3100"],
       {
         stdio: ["ignore", "pipe", "pipe"],
       },
@@ -115,7 +108,7 @@ function runTests() {
 
     const coverage = process.argv[2] === "--coverage" ? "--coverage" : "";
 
-    const testProcess = spawn("jest", [coverage], {
+    const testProcess = spawn("jest", [coverage, "--no-cache"], {
       stdio: "inherit",
     });
 

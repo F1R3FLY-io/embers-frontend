@@ -25,6 +25,10 @@ export class PublicKey {
     return PublicKey.tryFrom(bytes);
   }
 
+  public toHex(): string {
+    return base16.encode(this.value);
+  }
+
   public getAddress(): Address {
     return Address.fromPublicKey(this);
   }

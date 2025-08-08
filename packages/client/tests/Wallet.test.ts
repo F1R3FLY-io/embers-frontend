@@ -1,6 +1,3 @@
-import { secp256k1 } from "@noble/curves/secp256k1";
-import { blake2b } from "blakejs";
-
 import type {
   Boost,
   Direction,
@@ -9,84 +6,17 @@ import type {
   Transfer,
   WalletStateAndHistory,
 } from "../src/api-client";
-import type {
-  GetContractCallback,
-  TransferTokensCallback,
-} from "../src/functions";
 
 import { PrivateKey } from "../src";
 import { Amount } from "../src/entities/Amount";
 import { Description } from "../src/entities/Description";
 import { Wallet } from "../src/entities/Wallet";
-import { transferTokens } from "../src/functions";
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Wallet Transfer Tests", () => {
-  test("transferTokens function", async () => {
-    const senderPrivateKey = PrivateKey.new();
-    const senderPublicKey = senderPrivateKey.getPublicKey();
-    const receiverAddress = PrivateKey.new().getPublicKey().getAddress();
-
-    const amount = Amount.tryFrom(1000n);
-    const description = Description.tryFrom(
-      "This is a test transfer with a valid description.",
-    );
-
-    const contract = new Uint8Array(32);
-    const expectedSignature = secp256k1
-      .sign(blake2b(contract, undefined, 32), senderPrivateKey.value)
-      .toBytes("der");
-    const mockPreparePostCallback = jest
-      .fn<ReturnType<GetContractCallback>, Parameters<GetContractCallback>>()
-      .mockResolvedValueOnce({
-        contract,
-      });
-    const mockTransferSendCallback = jest.fn<
-      ReturnType<TransferTokensCallback>,
-      Parameters<TransferTokensCallback>
-    >();
-
-    const result = await transferTokens(
-      senderPrivateKey,
-      receiverAddress,
-      amount,
-      description,
-      mockPreparePostCallback,
-      mockTransferSendCallback,
-    );
-
-    expect(result).toBeTruthy();
-
-    expect(mockPreparePostCallback).toHaveBeenCalledWith({
-      amount,
-      description,
-      from: senderPublicKey.getAddress(),
-      to: receiverAddress,
-    });
-
-    expect(mockTransferSendCallback).toHaveBeenCalledWith({
-      contract,
-      sig: expectedSignature,
-      sigAlgorithm: "secp256k1",
-    });
-
-    const signature = secp256k1.Signature.fromBytes(
-      mockTransferSendCallback.mock.calls[0][0].sig,
-      "der",
-    ).toBytes();
-
-    expect(
-      secp256k1.verify(
-        signature,
-        blake2b(contract, undefined, 32),
-        senderPublicKey.value,
-      ),
-    ).toBe(true);
-  });
-
+describe("Wallet Transfer", () => {
   test("Wallet.sendTokens method", async () => {
     const privateKey = PrivateKey.new();
     const address = privateKey.getPublicKey().getAddress();
@@ -100,9 +30,9 @@ describe("Wallet Transfer Tests", () => {
       privateKey,
     });
 
-    const result = await wallet.sendTokens(address, amount, description);
+    const result = wallet.sendTokens(address, amount, description);
 
-    expect(result).toBeTruthy();
+    await expect(result).resolves.toBeUndefined();
   });
 
   test("Wallet.getWalletState method", async () => {

@@ -4,8 +4,6 @@ import { blake2b } from "blakejs";
 
 import type { WalletsApi } from "./api-client/index";
 import type { Address } from "./entities/Address";
-import type { Amount } from "./entities/Amount";
-import type { Description } from "./entities/Description";
 import type { PrivateKey } from "./entities/PrivateKey";
 
 /**
@@ -64,54 +62,36 @@ export async function getWalletState(address: Address, client: WalletsApi) {
   });
 }
 
-export type GetContractCallback = (value: {
-  amount: Amount;
-  description: Description | undefined;
-  from: Address;
-  to: Address;
-}) => Promise<{ contract: Uint8Array }>;
+export type GetContractCallback = () => Promise<Uint8Array>;
 
-export type TransferTokensCallback = (value: {
+export type DeployContractCallback<T> = (value: {
   contract: Uint8Array;
   sig: Uint8Array;
   sigAlgorithm: string;
-}) => Promise<void>;
+}) => Promise<T>;
 
 /**
  * Transfers tokens from one address to another.
  * This function prepares a transfer contract, signs it with the provided private key,
- * and sends the signed contract to the wallet API.
+ * and sends the signed contract to the wallet API. GetContractCallback is used to prepare the contract, transferTokensCallback is used to send the signed contract.
  *
  * @param privateKey - The private key of the sender's wallet.
- * @param toAddress - The address of the recipient.
- * @param amount - The amount of tokens to transfer.
- * @param description - A description of the transfer.
  * @returns A promise that resolves when the transfer is sent.
  */
-export async function transferTokens(
+export async function deployContract<R>(
   privateKey: PrivateKey,
-  toAddress: Address,
-  amount: Amount,
-  description: Description | undefined,
   getContractCallback: GetContractCallback,
-  transferTokensCallback: TransferTokensCallback,
-) {
-  const { contract } = await getContractCallback({
-    amount,
-    description,
-    from: privateKey.getPublicKey().getAddress(),
-    to: toAddress,
-  });
+  transferTokensCallback: DeployContractCallback<R>,
+): ReturnType<DeployContractCallback<R>> {
+  const contract = await getContractCallback();
 
   const payload = blake2b(contract, undefined, 32);
 
   const { sig, sigAlgorithm } = sign(payload, privateKey);
 
-  await transferTokensCallback({
+  return transferTokensCallback({
     contract,
     sig,
     sigAlgorithm,
   });
-
-  return true;
 }
