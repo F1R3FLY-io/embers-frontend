@@ -6,7 +6,6 @@ import type {
 
 import { AiAgent, PrivateKey } from "../src";
 import { LogLevel } from "../src/api-client";
-import { Agent } from "../src/entities/Agent";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -28,7 +27,10 @@ describe("AiAgent", () => {
       shard: "test",
     });
 
-    await expect(result).resolves.toEqual(new Agent("fake id", "fake version"));
+    await expect(result).resolves.toEqual({
+      id: "fake id",
+      version: "fake version",
+    });
   });
 
   it("should deploy Agent", async () => {
@@ -121,9 +123,9 @@ describe("AiAgent", () => {
       shard: "test",
     });
 
-    await expect(result).resolves.toEqual(
-      new Agent("fake agent id", "fake version"),
-    );
+    await expect(result).resolves.toEqual({
+      version: "fake version",
+    });
   });
 
   it("should testDeployAgent agent with error", async () => {

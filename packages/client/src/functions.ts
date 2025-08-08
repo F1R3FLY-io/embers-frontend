@@ -62,13 +62,14 @@ export async function getWalletState(address: Address, client: WalletsApi) {
   });
 }
 
-export type GetContractCallback = () => Promise<Uint8Array>;
+export type GetContractCallback<T extends { contract: Uint8Array }> =
+  () => Promise<T>;
 
-export type DeployContractCallback<T> = (value: {
-  contract: Uint8Array;
-  sig: Uint8Array;
-  sigAlgorithm: string;
-}) => Promise<T>;
+export type DeployContractCallback<T> = (
+  contract: Uint8Array,
+  sig: Uint8Array,
+  sigAlgorithm: string,
+) => Promise<T>;
 
 /**
  * Transfers tokens from one address to another.
@@ -78,20 +79,21 @@ export type DeployContractCallback<T> = (value: {
  * @param privateKey - The private key of the sender's wallet.
  * @returns A promise that resolves when the transfer is sent.
  */
-export async function deployContract<R>(
+export async function deployContract<T extends { contract: Uint8Array }, R>(
   privateKey: PrivateKey,
-  getContractCallback: GetContractCallback,
-  transferTokensCallback: DeployContractCallback<R>,
-): ReturnType<DeployContractCallback<R>> {
-  const contract = await getContractCallback();
+  getContractCallback: GetContractCallback<T>,
+  deployContractCallback: DeployContractCallback<R>,
+) {
+  const generateModel = await getContractCallback();
 
-  const payload = blake2b(contract, undefined, 32);
-
+  const payload = blake2b(generateModel.contract, undefined, 32);
   const { sig, sigAlgorithm } = sign(payload, privateKey);
 
-  return transferTokensCallback({
-    contract,
+  const deployModel = await deployContractCallback(
+    generateModel.contract,
     sig,
     sigAlgorithm,
-  });
+  );
+
+  return { deployModel, generateModel };
 }

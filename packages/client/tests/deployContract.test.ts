@@ -18,8 +18,11 @@ test("deployContract function", async () => {
     .sign(blake2b(contract, undefined, 32), senderPrivateKey.value)
     .toBytes("der");
   const mockPreparePostCallback = jest
-    .fn<ReturnType<GetContractCallback>, Parameters<GetContractCallback>>()
-    .mockResolvedValueOnce(contract);
+    .fn<
+      ReturnType<GetContractCallback<{ contract: Uint8Array<ArrayBuffer> }>>,
+      Parameters<GetContractCallback<{ contract: Uint8Array<ArrayBuffer> }>>
+    >()
+    .mockResolvedValueOnce({ contract });
   const mockTransferSendCallback = jest
     .fn<
       ReturnType<DeployContractCallback<boolean>>,
@@ -37,14 +40,14 @@ test("deployContract function", async () => {
 
   expect(mockPreparePostCallback).toHaveBeenCalledWith();
 
-  expect(mockTransferSendCallback).toHaveBeenCalledWith({
+  expect(mockTransferSendCallback).toHaveBeenCalledWith(
     contract,
-    sig: expectedSignature,
-    sigAlgorithm: "secp256k1",
-  });
+    expectedSignature,
+    "secp256k1",
+  );
 
   const signature = secp256k1.Signature.fromBytes(
-    mockTransferSendCallback.mock.calls[0][0].sig,
+    mockTransferSendCallback.mock.calls[0][1],
     "der",
   ).toBytes();
 
