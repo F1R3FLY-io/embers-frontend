@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import ChevronIcon from "@/public/icons/icon_components/chevron-icon";
@@ -40,14 +42,17 @@ export default function Dashboard() {
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
             <button
-              className={`${styles["icon-button"]} ${styles["agents-button"]}`}
+              className={classNames(
+                styles["icon-button"],
+                styles["agents-button"],
+              )}
             >
               <SmallRobotIcon />
               <Text fontSize={14}>Agents</Text>
             </button>
           </div>
           <div className={styles["dashboard-column"]}>
-            <div className={styles["dashboard-divider"]}></div>
+            <div className={styles["dashboard-divider"]} />
             <div className={styles["dashboard-buttons"]}>
               <button className={styles["icon-button"]}>
                 <DocumentationIcon />
@@ -67,7 +72,9 @@ export default function Dashboard() {
             </Text>
           </div>
           <div className={styles["grid-container"]}>
-            <div className={`${styles["grid-box"]} ${styles["create-box"]}`}>
+            <div
+              className={classNames(styles["grid-box"], styles["create-box"])}
+            >
               <div className={styles["create-robot-icon"]}>
                 <RobotIcon />
               </div>
