@@ -14,6 +14,9 @@ declare const classNames: {
   readonly selected: "selected";
   readonly "content-area": "content-area";
   readonly "content-header": "content-header";
+  readonly "tab-content": "tab-content";
+  readonly entering: "entering";
+  readonly entered: "entered";
   readonly "grid-container": "grid-container";
   readonly "grid-box": "grid-box";
   readonly "create-box": "create-box";

@@ -25,8 +25,9 @@ export default function App() {
             <Routes>
               <Route element={<Home />} path="/" />
               <Route element={<Login />} path="/login" />
+              <Route element={<Dashboard />} path="/dashboard" />
               <Route element={<ProtectedRoute />}>
-                <Route element={<Dashboard />} path="/dashboard" />
+                
                 <Route element={<Edit />} path="/edit" />
               </Route>
             </Routes>
