@@ -12,7 +12,7 @@ function updateTheme(dark: boolean) {
 
 export function ThemeProvider({ children }: React.PropsWithChildren) {
   const [isDark, setIsDark] = useState(true);
-  
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     let isDarkMode;
@@ -27,7 +27,7 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
 
     setIsDark(isDarkMode);
     updateTheme(isDarkMode);
-}, []);
+  }, []);
 
   const toggle = useCallback(() => {
     setIsDark((isDark) => {

@@ -1,5 +1,5 @@
 import { base16 } from "@scure/base";
-import z from "zod";
+import { z } from "zod/mini";
 
 import { PrivateKey } from "./entities/PrivateKey";
 
