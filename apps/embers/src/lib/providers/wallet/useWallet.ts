@@ -6,16 +6,30 @@ export type Wallet = {
   privateKey: PrivateKey;
 };
 
-export type WalletStateContext = {
-  setWallet: (wallet?: Wallet) => void;
-  wallet: Wallet | undefined;
-};
+export type WalletStateContext =
+  | {
+      ready: false;
+      setWallet: (wallet?: Wallet) => void;
+    }
+  | {
+      ready: true;
+      setWallet: (wallet?: Wallet) => void;
+      wallet: Wallet;
+    };
 
 export const WalletContext = createContext<WalletStateContext>({
+  ready: false,
   setWallet: () => {},
-  wallet: undefined,
 });
 
-export function useWallet() {
+export function useWalletState() {
   return useContext(WalletContext);
+}
+
+export function useWallet(): Wallet {
+  const state = useContext(WalletContext);
+  if (!state.ready) {
+    throw Error("wallet not ready");
+  }
+  return state.wallet;
 }

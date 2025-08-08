@@ -1,11 +1,11 @@
 import { Navigate } from "react-router-dom";
 
-import { useWallet } from "@/lib/providers/wallet/useWallet";
+import { useWalletState } from "@/lib/providers/wallet/useWallet";
 
 export default function Home() {
-  const { wallet } = useWallet();
+  const state = useWalletState();
 
-  if (!wallet) {
+  if (state.ready) {
     return <Navigate replace to="/login" />;
   }
 

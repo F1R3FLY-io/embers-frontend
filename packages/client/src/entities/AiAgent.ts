@@ -39,7 +39,7 @@ export class AiAgent {
   /**
    * Creates a new AI agent.
    * @param agentReq The agent creation request
-   * @return Promise with Agent enitity or reject with error
+   * @return Promise with Agent entity or reject with error
    */
   public async createAgent(agentReq: CreateAgentReq) {
     // First prepare the contract for creating an agent
@@ -147,7 +147,7 @@ export class AiAgent {
    * Saves a new version of an existing agent.
    * @param agentId The ID of the agent
    * @param agentReq The agent update request
-   * @return Promise with Agent enitity or reject with error
+   * @return Promise with Agent entity or reject with error
    */
   public async saveAgentVersion(agentId: string, agentReq: CreateAgentReq) {
     const generateContract = async () =>

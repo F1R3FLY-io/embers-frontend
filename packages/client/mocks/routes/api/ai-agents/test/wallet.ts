@@ -4,6 +4,6 @@ import { bytesToHex } from "@noble/curves/utils.js";
 
 export const POST: HTTP_POST = ($) => {
   return $.response[200].json({
-    key: bytesToHex(secp256k1.utils.randomPrivateKey()),
+    key: bytesToHex(secp256k1.utils.randomSecretKey()),
   });
 };

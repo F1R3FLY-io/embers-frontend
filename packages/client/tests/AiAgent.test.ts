@@ -51,14 +51,16 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
+      headers: {
+        "x-test-response": "all-props",
+      },
       privateKey,
     });
 
     const result = await agent.getAgents();
     expect(result.agents).toBeDefined();
-    expect(result.agents).toContainEqual(
-      expect.objectContaining<AgentHeader>({
+    expect(result.agents).toEqual(
+      expect.arrayOf<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -72,13 +74,15 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
+      headers: {
+        "x-test-response": "all-props",
+      },
       privateKey,
     });
 
     const result = await agent.getAgentVersions("fake agent id");
-    expect(result.agents).toContainEqual(
-      expect.objectContaining<AgentHeader>({
+    expect(result.agents).toEqual(
+      expect.arrayOf<AgentHeader>({
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,

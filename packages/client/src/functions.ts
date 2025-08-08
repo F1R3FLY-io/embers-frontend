@@ -62,8 +62,7 @@ export async function getWalletState(address: Address, client: WalletsApi) {
   });
 }
 
-export type GetContractCallback<T extends { contract: Uint8Array }> =
-  () => Promise<T>;
+export type GetContractCallback<T> = () => Promise<T>;
 
 export type DeployContractCallback<T> = (
   contract: Uint8Array,

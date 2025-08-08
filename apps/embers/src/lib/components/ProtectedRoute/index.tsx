@@ -1,12 +1,12 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import { useWallet } from "@/lib/providers/wallet/useWallet";
+import { useWalletState } from "@/lib/providers/wallet/useWallet";
 
 export default function ProtectedRoute() {
-  const { wallet } = useWallet();
+  const { ready } = useWalletState();
   const location = useLocation();
 
-  if (!wallet) {
+  if (!ready) {
     return <Navigate replace state={{ from: location }} to="/login" />;
   }
 

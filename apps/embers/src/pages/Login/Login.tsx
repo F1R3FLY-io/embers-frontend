@@ -10,7 +10,7 @@ import { ContainerWithLogo } from "@/lib/components/ContainerWithLogo";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
-import { useWallet } from "@/lib/providers/wallet/useWallet";
+import { useWalletState } from "@/lib/providers/wallet/useWallet";
 
 import styles from "./Login.module.scss";
 
@@ -27,7 +27,7 @@ export default function Login() {
 
   const navigate = useNavigate();
   const location = useLocation() as Location<{ from?: string } | undefined>;
-  const { setWallet } = useWallet();
+  const { setWallet } = useWalletState();
   const [walletInputState, setWalletInputState] = useState<WalletControlState>({
     touched: false,
     wallet: undefined,
