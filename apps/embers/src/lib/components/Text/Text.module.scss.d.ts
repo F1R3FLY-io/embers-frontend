@@ -1,7 +1,7 @@
 declare const classNames: {
   readonly text: "text";
   readonly title: "title";
+  readonly primary: "primary";
   readonly secondary: "secondary";
-  readonly "no-color": "no-color";
 };
 export default classNames;

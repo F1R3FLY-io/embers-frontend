@@ -9,7 +9,7 @@ import { deployContract, getWalletState } from "../functions";
 
 export type WalletConfig = {
   basePath: string;
-  headers: HTTPHeaders;
+  headers?: HTTPHeaders;
   privateKey: PrivateKey;
 };
 

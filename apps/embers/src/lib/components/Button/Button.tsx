@@ -18,7 +18,7 @@ export default function Button({ children, onClick, type }: ButtonProps) {
 
   return (
     <button className={btnClass} onClick={onClick}>
-      <Text noColour fontSize={14} fontWeight={600}>
+      <Text fontSize={14} fontWeight={600}>
         {children ?? ""}
       </Text>
     </button>

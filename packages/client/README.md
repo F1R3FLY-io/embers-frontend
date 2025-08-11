@@ -63,10 +63,8 @@ Or, if using yarn:
 // Initialize a new wallet with a private key
 const privateKey = PrivateKey.new();
 const client = new Wallet({
-  host: "http://localhost",
-  port: 3100,
-  privateKey: privateKey,
-  headers: {} as HTTPHeaders,
+  basePath: "http://localhost:3100",
+  privateKey,
 });
 
 // Create a transfer
@@ -92,10 +90,8 @@ const result = client.sendTokens(
 // Initialize a new wallet with a private key
 const privateKey = PrivateKey.new();
 const client = new Wallet({
-  host: "http://localhost",
-  port: 3100,
-  privateKey: privateKey,
-  headers: {} as HTTPHeaders,
+  basePath: "http://localhost:3100",
+  privateKey,
 });
 
 // Get the wallet state

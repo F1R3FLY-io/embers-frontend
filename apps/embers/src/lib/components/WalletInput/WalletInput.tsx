@@ -5,17 +5,15 @@ import { base16 } from "@scure/base";
 import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 
-import type { Wallet } from "@/lib/providers/wallet/useWallet";
-
 import { FilePicker } from "@/lib/components/FilePicker";
 import { Text } from "@/lib/components/Text";
-import UploadIcon from "@/public/icons/upload-icon.svg";
+import UploadIcon from "@/public/icons/download-icon.svg?react";
 
 import styles from "./WalletInput.module.scss";
 
 type WalletInputProps = {
   error?: boolean;
-  onChange: (wallet?: Wallet) => void;
+  onChange: (key?: PrivateKey) => void;
 };
 
 export default function WalletInput({ error, onChange }: WalletInputProps) {
@@ -37,7 +35,7 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
 
       setContent(content);
       try {
-        onChange({ privateKey: PrivateKey.tryFromHex(content) });
+        onChange(PrivateKey.tryFromHex(content));
         setErrorState(false);
       } catch {
         onChange(undefined);
@@ -53,7 +51,7 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
       reader.onload = () => {
         try {
           const privateKey = deserializeKey(reader.result as string);
-          onChange({ privateKey });
+          onChange(privateKey);
           setContent(base16.encode(privateKey.value));
           setErrorState(false);
         } catch {
@@ -83,7 +81,7 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
           onChange={setWalletFromInput}
         />
         <FilePicker onChange={setWalletFromFile}>
-          <img className={styles.icon} src={UploadIcon} />
+          <UploadIcon className={styles.icon} />
         </FilePicker>
       </div>
     </div>

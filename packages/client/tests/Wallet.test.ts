@@ -26,7 +26,6 @@ describe("Wallet Transfer", () => {
     );
     const wallet = new Wallet({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey,
     });
 
@@ -38,7 +37,6 @@ describe("Wallet Transfer", () => {
   test("Wallet.getWalletState method", async () => {
     const client = new Wallet({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey: PrivateKey.new(),
     });
 

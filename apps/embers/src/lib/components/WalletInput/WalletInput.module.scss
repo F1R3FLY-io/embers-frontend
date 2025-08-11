@@ -8,6 +8,7 @@
 .input-area {
   display: grid;
   grid-template-columns: 1fr auto;
+  gap: 8px;
   align-items: center;
   padding: 9px 12px;
   background-color: var(--background-neutral-hover);
@@ -24,6 +25,10 @@
 
 .icon {
   display: flex;
+  width: 24px;
+  height: 24px;
+  stroke: var(--icon-accent);
+  transform: rotate(180deg);
 }
 
 .error {

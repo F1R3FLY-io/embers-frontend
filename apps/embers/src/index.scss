@@ -35,7 +35,11 @@ body {
   --border-color: #6b7280;
   --text-link-color: #208bfe;
   --background-neutral-hover: #1e2936;
-  --secondary-button-colour: #9a52ff;
+  --secondary-button-color: #5a12be;
+  --button-hover: #9a52ff;
+  --background-neutral-surface-secondary: #2e3f52;
+  --border-primary: #4b6179;
+  --icon-accent: #9a52ff;
 }
 
 .light-theme {
@@ -47,5 +51,8 @@ body {
   --border-color: #d4dbe2;
   --text-link-color: #1083fe;
   --background-neutral-hover: #f1f3f5;
-  --secondary-button-colour: #5a12be;
+  --secondary-button-color: #9a52ff;
+  --button-hover: #5a12be;
+  --background-neutral-surface-secondary: #d4dbe2;
+  --border-primary: #a9b7c5;
 }

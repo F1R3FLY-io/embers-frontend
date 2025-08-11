@@ -1,17 +1,24 @@
 import classNames from "classnames";
+import { useCallback } from "react";
 
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
-import ChevronIcon from "@/public/icons/icon_components/chevron-icon";
-import DocumentationIcon from "@/public/icons/icon_components/documentation-icon";
-import LogoutIcon from "@/public/icons/icon_components/logout-icon";
-import RobotIcon from "@/public/icons/icon_components/robot-icon";
-import SettingsIcon from "@/public/icons/icon_components/settings-icon";
-import SmallRobotIcon from "@/public/icons/icon_components/small-robot-icon";
+import { useWalletState } from "@/lib/providers/wallet/useApi";
+import { useAgents } from "@/lib/queries";
+import RobotIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
+import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
+import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
+import LogoutIcon from "@/public/icons/logout-icon.svg?react";
+import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
+  const { setKey } = useWalletState();
+  const logout = useCallback(() => setKey(), [setKey]);
+
+  const { data, isSuccess } = useAgents();
+
   return (
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
@@ -23,14 +30,20 @@ export default function Dashboard() {
         <div className={styles["header-right"]}>
           <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
-              <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="de">Deutsch</option>
+              <option value="en">
+                <Text type="secondary">English</Text>
+              </option>
+              <option value="es">
+                <Text type="secondary">Español</Text>
+              </option>
+              <option value="fr">
+                <Text type="secondary">Français</Text>
+              </option>
+              <option value="de">
+                <Text type="secondary">Deutsch</Text>
+              </option>
             </select>
-            <div className={styles.chevron}>
-              <ChevronIcon />
-            </div>
+            <ChevronIcon className={styles.chevron} />
           </div>
           <ThemeSwitch />
           <button className={styles["settings-icon"]}>
@@ -47,8 +60,10 @@ export default function Dashboard() {
                 styles["agents-button"],
               )}
             >
-              <SmallRobotIcon />
-              <Text fontSize={14}>Agents</Text>
+              <RobotIcon />
+              <Text fontSize={16} fontWeight={600} type="primary">
+                Agents
+              </Text>
             </button>
           </div>
           <div className={styles["dashboard-column"]}>
@@ -56,11 +71,15 @@ export default function Dashboard() {
             <div className={styles["dashboard-buttons"]}>
               <button className={styles["icon-button"]}>
                 <DocumentationIcon />
-                <Text fontSize={14}>Documentation</Text>
+                <Text fontSize={14} type="secondary">
+                  Documentation
+                </Text>
               </button>
-              <button className={styles["icon-button"]}>
+              <button className={styles["icon-button"]} onClick={logout}>
                 <LogoutIcon />
-                <Text fontSize={14}>Logout</Text>
+                <Text fontSize={14} type="secondary">
+                  Logout
+                </Text>
               </button>
             </div>
           </div>
@@ -75,16 +94,15 @@ export default function Dashboard() {
             <div
               className={classNames(styles["grid-box"], styles["create-box"])}
             >
-              <div className={styles["create-robot-icon"]}>
-                <RobotIcon />
-              </div>
+              <RobotIcon className={styles["create-robot-icon"]} />
               <Text type="secondary">Create new Agent</Text>
             </div>
-            {Array.from({ length: 0 }, (_, index) => (
-              <div key={index + 1} className={styles["grid-box"]}>
-                <Text type="secondary">{`Agent ${index + 2}`}</Text>
-              </div>
-            ))}
+            {isSuccess &&
+              data.agents.map((agent) => (
+                <div key={agent.id} className={styles["grid-box"]}>
+                  <Text type="secondary">Agent {agent.name}</Text>
+                </div>
+              ))}
           </div>
         </div>
       </div>
