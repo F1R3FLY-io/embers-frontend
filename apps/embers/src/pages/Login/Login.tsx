@@ -1,23 +1,22 @@
+import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import type { Location } from "react-router-dom";
 
 import { useCallback, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import type { Wallet } from "@/lib/providers/wallet/useWallet";
 
 import { Button } from "@/lib/components/Button";
 import { ContainerWithLogo } from "@/lib/components/ContainerWithLogo";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
-import { useWalletState } from "@/lib/providers/wallet/useWallet";
+import { useWalletState } from "@/lib/providers/wallet/useApi";
 
 import styles from "./Login.module.scss";
 
 type PageState = "init" | "signin";
 type WalletControlState = {
+  key: PrivateKey | undefined;
   touched: boolean;
-  wallet: Wallet | undefined;
 };
 
 export default function Login() {
@@ -27,24 +26,24 @@ export default function Login() {
 
   const navigate = useNavigate();
   const location = useLocation() as Location<{ from?: string } | undefined>;
-  const { setWallet } = useWalletState();
+  const { setKey } = useWalletState();
   const [walletInputState, setWalletInputState] = useState<WalletControlState>({
+    key: undefined,
     touched: false,
-    wallet: undefined,
   });
 
-  const updateWallet = useCallback((wallet?: Wallet) => {
-    setWalletInputState((state) => ({ ...state, wallet }));
+  const updateWallet = useCallback((key?: PrivateKey) => {
+    setWalletInputState((state) => ({ ...state, key }));
   }, []);
 
   const signin = useCallback(() => {
-    if (walletInputState.wallet) {
-      setWallet(walletInputState.wallet);
+    if (walletInputState.key) {
+      setKey(walletInputState.key);
       void navigate(location.state?.from ?? "/dashboard");
     } else {
       setWalletInputState((state) => ({ ...state, touched: true }));
     }
-  }, [walletInputState.wallet, setWallet, navigate, location.state?.from]);
+  }, [walletInputState.key, setKey, navigate, location.state?.from]);
 
   let content;
 
@@ -88,8 +87,7 @@ export default function Login() {
             </div>
             <WalletInput
               error={
-                walletInputState.touched &&
-                walletInputState.wallet === undefined
+                walletInputState.touched && walletInputState.key === undefined
               }
               onChange={updateWallet}
             />

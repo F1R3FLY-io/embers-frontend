@@ -1,24 +1,45 @@
-import { useState } from "react";
+import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
-import type { Wallet } from "./useWallet";
+import { AiAgent, Wallet } from "@f1r3fly-io/embers-client-sdk";
+import { useReducer } from "react";
 
-import { WalletContext } from "./useWallet";
+import type { EmbersAPI } from "./useApi";
+
+import { WalletContext } from "./useApi";
+
+const FIREFLY_API_URL = import.meta.env.VITE_FIREFLY_API_URL as string;
 
 export function WalletProvider({ children }: React.PropsWithChildren) {
-  const [wallet, setWallet] = useState<Wallet>();
+  const [embers, dispatch] = useReducer<
+    EmbersAPI | undefined,
+    [PrivateKey | undefined]
+  >(
+    (_, privateKey) =>
+      privateKey && {
+        aiAgent: new AiAgent({
+          basePath: FIREFLY_API_URL,
+          privateKey,
+        }),
+        wallet: new Wallet({
+          basePath: FIREFLY_API_URL,
+          privateKey,
+        }),
+      },
+    undefined,
+  );
 
   return (
     <WalletContext.Provider
       value={
-        wallet === undefined
+        embers === undefined
           ? {
               ready: false,
-              setWallet,
+              setKey: dispatch,
             }
           : {
+              embers,
               ready: true,
-              setWallet,
-              wallet,
+              setKey: dispatch,
             }
       }
     >

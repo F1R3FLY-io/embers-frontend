@@ -17,7 +17,6 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey,
     });
 
@@ -38,7 +37,6 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey,
     });
     const result = agent.deployAgent("fake agent id", "fake version id");
@@ -96,7 +94,6 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey,
     });
 
@@ -117,7 +114,6 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey,
     });
 
@@ -180,12 +176,11 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {},
       privateKey,
     });
 
     const result = agent.getTestWalletKey();
 
-    await expect(result).resolves.toEqual(expect.any(String));
+    await expect(result).resolves.toEqual(expect.any(PrivateKey));
   });
 });

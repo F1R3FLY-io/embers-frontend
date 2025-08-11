@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-import { useWalletState } from "@/lib/providers/wallet/useWallet";
+import { useWalletState } from "@/lib/providers/wallet/useApi";
 
 export default function Home() {
   const state = useWalletState();

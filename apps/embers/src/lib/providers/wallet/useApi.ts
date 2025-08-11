@@ -1,35 +1,40 @@
-import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
+import type {
+  AiAgent,
+  PrivateKey,
+  Wallet,
+} from "@f1r3fly-io/embers-client-sdk";
 
 import { createContext, useContext } from "react";
 
-export type Wallet = {
-  privateKey: PrivateKey;
+export type EmbersAPI = {
+  aiAgent: AiAgent;
+  wallet: Wallet;
 };
 
 export type WalletStateContext =
   | {
       ready: false;
-      setWallet: (wallet?: Wallet) => void;
+      setKey: (key?: PrivateKey) => void;
     }
   | {
+      embers: EmbersAPI;
       ready: true;
-      setWallet: (wallet?: Wallet) => void;
-      wallet: Wallet;
+      setKey: (key?: PrivateKey) => void;
     };
 
 export const WalletContext = createContext<WalletStateContext>({
   ready: false,
-  setWallet: () => {},
+  setKey: () => {},
 });
 
 export function useWalletState() {
   return useContext(WalletContext);
 }
 
-export function useWallet(): Wallet {
+export function useApi(): EmbersAPI {
   const state = useContext(WalletContext);
   if (!state.ready) {
     throw Error("wallet not ready");
   }
-  return state.wallet;
+  return state.embers;
 }

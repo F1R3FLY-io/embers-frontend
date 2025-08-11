@@ -4,14 +4,14 @@ import type {
   SignedContract,
 } from "../api-client";
 import type { Address } from "./Address";
-import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
+import { PrivateKey } from "./PrivateKey";
 
 export type AiAgentConfig = {
   basePath: string;
-  headers: HTTPHeaders;
+  headers?: HTTPHeaders;
   privateKey: PrivateKey;
 };
 
@@ -228,6 +228,7 @@ export class AiAgent {
    * @returns Wallet key
    */
   public async getTestWalletKey() {
-    return (await this.client.apiAiAgentsTestWalletPost()).key;
+    const { key } = await this.client.apiAiAgentsTestWalletPost();
+    return PrivateKey.tryFromHex(key);
   }
 }

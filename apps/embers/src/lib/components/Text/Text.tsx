@@ -8,21 +8,19 @@ type TextProps = {
   children: ReactNode;
   fontSize?: number;
   fontWeight?: 400 | 600;
-  noColour?: boolean;
-  type?: "title" | "secondary";
+  type?: "title" | "primary" | "secondary";
 };
 
 export default function Text({
   children,
   fontSize,
   fontWeight,
-  noColour,
   type,
 }: TextProps) {
   const textClass = classNames(styles.text, {
+    [styles.primary]: type === "primary",
     [styles.secondary]: type === "secondary",
     [styles.title]: type === "title",
-    [styles["no-color"]]: noColour,
   });
 
   const customStyle = {

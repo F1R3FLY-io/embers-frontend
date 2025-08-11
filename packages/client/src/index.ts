@@ -1,3 +1,4 @@
+export * from "./api-client";
 export * from "./entities/Address";
 export * from "./entities/AiAgent";
 export * from "./entities/PrivateKey";

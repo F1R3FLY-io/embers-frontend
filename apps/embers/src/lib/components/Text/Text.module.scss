@@ -1,18 +1,19 @@
 .text {
   font-family: Manrope, sans-serif;
-  color: var(--text-color-primary);
 }
 
 .title {
   font-size: 32px;
   font-weight: 600;
+  color: var(--text-color-primary);
+}
+
+.primary {
+  font-size: 14px;
+  color: var(--text-color-primary);
 }
 
 .secondary {
   font-size: 14px;
   color: var(--text-color-secondary);
-}
-
-.no-color {
-  color: unset;
 }

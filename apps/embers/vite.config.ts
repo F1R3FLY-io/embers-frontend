@@ -12,7 +12,22 @@ export default defineConfig({
       enabledMode: ["development", "production"],
       esmExport: true,
     }),
-    svgr(),
+    svgr({
+      svgrOptions: {
+        plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
+        svgo: true,
+        svgoConfig: {
+          plugins: [
+            {
+              name: "removeAttrs",
+              params: {
+                attrs: ["svg:fill", "svg:stroke", "path:fill", "path:stroke"],
+              },
+            },
+          ],
+        },
+      },
+    }),
   ],
   resolve: {
     alias: {
