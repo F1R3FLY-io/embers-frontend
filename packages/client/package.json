@@ -50,13 +50,13 @@
     "serve": "^14.2.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.9"
+    "typedoc": "^0.28.10"
   },
   "dependencies": {
     "@noble/curves": "^1.9.6",
     "@scure/base": "^1.2.6",
     "blakejs": "^1.2.1",
     "js-sha3": "^0.9.3",
-    "zod": "^4.0.15"
+    "zod": "^4.0.17"
   }
 }
