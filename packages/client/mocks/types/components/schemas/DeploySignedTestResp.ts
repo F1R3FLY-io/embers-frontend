@@ -1,7 +1,8 @@
-import type { SignedTestDeplotError } from "./SignedTestDeplotError.js";
-import type { SignedTestDeplotLogs } from "./SignedTestDeplotLogs.js";
+import type { DeploySignedTestResp_EnvDeployFailed } from "./DeploySignedTestResp_EnvDeployFailed.js";
+import type { DeploySignedTestResp_TestDeployFailed } from "./DeploySignedTestResp_TestDeployFailed.js";
+import type { DeploySignedTestResp_SignedTestDeplotLogs } from "./DeploySignedTestResp_SignedTestDeplotLogs.js";
 
 export type DeploySignedTestResp =
-  | SignedTestDeplotError
-  | SignedTestDeplotError
-  | SignedTestDeplotLogs;
+  | DeploySignedTestResp_EnvDeployFailed
+  | DeploySignedTestResp_TestDeployFailed
+  | DeploySignedTestResp_SignedTestDeplotLogs;

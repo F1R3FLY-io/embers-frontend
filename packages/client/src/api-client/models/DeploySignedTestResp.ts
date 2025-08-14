@@ -10,26 +10,32 @@
  * Do not edit the class manually.
  */
 
-import type { SignedTestDeplotError } from "./SignedTestDeplotError";
-import type { SignedTestDeplotLogs } from "./SignedTestDeplotLogs";
+import type { DeploySignedTestRespEnvDeployFailed } from "./DeploySignedTestRespEnvDeployFailed";
+import type { DeploySignedTestRespSignedTestDeplotLogs } from "./DeploySignedTestRespSignedTestDeplotLogs";
+import type { DeploySignedTestRespTestDeployFailed } from "./DeploySignedTestRespTestDeployFailed";
 
 import {
-  instanceOfSignedTestDeplotError,
-  SignedTestDeplotErrorFromJSONTyped,
-  SignedTestDeplotErrorToJSON,
-} from "./SignedTestDeplotError";
+  DeploySignedTestRespEnvDeployFailedFromJSONTyped,
+  DeploySignedTestRespEnvDeployFailedToJSON,
+} from "./DeploySignedTestRespEnvDeployFailed";
 import {
-  instanceOfSignedTestDeplotLogs,
-  SignedTestDeplotLogsFromJSONTyped,
-  SignedTestDeplotLogsToJSON,
-} from "./SignedTestDeplotLogs";
+  DeploySignedTestRespSignedTestDeplotLogsFromJSONTyped,
+  DeploySignedTestRespSignedTestDeplotLogsToJSON,
+} from "./DeploySignedTestRespSignedTestDeplotLogs";
+import {
+  DeploySignedTestRespTestDeployFailedFromJSONTyped,
+  DeploySignedTestRespTestDeployFailedToJSON,
+} from "./DeploySignedTestRespTestDeployFailed";
 
 /**
  * @type DeploySignedTestResp
  *
  * @export
  */
-export type DeploySignedTestResp = SignedTestDeplotError | SignedTestDeplotLogs;
+export type DeploySignedTestResp =
+  | ({ type: "EnvDeployFailed" } & DeploySignedTestRespEnvDeployFailed)
+  | ({ type: "Ok" } & DeploySignedTestRespSignedTestDeplotLogs)
+  | ({ type: "TestDeployFailed" } & DeploySignedTestRespTestDeployFailed);
 
 export function DeploySignedTestRespFromJSON(json: any): DeploySignedTestResp {
   return DeploySignedTestRespFromJSONTyped(json, false);
@@ -42,17 +48,28 @@ export function DeploySignedTestRespFromJSONTyped(
   if (json == null) {
     return json;
   }
-  if (typeof json !== "object") {
-    return json;
+  switch (json.type) {
+    case "EnvDeployFailed":
+      return Object.assign(
+        {},
+        DeploySignedTestRespEnvDeployFailedFromJSONTyped(json, true),
+        { type: "EnvDeployFailed" } as const,
+      );
+    case "Ok":
+      return Object.assign(
+        {},
+        DeploySignedTestRespSignedTestDeplotLogsFromJSONTyped(json, true),
+        { type: "Ok" } as const,
+      );
+    case "TestDeployFailed":
+      return Object.assign(
+        {},
+        DeploySignedTestRespTestDeployFailedFromJSONTyped(json, true),
+        { type: "TestDeployFailed" } as const,
+      );
+    default:
+      return json;
   }
-  if (instanceOfSignedTestDeplotError(json)) {
-    return SignedTestDeplotErrorFromJSONTyped(json, true);
-  }
-  if (instanceOfSignedTestDeplotLogs(json)) {
-    return SignedTestDeplotLogsFromJSONTyped(json, true);
-  }
-
-  return {} as any;
 }
 
 export function DeploySignedTestRespToJSON(json: any): any {
@@ -66,15 +83,26 @@ export function DeploySignedTestRespToJSONTyped(
   if (value == null) {
     return value;
   }
-  if (typeof value !== "object") {
-    return value;
+  switch (value.type) {
+    case "EnvDeployFailed":
+      return Object.assign(
+        {},
+        DeploySignedTestRespEnvDeployFailedToJSON(value),
+        { type: "EnvDeployFailed" } as const,
+      );
+    case "Ok":
+      return Object.assign(
+        {},
+        DeploySignedTestRespSignedTestDeplotLogsToJSON(value),
+        { type: "Ok" } as const,
+      );
+    case "TestDeployFailed":
+      return Object.assign(
+        {},
+        DeploySignedTestRespTestDeployFailedToJSON(value),
+        { type: "TestDeployFailed" } as const,
+      );
+    default:
+      return value;
   }
-  if (instanceOfSignedTestDeplotError(value)) {
-    return SignedTestDeplotErrorToJSON(value);
-  }
-  if (instanceOfSignedTestDeplotLogs(value)) {
-    return SignedTestDeplotLogsToJSON(value);
-  }
-
-  return {};
 }
