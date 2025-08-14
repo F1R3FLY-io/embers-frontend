@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/AIAgentsApi.ts
 apis/AIAgentsTeamsApi.ts
 apis/WalletsApi.ts
@@ -15,7 +16,7 @@ models/DeployDemoReq.ts
 models/DeploySignedTestReq.ts
 models/DeploySignedTestResp.ts
 models/DeploySignedTestRespEnvDeployFailed.ts
-models/DeploySignedTestRespSignedTestDeplotLogs.ts
+models/DeploySignedTestRespSignedTestDeployLogs.ts
 models/DeploySignedTestRespTestDeployFailed.ts
 models/DeployTestReq.ts
 models/DeployTestResp.ts
@@ -29,7 +30,7 @@ models/RequestStatus.ts
 models/RunDemoReq.ts
 models/SaveAgentResp.ts
 models/SignedContract.ts
-models/SignedTestDeplotLogs.ts
+models/SignedTestDeployLogs.ts
 models/TestDeployFailed.ts
 models/Transfer.ts
 models/TransferReq.ts

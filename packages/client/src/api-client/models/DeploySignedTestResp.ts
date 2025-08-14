@@ -11,7 +11,7 @@
  */
 
 import type { DeploySignedTestRespEnvDeployFailed } from "./DeploySignedTestRespEnvDeployFailed";
-import type { DeploySignedTestRespSignedTestDeplotLogs } from "./DeploySignedTestRespSignedTestDeplotLogs";
+import type { DeploySignedTestRespSignedTestDeployLogs } from "./DeploySignedTestRespSignedTestDeployLogs";
 import type { DeploySignedTestRespTestDeployFailed } from "./DeploySignedTestRespTestDeployFailed";
 
 import {
@@ -19,9 +19,9 @@ import {
   DeploySignedTestRespEnvDeployFailedToJSON,
 } from "./DeploySignedTestRespEnvDeployFailed";
 import {
-  DeploySignedTestRespSignedTestDeplotLogsFromJSONTyped,
-  DeploySignedTestRespSignedTestDeplotLogsToJSON,
-} from "./DeploySignedTestRespSignedTestDeplotLogs";
+  DeploySignedTestRespSignedTestDeployLogsFromJSONTyped,
+  DeploySignedTestRespSignedTestDeployLogsToJSON,
+} from "./DeploySignedTestRespSignedTestDeployLogs";
 import {
   DeploySignedTestRespTestDeployFailedFromJSONTyped,
   DeploySignedTestRespTestDeployFailedToJSON,
@@ -34,7 +34,7 @@ import {
  */
 export type DeploySignedTestResp =
   | ({ type: "EnvDeployFailed" } & DeploySignedTestRespEnvDeployFailed)
-  | ({ type: "Ok" } & DeploySignedTestRespSignedTestDeplotLogs)
+  | ({ type: "Ok" } & DeploySignedTestRespSignedTestDeployLogs)
   | ({ type: "TestDeployFailed" } & DeploySignedTestRespTestDeployFailed);
 
 export function DeploySignedTestRespFromJSON(json: any): DeploySignedTestResp {
@@ -58,7 +58,7 @@ export function DeploySignedTestRespFromJSONTyped(
     case "Ok":
       return Object.assign(
         {},
-        DeploySignedTestRespSignedTestDeplotLogsFromJSONTyped(json, true),
+        DeploySignedTestRespSignedTestDeployLogsFromJSONTyped(json, true),
         { type: "Ok" } as const,
       );
     case "TestDeployFailed":
@@ -93,7 +93,7 @@ export function DeploySignedTestRespToJSONTyped(
     case "Ok":
       return Object.assign(
         {},
-        DeploySignedTestRespSignedTestDeplotLogsToJSON(value),
+        DeploySignedTestRespSignedTestDeployLogsToJSON(value),
         { type: "Ok" } as const,
       );
     case "TestDeployFailed":

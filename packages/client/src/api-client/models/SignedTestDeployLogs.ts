@@ -17,37 +17,37 @@ import { LogFromJSON, LogToJSON } from "./Log";
 /**
  *
  * @export
- * @interface SignedTestDeplotLogs
+ * @interface SignedTestDeployLogs
  */
-export interface SignedTestDeplotLogs {
+export interface SignedTestDeployLogs {
   /**
    *
    * @type {Array<Log>}
-   * @memberof SignedTestDeplotLogs
+   * @memberof SignedTestDeployLogs
    */
   logs: Array<Log>;
 }
 
 /**
- * Check if a given object implements the SignedTestDeplotLogs interface.
+ * Check if a given object implements the SignedTestDeployLogs interface.
  */
-export function instanceOfSignedTestDeplotLogs(
+export function instanceOfSignedTestDeployLogs(
   value: object,
-): value is SignedTestDeplotLogs {
+): value is SignedTestDeployLogs {
   if (!("logs" in value) || value.logs === undefined) {
     return false;
   }
   return true;
 }
 
-export function SignedTestDeplotLogsFromJSON(json: any): SignedTestDeplotLogs {
-  return SignedTestDeplotLogsFromJSONTyped(json, false);
+export function SignedTestDeployLogsFromJSON(json: any): SignedTestDeployLogs {
+  return SignedTestDeployLogsFromJSONTyped(json, false);
 }
 
-export function SignedTestDeplotLogsFromJSONTyped(
+export function SignedTestDeployLogsFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): SignedTestDeplotLogs {
+): SignedTestDeployLogs {
   if (json == null) {
     return json;
   }
@@ -56,12 +56,12 @@ export function SignedTestDeplotLogsFromJSONTyped(
   };
 }
 
-export function SignedTestDeplotLogsToJSON(json: any): SignedTestDeplotLogs {
-  return SignedTestDeplotLogsToJSONTyped(json, false);
+export function SignedTestDeployLogsToJSON(json: any): SignedTestDeployLogs {
+  return SignedTestDeployLogsToJSONTyped(json, false);
 }
 
-export function SignedTestDeplotLogsToJSONTyped(
-  value?: SignedTestDeplotLogs | null,
+export function SignedTestDeployLogsToJSONTyped(
+  value?: SignedTestDeployLogs | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
