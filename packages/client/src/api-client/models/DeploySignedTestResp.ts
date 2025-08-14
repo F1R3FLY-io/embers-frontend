@@ -10,6 +10,23 @@
  * Do not edit the class manually.
  */
 
+import type { DeploySignedTestRespEnvDeployFailed } from "./DeploySignedTestRespEnvDeployFailed";
+import type { DeploySignedTestRespSignedTestDeployLogs } from "./DeploySignedTestRespSignedTestDeployLogs";
+import type { DeploySignedTestRespTestDeployFailed } from "./DeploySignedTestRespTestDeployFailed";
+
+import {
+  DeploySignedTestRespEnvDeployFailedFromJSONTyped,
+  DeploySignedTestRespEnvDeployFailedToJSON,
+} from "./DeploySignedTestRespEnvDeployFailed";
+import {
+  DeploySignedTestRespSignedTestDeployLogsFromJSONTyped,
+  DeploySignedTestRespSignedTestDeployLogsToJSON,
+} from "./DeploySignedTestRespSignedTestDeployLogs";
+import {
+  DeploySignedTestRespTestDeployFailedFromJSONTyped,
+  DeploySignedTestRespTestDeployFailedToJSON,
+} from "./DeploySignedTestRespTestDeployFailed";
+
 /**
  * @type DeploySignedTestResp
  *
@@ -86,6 +103,6 @@ export function DeploySignedTestRespToJSONTyped(
         { type: "TestDeployFailed" } as const,
       );
     default:
-      return json;
+      return value;
   }
 }
