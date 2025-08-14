@@ -742,7 +742,7 @@
             "$ref": "#/components/schemas/DeploySignedTestResp_TestDeployFailed"
           },
           {
-            "$ref": "#/components/schemas/DeploySignedTestResp_SignedTestDeplotLogs"
+            "$ref": "#/components/schemas/DeploySignedTestResp_SignedTestDeployLogs"
           }
         ],
         "discriminator": {
@@ -750,7 +750,7 @@
           "mapping": {
             "EnvDeployFailed": "#/components/schemas/DeploySignedTestResp_EnvDeployFailed",
             "TestDeployFailed": "#/components/schemas/DeploySignedTestResp_TestDeployFailed",
-            "Ok": "#/components/schemas/DeploySignedTestResp_SignedTestDeplotLogs"
+            "Ok": "#/components/schemas/DeploySignedTestResp_SignedTestDeployLogs"
           }
         }
       },
@@ -772,7 +772,7 @@
           }
         ]
       },
-      "DeploySignedTestResp_SignedTestDeplotLogs": {
+      "DeploySignedTestResp_SignedTestDeployLogs": {
         "allOf": [
           {
             "type": "object",
@@ -786,7 +786,7 @@
             }
           },
           {
-            "$ref": "#/components/schemas/SignedTestDeplotLogs"
+            "$ref": "#/components/schemas/SignedTestDeployLogs"
           }
         ]
       },
@@ -955,9 +955,9 @@
           }
         }
       },
-      "SignedTestDeplotLogs": {
+      "SignedTestDeployLogs": {
         "type": "object",
-        "title": "SignedTestDeplotLogs",
+        "title": "SignedTestDeployLogs",
         "required": ["logs"],
         "properties": {
           "logs": {
