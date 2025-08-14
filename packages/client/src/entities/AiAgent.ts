@@ -80,7 +80,7 @@ export class AiAgent {
   public async deployAgent(agentId: string, version: string) {
     // Get the contract and sign it
     const contract = async () =>
-      this.client.apiAiAgentsAddressIdVersionDeployPreparePost({
+      this.client.apiAiAgentsAddressIdVersionsVersionDeployPreparePost({
         address: this.address.value,
         id: agentId,
         version,
@@ -99,7 +99,7 @@ export class AiAgent {
         sigAlgorithm,
       };
 
-      return this.client.apiAiAgentsAddressIdVersionDeploySendPost({
+      return this.client.apiAiAgentsAddressIdVersionsVersionDeploySendPost({
         address: this.address.value,
         id: agentId,
         signedContract,
@@ -125,7 +125,7 @@ export class AiAgent {
    * @param version The version to retrieve
    */
   public async getAgentVersion(agentId: string, version: string) {
-    return this.client.apiAiAgentsAddressIdVersionGet({
+    return this.client.apiAiAgentsAddressIdVersionsVersionGet({
       address: this.address.value,
       id: agentId,
       version,
