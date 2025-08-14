@@ -171,7 +171,7 @@
         }
       }
     },
-    "/api/ai-agents/{address}/{id}/{version}": {
+    "/api/ai-agents/{address}/{id}/versions/{version}": {
       "get": {
         "tags": ["AIAgents"],
         "parameters": [
@@ -422,7 +422,7 @@
         }
       }
     },
-    "/api/ai-agents/{address}/{id}/{version}/deploy/prepare": {
+    "/api/ai-agents/{address}/{id}/versions/{version}/deploy/prepare": {
       "post": {
         "tags": ["AIAgents"],
         "parameters": [
@@ -471,7 +471,7 @@
         }
       }
     },
-    "/api/ai-agents/{address}/{id}/{version}/deploy/send": {
+    "/api/ai-agents/{address}/{id}/versions/{version}/deploy/send": {
       "post": {
         "tags": ["AIAgents"],
         "parameters": [

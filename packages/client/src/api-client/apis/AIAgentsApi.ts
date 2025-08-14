@@ -45,28 +45,28 @@ export interface ApiAiAgentsAddressGetRequest {
   address: string;
 }
 
-export interface ApiAiAgentsAddressIdVersionDeployPreparePostRequest {
+export interface ApiAiAgentsAddressIdVersionsGetRequest {
+  address: string;
+  id: string;
+}
+
+export interface ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest {
   address: string;
   id: string;
   version: string;
 }
 
-export interface ApiAiAgentsAddressIdVersionDeploySendPostRequest {
+export interface ApiAiAgentsAddressIdVersionsVersionDeploySendPostRequest {
   address: string;
   id: string;
   signedContract: SignedContract;
   version: string;
 }
 
-export interface ApiAiAgentsAddressIdVersionGetRequest {
+export interface ApiAiAgentsAddressIdVersionsVersionGetRequest {
   address: string;
   id: string;
   version: string;
-}
-
-export interface ApiAiAgentsAddressIdVersionsGetRequest {
-  address: string;
-  id: string;
 }
 
 export interface ApiAiAgentsCreatePreparePostRequest {
@@ -152,232 +152,6 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsAddressIdVersionDeployPreparePostRaw(
-    requestParameters: ApiAiAgentsAddressIdVersionDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployAgentResp>> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionDeployPreparePost().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionDeployPreparePost().',
-      );
-    }
-
-    if (requestParameters.version == null) {
-      throw new runtime.RequiredError(
-        "version",
-        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionDeployPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents/{address}/{id}/{version}/deploy/prepare`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
-
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployAgentRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionDeployPreparePost(
-    requestParameters: ApiAiAgentsAddressIdVersionDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployAgentResp> {
-    const response = await this.apiAiAgentsAddressIdVersionDeployPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionDeploySendPostRaw(
-    requestParameters: ApiAiAgentsAddressIdVersionDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionDeploySendPost().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionDeploySendPost().',
-      );
-    }
-
-    if (requestParameters.version == null) {
-      throw new runtime.RequiredError(
-        "version",
-        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionDeploySendPost().',
-      );
-    }
-
-    if (requestParameters.signedContract == null) {
-      throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsAddressIdVersionDeploySendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    let urlPath = `/api/ai-agents/{address}/{id}/{version}/deploy/send`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
-
-    const response = await this.request(
-      {
-        body: SignedContractToJSON(requestParameters.signedContract),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionDeploySendPost(
-    requestParameters: ApiAiAgentsAddressIdVersionDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsAddressIdVersionDeploySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionGetRaw(
-    requestParameters: ApiAiAgentsAddressIdVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Agent>> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionGet().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionGet().',
-      );
-    }
-
-    if (requestParameters.version == null) {
-      throw new runtime.RequiredError(
-        "version",
-        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents/{address}/{id}/{version}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
-
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionGet(
-    requestParameters: ApiAiAgentsAddressIdVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Agent> {
-    const response = await this.apiAiAgentsAddressIdVersionGetRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   */
   async apiAiAgentsAddressIdVersionsGetRaw(
     requestParameters: ApiAiAgentsAddressIdVersionsGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
@@ -432,6 +206,233 @@ export class AIAgentsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Agents> {
     const response = await this.apiAiAgentsAddressIdVersionsGetRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionDeployPreparePostRaw(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeployAgentResp>> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeployPreparePost().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeployPreparePost().',
+      );
+    }
+
+    if (requestParameters.version == null) {
+      throw new runtime.RequiredError(
+        "version",
+        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeployPreparePost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}/deploy/prepare`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+    urlPath = urlPath.replace(
+      `{version}`,
+      encodeURIComponent(String(requestParameters.version)),
+    );
+
+    const response = await this.request(
+      {
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      DeployAgentRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionDeployPreparePost(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<DeployAgentResp> {
+    const response =
+      await this.apiAiAgentsAddressIdVersionsVersionDeployPreparePostRaw(
+        requestParameters,
+        initOverrides,
+      );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionDeploySendPostRaw(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
+      );
+    }
+
+    if (requestParameters.version == null) {
+      throw new runtime.RequiredError(
+        "version",
+        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
+      );
+    }
+
+    if (requestParameters.signedContract == null) {
+      throw new runtime.RequiredError(
+        "signedContract",
+        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}/deploy/send`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+    urlPath = urlPath.replace(
+      `{version}`,
+      encodeURIComponent(String(requestParameters.version)),
+    );
+
+    const response = await this.request(
+      {
+        body: SignedContractToJSON(requestParameters.signedContract),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionDeploySendPost(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.apiAiAgentsAddressIdVersionsVersionDeploySendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionGetRaw(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Agent>> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionGet().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionGet().',
+      );
+    }
+
+    if (requestParameters.version == null) {
+      throw new runtime.RequiredError(
+        "version",
+        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionGet().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+    urlPath = urlPath.replace(
+      `{version}`,
+      encodeURIComponent(String(requestParameters.version)),
+    );
+
+    const response = await this.request(
+      {
+        headers: headerParameters,
+        method: "GET",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      AgentFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionGet(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Agent> {
+    const response = await this.apiAiAgentsAddressIdVersionsVersionGetRaw(
       requestParameters,
       initOverrides,
     );
