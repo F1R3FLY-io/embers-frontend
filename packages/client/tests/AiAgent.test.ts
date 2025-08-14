@@ -1,8 +1,4 @@
-import type {
-  AgentHeader,
-  SignedTestDeplotError,
-  SignedTestDeplotLogs,
-} from "../src/api-client";
+import type { AgentHeader, DeploySignedTestResp } from "../src/api-client";
 
 import { AiAgent, PrivateKey } from "../src";
 import { LogLevel } from "../src/api-client";
@@ -133,17 +129,15 @@ describe("AiAgent", () => {
 
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
-      headers: {
-        "x-test-response": "with_error",
-      },
       privateKey,
     });
 
     const testnetPrivateKey = PrivateKey.new();
     const result = agent.testDeployAgent(testnetPrivateKey, "fake test");
 
-    await expect(result).resolves.toEqual<SignedTestDeplotError>({
+    await expect(result).resolves.toEqual<DeploySignedTestResp>({
       error: expect.any(String) as string,
+      type: "TestDeployFailed",
     });
   });
 
@@ -153,7 +147,7 @@ describe("AiAgent", () => {
     const agent = new AiAgent({
       basePath: "http://localhost:3100",
       headers: {
-        "x-test-response": "with_logs",
+        "x-test-response": "with-logs",
       },
       privateKey,
     });
@@ -161,13 +155,14 @@ describe("AiAgent", () => {
     const testnetPrivateKey = PrivateKey.new();
     const result = agent.testDeployAgent(testnetPrivateKey, "fake test");
 
-    await expect(result).resolves.toEqual<SignedTestDeplotLogs>({
+    await expect(result).resolves.toEqual<DeploySignedTestResp>({
       logs: [
         {
           level: LogLevel.Info,
           message: "Hello, World!",
         },
       ],
+      type: "Ok",
     });
   });
 
