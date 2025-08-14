@@ -10,6 +10,9 @@
       "name": "AIAgents"
     },
     {
+      "name": "AIAgentsTeams"
+    },
+    {
       "name": "Wallets"
     }
   ],
@@ -522,6 +525,51 @@
           }
         }
       }
+    },
+    "/api/ai-agents-teams/deploy-demo": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployDemoReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/run-demo": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/RunDemoReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -661,6 +709,16 @@
           }
         }
       },
+      "DeployDemoReq": {
+        "type": "object",
+        "title": "DeployDemoReq",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "DeploySignedTestReq": {
         "type": "object",
         "title": "DeploySignedTestReq",
@@ -678,13 +736,75 @@
         "type": "object",
         "oneOf": [
           {
-            "$ref": "#/components/schemas/SignedTestDeplotError"
+            "$ref": "#/components/schemas/DeploySignedTestResp_EnvDeployFailed"
           },
           {
-            "$ref": "#/components/schemas/SignedTestDeplotError"
+            "$ref": "#/components/schemas/DeploySignedTestResp_TestDeployFailed"
+          },
+          {
+            "$ref": "#/components/schemas/DeploySignedTestResp_SignedTestDeplotLogs"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "EnvDeployFailed": "#/components/schemas/DeploySignedTestResp_EnvDeployFailed",
+            "TestDeployFailed": "#/components/schemas/DeploySignedTestResp_TestDeployFailed",
+            "Ok": "#/components/schemas/DeploySignedTestResp_SignedTestDeplotLogs"
+          }
+        }
+      },
+      "DeploySignedTestResp_EnvDeployFailed": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["EnvDeployFailed"],
+                "example": "EnvDeployFailed"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/EnvDeployFailed"
+          }
+        ]
+      },
+      "DeploySignedTestResp_SignedTestDeplotLogs": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Ok"],
+                "example": "Ok"
+              }
+            }
           },
           {
             "$ref": "#/components/schemas/SignedTestDeplotLogs"
+          }
+        ]
+      },
+      "DeploySignedTestResp_TestDeployFailed": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["TestDeployFailed"],
+                "example": "TestDeployFailed"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/TestDeployFailed"
           }
         ]
       },
@@ -719,6 +839,16 @@
       "Direction": {
         "type": "string",
         "enum": ["incoming", "outgoing"]
+      },
+      "EnvDeployFailed": {
+        "type": "object",
+        "title": "EnvDeployFailed",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
       },
       "Exchange": {
         "type": "object",
@@ -776,6 +906,19 @@
         "type": "string",
         "enum": ["done", "ongoing", "cancelled"]
       },
+      "RunDemoReq": {
+        "type": "object",
+        "title": "RunDemoReq",
+        "required": ["name", "prompt"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          }
+        }
+      },
       "SaveAgentResp": {
         "type": "object",
         "title": "SaveAgentResp",
@@ -812,16 +955,6 @@
           }
         }
       },
-      "SignedTestDeplotError": {
-        "type": "object",
-        "title": "SignedTestDeplotError",
-        "required": ["error"],
-        "properties": {
-          "error": {
-            "type": "string"
-          }
-        }
-      },
       "SignedTestDeplotLogs": {
         "type": "object",
         "title": "SignedTestDeplotLogs",
@@ -832,6 +965,16 @@
             "items": {
               "$ref": "#/components/schemas/Log"
             }
+          }
+        }
+      },
+      "TestDeployFailed": {
+        "type": "object",
+        "title": "TestDeployFailed",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string"
           }
         }
       },
