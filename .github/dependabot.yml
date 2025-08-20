@@ -24,23 +24,3 @@ updates:
       all:
         patterns:
           - "*"
-
-  - package-ecosystem: "npm"
-    directory: "/apps/embers"
-    schedule:
-      interval: "weekly"
-    versioning-strategy: increase
-    groups:
-      all:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "npm"
-    directory: "/packages/client"
-    schedule:
-      interval: "weekly"
-    versioning-strategy: increase
-    groups:
-      all:
-        patterns:
-          - "*"

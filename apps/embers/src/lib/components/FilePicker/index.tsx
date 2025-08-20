@@ -1,3 +1,1 @@
-import FilePicker from "./FilePicker";
-
-export { FilePicker };
+export { FilePicker } from "./FilePicker";

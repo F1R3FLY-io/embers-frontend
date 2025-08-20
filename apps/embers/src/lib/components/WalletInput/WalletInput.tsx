@@ -16,7 +16,7 @@ type WalletInputProps = {
   onChange: (key?: PrivateKey) => void;
 };
 
-export default function WalletInput({ error, onChange }: WalletInputProps) {
+export function WalletInput({ error, onChange }: WalletInputProps) {
   const [errorState, setErrorState] = useState(false);
   useEffect(() => {
     if (error) {

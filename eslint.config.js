@@ -135,6 +135,7 @@ export default tseslint.config(
       "perfectionist/sort-imports": [
         "error",
         {
+          sortSideEffects: true,
           type: "natural",
         },
       ],

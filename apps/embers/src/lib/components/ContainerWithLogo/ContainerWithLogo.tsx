@@ -8,7 +8,7 @@ type ContainerWithLogoProp = {
   children: ReactNode;
 };
 
-export default function ContainerWithLogo({ children }: ContainerWithLogoProp) {
+export function ContainerWithLogo({ children }: ContainerWithLogoProp) {
   return (
     <div className={styles.container}>
       <div className={styles.content}>

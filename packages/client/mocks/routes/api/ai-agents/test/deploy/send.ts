@@ -1,7 +1,7 @@
 import type { HTTP_POST } from "../../../../../types/paths/api/ai-agents/test/deploy/send.types.js";
 
 export const POST: HTTP_POST = ($) => {
-  if ($.headers["x-test-response"] === "with-logs") {
+  if ($.x.headers["x-test-response"] === "with-logs") {
     return $.response[200].json({
       type: "Ok",
       logs: [

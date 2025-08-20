@@ -7,7 +7,7 @@ type TextLinkProps = {
   onClick: () => void;
 };
 
-export default function TextLink({ children, onClick }: TextLinkProps) {
+export function TextLink({ children, onClick }: TextLinkProps) {
   return (
     <span className={styles.text} onClick={onClick}>
       {children}

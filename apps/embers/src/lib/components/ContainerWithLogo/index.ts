@@ -1,3 +1,1 @@
-import ContainerWithLogo from "./ContainerWithLogo";
-
-export { ContainerWithLogo };
+export { ContainerWithLogo } from "./ContainerWithLogo";

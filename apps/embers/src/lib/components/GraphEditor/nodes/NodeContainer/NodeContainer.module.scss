@@ -1,0 +1,16 @@
+.container {
+  padding: 16px;
+  background-color: var(--background-neutral-hover);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px;
+}
+
+.selected {
+  background-color: #208bfe4d;
+}
+
+.handle {
+  background-color: #208bfe !important;
+  border-color: #143f6d !important;
+}

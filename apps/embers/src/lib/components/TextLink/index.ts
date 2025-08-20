@@ -1,3 +1,1 @@
-import TextLink from "./TextLink";
-
-export { TextLink };
+export { TextLink } from "./TextLink";
