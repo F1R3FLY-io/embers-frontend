@@ -32,7 +32,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text fontSize={18} type="title">
+          <Text fontSize={24} type="title">
             F1R3FLY
           </Text>
         </div>
@@ -111,13 +111,13 @@ export default function Dashboard() {
             <div className={styles["dashboard-buttons"]}>
               <button className={styles["icon-button"]}>
                 <DocumentationIcon />
-                <Text fontSize={14} type="secondary">
+                <Text fontSize={16} type="secondary">
                   Documentation
                 </Text>
               </button>
               <button className={styles["icon-button"]} onClick={logout}>
                 <LogoutIcon />
-                <Text fontSize={14} type="secondary">
+                <Text fontSize={16} type="secondary">
                   Logout
                 </Text>
               </button>
@@ -132,7 +132,7 @@ export default function Dashboard() {
               isTransitioning ? styles.entering : styles.entered,
             )}
           >
-            <Text fontSize={26} type="title">
+            <Text fontSize={32} type="title">
               {selectedTab === "agents" ? "Agents" : "Agent Teams"}
             </Text>
             <div className={styles["controls-row"]}>
