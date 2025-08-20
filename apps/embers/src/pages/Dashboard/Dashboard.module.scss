@@ -112,15 +112,15 @@
   position: relative;
   width: 258px;
   min-height: 100%;
-  padding: 24px 24px;
+  padding: 24px;
   background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
 
   .dashboard-top {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 8px;
+    align-items: center;
     margin-bottom: 24px;
   }
 
@@ -142,16 +142,16 @@
 
     /* Default styling for agent icon (RobotIcon) */
     svg[data-agent] {
-      height: 24px;
       width: 24px;
+      height: 24px;
       fill: var(--text-color-secondary) !important;
       stroke: var(--text-color-secondary) !important;
     }
 
     /* Specific styling for agent teams icon */
     svg[data-agent-teams] {
-      height: 24px;
       width: 24px;
+      height: 24px;
     }
 
     /* First robot (front) - secondary text color */
@@ -426,12 +426,14 @@
       .search-input-container {
         position: relative;
         display: flex;
+        gap: 8px;
         align-items: center;
-
 
         .search-icon {
           position: absolute;
           left: 12px;
+          width: 24px;
+          height: 24px;
           fill: var(--text-color-secondary);
           stroke: var(--text-color-secondary);
           transition: all 0.3s ease;
