@@ -1,3 +1,4 @@
+/* Page Layout */
 .page {
   display: flex;
   flex-direction: column;
@@ -5,6 +6,13 @@
   overflow: hidden;
 }
 
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Header Bar */
 .header-bar {
   position: sticky;
   top: 0;
@@ -18,93 +26,88 @@
   padding: 0 24px;
   background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
-}
 
-.app-title {
-  margin: 0;
-}
+  .app-title {
+    margin: 0;
+  }
 
-.header-right {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
+  .header-right {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
 
-.language-dropdown {
-  position: relative;
-  cursor: pointer;
-
-  .dropdown {
-    padding: 6px 24px 6px 12px;
-    font-size: 14px;
-    color: var(--text-color-secondary);
-    appearance: none;
+  .language-dropdown {
+    position: relative;
     cursor: pointer;
-    outline: none;
-    background-color: var(--background-color);
-    border: none;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-  }
 
-  .chevron {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    pointer-events: none;
-    fill: var(--text-color-secondary);
-    stroke: var(--text-color-secondary);
-    transform: translateY(-50%);
-    transition: none;
-  }
-
-  &:hover {
     .dropdown {
-      color: var(--text-color-primary);
+      padding: 6px 24px 6px 12px;
+      font-size: 14px;
+      color: var(--text-color-secondary);
+      appearance: none;
+      cursor: pointer;
+      outline: none;
+      background-color: var(--background-color);
+      border: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
     }
 
     .chevron {
-      fill: var(--text-color-primary);
-      stroke: var(--text-color-primary);
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      pointer-events: none;
+      fill: var(--text-color-secondary);
+      stroke: var(--text-color-secondary);
+      transform: translateY(-50%);
+      transition: none;
     }
 
-    option:not(:checked) {
-      color: var(--text-color-secondary);
+    &:hover {
+      .dropdown {
+        color: var(--text-color-primary);
+      }
+
+      .chevron {
+        fill: var(--text-color-primary);
+        stroke: var(--text-color-primary);
+      }
+
+      option:not(:checked) {
+        color: var(--text-color-secondary);
+      }
     }
   }
-}
 
-.settings-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: var(--background-neutral-hover);
+  .settings-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 
     svg {
-      fill: var(--text-color-primary);
+      fill: var(--text-color-secondary);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      background-color: var(--background-neutral-hover);
+
+      svg {
+        fill: var(--text-color-primary);
+      }
     }
   }
-
-  svg {
-    fill: var(--text-color-secondary);
-    transition: all 0.3s ease;
-  }
 }
 
-.main-content {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
+/* Dashboard Sidebar */
 .dashboard {
   position: relative;
   width: 220px;
@@ -112,84 +115,52 @@
   padding: 24px;
   background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
-}
 
-.dashboard-top {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.agents-button {
-  gap: 8px !important;
-  width: 100% !important;
-  height: 42px;
-  padding: 16px !important;
-  background-color: transparent !important;
-  transition: all 0.3s ease;
-
-  // Size styling for all icons
-  svg {
-    width: 24px;
-    height: 24px;
+  .dashboard-top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
   }
 
-  // Default styling for agent icon (RobotIcon)
-  svg[data-agent] {
-    fill: var(--text-color-secondary) !important;
-    stroke: var(--text-color-secondary) !important;
-    stroke-width: 1;
-  }
+  /* Agents button styles - positioned after dashboard-top for proper specificity */
+  .agents-button {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    height: 42px;
+    padding: 16px;
+    cursor: pointer;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 
-  // Specific styling for agent teams icon
-  // First robot (front) - secondary text color
-  svg[data-agent-teams] path:nth-child(1),
-  svg[data-agent-teams] path:nth-child(2) {
-    fill: var(--text-color-secondary) !important;
-    stroke: var(--text-color-secondary) !important;
-    stroke-width: 0;
-  }
-
-  // Shadow/overlap areas - background color
-  svg[data-agent-teams] path:nth-child(3),
-  svg[data-agent-teams] path:nth-child(4) {
-    fill: var(--background-color) !important;
-    stroke: var(--background-color) !important;
-    stroke-width: 0;
-  }
-
-  // Second robot (back) - secondary text color
-  svg[data-agent-teams] path:nth-child(5) {
-    fill: var(--text-color-secondary) !important;
-    stroke: var(--text-color-secondary) !important;
-    stroke-width: 0;
-  }
-
-  span {
-    color: var(--text-color-secondary) !important;
-  }
-
-  &:hover {
-    background-color: rgb(255 255 255 / 5%) !important;
-
-    // Default styling for agent icon (RobotIcon)
+    /* Default styling for agent icon (RobotIcon) */
     svg[data-agent] {
-      fill: var(--text-color-primary) !important;
-      stroke: var(--text-color-primary) !important;
+      height: 24px;
+      fill: var(--text-color-secondary) !important;
+      stroke: var(--text-color-secondary) !important;
       stroke-width: 1;
     }
 
-    // Specific styling for agent teams icon
-    // First robot (front) - primary text color
+    /* Specific styling for agent teams icon */
+    svg[data-agent-teams] {
+      height: 24px;
+    }
+
+    /* First robot (front) - secondary text color */
     svg[data-agent-teams] path:nth-child(1),
     svg[data-agent-teams] path:nth-child(2) {
-      fill: var(--text-color-primary) !important;
-      stroke: var(--text-color-primary) !important;
+      fill: var(--text-color-secondary) !important;
+      stroke: var(--text-color-secondary) !important;
       stroke-width: 0;
     }
 
-    // Shadow/overlap areas - background color
+    /* Shadow/overlap areas - background color */
     svg[data-agent-teams] path:nth-child(3),
     svg[data-agent-teams] path:nth-child(4) {
       fill: var(--background-color) !important;
@@ -197,327 +168,366 @@
       stroke-width: 0;
     }
 
-    // Second robot (back) - primary text color
+    /* Second robot (back) - secondary text color */
     svg[data-agent-teams] path:nth-child(5) {
-      fill: var(--text-color-primary) !important;
-      stroke: var(--text-color-primary) !important;
+      fill: var(--text-color-secondary) !important;
+      stroke: var(--text-color-secondary) !important;
       stroke-width: 0;
     }
 
-    span {
-      color: var(--text-color-primary) !important;
+    &:hover {
+      background-color: var(--background-neutral-hover) !important;
+
+      /* Default styling for agent icon (RobotIcon) */
+      svg[data-agent] {
+        fill: var(--text-color-primary) !important;
+        stroke: var(--text-color-primary) !important;
+        stroke-width: 1;
+      }
+
+      /* Specific styling for agent teams icon */
+
+      /* First robot (front) - primary text color */
+      svg[data-agent-teams] path:nth-child(1),
+      svg[data-agent-teams] path:nth-child(2) {
+        fill: var(--text-color-primary) !important;
+        stroke: var(--text-color-primary) !important;
+        stroke-width: 0;
+      }
+
+      /* Shadow/overlap areas - background color */
+      svg[data-agent-teams] path:nth-child(3),
+      svg[data-agent-teams] path:nth-child(4) {
+        fill: var(--background-color) !important;
+        stroke: var(--background-color) !important;
+        stroke-width: 0;
+      }
+
+      /* Second robot (back) - primary text color */
+      svg[data-agent-teams] path:nth-child(5) {
+        fill: var(--text-color-primary) !important;
+        stroke: var(--text-color-primary) !important;
+        stroke-width: 0;
+      }
+
+      span {
+        color: var(--text-color-primary) !important;
+      }
+    }
+
+    &.selected {
+      background-color: var(--secondary-button-color) !important;
+      transition: all 0.3s ease;
+
+      /* Default styling for agent icon (RobotIcon) */
+      svg[data-agent] {
+        fill: #fff !important;
+        stroke: #fff !important;
+        stroke-width: 1.5;
+      }
+
+      /* Specific styling for agent teams icon */
+
+      /* First robot (front) - white */
+      svg[data-agent-teams] path:nth-child(1),
+      svg[data-agent-teams] path:nth-child(2) {
+        fill: #fff !important;
+        stroke: #fff !important;
+        stroke-width: 0;
+      }
+
+      /* Shadow/overlap areas - button background color */
+      svg[data-agent-teams] path:nth-child(3),
+      svg[data-agent-teams] path:nth-child(4) {
+        fill: var(--secondary-button-color) !important;
+        stroke: var(--secondary-button-color) !important;
+        stroke-width: 0;
+      }
+
+      /* Second robot (back) - white except for eyes and border */
+      svg[data-agent-teams] path:nth-child(5) {
+        fill: #fff !important;
+        stroke: #fff !important;
+        stroke-width: 0;
+      }
+
+      span {
+        color: #fff !important;
+      }
+
+      &:hover {
+        background-color: var(--secondary-button-color-hover, var(--secondary-button-color)) !important;
+
+        /* Shadow/overlap areas - hover button background color */
+        svg[data-agent-teams] path:nth-child(3),
+        svg[data-agent-teams] path:nth-child(4) {
+          fill: var(--secondary-button-color-hover, var(--secondary-button-color)) !important;
+        }
+      }
     }
   }
 
-  &.selected {
-    transition: all 0.3s ease;
-    background-color: var(--secondary-button-color) !important;
+  .dashboard-column {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 
-    // Default styling for agent icon (RobotIcon)
-    svg[data-agent] {
-      fill: #fff !important;
-      stroke: #fff !important;
-      stroke-width: 1.5;
+    .dashboard-divider {
+      width: 100%;
+      height: 1px;
+      background-color: var(--border-color);
     }
 
-    // Specific styling for agent teams icon
-    // First robot (front) - white
-    svg[data-agent-teams] path:nth-child(1),
-    svg[data-agent-teams] path:nth-child(2) {
-      fill: #fff !important;
-      stroke: #fff !important;
-      stroke-width: 0;
-    }
+    .dashboard-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 24px;
 
-    // Shadow/overlap areas - button background color
-    svg[data-agent-teams] path:nth-child(3),
-    svg[data-agent-teams] path:nth-child(4) {
-      fill: var(--secondary-button-color) !important;
-      stroke: var(--secondary-button-color) !important;
-      stroke-width: 0;
-    }
+      .icon-button {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 12px;
+        cursor: pointer;
+        background: none;
+        background-color: transparent;
+        border: none;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
 
-    // Second robot (back) - white except for eyes and border
-    svg[data-agent-teams] path:nth-child(5) {
-      fill: #fff !important;
-      stroke: #fff !important;
-      stroke-width: 0;
-    }
+        svg {
+          fill: var(--text-color-secondary);
+          transition: all 0.3s ease;
+        }
 
-    span {
-      color: #fff !important;
+        span {
+          color: var(--text-color-secondary) !important;
+          transition: all 0.3s ease;
+        }
+
+        &:hover {
+          background-color: var(--background-neutral-hover);
+
+          svg {
+            fill: var(--text-color-primary);
+          }
+
+          span {
+            color: var(--text-color-primary) !important;
+          }
+        }
+      }
     }
   }
 }
 
+/* Content Area */
 .content-area {
   display: flex;
   flex: 1;
   flex-direction: column;
   padding: 24px 24px 24px 32px;
   overflow-y: auto;
-}
 
-.content-header {
-  margin-bottom: 24px;
-  transition: all 0.3s ease;
-
-  span {
+  .content-header {
+    margin-bottom: 24px;
     transition: all 0.3s ease;
   }
-}
 
-.tab-content {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.3s ease;
-
-  &.entering {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  &.entered {
+  .tab-content {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-.grid-container {
-  display: grid;
-  flex: 1;
-  grid-template-rows: repeat(3, minmax(150px, 1fr));
-  grid-template-columns: repeat(4, minmax(200px, 1fr));
-  gap: 16px;
-  transition: all 0.3s ease;
-}
-
-.grid-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 120px;
-  padding: 16px;
-  background-color: var(--background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: tileEnter 0.5s ease-in-out forwards;
-  animation-delay: var(--tile-delay, 0s);
-
-  &:hover {
-    border-color: var(--text-color-primary);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes tileEnter {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.create-box {
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-style: dashed;
-  border-width: 2.5px;
-
-  &:hover {
-    span {
-      color: var(--text-color-primary);
-    }
-  }
-}
-
-.create-robot-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  fill: var(--icon-accent);
-  stroke: var(--icon-accent);
-}
-
-.dashboard-column {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.dashboard-divider {
-  width: 100%;
-  height: 1px;
-  background-color: var(--border-color);
-}
-
-.dashboard-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px;
-}
-
-.icon-button {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 8px 12px;
-  cursor: pointer;
-  background: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-
-  svg {
-    fill: var(--text-color-secondary);
-    transition: all 0.3s ease;
-  }
-
-  &:hover {
-    background-color: var(--background-neutral-hover);
-
-    svg {
-      fill: var(--text-color-primary);
-    }
-  }
-}
-
-// Specific styling for dashboard buttons (documentation and logout)
-.dashboard-buttons .icon-button {
-  span {
-    color: var(--text-color-secondary) !important;
-    transition: all 0.3s ease;
-  }
-
-  &:hover {
-    span {
-      color: var(--text-color-primary) !important;
-    }
-  }
-}
-
-.controls-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
-  padding: 16px 0;
-}
-
-.sort-control {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-
-  .sort-icon {
-    fill: var(--text-color-primary);
-    stroke: var(--text-color-primary);
-    transition: all 0.3s ease;
-  }
-}
-
-.sort-dropdown {
-  position: relative;
-  cursor: pointer;
-
-  .dropdown {
-    padding: 6px 32px 6px 12px;
-    font-size: 14px;
-    color: var(--text-color-secondary);
-    appearance: none;
-    cursor: pointer;
-    outline: none;
-    background-color: var(--background-color);
-    border: none;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    min-width: 80px;
-  }
-
-  .chevron {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    pointer-events: none;
-    fill: var(--text-color-secondary);
-    stroke: var(--text-color-secondary);
-    transform: translateY(-50%);
-    transition: none;
-  }
-
-  &:hover {
-    .dropdown {
-      color: var(--text-color-primary);
-      border-color: var(--text-color-primary);
-    }
-
-    .chevron {
-      fill: var(--text-color-primary);
-      stroke: var(--text-color-primary);
-    }
-  }
-}
-
-.search-control {
-  flex: 1;
-  max-width: 246px;
-  margin-left: 24px;
-}
-
-.search-input-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  .search-icon {
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    left: 12px;
-    fill: var(--text-color-secondary);
-    stroke: var(--text-color-secondary);
-    transition: all 0.3s ease;
-  }
-
-  .search-input {
-    width: 100%;
-    padding: 8px 12px 8px 36px;
-    font-size: 14px;
-    color: var(--text-color-primary);
-    background-color: var(--background-neutral-hover);
-    border: none;
-    border-radius: 6px;
-    outline: none;
     transition: all 0.3s ease;
 
-    &::placeholder {
-      color: var(--text-color-secondary);
+    &.entering {
+      opacity: 0;
+      transform: translateY(10px);
     }
 
-    &:focus {
-      border-color: var(--text-color-primary);
-      box-shadow: 0 0 0 2px rgb(var(--text-color-primary) / 10%);
+    &.entered {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-      & + .search-icon {
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    margin-top: 16px;
+
+    .sort-control {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .sort-icon {
         fill: var(--text-color-primary);
         stroke: var(--text-color-primary);
+        transition: all 0.3s ease;
+      }
+
+      .sort-dropdown {
+        position: relative;
+        cursor: pointer;
+
+        .dropdown {
+          min-width: 80px;
+          padding: 6px 32px 6px 12px;
+          font-size: 14px;
+          color: var(--text-color-secondary);
+          appearance: none;
+          cursor: pointer;
+          outline: none;
+          background-color: var(--background-color);
+          border: none;
+          border-radius: 6px;
+          transition: all 0.3s ease;
+        }
+
+        .chevron {
+          position: absolute;
+          top: 50%;
+          right: 8px;
+          pointer-events: none;
+          fill: var(--text-color-secondary);
+          stroke: var(--text-color-secondary);
+          transform: translateY(-50%);
+          transition: none;
+        }
+
+        &:hover {
+          .dropdown {
+            color: var(--text-color-primary);
+            border-color: var(--text-color-primary);
+          }
+
+          .chevron {
+            fill: var(--text-color-primary);
+            stroke: var(--text-color-primary);
+          }
+        }
       }
     }
 
-    &:hover {
-      border-color: var(--text-color-primary);
+    .search-control {
+      flex: 1;
+      max-width: 300px;
+      margin-left: 24px;
+
+      .search-input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          fill: var(--text-color-secondary);
+          stroke: var(--text-color-secondary);
+          transition: all 0.3s ease;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 8px 12px 8px 36px;
+          font-size: 14px;
+          color: var(--text-color-primary);
+          outline: none;
+          background-color: var(--background-neutral-hover);
+          border: none;
+          border-radius: 6px;
+          transition: all 0.3s ease;
+
+          &::placeholder {
+            color: var(--text-color-secondary);
+          }
+
+          &:focus {
+            border-color: var(--text-color-primary);
+            box-shadow: 0 0 0 2px rgb(var(--text-color-primary) / 10%);
+
+            &+.search-icon {
+              fill: var(--text-color-primary);
+              stroke: var(--text-color-primary);
+            }
+          }
+
+          &:hover {
+            border-color: var(--text-color-primary);
+          }
+        }
+      }
     }
+  }
+
+  .grid-container {
+    display: grid;
+    flex: 1;
+    grid-template-rows: repeat(3, minmax(150px, 1fr));
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    gap: 16px;
+    transition: all 0.3s ease;
+
+    .grid-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+      padding: 16px;
+      background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      animation: tile-enter 0.5s ease-in-out forwards;
+      animation-delay: var(--tile-delay, 0s);
+
+      &:hover {
+        border-color: var(--text-color-primary);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+        transform: translateY(-2px);
+      }
+
+      &.create-box {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-style: dashed;
+        border-width: 2.5px;
+
+        &:hover {
+          span {
+            color: var(--text-color-primary);
+          }
+        }
+
+        .create-robot-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          fill: var(--icon-accent);
+          stroke: var(--icon-accent);
+        }
+      }
+    }
+  }
+}
+
+/* Animations */
+@keyframes tile-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
