@@ -51,21 +51,16 @@
     position: absolute;
     top: 50%;
     right: 8px;
+    color: var(--text-color-secondary);
     pointer-events: none;
-    fill: var(--text-color-secondary);
-    stroke: var(--text-color-secondary);
     transform: translateY(-50%);
     transition: none;
   }
 
   &:hover {
-    .dropdown {
-      color: var(--text-color-primary);
-    }
-
+    .dropdown,
     .chevron {
-      fill: var(--text-color-primary);
-      stroke: var(--text-color-primary);
+      color: var(--text-color-primary);
     }
 
     option:not(:checked) {
@@ -79,6 +74,7 @@
   align-items: center;
   justify-content: center;
   padding: 8px;
+  color: var(--text-color-secondary);
   cursor: pointer;
   background: transparent;
   border: none;
@@ -86,11 +82,13 @@
   transition: all 0.3s ease;
 
   &:hover {
+    color: var(--text-color-primary);
     background-color: var(--background-neutral-hover);
   }
 
   svg {
-    fill: var(--text-color-secondary);
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -117,49 +115,62 @@
 }
 
 .agents-button {
-  gap: 8px !important;
+  gap: 0 !important;
   width: 100% !important;
-  height: 42px;
-  padding: 9px 16px !important;
+  padding: 12px !important;
   background-color: transparent !important;
-  transition: all 0.3s ease;
-
-  svg {
-    fill: var(--text-color-secondary) !important;
-    stroke: var(--text-color-secondary) !important;
-  }
 
   span {
     color: var(--text-color-secondary) !important;
   }
 
+  svg {
+    path,
+    line {
+      stroke: var(--text-color-secondary) !important;
+    }
+  }
+
   &:hover {
     background-color: rgb(255 255 255 / 5%) !important;
-
-    svg {
-      fill: var(--text-color-primary) !important;
-      stroke: var(--text-color-primary) !important;
-    }
 
     span {
       color: var(--text-color-primary) !important;
     }
+
+    svg {
+      circle,
+      line,
+      path {
+        stroke: var(--text-color-primary) !important;
+      }
+    }
   }
 
   &.selected {
-    background-color: var(--secondary-button-color) !important;
-
-    svg {
-      fill: #fff !important;
-      stroke: #fff !important;
-    }
+    background-color: #6a00ff !important;
 
     span {
-      color: #fff !important;
+      color: white !important;
+    }
+
+    svg {
+      path,
+      line {
+        stroke: white !important;
+      }
     }
 
     &:hover {
-      background-color: var(--secondary-button-color-hover, var(--secondary-button-color)) !important;
+      background-color: #5a00e6 !important;
+
+      svg {
+        circle,
+        line,
+        path {
+          stroke: white !important;
+        }
+      }
     }
   }
 }
@@ -170,6 +181,7 @@
   flex-direction: column;
   padding: 24px 24px 24px 32px;
   overflow-y: auto;
+  position: relative;
 }
 
 .content-header {
@@ -185,16 +197,16 @@
   opacity: 1;
   transform: translateY(0);
   transition: all 0.3s ease-in-out;
+}
 
-  &.entering {
-    opacity: 0;
-    transform: translateY(10px);
-  }
+.tab-content.entering {
+  opacity: 0;
+  transform: translateY(10px);
+}
 
-  &.entered {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.tab-content.entered {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .grid-container {
@@ -220,12 +232,6 @@
   transform: translateY(20px);
   animation: tileEnter 0.5s ease-in-out forwards;
   animation-delay: var(--tile-delay, 0s);
-
-  &:hover {
-    border-color: var(--text-color-primary);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-    transform: translateY(-2px);
-  }
 }
 
 @keyframes tileEnter {
@@ -233,6 +239,12 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.grid-box:hover {
+  border-color: var(--text-color-primary);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  transform: translateY(-2px);
 }
 
 .create-box {
@@ -244,10 +256,8 @@
   border-style: dashed;
   border-width: 2.5px;
 
-  &:hover {
-    span {
-      color: var(--text-color-primary);
-    }
+  span {
+    color: var(--text-color-secondary);
   }
 }
 
@@ -255,8 +265,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  fill: var(--icon-accent);
-  stroke: var(--icon-accent);
+}
+
+.small-robot-icon {
+  width: 24px;
+  height: 24px;
+  padding: 0 !important;
 }
 
 .dashboard-column {
@@ -284,9 +298,11 @@
 
 .icon-button {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text-color-secondary);
   cursor: pointer;
   background: none;
   background-color: transparent;
@@ -294,11 +310,45 @@
   border-radius: 8px;
   transition: background-color 0.2s ease;
 
-  svg {
-    fill: var(--text-color-primary);
+  span {
+    color: var(--text-color-secondary);
+    transition: color 0.2s ease;
   }
 
-  &:hover {
-    background-color: var(--background-neutral-hover);
+  svg {
+    transition: color 0.2s ease;
+  }
+}
+
+.icon-button:hover {
+  background-color: rgb(255 255 255 / 5%);
+
+  span,
+  svg {
+    color: var(--text-color-primary);
+  }
+
+  svg path {
+    stroke: var(--text-color-primary);
+    transition: stroke 0.2s ease;
+  }
+}
+
+.create-box:hover {
+  span {
+    color: var(--text-color-primary);
+  }
+
+  svg {
+    path,
+    line {
+      stroke: #5a00e6 !important;
+      transition: all 0.3s ease;
+    }
+
+    circle {
+      stroke: #5a00e6 !important;
+      transition: all 0.3s ease;
+    }
   }
 }
