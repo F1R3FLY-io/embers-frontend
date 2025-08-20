@@ -127,6 +127,7 @@
   svg {
     fill: var(--text-color-secondary) !important;
     stroke: var(--text-color-secondary) !important;
+    transition: all 0.3s ease;
   }
 
   span {
@@ -300,5 +301,110 @@
 
   &:hover {
     background-color: var(--background-neutral-hover);
+  }
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 16px 0;
+}
+
+.sort-control {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sort-dropdown {
+  position: relative;
+  cursor: pointer;
+
+  .dropdown {
+    padding: 6px 24px 6px 12px;
+    font-size: 14px;
+    color: var(--text-color-secondary);
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .sort-icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    pointer-events: none;
+    fill: var(--text-color-secondary);
+    stroke: var(--text-color-secondary);
+    transform: translateY(-50%);
+    transition: none;
+  }
+
+  &:hover {
+    .dropdown {
+      color: var(--text-color-primary);
+      border-color: var(--text-color-primary);
+    }
+
+    .sort-icon {
+      fill: var(--text-color-primary);
+      stroke: var(--text-color-primary);
+    }
+  }
+}
+
+.search-control {
+  flex: 1;
+  max-width: 246px;
+  margin-left: 24px;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    fill: var(--text-color-secondary);
+    stroke: var(--text-color-secondary);
+    transition: all 0.3s ease;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    font-size: 14px;
+    color: var(--text-color-primary);
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: var(--text-color-secondary);
+    }
+
+    &:focus {
+      border-color: var(--text-color-primary);
+      box-shadow: 0 0 0 2px rgb(var(--text-color-primary) / 10%);
+
+      & + .search-icon {
+        fill: var(--text-color-primary);
+        stroke: var(--text-color-primary);
+      }
+    }
+
+    &:hover {
+      border-color: var(--text-color-primary);
+    }
   }
 }

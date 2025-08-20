@@ -25,5 +25,13 @@ declare const classNames: {
   readonly "dashboard-divider": "dashboard-divider";
   readonly "dashboard-buttons": "dashboard-buttons";
   readonly "icon-button": "icon-button";
+  readonly "controls-row": "controls-row";
+  readonly "sort-control": "sort-control";
+  readonly "sort-dropdown": "sort-dropdown";
+  readonly "sort-icon": "sort-icon";
+  readonly "search-control": "search-control";
+  readonly "search-input-container": "search-input-container";
+  readonly "search-icon": "search-icon";
+  readonly "search-input": "search-input";
 };
 export default classNames;
