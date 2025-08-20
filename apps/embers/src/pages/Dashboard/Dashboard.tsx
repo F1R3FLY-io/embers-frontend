@@ -5,19 +5,21 @@ import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 import { useAgents } from "@/lib/queries";
-import RobotIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
+import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
-import AgentTeamIcon from "@/public/icons/at-icon.svg?react";
+import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import SearchIcon from "@/public/icons/search-light-line-icon.svg?react";
 import SortIcon from "@/public/icons/sort-icon.svg?react";
 
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
-  const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">("agents");
+  const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
+    "agents",
+  );
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
@@ -77,7 +79,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <RobotIcon />
+              <AgentIcon data-agent />
               <Text fontSize={16} fontWeight={600} type="primary">
                 Agents
               </Text>
@@ -98,7 +100,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <AgentTeamIcon />
+              <AgentTeamIcon data-agent-teams />
               <Text fontSize={16} fontWeight={600} type="primary">
                 Agent Teams
               </Text>
@@ -123,25 +125,34 @@ export default function Dashboard() {
           </div>
         </div>
         <div className={styles["content-area"]}>
-          <div className={classNames(styles["content-header"], styles["tab-content"], isTransitioning ? styles.entering : styles.entered)}>
+          <div
+            className={classNames(
+              styles["content-header"],
+              styles["tab-content"],
+              isTransitioning ? styles.entering : styles.entered,
+            )}
+          >
             <Text fontSize={26} type="title">
               {selectedTab === "agents" ? "Agents" : "Agent Teams"}
             </Text>
             <div className={styles["controls-row"]}>
               <div className={styles["sort-control"]}>
-                <Text fontSize={14} type="secondary">
+                <SortIcon className={styles["sort-icon"]} />
+                <Text fontSize={14} type="primary">
                   Sort {selectedTab === "agents" ? "agents" : "agent teams"} by
                 </Text>
                 <div className={styles["sort-dropdown"]}>
-                  <select 
-                    value={sortBy} 
-                    onChange={(e) => setSortBy(e.target.value as "date" | "name")}
+                  <select
+                    value={sortBy}
+                    onChange={(e) =>
+                      setSortBy(e.target.value as "date" | "name")
+                    }
                     className={styles.dropdown}
                   >
                     <option value="date">Date</option>
                     <option value="name">Name</option>
                   </select>
-                  <SortIcon className={styles["sort-icon"]} />
+                  <ChevronIcon className={styles["chevron"]} />
                 </div>
               </div>
               <div className={styles["search-control"]}>
@@ -149,7 +160,7 @@ export default function Dashboard() {
                   <SearchIcon className={styles["search-icon"]} />
                   <input
                     type="text"
-                    placeholder={`Search ${selectedTab === "agents" ? "agents" : "agent teams"}...`}
+                    placeholder={`Type to search ${selectedTab === "agents" ? "agents" : "agent teams"}...`}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className={styles["search-input"]}
@@ -158,22 +169,35 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className={classNames(styles["grid-container"], styles["tab-content"], isTransitioning ? styles.entering : styles.entered)}>
+          <div
+            className={classNames(
+              styles["grid-container"],
+              styles["tab-content"],
+              isTransitioning ? styles.entering : styles.entered,
+            )}
+          >
             {selectedTab === "agents" ? (
               <>
                 <div
-                  className={classNames(styles["grid-box"], styles["create-box"])}
+                  className={classNames(
+                    styles["grid-box"],
+                    styles["create-box"],
+                  )}
                   style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
                 >
-                  <RobotIcon className={styles["create-robot-icon"]} />
+                  <AgentIcon className={styles["create-robot-icon"]} />
                   <Text type="secondary">Create new Agent</Text>
                 </div>
                 {isSuccess &&
                   data.agents.map((agent, index) => (
-                    <div 
-                      key={agent.id} 
+                    <div
+                      key={agent.id}
                       className={styles["grid-box"]}
-                      style={{ "--tile-delay": `${0.2 + index * 0.1}s` } as React.CSSProperties}
+                      style={
+                        {
+                          "--tile-delay": `${0.2 + index * 0.1}s`,
+                        } as React.CSSProperties
+                      }
                     >
                       <Text type="secondary">Agent {agent.name}</Text>
                     </div>
@@ -182,17 +206,24 @@ export default function Dashboard() {
             ) : (
               <>
                 <div
-                  className={classNames(styles["grid-box"], styles["create-box"])}
+                  className={classNames(
+                    styles["grid-box"],
+                    styles["create-box"],
+                  )}
                   style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
                 >
-                  <RobotIcon className={styles["create-robot-icon"]} />
+                  <AgentIcon className={styles["create-robot-icon"]} />
                   <Text type="secondary">Create new Agent Team</Text>
                 </div>
-                {Array.from({ length: 10 }, (_, index) => (
-                  <div 
-                    key={index + 1} 
+                {Array.from({ length: 0 }, (_, index) => (
+                  <div
+                    key={index + 1}
                     className={styles["grid-box"]}
-                    style={{ "--tile-delay": `${0.2 + index * 0.1}s` } as React.CSSProperties}
+                    style={
+                      {
+                        "--tile-delay": `${0.2 + index * 0.1}s`,
+                      } as React.CSSProperties
+                    }
                   >
                     <Text type="secondary">{`Agent Team ${index + 1}`}</Text>
                   </div>

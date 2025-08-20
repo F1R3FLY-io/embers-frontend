@@ -87,10 +87,15 @@
 
   &:hover {
     background-color: var(--background-neutral-hover);
+
+    svg {
+      fill: var(--text-color-primary);
+    }
   }
 
   svg {
     fill: var(--text-color-secondary);
+    transition: all 0.3s ease;
   }
 }
 
@@ -120,14 +125,45 @@
   gap: 8px !important;
   width: 100% !important;
   height: 42px;
-  padding: 9px 16px !important;
+  padding: 16px !important;
   background-color: transparent !important;
   transition: all 0.3s ease;
 
+  // Size styling for all icons
   svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  // Default styling for agent icon (RobotIcon)
+  svg[data-agent] {
     fill: var(--text-color-secondary) !important;
     stroke: var(--text-color-secondary) !important;
-    transition: all 0.3s ease;
+    stroke-width: 1;
+  }
+
+  // Specific styling for agent teams icon
+  // First robot (front) - secondary text color
+  svg[data-agent-teams] path:nth-child(1),
+  svg[data-agent-teams] path:nth-child(2) {
+    fill: var(--text-color-secondary) !important;
+    stroke: var(--text-color-secondary) !important;
+    stroke-width: 0;
+  }
+
+  // Shadow/overlap areas - background color
+  svg[data-agent-teams] path:nth-child(3),
+  svg[data-agent-teams] path:nth-child(4) {
+    fill: var(--background-color) !important;
+    stroke: var(--background-color) !important;
+    stroke-width: 0;
+  }
+
+  // Second robot (back) - secondary text color
+  svg[data-agent-teams] path:nth-child(5) {
+    fill: var(--text-color-secondary) !important;
+    stroke: var(--text-color-secondary) !important;
+    stroke-width: 0;
   }
 
   span {
@@ -137,9 +173,35 @@
   &:hover {
     background-color: rgb(255 255 255 / 5%) !important;
 
-    svg {
+    // Default styling for agent icon (RobotIcon)
+    svg[data-agent] {
       fill: var(--text-color-primary) !important;
       stroke: var(--text-color-primary) !important;
+      stroke-width: 1;
+    }
+
+    // Specific styling for agent teams icon
+    // First robot (front) - primary text color
+    svg[data-agent-teams] path:nth-child(1),
+    svg[data-agent-teams] path:nth-child(2) {
+      fill: var(--text-color-primary) !important;
+      stroke: var(--text-color-primary) !important;
+      stroke-width: 0;
+    }
+
+    // Shadow/overlap areas - background color
+    svg[data-agent-teams] path:nth-child(3),
+    svg[data-agent-teams] path:nth-child(4) {
+      fill: var(--background-color) !important;
+      stroke: var(--background-color) !important;
+      stroke-width: 0;
+    }
+
+    // Second robot (back) - primary text color
+    svg[data-agent-teams] path:nth-child(5) {
+      fill: var(--text-color-primary) !important;
+      stroke: var(--text-color-primary) !important;
+      stroke-width: 0;
     }
 
     span {
@@ -148,19 +210,42 @@
   }
 
   &.selected {
+    transition: all 0.3s ease;
     background-color: var(--secondary-button-color) !important;
 
-    svg {
+    // Default styling for agent icon (RobotIcon)
+    svg[data-agent] {
       fill: #fff !important;
       stroke: #fff !important;
+      stroke-width: 1.5;
+    }
+
+    // Specific styling for agent teams icon
+    // First robot (front) - white
+    svg[data-agent-teams] path:nth-child(1),
+    svg[data-agent-teams] path:nth-child(2) {
+      fill: #fff !important;
+      stroke: #fff !important;
+      stroke-width: 0;
+    }
+
+    // Shadow/overlap areas - button background color
+    svg[data-agent-teams] path:nth-child(3),
+    svg[data-agent-teams] path:nth-child(4) {
+      fill: var(--secondary-button-color) !important;
+      stroke: var(--secondary-button-color) !important;
+      stroke-width: 0;
+    }
+
+    // Second robot (back) - white except for eyes and border
+    svg[data-agent-teams] path:nth-child(5) {
+      fill: #fff !important;
+      stroke: #fff !important;
+      stroke-width: 0;
     }
 
     span {
       color: #fff !important;
-    }
-
-    &:hover {
-      background-color: var(--secondary-button-color-hover, var(--secondary-button-color)) !important;
     }
   }
 }
@@ -185,7 +270,7 @@
 .tab-content {
   opacity: 1;
   transform: translateY(0);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease;
 
   &.entering {
     opacity: 0;
@@ -296,11 +381,30 @@
   transition: background-color 0.2s ease;
 
   svg {
-    fill: var(--text-color-primary);
+    fill: var(--text-color-secondary);
+    transition: all 0.3s ease;
   }
 
   &:hover {
     background-color: var(--background-neutral-hover);
+
+    svg {
+      fill: var(--text-color-primary);
+    }
+  }
+}
+
+// Specific styling for dashboard buttons (documentation and logout)
+.dashboard-buttons .icon-button {
+  span {
+    color: var(--text-color-secondary) !important;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    span {
+      color: var(--text-color-primary) !important;
+    }
   }
 }
 
@@ -316,6 +420,12 @@
   display: flex;
   gap: 8px;
   align-items: center;
+
+  .sort-icon {
+    fill: var(--text-color-primary);
+    stroke: var(--text-color-primary);
+    transition: all 0.3s ease;
+  }
 }
 
 .sort-dropdown {
@@ -323,19 +433,20 @@
   cursor: pointer;
 
   .dropdown {
-    padding: 6px 24px 6px 12px;
+    padding: 6px 32px 6px 12px;
     font-size: 14px;
     color: var(--text-color-secondary);
     appearance: none;
     cursor: pointer;
     outline: none;
     background-color: var(--background-color);
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: 6px;
     transition: all 0.3s ease;
+    min-width: 80px;
   }
 
-  .sort-icon {
+  .chevron {
     position: absolute;
     top: 50%;
     right: 8px;
@@ -352,7 +463,7 @@
       border-color: var(--text-color-primary);
     }
 
-    .sort-icon {
+    .chevron {
       fill: var(--text-color-primary);
       stroke: var(--text-color-primary);
     }
@@ -371,6 +482,8 @@
   align-items: center;
 
   .search-icon {
+    width: 16px;
+    height: 16px;
     position: absolute;
     left: 12px;
     fill: var(--text-color-secondary);
@@ -383,8 +496,8 @@
     padding: 8px 12px 8px 36px;
     font-size: 14px;
     color: var(--text-color-primary);
-    background-color: var(--background-color);
-    border: 1px solid var(--border-color);
+    background-color: var(--background-neutral-hover);
+    border: none;
     border-radius: 6px;
     outline: none;
     transition: all 0.3s ease;

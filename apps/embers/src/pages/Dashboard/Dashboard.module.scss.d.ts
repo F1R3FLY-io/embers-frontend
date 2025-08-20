@@ -27,8 +27,8 @@ declare const classNames: {
   readonly "icon-button": "icon-button";
   readonly "controls-row": "controls-row";
   readonly "sort-control": "sort-control";
-  readonly "sort-dropdown": "sort-dropdown";
   readonly "sort-icon": "sort-icon";
+  readonly "sort-dropdown": "sort-dropdown";
   readonly "search-control": "search-control";
   readonly "search-input-container": "search-input-container";
   readonly "search-icon": "search-icon";
