@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 
-export default function ProtectedRoute() {
+export function ProtectedRoute() {
   const { ready } = useWalletState();
   const location = useLocation();
 

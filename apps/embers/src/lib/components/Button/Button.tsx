@@ -10,7 +10,7 @@ type ButtonProps = {
   type: "primary" | "secondary";
 };
 
-export default function Button({ children, onClick, type }: ButtonProps) {
+export function Button({ children, onClick, type }: ButtonProps) {
   const btnClass = classNames(styles.button, {
     [styles.primary]: type === "primary",
     [styles.secondary]: type === "secondary",

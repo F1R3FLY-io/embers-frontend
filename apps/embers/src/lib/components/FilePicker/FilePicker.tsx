@@ -10,7 +10,7 @@ type FilePickerProps = {
   onChange: (file: File) => void;
 };
 
-export default function FilePicker({ children, onChange }: FilePickerProps) {
+export function FilePicker({ children, onChange }: FilePickerProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       const file = acceptedFiles.at(0);
