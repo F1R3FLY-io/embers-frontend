@@ -258,12 +258,18 @@
       }
 
       &:hover {
-        background-color: var(--secondary-button-color-hover, var(--secondary-button-color)) !important;
+        background-color: var(
+          --secondary-button-color-hover,
+          var(--secondary-button-color)
+        ) !important;
 
         /* Shadow/overlap areas - hover button background color */
         svg[data-agent-teams] path:nth-child(3),
         svg[data-agent-teams] path:nth-child(4) {
-          fill: var(--secondary-button-color-hover, var(--secondary-button-color)) !important;
+          fill: var(
+            --secondary-button-color-hover,
+            var(--secondary-button-color)
+          ) !important;
         }
       }
     }
@@ -458,7 +464,7 @@
             border-color: var(--text-color-primary);
             box-shadow: 0 0 0 2px rgb(var(--text-color-primary) / 10%);
 
-            &+.search-icon {
+            & + .search-icon {
               fill: var(--text-color-primary);
               stroke: var(--text-color-primary);
             }
