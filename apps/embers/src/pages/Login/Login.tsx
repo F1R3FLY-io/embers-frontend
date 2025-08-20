@@ -82,7 +82,7 @@ export default function Login() {
               <Text type="secondary">
                 Please enter your private key or upload a key file to sign in.
                 <br />
-                Make sure you're using the correct credentials.
+                Make sure you&apos;re using the correct credentials.
               </Text>
             </div>
             <WalletInput
@@ -98,7 +98,7 @@ export default function Login() {
             </Button>
             <div className={styles.note}>
               <Text type="secondary">
-                Don’t have F1R3SKY Wallet?{" "}
+                Don&apos;t have F1R3SKY Wallet?{" "}
                 <TextLink onClick={redirectToFiresky}>Create one</TextLink>
               </Text>
             </div>

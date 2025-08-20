@@ -5,13 +5,13 @@ import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 import { useAgents } from "@/lib/queries";
+import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
-import SettingsIcon from "@/public/icons/settings-icon.svg?react";
-import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import SearchIcon from "@/public/icons/search-light-line-icon.svg?react";
+import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 import SortIcon from "@/public/icons/sort-icon.svg?react";
 
 import styles from "./Dashboard.module.scss";
@@ -143,27 +143,27 @@ export default function Dashboard() {
                 </Text>
                 <div className={styles["sort-dropdown"]}>
                   <select
+                    className={styles.dropdown}
                     value={sortBy}
                     onChange={(e) =>
                       setSortBy(e.target.value as "date" | "name")
                     }
-                    className={styles.dropdown}
                   >
                     <option value="date">Date</option>
                     <option value="name">Name</option>
                   </select>
-                  <ChevronIcon className={styles["chevron"]} />
+                  <ChevronIcon className={styles.chevron} />
                 </div>
               </div>
               <div className={styles["search-control"]}>
                 <div className={styles["search-input-container"]}>
                   <SearchIcon className={styles["search-icon"]} />
                   <input
-                    type="text"
+                    className={styles["search-input"]}
                     placeholder={`Type to search ${selectedTab === "agents" ? "agents" : "agent teams"}...`}
+                    type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className={styles["search-input"]}
                   />
                 </div>
               </div>
