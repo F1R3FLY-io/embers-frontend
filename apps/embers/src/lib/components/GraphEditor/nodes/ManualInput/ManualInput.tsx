@@ -15,7 +15,7 @@ export function ManualInput({ selected }: NodeProps<Node>) {
       selected={selected}
       selectedClassName={styles.selected}
     >
-      <Text className={styles.text}>Manual Input</Text>
+      <Text color="primary">Manual Input</Text>
     </NodeContainer>
   );
 }

@@ -1,8 +1,23 @@
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding-top: 15vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  align-self: stretch;
+  align-items: center;
+  width: 553px;
+  padding: 24px;
+  background-color: var(--background-neutral-overlay);
+}
+
+.logo {
+  max-width: 76px;
+  max-height: 76px;
 }
 
 .title {
@@ -17,6 +32,7 @@
   display: grid;
   grid-auto-rows: 1fr;
   gap: 8px;
+  align-self: stretch;
 }
 
 .note {
@@ -30,4 +46,5 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-self: stretch;
 }

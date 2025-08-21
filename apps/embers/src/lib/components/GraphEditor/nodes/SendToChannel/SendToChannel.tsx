@@ -15,7 +15,7 @@ export function SendToChannel({ selected }: NodeProps<Node>) {
       selected={selected}
       selectedClassName={styles.selected}
     >
-      <Text className={styles.text}>Send to channel</Text>
+      <Text color="primary">Send to channel</Text>
     </NodeContainer>
   );
 }
