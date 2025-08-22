@@ -34,7 +34,9 @@ const Accordion: React.FC<AccordionProps> = ({
         <div className={styles.actions}>{actions}</div>
       </div>
 
-      <div className={`${styles["accordion-content"]} ${open ? styles.open : ""}`}>
+      <div
+        className={`${styles["accordion-content"]} ${open ? styles.open : ""}`}
+      >
         {children}
       </div>
     </div>
