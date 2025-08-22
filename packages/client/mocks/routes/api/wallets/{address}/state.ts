@@ -1,4 +1,3 @@
-import { WalletStateAndHistory } from "../../../../types/components/schemas/WalletStateAndHistory.js";
 import type { HTTP_GET } from "../../../../types/paths/api/wallets/{address}/state.types.js";
 
 export const GET: HTTP_GET = ($) => {

@@ -1,3 +1,1 @@
-import WalletInput from "./WalletInput";
-
-export { WalletInput };
+export { WalletInput } from "./WalletInput";

@@ -5,31 +5,31 @@ import classNames from "classnames";
 import styles from "./Text.module.scss";
 
 type TextProps = {
+  bold?: true;
   children: ReactNode;
+  color?: "primary" | "secondary";
   fontSize?: number;
-  fontWeight?: 400 | 600;
-  type?: "title" | "primary" | "secondary";
+  type?: "H2" | "H3" | "H4";
 };
 
-export default function Text({
-  children,
-  fontSize,
-  fontWeight,
-  type,
-}: TextProps) {
+export function Text({ bold, children, color, fontSize, type }: TextProps) {
   const textClass = classNames(styles.text, {
-    [styles.primary]: type === "primary",
-    [styles.secondary]: type === "secondary",
-    [styles.title]: type === "title",
+    [styles.bold]: bold,
+    [styles.h2]: type === "H2",
+    [styles.h3]: type === "H3",
+    [styles.h4]: type === "H4",
+    [styles.primary]: color === "primary",
+    [styles.secondary]: color === "secondary",
+    [styles["default-size"]]: type === undefined,
   });
 
-  const customStyle = {
-    fontSize,
-    fontWeight,
-  };
-
   return (
-    <span className={textClass} style={customStyle}>
+    <span
+      className={textClass}
+      style={{
+        fontSize,
+      }}
+    >
       {children}
     </span>
   );

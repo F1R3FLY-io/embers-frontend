@@ -16,7 +16,7 @@ type WalletInputProps = {
   onChange: (key?: PrivateKey) => void;
 };
 
-export default function WalletInput({ error, onChange }: WalletInputProps) {
+export function WalletInput({ error, onChange }: WalletInputProps) {
   const [errorState, setErrorState] = useState(false);
   useEffect(() => {
     if (error) {
@@ -70,7 +70,7 @@ export default function WalletInput({ error, onChange }: WalletInputProps) {
 
   return (
     <div className={styles.container}>
-      <Text fontSize={13} fontWeight={600} type="secondary">
+      <Text bold color="secondary" fontSize={13}>
         Private Key
       </Text>
       <div className={inputAreaClass}>

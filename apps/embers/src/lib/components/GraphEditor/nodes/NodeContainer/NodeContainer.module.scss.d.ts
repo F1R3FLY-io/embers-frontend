@@ -1,6 +1,6 @@
 declare const classNames: {
   readonly container: "container";
-  readonly content: "content";
-  readonly logo: "logo";
+  readonly selected: "selected";
+  readonly handle: "handle";
 };
 export default classNames;

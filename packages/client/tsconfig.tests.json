@@ -8,7 +8,7 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    // "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "esModuleInterop": true,
@@ -16,7 +16,7 @@
 
     /* Linting */
     "strict": true,
-    // "noUnusedLocals": true,
+    "noUnusedLocals": true,
     // "noUnusedParameters": true,
     // "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
@@ -25,5 +25,5 @@
     // "exactOptionalPropertyTypes": true,
     "skipLibCheck": true
   },
-  "include": ["tests"]
+  "include": ["tests", "mocks"]
 }

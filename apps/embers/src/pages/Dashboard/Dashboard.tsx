@@ -32,7 +32,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text fontSize={24} type="title">
+          <Text bold color="primary" type="H3">
             F1R3FLY
           </Text>
         </div>
@@ -40,16 +40,16 @@ export default function Dashboard() {
           <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
               <option value="en">
-                <Text type="secondary">English</Text>
+                <Text color="secondary">English</Text>
               </option>
               <option value="es">
-                <Text type="secondary">Español</Text>
+                <Text color="secondary">Español</Text>
               </option>
               <option value="fr">
-                <Text type="secondary">Français</Text>
+                <Text color="secondary">Français</Text>
               </option>
               <option value="de">
-                <Text type="secondary">Deutsch</Text>
+                <Text color="secondary">Deutsch</Text>
               </option>
             </select>
             <ChevronIcon className={styles.chevron} />
@@ -80,7 +80,7 @@ export default function Dashboard() {
               }}
             >
               <AgentIcon data-agent />
-              <Text fontSize={16} fontWeight={600} type="primary">
+              <Text bold color="primary" type="H4">
                 Agents
               </Text>
             </button>
@@ -101,7 +101,7 @@ export default function Dashboard() {
               }}
             >
               <AgentTeamIcon data-agent-teams />
-              <Text fontSize={16} fontWeight={600} type="primary">
+              <Text color="primary" type="H4">
                 Agent Teams
               </Text>
             </button>
@@ -111,13 +111,13 @@ export default function Dashboard() {
             <div className={styles["dashboard-buttons"]}>
               <button className={styles["icon-button"]}>
                 <DocumentationIcon />
-                <Text fontSize={16} type="secondary">
+                <Text color="primary" type="H4">
                   Documentation
                 </Text>
               </button>
               <button className={styles["icon-button"]} onClick={logout}>
                 <LogoutIcon />
-                <Text fontSize={16} type="secondary">
+                <Text color="primary" type="H4">
                   Logout
                 </Text>
               </button>
@@ -132,13 +132,13 @@ export default function Dashboard() {
               isTransitioning ? styles.entering : styles.entered,
             )}
           >
-            <Text fontSize={32} type="title">
+            <Text bold color="primary" type="H2">
               {selectedTab === "agents" ? "Agents" : "Agent Teams"}
             </Text>
             <div className={styles["controls-row"]}>
               <div className={styles["sort-control"]}>
                 <SortIcon className={styles["sort-icon"]} />
-                <Text fontSize={14} type="primary">
+                <Text color="primary" type="H4">
                   Sort {selectedTab === "agents" ? "agents" : "agent teams"} by
                 </Text>
                 <div className={styles["sort-dropdown"]}>
@@ -186,7 +186,9 @@ export default function Dashboard() {
                   style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
                 >
                   <AgentIcon className={styles["create-robot-icon"]} />
-                  <Text type="secondary">Create new Agent</Text>
+                  <Text color="secondary" type="H4">
+                    Create new Agent
+                  </Text>
                 </div>
                 {isSuccess &&
                   data.agents.map((agent, index) => (
@@ -199,7 +201,9 @@ export default function Dashboard() {
                         } as React.CSSProperties
                       }
                     >
-                      <Text type="secondary">Agent {agent.name}</Text>
+                      <Text color="secondary" type="H4">
+                        Agent {agent.name}
+                      </Text>
                     </div>
                   ))}
               </>
@@ -213,7 +217,9 @@ export default function Dashboard() {
                   style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
                 >
                   <AgentIcon className={styles["create-robot-icon"]} />
-                  <Text type="secondary">Create new Agent Team</Text>
+                  <Text color="secondary" type="H4">
+                    Create new Agent Team
+                  </Text>
                 </div>
                 {Array.from({ length: 0 }, (_, index) => (
                   <div
@@ -225,7 +231,9 @@ export default function Dashboard() {
                       } as React.CSSProperties
                     }
                   >
-                    <Text type="secondary">{`Agent Team ${index + 1}`}</Text>
+                    <Text color="secondary" type="H4">
+                      {`Agent Team ${index + 1}`}
+                    </Text>
                   </div>
                 ))}
               </>

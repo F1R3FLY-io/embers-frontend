@@ -1,6 +1,6 @@
 {
   "name": "@f1r3fly-io/embers-client-sdk",
-  "version": "0.0.25",
+  "version": "0.0.28",
   "main": "dist/embers-client-sdk.cjs.js",
   "module": "dist/embers-client-sdk.es.js",
   "browser": "dist/embers-client-sdk.umd.js",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "counterfact": "^1.4.1",
+    "counterfact": "^1.4.2",
     "eslint-plugin-unused-imports": "^4.2.0",
     "express": "^5.1.0",
     "serve": "^14.2.4",

@@ -5,11 +5,11 @@ import { useCallback, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
-import { ContainerWithLogo } from "@/lib/components/ContainerWithLogo";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
+import logo from "@/public/icons/firefly-io.png";
 
 import styles from "./Login.module.scss";
 
@@ -52,7 +52,9 @@ export default function Login() {
       content = (
         <>
           <div className={styles.title}>
-            <Text type="title">Get started with F1R3SKY</Text>
+            <Text bold color="primary" type="H2">
+              Get started with F1R3SKY
+            </Text>
           </div>
           <div className={styles.buttons}>
             <Button type="primary" onClick={toSigning}>
@@ -63,7 +65,7 @@ export default function Login() {
             </Button>
           </div>
           <div className={styles.note}>
-            <Text type="secondary">
+            <Text color="secondary">
               By using F1R3SKY, you agree to the{" "}
               <TextLink onClick={() => {}}>terms and privacy policy</TextLink>
             </Text>
@@ -76,10 +78,12 @@ export default function Login() {
         <>
           <div className={styles["picker-container"]}>
             <div className={styles.title}>
-              <Text type="title">Sign in with F1R3SKY Wallet</Text>
+              <Text bold color="primary" type="H2">
+                Sign in with F1R3SKY Wallet
+              </Text>
             </div>
             <div className={styles.note}>
-              <Text type="secondary">
+              <Text color="secondary">
                 Please enter your private key or upload a key file to sign in.
                 <br />
                 Make sure you&apos;re using the correct credentials.
@@ -97,7 +101,7 @@ export default function Login() {
               Sign In
             </Button>
             <div className={styles.note}>
-              <Text type="secondary">
+              <Text color="secondary">
                 Don&apos;t have F1R3SKY Wallet?{" "}
                 <TextLink onClick={redirectToFiresky}>Create one</TextLink>
               </Text>
@@ -109,8 +113,11 @@ export default function Login() {
   }
 
   return (
-    <ContainerWithLogo>
-      <div className={styles.container}>{content}</div>
-    </ContainerWithLogo>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <img className={styles.logo} src={logo} />
+        {content}
+      </div>
+    </div>
   );
 }

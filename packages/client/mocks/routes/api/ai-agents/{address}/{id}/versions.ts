@@ -1,7 +1,7 @@
 import type { HTTP_GET } from "../../../../../types/paths/api/ai-agents/{address}/{id}/versions.types.js";
 
 export const GET: HTTP_GET = ($) => {
-  if ($.headers["x-test-response"] === "all-props") {
+  if ($.x.headers["x-test-response"] === "all-props") {
     return $.response[200].json({
       agents: [
         {
