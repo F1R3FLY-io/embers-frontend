@@ -21,13 +21,12 @@ const Accordion: React.FC<AccordionProps> = ({
   title,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
-  const className = classNames(styles["accordion-header"], {[styles.open]: open});
+  const className = classNames(styles["accordion-header"], {
+    [styles.open]: open,
+  });
   return (
     <div>
-      <div
-        className={className}
-        onClick={() => setOpen(!open)}
-      >
+      <div className={className} onClick={() => setOpen(!open)}>
         <Text type="H4">
           {title}
           <i className={open ? "fa fa-chevron-down" : "fa fa-chevron-up"} />
