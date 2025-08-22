@@ -10,7 +10,7 @@ const CodeFooter: React.FC = () => (
       actions={
         <Button
           className={styles["accordion-action"]}
-          type={"secondary"}
+          type="secondary"
           onClick={() => {}}
         >
           {/*todo add support for JSX elements*/}

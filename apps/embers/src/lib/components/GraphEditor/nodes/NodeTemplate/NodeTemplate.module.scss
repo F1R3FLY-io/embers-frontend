@@ -1,12 +1,13 @@
 .container {
   padding: 16px;
   background-color: var(--background-neutral-hover);
-  border: 1px solid transparent;
+  border-style: solid;
+  border-width: 1px;
   border-radius: 8px;
 }
 
 .selected {
-  background-color: #208bfe4d;
+  background-color: var(--background-blue-transparent);
 }
 
 .handle {
