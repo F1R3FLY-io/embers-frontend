@@ -118,10 +118,13 @@ export function GraphEditor() {
   );
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <div className={styles.container}>
       <ReactFlow
         fitView
-        defaultEdgeOptions={{ animated: true }}
+        defaultEdgeOptions={{
+          animated: true,
+          className: styles.edge,
+        }}
         deleteKeyCode={["Delete", "Backspace"]}
         edges={edges}
         nodes={nodes}

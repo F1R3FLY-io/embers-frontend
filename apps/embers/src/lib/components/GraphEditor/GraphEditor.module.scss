@@ -1,9 +1,20 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+
+  --xy-edge-stroke-default: var(--border-selected) !important;
+}
+
 .background {
   background-color: var(--background-color);
 }
 
 .pattern {
   fill: #3e4043 !important;
+}
+
+.edge > path {
+  stroke: #208bfe !important;
 }
 
 .no-node-style {
