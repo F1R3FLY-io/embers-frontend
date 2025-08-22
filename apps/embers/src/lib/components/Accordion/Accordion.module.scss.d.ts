@@ -3,6 +3,5 @@ declare const classNames: {
   readonly open: "open";
   readonly actions: "actions";
   readonly "accordion-content": "accordion-content";
-  readonly chevron: "chevron";
 };
 export default classNames;

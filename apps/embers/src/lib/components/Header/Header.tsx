@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ actions }) => {
     <header className={styles["header-bar"]}>
       <div className={styles["header-content"]}>
         <div className={styles["app-title"]}>
-          <Text fontSize={24} type="title">
+          <Text color="primary" type="H3">
             {headerTitle}
           </Text>
         </div>

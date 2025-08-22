@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Text } from "@/lib/components/Text";
 
 import styles from "./Accordion.module.scss";
+import classNames from "classnames";
 
 interface AccordionProps {
   actions?: React.ReactNode;
@@ -20,14 +21,14 @@ const Accordion: React.FC<AccordionProps> = ({
   title,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
-
+  const className = classNames(styles["accordion-header"], {[styles.open]: open});
   return (
     <div>
       <div
-        className={`${styles["accordion-header"]} ${open ? styles.open : ""}`}
+        className={className}
         onClick={() => setOpen(!open)}
       >
-        <Text fontSize={14} type={"title"}>
+        <Text type="H4">
           {title}
           <i className={open ? "fa fa-chevron-down" : "fa fa-chevron-up"} />
         </Text>

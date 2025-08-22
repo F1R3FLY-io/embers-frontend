@@ -1,7 +1,8 @@
 import type React from "react";
 
-import styles from "./Sidebar.module.scss";
 import { Text } from "@/lib/components/Text";
+
+import styles from "./Sidebar.module.scss";
 
 interface SidebarProps {
   actions?: React.ReactNode;
@@ -14,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ actions, children, title }) => {
     <div className={styles.container}>
       {(title || actions) && (
         <div className={styles.header}>
-          <Text className={styles.title} fontSize={20} type={"title"}>
+          <Text fontSize={20}>
             {title}
           </Text>
           <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
