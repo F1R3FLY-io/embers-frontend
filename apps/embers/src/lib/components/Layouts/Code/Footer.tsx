@@ -11,7 +11,7 @@ const CodeFooter: React.FC = () => (
         <Button
           className={styles["accordion-action"]}
           type={"secondary"}
-          onClick={() => console.log("deploy")}
+          onClick={() => {}}
         >
           {/*todo add support for JSX elements*/}
           {/*<i className="fa fa-play"/> test*/}

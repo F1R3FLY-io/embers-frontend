@@ -1,11 +1,11 @@
 import type React from "react";
 
+import classNames from "classnames";
 import { useState } from "react";
 
 import { Text } from "@/lib/components/Text";
 
 import styles from "./Accordion.module.scss";
-import classNames from "classnames";
 
 interface AccordionProps {
   actions?: React.ReactNode;

@@ -32,7 +32,7 @@ export default function CodeEditor() {
     }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [setHeaderTitle, editorRef]);
 
   return (
     <DefaultLayout>
