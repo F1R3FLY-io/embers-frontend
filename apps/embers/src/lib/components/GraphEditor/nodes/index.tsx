@@ -46,7 +46,7 @@ export const nodeTypes = {
     ],
   }),
   "tts-model": NodeTemplate({
-    children: <Text color="primary">Text to speach model</Text>,
+    children: <Text color="primary">Text to speech model</Text>,
     className: styles.service,
     displayName: "TTS model",
     handlers: [

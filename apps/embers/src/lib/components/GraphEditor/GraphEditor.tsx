@@ -105,7 +105,7 @@ export function GraphEditor() {
         },
       },
       {
-        element: <Text>Add text to speach model</Text>,
+        element: <Text>Add text to speech model</Text>,
         onClick: () => {
           setNodes((edgesSnapshot) => [
             ...edgesSnapshot,
