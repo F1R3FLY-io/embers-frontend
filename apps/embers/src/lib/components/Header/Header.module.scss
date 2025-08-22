@@ -1,0 +1,39 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.header-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--background-neutral-surface-secondary);
+}
+
+.app-title {
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.header-content {
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 20px 24px;
+  align-items: center;
+  justify-content: space-between;
+}

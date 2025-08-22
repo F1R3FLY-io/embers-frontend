@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--background-color);
+  color: var(--text-color-primary);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.sidebar {
+  flex: 0 0 var(--sidebar-width, 280px);
+  width: var(--sidebar-width, 280px);
+  border-right: 1px solid var(--background-neutral-surface-secondary);
+  overflow: auto;
+  background: var(--text-color-primary);
+}
+
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+}
