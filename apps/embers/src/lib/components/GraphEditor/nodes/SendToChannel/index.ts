@@ -1,1 +1,0 @@
-export { SendToChannel } from "./SendToChannel";
