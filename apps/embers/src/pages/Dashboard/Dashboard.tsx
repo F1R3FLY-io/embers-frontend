@@ -23,7 +23,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text fontSize={18} type="title">
+          <Text bold color="primary" type="H3">
             F1R3FLY
           </Text>
         </div>
@@ -31,16 +31,16 @@ export default function Dashboard() {
           <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
               <option value="en">
-                <Text type="secondary">English</Text>
+                <Text color="secondary">English</Text>
               </option>
               <option value="es">
-                <Text type="secondary">Español</Text>
+                <Text color="secondary">Español</Text>
               </option>
               <option value="fr">
-                <Text type="secondary">Français</Text>
+                <Text color="secondary">Français</Text>
               </option>
               <option value="de">
-                <Text type="secondary">Deutsch</Text>
+                <Text color="secondary">Deutsch</Text>
               </option>
             </select>
             <ChevronIcon className={styles.chevron} />
@@ -61,7 +61,7 @@ export default function Dashboard() {
               )}
             >
               <RobotIcon />
-              <Text fontSize={16} fontWeight={600} type="primary">
+              <Text bold color="primary" type="H4">
                 Agents
               </Text>
             </button>
@@ -71,13 +71,13 @@ export default function Dashboard() {
             <div className={styles["dashboard-buttons"]}>
               <button className={styles["icon-button"]}>
                 <DocumentationIcon />
-                <Text fontSize={14} type="secondary">
+                <Text color="primary" type="H4">
                   Documentation
                 </Text>
               </button>
               <button className={styles["icon-button"]} onClick={logout}>
                 <LogoutIcon />
-                <Text fontSize={14} type="secondary">
+                <Text color="primary" type="H4">
                   Logout
                 </Text>
               </button>
@@ -86,7 +86,7 @@ export default function Dashboard() {
         </div>
         <div className={styles["content-area"]}>
           <div className={styles["content-header"]}>
-            <Text fontSize={26} type="title">
+            <Text bold color="primary" type="H2">
               Agents
             </Text>
           </div>
@@ -95,12 +95,16 @@ export default function Dashboard() {
               className={classNames(styles["grid-box"], styles["create-box"])}
             >
               <RobotIcon className={styles["create-robot-icon"]} />
-              <Text type="secondary">Create new Agent</Text>
+              <Text color="secondary" type="H4">
+                Create new Agent
+              </Text>
             </div>
             {isSuccess &&
               data.agents.map((agent) => (
                 <div key={agent.id} className={styles["grid-box"]}>
-                  <Text type="secondary">Agent {agent.name}</Text>
+                  <Text color="secondary" type="H4">
+                    Agent {agent.name}
+                  </Text>
                 </div>
               ))}
           </div>
