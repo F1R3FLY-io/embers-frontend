@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: var(--text-color-primary);
+  background: var(--background-color);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.sidebar {
+  flex: 0 0 var(--sidebar-width, 280px);
+  width: var(--sidebar-width, 280px);
+  overflow: auto;
+  background: var(--text-color-primary);
+  border-right: 1px solid var(--background-neutral-surface-secondary);
+}
+
+.content-area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.main {
+  flex: 1;
+  min-height: 0;
+  padding: 16px;
+  overflow: auto;
+}

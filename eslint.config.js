@@ -39,8 +39,17 @@ export default tseslint.config(
     },
     plugins: { perfectionist },
     rules: {
-      "arrow-body-style": "error",
-      "class-methods-use-this": "error",
+      "class-methods-use-this": [
+        "error",
+        {
+          "exceptMethods": [
+            "componentDidCatch",
+            "componentDidMount",
+            "componentWillUnmount",
+            "render"
+          ]
+        }
+      ],
       curly: ["error", "all"],
       "default-case-last": "error",
       "default-param-last": "error",
@@ -268,10 +277,6 @@ export default tseslint.config(
       "@typescript-eslint/promise-function-async": "error",
       "@typescript-eslint/related-getter-setter-pairs": "error",
       "@typescript-eslint/return-await": "error",
-      "@typescript-eslint/strict-boolean-expressions": [
-        "error",
-        { allowNullableBoolean: true },
-      ],
       "@typescript-eslint/switch-exhaustiveness-check": "error",
       "dot-notation": "off",
     },

@@ -4,6 +4,7 @@ import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
+import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider.tsx";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
@@ -15,6 +16,7 @@ const Edit = lazy(async () => import("@/pages/Edit"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
 const GraphEditor = lazy(async () => import("@/lib/components/GraphEditor"));
+const CodeEditor = lazy(async () => import("@/pages/CodeEditor"));
 
 const queryClient = new QueryClient();
 
@@ -23,22 +25,25 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <WalletProvider>
         <ThemeProvider>
-          <ReactFlowProvider>
-            <BrowserRouter>
-              <div className={styles.background}>
-                <Routes>
-                  <Route element={<Home />} path="/" />
-                  <Route element={<Login />} path="/login" />
-                  {/* until full page is ready */}
-                  <Route element={<GraphEditor />} path="/editor" />
-                  <Route element={<ProtectedRoute />}>
-                    <Route element={<Dashboard />} path="/dashboard" />
-                    <Route element={<Edit />} path="/edit" />
-                  </Route>
-                </Routes>
-              </div>
-            </BrowserRouter>
-          </ReactFlowProvider>
+          <LayoutProvider>
+            <ReactFlowProvider>
+              <BrowserRouter>
+                <div className={styles.background}>
+                  <Routes>
+                    <Route element={<Home />} path="/" />
+                    <Route element={<Login />} path="/login" />
+                    {/* until full page is ready */}
+                    <Route element={<CodeEditor />} path="/code" />
+                    <Route element={<GraphEditor />} path="/editor" />
+                    <Route element={<ProtectedRoute />}>
+                      <Route element={<Dashboard />} path="/dashboard" />
+                      <Route element={<Edit />} path="/edit" />
+                    </Route>
+                  </Routes>
+                </div>
+              </BrowserRouter>
+            </ReactFlowProvider>
+          </LayoutProvider>
         </ThemeProvider>
       </WalletProvider>
     </QueryClientProvider>
