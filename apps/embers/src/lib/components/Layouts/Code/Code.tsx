@@ -17,13 +17,13 @@ const CodeLayout: React.FC<DefaultLayoutProps> = ({ children }) => (
     sidebar={
       <Sidebar
         actions={
-          <Button type={"secondary"} onClick={() => {}}>
+          <Button type="secondary" onClick={() => {}}>
             New
           </Button>
         }
         title="Explorer"
       >
-        <></>
+        {null}
       </Sidebar>
     }
     sidebarWidth={320}
