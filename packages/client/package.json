@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "counterfact": "^1.4.1",
+    "counterfact": "^1.4.2",
     "eslint-plugin-unused-imports": "^4.2.0",
     "express": "^5.1.0",
     "serve": "^14.2.4",

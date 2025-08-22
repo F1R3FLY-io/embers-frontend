@@ -12,7 +12,16 @@
   align-items: center;
   padding: 9px 12px;
   background-color: var(--background-neutral-hover);
+  border: 2px solid transparent;
   border-radius: 8px;
+
+  &:hover {
+    border-color: var(--border-primary);
+  }
+
+  &:focus-within {
+    border-color: var(--border-selected);
+  }
 }
 
 .input {
@@ -32,5 +41,5 @@
 }
 
 .error {
-  border: 2px solid #f52958;
+  border-color: var(--text-danger) !important;
 }

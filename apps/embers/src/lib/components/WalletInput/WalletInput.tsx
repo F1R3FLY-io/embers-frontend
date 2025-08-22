@@ -70,7 +70,7 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
 
   return (
     <div className={styles.container}>
-      <Text fontSize={13} fontWeight={600} type="secondary">
+      <Text bold color="secondary" fontSize={13}>
         Private Key
       </Text>
       <div className={inputAreaClass}>
