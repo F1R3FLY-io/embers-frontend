@@ -27,7 +27,7 @@ const Accordion: React.FC<AccordionProps> = ({
   return (
     <div>
       <div className={className} onClick={() => setOpen(!open)}>
-        <Text type="H4" bold>
+        <Text type="H4">
           {title}
           <i className={open ? "fa fa-chevron-down" : "fa fa-chevron-up"} />
         </Text>
