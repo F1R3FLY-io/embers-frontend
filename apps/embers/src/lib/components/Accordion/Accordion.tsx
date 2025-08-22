@@ -13,7 +13,12 @@ interface AccordionProps {
   title: string;
 }
 
-const Accordion: React.FC<AccordionProps> = ({ actions, children, defaultOpen = false, title }) => {
+const Accordion: React.FC<AccordionProps> = ({
+  actions,
+  children,
+  defaultOpen = false,
+  title,
+}) => {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
@@ -22,12 +27,11 @@ const Accordion: React.FC<AccordionProps> = ({ actions, children, defaultOpen = 
         className={`${styles.accordionHeader} ${open ? styles.open : ""}`}
         onClick={() => setOpen(!open)}
       >
-          <Text fontSize={14} type={'title'}>
-            {title}<i className={open ? "fa fa-chevron-down" : "fa fa-chevron-up"}/>
-          </Text>
-        <div className={styles.actions}>
-          {actions}
-        </div>
+        <Text fontSize={14} type={"title"}>
+          {title}
+          <i className={open ? "fa fa-chevron-down" : "fa fa-chevron-up"} />
+        </Text>
+        <div className={styles.actions}>{actions}</div>
       </div>
 
       <div className={`${styles.accordionContent} ${open ? styles.open : ""}`}>

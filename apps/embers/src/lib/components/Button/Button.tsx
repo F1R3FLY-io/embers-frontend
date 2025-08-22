@@ -12,10 +12,14 @@ type ButtonProps = {
 };
 
 export function Button({ children, className, onClick, type }: ButtonProps) {
-  const btnClass = classNames(styles.button, {
-    [styles.primary]: type === "primary",
-    [styles.secondary]: type === "secondary",
-  }, className);
+  const btnClass = classNames(
+    styles.button,
+    {
+      [styles.primary]: type === "primary",
+      [styles.secondary]: type === "secondary",
+    },
+    className,
+  );
 
   return (
     <button className={btnClass} onClick={onClick}>

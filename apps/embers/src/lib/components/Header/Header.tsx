@@ -10,11 +10,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ actions }) => {
-
   const { headerTitle } = useLayout();
   return (
     <header className={styles["header-bar"]}>
-      <div className={styles["header-content"]} >
+      <div className={styles["header-content"]}>
         <div className={styles["app-title"]}>
           <Text fontSize={24} type="title">
             {headerTitle}
@@ -26,6 +25,6 @@ const Header: React.FC<HeaderProps> = ({ actions }) => {
       </div>
     </header>
   );
-}
+};
 
 export default Header;

@@ -1,6 +1,6 @@
-import type {EditorRef} from "@f1r3fly-io/lightning-bug";
+import type { EditorRef } from "@f1r3fly-io/lightning-bug";
 
-import { Editor  } from "@f1r3fly-io/lightning-bug";
+import { Editor } from "@f1r3fly-io/lightning-bug";
 import { RholangExtension } from "@f1r3fly-io/lightning-bug/extensions";
 import { useEffect, useRef } from "react";
 
@@ -26,7 +26,7 @@ export default function CodeEditor() {
         editorRef.current.openDocument(
           "demo.rho",
           'new x in { x!("Hello") | Nil }',
-          "rholang"
+          "rholang",
         );
       }
     }, 100);
@@ -39,10 +39,7 @@ export default function CodeEditor() {
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
         <div className={styles.container}>
-          <Editor
-            ref={editorRef}
-            languages={{ rholang: RholangExtension }}
-          />
+          <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
         </div>
       </ErrorBoundary>
     </DefaultLayout>

@@ -14,12 +14,12 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({
-                                         children,
-                                         footer,
-                                         headerActions,
-                                         sidebar,
-                                         sidebarWidth = 280,
-                                       }) => {
+  children,
+  footer,
+  headerActions,
+  sidebar,
+  sidebarWidth = 280,
+}) => {
   const styleVar =
     typeof sidebarWidth === "number" ? `${sidebarWidth}px` : sidebarWidth;
 

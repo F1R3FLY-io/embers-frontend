@@ -14,11 +14,10 @@ const Sidebar: React.FC<SidebarProps> = ({ actions, children, title }) => {
     <div className={styles.container}>
       {(title || actions) && (
         <div className={styles.header}>
-          <Text className={styles.title} fontSize={20} type={"title"}>{title}</Text>
-          <div
-            className={styles.actions}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <Text className={styles.title} fontSize={20} type={"title"}>
+            {title}
+          </Text>
+          <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
             {actions}
           </div>
         </div>
