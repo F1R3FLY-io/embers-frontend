@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({
       <div className={styles.body}>
         {sidebar && <aside className={styles.sidebar}>{sidebar}</aside>}
 
-        <div className={styles.contentArea}>
+        <div className={styles["content-area"]}>
           <main className={styles.main}>{children}</main>
           {footer && <Footer>{footer}</Footer>}
         </div>

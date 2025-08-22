@@ -1,8 +1,8 @@
 declare const classNames: {
   readonly container: "container";
-  readonly main: "main";
   readonly body: "body";
   readonly sidebar: "sidebar";
-  readonly contentArea: "contentArea";
+  readonly "content-area": "content-area";
+  readonly main: "main";
 };
 export default classNames;

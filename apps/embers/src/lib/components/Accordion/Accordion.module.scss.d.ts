@@ -1,8 +1,8 @@
 declare const classNames: {
-  readonly accordionHeader: "accordionHeader";
+  readonly "accordion-header": "accordion-header";
   readonly open: "open";
   readonly actions: "actions";
-  readonly accordionContent: "accordionContent";
+  readonly "accordion-content": "accordion-content";
   readonly chevron: "chevron";
 };
 export default classNames;

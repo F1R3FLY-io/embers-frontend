@@ -24,7 +24,7 @@ const Accordion: React.FC<AccordionProps> = ({
   return (
     <div>
       <div
-        className={`${styles.accordionHeader} ${open ? styles.open : ""}`}
+        className={`${styles["accordion-header"]} ${open ? styles.open : ""}`}
         onClick={() => setOpen(!open)}
       >
         <Text fontSize={14} type={"title"}>
@@ -34,7 +34,7 @@ const Accordion: React.FC<AccordionProps> = ({
         <div className={styles.actions}>{actions}</div>
       </div>
 
-      <div className={`${styles.accordionContent} ${open ? styles.open : ""}`}>
+      <div className={`${styles["accordion-content"]} ${open ? styles.open : ""}`}>
         {children}
       </div>
     </div>
