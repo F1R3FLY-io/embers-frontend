@@ -53,12 +53,12 @@ export default function Login() {
         <>
           <div className={styles.title}>
             <Text bold color="primary" type="H2">
-              Get started F1R3SKY
+              Get started with F1R3SKY
             </Text>
           </div>
           <div className={styles.buttons}>
             <Button type="primary" onClick={toSigning}>
-              Sign In with F1R3SKY Wallet
+              Sign in with F1R3SKY Wallet
             </Button>
             <Button type="secondary" onClick={redirectToFiresky}>
               Create Wallet
@@ -79,14 +79,14 @@ export default function Login() {
           <div className={styles["picker-container"]}>
             <div className={styles.title}>
               <Text bold color="primary" type="H2">
-                Sign In with F1R3SKY Wallet
+                Sign in with F1R3SKY Wallet
               </Text>
             </div>
             <div className={styles.note}>
               <Text color="secondary">
-                Please enter your private key or upload a key file to Sign In.
+                Please enter your private key or upload a key file to sign in.
                 <br />
-                Make sure you’re using the correct and secure credentials.
+                Make sure you&apos;re using the correct credentials.
               </Text>
             </div>
             <WalletInput
@@ -102,7 +102,7 @@ export default function Login() {
             </Button>
             <div className={styles.note}>
               <Text color="secondary">
-                Don’t have F1R3SKY Wallet?{" "}
+                Don&apos;t have F1R3SKY Wallet?{" "}
                 <TextLink onClick={redirectToFiresky}>Create one</TextLink>
               </Text>
             </div>

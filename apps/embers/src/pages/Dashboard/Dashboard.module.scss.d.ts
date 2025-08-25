@@ -1,5 +1,6 @@
 declare const classNames: {
   readonly page: "page";
+  readonly "main-content": "main-content";
   readonly "header-bar": "header-bar";
   readonly "app-title": "app-title";
   readonly "header-right": "header-right";
@@ -7,19 +8,16 @@ declare const classNames: {
   readonly dropdown: "dropdown";
   readonly chevron: "chevron";
   readonly "settings-icon": "settings-icon";
-  readonly "main-content": "main-content";
   readonly dashboard: "dashboard";
   readonly "dashboard-top": "dashboard-top";
-  readonly "agents-button": "agents-button";
-  readonly "content-area": "content-area";
-  readonly "content-header": "content-header";
-  readonly "grid-container": "grid-container";
-  readonly "grid-box": "grid-box";
-  readonly "create-box": "create-box";
-  readonly "create-robot-icon": "create-robot-icon";
   readonly "dashboard-column": "dashboard-column";
   readonly "dashboard-divider": "dashboard-divider";
   readonly "dashboard-buttons": "dashboard-buttons";
-  readonly "icon-button": "icon-button";
+  readonly "content-area": "content-area";
+  readonly "content-header": "content-header";
+  readonly "tab-content": "tab-content";
+  readonly entering: "entering";
+  readonly entered: "entered";
+  readonly "grid-container": "grid-container";
 };
 export default classNames;
