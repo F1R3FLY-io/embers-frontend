@@ -1,0 +1,242 @@
+.deploy-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 560px;
+  padding-left: 148px;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  row-gap: 16px;
+}
+
+.stepper-container {
+  margin-top: 32px;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.title-container {
+  margin-top: 16px;
+}
+
+.description-container {
+  margin-top: 16px;
+}
+
+.details-container {
+  margin-top: 16px;
+}
+
+.detail-row {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+
+  &:nth-child(2) {
+    margin-top: 8px;
+  }
+}
+
+.label-container {
+  min-width: 120px;
+}
+
+.divider {
+  background-color: var(--background-neutral-surface-secondary);
+  height: 1px;
+  margin-top: 24px;
+}
+
+.form-section {
+  margin-top: 24px;
+}
+
+.form-label {
+  margin-bottom: 8px;
+}
+
+.form-input {
+  background-color: var(--background-neutral-hover);
+  border: none;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: var(--text-color-primary);
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  width: 100%;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-selected);
+  }
+
+  &::placeholder {
+    color: var(--text-color-secondary);
+  }
+}
+
+.form-textarea {
+  @extend .form-input;
+  min-height: 120px;
+  resize: none;
+}
+
+.section-title {
+  margin-bottom: 24px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.button-container {
+  align-items: center;
+  border-bottom: 1px solid var(--background-neutral-surface-secondary);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-bottom: 24px;
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-color-primary);
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  padding: 12px 24px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--background-neutral-hover);
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.draft-button {
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-color-primary);
+  cursor: pointer;
+  display: flex;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  gap: 8px;
+  padding: 12px 24px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--background-neutral-hover);
+  }
+
+  svg {
+    fill: currentColor;
+  }
+}
+
+.deploy-button {
+  background-color: var(--icon-accent);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  padding: 12px 24px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--secondary-button-color);
+  }
+}
+
+.footer-container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+
+.language-container {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.language-select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  height: 32px;
+  outline: none;
+  padding: 0px 24px 0px 0px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--text-color-primary);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.language-icon {
+  pointer-events: none;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: brightness(0) saturate(100%) invert(67%) sepia(8%) saturate(1234%) hue-rotate(182deg) brightness(89%) contrast(86%);
+  transition: filter 0.2s ease;
+}
+
+.language-select:hover ~ .language-icon {
+  filter: brightness(0) invert(1);
+}
+
+.support-container {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.support-link {
+  color: var(--text-link-color);
+  cursor: pointer;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

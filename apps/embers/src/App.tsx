@@ -11,6 +11,7 @@ import styles from "./App.module.scss";
 import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
+const Deploy = lazy(async () => import("@/pages/Deploy/Deploy"));
 const Edit = lazy(async () => import("@/pages/Edit"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
@@ -31,6 +32,7 @@ export default function App() {
                   <Route element={<Login />} path="/login" />
                   {/* until full page is ready */}
                   <Route element={<GraphEditor />} path="/editor" />
+                  <Route element={<Deploy />} path="/deploy" />
                   <Route element={<ProtectedRoute />}>
                     <Route element={<Dashboard />} path="/dashboard" />
                     <Route element={<Edit />} path="/edit" />
