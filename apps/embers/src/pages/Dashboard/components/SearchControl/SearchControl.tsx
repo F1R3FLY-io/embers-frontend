@@ -8,7 +8,11 @@ interface SearchControlProps {
   searchQuery: string;
 }
 
-export function SearchControl({ onSearchChange, placeholder, searchQuery }: SearchControlProps) {
+export function SearchControl({
+  onSearchChange,
+  placeholder,
+  searchQuery,
+}: SearchControlProps) {
   return (
     <div className={styles["search-control"]}>
       <div className={styles["search-input-container"]}>

@@ -127,7 +127,9 @@ export default function Dashboard() {
             )}
           >
             <AgentsTitle
-              getTitle={() => selectedTab === "agents" ? "Agents" : "Agent Teams"}
+              getTitle={() =>
+                selectedTab === "agents" ? "Agents" : "Agent Teams"
+              }
             />
             <ControlsRow
               searchQuery={searchQuery}

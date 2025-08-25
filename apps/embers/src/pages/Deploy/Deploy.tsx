@@ -1,6 +1,9 @@
-import Stepper from "./components/Stepper";
 import { Text } from "@/lib/components/Text";
 
+import DraftIcon from "@/public/icons/draft-icon.svg?react";
+import ChevronDownIcon from "@/public/icons/chevron-down-icon.svg?react";
+
+import Stepper from "./components/Stepper";
 import styles from "./Deploy.module.scss";
 
 type DeployProps = {
@@ -16,11 +19,13 @@ export default function Deploy({
   agentDescription = "Enter agent description",
   agentName = "BioMatch",
   agentVersion = "1.0.0",
-  blockchainShard = "shard://ai-health.open.mettacycle.net"
+  blockchainShard = "shard://ai-health.open.mettacycle.net",
 }: DeployProps) {
   return (
     <div className={styles["deploy-container"]}>
-      <Text fontSize={40} type="H2" bold>Create AI Agent</Text>
+      <Text bold color="primary" fontSize={40} type="H2">
+        Create AI Agent
+      </Text>
       <div className={styles["stepper-container"]}>
         <Stepper
           currentStep={3}
@@ -30,42 +35,42 @@ export default function Deploy({
       </div>
       <div className={styles["content-container"]}>
         <div>
-          <Text fontSize={32} type="H2" bold>
+          <Text bold color="primary" fontSize={32} type="H2">
             Deploy {agentName} Agent
           </Text>
           <div className={styles["description-container"]}>
-            <Text fontSize={16} type="H4" color="secondary">
+            <Text color="secondary" fontSize={16} type="H4">
               Review the details and confirm where and how your agent will run.
             </Text>
           </div>
         </div>
         <div className={styles["details-container"]}>
-          <Text fontSize={20} type="H3" bold>
+          <Text bold color="primary" fontSize={20} type="H3">
             Agent Details
           </Text>
           <div className={styles["detail-row"]}>
             <div className={styles["label-container"]}>
-              <Text fontSize={12} color="secondary">
+              <Text color="secondary" fontSize={12}>
                 Agent address
               </Text>
             </div>
-            <Text fontSize={12} color="primary">
+            <Text color="primary" fontSize={12}>
               {agentAddress}
             </Text>
           </div>
           <div className={styles["detail-row"]}>
             <div className={styles["label-container"]}>
-              <Text fontSize={12} color="secondary">
+              <Text color="secondary" fontSize={12}>
                 Blockchain shard
               </Text>
             </div>
-            <Text fontSize={12} color="primary">
+            <Text color="primary" fontSize={12}>
               {blockchainShard}
             </Text>
           </div>
           <div className={styles.divider} />
           <div className={styles["form-section"]}>
-            <Text fontSize={12} color="secondary">
+            <Text color="secondary" fontSize={12}>
               Agent name
             </Text>
             <input
@@ -75,7 +80,7 @@ export default function Deploy({
             />
           </div>
           <div className={styles["form-section"]}>
-            <Text fontSize={12} color="secondary">
+            <Text color="secondary" fontSize={12}>
               Agent description
             </Text>
             <textarea
@@ -84,12 +89,12 @@ export default function Deploy({
             />
           </div>
           <div className={styles["form-section"]}>
-            <Text fontSize={20} type="H3" bold>
+            <Text bold color="primary" fontSize={20} type="H3">
               Welcome Interface
             </Text>
             <div className={styles["form-fields"]}>
               <div>
-                <Text fontSize={12} color="secondary">
+                <Text color="secondary" fontSize={12}>
                   Welcome message
                 </Text>
                 <textarea
@@ -98,7 +103,7 @@ export default function Deploy({
                 />
               </div>
               <div>
-                <Text fontSize={12} color="secondary">
+                <Text color="secondary" fontSize={12}>
                   Input prompt
                 </Text>
                 <textarea
@@ -109,12 +114,12 @@ export default function Deploy({
             </div>
           </div>
           <div className={styles["form-section"]}>
-            <Text fontSize={20} type="H3" bold>
+            <Text bold color="primary" fontSize={20} type="H3">
               Version & Notes
             </Text>
             <div className={styles["form-fields"]}>
               <div>
-                <Text fontSize={12} color="secondary">
+                <Text color="secondary" fontSize={12}>
                   Version
                 </Text>
                 <input
@@ -124,7 +129,7 @@ export default function Deploy({
                 />
               </div>
               <div>
-                <Text fontSize={12} color="secondary">
+                <Text color="secondary" fontSize={12}>
                   Notes
                 </Text>
                 <textarea
@@ -135,21 +140,13 @@ export default function Deploy({
             </div>
           </div>
           <div className={styles["button-container"]}>
-            <button className={styles["back-button"]}>
-              Back
-            </button>
+            <button className={styles["back-button"]}>Back</button>
             <div className={styles["button-group"]}>
               <button className={styles["draft-button"]}>
-                {/* TODO(aidan): replace svg with public icon once icons PR is merged */}
-                <svg fill="none" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17 3H7C5.9 3 5 3.9 5 5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V5C19 3.9 18.1 3 17 3ZM17 19H7V5H17V19Z" fill="currentColor"/>
-                  <path d="M9 7H15V9H9V7ZM9 11H15V13H9V11ZM9 15H13V17H9V15Z" fill="currentColor"/>
-                </svg>
+                <DraftIcon />
                 Save as Draft
               </button>
-              <button className={styles["deploy-button"]}>
-                Deploy
-              </button>
+              <button className={styles["deploy-button"]}>Deploy</button>
             </div>
           </div>
           <div className={styles["footer-container"]}>
@@ -160,19 +157,13 @@ export default function Deploy({
                 <option value="fr">Français</option>
                 <option value="de">Deutsch</option>
               </select>
-              <img 
-                alt="dropdown" 
-                className={styles["language-icon"]}
-                height="20" 
-                src="/src/public/icons/chevron-down.svg" 
-                width="20"
-              />
+              <ChevronDownIcon className={styles["language-icon"]} />
             </div>
             <div className={styles["support-container"]}>
-              <Text fontSize={14} color="secondary">
+              <Text color="secondary" fontSize={14}>
                 Having trouble?
               </Text>
-              <a href="#" className={styles["support-link"]}>
+              <a className={styles["support-link"]} href="#">
                 Contact support
               </a>
             </div>

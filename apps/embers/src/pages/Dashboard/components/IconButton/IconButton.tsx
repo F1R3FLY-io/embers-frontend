@@ -1,17 +1,17 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import styles from "./IconButton.module.scss";
 
 interface IconButtonProps {
-  icon: ReactNode;
   children: ReactNode;
-  onClick?: () => void;
   className?: string;
+  icon: ReactNode;
+  onClick?: () => void;
 }
 
-export function IconButton({ icon, children, onClick, className }: IconButtonProps) {
+export function IconButton({ children, icon, onClick }: IconButtonProps) {
   return (
-    <button className={`${styles["icon-button"]} ${className || ""}`} onClick={onClick}>
+    <button className={styles["icon-button"]} onClick={onClick}>
       {icon}
       <span>{children}</span>
     </button>

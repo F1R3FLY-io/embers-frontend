@@ -14,10 +14,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   return (
     <>
       <div
-        className={classNames(
-          styles["grid-box"],
-          styles["create-box"],
-        )}
+        className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
       >
         <AgentIcon className={styles["create-robot-icon"]} />

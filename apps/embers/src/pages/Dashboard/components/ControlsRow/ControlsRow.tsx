@@ -10,21 +10,21 @@ interface ControlsRowProps {
   sortBy: "date" | "name";
 }
 
-export function ControlsRow({ 
-  onSearchChange, 
-  onSortChange, 
-  searchQuery, 
-  selectedTab, 
-  sortBy 
+export function ControlsRow({
+  onSearchChange,
+  onSortChange,
+  searchQuery,
+  selectedTab,
+  sortBy,
 }: ControlsRowProps) {
   const placeholder = `Type to search ${selectedTab === "agents" ? "agents" : "agent teams"}...`;
 
   return (
     <div className={styles["controls-row"]}>
       <SortControl sortBy={sortBy} onSortChange={onSortChange} />
-      <SearchControl 
-        placeholder={placeholder} 
-        searchQuery={searchQuery} 
+      <SearchControl
+        placeholder={placeholder}
+        searchQuery={searchQuery}
         onSearchChange={onSearchChange}
       />
     </div>

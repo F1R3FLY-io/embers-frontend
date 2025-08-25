@@ -9,13 +9,13 @@ export function AgentTeamsGrid() {
   return (
     <>
       <div
-        className={classNames(
-          styles["grid-box"],
-          styles["create-box"],
-        )}
+        className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
       >
-        <AgentTeamIcon className={styles["create-robot-icon"]} data-agent-teams />
+        <AgentTeamIcon
+          data-agent-teams
+          className={styles["create-robot-icon"]}
+        />
         <Text color="secondary" type="H4">
           Create new Agent Team
         </Text>
@@ -38,5 +38,3 @@ export function AgentTeamsGrid() {
     </>
   );
 }
-
-

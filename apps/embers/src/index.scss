@@ -11,7 +11,7 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
+  overflow: hidden auto;
   background-color: var(--background-color);
   transition:
     background-color 0.3s ease,

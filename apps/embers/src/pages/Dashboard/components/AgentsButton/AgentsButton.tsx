@@ -1,16 +1,22 @@
+import type { ReactNode } from "react";
+
 import classNames from "classnames";
-import { ReactNode } from "react";
 
 import styles from "./AgentsButton.module.scss";
 
 interface AgentsButtonProps {
-  icon: ReactNode;
   children: ReactNode;
+  icon: ReactNode;
   isSelected?: boolean;
   onClick?: () => void;
 }
 
-export function AgentsButton({ icon, children, isSelected, onClick }: AgentsButtonProps) {
+export function AgentsButton({
+  children,
+  icon,
+  isSelected,
+  onClick,
+}: AgentsButtonProps) {
   return (
     <button
       className={classNames(

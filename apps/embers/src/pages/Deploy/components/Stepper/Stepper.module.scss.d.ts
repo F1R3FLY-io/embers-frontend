@@ -1,7 +1,7 @@
 declare const classNames: {
   readonly stepper: "stepper";
-  readonly stepContainer: "stepContainer";
-  readonly stepContent: "stepContent";
+  readonly "step-container": "step-container";
+  readonly "step-content": "step-content";
   readonly circle: "circle";
   readonly line: "line";
   readonly label: "label";

@@ -11,5 +11,3 @@ export function AgentsTitle({ getTitle }: AgentsTitleProps) {
     </Text>
   );
 }
-
-
