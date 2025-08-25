@@ -1,0 +1,76 @@
+.grid-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: 16px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  animation: tile-enter 0.5s ease-in-out forwards;
+  animation-delay: var(--tile-delay, 0s);
+
+  &:hover {
+    border-color: var(--text-color-primary);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    transform: translateY(-2px);
+  }
+
+  &.create-box {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-style: dashed;
+    border-width: 2.5px;
+
+    &:hover {
+      span {
+        color: var(--text-color-primary);
+      }
+    }
+
+    .create-robot-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      fill: var(--icon-accent);
+      stroke: var(--icon-accent);
+
+      /* First robot (front) - icon accent color */
+      path:nth-child(1),
+      path:nth-child(2) {
+        fill: var(--icon-accent);
+        stroke: var(--icon-accent);
+        stroke-width: 0;
+      }
+
+      /* Shadow/overlap areas - background color */
+      path:nth-child(3),
+      path:nth-child(4) {
+        fill: var(--background-color);
+        stroke: var(--background-color);
+        stroke-width: 0;
+      }
+
+      /* Second robot (back) - icon accent color */
+      path:nth-child(5) {
+        fill: var(--icon-accent);
+        stroke: var(--icon-accent);
+        stroke-width: 0;
+      }
+    }
+  }
+}
+
+/* Animations */
+@keyframes tile-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -10,10 +10,14 @@ import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
-import SearchIcon from "@/public/icons/search-light-line-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
-import SortIcon from "@/public/icons/sort-icon.svg?react";
 
+import { AgentsButton } from "./components/AgentsButton";
+import { AgentsGrid } from "./components/AgentsGrid";
+import { AgentsTitle } from "./components/AgentsTitle";
+import { AgentTeamsGrid } from "./components/AgentTeamsGrid";
+import { ControlsRow } from "./components/ControlsRow";
+import { IconButton } from "./components/IconButton";
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
@@ -63,12 +67,9 @@ export default function Dashboard() {
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
-            <button
-              className={classNames(
-                styles["icon-button"],
-                styles["agents-button"],
-                selectedTab === "agents" && styles.selected,
-              )}
+            <AgentsButton
+              icon={<AgentIcon data-agent />}
+              isSelected={selectedTab === "agents"}
               onClick={() => {
                 if (selectedTab !== "agents") {
                   setIsTransitioning(true);
@@ -79,17 +80,13 @@ export default function Dashboard() {
                 }
               }}
             >
-              <AgentIcon data-agent />
               <Text bold color="primary" type="H4">
                 Agents
               </Text>
-            </button>
-            <button
-              className={classNames(
-                styles["icon-button"],
-                styles["agents-button"],
-                selectedTab === "agent-teams" && styles.selected,
-              )}
+            </AgentsButton>
+            <AgentsButton
+              icon={<AgentTeamIcon data-agent-teams />}
+              isSelected={selectedTab === "agent-teams"}
               onClick={() => {
                 if (selectedTab !== "agent-teams") {
                   setIsTransitioning(true);
@@ -100,27 +97,24 @@ export default function Dashboard() {
                 }
               }}
             >
-              <AgentTeamIcon data-agent-teams />
               <Text color="primary" type="H4">
                 Agent Teams
               </Text>
-            </button>
+            </AgentsButton>
           </div>
           <div className={styles["dashboard-column"]}>
             <div className={styles["dashboard-divider"]} />
             <div className={styles["dashboard-buttons"]}>
-              <button className={styles["icon-button"]}>
-                <DocumentationIcon />
+              <IconButton icon={<DocumentationIcon />}>
                 <Text color="primary" type="H4">
                   Documentation
                 </Text>
-              </button>
-              <button className={styles["icon-button"]} onClick={logout}>
-                <LogoutIcon />
+              </IconButton>
+              <IconButton icon={<LogoutIcon />} onClick={logout}>
                 <Text color="primary" type="H4">
                   Logout
                 </Text>
-              </button>
+              </IconButton>
             </div>
           </div>
         </div>
@@ -132,42 +126,16 @@ export default function Dashboard() {
               isTransitioning ? styles.entering : styles.entered,
             )}
           >
-            <Text bold color="primary" type="H2">
-              {selectedTab === "agents" ? "Agents" : "Agent Teams"}
-            </Text>
-            <div className={styles["controls-row"]}>
-              <div className={styles["sort-control"]}>
-                <SortIcon className={styles["sort-icon"]} />
-                <Text color="primary" type="H4">
-                  Sort {selectedTab === "agents" ? "agents" : "agent teams"} by
-                </Text>
-                <div className={styles["sort-dropdown"]}>
-                  <select
-                    className={styles.dropdown}
-                    value={sortBy}
-                    onChange={(e) =>
-                      setSortBy(e.target.value as "date" | "name")
-                    }
-                  >
-                    <option value="date">Date</option>
-                    <option value="name">Name</option>
-                  </select>
-                  <ChevronIcon className={styles.chevron} />
-                </div>
-              </div>
-              <div className={styles["search-control"]}>
-                <div className={styles["search-input-container"]}>
-                  <SearchIcon className={styles["search-icon"]} />
-                  <input
-                    className={styles["search-input"]}
-                    placeholder={`Type to search ${selectedTab === "agents" ? "agents" : "agent teams"}...`}
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
+            <AgentsTitle
+              getTitle={() => selectedTab === "agents" ? "Agents" : "Agent Teams"}
+            />
+            <ControlsRow
+              searchQuery={searchQuery}
+              selectedTab={selectedTab}
+              sortBy={sortBy}
+              onSearchChange={setSearchQuery}
+              onSortChange={setSortBy}
+            />
           </div>
           <div
             className={classNames(
@@ -177,66 +145,9 @@ export default function Dashboard() {
             )}
           >
             {selectedTab === "agents" ? (
-              <>
-                <div
-                  className={classNames(
-                    styles["grid-box"],
-                    styles["create-box"],
-                  )}
-                  style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
-                >
-                  <AgentIcon className={styles["create-robot-icon"]} />
-                  <Text color="secondary" type="H4">
-                    Create new Agent
-                  </Text>
-                </div>
-                {isSuccess &&
-                  data.agents.map((agent, index) => (
-                    <div
-                      key={agent.id}
-                      className={styles["grid-box"]}
-                      style={
-                        {
-                          "--tile-delay": `${0.2 + index * 0.1}s`,
-                        } as React.CSSProperties
-                      }
-                    >
-                      <Text color="secondary" type="H4">
-                        Agent {agent.name}
-                      </Text>
-                    </div>
-                  ))}
-              </>
+              <AgentsGrid agents={data?.agents || []} isSuccess={isSuccess} />
             ) : (
-              <>
-                <div
-                  className={classNames(
-                    styles["grid-box"],
-                    styles["create-box"],
-                  )}
-                  style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
-                >
-                  <AgentIcon className={styles["create-robot-icon"]} />
-                  <Text color="secondary" type="H4">
-                    Create new Agent Team
-                  </Text>
-                </div>
-                {Array.from({ length: 0 }, (_, index) => (
-                  <div
-                    key={index + 1}
-                    className={styles["grid-box"]}
-                    style={
-                      {
-                        "--tile-delay": `${0.2 + index * 0.1}s`,
-                      } as React.CSSProperties
-                    }
-                  >
-                    <Text color="secondary" type="H4">
-                      {`Agent Team ${index + 1}`}
-                    </Text>
-                  </div>
-                ))}
-              </>
+              <AgentTeamsGrid />
             )}
           </div>
         </div>
