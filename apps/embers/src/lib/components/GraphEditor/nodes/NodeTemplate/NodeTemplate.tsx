@@ -4,23 +4,28 @@ import type { FC, ReactNode } from "react";
 import { Handle } from "@xyflow/react";
 import classNames from "classnames";
 
+import { Text } from "@/lib/components/Text";
+import SettingsIcon from "@/public/icons/settings-icon.svg?react";
+
 import styles from "./NodeTemplate.module.scss";
 
 type NodeTemplateProps = {
-  children: ReactNode;
   className?: string;
   displayName: string;
   handlers?: {
     position: Position;
     type: HandleType;
   }[];
+  icon: ReactNode;
+  title: string;
 };
 
 export function NodeTemplate({
-  children,
   className,
   displayName,
   handlers,
+  icon,
+  title,
 }: NodeTemplateProps) {
   const component: FC<NodeProps> = ({ selected }) => {
     const containerClassName = classNames(styles.container, className, {
@@ -29,7 +34,13 @@ export function NodeTemplate({
 
     return (
       <div className={containerClassName}>
-        {children}
+        <div className={styles.content}>
+          {icon}
+          <Text bold color="primary" type="normal">
+            {title}
+          </Text>
+          <SettingsIcon className={styles["settings-icon"]} />
+        </div>
         {handlers?.map(({ position, type }, index) => (
           <Handle
             key={index}
