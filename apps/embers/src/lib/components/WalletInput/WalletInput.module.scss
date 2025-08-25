@@ -22,6 +22,10 @@
   &:focus-within {
     border-color: var(--border-selected);
   }
+
+  &.error {
+    border-color: var(--text-danger);
+  }
 }
 
 .input {
@@ -38,8 +42,4 @@
   height: 24px;
   stroke: var(--icon-accent);
   transform: rotate(180deg);
-}
-
-.error {
-  border-color: var(--text-danger) !important;
 }

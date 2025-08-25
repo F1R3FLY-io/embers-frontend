@@ -4,13 +4,37 @@
   border-style: solid;
   border-width: 1px;
   border-radius: 8px;
+
+  &.selected {
+    background-color: var(--background-blue-transparent);
+  }
 }
 
-.selected {
-  background-color: var(--background-blue-transparent);
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+
+  img {
+    max-height: 24px;
+    object-fit: contain;
+    border: 0.6px solid var(--divider-primary);
+    border-radius: 3.6px;
+  }
+}
+
+.settings-icon {
+  max-width: 16px;
+  max-height: 16px;
+  margin-left: auto;
+  cursor: pointer;
+  fill: var(--text-color-primary);
 }
 
 .handle {
+  width: 10px;
+  height: 10px;
   background-color: #208bfe !important;
   border-color: #143f6d !important;
 }

@@ -1,13 +1,17 @@
-import type { ReactNode } from "react";
-
 import { ControlledMenu, MenuItem } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 
+import { Text } from "@/lib/components/Text";
+
+export type MenuItem = {
+  content: string;
+  hidden?: boolean;
+  onClick: () => void;
+  type: "text";
+};
+
 type ContextMenuProps = {
-  items: {
-    element: ReactNode;
-    onClick: () => void;
-  }[];
+  items: MenuItem[];
   onClose: () => void;
   open: boolean;
   position: {
@@ -29,11 +33,13 @@ export function ContextMenu({
       state={open ? "open" : "closed"}
       onClose={onClose}
     >
-      {items.map((item, index) => (
-        <MenuItem key={index} onClick={item.onClick}>
-          {item.element}
-        </MenuItem>
-      ))}
+      {items.map((item, index) =>
+        item.hidden ? null : (
+          <MenuItem key={index} onClick={item.onClick}>
+            <Text type="normal">{item.content}</Text>
+          </MenuItem>
+        ),
+      )}
     </ControlledMenu>
   );
 }

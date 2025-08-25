@@ -4,7 +4,7 @@ import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
-import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider.tsx";
+import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
@@ -12,11 +12,10 @@ import styles from "./App.module.scss";
 import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
-const Edit = lazy(async () => import("@/pages/Edit"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
-const GraphEditor = lazy(async () => import("@/lib/components/GraphEditor"));
-const CodeEditor = lazy(async () => import("@/pages/CodeEditor"));
+const CreateAiTeamFlow = lazy(async () => import("@/pages/CreateAiTeamFlow"));
+const CreateAiAgentFlow = lazy(async () => import("@/pages/CreateAiAgentFlow"));
 
 const queryClient = new QueryClient();
 
@@ -32,12 +31,16 @@ export default function App() {
                   <Routes>
                     <Route element={<Home />} path="/" />
                     <Route element={<Login />} path="/login" />
-                    {/* until full page is ready */}
-                    <Route element={<CodeEditor />} path="/code" />
-                    <Route element={<GraphEditor />} path="/editor" />
+                    <Route
+                      element={<CreateAiTeamFlow />}
+                      path="/create-ai-team"
+                    />
                     <Route element={<ProtectedRoute />}>
                       <Route element={<Dashboard />} path="/dashboard" />
-                      <Route element={<Edit />} path="/edit" />
+                      <Route
+                        element={<CreateAiAgentFlow />}
+                        path="/create-ai-agent"
+                      />
                     </Route>
                   </Routes>
                 </div>

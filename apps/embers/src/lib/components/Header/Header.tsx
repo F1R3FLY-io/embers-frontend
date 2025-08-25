@@ -1,7 +1,7 @@
 import type React from "react";
 
 import { Text } from "@/lib/components/Text";
-import { useLayout } from "@/lib/providers/layout/useLayout.ts";
+import { useLayout } from "@/lib/providers/layout/useLayout";
 
 import styles from "./Header.module.scss";
 
@@ -9,13 +9,13 @@ interface HeaderProps {
   actions?: React.ReactNode;
 }
 
-const Header: React.FC<HeaderProps> = ({ actions }) => {
+export const Header: React.FC<HeaderProps> = ({ actions }) => {
   const { headerTitle } = useLayout();
   return (
     <header className={styles["header-bar"]}>
       <div className={styles["header-content"]}>
         <div className={styles["app-title"]}>
-          <Text color="primary" type="H3">
+          <Text color="primary" type="H4">
             {headerTitle}
           </Text>
         </div>
@@ -26,5 +26,3 @@ const Header: React.FC<HeaderProps> = ({ actions }) => {
     </header>
   );
 };
-
-export default Header;

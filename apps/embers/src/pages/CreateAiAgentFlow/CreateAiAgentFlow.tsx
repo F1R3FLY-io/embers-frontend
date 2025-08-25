@@ -4,11 +4,11 @@ import { Editor } from "@f1r3fly-io/lightning-bug";
 import { RholangExtension } from "@f1r3fly-io/lightning-bug/extensions";
 import { useEffect, useRef } from "react";
 
-import { ErrorBoundary } from "@/lib/errorBoundary.ts";
-import { useLayout } from "@/lib/providers/layout/useLayout.ts";
+import { ErrorBoundary } from "@/lib/ErrorBoundary";
+import { CodeLayout } from "@/lib/layouts/Code";
+import { useLayout } from "@/lib/providers/layout/useLayout";
 
-import DefaultLayout from "../../lib/components/Layouts/Code";
-import styles from "./CodeEditor.module.scss";
+import styles from "./CreateAiAgentFlow.module.scss";
 
 export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
@@ -32,16 +32,16 @@ export default function CodeEditor() {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [setHeaderTitle, editorRef]);
+  }, [setHeaderTitle]);
 
   return (
-    <DefaultLayout>
+    <CodeLayout>
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
         <div className={styles.container}>
           <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
         </div>
       </ErrorBoundary>
-    </DefaultLayout>
+    </CodeLayout>
   );
 }

@@ -2,7 +2,7 @@ import type React from "react";
 
 import { useState } from "react";
 
-import { LayoutContext } from "./useLayout.ts";
+import { LayoutContext } from "./useLayout";
 
 export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

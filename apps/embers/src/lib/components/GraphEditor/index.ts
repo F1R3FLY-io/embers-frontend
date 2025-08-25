@@ -1,3 +1,1 @@
-import { GraphEditor } from "./GraphEditor";
-
-export default GraphEditor;
+export { GraphEditor } from "./GraphEditor";

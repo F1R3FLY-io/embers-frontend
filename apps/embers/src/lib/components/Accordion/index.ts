@@ -1,1 +1,1 @@
-export { default } from "./Accordion.tsx";
+export { Accordion } from "./Accordion";

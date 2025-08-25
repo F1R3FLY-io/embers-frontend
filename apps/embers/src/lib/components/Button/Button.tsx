@@ -23,7 +23,9 @@ export function Button({ children, className, onClick, type }: ButtonProps) {
 
   return (
     <button className={btnClass} onClick={onClick}>
-      <Text bold>{children}</Text>
+      <Text bold type="normal">
+        {children}
+      </Text>
     </button>
   );
 }

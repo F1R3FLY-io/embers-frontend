@@ -19,7 +19,9 @@ export class ErrorBoundary extends React.Component<
     // eslint-disable-next-line no-console
     console.error("Error caught in boundary:", error, errorInfo);
   }
-  // eslint-disable-next-line
+
+  // async components are not supported yet
+  // eslint-disable-next-line @typescript-eslint/promise-function-async
   public render() {
     if (this.state.hasError) {
       return `${this.state.error}`;

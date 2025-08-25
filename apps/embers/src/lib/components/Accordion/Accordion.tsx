@@ -1,7 +1,7 @@
 import type React from "react";
 
 import classNames from "classnames";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Text } from "@/lib/components/Text";
 
@@ -14,20 +14,24 @@ interface AccordionProps {
   title: string;
 }
 
-const Accordion: React.FC<AccordionProps> = ({
+export const Accordion: React.FC<AccordionProps> = ({
   actions,
   children,
   defaultOpen = false,
   title,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
-  const className = classNames(styles["accordion-header"], {
-    [styles.open]: open,
-  });
+  const toggleOpen = useCallback(() => setOpen((prev) => !prev), []);
+
   return (
     <div>
-      <div className={className} onClick={() => setOpen(!open)}>
-        <Text type="H4">
+      <div
+        className={classNames(styles["accordion-header"], {
+          [styles.open]: open,
+        })}
+        onClick={toggleOpen}
+      >
+        <Text color="primary" type="large">
           {title}
           <i className={open ? "fa fa-chevron-down" : "fa fa-chevron-up"} />
         </Text>
@@ -35,12 +39,12 @@ const Accordion: React.FC<AccordionProps> = ({
       </div>
 
       <div
-        className={`${styles["accordion-content"]} ${open ? styles.open : ""}`}
+        className={classNames(styles["accordion-content"], {
+          [styles.open]: open,
+        })}
       >
         {children}
       </div>
     </div>
   );
 };
-
-export default Accordion;

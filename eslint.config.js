@@ -42,13 +42,13 @@ export default tseslint.config(
       "class-methods-use-this": [
         "error",
         {
-          "exceptMethods": [
+          exceptMethods: [
             "componentDidCatch",
             "componentDidMount",
             "componentWillUnmount",
-            "render"
-          ]
-        }
+            "render",
+          ],
+        },
       ],
       curly: ["error", "all"],
       "default-case-last": "error",
@@ -62,6 +62,14 @@ export default tseslint.config(
         { enforceForTSTypes: true },
       ],
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          ts: "never",
+          tsx: "never",
+        },
+      ],
       "import/no-duplicates": "error",
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
