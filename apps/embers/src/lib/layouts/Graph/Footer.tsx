@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ deployments, logs }) => {
     <>
       <Accordion title="Logs">
         {logs.map((log) => (
-          <pre key={log.time.toISOString()} style={{ wordBreak: "break-word" }}>
+          <pre key={log.time.toISOString()}>
             <Text color="secondary">{formatTime(log.time)}</Text>
             <Text className={logLevelClassName(log.logLevel)}>
               [{log.logLevel}]
