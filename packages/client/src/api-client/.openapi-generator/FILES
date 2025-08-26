@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/AIAgentsApi.ts
 apis/AIAgentsTeamsApi.ts
 apis/WalletsApi.ts
@@ -7,9 +6,14 @@ index.ts
 models/Agent.ts
 models/AgentHeader.ts
 models/Agents.ts
+models/AgentsTeam.ts
+models/AgentsTeamHeader.ts
+models/AgentsTeams.ts
 models/Boost.ts
 models/CreateAgentReq.ts
 models/CreateAgentResp.ts
+models/CreateAgentsTeamReq.ts
+models/CreateAgentsTeamResp.ts
 models/CreateTestwalletResp.ts
 models/DeployAgentResp.ts
 models/DeployDemoReq.ts
@@ -29,6 +33,7 @@ models/Request.ts
 models/RequestStatus.ts
 models/RunDemoReq.ts
 models/SaveAgentResp.ts
+models/SaveAgentsTeamResp.ts
 models/SignedContract.ts
 models/SignedTestDeployLogs.ts
 models/TestDeployFailed.ts
