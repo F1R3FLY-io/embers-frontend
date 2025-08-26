@@ -1,55 +1,63 @@
 import type React from "react";
 
+import classNames from "classnames";
+
 import { Accordion } from "@/lib/components/Accordion";
-import { Button } from "@/lib/components/Button";
+import { Text } from "@/lib/components/Text";
 
 import styles from "./Graph.module.scss";
 
-export const Footer: React.FC = () => (
-  <>
-    <Accordion
-      actions={
-        <Button
-          className={styles["accordion-action"]}
-          type="secondary"
-          onClick={() => {}}
-        >
-          {/*todo add support for JSX elements*/}
-          {/*<i className="fa fa-play"/> test*/}
-          Test it
-        </Button>
-      }
-      title="Test Agent"
-    >
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </Accordion>
-    <Accordion title="Logs">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </Accordion>
-    <Accordion title="Deploy History">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </Accordion>
-  </>
-);
+type LogLevel = "info" | "error";
+
+export type FooterProps = {
+  deployments: {
+    success: boolean;
+    time: Date;
+  }[];
+  logs: {
+    log: string;
+    logLevel: LogLevel;
+    time: Date;
+  }[];
+};
+
+export const Footer: React.FC<FooterProps> = ({ deployments, logs }) => {
+  const logLevelClassName = (logLevel: LogLevel) =>
+    classNames({
+      [styles["error-log"]]: logLevel === "error",
+      [styles["info-log"]]: logLevel === "info",
+    });
+
+  return (
+    <>
+      <Accordion title="Logs">
+        {logs.map((log) => (
+          <pre key={log.time.toISOString()} style={{ wordBreak: "break-word" }}>
+            <Text color="secondary">{formatTime(log.time)}</Text>
+            <Text className={logLevelClassName(log.logLevel)}>
+              [{log.logLevel}]
+            </Text>
+            <Text color="primary">{log.log}</Text>
+          </pre>
+        ))}
+      </Accordion>
+      <Accordion title="Deploy History">
+        {deployments.map((deploy) => (
+          <pre key={deploy.time.toISOString()}>
+            <Text color="secondary">{formatTime(deploy.time)}</Text>
+            <Text color="primary">: </Text>
+            {deploy.success ? (
+              <Text color="primary">Success</Text>
+            ) : (
+              <Text color="primary">Failure</Text>
+            )}
+          </pre>
+        ))}
+      </Accordion>
+    </>
+  );
+};
+
+function formatTime(time: Date) {
+  return time.toISOString().replace("T", " ").substring(0, 19);
+}

@@ -1,4 +1,5 @@
 declare const classNames: {
-  readonly "accordion-action": "accordion-action";
+  readonly "info-log": "info-log";
+  readonly "error-log": "error-log";
 };
 export default classNames;

@@ -2,7 +2,7 @@ import type React from "react";
 
 import { Button } from "@/lib/components/Button";
 
-type HeaderProps = {
+export type HeaderProps = {
   onDeploy: () => void;
   onRun: () => void;
 };
