@@ -1,10 +1,11 @@
 import type React from "react";
 
-import Accordion from "@/lib/components/Accordion";
+import { Accordion } from "@/lib/components/Accordion";
 import { Button } from "@/lib/components/Button";
 
 import styles from "./Code.module.scss";
-const CodeFooter: React.FC = () => (
+
+export const Footer: React.FC = () => (
   <>
     <Accordion
       actions={
@@ -52,4 +53,3 @@ const CodeFooter: React.FC = () => (
     </Accordion>
   </>
 );
-export default CodeFooter;

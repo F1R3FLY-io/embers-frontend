@@ -1,7 +1,7 @@
 import type React from "react";
 
-import Footer from "@/lib/components/Footer";
-import Header from "@/lib/components/Header";
+import { Footer } from "@/lib/components/Footer";
+import { Header } from "@/lib/components/Header";
 
 import styles from "./Layout.module.scss";
 
@@ -13,7 +13,7 @@ interface LayoutProps {
   sidebarWidth?: number | string;
 }
 
-const Layout: React.FC<LayoutProps> = ({
+export const Layout: React.FC<LayoutProps> = ({
   children,
   footer,
   headerActions,
@@ -41,5 +41,3 @@ const Layout: React.FC<LayoutProps> = ({
     </div>
   );
 };
-
-export default Layout;
