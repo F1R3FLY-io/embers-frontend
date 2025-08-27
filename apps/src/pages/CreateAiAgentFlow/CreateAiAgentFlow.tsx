@@ -1,7 +1,7 @@
 // Optional lightning-bug components - loaded dynamically to avoid dependency errors
 let Editor: any = null;
 let RholangExtension: any = null;
-// @ts-expect-error - EditorRef is assigned but not used, kept for future extension support  
+// @ts-expect-error - EditorRef is assigned but not used, kept for future extension support
 let EditorRef: any = null;
 
 // Function to load lightning-bug at runtime using conditional require
@@ -10,12 +10,16 @@ async function loadLightningBug() {
     try {
       // Use eval to prevent Vite from trying to resolve these at build time
       const lightningBug = eval('require("@f1r3fly-io/lightning-bug")');
-      const extensions = eval('require("@f1r3fly-io/lightning-bug/extensions")');
+      const extensions = eval(
+        'require("@f1r3fly-io/lightning-bug/extensions")',
+      );
       Editor = lightningBug.Editor;
       RholangExtension = extensions.RholangExtension;
       EditorRef = lightningBug.EditorRef;
     } catch (error) {
-      console.warn("Lightning-bug package not available. Code editor will be disabled.");
+      console.warn(
+        "Lightning-bug package not available. Code editor will be disabled.",
+      );
     }
     resolve();
   });
@@ -32,17 +36,17 @@ export default function CodeEditor() {
   const editorRef = useRef<any>(null);
   const { setHeaderTitle } = useLayout();
   const [isLightningBugLoaded, setIsLightningBugLoaded] = useState(false);
-  
+
   // Load lightning-bug components dynamically
   useEffect(() => {
     loadLightningBug().then(() => {
       setIsLightningBugLoaded(true);
     });
   }, []);
-  
+
   useEffect(() => {
     setHeaderTitle("BioMatch Agent");
-    
+
     if (!Editor || !editorRef.current) {
       return;
     }
@@ -67,15 +71,22 @@ export default function CodeEditor() {
       <ErrorBoundary>
         <div className={styles.container}>
           {!isLightningBugLoaded ? (
-            <div style={{ color: '#666', padding: '2rem', textAlign: 'center' }}>
+            <div
+              style={{ color: "#666", padding: "2rem", textAlign: "center" }}
+            >
               <p>Loading code editor...</p>
             </div>
           ) : Editor ? (
             <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
           ) : (
-            <div style={{ color: '#666', padding: '2rem', textAlign: 'center' }}>
+            <div
+              style={{ color: "#666", padding: "2rem", textAlign: "center" }}
+            >
               <p>Code editor not available.</p>
-              <p>Install @f1r3fly-io/lightning-bug package for full functionality.</p>
+              <p>
+                Install @f1r3fly-io/lightning-bug package for full
+                functionality.
+              </p>
             </div>
           )}
         </div>

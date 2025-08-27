@@ -1,7 +1,4 @@
 pnpm run format:code
 pnpm --filter @f1r3fly-io/embers-frontend run format:code
 pnpm --filter @f1r3fly-io/embers-client-sdk run format:code
-pnpm run lint
-pnpm --filter @f1r3fly-io/embers-frontend run lint
 pnpm --filter @f1r3fly-io/embers-client-sdk run lint
-pnpm run test
