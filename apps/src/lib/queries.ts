@@ -13,7 +13,7 @@ export function useAgents() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgents() as Promise<unknown>,
+    queryFn: async () => api.agents.getAgents(),
     queryKey: ["agents", api.wallets.address],
   });
 }
@@ -22,7 +22,7 @@ export function useAgentVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgentVersions(id) as Promise<unknown>,
+    queryFn: async () => api.agents.getAgentVersions(id),
     queryKey: ["agents", api.wallets.address, id],
   });
 }
@@ -31,8 +31,7 @@ export function useAgent(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () =>
-      api.agents.getAgentVersion(id, version) as Promise<unknown>,
+    queryFn: async () => api.agents.getAgentVersion(id, version),
     queryKey: ["agents", api.wallets.address, id, version],
   });
 }
@@ -41,7 +40,7 @@ export function useTestKey() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getTestWalletKey() as Promise<unknown>,
+    queryFn: async () => api.agents.getTestWalletKey(),
     queryKey: ["agents", "test-key"],
   });
 }
@@ -51,7 +50,7 @@ export function useCreateAgentMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) =>
-      api.agents.createAgent(params) as Promise<unknown>,
+      api.agents.createAgent(params),
   });
 }
 
@@ -60,7 +59,7 @@ export function useSaveAgentMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) =>
-      api.agents.saveAgentVersion(id, params) as Promise<unknown>,
+      api.agents.saveAgentVersion(id, params),
   });
 }
 
@@ -76,7 +75,7 @@ export function useDeployTestMutation() {
       env?: string;
       test: string;
       testKey: PrivateKey;
-    }) => api.agents.testDeployAgent(testKey, test, env) as Promise<unknown>,
+    }) => api.agents.testDeployAgent(testKey, test, env),
   });
 }
 
@@ -90,7 +89,7 @@ export function useDeployDemo() {
     mutationFn: async (name: string) =>
       client.apiAiAgentsTeamsDeployDemoPost({
         deployDemoReq: { name },
-      }) as Promise<unknown>,
+      }),
   });
 }
 
@@ -104,7 +103,7 @@ export function useRunDemo() {
     mutationFn: async (props: { name: string; prompt: string }) =>
       client.apiAiAgentsTeamsRunDemoPost({
         runDemoReq: props,
-      }) as Promise<unknown>,
+      }),
   });
 }
 
@@ -112,7 +111,7 @@ export function useAgentsTeams() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeams() as Promise<unknown>,
+    queryFn: async () => api.agentsTeams.getAgentsTeams(),
     queryKey: ["agents-teams", api.wallets.address],
   });
 }
@@ -121,8 +120,7 @@ export function useAgentsTeamVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () =>
-      api.agentsTeams.getAgentsTeamVersions(id) as Promise<unknown>,
+    queryFn: async () => api.agentsTeams.getAgentsTeamVersions(id),
     queryKey: ["agents-teams", api.wallets.address, id],
   });
 }
@@ -131,8 +129,7 @@ export function useAgentsTeam(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () =>
-      api.agentsTeams.getAgentsTeamVersion(id, version) as Promise<unknown>,
+    queryFn: async () => api.agentsTeams.getAgentsTeamVersion(id, version),
     queryKey: ["agents-teams", api.wallets.address, id, version],
   });
 }
@@ -142,7 +139,7 @@ export function useCreateAgentsTeamMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.createAgentsTeam(params) as Promise<unknown>,
+      api.agentsTeams.createAgentsTeam(params),
   });
 }
 
@@ -151,6 +148,6 @@ export function useSaveAgentsTeamMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.saveAgentsTeamVersion(id, params) as Promise<unknown>,
+      api.agentsTeams.saveAgentsTeamVersion(id, params),
   });
 }
