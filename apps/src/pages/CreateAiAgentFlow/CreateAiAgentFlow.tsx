@@ -28,7 +28,7 @@ async function loadLightningBug() {
     resolve();
   });
 }
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
@@ -90,7 +90,13 @@ export default function CodeEditor() {
               <p>Loading code editor...</p>
             </div>
           ) : Editor ? (
-            <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
+            <>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */}
+              {React.createElement(Editor as any, {
+                languages: { rholang: RholangExtension },
+                ref: editorRef,
+              })}
+            </>
           ) : (
             <div
               style={{ color: "#666", padding: "2rem", textAlign: "center" }}
