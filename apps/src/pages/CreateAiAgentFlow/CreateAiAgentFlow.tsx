@@ -1,22 +1,25 @@
 // Optional lightning-bug components - loaded dynamically to avoid dependency errors
-let Editor: any = null;
-let RholangExtension: any = null;
+let Editor: unknown = null;
+let RholangExtension: unknown = null;
 // @ts-expect-error - EditorRef is assigned but not used, kept for future extension support
-let EditorRef: any = null;
+let _EditorRef: unknown = null;
 
 // Function to load lightning-bug at runtime using conditional require
 async function loadLightningBug() {
   return new Promise<void>((resolve) => {
     try {
       // Use eval to prevent Vite from trying to resolve these at build time
+      // eslint-disable-next-line no-eval
       const lightningBug = eval('require("@f1r3fly-io/lightning-bug")');
+      // eslint-disable-next-line no-eval
       const extensions = eval(
         'require("@f1r3fly-io/lightning-bug/extensions")',
       );
-      Editor = lightningBug.Editor;
-      RholangExtension = extensions.RholangExtension;
-      EditorRef = lightningBug.EditorRef;
-    } catch (error) {
+      Editor = (lightningBug as { Editor: unknown }).Editor;
+      RholangExtension = (extensions as { RholangExtension: unknown }).RholangExtension;
+      _EditorRef = (lightningBug as { EditorRef: unknown }).EditorRef;
+    } catch {
+      // eslint-disable-next-line no-console
       console.warn(
         "Lightning-bug package not available. Code editor will be disabled.",
       );
@@ -33,13 +36,13 @@ import { useLayout } from "@/lib/providers/layout/useLayout";
 import styles from "./CreateAiAgentFlow.module.scss";
 
 export default function CodeEditor() {
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<unknown>(null);
   const { setHeaderTitle } = useLayout();
   const [isLightningBugLoaded, setIsLightningBugLoaded] = useState(false);
 
   // Load lightning-bug components dynamically
   useEffect(() => {
-    loadLightningBug().then(() => {
+    void loadLightningBug().then(() => {
       setIsLightningBugLoaded(true);
     });
   }, []);
@@ -52,10 +55,12 @@ export default function CodeEditor() {
     }
 
     const interval = setInterval(() => {
-      if (editorRef.current?.isReady()) {
+      if ((editorRef.current as { isReady?: () => boolean })?.isReady?.()) {
         clearInterval(interval);
 
-        editorRef.current.openDocument(
+        (editorRef.current as {
+          openDocument?: (name: string, content: string, lang: string) => void;
+        }).openDocument?.(
           "demo.rho",
           'new x in { x!("Hello") | Nil }',
           "rholang",
@@ -77,7 +82,11 @@ export default function CodeEditor() {
               <p>Loading code editor...</p>
             </div>
           ) : Editor ? (
-            <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            <Editor
+              ref={editorRef}
+              languages={{ rholang: RholangExtension }}
+            />
           ) : (
             <div
               style={{ color: "#666", padding: "2rem", textAlign: "center" }}

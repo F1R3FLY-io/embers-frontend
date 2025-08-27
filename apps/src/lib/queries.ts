@@ -13,7 +13,7 @@ export function useAgents() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgents(),
+    queryFn: async () => api.agents.getAgents() as Promise<unknown>,
     queryKey: ["agents", api.wallets.address],
   });
 }
@@ -22,7 +22,7 @@ export function useAgentVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgentVersions(id),
+    queryFn: async () => api.agents.getAgentVersions(id) as Promise<unknown>,
     queryKey: ["agents", api.wallets.address, id],
   });
 }
@@ -31,7 +31,8 @@ export function useAgent(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgentVersion(id, version),
+    queryFn: async () =>
+      api.agents.getAgentVersion(id, version) as Promise<unknown>,
     queryKey: ["agents", api.wallets.address, id, version],
   });
 }
@@ -40,7 +41,7 @@ export function useTestKey() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getTestWalletKey(),
+    queryFn: async () => api.agents.getTestWalletKey() as Promise<unknown>,
     queryKey: ["agents", "test-key"],
   });
 }
@@ -50,7 +51,7 @@ export function useCreateAgentMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) =>
-      api.agents.createAgent(params),
+      api.agents.createAgent(params) as Promise<unknown>,
   });
 }
 
@@ -59,7 +60,7 @@ export function useSaveAgentMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) =>
-      api.agents.saveAgentVersion(id, params),
+      api.agents.saveAgentVersion(id, params) as Promise<unknown>,
   });
 }
 
@@ -75,7 +76,7 @@ export function useDeployTestMutation() {
       env?: string;
       test: string;
       testKey: PrivateKey;
-    }) => api.agents.testDeployAgent(testKey, test, env),
+    }) => api.agents.testDeployAgent(testKey, test, env) as Promise<unknown>,
   });
 }
 
@@ -87,7 +88,9 @@ export function useDeployDemo() {
 
   return useMutation({
     mutationFn: async (name: string) =>
-      client.apiAiAgentsTeamsDeployDemoPost({ deployDemoReq: { name } }),
+      client.apiAiAgentsTeamsDeployDemoPost({
+        deployDemoReq: { name },
+      }) as Promise<unknown>,
   });
 }
 
@@ -109,7 +112,7 @@ export function useAgentsTeams() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeams(),
+    queryFn: async () => api.agentsTeams.getAgentsTeams() as Promise<unknown>,
     queryKey: ["agents-teams", api.wallets.address],
   });
 }
@@ -118,7 +121,8 @@ export function useAgentsTeamVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeamVersions(id),
+    queryFn: async () =>
+      api.agentsTeams.getAgentsTeamVersions(id) as Promise<unknown>,
     queryKey: ["agents-teams", api.wallets.address, id],
   });
 }
@@ -127,7 +131,8 @@ export function useAgentsTeam(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeamVersion(id, version),
+    queryFn: async () =>
+      api.agentsTeams.getAgentsTeamVersion(id, version) as Promise<unknown>,
     queryKey: ["agents-teams", api.wallets.address, id, version],
   });
 }
@@ -137,7 +142,7 @@ export function useCreateAgentsTeamMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.createAgentsTeam(params),
+      api.agentsTeams.createAgentsTeam(params) as Promise<unknown>,
   });
 }
 
@@ -146,6 +151,6 @@ export function useSaveAgentsTeamMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.saveAgentsTeamVersion(id, params),
+      api.agentsTeams.saveAgentsTeamVersion(id, params) as Promise<unknown>,
   });
 }
