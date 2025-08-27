@@ -46,8 +46,7 @@ export interface GraphGVar {
 export const GraphGVarTypeEnum = {
   Var: "Var",
 } as const;
-export type GraphGVarTypeEnum =
-  (typeof GraphGVarTypeEnum)[keyof typeof GraphGVarTypeEnum];
+export type GraphGVarTypeEnum = (typeof GraphGVarTypeEnum)[keyof typeof GraphGVarTypeEnum];
 
 /**
  * Check if a given object implements the GraphGVar interface.
@@ -69,10 +68,7 @@ export function GraphGVarFromJSON(json: any): GraphGVar {
   return GraphGVarFromJSONTyped(json, false);
 }
 
-export function GraphGVarFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GraphGVar {
+export function GraphGVarFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphGVar {
   if (json == null) {
     return json;
   }

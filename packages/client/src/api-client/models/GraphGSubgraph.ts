@@ -58,9 +58,7 @@ export type GraphGSubgraphTypeEnum =
 /**
  * Check if a given object implements the GraphGSubgraph interface.
  */
-export function instanceOfGraphGSubgraph(
-  value: object,
-): value is GraphGSubgraph {
+export function instanceOfGraphGSubgraph(value: object): value is GraphGSubgraph {
   if (!("graph1" in value) || value.graph1 === undefined) {
     return false;
   }

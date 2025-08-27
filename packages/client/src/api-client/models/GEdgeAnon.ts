@@ -51,10 +51,7 @@ export function GEdgeAnonFromJSON(json: any): GEdgeAnon {
   return GEdgeAnonFromJSONTyped(json, false);
 }
 
-export function GEdgeAnonFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GEdgeAnon {
+export function GEdgeAnonFromJSONTyped(json: any, ignoreDiscriminator: boolean): GEdgeAnon {
   if (json == null) {
     return json;
   }

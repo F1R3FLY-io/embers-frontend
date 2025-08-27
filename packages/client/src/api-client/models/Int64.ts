@@ -4,10 +4,7 @@ export function Int64FromJSON(json: any): Int64 {
   return Int64FromJSONTyped(json, false);
 }
 
-export function Int64FromJSONTyped(
-  json: any,
-  _ignoreDiscriminator: boolean,
-): Int64 {
+export function Int64FromJSONTyped(json: any, _ignoreDiscriminator: boolean): Int64 {
   return BigInt(json);
 }
 

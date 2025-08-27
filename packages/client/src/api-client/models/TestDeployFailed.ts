@@ -27,9 +27,7 @@ export interface TestDeployFailed {
 /**
  * Check if a given object implements the TestDeployFailed interface.
  */
-export function instanceOfTestDeployFailed(
-  value: object,
-): value is TestDeployFailed {
+export function instanceOfTestDeployFailed(value: object): value is TestDeployFailed {
   if (!("error" in value) || value.error === undefined) {
     return false;
   }

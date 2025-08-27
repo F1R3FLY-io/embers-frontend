@@ -52,9 +52,7 @@ export type GraphGRuleAnonTypeEnum =
 /**
  * Check if a given object implements the GraphGRuleAnon interface.
  */
-export function instanceOfGraphGRuleAnon(
-  value: object,
-): value is GraphGRuleAnon {
+export function instanceOfGraphGRuleAnon(value: object): value is GraphGRuleAnon {
   if (!("graph1" in value) || value.graph1 === undefined) {
     return false;
   }

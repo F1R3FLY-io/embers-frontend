@@ -4,10 +4,7 @@ export function UInt64FromJSON(json: any): UInt64 {
   return UInt64FromJSONTyped(json, false);
 }
 
-export function UInt64FromJSONTyped(
-  json: any,
-  _ignoreDiscriminator: boolean,
-): UInt64 {
+export function UInt64FromJSONTyped(json: any, _ignoreDiscriminator: boolean): UInt64 {
   const bigInt = BigInt(json);
   if (bigInt < 0n) {
     throw new Error("Value must be unsigned");

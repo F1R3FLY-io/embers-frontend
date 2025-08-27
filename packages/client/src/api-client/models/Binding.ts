@@ -11,9 +11,8 @@
  */
 
 import type { Graph } from "./Graph";
-import type { Vertex } from "./Vertex";
-
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import type { Vertex } from "./Vertex";
 import { VertexFromJSON, VertexToJSON } from "./Vertex";
 
 /**
@@ -62,10 +61,7 @@ export function BindingFromJSON(json: any): Binding {
   return BindingFromJSONTyped(json, false);
 }
 
-export function BindingFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Binding {
+export function BindingFromJSONTyped(json: any, ignoreDiscriminator: boolean): Binding {
   if (json == null) {
     return json;
   }

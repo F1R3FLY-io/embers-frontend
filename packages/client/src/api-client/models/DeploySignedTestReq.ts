@@ -37,9 +37,7 @@ export interface DeploySignedTestReq {
 /**
  * Check if a given object implements the DeploySignedTestReq interface.
  */
-export function instanceOfDeploySignedTestReq(
-  value: object,
-): value is DeploySignedTestReq {
+export function instanceOfDeploySignedTestReq(value: object): value is DeploySignedTestReq {
   if (!("test" in value) || value.test === undefined) {
     return false;
   }

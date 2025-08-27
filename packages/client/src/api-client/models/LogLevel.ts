@@ -23,7 +23,7 @@ export type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 
 export function instanceOfLogLevel(value: any): boolean {
   for (const key in LogLevel) {
-    if (Object.prototype.hasOwnProperty.call(LogLevel, key)) {
+    if (Object.hasOwn(LogLevel, key)) {
       if (LogLevel[key as keyof typeof LogLevel] === value) {
         return true;
       }
@@ -36,10 +36,7 @@ export function LogLevelFromJSON(json: any): LogLevel {
   return LogLevelFromJSONTyped(json, false);
 }
 
-export function LogLevelFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): LogLevel {
+export function LogLevelFromJSONTyped(json: any, ignoreDiscriminator: boolean): LogLevel {
   return json as LogLevel;
 }
 
@@ -47,9 +44,6 @@ export function LogLevelToJSON(value?: LogLevel | null): any {
   return value as any;
 }
 
-export function LogLevelToJSONTyped(
-  value: any,
-  ignoreDiscriminator: boolean,
-): LogLevel {
+export function LogLevelToJSONTyped(value: any, ignoreDiscriminator: boolean): LogLevel {
   return value as LogLevel;
 }

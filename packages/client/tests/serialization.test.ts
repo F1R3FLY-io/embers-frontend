@@ -8,9 +8,7 @@ describe("serializeKey/deserializeKey", () => {
     const serialized = serializeKey(originalKey);
     const deserialized = deserializeKey(serialized);
 
-    expect(base16.encode(deserialized.value)).toBe(
-      base16.encode(originalKey.value),
-    );
+    expect(base16.encode(deserialized.value)).toBe(base16.encode(originalKey.value));
   });
 
   it("should throw on invalid serialized content", () => {

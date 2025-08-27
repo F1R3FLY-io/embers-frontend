@@ -12,13 +12,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint --fix .",
+    "lint": "biome check --write .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
+    "format:code": "biome format --write .",
     "format:css": "stylelint --fix '**/*.{css,scss}'",
-    "ci:lint": "eslint .",
-    "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
+    "ci:lint": "biome check .",
+    "ci:check:code": "biome format .",
     "ci:check:css": "stylelint '**/*.{css,scss}'"
   },
   "dependencies": {

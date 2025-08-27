@@ -38,10 +38,7 @@ export function InternalErrorFromJSON(json: any): InternalError {
   return InternalErrorFromJSONTyped(json, false);
 }
 
-export function InternalErrorFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): InternalError {
+export function InternalErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean): InternalError {
   if (json == null) {
     return json;
   }

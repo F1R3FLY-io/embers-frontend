@@ -18,9 +18,7 @@ describe("Wallet Transfer", () => {
     const privateKey = PrivateKey.new();
     const address = privateKey.getPublicKey().getAddress();
     const amount = Amount.tryFrom(1000n);
-    const description = Description.tryFrom(
-      "This is a test transfer with a valid description.",
-    );
+    const description = Description.tryFrom("This is a test transfer with a valid description.");
     const wallet = new WalletsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,

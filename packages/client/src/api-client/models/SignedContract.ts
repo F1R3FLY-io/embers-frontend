@@ -49,9 +49,7 @@ export interface SignedContract {
 /**
  * Check if a given object implements the SignedContract interface.
  */
-export function instanceOfSignedContract(
-  value: object,
-): value is SignedContract {
+export function instanceOfSignedContract(value: object): value is SignedContract {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }

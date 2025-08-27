@@ -46,8 +46,7 @@ export interface GraphGTensor {
 export const GraphGTensorTypeEnum = {
   Tensor: "Tensor",
 } as const;
-export type GraphGTensorTypeEnum =
-  (typeof GraphGTensorTypeEnum)[keyof typeof GraphGTensorTypeEnum];
+export type GraphGTensorTypeEnum = (typeof GraphGTensorTypeEnum)[keyof typeof GraphGTensorTypeEnum];
 
 /**
  * Check if a given object implements the GraphGTensor interface.
@@ -69,10 +68,7 @@ export function GraphGTensorFromJSON(json: any): GraphGTensor {
   return GraphGTensorFromJSONTyped(json, false);
 }
 
-export function GraphGTensorFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GraphGTensor {
+export function GraphGTensorFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphGTensor {
   if (json == null) {
     return json;
   }

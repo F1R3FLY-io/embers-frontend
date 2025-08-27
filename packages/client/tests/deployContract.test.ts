@@ -1,12 +1,7 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
-
-import type {
-  DeployContractCallback,
-  GetContractCallback,
-} from "../src/functions";
-
 import { PrivateKey } from "../src";
+import type { DeployContractCallback, GetContractCallback } from "../src/functions";
 import { deployContract } from "../src/functions";
 
 test("deployContract function", async () => {
@@ -24,10 +19,7 @@ test("deployContract function", async () => {
     >()
     .mockResolvedValueOnce({ contract });
   const mockTransferSendCallback = jest
-    .fn<
-      ReturnType<DeployContractCallback<boolean>>,
-      Parameters<DeployContractCallback<boolean>>
-    >()
+    .fn<ReturnType<DeployContractCallback<boolean>>, Parameters<DeployContractCallback<boolean>>>()
     .mockResolvedValueOnce(true);
 
   const result = await deployContract(
@@ -40,22 +32,14 @@ test("deployContract function", async () => {
 
   expect(mockPreparePostCallback).toHaveBeenCalledWith();
 
-  expect(mockTransferSendCallback).toHaveBeenCalledWith(
-    contract,
-    expectedSignature,
-    "secp256k1",
-  );
+  expect(mockTransferSendCallback).toHaveBeenCalledWith(contract, expectedSignature, "secp256k1");
 
   const signature = secp256k1.Signature.fromBytes(
     mockTransferSendCallback.mock.calls[0][1],
     "der",
   ).toBytes();
 
-  expect(
-    secp256k1.verify(
-      signature,
-      blake2b(contract, undefined, 32),
-      senderPublicKey.value,
-    ),
-  ).toBe(true);
+  expect(secp256k1.verify(signature, blake2b(contract, undefined, 32), senderPublicKey.value)).toBe(
+    true,
+  );
 });

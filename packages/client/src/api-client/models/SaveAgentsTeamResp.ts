@@ -37,9 +37,7 @@ export interface SaveAgentsTeamResp {
 /**
  * Check if a given object implements the SaveAgentsTeamResp interface.
  */
-export function instanceOfSaveAgentsTeamResp(
-  value: object,
-): value is SaveAgentsTeamResp {
+export function instanceOfSaveAgentsTeamResp(value: object): value is SaveAgentsTeamResp {
   if (!("version" in value) || value.version === undefined) {
     return false;
   }

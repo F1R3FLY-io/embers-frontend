@@ -5,9 +5,7 @@ interface LayoutContextValue {
   setHeaderTitle: (title: string) => void;
 }
 
-export const LayoutContext = createContext<LayoutContextValue | undefined>(
-  undefined,
-);
+export const LayoutContext = createContext<LayoutContextValue | undefined>(undefined);
 
 export const useLayout = () => {
   const ctx = useContext(LayoutContext);

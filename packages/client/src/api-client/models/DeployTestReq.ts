@@ -44,10 +44,7 @@ export function DeployTestReqFromJSON(json: any): DeployTestReq {
   return DeployTestReqFromJSONTyped(json, false);
 }
 
-export function DeployTestReqFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): DeployTestReq {
+export function DeployTestReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): DeployTestReq {
   if (json == null) {
     return json;
   }

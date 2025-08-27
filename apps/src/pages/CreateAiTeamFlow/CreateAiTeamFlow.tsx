@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-
-import type { FooterProps } from "@/lib/layouts/Graph";
-
 import { GraphEditor } from "@/lib/components/GraphEditor";
 import { Spinner } from "@/lib/components/Spinner";
+import type { FooterProps } from "@/lib/layouts/Graph";
 import { GraphLayout } from "@/lib/layouts/Graph";
 import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useDeployDemo, useRunDemo } from "@/lib/queries";
@@ -21,16 +19,12 @@ export default function CreateAiTeamFlow() {
 
   const [deployments, setDeployments] = useState<Deployment[]>([]);
   const addDeploy = useCallback(
-    (deployment: Deployment) =>
-      setDeployments((snapshot) => [...snapshot, deployment]),
+    (deployment: Deployment) => setDeployments((snapshot) => [...snapshot, deployment]),
     [],
   );
 
   const [logs, setLogs] = useState<Logs[]>([]);
-  const addLog = useCallback(
-    (log: Logs) => setLogs((snapshot) => [...snapshot, log]),
-    [],
-  );
+  const addLog = useCallback((log: Logs) => setLogs((snapshot) => [...snapshot, log]), []);
 
   const logError = useCallback(
     (err: Error) =>
@@ -70,10 +64,7 @@ export default function CreateAiTeamFlow() {
       }}
       headerProps={{
         onDeploy: () =>
-          void deployDemo
-            .mutateAsync("demoName")
-            .then(onSuccessfulDeploy)
-            .catch(onFailedDeploy),
+          void deployDemo.mutateAsync("demoName").then(onSuccessfulDeploy).catch(onFailedDeploy),
         onRun: () =>
           void runDemo
             .mutateAsync({
@@ -85,10 +76,7 @@ export default function CreateAiTeamFlow() {
                 log: JSON.stringify(
                   result,
                   (key, value) => {
-                    if (
-                      typeof value === "string" &&
-                      key === "textToAudioAnswer"
-                    ) {
+                    if (typeof value === "string" && key === "textToAudioAnswer") {
                       return `${value.slice(0, 120)}...`;
                     }
                     return value as unknown;

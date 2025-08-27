@@ -62,10 +62,7 @@ export function AgentHeaderFromJSON(json: any): AgentHeader {
   return AgentHeaderFromJSONTyped(json, false);
 }
 
-export function AgentHeaderFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): AgentHeader {
+export function AgentHeaderFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgentHeader {
   if (json == null) {
     return json;
   }

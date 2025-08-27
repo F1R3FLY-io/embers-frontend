@@ -11,9 +11,8 @@
  */
 
 import type { Graph } from "./Graph";
-import type { Name } from "./Name";
-
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import type { Name } from "./Name";
 import { NameFromJSON, NameToJSON } from "./Name";
 
 /**
@@ -60,9 +59,7 @@ export type GraphGRuleNamedTypeEnum =
 /**
  * Check if a given object implements the GraphGRuleNamed interface.
  */
-export function instanceOfGraphGRuleNamed(
-  value: object,
-): value is GraphGRuleNamed {
+export function instanceOfGraphGRuleNamed(value: object): value is GraphGRuleNamed {
   if (!("graph1" in value) || value.graph1 === undefined) {
     return false;
   }

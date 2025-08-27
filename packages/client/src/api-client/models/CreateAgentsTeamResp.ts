@@ -43,9 +43,7 @@ export interface CreateAgentsTeamResp {
 /**
  * Check if a given object implements the CreateAgentsTeamResp interface.
  */
-export function instanceOfCreateAgentsTeamResp(
-  value: object,
-): value is CreateAgentsTeamResp {
+export function instanceOfCreateAgentsTeamResp(value: object): value is CreateAgentsTeamResp {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }

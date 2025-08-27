@@ -11,13 +11,12 @@
  */
 
 import type { Boost } from "./Boost";
-import type { Request } from "./Request";
-import type { Transfer } from "./Transfer";
-import type { UInt64 } from "./UInt64";
-
 import { BoostFromJSON, BoostToJSON } from "./Boost";
+import type { Request } from "./Request";
 import { RequestFromJSON, RequestToJSON } from "./Request";
+import type { Transfer } from "./Transfer";
 import { TransferFromJSON, TransferToJSON } from "./Transfer";
+import type { UInt64 } from "./UInt64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
 
 /**
@@ -61,9 +60,7 @@ export interface WalletStateAndHistory {
 /**
  * Check if a given object implements the WalletStateAndHistory interface.
  */
-export function instanceOfWalletStateAndHistory(
-  value: object,
-): value is WalletStateAndHistory {
+export function instanceOfWalletStateAndHistory(value: object): value is WalletStateAndHistory {
   if (!("balance" in value) || value.balance === undefined) {
     return false;
   }
@@ -82,9 +79,7 @@ export function instanceOfWalletStateAndHistory(
   return true;
 }
 
-export function WalletStateAndHistoryFromJSON(
-  json: any,
-): WalletStateAndHistory {
+export function WalletStateAndHistoryFromJSON(json: any): WalletStateAndHistory {
   return WalletStateAndHistoryFromJSONTyped(json, false);
 }
 

@@ -11,9 +11,8 @@
  */
 
 import type { Binding } from "./Binding";
-import type { Name } from "./Name";
-
 import { BindingFromJSON, BindingToJSON } from "./Binding";
+import type { Name } from "./Name";
 import { NameFromJSON, NameToJSON } from "./Name";
 
 /**
@@ -62,10 +61,7 @@ export function GEdgeNamedFromJSON(json: any): GEdgeNamed {
   return GEdgeNamedFromJSONTyped(json, false);
 }
 
-export function GEdgeNamedFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GEdgeNamed {
+export function GEdgeNamedFromJSONTyped(json: any, ignoreDiscriminator: boolean): GEdgeNamed {
   if (json == null) {
     return json;
   }

@@ -51,10 +51,7 @@ export function GTensorFromJSON(json: any): GTensor {
   return GTensorFromJSONTyped(json, false);
 }
 
-export function GTensorFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GTensor {
+export function GTensorFromJSONTyped(json: any, ignoreDiscriminator: boolean): GTensor {
   if (json == null) {
     return json;
   }

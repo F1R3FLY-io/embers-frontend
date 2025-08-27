@@ -11,40 +11,24 @@
  */
 
 import type { GraphBinding } from "./GraphBinding";
-import type { GraphGEdgeAnon } from "./GraphGEdgeAnon";
-import type { GraphGEdgeNamed } from "./GraphGEdgeNamed";
-import type { GraphGRuleAnon } from "./GraphGRuleAnon";
-import type { GraphGRuleNamed } from "./GraphGRuleNamed";
-import type { GraphGSubgraph } from "./GraphGSubgraph";
-import type { GraphGTensor } from "./GraphGTensor";
-import type { GraphGVar } from "./GraphGVar";
-import type { GraphGVertex } from "./GraphGVertex";
-import type { GraphUnit } from "./GraphUnit";
-
 import { GraphBindingFromJSONTyped, GraphBindingToJSON } from "./GraphBinding";
-import {
-  GraphGEdgeAnonFromJSONTyped,
-  GraphGEdgeAnonToJSON,
-} from "./GraphGEdgeAnon";
-import {
-  GraphGEdgeNamedFromJSONTyped,
-  GraphGEdgeNamedToJSON,
-} from "./GraphGEdgeNamed";
-import {
-  GraphGRuleAnonFromJSONTyped,
-  GraphGRuleAnonToJSON,
-} from "./GraphGRuleAnon";
-import {
-  GraphGRuleNamedFromJSONTyped,
-  GraphGRuleNamedToJSON,
-} from "./GraphGRuleNamed";
-import {
-  GraphGSubgraphFromJSONTyped,
-  GraphGSubgraphToJSON,
-} from "./GraphGSubgraph";
+import type { GraphGEdgeAnon } from "./GraphGEdgeAnon";
+import { GraphGEdgeAnonFromJSONTyped, GraphGEdgeAnonToJSON } from "./GraphGEdgeAnon";
+import type { GraphGEdgeNamed } from "./GraphGEdgeNamed";
+import { GraphGEdgeNamedFromJSONTyped, GraphGEdgeNamedToJSON } from "./GraphGEdgeNamed";
+import type { GraphGRuleAnon } from "./GraphGRuleAnon";
+import { GraphGRuleAnonFromJSONTyped, GraphGRuleAnonToJSON } from "./GraphGRuleAnon";
+import type { GraphGRuleNamed } from "./GraphGRuleNamed";
+import { GraphGRuleNamedFromJSONTyped, GraphGRuleNamedToJSON } from "./GraphGRuleNamed";
+import type { GraphGSubgraph } from "./GraphGSubgraph";
+import { GraphGSubgraphFromJSONTyped, GraphGSubgraphToJSON } from "./GraphGSubgraph";
+import type { GraphGTensor } from "./GraphGTensor";
 import { GraphGTensorFromJSONTyped, GraphGTensorToJSON } from "./GraphGTensor";
+import type { GraphGVar } from "./GraphGVar";
 import { GraphGVarFromJSONTyped, GraphGVarToJSON } from "./GraphGVar";
+import type { GraphGVertex } from "./GraphGVertex";
 import { GraphGVertexFromJSONTyped, GraphGVertexToJSON } from "./GraphGVertex";
+import type { GraphUnit } from "./GraphUnit";
 import { GraphUnitFromJSONTyped, GraphUnitToJSON } from "./GraphUnit";
 
 /**
@@ -68,10 +52,7 @@ export function GraphFromJSON(json: any): Graph {
   return GraphFromJSONTyped(json, false);
 }
 
-export function GraphFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Graph {
+export function GraphFromJSONTyped(json: any, ignoreDiscriminator: boolean): Graph {
   if (json == null) {
     return json;
   }
@@ -125,10 +106,7 @@ export function GraphToJSON(json: any): any {
   return GraphToJSONTyped(json, false);
 }
 
-export function GraphToJSONTyped(
-  value?: Graph | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function GraphToJSONTyped(value?: Graph | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

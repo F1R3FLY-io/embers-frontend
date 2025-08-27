@@ -42,10 +42,7 @@ export function AgentsFromJSON(json: any): Agents {
   return AgentsFromJSONTyped(json, false);
 }
 
-export function AgentsFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Agents {
+export function AgentsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Agents {
   if (json == null) {
     return json;
   }

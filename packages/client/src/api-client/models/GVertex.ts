@@ -11,9 +11,8 @@
  */
 
 import type { Graph } from "./Graph";
-import type { Vertex } from "./Vertex";
-
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import type { Vertex } from "./Vertex";
 import { VertexFromJSON, VertexToJSON } from "./Vertex";
 
 /**
@@ -53,10 +52,7 @@ export function GVertexFromJSON(json: any): GVertex {
   return GVertexFromJSONTyped(json, false);
 }
 
-export function GVertexFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GVertex {
+export function GVertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): GVertex {
   if (json == null) {
     return json;
   }

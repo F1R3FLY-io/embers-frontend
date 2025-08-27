@@ -96,10 +96,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents-teams/{address}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
 
     const response = await this.request(
       {
@@ -111,9 +108,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsTeamsFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => AgentsTeamsFromJSON(jsonValue));
   }
 
   /**
@@ -122,10 +117,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsAddressGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<AgentsTeams> {
-    const response = await this.apiAiAgentsTeamsAddressGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiAiAgentsTeamsAddressGetRaw(requestParameters, initOverrides);
     return response.value();
   }
 
@@ -154,14 +146,8 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents-teams/{address}/{id}/versions`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
 
     const response = await this.request(
       {
@@ -173,9 +159,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsTeamsFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => AgentsTeamsFromJSON(jsonValue));
   }
 
   /**
@@ -223,18 +207,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents-teams/{address}/{id}/versions/{version}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
+    urlPath = urlPath.replace(`{version}`, encodeURIComponent(String(requestParameters.version)));
 
     const response = await this.request(
       {
@@ -246,9 +221,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsTeamFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => AgentsTeamFromJSON(jsonValue));
   }
 
   /**
@@ -355,10 +328,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
-    await this.apiAiAgentsTeamsCreateSendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    await this.apiAiAgentsTeamsCreateSendPostRaw(requestParameters, initOverrides);
   }
 
   /**
@@ -402,10 +372,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsDeployDemoPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
-    await this.apiAiAgentsTeamsDeployDemoPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    await this.apiAiAgentsTeamsDeployDemoPostRaw(requestParameters, initOverrides);
   }
 
   /**
@@ -435,10 +402,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
     let urlPath = `/api/ai-agents-teams/{id}/save/prepare`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
 
     const response = await this.request(
       {
@@ -496,10 +460,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
     let urlPath = `/api/ai-agents-teams/{id}/save/send`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
 
     const response = await this.request(
       {
@@ -521,10 +482,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
-    await this.apiAiAgentsTeamsIdSaveSendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    await this.apiAiAgentsTeamsIdSaveSendPostRaw(requestParameters, initOverrides);
   }
 
   /**
@@ -571,10 +529,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsRunDemoPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<any> {
-    const response = await this.apiAiAgentsTeamsRunDemoPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiAiAgentsTeamsRunDemoPostRaw(requestParameters, initOverrides);
     return response.value();
   }
 }

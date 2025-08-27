@@ -20,12 +20,7 @@ type ContextMenuProps = {
   };
 };
 
-export function ContextMenu({
-  items,
-  onClose,
-  open,
-  position,
-}: ContextMenuProps) {
+export function ContextMenu({ items, onClose, open, position }: ContextMenuProps) {
   return (
     <ControlledMenu
       anchorPoint={position}

@@ -1,7 +1,6 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import type { Location } from "react-router-dom";
-
 import { useCallback, useState } from "react";
+import type { Location } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
@@ -90,9 +89,7 @@ export default function Login() {
               </Text>
             </div>
             <WalletInput
-              error={
-                walletInputState.touched && walletInputState.key === undefined
-              }
+              error={walletInputState.touched && walletInputState.key === undefined}
               onChange={updateWallet}
             />
           </div>

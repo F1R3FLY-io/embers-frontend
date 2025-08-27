@@ -117,10 +117,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents/{address}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
 
     const response = await this.request(
       {
@@ -132,9 +129,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => AgentsFromJSON(jsonValue));
   }
 
   /**
@@ -143,10 +138,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsAddressGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Agents> {
-    const response = await this.apiAiAgentsAddressGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiAiAgentsAddressGetRaw(requestParameters, initOverrides);
     return response.value();
   }
 
@@ -175,14 +167,8 @@ export class AIAgentsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents/{address}/{id}/versions`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
 
     const response = await this.request(
       {
@@ -194,9 +180,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => AgentsFromJSON(jsonValue));
   }
 
   /**
@@ -244,18 +228,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}/deploy/prepare`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
+    urlPath = urlPath.replace(`{version}`, encodeURIComponent(String(requestParameters.version)));
 
     const response = await this.request(
       {
@@ -267,9 +242,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployAgentRespFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => DeployAgentRespFromJSON(jsonValue));
   }
 
   /**
@@ -278,11 +251,10 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<DeployAgentResp> {
-    const response =
-      await this.apiAiAgentsAddressIdVersionsVersionDeployPreparePostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.apiAiAgentsAddressIdVersionsVersionDeployPreparePostRaw(
+      requestParameters,
+      initOverrides,
+    );
     return response.value();
   }
 
@@ -327,18 +299,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
     let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}/deploy/send`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
+    urlPath = urlPath.replace(`{version}`, encodeURIComponent(String(requestParameters.version)));
 
     const response = await this.request(
       {
@@ -398,18 +361,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
+    urlPath = urlPath.replace(`{version}`, encodeURIComponent(String(requestParameters.version)));
 
     const response = await this.request(
       {
@@ -421,9 +375,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => AgentFromJSON(jsonValue));
   }
 
   /**
@@ -471,9 +423,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CreateAgentRespFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => CreateAgentRespFromJSON(jsonValue));
   }
 
   /**
@@ -482,10 +432,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsCreatePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<CreateAgentResp> {
-    const response = await this.apiAiAgentsCreatePreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiAiAgentsCreatePreparePostRaw(requestParameters, initOverrides);
     return response.value();
   }
 
@@ -560,10 +507,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
     let urlPath = `/api/ai-agents/{id}/save/prepare`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
 
     const response = await this.request(
       {
@@ -576,9 +520,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SaveAgentRespFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => SaveAgentRespFromJSON(jsonValue));
   }
 
   /**
@@ -587,10 +529,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsIdSavePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SaveAgentResp> {
-    const response = await this.apiAiAgentsIdSavePreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiAiAgentsIdSavePreparePostRaw(requestParameters, initOverrides);
     return response.value();
   }
 
@@ -621,10 +560,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
     let urlPath = `/api/ai-agents/{id}/save/send`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
+    urlPath = urlPath.replace(`{id}`, encodeURIComponent(String(requestParameters.id)));
 
     const response = await this.request(
       {
@@ -681,9 +617,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployTestRespFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => DeployTestRespFromJSON(jsonValue));
   }
 
   /**
@@ -742,10 +676,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTestDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<DeploySignedTestResp> {
-    const response = await this.apiAiAgentsTestDeploySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiAiAgentsTestDeploySendPostRaw(requestParameters, initOverrides);
     return response.value();
   }
 

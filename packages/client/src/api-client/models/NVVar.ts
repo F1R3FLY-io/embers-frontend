@@ -38,10 +38,7 @@ export function NVVarFromJSON(json: any): NVVar {
   return NVVarFromJSONTyped(json, false);
 }
 
-export function NVVarFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NVVar {
+export function NVVarFromJSONTyped(json: any, ignoreDiscriminator: boolean): NVVar {
   if (json == null) {
     return json;
   }
@@ -54,10 +51,7 @@ export function NVVarToJSON(json: any): NVVar {
   return NVVarToJSONTyped(json, false);
 }
 
-export function NVVarToJSONTyped(
-  value?: NVVar | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NVVarToJSONTyped(value?: NVVar | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

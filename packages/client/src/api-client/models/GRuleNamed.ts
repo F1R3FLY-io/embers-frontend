@@ -11,9 +11,8 @@
  */
 
 import type { Graph } from "./Graph";
-import type { Name } from "./Name";
-
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import type { Name } from "./Name";
 import { NameFromJSON, NameToJSON } from "./Name";
 
 /**
@@ -62,10 +61,7 @@ export function GRuleNamedFromJSON(json: any): GRuleNamed {
   return GRuleNamedFromJSONTyped(json, false);
 }
 
-export function GRuleNamedFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GRuleNamed {
+export function GRuleNamedFromJSONTyped(json: any, ignoreDiscriminator: boolean): GRuleNamed {
   if (json == null) {
     return json;
   }

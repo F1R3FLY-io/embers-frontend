@@ -24,9 +24,7 @@ export default function Dashboard() {
 
   const { data, isSuccess } = useAgents();
 
-  const agentsData = data as
-    | { agents: Array<{ id: string; name: string }> }
-    | undefined;
+  const agentsData = data as { agents: Array<{ id: string; name: string }> } | undefined;
 
   return (
     <div className={styles.page}>
@@ -71,12 +69,7 @@ export default function Dashboard() {
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
-            <button
-              className={classNames(
-                styles["icon-button"],
-                styles["agents-button"],
-              )}
-            >
+            <button className={classNames(styles["icon-button"], styles["agents-button"])}>
               <RobotIcon />
               <Text bold color="primary" type="large">
                 Agents

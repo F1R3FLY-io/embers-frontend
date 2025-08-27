@@ -11,9 +11,7 @@ export function UnixTimestampFromJSONTyped(
   return new Date(json * 1000);
 }
 
-export function UnixTimestampToJSON(
-  value?: UnixTimestamp | null,
-): string | null | undefined {
+export function UnixTimestampToJSON(value?: UnixTimestamp | null): string | null | undefined {
   return UnixTimestampToJSONTyped(value, false);
 }
 

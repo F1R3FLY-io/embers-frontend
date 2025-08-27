@@ -46,9 +46,7 @@ export type NameNQuoteVertexTypeEnum =
 /**
  * Check if a given object implements the NameNQuoteVertex interface.
  */
-export function instanceOfNameNQuoteVertex(
-  value: object,
-): value is NameNQuoteVertex {
+export function instanceOfNameNQuoteVertex(value: object): value is NameNQuoteVertex {
   if (!("value" in value) || value.value === undefined) {
     return false;
   }

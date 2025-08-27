@@ -37,9 +37,7 @@ export interface DeployTestResp {
 /**
  * Check if a given object implements the DeployTestResp interface.
  */
-export function instanceOfDeployTestResp(
-  value: object,
-): value is DeployTestResp {
+export function instanceOfDeployTestResp(value: object): value is DeployTestResp {
   if (!("testContract" in value) || value.testContract === undefined) {
     return false;
   }
@@ -58,8 +56,7 @@ export function DeployTestRespFromJSONTyped(
     return json;
   }
   return {
-    envContract:
-      json.env_contract == null ? undefined : Base64FromJSON(json.env_contract),
+    envContract: json.env_contract == null ? undefined : Base64FromJSON(json.env_contract),
     testContract: Base64FromJSON(json.test_contract),
   };
 }

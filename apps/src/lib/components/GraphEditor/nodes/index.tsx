@@ -5,8 +5,8 @@ import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 import ttsNodeIcon from "@/public/icons/tts-node.png";
 
 import { DeployContainerNode } from "./DeployContainer";
-import styles from "./nodes.module.scss";
 import { NodeTemplate } from "./NodeTemplate";
+import styles from "./nodes.module.scss";
 
 export const nodeTypes = {
   compress: NodeTemplate({

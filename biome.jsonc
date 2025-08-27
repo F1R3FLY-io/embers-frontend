@@ -1,0 +1,155 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
+
+  // VCS integration with Git
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+
+  // File inclusion and exclusion patterns
+  "files": {
+    "includes": [
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.json",
+      "**/*.mts", // TypeScript ES modules
+      "**/*.css",
+      "**/*.scss",
+      "!**/node_modules", // Exclude dependencies
+      "!**/dist", // Exclude build outputs
+      "!**/coverage", // Exclude test coverage
+      "!**/mocks", // Exclude mock files
+      "!**/docs", // Exclude documentation
+      "!**/*.d.ts" // Exclude TypeScript declaration files
+    ]
+  },
+
+  // Auto-organize imports on save/format
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+
+  // Code formatting configuration
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+
+  // Linting rules and configuration
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+
+      // Accessibility rules
+      "a11y": {
+        "recommended": true
+      },
+
+      // Code complexity rules
+      "complexity": {
+        "recommended": true
+      },
+
+      // Correctness rules
+      "correctness": {
+        "recommended": true,
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "warn" // React hooks dependencies
+      },
+
+      // Performance optimization rules
+      "performance": {
+        "recommended": true
+      },
+
+      // Security-related rules
+      "security": {
+        "recommended": true
+      },
+
+      // Code style rules
+      "style": {
+        "recommended": true,
+        "noParameterAssign": "warn",
+        "useConsistentArrayType": "error" // Prefer T[] over Array<T>
+      },
+
+      // Suspicious code pattern detection
+      "suspicious": {
+        "recommended": true,
+        "noExplicitAny": "warn", // Discourage 'any' type
+        "noArrayIndexKey": "warn" // React key prop best practices
+      }
+    }
+  },
+
+  // JavaScript/TypeScript specific formatting
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "always"
+    }
+  },
+
+  // JSON formatting
+  "json": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+
+  // CSS formatting
+  "css": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+
+  // File-specific rule overrides
+  "overrides": [
+    {
+      // Auto-generated API client code - relaxed rules
+      "includes": ["**/src/api-client/**/*.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off" // Generated code may use 'any'
+          },
+          "correctness": {
+            "noUnusedVariables": "off" // Generated code may have unused vars
+          },
+          "style": {
+            "useNamingConvention": "off" // Generated code naming
+          }
+        }
+      }
+    },
+    {
+      // Test mock files - allow console usage
+      "includes": ["**/test-with-mocks.js"],
+      "linter": {
+        "rules": {
+          "style": {},
+          "suspicious": {
+            "noConsole": "off" // Allow console.log in test files
+          }
+        }
+      }
+    }
+  ]
+}

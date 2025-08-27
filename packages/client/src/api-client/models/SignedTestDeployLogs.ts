@@ -31,9 +31,7 @@ export interface SignedTestDeployLogs {
 /**
  * Check if a given object implements the SignedTestDeployLogs interface.
  */
-export function instanceOfSignedTestDeployLogs(
-  value: object,
-): value is SignedTestDeployLogs {
+export function instanceOfSignedTestDeployLogs(value: object): value is SignedTestDeployLogs {
   if (!("logs" in value) || value.logs === undefined) {
     return false;
   }

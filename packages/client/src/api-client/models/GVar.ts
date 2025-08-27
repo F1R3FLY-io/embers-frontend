@@ -51,10 +51,7 @@ export function GVarFromJSON(json: any): GVar {
   return GVarFromJSONTyped(json, false);
 }
 
-export function GVarFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GVar {
+export function GVarFromJSONTyped(json: any, ignoreDiscriminator: boolean): GVar {
   if (json == null) {
     return json;
   }
@@ -68,10 +65,7 @@ export function GVarToJSON(json: any): GVar {
   return GVarToJSONTyped(json, false);
 }
 
-export function GVarToJSONTyped(
-  value?: GVar | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function GVarToJSONTyped(value?: GVar | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

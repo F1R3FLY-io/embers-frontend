@@ -1,10 +1,8 @@
 import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 import { keccak256 } from "js-sha3";
-
-import type { PublicKey } from "./PublicKey";
-
 import { verifyAddress } from "../functions";
+import type { PublicKey } from "./PublicKey";
 
 export const F1R3CAP_TOKE_ID = [0, 0, 0];
 export const F1R3CAP_VERSION = [0];
@@ -32,14 +30,10 @@ export class Address {
     const publicKeyHash = keccak256.digest(value).slice(-20);
     const ethHash = keccak256.digest(publicKeyHash);
 
-    const payloadBytes = new Uint8Array(
-      [F1R3CAP_TOKE_ID, F1R3CAP_VERSION, ethHash].flat(),
-    );
+    const payloadBytes = new Uint8Array([F1R3CAP_TOKE_ID, F1R3CAP_VERSION, ethHash].flat());
     const checksum = blake2b(payloadBytes, undefined, 32).slice(0, 4);
 
-    const addressBytes = new Uint8Array(
-      [Array.from(payloadBytes), Array.from(checksum)].flat(),
-    );
+    const addressBytes = new Uint8Array([Array.from(payloadBytes), Array.from(checksum)].flat());
     return new Address(base58.encode(addressBytes));
   }
 

@@ -22,7 +22,7 @@ export type Direction = (typeof Direction)[keyof typeof Direction];
 
 export function instanceOfDirection(value: any): boolean {
   for (const key in Direction) {
-    if (Object.prototype.hasOwnProperty.call(Direction, key)) {
+    if (Object.hasOwn(Direction, key)) {
       if (Direction[key as keyof typeof Direction] === value) {
         return true;
       }
@@ -35,10 +35,7 @@ export function DirectionFromJSON(json: any): Direction {
   return DirectionFromJSONTyped(json, false);
 }
 
-export function DirectionFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Direction {
+export function DirectionFromJSONTyped(json: any, ignoreDiscriminator: boolean): Direction {
   return json as Direction;
 }
 
@@ -46,9 +43,6 @@ export function DirectionToJSON(value?: Direction | null): any {
   return value as any;
 }
 
-export function DirectionToJSONTyped(
-  value: any,
-  ignoreDiscriminator: boolean,
-): Direction {
+export function DirectionToJSONTyped(value: any, ignoreDiscriminator: boolean): Direction {
   return value as Direction;
 }

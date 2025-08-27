@@ -30,8 +30,7 @@ export interface NameUnit {
 export const NameUnitTypeEnum = {
   Wildcard: "Wildcard",
 } as const;
-export type NameUnitTypeEnum =
-  (typeof NameUnitTypeEnum)[keyof typeof NameUnitTypeEnum];
+export type NameUnitTypeEnum = (typeof NameUnitTypeEnum)[keyof typeof NameUnitTypeEnum];
 
 /**
  * Check if a given object implements the NameUnit interface.
@@ -47,10 +46,7 @@ export function NameUnitFromJSON(json: any): NameUnit {
   return NameUnitFromJSONTyped(json, false);
 }
 
-export function NameUnitFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NameUnit {
+export function NameUnitFromJSONTyped(json: any, ignoreDiscriminator: boolean): NameUnit {
   if (json == null) {
     return json;
   }

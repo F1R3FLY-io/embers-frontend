@@ -31,9 +31,7 @@ export interface DeployAgentResp {
 /**
  * Check if a given object implements the DeployAgentResp interface.
  */
-export function instanceOfDeployAgentResp(
-  value: object,
-): value is DeployAgentResp {
+export function instanceOfDeployAgentResp(value: object): value is DeployAgentResp {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }

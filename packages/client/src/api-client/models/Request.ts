@@ -11,11 +11,10 @@
  */
 
 import type { RequestStatus } from "./RequestStatus";
-import type { UInt64 } from "./UInt64";
-import type { UnixTimestamp } from "./UnixTimestamp";
-
 import { RequestStatusFromJSON, RequestStatusToJSON } from "./RequestStatus";
+import type { UInt64 } from "./UInt64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
+import type { UnixTimestamp } from "./UnixTimestamp";
 import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
@@ -73,10 +72,7 @@ export function RequestFromJSON(json: any): Request {
   return RequestFromJSONTyped(json, false);
 }
 
-export function RequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Request {
+export function RequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): Request {
   if (json == null) {
     return json;
   }

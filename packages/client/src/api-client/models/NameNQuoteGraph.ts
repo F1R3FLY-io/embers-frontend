@@ -46,9 +46,7 @@ export type NameNQuoteGraphTypeEnum =
 /**
  * Check if a given object implements the NameNQuoteGraph interface.
  */
-export function instanceOfNameNQuoteGraph(
-  value: object,
-): value is NameNQuoteGraph {
+export function instanceOfNameNQuoteGraph(value: object): value is NameNQuoteGraph {
   if (!("value" in value) || value.value === undefined) {
     return false;
   }

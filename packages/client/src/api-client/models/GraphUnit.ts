@@ -30,8 +30,7 @@ export interface GraphUnit {
 export const GraphUnitTypeEnum = {
   Nil: "Nil",
 } as const;
-export type GraphUnitTypeEnum =
-  (typeof GraphUnitTypeEnum)[keyof typeof GraphUnitTypeEnum];
+export type GraphUnitTypeEnum = (typeof GraphUnitTypeEnum)[keyof typeof GraphUnitTypeEnum];
 
 /**
  * Check if a given object implements the GraphUnit interface.
@@ -47,10 +46,7 @@ export function GraphUnitFromJSON(json: any): GraphUnit {
   return GraphUnitFromJSONTyped(json, false);
 }
 
-export function GraphUnitFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GraphUnit {
+export function GraphUnitFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphUnit {
   if (json == null) {
     return json;
   }

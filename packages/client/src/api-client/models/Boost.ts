@@ -11,11 +11,10 @@
  */
 
 import type { Direction } from "./Direction";
-import type { UInt64 } from "./UInt64";
-import type { UnixTimestamp } from "./UnixTimestamp";
-
 import { DirectionFromJSON, DirectionToJSON } from "./Direction";
+import type { UInt64 } from "./UInt64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
+import type { UnixTimestamp } from "./UnixTimestamp";
 import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
@@ -91,10 +90,7 @@ export function BoostFromJSON(json: any): Boost {
   return BoostFromJSONTyped(json, false);
 }
 
-export function BoostFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Boost {
+export function BoostFromJSONTyped(json: any, ignoreDiscriminator: boolean): Boost {
   if (json == null) {
     return json;
   }
@@ -112,10 +108,7 @@ export function BoostToJSON(json: any): Boost {
   return BoostToJSONTyped(json, false);
 }
 
-export function BoostToJSONTyped(
-  value?: Boost | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function BoostToJSONTyped(value?: Boost | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

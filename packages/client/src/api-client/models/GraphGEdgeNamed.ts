@@ -11,9 +11,8 @@
  */
 
 import type { Binding } from "./Binding";
-import type { Name } from "./Name";
-
 import { BindingFromJSON, BindingToJSON } from "./Binding";
+import type { Name } from "./Name";
 import { NameFromJSON, NameToJSON } from "./Name";
 
 /**
@@ -60,9 +59,7 @@ export type GraphGEdgeNamedTypeEnum =
 /**
  * Check if a given object implements the GraphGEdgeNamed interface.
  */
-export function instanceOfGraphGEdgeNamed(
-  value: object,
-): value is GraphGEdgeNamed {
+export function instanceOfGraphGEdgeNamed(value: object): value is GraphGEdgeNamed {
   if (!("binding1" in value) || value.binding1 === undefined) {
     return false;
   }

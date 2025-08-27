@@ -11,9 +11,8 @@
  */
 
 import type { Graph } from "./Graph";
-import type { Vertex } from "./Vertex";
-
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import type { Vertex } from "./Vertex";
 import { VertexFromJSON, VertexToJSON } from "./Vertex";
 
 /**
@@ -48,8 +47,7 @@ export interface GraphGVertex {
 export const GraphGVertexTypeEnum = {
   Vertex: "Vertex",
 } as const;
-export type GraphGVertexTypeEnum =
-  (typeof GraphGVertexTypeEnum)[keyof typeof GraphGVertexTypeEnum];
+export type GraphGVertexTypeEnum = (typeof GraphGVertexTypeEnum)[keyof typeof GraphGVertexTypeEnum];
 
 /**
  * Check if a given object implements the GraphGVertex interface.
@@ -71,10 +69,7 @@ export function GraphGVertexFromJSON(json: any): GraphGVertex {
   return GraphGVertexFromJSONTyped(json, false);
 }
 
-export function GraphGVertexFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GraphGVertex {
+export function GraphGVertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphGVertex {
   if (json == null) {
     return json;
   }

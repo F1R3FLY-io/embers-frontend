@@ -42,10 +42,7 @@ export function NQuoteGraphFromJSON(json: any): NQuoteGraph {
   return NQuoteGraphFromJSONTyped(json, false);
 }
 
-export function NQuoteGraphFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NQuoteGraph {
+export function NQuoteGraphFromJSONTyped(json: any, ignoreDiscriminator: boolean): NQuoteGraph {
   if (json == null) {
     return json;
   }

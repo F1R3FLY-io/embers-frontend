@@ -45,9 +45,7 @@ export interface AgentsTeamHeader {
 /**
  * Check if a given object implements the AgentsTeamHeader interface.
  */
-export function instanceOfAgentsTeamHeader(
-  value: object,
-): value is AgentsTeamHeader {
+export function instanceOfAgentsTeamHeader(value: object): value is AgentsTeamHeader {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }

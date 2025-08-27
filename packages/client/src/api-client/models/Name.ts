@@ -11,21 +11,14 @@
  */
 
 import type { NameNGVar } from "./NameNGVar";
-import type { NameNQuoteGraph } from "./NameNQuoteGraph";
-import type { NameNQuoteVertex } from "./NameNQuoteVertex";
-import type { NameNVVar } from "./NameNVVar";
-import type { NameUnit } from "./NameUnit";
-
 import { NameNGVarFromJSONTyped, NameNGVarToJSON } from "./NameNGVar";
-import {
-  NameNQuoteGraphFromJSONTyped,
-  NameNQuoteGraphToJSON,
-} from "./NameNQuoteGraph";
-import {
-  NameNQuoteVertexFromJSONTyped,
-  NameNQuoteVertexToJSON,
-} from "./NameNQuoteVertex";
+import type { NameNQuoteGraph } from "./NameNQuoteGraph";
+import { NameNQuoteGraphFromJSONTyped, NameNQuoteGraphToJSON } from "./NameNQuoteGraph";
+import type { NameNQuoteVertex } from "./NameNQuoteVertex";
+import { NameNQuoteVertexFromJSONTyped, NameNQuoteVertexToJSON } from "./NameNQuoteVertex";
+import type { NameNVVar } from "./NameNVVar";
 import { NameNVVarFromJSONTyped, NameNVVarToJSON } from "./NameNVVar";
+import type { NameUnit } from "./NameUnit";
 import { NameUnitFromJSONTyped, NameUnitToJSON } from "./NameUnit";
 
 /**
@@ -44,10 +37,7 @@ export function NameFromJSON(json: any): Name {
   return NameFromJSONTyped(json, false);
 }
 
-export function NameFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Name {
+export function NameFromJSONTyped(json: any, ignoreDiscriminator: boolean): Name {
   if (json == null) {
     return json;
   }
@@ -81,10 +71,7 @@ export function NameToJSON(json: any): any {
   return NameToJSONTyped(json, false);
 }
 
-export function NameToJSONTyped(
-  value?: Name | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NameToJSONTyped(value?: Name | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

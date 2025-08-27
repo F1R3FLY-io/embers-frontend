@@ -51,10 +51,7 @@ export function SaveAgentRespFromJSON(json: any): SaveAgentResp {
   return SaveAgentRespFromJSONTyped(json, false);
 }
 
-export function SaveAgentRespFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): SaveAgentResp {
+export function SaveAgentRespFromJSONTyped(json: any, ignoreDiscriminator: boolean): SaveAgentResp {
   if (json == null) {
     return json;
   }

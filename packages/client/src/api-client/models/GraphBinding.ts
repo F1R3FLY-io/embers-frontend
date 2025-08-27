@@ -11,9 +11,8 @@
  */
 
 import type { Graph } from "./Graph";
-import type { Vertex } from "./Vertex";
-
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import type { Vertex } from "./Vertex";
 import { VertexFromJSON, VertexToJSON } from "./Vertex";
 
 /**
@@ -54,8 +53,7 @@ export interface GraphBinding {
 export const GraphBindingTypeEnum = {
   Nominate: "Nominate",
 } as const;
-export type GraphBindingTypeEnum =
-  (typeof GraphBindingTypeEnum)[keyof typeof GraphBindingTypeEnum];
+export type GraphBindingTypeEnum = (typeof GraphBindingTypeEnum)[keyof typeof GraphBindingTypeEnum];
 
 /**
  * Check if a given object implements the GraphBinding interface.
@@ -80,10 +78,7 @@ export function GraphBindingFromJSON(json: any): GraphBinding {
   return GraphBindingFromJSONTyped(json, false);
 }
 
-export function GraphBindingFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GraphBinding {
+export function GraphBindingFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphBinding {
   if (json == null) {
     return json;
   }

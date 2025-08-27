@@ -10,11 +10,7 @@ interface SidebarProps {
   title?: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
-  actions,
-  children,
-  title,
-}) => {
+export const Sidebar: React.FC<SidebarProps> = ({ actions, children, title }) => {
   return (
     <div className={styles.container}>
       {(title || actions) && (

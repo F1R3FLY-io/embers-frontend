@@ -66,10 +66,7 @@ export function TransferReqFromJSON(json: any): TransferReq {
   return TransferReqFromJSONTyped(json, false);
 }
 
-export function TransferReqFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TransferReq {
+export function TransferReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransferReq {
   if (json == null) {
     return json;
   }

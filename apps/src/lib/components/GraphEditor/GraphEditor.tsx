@@ -1,6 +1,4 @@
 import type { Connection, Edge as REdge, Node as RNode } from "@xyflow/react";
-import type { MouseEvent as ReactMouseEvent } from "react";
-
 import {
   addEdge,
   Background,
@@ -10,16 +8,15 @@ import {
   useNodesState,
   useReactFlow,
 } from "@xyflow/react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useMemo, useState } from "react";
 
 import type { MenuItem } from "@/lib/components/ContextMenu";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
-
-import type { NodeTypes } from "./nodes";
-
 import styles from "./GraphEditor.module.scss";
+import type { NodeTypes } from "./nodes";
 import { nodeTypes } from "./nodes";
 
 type Node = {
@@ -32,8 +29,7 @@ export function GraphEditor() {
   const [nodes, , onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const onConnect = useCallback(
-    (connection: Connection) =>
-      setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot)),
+    (connection: Connection) => setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot)),
     [setEdges],
   );
 
@@ -70,10 +66,7 @@ export function GraphEditor() {
         hidden: selectedNodes.length !== 0,
         onClick: () =>
           onNodesChange(
-            createNodeChange(
-              "manual-input",
-              screenToFlowPosition(contextMenuPosition),
-            ),
+            createNodeChange("manual-input", screenToFlowPosition(contextMenuPosition)),
           ),
         type: "text",
       },
@@ -82,10 +75,7 @@ export function GraphEditor() {
         hidden: selectedNodes.length !== 0,
         onClick: () =>
           onNodesChange(
-            createNodeChange(
-              "send-to-channel",
-              screenToFlowPosition(contextMenuPosition),
-            ),
+            createNodeChange("send-to-channel", screenToFlowPosition(contextMenuPosition)),
           ),
         type: "text",
       },
@@ -93,48 +83,28 @@ export function GraphEditor() {
         content: "Add compress",
         hidden: selectedNodes.length !== 0,
         onClick: () =>
-          onNodesChange(
-            createNodeChange(
-              "compress",
-              screenToFlowPosition(contextMenuPosition),
-            ),
-          ),
+          onNodesChange(createNodeChange("compress", screenToFlowPosition(contextMenuPosition))),
         type: "text",
       },
       {
         content: "Add text model",
         hidden: selectedNodes.length !== 0,
         onClick: () =>
-          onNodesChange(
-            createNodeChange(
-              "text-model",
-              screenToFlowPosition(contextMenuPosition),
-            ),
-          ),
+          onNodesChange(createNodeChange("text-model", screenToFlowPosition(contextMenuPosition))),
         type: "text",
       },
       {
         content: "Add text to image model",
         hidden: selectedNodes.length !== 0,
         onClick: () =>
-          onNodesChange(
-            createNodeChange(
-              "tti-model",
-              screenToFlowPosition(contextMenuPosition),
-            ),
-          ),
+          onNodesChange(createNodeChange("tti-model", screenToFlowPosition(contextMenuPosition))),
         type: "text",
       },
       {
         content: "Add text to speech model",
         hidden: selectedNodes.length !== 0,
         onClick: () =>
-          onNodesChange(
-            createNodeChange(
-              "tts-model",
-              screenToFlowPosition(contextMenuPosition),
-            ),
-          ),
+          onNodesChange(createNodeChange("tts-model", screenToFlowPosition(contextMenuPosition))),
         type: "text",
       },
       {
@@ -142,14 +112,10 @@ export function GraphEditor() {
         hidden: selectedNodes.length === 0,
         onClick: () => {
           const minX = Math.min(...selectedNodes.map((n) => n.position.x));
-          const maxX = Math.max(
-            ...selectedNodes.map((n) => n.position.x + n.measured!.width!),
-          );
+          const maxX = Math.max(...selectedNodes.map((n) => n.position.x + n.measured!.width!));
 
           const minY = Math.min(...selectedNodes.map((n) => n.position.y));
-          const maxY = Math.max(
-            ...selectedNodes.map((n) => n.position.y + n.measured!.height!),
-          );
+          const maxY = Math.max(...selectedNodes.map((n) => n.position.y + n.measured!.height!));
 
           const subflowNode: Node = {
             className: styles["no-node-style"],
@@ -212,11 +178,7 @@ export function GraphEditor() {
         onPaneContextMenu={openContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}
       >
-        <Background
-          className={styles.background}
-          gap={5}
-          patternClassName={styles.pattern}
-        />
+        <Background className={styles.background} gap={5} patternClassName={styles.pattern} />
         <Controls />
         <ContextMenu
           items={menuItems}
@@ -229,10 +191,7 @@ export function GraphEditor() {
   );
 }
 
-function createNodeChange<T extends string>(
-  type: T,
-  position: Node["position"],
-) {
+function createNodeChange<T extends string>(type: T, position: Node["position"]) {
   return [
     {
       item: {

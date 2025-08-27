@@ -17,10 +17,7 @@ export interface ConfigurationParameters {
     | string
     | Promise<string>
     | ((name?: string, scopes?: string[]) => string | Promise<string>); // parameter for oauth2 security
-  apiKey?:
-    | string
-    | Promise<string>
-    | ((name: string) => string | Promise<string>); // parameter for apiKey security
+  apiKey?: string | Promise<string> | ((name: string) => string | Promise<string>); // parameter for apiKey security
   basePath?: string; // override base path
   credentials?: RequestCredentials; //value for the credentials param we want to use on each request
   fetchApi?: FetchAPI; // override for fetch implementation
@@ -39,9 +36,7 @@ export class Configuration {
   }
 
   get basePath(): string {
-    return this.configuration.basePath != null
-      ? this.configuration.basePath
-      : BASE_PATH;
+    return this.configuration.basePath != null ? this.configuration.basePath : BASE_PATH;
   }
 
   get fetchApi(): FetchAPI | undefined {
@@ -72,14 +67,10 @@ export class Configuration {
     return undefined;
   }
 
-  get accessToken():
-    | ((name?: string, scopes?: string[]) => string | Promise<string>)
-    | undefined {
+  get accessToken(): ((name?: string, scopes?: string[]) => string | Promise<string>) | undefined {
     const accessToken = this.configuration.accessToken;
     if (accessToken) {
-      return typeof accessToken === "function"
-        ? accessToken
-        : async () => accessToken;
+      return typeof accessToken === "function" ? accessToken : async () => accessToken;
     }
     return undefined;
   }
@@ -99,10 +90,8 @@ export const DefaultConfig = new Configuration();
  * This is the base class for all generated API classes.
  */
 export class BaseAPI {
-  private static readonly jsonRegex = new RegExp(
-    "^(:?application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(:?;.*)?$",
-    "i",
-  );
+  private static readonly jsonRegex =
+    /^(:?application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(:?;.*)?$/i;
   private middleware: Middleware[];
 
   constructor(protected configuration = DefaultConfig) {
@@ -115,18 +104,12 @@ export class BaseAPI {
     return next;
   }
 
-  withPreMiddleware<T extends BaseAPI>(
-    this: T,
-    ...preMiddlewares: Array<Middleware["pre"]>
-  ) {
+  withPreMiddleware<T extends BaseAPI>(this: T, ...preMiddlewares: Array<Middleware["pre"]>) {
     const middlewares = preMiddlewares.map((pre) => ({ pre }));
     return this.withMiddleware<T>(...middlewares);
   }
 
-  withPostMiddleware<T extends BaseAPI>(
-    this: T,
-    ...postMiddlewares: Array<Middleware["post"]>
-  ) {
+  withPostMiddleware<T extends BaseAPI>(this: T, ...postMiddlewares: Array<Middleware["post"]>) {
     const middlewares = postMiddlewares.map((post) => ({ post }));
     return this.withMiddleware<T>(...middlewares);
   }
@@ -165,29 +148,18 @@ export class BaseAPI {
     initOverrides?: RequestInit | InitOverrideFunction,
   ) {
     let url = this.configuration.basePath + context.path;
-    if (
-      context.query !== undefined &&
-      Object.keys(context.query).length !== 0
-    ) {
+    if (context.query !== undefined && Object.keys(context.query).length !== 0) {
       // only add the querystring to the URL if there are query parameters.
       // this is done to avoid urls ending with a "?" character which buggy webservers
       // do not handle correctly sometimes.
       url += `?${this.configuration.queryParamsStringify(context.query)}`;
     }
 
-    const headers = Object.assign(
-      {},
-      this.configuration.headers,
-      context.headers,
-    );
-    Object.keys(headers).forEach((key) =>
-      headers[key] === undefined ? delete headers[key] : {},
-    );
+    const headers = Object.assign({}, this.configuration.headers, context.headers);
+    Object.keys(headers).forEach((key) => (headers[key] === undefined ? delete headers[key] : {}));
 
     const initOverrideFn =
-      typeof initOverrides === "function"
-        ? initOverrides
-        : async () => initOverrides;
+      typeof initOverrides === "function" ? initOverrides : async () => initOverrides;
 
     const initParams = {
       body: context.body,
@@ -236,12 +208,9 @@ export class BaseAPI {
           })) || fetchParams;
       }
     }
-    let response: Response | undefined = undefined;
+    let response: Response | undefined;
     try {
-      response = await (this.configuration.fetchApi || fetch)(
-        fetchParams.url,
-        fetchParams.init,
-      );
+      response = await (this.configuration.fetchApi || fetch)(fetchParams.url, fetchParams.init);
     } catch (e) {
       for (const middleware of this.middleware) {
         if (middleware.onError) {
@@ -340,14 +309,7 @@ export const COLLECTION_FORMATS = {
 export type FetchAPI = WindowOrWorkerGlobalScope["fetch"];
 
 export type Json = any;
-export type HTTPMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
-  | "OPTIONS"
-  | "HEAD";
+export type HTTPMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS" | "HEAD";
 export type HTTPHeaders = { [key: string]: string };
 export type HTTPQuery = {
   [key: string]:
@@ -366,11 +328,7 @@ export type HTTPRequestInit = {
   headers?: HTTPHeaders;
   method: HTTPMethod;
 };
-export type ModelPropertyNaming =
-  | "camelCase"
-  | "snake_case"
-  | "PascalCase"
-  | "original";
+export type ModelPropertyNaming = "camelCase" | "snake_case" | "PascalCase" | "original";
 
 export type InitOverrideFunction = (requestContext: {
   context: RequestOpts;
@@ -488,9 +446,7 @@ export interface ApiResponse<T> {
   value: () => Promise<T>;
 }
 
-export interface ResponseTransformer<T> {
-  (json: any): T;
-}
+export type ResponseTransformer<T> = (json: any) => T;
 
 export class JSONApiResponse<T> {
   constructor(

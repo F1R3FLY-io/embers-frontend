@@ -27,9 +27,7 @@ export interface CreateTestwalletResp {
 /**
  * Check if a given object implements the CreateTestwalletResp interface.
  */
-export function instanceOfCreateTestwalletResp(
-  value: object,
-): value is CreateTestwalletResp {
+export function instanceOfCreateTestwalletResp(value: object): value is CreateTestwalletResp {
   if (!("key" in value) || value.key === undefined) {
     return false;
   }

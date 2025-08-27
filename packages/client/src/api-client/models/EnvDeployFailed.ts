@@ -27,9 +27,7 @@ export interface EnvDeployFailed {
 /**
  * Check if a given object implements the EnvDeployFailed interface.
  */
-export function instanceOfEnvDeployFailed(
-  value: object,
-): value is EnvDeployFailed {
+export function instanceOfEnvDeployFailed(value: object): value is EnvDeployFailed {
   if (!("error" in value) || value.error === undefined) {
     return false;
   }

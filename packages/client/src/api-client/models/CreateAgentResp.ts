@@ -43,9 +43,7 @@ export interface CreateAgentResp {
 /**
  * Check if a given object implements the CreateAgentResp interface.
  */
-export function instanceOfCreateAgentResp(
-  value: object,
-): value is CreateAgentResp {
+export function instanceOfCreateAgentResp(value: object): value is CreateAgentResp {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }

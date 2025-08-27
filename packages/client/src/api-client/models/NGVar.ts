@@ -38,10 +38,7 @@ export function NGVarFromJSON(json: any): NGVar {
   return NGVarFromJSONTyped(json, false);
 }
 
-export function NGVarFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NGVar {
+export function NGVarFromJSONTyped(json: any, ignoreDiscriminator: boolean): NGVar {
   if (json == null) {
     return json;
   }
@@ -54,10 +51,7 @@ export function NGVarToJSON(json: any): NGVar {
   return NGVarToJSONTyped(json, false);
 }
 
-export function NGVarToJSONTyped(
-  value?: NGVar | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NGVarToJSONTyped(value?: NGVar | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }
