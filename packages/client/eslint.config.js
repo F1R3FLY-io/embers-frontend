@@ -9,6 +9,13 @@ export default tseslint.config(
   baseConfig,
   globalIgnores(["coverage", "docs", "mocks"]),
   {
+    settings: {
+      react: {
+        version: "18.0"
+      }
+    }
+  },
+  {
     files: ["src/api-client/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
       noInlineConfig: true,
