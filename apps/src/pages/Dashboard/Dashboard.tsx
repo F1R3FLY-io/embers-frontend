@@ -114,7 +114,7 @@ export default function Dashboard() {
               </Text>
             </div>
             {isSuccess &&
-              data.agents.map((agent: any) => (
+              (data as { agents: any[] }).agents.map((agent: any) => (
                 <div key={agent.id} className={styles["grid-box"]}>
                   <Text color="secondary" type="large">
                     Agent {agent.name}

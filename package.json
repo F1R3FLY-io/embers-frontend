@@ -13,9 +13,7 @@
     "lint": "eslint --fix '*'",
     "ci:lint": "eslint '*'",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",
-    "format:code:all": "pnpm -r run format:code",
-    "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'",
-    "ci:check:code:all": "pnpm -r run ci:check:code"
+    "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

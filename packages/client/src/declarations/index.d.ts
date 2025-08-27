@@ -2,86 +2,78 @@
 // Auto-generated declaration files will replace this when TypeScript issues are resolved
 
 export interface PrivateKey {
-  getPublicKey: () => string;
-  serialize: () => Uint8Array;
+  serialize(): Uint8Array;
+  getPublicKey(): string;
   value: Uint8Array;
 }
 
 export const PrivateKey: {
-  tryFromHex: (hex: string) => PrivateKey;
+  tryFromHex(hex: string): PrivateKey;
 };
 
 export function deserializeKey(data: string | Uint8Array): PrivateKey;
 export function generateKey(): PrivateKey;
 
-export interface ConfigurationInterface {
+export interface Configuration {
   basePath?: string;
   headers?: Record<string, string>;
   privateKey?: PrivateKey;
 }
 
 export class Configuration {
-  public basePath?: string;
-  public headers?: Record<string, string>;
-  public privateKey?: PrivateKey;
-
-  public constructor(config?: Partial<ConfigurationInterface>);
+  constructor(config?: Partial<Configuration>);
 }
 
 export class AIAgentsTeamsApi {
-  public constructor(config?: Configuration);
-  public apiAiAgentsTeamsDeployDemoPost(req: unknown): Promise<unknown>;
-  public apiAiAgentsTeamsRunDemoPost(req: unknown): Promise<unknown>;
+  constructor(config?: Configuration);
+  apiAiAgentsTeamsDeployDemoPost(req: any): Promise<any>;
+  apiAiAgentsTeamsRunDemoPost(req: any): Promise<any>;
 }
 
 export class WalletsApi {
-  public constructor(config?: Configuration);
-  public getWalletStateAndHistory(): Promise<unknown>;
-  public sendTransaction(req: unknown): Promise<unknown>;
+  constructor(config?: Configuration);
+  getWalletStateAndHistory(): Promise<any>;
+  sendTransaction(req: any): Promise<any>;
 }
 
 export class EmbersClient {
-  public constructor(config?: Configuration);
-  public getAgents(): Promise<unknown>;
-  public getAgentVersions(id: string): Promise<unknown>;
-  public getAgentVersion(id: string, version: string): Promise<unknown>;
-  public getTestWalletKey(): Promise<unknown>;
-  public createAgent(params: unknown): Promise<unknown>;
-  public saveAgentVersion(id: string, params: unknown): Promise<unknown>;
-  public testDeployAgent(
-    testKey: PrivateKey,
-    test: string,
-    env?: string,
-  ): Promise<unknown>;
+  constructor(config?: Configuration);
+  getAgents(): Promise<any>;
+  getAgentVersions(id: string): Promise<any>;
+  getAgentVersion(id: string, version: string): Promise<any>;
+  getTestWalletKey(): Promise<any>;
+  createAgent(params: any): Promise<any>;
+  saveAgentVersion(id: string, params: any): Promise<any>;
+  testDeployAgent(testKey: PrivateKey, test: string, env?: string): Promise<any>;
 }
 
 // Legacy API class aliases for backwards compatibility
 export class AgentsApiSdk extends EmbersClient {}
 
 export class AgentsTeamsApiSdk extends AIAgentsTeamsApi {
-  public getAgentsTeams(): Promise<unknown>;
-  public getAgentsTeamVersions(id: string): Promise<unknown>;
-  public getAgentsTeamVersion(id: string, version: string): Promise<unknown>;
-  public createAgentsTeam(params: unknown): Promise<unknown>;
-  public saveAgentsTeamVersion(id: string, params: unknown): Promise<unknown>;
+  getAgentsTeams(): Promise<any>;
+  getAgentsTeamVersions(id: string): Promise<any>;
+  getAgentsTeamVersion(id: string, version: string): Promise<any>;
+  createAgentsTeam(params: any): Promise<any>;
+  saveAgentsTeamVersion(id: string, params: any): Promise<any>;
 }
 
 export class WalletsApiSdk extends WalletsApi {
-  public address: string;
+  address: string;
 }
 
 // Re-export all API types
-export type * from "./api-types";
+export * from './api-types';
 
 // Default export
-declare const clientDefault: {
-  AIAgentsTeamsApi: typeof AIAgentsTeamsApi;
-  Configuration: typeof Configuration;
-  deserializeKey: typeof deserializeKey;
-  EmbersClient: typeof EmbersClient;
-  generateKey: typeof generateKey;
+declare const _default: {
   PrivateKey: typeof PrivateKey;
+  deserializeKey: typeof deserializeKey;
+  generateKey: typeof generateKey;
+  Configuration: typeof Configuration;
+  AIAgentsTeamsApi: typeof AIAgentsTeamsApi;
   WalletsApi: typeof WalletsApi;
+  EmbersClient: typeof EmbersClient;
 };
 
-export default clientDefault;
+export default _default;

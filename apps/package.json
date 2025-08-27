@@ -42,6 +42,7 @@
     "vite-plugin-svgr": "^4.5.0"
   },
   "optionalDependencies": {
-    "@f1r3fly-io/embers-client-sdk": "workspace:*"
+    "@f1r3fly-io/embers-client-sdk": "workspace:*",
+    "@f1r3fly-io/lightning-bug": "0.4.1"
   }
 }
