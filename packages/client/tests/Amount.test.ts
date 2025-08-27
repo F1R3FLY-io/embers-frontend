@@ -1,4 +1,4 @@
-import { Amount } from "../src/entities/Amount";
+import { Amount } from "../src";
 
 describe("Amount class", () => {
   test("should create an Amount", () => {

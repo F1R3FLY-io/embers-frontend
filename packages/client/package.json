@@ -37,6 +37,7 @@
     "typecheck": "tsc -b --noEmit",
     "gen-docs": "typedoc",
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
+    "generate-mocks": "counterfact ./schema.json mocks --generate",
     "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
     "ci:lint": "eslint .",

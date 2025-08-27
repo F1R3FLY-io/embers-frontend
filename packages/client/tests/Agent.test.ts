@@ -1,17 +1,16 @@
-import type { AgentHeader, DeploySignedTestResp } from "../src/api-client";
+import type { AgentHeader, DeploySignedTestResp } from "../src";
 
-import { AiAgent, PrivateKey } from "../src";
-import { LogLevel } from "../src/api-client";
+import { AgentsApiSdk, LogLevel, PrivateKey } from "../src";
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe("AiAgent", () => {
+describe("AgentsApiSdk", () => {
   it("should create agent with correct properties", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
@@ -31,7 +30,7 @@ describe("AiAgent", () => {
   it("should deploy Agent", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
@@ -43,7 +42,7 @@ describe("AiAgent", () => {
   it("should return agents list", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       headers: {
         "x-test-response": "all-props",
@@ -66,7 +65,7 @@ describe("AiAgent", () => {
   it("should return agent's versions", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       headers: {
         "x-test-response": "all-props",
@@ -88,7 +87,7 @@ describe("AiAgent", () => {
   it("should return agent by version", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
@@ -108,7 +107,7 @@ describe("AiAgent", () => {
   it("should update agent version", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
@@ -127,7 +126,7 @@ describe("AiAgent", () => {
   it("should testDeployAgent agent with error", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
@@ -144,7 +143,7 @@ describe("AiAgent", () => {
   it("should testDeployAgent agent with success", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       headers: {
         "x-test-response": "with-logs",
@@ -169,7 +168,7 @@ describe("AiAgent", () => {
   it("should test wallet", async () => {
     const privateKey = PrivateKey.new();
 
-    const agent = new AiAgent({
+    const agent = new AgentsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
