@@ -18,7 +18,7 @@
 - Test: `pnpm test`
 - Lint: `pnpm lint` (ESLint with TypeScript rules)
 - Install dependencies: `pnpm install`
-- DO NOT ever `git add`, `git rm` or `git commit` code. Allow the Claude user to always manually review git changes. `git mv` is permitted and inform the developer.
+- DO NOT ever `git add`, `git rm` or `git commit, or git push` code. Allow the Claude user to always manually review git changes. `git mv` and `git push` are permitted and inform the developer.
 - DO NOT ever remove tests from eslint or type checks.
 - Run `pnpm test && pnpm build` to test code changes before proceeding to a prompt for more instructions or the next task.
 - **Operating outside of local repository (with .git/ directory root)**: Not permitted and any file or other operations require user approval and notification
