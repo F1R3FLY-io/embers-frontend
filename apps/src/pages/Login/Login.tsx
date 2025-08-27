@@ -1,4 +1,5 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
+import type { ReactElement } from "react";
 import { useCallback, useState } from "react";
 import type { Location } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -44,7 +45,7 @@ export default function Login() {
     }
   }, [walletInputState.key, setKey, navigate, location.state?.from]);
 
-  let content: JSX.Element;
+  let content: ReactElement;
 
   switch (pageState) {
     case "init":

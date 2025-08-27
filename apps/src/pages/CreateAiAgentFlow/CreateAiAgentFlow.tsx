@@ -9,9 +9,9 @@ async function loadLightningBug() {
   return new Promise<void>((resolve) => {
     try {
       // Use eval to prevent Vite from trying to resolve these at build time
-      // eslint-disable-next-line no-eval, @typescript-eslint/no-unsafe-assignment
+      // biome-ignore lint/security/noGlobalEval: Required for optional dependency loading
       const lightningBug = eval('require("@f1r3fly-io/lightning-bug")');
-      // eslint-disable-next-line no-eval, @typescript-eslint/no-unsafe-assignment
+      // biome-ignore lint/security/noGlobalEval: Required for optional dependency loading
       const extensions = eval('require("@f1r3fly-io/lightning-bug/extensions")');
       Editor = (lightningBug as { Editor: unknown }).Editor;
       RholangExtension = (extensions as { RholangExtension: unknown }).RholangExtension;
