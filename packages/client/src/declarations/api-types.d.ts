@@ -2,9 +2,9 @@
 // These are placeholder types until auto-generated declarations work properly
 
 export interface Agent {
+  description?: string;
   id?: string;
   name?: string;
-  description?: string;
 }
 
 export interface AgentHeader {
@@ -13,20 +13,20 @@ export interface AgentHeader {
 }
 
 export interface DeployAgentResp {
-  success?: boolean;
   message?: string;
+  success?: boolean;
 }
 
 export interface WalletStateAndHistory {
   balance?: string;
-  transactions?: any[];
+  transactions?: unknown[];
 }
 
 export interface TransferReq {
-  from: string;
-  to: string;
   amount: bigint;
   description?: string;
+  from: string;
+  to: string;
 }
 
 export interface TransferResp {
@@ -35,15 +35,15 @@ export interface TransferResp {
 }
 
 export interface CreateAgentReq {
-  name?: string;
-  description?: string;
   code?: string;
+  description?: string;
+  name?: string;
 }
 
 export interface CreateAgentsTeamReq {
-  name?: string;
-  description?: string;
   agents?: Agent[];
+  description?: string;
+  name?: string;
 }
 
 // Add more types as needed
