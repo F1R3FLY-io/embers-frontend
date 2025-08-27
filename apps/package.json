@@ -24,7 +24,6 @@
   "dependencies": {
     "@codemirror/commands": "^6.8.1",
     "@codemirror/state": "^6.5.2",
-    "@f1r3fly-io/embers-client-sdk": "workspace:*",
     "@scure/base": "^2.0.0",
     "@szhsin/react-menu": "^4.4.1",
     "@tanstack/react-query": "^5.85.5",
@@ -43,6 +42,7 @@
     "vite-plugin-svgr": "^4.5.0"
   },
   "optionalDependencies": {
+    "@f1r3fly-io/embers-client-sdk": "workspace:*",
     "@f1r3fly-io/lightning-bug": "0.3.0"
   }
 }
