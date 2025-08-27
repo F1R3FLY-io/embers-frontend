@@ -52,9 +52,13 @@
     "rules": {
       "recommended": true,
 
-      // Accessibility rules
+      // Accessibility rules - relaxed to match ESLint
       "a11y": {
-        "recommended": true
+        "recommended": false, // Turn off most a11y rules to match ESLint
+        "useAltText": "off",
+        "useButtonType": "off",
+        "noStaticElementInteractions": "off",
+        "useKeyWithClickEvents": "off"
       },
 
       // Code complexity rules
@@ -66,7 +70,8 @@
       "correctness": {
         "recommended": true,
         "noUnusedImports": "error",
-        "useExhaustiveDependencies": "warn" // React hooks dependencies
+        "useExhaustiveDependencies": "warn", // React hooks dependencies
+        "noUnusedFunctionParameters": "warn" // Allow unused function parameters
       },
 
       // Performance optimization rules
@@ -76,21 +81,27 @@
 
       // Security-related rules
       "security": {
-        "recommended": true
+        "recommended": true,
+        "noGlobalEval": "warn" // Allow eval() with warning
       },
 
-      // Code style rules
+      // Code style rules - relaxed to match ESLint
       "style": {
         "recommended": true,
         "noParameterAssign": "warn",
-        "useConsistentArrayType": "error" // Prefer T[] over Array<T>
+        "useConsistentArrayType": "warn", // Warn instead of error for Array<T>
+        "useNodejsImportProtocol": "off", // Allow regular imports
+        "noNonNullAssertion": "off" // Allow non-null assertions without warning
       },
 
-      // Suspicious code pattern detection
+      // Suspicious code pattern detection - relaxed
       "suspicious": {
         "recommended": true,
-        "noExplicitAny": "warn", // Discourage 'any' type
-        "noArrayIndexKey": "warn" // React key prop best practices
+        "noExplicitAny": "off", // Allow 'any' type (was common in ESLint setup)
+        "noArrayIndexKey": "off", // Allow array index keys
+        "noConsole": "off", // Allow console statements
+        "noRedeclare": "warn", // Allow redeclarations with warning
+        "noImplicitAnyLet": "warn" // Allow implicit any in let declarations
       }
     }
   },
