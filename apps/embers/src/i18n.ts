@@ -7,7 +7,6 @@ type Resource = {
 
 type Resources = Record<string, Resource>;
 
-// Import all JSON files eagerly
 const modules: Record<string, { default: Record<string, string> }> =
   import.meta.glob("./i18n/*.json", { eager: true });
 
