@@ -6,6 +6,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2023"],
     "module": "ESNext",
+    "esModuleInterop": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",

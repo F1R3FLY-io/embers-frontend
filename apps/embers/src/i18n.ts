@@ -1,0 +1,32 @@
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+type Resource = {
+  translation: Record<string, string>;
+};
+
+type Resources = Record<string, Resource>;
+
+// Import all JSON files eagerly
+const modules: Record<string, { default: Record<string, string> }> =
+  import.meta.glob("./i18n/*.json", { eager: true });
+
+const resources: Resources = Object.fromEntries(
+  Object.entries(modules).map(([path, value]) => {
+    const lang = path.match(/\/([a-z]+)\.json$/i)?.[1];
+    if (!lang) {
+      return [];
+    }
+    return [lang, { translation: value.default }];
+  }),
+) as Resources;
+
+void i18n.use(initReactI18next).init({
+  fallbackLng: "en",
+  interpolation: { escapeValue: false },
+  lng: "en",
+  react: { useSuspense: false },
+  resources,
+});
+
+export default i18n;

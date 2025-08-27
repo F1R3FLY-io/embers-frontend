@@ -1,13 +1,14 @@
 import classNames from "classnames";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import { LanguageSelect } from "@/lib/components/Select/LanguageSelect/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 import { useAgents } from "@/lib/queries";
 import RobotIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
-import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
@@ -15,6 +16,7 @@ import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { setKey } = useWalletState();
   const logout = useCallback(() => setKey(), [setKey]);
   const navigate = useNavigate();
@@ -29,35 +31,11 @@ export default function Dashboard() {
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
           <Text bold color="primary" type="H4">
-            F1R3FLY
+            {t("f1r3fly")}
           </Text>
         </div>
         <div className={styles["header-right"]}>
-          <div className={styles["language-dropdown"]}>
-            <select className={styles.dropdown}>
-              <option value="en">
-                <Text color="secondary" type="normal">
-                  English
-                </Text>
-              </option>
-              <option value="es">
-                <Text color="secondary" type="normal">
-                  Español
-                </Text>
-              </option>
-              <option value="fr">
-                <Text color="secondary" type="normal">
-                  Français
-                </Text>
-              </option>
-              <option value="de">
-                <Text color="secondary" type="normal">
-                  Deutsch
-                </Text>
-              </option>
-            </select>
-            <ChevronIcon className={styles.chevron} />
-          </div>
+          <LanguageSelect />
           <ThemeSwitch />
           <button className={styles["settings-icon"]}>
             <SettingsIcon />

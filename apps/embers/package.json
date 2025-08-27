@@ -19,7 +19,8 @@
     "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
-    "ci:check:css": "stylelint '**/*.{css,scss}'"
+    "ci:check:css": "stylelint '**/*.{css,scss}'",
+    "sync-i18n": "node --loader ts-node/esm sync-i18n.mts"
   },
   "dependencies": {
     "@codemirror/commands": "^6.8.1",
@@ -32,15 +33,22 @@
     "@xyflow/react": "^12.8.4",
     "classnames": "^2.5.1",
     "font-awesome": "^4.7.0",
+    "i18next": "^25.4.2",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "i18next-http-backend": "^3.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
+    "react-i18next": "^15.7.2",
     "react-modal": "^3.16.3",
     "react-router-dom": "^7.8.2"
   },
   "devDependencies": {
     "@svgr/plugin-svgo": "^8.1.0",
+    "@types/node": "^24.3.0",
     "@types/react-modal": "^3.16.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
     "vite-plugin-svgr": "^4.5.0"
   }
 }
