@@ -35,6 +35,7 @@
 - When adding source code or new files, enhance, update, and provide new unit tests using the existing testing patterns.
 - If unused variables are required, deliberately prefix them with an _, underscore and set eslint up appropriately.
 - Maintain 90%+ test coverage target.
+- DO NOT USE emoticons in documenation or the code base
 
 ## Best Practices
 - Keep console logging to minimum, prefer `console.warn` or `console.error`

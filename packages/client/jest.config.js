@@ -1,7 +1,7 @@
 import { createDefaultEsmPreset } from "ts-jest";
 
 const tsJestTransformCfg = createDefaultEsmPreset({
-  tsconfig: "./tsconfig.tests.json",
+  tsconfig: "./tsconfig.json",
 }).transform;
 
 /** @type {import("jest").Config} **/

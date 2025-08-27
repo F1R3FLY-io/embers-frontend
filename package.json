@@ -3,10 +3,12 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "apps/*",
+    "apps",
     "packages/*"
   ],
   "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
     "lint": "eslint --fix '*'",
     "ci:lint": "eslint '*'",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",

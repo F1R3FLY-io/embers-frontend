@@ -11,10 +11,10 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc && vite build",
     "lint": "eslint --fix .",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit",
+    "typecheck": "tsc --noEmit",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
     "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
@@ -25,7 +25,6 @@
     "@codemirror/commands": "^6.8.1",
     "@codemirror/state": "^6.5.2",
     "@f1r3fly-io/embers-client-sdk": "workspace:*",
-    "@f1r3fly-io/lightning-bug": "0.3.0",
     "@scure/base": "^2.0.0",
     "@szhsin/react-menu": "^4.4.1",
     "@tanstack/react-query": "^5.85.5",
@@ -42,5 +41,8 @@
     "@svgr/plugin-svgo": "^8.1.0",
     "@types/react-modal": "^3.16.3",
     "vite-plugin-svgr": "^4.5.0"
+  },
+  "optionalDependencies": {
+    "@f1r3fly-io/lightning-bug": "0.3.0"
   }
 }
