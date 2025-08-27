@@ -53,7 +53,7 @@ export function SaveAgentsTeamRespFromJSON(json: any): SaveAgentsTeamResp {
 
 export function SaveAgentsTeamRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): SaveAgentsTeamResp {
   if (json == null) {
     return json;
@@ -70,7 +70,7 @@ export function SaveAgentsTeamRespToJSON(json: any): SaveAgentsTeamResp {
 
 export function SaveAgentsTeamRespToJSONTyped(
   value?: SaveAgentsTeamResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

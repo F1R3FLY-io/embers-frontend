@@ -62,7 +62,7 @@ export function DeploySignedTestRespEnvDeployFailedFromJSON(
 
 export function DeploySignedTestRespEnvDeployFailedFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeploySignedTestRespEnvDeployFailed {
   if (json == null) {
     return json;
@@ -81,7 +81,7 @@ export function DeploySignedTestRespEnvDeployFailedToJSON(
 
 export function DeploySignedTestRespEnvDeployFailedToJSONTyped(
   value?: DeploySignedTestRespEnvDeployFailed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

@@ -68,7 +68,7 @@ export function AgentFromJSON(json: any): Agent {
   return AgentFromJSONTyped(json, false);
 }
 
-export function AgentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Agent {
+export function AgentFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Agent {
   if (json == null) {
     return json;
   }
@@ -85,7 +85,7 @@ export function AgentToJSON(json: any): Agent {
   return AgentToJSONTyped(json, false);
 }
 
-export function AgentToJSONTyped(value?: Agent | null, ignoreDiscriminator: boolean = false): any {
+export function AgentToJSONTyped(value?: Agent | null, _ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

@@ -61,7 +61,7 @@ export function GRuleNamedFromJSON(json: any): GRuleNamed {
   return GRuleNamedFromJSONTyped(json, false);
 }
 
-export function GRuleNamedFromJSONTyped(json: any, ignoreDiscriminator: boolean): GRuleNamed {
+export function GRuleNamedFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GRuleNamed {
   if (json == null) {
     return json;
   }
@@ -78,7 +78,7 @@ export function GRuleNamedToJSON(json: any): GRuleNamed {
 
 export function GRuleNamedToJSONTyped(
   value?: GRuleNamed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

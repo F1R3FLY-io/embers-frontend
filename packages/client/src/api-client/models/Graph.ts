@@ -52,7 +52,7 @@ export function GraphFromJSON(json: any): Graph {
   return GraphFromJSONTyped(json, false);
 }
 
-export function GraphFromJSONTyped(json: any, ignoreDiscriminator: boolean): Graph {
+export function GraphFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Graph {
   if (json == null) {
     return json;
   }
@@ -106,7 +106,7 @@ export function GraphToJSON(json: any): any {
   return GraphToJSONTyped(json, false);
 }
 
-export function GraphToJSONTyped(value?: Graph | null, ignoreDiscriminator: boolean = false): any {
+export function GraphToJSONTyped(value?: Graph | null, _ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

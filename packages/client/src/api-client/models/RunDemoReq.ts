@@ -47,7 +47,7 @@ export function RunDemoReqFromJSON(json: any): RunDemoReq {
   return RunDemoReqFromJSONTyped(json, false);
 }
 
-export function RunDemoReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): RunDemoReq {
+export function RunDemoReqFromJSONTyped(json: any, _ignoreDiscriminator: boolean): RunDemoReq {
   if (json == null) {
     return json;
   }
@@ -63,7 +63,7 @@ export function RunDemoReqToJSON(json: any): RunDemoReq {
 
 export function RunDemoReqToJSONTyped(
   value?: RunDemoReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

@@ -78,7 +78,7 @@ export function GraphBindingFromJSON(json: any): GraphBinding {
   return GraphBindingFromJSONTyped(json, false);
 }
 
-export function GraphBindingFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphBinding {
+export function GraphBindingFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GraphBinding {
   if (json == null) {
     return json;
   }
@@ -96,7 +96,7 @@ export function GraphBindingToJSON(json: any): GraphBinding {
 
 export function GraphBindingToJSONTyped(
   value?: GraphBinding | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

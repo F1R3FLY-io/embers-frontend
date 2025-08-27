@@ -37,7 +37,7 @@ export function NameFromJSON(json: any): Name {
   return NameFromJSONTyped(json, false);
 }
 
-export function NameFromJSONTyped(json: any, ignoreDiscriminator: boolean): Name {
+export function NameFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Name {
   if (json == null) {
     return json;
   }
@@ -71,7 +71,7 @@ export function NameToJSON(json: any): any {
   return NameToJSONTyped(json, false);
 }
 
-export function NameToJSONTyped(value?: Name | null, ignoreDiscriminator: boolean = false): any {
+export function NameToJSONTyped(value?: Name | null, _ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

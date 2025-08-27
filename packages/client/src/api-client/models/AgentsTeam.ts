@@ -78,7 +78,7 @@ export function AgentsTeamFromJSON(json: any): AgentsTeam {
   return AgentsTeamFromJSONTyped(json, false);
 }
 
-export function AgentsTeamFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgentsTeam {
+export function AgentsTeamFromJSONTyped(json: any, _ignoreDiscriminator: boolean): AgentsTeam {
   if (json == null) {
     return json;
   }
@@ -98,7 +98,7 @@ export function AgentsTeamToJSON(json: any): AgentsTeam {
 
 export function AgentsTeamToJSONTyped(
   value?: AgentsTeam | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

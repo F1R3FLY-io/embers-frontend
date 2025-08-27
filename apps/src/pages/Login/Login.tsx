@@ -44,7 +44,7 @@ export default function Login() {
     }
   }, [walletInputState.key, setKey, navigate, location.state?.from]);
 
-  let content;
+  let content: JSX.Element;
 
   switch (pageState) {
     case "init":

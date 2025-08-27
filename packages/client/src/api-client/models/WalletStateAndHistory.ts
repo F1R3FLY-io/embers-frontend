@@ -36,25 +36,25 @@ export interface WalletStateAndHistory {
    * @type {Array<Boost>}
    * @memberof WalletStateAndHistory
    */
-  boosts: Array<Boost>;
+  boosts: Boost[];
   /**
    *
    * @type {Array<object>}
    * @memberof WalletStateAndHistory
    */
-  exchanges: Array<object>;
+  exchanges: object[];
   /**
    *
    * @type {Array<Request>}
    * @memberof WalletStateAndHistory
    */
-  requests: Array<Request>;
+  requests: Request[];
   /**
    *
    * @type {Array<Transfer>}
    * @memberof WalletStateAndHistory
    */
-  transfers: Array<Transfer>;
+  transfers: Transfer[];
 }
 
 /**
@@ -85,17 +85,17 @@ export function WalletStateAndHistoryFromJSON(json: any): WalletStateAndHistory 
 
 export function WalletStateAndHistoryFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): WalletStateAndHistory {
   if (json == null) {
     return json;
   }
   return {
     balance: UInt64FromJSON(json.balance),
-    boosts: (json.boosts as Array<any>).map(BoostFromJSON),
+    boosts: (json.boosts as any[]).map(BoostFromJSON),
     exchanges: json.exchanges,
-    requests: (json.requests as Array<any>).map(RequestFromJSON),
-    transfers: (json.transfers as Array<any>).map(TransferFromJSON),
+    requests: (json.requests as any[]).map(RequestFromJSON),
+    transfers: (json.transfers as any[]).map(TransferFromJSON),
   };
 }
 
@@ -105,7 +105,7 @@ export function WalletStateAndHistoryToJSON(json: any): WalletStateAndHistory {
 
 export function WalletStateAndHistoryToJSONTyped(
   value?: WalletStateAndHistory | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
@@ -113,9 +113,9 @@ export function WalletStateAndHistoryToJSONTyped(
 
   return {
     balance: UInt64ToJSON(value.balance),
-    boosts: (value.boosts as Array<any>).map(BoostToJSON),
+    boosts: (value.boosts as any[]).map(BoostToJSON),
     exchanges: value.exchanges,
-    requests: (value.requests as Array<any>).map(RequestToJSON),
-    transfers: (value.transfers as Array<any>).map(TransferToJSON),
+    requests: (value.requests as any[]).map(RequestToJSON),
+    transfers: (value.transfers as any[]).map(TransferToJSON),
   };
 }

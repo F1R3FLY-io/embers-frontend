@@ -36,7 +36,10 @@ export function RequestStatusFromJSON(json: any): RequestStatus {
   return RequestStatusFromJSONTyped(json, false);
 }
 
-export function RequestStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean): RequestStatus {
+export function RequestStatusFromJSONTyped(
+  json: any,
+  _ignoreDiscriminator: boolean,
+): RequestStatus {
   return json as RequestStatus;
 }
 
@@ -44,6 +47,6 @@ export function RequestStatusToJSON(value?: RequestStatus | null): any {
   return value as any;
 }
 
-export function RequestStatusToJSONTyped(value: any, ignoreDiscriminator: boolean): RequestStatus {
+export function RequestStatusToJSONTyped(value: any, _ignoreDiscriminator: boolean): RequestStatus {
   return value as RequestStatus;
 }

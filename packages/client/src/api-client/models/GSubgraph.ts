@@ -60,7 +60,7 @@ export function GSubgraphFromJSON(json: any): GSubgraph {
   return GSubgraphFromJSONTyped(json, false);
 }
 
-export function GSubgraphFromJSONTyped(json: any, ignoreDiscriminator: boolean): GSubgraph {
+export function GSubgraphFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GSubgraph {
   if (json == null) {
     return json;
   }
@@ -77,7 +77,7 @@ export function GSubgraphToJSON(json: any): GSubgraph {
 
 export function GSubgraphToJSONTyped(
   value?: GSubgraph | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

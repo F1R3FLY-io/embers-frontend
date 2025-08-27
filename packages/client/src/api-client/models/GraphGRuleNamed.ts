@@ -81,7 +81,7 @@ export function GraphGRuleNamedFromJSON(json: any): GraphGRuleNamed {
 
 export function GraphGRuleNamedFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): GraphGRuleNamed {
   if (json == null) {
     return json;
@@ -100,7 +100,7 @@ export function GraphGRuleNamedToJSON(json: any): GraphGRuleNamed {
 
 export function GraphGRuleNamedToJSONTyped(
   value?: GraphGRuleNamed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

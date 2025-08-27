@@ -69,7 +69,7 @@ export function GraphGVertexFromJSON(json: any): GraphGVertex {
   return GraphGVertexFromJSONTyped(json, false);
 }
 
-export function GraphGVertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphGVertex {
+export function GraphGVertexFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GraphGVertex {
   if (json == null) {
     return json;
   }
@@ -86,7 +86,7 @@ export function GraphGVertexToJSON(json: any): GraphGVertex {
 
 export function GraphGVertexToJSONTyped(
   value?: GraphGVertex | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

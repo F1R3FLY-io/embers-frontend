@@ -52,7 +52,7 @@ export function CreateAgentReqFromJSON(json: any): CreateAgentReq {
 
 export function CreateAgentReqFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateAgentReq {
   if (json == null) {
     return json;
@@ -70,7 +70,7 @@ export function CreateAgentReqToJSON(json: any): CreateAgentReq {
 
 export function CreateAgentReqToJSONTyped(
   value?: CreateAgentReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

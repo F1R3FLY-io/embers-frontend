@@ -42,7 +42,7 @@ export function NQuoteVertexFromJSON(json: any): NQuoteVertex {
   return NQuoteVertexFromJSONTyped(json, false);
 }
 
-export function NQuoteVertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): NQuoteVertex {
+export function NQuoteVertexFromJSONTyped(json: any, _ignoreDiscriminator: boolean): NQuoteVertex {
   if (json == null) {
     return json;
   }
@@ -57,7 +57,7 @@ export function NQuoteVertexToJSON(json: any): NQuoteVertex {
 
 export function NQuoteVertexToJSONTyped(
   value?: NQuoteVertex | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

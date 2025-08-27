@@ -81,7 +81,7 @@ export function GraphGEdgeNamedFromJSON(json: any): GraphGEdgeNamed {
 
 export function GraphGEdgeNamedFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): GraphGEdgeNamed {
   if (json == null) {
     return json;
@@ -100,7 +100,7 @@ export function GraphGEdgeNamedToJSON(json: any): GraphGEdgeNamed {
 
 export function GraphGEdgeNamedToJSONTyped(
   value?: GraphGEdgeNamed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

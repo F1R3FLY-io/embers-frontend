@@ -68,7 +68,7 @@ export function GraphGTensorFromJSON(json: any): GraphGTensor {
   return GraphGTensorFromJSONTyped(json, false);
 }
 
-export function GraphGTensorFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphGTensor {
+export function GraphGTensorFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GraphGTensor {
   if (json == null) {
     return json;
   }
@@ -85,7 +85,7 @@ export function GraphGTensorToJSON(json: any): GraphGTensor {
 
 export function GraphGTensorToJSONTyped(
   value?: GraphGTensor | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

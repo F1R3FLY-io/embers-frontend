@@ -12,7 +12,7 @@ import type { MouseEvent as ReactMouseEvent } from "react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useMemo, useState } from "react";
 
-import type { MenuItem } from "@/lib/components/ContextMenu";
+import type { ContextMenuItem } from "@/lib/components/ContextMenu";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import styles from "./GraphEditor.module.scss";
@@ -59,7 +59,7 @@ export function GraphEditor() {
   }, []);
 
   const { screenToFlowPosition } = useReactFlow();
-  const menuItems = useMemo<MenuItem[]>(
+  const menuItems = useMemo<ContextMenuItem[]>(
     () => [
       {
         content: "Add input",

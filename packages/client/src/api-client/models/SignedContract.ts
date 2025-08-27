@@ -71,7 +71,7 @@ export function SignedContractFromJSON(json: any): SignedContract {
 
 export function SignedContractFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): SignedContract {
   if (json == null) {
     return json;
@@ -90,7 +90,7 @@ export function SignedContractToJSON(json: any): SignedContract {
 
 export function SignedContractToJSONTyped(
   value?: SignedContract | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

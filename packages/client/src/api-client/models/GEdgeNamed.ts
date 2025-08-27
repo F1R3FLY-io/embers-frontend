@@ -61,7 +61,7 @@ export function GEdgeNamedFromJSON(json: any): GEdgeNamed {
   return GEdgeNamedFromJSONTyped(json, false);
 }
 
-export function GEdgeNamedFromJSONTyped(json: any, ignoreDiscriminator: boolean): GEdgeNamed {
+export function GEdgeNamedFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GEdgeNamed {
   if (json == null) {
     return json;
   }
@@ -78,7 +78,7 @@ export function GEdgeNamedToJSON(json: any): GEdgeNamed {
 
 export function GEdgeNamedToJSONTyped(
   value?: GEdgeNamed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

@@ -35,7 +35,7 @@ export function DirectionFromJSON(json: any): Direction {
   return DirectionFromJSONTyped(json, false);
 }
 
-export function DirectionFromJSONTyped(json: any, ignoreDiscriminator: boolean): Direction {
+export function DirectionFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Direction {
   return json as Direction;
 }
 
@@ -43,6 +43,6 @@ export function DirectionToJSON(value?: Direction | null): any {
   return value as any;
 }
 
-export function DirectionToJSONTyped(value: any, ignoreDiscriminator: boolean): Direction {
+export function DirectionToJSONTyped(value: any, _ignoreDiscriminator: boolean): Direction {
   return value as Direction;
 }

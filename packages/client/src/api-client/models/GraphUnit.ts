@@ -46,7 +46,7 @@ export function GraphUnitFromJSON(json: any): GraphUnit {
   return GraphUnitFromJSONTyped(json, false);
 }
 
-export function GraphUnitFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphUnit {
+export function GraphUnitFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GraphUnit {
   if (json == null) {
     return json;
   }
@@ -61,7 +61,7 @@ export function GraphUnitToJSON(json: any): GraphUnit {
 
 export function GraphUnitToJSONTyped(
   value?: GraphUnit | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

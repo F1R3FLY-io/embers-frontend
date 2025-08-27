@@ -90,7 +90,7 @@ export function TransferFromJSON(json: any): Transfer {
   return TransferFromJSONTyped(json, false);
 }
 
-export function TransferFromJSONTyped(json: any, ignoreDiscriminator: boolean): Transfer {
+export function TransferFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Transfer {
   if (json == null) {
     return json;
   }
@@ -110,7 +110,7 @@ export function TransferToJSON(json: any): Transfer {
 
 export function TransferToJSONTyped(
   value?: Transfer | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

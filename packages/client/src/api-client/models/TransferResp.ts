@@ -42,7 +42,7 @@ export function TransferRespFromJSON(json: any): TransferResp {
   return TransferRespFromJSONTyped(json, false);
 }
 
-export function TransferRespFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransferResp {
+export function TransferRespFromJSONTyped(json: any, _ignoreDiscriminator: boolean): TransferResp {
   if (json == null) {
     return json;
   }
@@ -57,7 +57,7 @@ export function TransferRespToJSON(json: any): TransferResp {
 
 export function TransferRespToJSONTyped(
   value?: TransferResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

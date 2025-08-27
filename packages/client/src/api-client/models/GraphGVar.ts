@@ -68,7 +68,7 @@ export function GraphGVarFromJSON(json: any): GraphGVar {
   return GraphGVarFromJSONTyped(json, false);
 }
 
-export function GraphGVarFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphGVar {
+export function GraphGVarFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GraphGVar {
   if (json == null) {
     return json;
   }
@@ -85,7 +85,7 @@ export function GraphGVarToJSON(json: any): GraphGVar {
 
 export function GraphGVarToJSONTyped(
   value?: GraphGVar | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

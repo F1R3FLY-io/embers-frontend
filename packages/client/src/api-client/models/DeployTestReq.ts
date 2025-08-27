@@ -44,7 +44,10 @@ export function DeployTestReqFromJSON(json: any): DeployTestReq {
   return DeployTestReqFromJSONTyped(json, false);
 }
 
-export function DeployTestReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): DeployTestReq {
+export function DeployTestReqFromJSONTyped(
+  json: any,
+  _ignoreDiscriminator: boolean,
+): DeployTestReq {
   if (json == null) {
     return json;
   }
@@ -60,7 +63,7 @@ export function DeployTestReqToJSON(json: any): DeployTestReq {
 
 export function DeployTestReqToJSONTyped(
   value?: DeployTestReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

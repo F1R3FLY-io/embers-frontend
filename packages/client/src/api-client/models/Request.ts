@@ -72,7 +72,7 @@ export function RequestFromJSON(json: any): Request {
   return RequestFromJSONTyped(json, false);
 }
 
-export function RequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): Request {
+export function RequestFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Request {
   if (json == null) {
     return json;
   }
@@ -90,7 +90,7 @@ export function RequestToJSON(json: any): Request {
 
 export function RequestToJSONTyped(
   value?: Request | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

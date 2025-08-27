@@ -40,7 +40,7 @@ export function CreateTestwalletRespFromJSON(json: any): CreateTestwalletResp {
 
 export function CreateTestwalletRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateTestwalletResp {
   if (json == null) {
     return json;
@@ -56,7 +56,7 @@ export function CreateTestwalletRespToJSON(json: any): CreateTestwalletResp {
 
 export function CreateTestwalletRespToJSONTyped(
   value?: CreateTestwalletResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

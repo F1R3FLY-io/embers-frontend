@@ -61,7 +61,7 @@ export function BindingFromJSON(json: any): Binding {
   return BindingFromJSONTyped(json, false);
 }
 
-export function BindingFromJSONTyped(json: any, ignoreDiscriminator: boolean): Binding {
+export function BindingFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Binding {
   if (json == null) {
     return json;
   }
@@ -78,7 +78,7 @@ export function BindingToJSON(json: any): Binding {
 
 export function BindingToJSONTyped(
   value?: Binding | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

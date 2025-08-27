@@ -51,7 +51,7 @@ export function GRuleAnonFromJSON(json: any): GRuleAnon {
   return GRuleAnonFromJSONTyped(json, false);
 }
 
-export function GRuleAnonFromJSONTyped(json: any, ignoreDiscriminator: boolean): GRuleAnon {
+export function GRuleAnonFromJSONTyped(json: any, _ignoreDiscriminator: boolean): GRuleAnon {
   if (json == null) {
     return json;
   }
@@ -67,7 +67,7 @@ export function GRuleAnonToJSON(json: any): GRuleAnon {
 
 export function GRuleAnonToJSONTyped(
   value?: GRuleAnon | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

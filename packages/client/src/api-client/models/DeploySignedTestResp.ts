@@ -42,7 +42,7 @@ export function DeploySignedTestRespFromJSON(json: any): DeploySignedTestResp {
 
 export function DeploySignedTestRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeploySignedTestResp {
   if (json == null) {
     return json;
@@ -71,7 +71,7 @@ export function DeploySignedTestRespToJSON(json: any): any {
 
 export function DeploySignedTestRespToJSONTyped(
   value?: DeploySignedTestResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

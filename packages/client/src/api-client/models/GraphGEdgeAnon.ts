@@ -71,7 +71,7 @@ export function GraphGEdgeAnonFromJSON(json: any): GraphGEdgeAnon {
 
 export function GraphGEdgeAnonFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): GraphGEdgeAnon {
   if (json == null) {
     return json;
@@ -89,7 +89,7 @@ export function GraphGEdgeAnonToJSON(json: any): GraphGEdgeAnon {
 
 export function GraphGEdgeAnonToJSONTyped(
   value?: GraphGEdgeAnon | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

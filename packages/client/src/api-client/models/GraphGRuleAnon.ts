@@ -71,7 +71,7 @@ export function GraphGRuleAnonFromJSON(json: any): GraphGRuleAnon {
 
 export function GraphGRuleAnonFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): GraphGRuleAnon {
   if (json == null) {
     return json;
@@ -89,7 +89,7 @@ export function GraphGRuleAnonToJSON(json: any): GraphGRuleAnon {
 
 export function GraphGRuleAnonToJSONTyped(
   value?: GraphGRuleAnon | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

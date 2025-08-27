@@ -51,7 +51,7 @@ export function LogFromJSON(json: any): Log {
   return LogFromJSONTyped(json, false);
 }
 
-export function LogFromJSONTyped(json: any, ignoreDiscriminator: boolean): Log {
+export function LogFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Log {
   if (json == null) {
     return json;
   }
@@ -65,7 +65,7 @@ export function LogToJSON(json: any): Log {
   return LogToJSONTyped(json, false);
 }
 
-export function LogToJSONTyped(value?: Log | null, ignoreDiscriminator: boolean = false): any {
+export function LogToJSONTyped(value?: Log | null, _ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

@@ -55,7 +55,7 @@ export function NameNVVarFromJSON(json: any): NameNVVar {
   return NameNVVarFromJSONTyped(json, false);
 }
 
-export function NameNVVarFromJSONTyped(json: any, ignoreDiscriminator: boolean): NameNVVar {
+export function NameNVVarFromJSONTyped(json: any, _ignoreDiscriminator: boolean): NameNVVar {
   if (json == null) {
     return json;
   }
@@ -71,7 +71,7 @@ export function NameNVVarToJSON(json: any): NameNVVar {
 
 export function NameNVVarToJSONTyped(
   value?: NameNVVar | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

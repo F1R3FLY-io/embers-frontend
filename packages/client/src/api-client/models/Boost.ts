@@ -90,7 +90,7 @@ export function BoostFromJSON(json: any): Boost {
   return BoostFromJSONTyped(json, false);
 }
 
-export function BoostFromJSONTyped(json: any, ignoreDiscriminator: boolean): Boost {
+export function BoostFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Boost {
   if (json == null) {
     return json;
   }
@@ -108,7 +108,7 @@ export function BoostToJSON(json: any): Boost {
   return BoostToJSONTyped(json, false);
 }
 
-export function BoostToJSONTyped(value?: Boost | null, ignoreDiscriminator: boolean = false): any {
+export function BoostToJSONTyped(value?: Boost | null, _ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

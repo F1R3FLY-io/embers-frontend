@@ -1,2 +1,2 @@
-export type { MenuItem } from "./ContextMenu";
+export type { ContextMenuItem } from "./ContextMenu";
 export { ContextMenu } from "./ContextMenu";

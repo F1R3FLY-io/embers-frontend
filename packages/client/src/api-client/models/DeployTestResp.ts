@@ -50,7 +50,7 @@ export function DeployTestRespFromJSON(json: any): DeployTestResp {
 
 export function DeployTestRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeployTestResp {
   if (json == null) {
     return json;
@@ -67,7 +67,7 @@ export function DeployTestRespToJSON(json: any): DeployTestResp {
 
 export function DeployTestRespToJSONTyped(
   value?: DeployTestResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

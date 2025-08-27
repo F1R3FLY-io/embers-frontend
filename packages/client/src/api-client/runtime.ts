@@ -104,12 +104,12 @@ export class BaseAPI {
     return next;
   }
 
-  withPreMiddleware<T extends BaseAPI>(this: T, ...preMiddlewares: Array<Middleware["pre"]>) {
+  withPreMiddleware<T extends BaseAPI>(this: T, ...preMiddlewares: Middleware["pre"][]) {
     const middlewares = preMiddlewares.map((pre) => ({ pre }));
     return this.withMiddleware<T>(...middlewares);
   }
 
-  withPostMiddleware<T extends BaseAPI>(this: T, ...postMiddlewares: Array<Middleware["post"]>) {
+  withPostMiddleware<T extends BaseAPI>(this: T, ...postMiddlewares: Middleware["post"][]) {
     const middlewares = postMiddlewares.map((post) => ({ post }));
     return this.withMiddleware<T>(...middlewares);
   }
@@ -369,7 +369,7 @@ function querystringSingleKey(
   keyPrefix: string = "",
 ): string {
   const fullKey = keyPrefix + (keyPrefix.length ? `[${key}]` : key);
-  if (value instanceof Array) {
+  if (Array.isArray(value)) {
     const multiValue = value
       .map((singleValue) => encodeURIComponent(String(singleValue)))
       .join(`&${encodeURIComponent(fullKey)}=`);
@@ -436,9 +436,9 @@ export interface ErrorContext {
 }
 
 export interface Middleware {
-  onError?: (context: ErrorContext) => Promise<Response | void>;
-  post?: (context: ResponseContext) => Promise<Response | void>;
-  pre?: (context: RequestContext) => Promise<FetchParams | void>;
+  onError?: (context: ErrorContext) => Promise<Response | undefined>;
+  post?: (context: ResponseContext) => Promise<Response | undefined>;
+  pre?: (context: RequestContext) => Promise<FetchParams | undefined>;
 }
 
 export interface ApiResponse<T> {

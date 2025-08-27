@@ -36,7 +36,7 @@ export function LogLevelFromJSON(json: any): LogLevel {
   return LogLevelFromJSONTyped(json, false);
 }
 
-export function LogLevelFromJSONTyped(json: any, ignoreDiscriminator: boolean): LogLevel {
+export function LogLevelFromJSONTyped(json: any, _ignoreDiscriminator: boolean): LogLevel {
   return json as LogLevel;
 }
 
@@ -44,6 +44,6 @@ export function LogLevelToJSON(value?: LogLevel | null): any {
   return value as any;
 }
 
-export function LogLevelToJSONTyped(value: any, ignoreDiscriminator: boolean): LogLevel {
+export function LogLevelToJSONTyped(value: any, _ignoreDiscriminator: boolean): LogLevel {
   return value as LogLevel;
 }

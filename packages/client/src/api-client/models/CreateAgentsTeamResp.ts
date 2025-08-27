@@ -62,7 +62,7 @@ export function CreateAgentsTeamRespFromJSON(json: any): CreateAgentsTeamResp {
 
 export function CreateAgentsTeamRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateAgentsTeamResp {
   if (json == null) {
     return json;
@@ -80,7 +80,7 @@ export function CreateAgentsTeamRespToJSON(json: any): CreateAgentsTeamResp {
 
 export function CreateAgentsTeamRespToJSONTyped(
   value?: CreateAgentsTeamResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

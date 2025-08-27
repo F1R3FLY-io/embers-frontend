@@ -38,7 +38,10 @@ export function DeployDemoReqFromJSON(json: any): DeployDemoReq {
   return DeployDemoReqFromJSONTyped(json, false);
 }
 
-export function DeployDemoReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): DeployDemoReq {
+export function DeployDemoReqFromJSONTyped(
+  json: any,
+  _ignoreDiscriminator: boolean,
+): DeployDemoReq {
   if (json == null) {
     return json;
   }
@@ -53,7 +56,7 @@ export function DeployDemoReqToJSON(json: any): DeployDemoReq {
 
 export function DeployDemoReqToJSONTyped(
   value?: DeployDemoReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

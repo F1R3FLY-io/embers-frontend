@@ -46,7 +46,7 @@ export function NameUnitFromJSON(json: any): NameUnit {
   return NameUnitFromJSONTyped(json, false);
 }
 
-export function NameUnitFromJSONTyped(json: any, ignoreDiscriminator: boolean): NameUnit {
+export function NameUnitFromJSONTyped(json: any, _ignoreDiscriminator: boolean): NameUnit {
   if (json == null) {
     return json;
   }
@@ -61,7 +61,7 @@ export function NameUnitToJSON(json: any): NameUnit {
 
 export function NameUnitToJSONTyped(
   value?: NameUnit | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

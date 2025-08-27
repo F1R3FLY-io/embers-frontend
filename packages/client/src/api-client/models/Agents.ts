@@ -25,7 +25,7 @@ export interface Agents {
    * @type {Array<AgentHeader>}
    * @memberof Agents
    */
-  agents: Array<AgentHeader>;
+  agents: AgentHeader[];
 }
 
 /**
@@ -42,12 +42,12 @@ export function AgentsFromJSON(json: any): Agents {
   return AgentsFromJSONTyped(json, false);
 }
 
-export function AgentsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Agents {
+export function AgentsFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Agents {
   if (json == null) {
     return json;
   }
   return {
-    agents: (json.agents as Array<any>).map(AgentHeaderFromJSON),
+    agents: (json.agents as any[]).map(AgentHeaderFromJSON),
   };
 }
 
@@ -57,13 +57,13 @@ export function AgentsToJSON(json: any): Agents {
 
 export function AgentsToJSONTyped(
   value?: Agents | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
   }
 
   return {
-    agents: (value.agents as Array<any>).map(AgentHeaderToJSON),
+    agents: (value.agents as any[]).map(AgentHeaderToJSON),
   };
 }

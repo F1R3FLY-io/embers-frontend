@@ -50,7 +50,7 @@ export function DeploySignedTestReqFromJSON(json: any): DeploySignedTestReq {
 
 export function DeploySignedTestReqFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeploySignedTestReq {
   if (json == null) {
     return json;
@@ -67,7 +67,7 @@ export function DeploySignedTestReqToJSON(json: any): DeploySignedTestReq {
 
 export function DeploySignedTestReqToJSONTyped(
   value?: DeploySignedTestReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

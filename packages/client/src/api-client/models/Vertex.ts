@@ -42,7 +42,7 @@ export function VertexFromJSON(json: any): Vertex {
   return VertexFromJSONTyped(json, false);
 }
 
-export function VertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vertex {
+export function VertexFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Vertex {
   if (json == null) {
     return json;
   }
@@ -57,7 +57,7 @@ export function VertexToJSON(json: any): Vertex {
 
 export function VertexToJSONTyped(
   value?: Vertex | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

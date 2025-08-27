@@ -15,7 +15,7 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    let isDarkMode;
+    let isDarkMode: boolean;
 
     if (savedTheme === "dark") {
       isDarkMode = true;
