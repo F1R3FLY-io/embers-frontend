@@ -1,6 +1,6 @@
 {
   "name": "@f1r3fly-io/embers-client-sdk",
-  "version": "0.0.28",
+  "version": "0.0.32",
   "main": "dist/embers-client-sdk.cjs.js",
   "module": "dist/embers-client-sdk.es.js",
   "browser": "dist/embers-client-sdk.umd.js",
@@ -37,6 +37,7 @@
     "typecheck": "tsc -b --noEmit",
     "gen-docs": "typedoc",
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
+    "generate-mocks": "counterfact ./schema.json mocks --generate",
     "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
     "ci:lint": "eslint .",
@@ -50,13 +51,13 @@
     "serve": "^14.2.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.10"
+    "typedoc": "^0.28.11"
   },
   "dependencies": {
     "@noble/curves": "^1.9.7",
     "@scure/base": "^1.2.6",
     "blakejs": "^1.2.1",
     "js-sha3": "^0.9.3",
-    "zod": "^4.0.17"
+    "zod": "^4.1.1"
   }
 }

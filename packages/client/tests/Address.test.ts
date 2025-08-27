@@ -1,4 +1,4 @@
-import { Address } from "../src/entities/Address";
+import { Address } from "../src";
 
 describe("Address class", () => {
   test("should create an Address", () => {

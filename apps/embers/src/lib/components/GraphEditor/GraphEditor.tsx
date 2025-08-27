@@ -11,20 +11,25 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+
+import type { MenuItem } from "@/lib/components/ContextMenu";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
-import { Text } from "@/lib/components/Text";
 
 import type { NodeTypes } from "./nodes";
 
 import styles from "./GraphEditor.module.scss";
 import { nodeTypes } from "./nodes";
 
-export function GraphEditor() {
-  const { screenToFlowPosition } = useReactFlow();
+type Node = {
+  [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
+}[keyof NodeTypes];
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+type Edge = REdge;
+
+export function GraphEditor() {
+  const [nodes, , onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const onConnect = useCallback(
     (connection: Connection) =>
@@ -37,6 +42,7 @@ export function GraphEditor() {
     x: 0,
     y: 0,
   });
+  const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
 
   const openContextMenu = useCallback((event: ReactMouseEvent | MouseEvent) => {
     event.stopPropagation();
@@ -44,42 +50,158 @@ export function GraphEditor() {
     setContextMenuPosition({ x: event.clientX, y: event.clientY });
     setContextMenuOpen(true);
   }, []);
-
+  const openSelectionContextMenu = useCallback(
+    (event: ReactMouseEvent | MouseEvent, selectedNodes: Node[]) => {
+      setSelectedNodes(selectedNodes);
+      openContextMenu(event);
+    },
+    [openContextMenu],
+  );
   const closeContextMenu = useCallback(() => {
+    setSelectedNodes([]);
     setContextMenuOpen(false);
   }, []);
 
-  const addInputNode = useCallback(() => {
-    setNodes((edgesSnapshot) => [
-      ...edgesSnapshot,
+  const { screenToFlowPosition } = useReactFlow();
+  const menuItems = useMemo<MenuItem[]>(
+    () => [
       {
-        className: styles["no-node-style"],
-        data: {},
-        id: crypto.randomUUID(),
-        position: screenToFlowPosition(contextMenuPosition),
-        type: "manual-input",
+        content: "Add input",
+        hidden: selectedNodes.length !== 0,
+        onClick: () =>
+          onNodesChange(
+            createNodeChange(
+              "manual-input",
+              screenToFlowPosition(contextMenuPosition),
+            ),
+          ),
+        type: "text",
       },
-    ]);
-  }, [contextMenuPosition, screenToFlowPosition, setNodes]);
+      {
+        content: "Add sink",
+        hidden: selectedNodes.length !== 0,
+        onClick: () =>
+          onNodesChange(
+            createNodeChange(
+              "send-to-channel",
+              screenToFlowPosition(contextMenuPosition),
+            ),
+          ),
+        type: "text",
+      },
+      {
+        content: "Add compress",
+        hidden: selectedNodes.length !== 0,
+        onClick: () =>
+          onNodesChange(
+            createNodeChange(
+              "compress",
+              screenToFlowPosition(contextMenuPosition),
+            ),
+          ),
+        type: "text",
+      },
+      {
+        content: "Add text model",
+        hidden: selectedNodes.length !== 0,
+        onClick: () =>
+          onNodesChange(
+            createNodeChange(
+              "text-model",
+              screenToFlowPosition(contextMenuPosition),
+            ),
+          ),
+        type: "text",
+      },
+      {
+        content: "Add text to image model",
+        hidden: selectedNodes.length !== 0,
+        onClick: () =>
+          onNodesChange(
+            createNodeChange(
+              "tti-model",
+              screenToFlowPosition(contextMenuPosition),
+            ),
+          ),
+        type: "text",
+      },
+      {
+        content: "Add text to speech model",
+        hidden: selectedNodes.length !== 0,
+        onClick: () =>
+          onNodesChange(
+            createNodeChange(
+              "tts-model",
+              screenToFlowPosition(contextMenuPosition),
+            ),
+          ),
+        type: "text",
+      },
+      {
+        content: "Add to deploy container",
+        hidden: selectedNodes.length === 0,
+        onClick: () => {
+          const minX = Math.min(...selectedNodes.map((n) => n.position.x));
+          const maxX = Math.max(
+            ...selectedNodes.map((n) => n.position.x + n.measured!.width!),
+          );
 
-  const addSinkNode = useCallback(() => {
-    setNodes((edgesSnapshot) => [
-      ...edgesSnapshot,
-      {
-        className: styles["no-node-style"],
-        data: {},
-        id: crypto.randomUUID(),
-        position: screenToFlowPosition(contextMenuPosition),
-        type: "send-to-channel",
+          const minY = Math.min(...selectedNodes.map((n) => n.position.y));
+          const maxY = Math.max(
+            ...selectedNodes.map((n) => n.position.y + n.measured!.height!),
+          );
+
+          const subflowNode: Node = {
+            className: styles["no-node-style"],
+            data: {
+              containerId: "default",
+            },
+            id: crypto.randomUUID(),
+            position: { x: minX - 5, y: minY - 5 },
+            style: {
+              height: maxY - minY + 10,
+              width: maxX - minX + 10,
+            },
+            type: "deploy-container",
+          };
+
+          onNodesChange([
+            {
+              // parent should come before children
+              index: 0,
+              item: subflowNode,
+              type: "add",
+            },
+            ...selectedNodes.map((n) => ({
+              id: n.id,
+              item: {
+                ...n,
+                extent: "parent" as const,
+                parentId: subflowNode.id,
+                // position should be relative to parent
+                position: {
+                  x: n.position.x - subflowNode.position.x,
+                  y: n.position.y - subflowNode.position.y,
+                },
+              },
+              type: "replace" as const,
+            })),
+          ]);
+        },
+        type: "text",
       },
-    ]);
-  }, [contextMenuPosition, screenToFlowPosition, setNodes]);
+    ],
+    [contextMenuPosition, onNodesChange, screenToFlowPosition, selectedNodes],
+  );
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <div className={styles.container}>
       <ReactFlow
         fitView
-        defaultEdgeOptions={{ animated: true }}
+        defaultEdgeOptions={{
+          animated: true,
+          className: styles.edge,
+        }}
         deleteKeyCode={["Delete", "Backspace"]}
         edges={edges}
         nodes={nodes}
@@ -88,6 +210,7 @@ export function GraphEditor() {
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openContextMenu}
+        onSelectionContextMenu={openSelectionContextMenu}
       >
         <Background
           className={styles.background}
@@ -96,24 +219,30 @@ export function GraphEditor() {
         />
         <Controls />
         <ContextMenu
+          items={menuItems}
           open={contextMenuOpen}
           position={contextMenuPosition}
           onClose={closeContextMenu}
-        >
-          <div onClick={addInputNode}>
-            <Text>Add input</Text>
-          </div>
-          <div onClick={addSinkNode}>
-            <Text>Add sink</Text>
-          </div>
-        </ContextMenu>
+        />
       </ReactFlow>
     </div>
   );
 }
 
-type Node = {
-  [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
-}[keyof NodeTypes];
-
-type Edge = REdge;
+function createNodeChange<T extends string>(
+  type: T,
+  position: Node["position"],
+) {
+  return [
+    {
+      item: {
+        className: styles["no-node-style"],
+        data: {},
+        id: crypto.randomUUID(),
+        position,
+        type,
+      },
+      type: "add" as const,
+    },
+  ];
+}

@@ -1,7 +1,7 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { randomBytes } from "crypto";
 
-import { PrivateKey } from "../src/entities/PrivateKey";
+import { PrivateKey } from "../src";
 
 describe("PrivateKey class", () => {
   test("should check if private key is valid", () => {

@@ -1,14 +1,16 @@
 import type {
-  AiAgent,
+  AgentsApiSdk,
+  AgentsTeamsApiSdk,
   PrivateKey,
-  Wallet,
+  WalletsApiSdk,
 } from "@f1r3fly-io/embers-client-sdk";
 
 import { createContext, useContext } from "react";
 
 export type EmbersAPI = {
-  aiAgent: AiAgent;
-  wallet: Wallet;
+  agents: AgentsApiSdk;
+  agentsTeams: AgentsTeamsApiSdk;
+  wallets: WalletsApiSdk;
 };
 
 export type WalletStateContext =

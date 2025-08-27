@@ -65,7 +65,7 @@ export default function Login() {
             </Button>
           </div>
           <div className={styles.note}>
-            <Text color="secondary">
+            <Text color="secondary" type="normal">
               By using F1R3SKY, you agree to the{" "}
               <TextLink onClick={() => {}}>terms and privacy policy</TextLink>
             </Text>
@@ -83,7 +83,7 @@ export default function Login() {
               </Text>
             </div>
             <div className={styles.note}>
-              <Text color="secondary">
+              <Text color="secondary" type="normal">
                 Please enter your private key or upload a key file to sign in.
                 <br />
                 Make sure you&apos;re using the correct credentials.
@@ -101,7 +101,7 @@ export default function Login() {
               Sign In
             </Button>
             <div className={styles.note}>
-              <Text color="secondary">
+              <Text color="secondary" type="normal">
                 Don&apos;t have F1R3SKY Wallet?{" "}
                 <TextLink onClick={redirectToFiresky}>Create one</TextLink>
               </Text>

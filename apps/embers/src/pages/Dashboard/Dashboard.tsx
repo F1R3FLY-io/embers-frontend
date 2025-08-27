@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
@@ -29,6 +30,10 @@ export default function Dashboard() {
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const { setKey } = useWalletState();
   const logout = useCallback(() => setKey(), [setKey]);
+  const navigate = useNavigate();
+  const createAiAgent = useCallback(() => {
+    void navigate("/create-ai-agent");
+  }, [navigate]);
 
   const { data, isSuccess } = useAgents();
 
@@ -36,7 +41,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text bold color="primary" type="H3">
+          <Text bold color="primary" type="H4">
             F1R3FLY
           </Text>
         </div>
@@ -44,16 +49,24 @@ export default function Dashboard() {
           <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
               <option value="en">
-                <Text color="secondary">English</Text>
+                <Text color="secondary" type="normal">
+                  English
+                </Text>
               </option>
               <option value="es">
-                <Text color="secondary">Español</Text>
+                <Text color="secondary" type="normal">
+                  Español
+                </Text>
               </option>
               <option value="fr">
-                <Text color="secondary">Français</Text>
+                <Text color="secondary" type="normal">
+                  Français
+                </Text>
               </option>
               <option value="de">
-                <Text color="secondary">Deutsch</Text>
+                <Text color="secondary" type="normal">
+                  Deutsch
+                </Text>
               </option>
             </select>
             <ChevronIcon className={styles.chevron} />
@@ -145,6 +158,11 @@ export default function Dashboard() {
               styles["tab-content"],
               isTransitioning ? styles.entering : styles.entered,
             )}
+            onClick={() => {
+              if (selectedTab === "agents") {
+                void navigate("/create-ai-agent");
+              }
+            }}
           >
             {selectedTab === "agents" ? (
               <AgentsGrid agents={data?.agents || []} isSuccess={isSuccess} />

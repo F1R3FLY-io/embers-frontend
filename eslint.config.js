@@ -39,8 +39,17 @@ export default tseslint.config(
     },
     plugins: { perfectionist },
     rules: {
-      "arrow-body-style": "error",
-      "class-methods-use-this": "error",
+      "class-methods-use-this": [
+        "error",
+        {
+          exceptMethods: [
+            "componentDidCatch",
+            "componentDidMount",
+            "componentWillUnmount",
+            "render",
+          ],
+        },
+      ],
       curly: ["error", "all"],
       "default-case-last": "error",
       "default-param-last": "error",
@@ -53,6 +62,14 @@ export default tseslint.config(
         { enforceForTSTypes: true },
       ],
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          ts: "never",
+          tsx: "never",
+        },
+      ],
       "import/no-duplicates": "error",
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
@@ -185,6 +202,8 @@ export default tseslint.config(
       "prefer-const": "error",
       "prefer-promise-reject-errors": "error",
       "prefer-template": "error",
+      "react/jsx-curly-brace-presence": ["error", "never"],
+      "react/jsx-no-useless-fragment": "error",
       "react/jsx-sort-props": [
         "error",
         {
@@ -268,10 +287,6 @@ export default tseslint.config(
       "@typescript-eslint/promise-function-async": "error",
       "@typescript-eslint/related-getter-setter-pairs": "error",
       "@typescript-eslint/return-await": "error",
-      "@typescript-eslint/strict-boolean-expressions": [
-        "error",
-        { allowNullableBoolean: true },
-      ],
       "@typescript-eslint/switch-exhaustiveness-check": "error",
       "dot-notation": "off",
     },
