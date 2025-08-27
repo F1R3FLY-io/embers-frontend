@@ -26,19 +26,19 @@ export class Configuration {
 }
 
 export class AIAgentsTeamsApi {
-  public constructor(config?: Configuration);
+  public constructor(config?: ConfigurationInterface);
   public apiAiAgentsTeamsDeployDemoPost(req: unknown): Promise<unknown>;
   public apiAiAgentsTeamsRunDemoPost(req: unknown): Promise<unknown>;
 }
 
 export class WalletsApi {
-  public constructor(config?: Configuration);
+  public constructor(config?: ConfigurationInterface);
   public getWalletStateAndHistory(): Promise<unknown>;
   public sendTransaction(req: unknown): Promise<unknown>;
 }
 
 export class EmbersClient {
-  public constructor(config?: Configuration);
+  public constructor(config?: ConfigurationInterface);
   public getAgents(): Promise<unknown>;
   public getAgentVersions(id: string): Promise<unknown>;
   public getAgentVersion(id: string, version: string): Promise<unknown>;
@@ -53,7 +53,9 @@ export class EmbersClient {
 }
 
 // Legacy API class aliases for backwards compatibility
-export class AgentsApiSdk extends EmbersClient {}
+export class AgentsApiSdk extends EmbersClient {
+  public constructor(config?: ConfigurationInterface);
+}
 
 export class AgentsTeamsApiSdk extends AIAgentsTeamsApi {
   public getAgentsTeams(): Promise<unknown>;
