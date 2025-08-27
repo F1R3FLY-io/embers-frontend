@@ -51,24 +51,33 @@ When using LLM tools, start by providing context from:
 
 ```
 embers-frontend/
-├── docs/                    # Documentation hierarchy (see above)
-├── apps/
-│   └── embers/              # React frontend application
-│       ├── src/
-│       │   ├── lib/         # Shared components and utilities
-│       │   ├── pages/       # Route components
-│       │   └── public/      # Static assets
-│       └── package.json     # Frontend dependencies
-├── packages/
-│   └── client/              # TypeScript client SDK
-│       ├── src/
-│       │   ├── api-client/  # Auto-generated API client
-│       │   ├── entities/    # Core blockchain entities
-│       │   └── functions.ts # Wallet operations
-│       └── tests/           # SDK test suites
-├── .github/workflows/       # CI/CD pipelines
-├── CLAUDE.md                # Project context for LLM assistance
-└── pnpm-workspace.yaml      # Monorepo configuration
+├── package.json          # Root package.json with "workspaces": ["packages/*", "apps/*"]
+├── tsconfig.json         # Root tsconfig with references to sub-projects
+├── tsconfig.base.json    # Optional base config for shared compiler options
+├── node_modules/         # Shared dependencies
+├── packages/             # Directory for publishable library packages
+│   ├── library1/         # Example library package
+│   │   ├── src/          # Source code
+│   │   │   ├── index.ts  # Main entry point
+│   │   │   └── other.ts  # Other source files
+│   │   ├── dist/         # Compiled output (added to .gitignore)
+│   │   ├── tests/        # Unit tests (or __tests__/)
+│   │   │   └── index.test.ts
+│   │   ├── package.json  # Package config with "main": "dist/index.js", "types": "dist/index.d.ts"
+│   │   ├── tsconfig.json # Extends root/base tsconfig, with outDir: "dist"
+│   │   └── README.md     # Package documentation
+│   └── library2/         # Another library, similar structure
+└── apps/                 # Directory for applications, including test UI
+    └── test-ui/          # Test UI framework/app (e.g., React app for demo/testing libraries)
+        ├── src/          # App source code
+        │   ├── App.tsx   # Main app component, imports from libraries
+        │   └── index.tsx # Entry point
+        ├── public/       # Public assets (for web apps)
+        ├── dist/         # Build output (if applicable)
+        ├── tests/        # Integration/e2e tests
+        ├── package.json  # Private package ("private": true), dependencies on @monorepo/library1
+        ├── tsconfig.json # Extends root/base
+        └── README.md     # App documentation
 ```
 
 ## Development Workflow
