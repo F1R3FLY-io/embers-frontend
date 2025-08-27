@@ -4,3 +4,5 @@ pnpm --filter @f1r3fly-io/embers-client-sdk run format:code
 pnpm --filter @f1r3fly-io/embers-frontend run ci:check:code
 pnpm --filter @f1r3fly-io/embers-client-sdk run ci:check:code
 pnpm --filter @f1r3fly-io/embers-client-sdk run lint
+pnpm --filter @f1r3fly-io/embers-frontend run typecheck
+pnpm --filter @f1r3fly-io/embers-client-sdk run typecheck

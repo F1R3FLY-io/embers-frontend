@@ -14,15 +14,15 @@ export const PrivateKey: {
 export function deserializeKey(data: string | Uint8Array): PrivateKey;
 export function generateKey(): PrivateKey;
 
-export interface ConfigurationInterface {
+export interface Configuration {
   basePath?: string;
   headers?: Record<string, string>;
   privateKey?: PrivateKey;
 }
 
-export class Configuration {
-  public constructor(config?: Partial<ConfigurationInterface>);
-  public readonly config: ConfigurationInterface;
+export class ConfigurationClass {
+  public constructor(config?: Partial<Configuration>);
+  public readonly config: Configuration;
 }
 
 export class AIAgentsTeamsApi {
