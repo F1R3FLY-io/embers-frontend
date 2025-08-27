@@ -44,7 +44,11 @@ export class EmbersClient {
   getTestWalletKey(): Promise<any>;
   createAgent(params: any): Promise<any>;
   saveAgentVersion(id: string, params: any): Promise<any>;
-  testDeployAgent(testKey: PrivateKey, test: string, env?: string): Promise<any>;
+  testDeployAgent(
+    testKey: PrivateKey,
+    test: string,
+    env?: string,
+  ): Promise<any>;
 }
 
 // Legacy API class aliases for backwards compatibility
@@ -63,7 +67,7 @@ export class WalletsApiSdk extends WalletsApi {
 }
 
 // Re-export all API types
-export * from './api-types';
+export * from "./api-types";
 
 // Default export
 declare const _default: {
