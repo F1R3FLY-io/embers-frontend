@@ -5,7 +5,7 @@ let RholangExtension: any = null;
 let EditorRef: any = null;
 
 // Function to load lightning-bug at runtime using conditional require
-function loadLightningBug() {
+async function loadLightningBug() {
   return new Promise<void>((resolve) => {
     try {
       // Use eval to prevent Vite from trying to resolve these at build time
@@ -67,13 +67,13 @@ export default function CodeEditor() {
       <ErrorBoundary>
         <div className={styles.container}>
           {!isLightningBugLoaded ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
+            <div style={{ color: '#666', padding: '2rem', textAlign: 'center' }}>
               <p>Loading code editor...</p>
             </div>
           ) : Editor ? (
             <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
           ) : (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
+            <div style={{ color: '#666', padding: '2rem', textAlign: 'center' }}>
               <p>Code editor not available.</p>
               <p>Install @f1r3fly-io/lightning-bug package for full functionality.</p>
             </div>

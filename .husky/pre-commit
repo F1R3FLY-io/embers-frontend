@@ -1,1 +1,0 @@
-pnpm run --parallel --include-workspace-root --recursive ci:check:code
