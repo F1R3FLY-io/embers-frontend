@@ -5,3 +5,9 @@
 .error-log {
   color: #e74c3c;
 }
+
+pre {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
