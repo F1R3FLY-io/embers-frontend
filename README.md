@@ -5,18 +5,47 @@ Blockchain-based AI agent deployment and management platform with integrated wal
 ## Quick Start
 
 ```bash
-# Install dependencies
+# Install dependencies for all workspace packages
 pnpm install
 
-# Start development server
-cd apps/embers
+# Start development server (frontend app)
 pnpm dev
 
-# Build project
+# Build all packages
 pnpm build
 
-# Run tests
+# Run all tests
 pnpm test
+
+# Lint all code
+pnpm lint
+```
+
+## 📦 Monorepo Workspace
+
+This project uses **pnpm workspaces** for efficient monorepo management:
+
+### Key Benefits
+- **Single command setup**: `pnpm install` installs all workspace dependencies
+- **Dependency sharing**: Common packages shared between workspaces  
+- **Local package linking**: Frontend imports client SDK directly
+- **Efficient storage**: Hard linking saves disk space
+- **Consistent versions**: Shared dependencies use same versions
+
+### Workspace Commands
+```bash
+# Install all workspace dependencies
+pnpm install
+
+# Run script in all workspaces
+pnpm -r <script-name>
+
+# Run script in specific workspace
+pnpm --filter <package-name> <script-name>
+
+# Examples:
+pnpm --filter @f1r3fly-io/embers-frontend dev
+pnpm --filter @f1r3fly-io/embers-client-sdk build
 ```
 
 ## 📚 Documentation
@@ -51,34 +80,76 @@ When using LLM tools, start by providing context from:
 
 ```
 embers-frontend/
-├── package.json          # Root package.json with "workspaces": ["packages/*", "apps/*"]
-├── tsconfig.json         # Root tsconfig with references to sub-projects
-├── tsconfig.base.json    # Optional base config for shared compiler options
-├── node_modules/         # Shared dependencies
-├── packages/             # Directory for publishable library packages
-│   ├── library1/         # Example library package
-│   │   ├── src/          # Source code
-│   │   │   ├── index.ts  # Main entry point
-│   │   │   └── other.ts  # Other source files
-│   │   ├── dist/         # Compiled output (added to .gitignore)
-│   │   ├── tests/        # Unit tests (or __tests__/)
-│   │   │   └── index.test.ts
-│   │   ├── package.json  # Package config with "main": "dist/index.js", "types": "dist/index.d.ts"
-│   │   ├── tsconfig.json # Extends root/base tsconfig, with outDir: "dist"
-│   │   └── README.md     # Package documentation
-│   └── library2/         # Another library, similar structure
-└── apps/                 # Directory for applications, including test UI
-    └── test-ui/          # Test UI framework/app (e.g., React app for demo/testing libraries)
-        ├── src/          # App source code
-        │   ├── App.tsx   # Main app component, imports from libraries
-        │   └── index.tsx # Entry point
-        ├── public/       # Public assets (for web apps)
-        ├── dist/         # Build output (if applicable)
-        ├── tests/        # Integration/e2e tests
-        ├── package.json  # Private package ("private": true), dependencies on @monorepo/library1
-        ├── tsconfig.json # Extends root/base
-        └── README.md     # App documentation
+├── package.json              # Root package.json with workspaces: ["apps", "packages/*"]
+├── pnpm-workspace.yaml       # pnpm workspace configuration
+├── tsconfig.json             # Root tsconfig with project references
+├── tsconfig.base.json        # Base config for shared compiler options
+├── node_modules/             # Shared dependencies (pnpm workspaces)
+├── CLAUDE.md                 # LLM development guidelines and context
+│
+├── docs/                     # Documentation-first approach
+│   ├── requirements/         # User stories and business requirements  
+│   ├── specifications/       # Technical specifications
+│   └── architecture/         # System design and decisions
+│
+├── packages/                 # Publishable library packages
+│   └── client/              # @f1r3fly-io/embers-client-sdk
+│       ├── src/             # TypeScript source code
+│       ├── dist/            # Built library output  
+│       ├── tests/           # Unit tests with Jest
+│       ├── mocks/           # API mocks for testing
+│       ├── package.json     # SDK package configuration
+│       └── tsconfig.json    # TypeScript config (extends base)
+│
+└── apps/                    # Frontend application (single directory)
+    ├── src/                 # React 19 + TypeScript source
+    │   ├── pages/           # Route components
+    │   ├── lib/             # Shared components and utilities
+    │   └── public/          # Static assets
+    ├── dist/                # Vite build output
+    ├── package.json         # Private app package config
+    ├── tsconfig.json        # TypeScript config (extends base)
+    └── vite.config.ts       # Vite configuration
 ```
+
+### Workspace Packages
+
+1. **Root Package** (`embers`) - Development tooling and shared dependencies
+2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/`
+3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
+
+### Workspace Management
+
+#### Installing Dependencies
+```bash
+# Install root + all workspace dependencies
+pnpm install
+
+# Add dependency to specific workspace
+pnpm --filter @f1r3fly-io/embers-frontend add react-query
+pnpm --filter @f1r3fly-io/embers-client-sdk add zod
+```
+
+#### Development Scripts
+```bash
+# Start frontend development server
+pnpm dev
+
+# Build all packages in dependency order  
+pnpm build
+
+# Run all test suites
+pnpm test
+
+# Type-check all packages
+pnpm typecheck
+```
+
+#### TypeScript Configuration
+- **Consolidated Structure**: 4 total tsconfig files (reduced from 12)
+- **Project References**: Root references workspace packages 
+- **Shared Base**: Common compiler options in `tsconfig.base.json`
+- **Path Resolution**: Automatic linking between workspace packages
 
 ## Development Workflow
 

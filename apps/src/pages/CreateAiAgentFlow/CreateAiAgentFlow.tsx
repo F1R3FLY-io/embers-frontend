@@ -1,19 +1,26 @@
-// Optional import for lightning-bug - fallback if not available
+// Optional lightning-bug components - loaded dynamically to avoid dependency errors
 let Editor: any = null;
 let RholangExtension: any = null;
-// @ts-expect-error - EditorRef is assigned but not used, kept for future extension support
+// @ts-expect-error - EditorRef is assigned but not used, kept for future extension support  
 let EditorRef: any = null;
 
-try {
-  const lightningBug = require("@f1r3fly-io/lightning-bug");
-  const extensions = require("@f1r3fly-io/lightning-bug/extensions");
-  Editor = lightningBug.Editor;
-  RholangExtension = extensions.RholangExtension;
-  EditorRef = lightningBug.EditorRef;
-} catch (error) {
-  console.warn("Lightning-bug package not available. Code editor will be disabled.");
+// Function to load lightning-bug at runtime using conditional require
+function loadLightningBug() {
+  return new Promise<void>((resolve) => {
+    try {
+      // Use eval to prevent Vite from trying to resolve these at build time
+      const lightningBug = eval('require("@f1r3fly-io/lightning-bug")');
+      const extensions = eval('require("@f1r3fly-io/lightning-bug/extensions")');
+      Editor = lightningBug.Editor;
+      RholangExtension = extensions.RholangExtension;
+      EditorRef = lightningBug.EditorRef;
+    } catch (error) {
+      console.warn("Lightning-bug package not available. Code editor will be disabled.");
+    }
+    resolve();
+  });
 }
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
@@ -24,6 +31,14 @@ import styles from "./CreateAiAgentFlow.module.scss";
 export default function CodeEditor() {
   const editorRef = useRef<any>(null);
   const { setHeaderTitle } = useLayout();
+  const [isLightningBugLoaded, setIsLightningBugLoaded] = useState(false);
+  
+  // Load lightning-bug components dynamically
+  useEffect(() => {
+    loadLightningBug().then(() => {
+      setIsLightningBugLoaded(true);
+    });
+  }, []);
   
   useEffect(() => {
     setHeaderTitle("BioMatch Agent");
@@ -51,7 +66,11 @@ export default function CodeEditor() {
     <CodeLayout>
       <ErrorBoundary>
         <div className={styles.container}>
-          {Editor ? (
+          {!isLightningBugLoaded ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
+              <p>Loading code editor...</p>
+            </div>
+          ) : Editor ? (
             <Editor ref={editorRef} languages={{ rholang: RholangExtension }} />
           ) : (
             <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
