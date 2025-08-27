@@ -24,7 +24,7 @@ export class Configuration {
   public basePath?: string;
   public headers?: Record<string, string>;
   public privateKey?: PrivateKey;
-  
+
   public constructor(config?: Partial<ConfigurationInterface>);
 }
 
