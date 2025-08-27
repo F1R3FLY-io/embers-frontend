@@ -46,11 +46,6 @@
     "lineWidth": 100
   },
 
-  // Increase diagnostic limit for full visibility
-  "diagnostics": {
-    "maxItems": 1000
-  },
-
   // Linting rules and configuration
   "linter": {
     "enabled": true,
