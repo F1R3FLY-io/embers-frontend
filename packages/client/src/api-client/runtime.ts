@@ -156,7 +156,11 @@ export class BaseAPI {
     }
 
     const headers = Object.assign({}, this.configuration.headers, context.headers);
-    Object.keys(headers).forEach((key) => (headers[key] === undefined ? delete headers[key] : {}));
+    Object.keys(headers).forEach((key) => {
+      if (headers[key] === undefined) {
+        delete headers[key];
+      }
+    });
 
     const initOverrideFn =
       typeof initOverrides === "function" ? initOverrides : async () => initOverrides;
@@ -254,8 +258,8 @@ export class BaseAPI {
    * and then shallow cloning data members.
    */
   private clone<T extends BaseAPI>(this: T): T {
-    const constructor = this.constructor as any;
-    const next = new constructor(this.configuration);
+    const ctor = this.constructor as any;
+    const next = new ctor(this.configuration);
     next.middleware = this.middleware.slice();
     return next;
   }
