@@ -19,7 +19,7 @@ export type AiAgentConfig = {
  * A facade for interacting with AI agents on the blockchain.
  * Provides methods for creating, deploying, and managing AI agents.
  */
-export class AiAgent {
+export class AgentsApiSdk {
   private client: AIAgentsApi;
 
   public readonly privateKey: PrivateKey;

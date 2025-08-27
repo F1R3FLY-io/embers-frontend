@@ -1,7 +1,6 @@
 import { base16 } from "@scure/base";
 
-import { PrivateKey } from "../src/entities/PrivateKey";
-import { deserializeKey, serializeKey } from "../src/serialization";
+import { deserializeKey, PrivateKey, serializeKey } from "../src";
 
 describe("serializeKey/deserializeKey", () => {
   it("should roundtrip private key through serialization", () => {

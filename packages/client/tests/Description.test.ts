@@ -1,7 +1,4 @@
-import {
-  Description,
-  MAX_DESCRIPTION_LENGTH,
-} from "../src/entities/Description";
+import { Description, MAX_DESCRIPTION_LENGTH } from "../src";
 
 describe("Description class", () => {
   test("should create a Description", () => {

@@ -13,7 +13,7 @@ export type WalletConfig = {
   privateKey: PrivateKey;
 };
 
-export class Wallet {
+export class WalletsApiSdk {
   private client: WalletsApi;
 
   public readonly privateKey: PrivateKey;

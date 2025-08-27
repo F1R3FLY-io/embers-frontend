@@ -1,4 +1,8 @@
-import type { CreateAgentReq, PrivateKey } from "@f1r3fly-io/embers-client-sdk";
+import type {
+  CreateAgentReq,
+  CreateAgentsTeamReq,
+  PrivateKey,
+} from "@f1r3fly-io/embers-client-sdk";
 
 import { AIAgentsTeamsApi, Configuration } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -9,8 +13,8 @@ export function useAgents() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.aiAgent.getAgents(),
-    queryKey: ["ai-agents", api.wallet.address],
+    queryFn: async () => api.agents.getAgents(),
+    queryKey: ["agents", api.wallets.address],
   });
 }
 
@@ -18,8 +22,8 @@ export function useAgentVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.aiAgent.getAgentVersions(id),
-    queryKey: ["ai-agents", api.wallet.address, id],
+    queryFn: async () => api.agents.getAgentVersions(id),
+    queryKey: ["agents", api.wallets.address, id],
   });
 }
 
@@ -27,8 +31,8 @@ export function useAgent(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.aiAgent.getAgentVersion(id, version),
-    queryKey: ["ai-agents", api.wallet.address, id, version],
+    queryFn: async () => api.agents.getAgentVersion(id, version),
+    queryKey: ["agents", api.wallets.address, id, version],
   });
 }
 
@@ -36,8 +40,8 @@ export function useTestKey() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.aiAgent.getTestWalletKey(),
-    queryKey: ["ai-agents", "test-key"],
+    queryFn: async () => api.agents.getTestWalletKey(),
+    queryKey: ["agents", "test-key"],
   });
 }
 
@@ -46,7 +50,7 @@ export function useCreateAgentMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) =>
-      api.aiAgent.createAgent(params),
+      api.agents.createAgent(params),
   });
 }
 
@@ -55,7 +59,7 @@ export function useSaveAgentMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) =>
-      api.aiAgent.saveAgentVersion(id, params),
+      api.agents.saveAgentVersion(id, params),
   });
 }
 
@@ -71,7 +75,7 @@ export function useDeployTestMutation() {
       env?: string;
       test: string;
       testKey: PrivateKey;
-    }) => api.aiAgent.testDeployAgent(testKey, test, env),
+    }) => api.agents.testDeployAgent(testKey, test, env),
   });
 }
 
@@ -98,5 +102,50 @@ export function useRunDemo() {
       client.apiAiAgentsTeamsRunDemoPost({
         runDemoReq: props,
       }) as Promise<unknown>,
+  });
+}
+
+export function useAgentsTeams() {
+  const api = useApi();
+
+  return useQuery({
+    queryFn: async () => api.agentsTeams.getAgentsTeams(),
+    queryKey: ["agents-teams", api.wallets.address],
+  });
+}
+
+export function useAgentsTeamVersions(id: string) {
+  const api = useApi();
+
+  return useQuery({
+    queryFn: async () => api.agentsTeams.getAgentsTeamVersions(id),
+    queryKey: ["agents-teams", api.wallets.address, id],
+  });
+}
+
+export function useAgentsTeam(id: string, version: string) {
+  const api = useApi();
+
+  return useQuery({
+    queryFn: async () => api.agentsTeams.getAgentsTeamVersion(id, version),
+    queryKey: ["agents-teams", api.wallets.address, id, version],
+  });
+}
+
+export function useCreateAgentsTeamMutation() {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (params: CreateAgentsTeamReq) =>
+      api.agentsTeams.createAgentsTeam(params),
+  });
+}
+
+export function useSaveAgentsTeamMutation(id: string) {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (params: CreateAgentsTeamReq) =>
+      api.agentsTeams.saveAgentsTeamVersion(id, params),
   });
 }

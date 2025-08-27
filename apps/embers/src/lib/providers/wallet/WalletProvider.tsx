@@ -1,6 +1,10 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
-import { AiAgent, Wallet } from "@f1r3fly-io/embers-client-sdk";
+import {
+  AgentsApiSdk,
+  AgentsTeamsApiSdk,
+  WalletsApiSdk,
+} from "@f1r3fly-io/embers-client-sdk";
 import { useReducer } from "react";
 
 import type { EmbersAPI } from "./useApi";
@@ -16,11 +20,15 @@ export function WalletProvider({ children }: React.PropsWithChildren) {
   >(
     (_, privateKey) =>
       privateKey && {
-        aiAgent: new AiAgent({
+        agents: new AgentsApiSdk({
           basePath: FIREFLY_API_URL,
           privateKey,
         }),
-        wallet: new Wallet({
+        agentsTeams: new AgentsTeamsApiSdk({
+          basePath: FIREFLY_API_URL,
+          privateKey,
+        }),
+        wallets: new WalletsApiSdk({
           basePath: FIREFLY_API_URL,
           privateKey,
         }),
