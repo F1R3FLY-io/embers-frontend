@@ -51,6 +51,7 @@ jobs:
         run: |
           find src/api-client/ -type f -name '*.ts' -exec sed -i '/\/\* tslint:disable \*\//d' {} +
           find src/api-client/ -type f -name '*.ts' -exec sed -i '/\/\* eslint-disable \*\//d' {} +
+          find src/api-client/ -type f -name '*.ts' -exec sed -i '/\/\* biome-disable \*\//d' {} +
           pnpm run lint || true
           pnpm run format:code
 

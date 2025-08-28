@@ -1,8 +1,7 @@
 import type { HandleType, NodeProps, Position } from "@xyflow/react";
-import type { FC, ReactNode } from "react";
-
 import { Handle } from "@xyflow/react";
 import classNames from "classnames";
+import type { FC, ReactNode } from "react";
 
 import { Text } from "@/lib/components/Text";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
@@ -20,13 +19,7 @@ type NodeTemplateProps = {
   title: string;
 };
 
-export function NodeTemplate({
-  className,
-  displayName,
-  handlers,
-  icon,
-  title,
-}: NodeTemplateProps) {
+export function NodeTemplate({ className, displayName, handlers, icon, title }: NodeTemplateProps) {
   const component: FC<NodeProps> = ({ selected }) => {
     const containerClassName = classNames(styles.container, className, {
       [styles.selected]: selected,
@@ -42,12 +35,7 @@ export function NodeTemplate({
           <SettingsIcon className={styles["settings-icon"]} />
         </div>
         {handlers?.map(({ position, type }, index) => (
-          <Handle
-            key={index}
-            className={styles.handle}
-            position={position}
-            type={type}
-          />
+          <Handle key={index} className={styles.handle} position={position} type={type} />
         ))}
       </div>
     );

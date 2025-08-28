@@ -10,9 +10,7 @@ type DeployContainerNodeProps = {
   containerId: string;
 };
 
-export function DeployContainerNode({
-  data,
-}: NodeProps<Node<DeployContainerNodeProps>>) {
+export function DeployContainerNode({ data }: NodeProps<Node<DeployContainerNodeProps>>) {
   return (
     <div className={styles.container}>
       <NodeToolbar isVisible align="end" position={Position.Top}>

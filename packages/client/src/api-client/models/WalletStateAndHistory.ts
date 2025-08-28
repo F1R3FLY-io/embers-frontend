@@ -11,13 +11,12 @@
  */
 
 import type { Boost } from "./Boost";
-import type { Request } from "./Request";
-import type { Transfer } from "./Transfer";
-import type { UInt64 } from "./UInt64";
-
 import { BoostFromJSON, BoostToJSON } from "./Boost";
+import type { Request } from "./Request";
 import { RequestFromJSON, RequestToJSON } from "./Request";
+import type { Transfer } from "./Transfer";
 import { TransferFromJSON, TransferToJSON } from "./Transfer";
+import type { UInt64 } from "./UInt64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
 
 /**
@@ -37,33 +36,31 @@ export interface WalletStateAndHistory {
    * @type {Array<Boost>}
    * @memberof WalletStateAndHistory
    */
-  boosts: Array<Boost>;
+  boosts: Boost[];
   /**
    *
    * @type {Array<object>}
    * @memberof WalletStateAndHistory
    */
-  exchanges: Array<object>;
+  exchanges: object[];
   /**
    *
    * @type {Array<Request>}
    * @memberof WalletStateAndHistory
    */
-  requests: Array<Request>;
+  requests: Request[];
   /**
    *
    * @type {Array<Transfer>}
    * @memberof WalletStateAndHistory
    */
-  transfers: Array<Transfer>;
+  transfers: Transfer[];
 }
 
 /**
  * Check if a given object implements the WalletStateAndHistory interface.
  */
-export function instanceOfWalletStateAndHistory(
-  value: object,
-): value is WalletStateAndHistory {
+export function instanceOfWalletStateAndHistory(value: object): value is WalletStateAndHistory {
   if (!("balance" in value) || value.balance === undefined) {
     return false;
   }
@@ -82,25 +79,23 @@ export function instanceOfWalletStateAndHistory(
   return true;
 }
 
-export function WalletStateAndHistoryFromJSON(
-  json: any,
-): WalletStateAndHistory {
+export function WalletStateAndHistoryFromJSON(json: any): WalletStateAndHistory {
   return WalletStateAndHistoryFromJSONTyped(json, false);
 }
 
 export function WalletStateAndHistoryFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): WalletStateAndHistory {
   if (json == null) {
     return json;
   }
   return {
     balance: UInt64FromJSON(json.balance),
-    boosts: (json.boosts as Array<any>).map(BoostFromJSON),
+    boosts: (json.boosts as any[]).map(BoostFromJSON),
     exchanges: json.exchanges,
-    requests: (json.requests as Array<any>).map(RequestFromJSON),
-    transfers: (json.transfers as Array<any>).map(TransferFromJSON),
+    requests: (json.requests as any[]).map(RequestFromJSON),
+    transfers: (json.transfers as any[]).map(TransferFromJSON),
   };
 }
 
@@ -110,7 +105,7 @@ export function WalletStateAndHistoryToJSON(json: any): WalletStateAndHistory {
 
 export function WalletStateAndHistoryToJSONTyped(
   value?: WalletStateAndHistory | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
@@ -118,9 +113,9 @@ export function WalletStateAndHistoryToJSONTyped(
 
   return {
     balance: UInt64ToJSON(value.balance),
-    boosts: (value.boosts as Array<any>).map(BoostToJSON),
+    boosts: (value.boosts as any[]).map(BoostToJSON),
     exchanges: value.exchanges,
-    requests: (value.requests as Array<any>).map(RequestToJSON),
-    transfers: (value.transfers as Array<any>).map(TransferToJSON),
+    requests: (value.requests as any[]).map(RequestToJSON),
+    transfers: (value.transfers as any[]).map(TransferToJSON),
   };
 }

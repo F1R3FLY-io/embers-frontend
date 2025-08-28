@@ -21,9 +21,7 @@ export function verifyAddress(value: string): boolean {
 
     const checksumCalc = blake2b(payload, undefined, 32).slice(0, 4);
 
-    return checksum.every(
-      (byte: unknown, index: number) => byte === checksumCalc[index],
-    );
+    return checksum.every((byte: unknown, index: number) => byte === checksumCalc[index]);
   } catch {
     return false;
   }
@@ -88,11 +86,7 @@ export async function deployContract<T extends { contract: Uint8Array }, R>(
   const payload = blake2b(generateModel.contract, undefined, 32);
   const { sig, sigAlgorithm } = sign(payload, privateKey);
 
-  const deployModel = await deployContractCallback(
-    generateModel.contract,
-    sig,
-    sigAlgorithm,
-  );
+  const deployModel = await deployContractCallback(generateModel.contract, sig, sigAlgorithm);
 
   return { deployModel, generateModel };
 }

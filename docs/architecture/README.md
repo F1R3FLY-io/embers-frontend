@@ -20,6 +20,11 @@ Decision records documenting important architectural choices and their rationale
   - React 19, TypeScript, Vite, and SCSS Modules integration
   - Component architecture and state management strategy
 
+- **[ADR-003: Biome for Unified Linting and Formatting](./decisions/003-biome-linting-formatting.md)**
+  - Migration from ESLint + Prettier to Biome unified toolchain
+  - Performance improvements and configuration simplification
+  - Workspace-specific rule overrides and team adoption strategy
+
 ### Design Patterns
 
 Established patterns and conventions for consistent development:
@@ -61,6 +66,7 @@ When working with Embers Platform architecture:
 - **Frontend**: React 19 + TypeScript + Vite for modern development experience
 - **Styling**: SCSS Modules for component isolation and maintainability
 - **State Management**: React Query for server state, Context for global client state
+- **Code Quality**: Biome for unified linting and formatting with comprehensive rules
 - **Blockchain**: Noble curves and Web Crypto API for secure operations
 - **Build System**: pnpm workspaces for monorepo management
 
@@ -100,6 +106,9 @@ A: See [ADR-001](./decisions/001-monorepo-structure.md) - enables shared tooling
 
 **Q: Why React 19 over other frameworks?**
 A: See [ADR-002](./decisions/002-react-19-typescript.md) - provides concurrent features, excellent TypeScript integration, and mature ecosystem.
+
+**Q: Why migrate from ESLint/Prettier to Biome?**
+A: See [ADR-003](./decisions/003-biome-linting-formatting.md) - unified toolchain improves performance, reduces complexity, and eliminates tool conflicts.
 
 **Q: How should I structure new components?**
 A: Follow patterns in [Component Patterns](./patterns/component-patterns.md) - use SCSS modules, TypeScript interfaces, and established testing approaches.

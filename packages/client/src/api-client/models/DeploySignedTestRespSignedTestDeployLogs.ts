@@ -25,7 +25,7 @@ export interface DeploySignedTestRespSignedTestDeployLogs {
    * @type {Array<Log>}
    * @memberof DeploySignedTestRespSignedTestDeployLogs
    */
-  logs: Array<Log>;
+  logs: Log[];
   /**
    *
    * @type {string}
@@ -66,13 +66,13 @@ export function DeploySignedTestRespSignedTestDeployLogsFromJSON(
 
 export function DeploySignedTestRespSignedTestDeployLogsFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeploySignedTestRespSignedTestDeployLogs {
   if (json == null) {
     return json;
   }
   return {
-    logs: (json.logs as Array<any>).map(LogFromJSON),
+    logs: (json.logs as any[]).map(LogFromJSON),
     type: json.type,
   };
 }
@@ -85,14 +85,14 @@ export function DeploySignedTestRespSignedTestDeployLogsToJSON(
 
 export function DeploySignedTestRespSignedTestDeployLogsToJSONTyped(
   value?: DeploySignedTestRespSignedTestDeployLogs | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
   }
 
   return {
-    logs: (value.logs as Array<any>).map(LogToJSON),
+    logs: (value.logs as any[]).map(LogToJSON),
     type: value.type,
   };
 }

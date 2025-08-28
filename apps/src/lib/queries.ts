@@ -49,8 +49,7 @@ export function useCreateAgentMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentReq) =>
-      api.agents.createAgent(params),
+    mutationFn: async (params: CreateAgentReq) => api.agents.createAgent(params),
   });
 }
 
@@ -58,8 +57,7 @@ export function useSaveAgentMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentReq) =>
-      api.agents.saveAgentVersion(id, params),
+    mutationFn: async (params: CreateAgentReq) => api.agents.saveAgentVersion(id, params),
   });
 }
 
@@ -138,8 +136,7 @@ export function useCreateAgentsTeamMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.createAgentsTeam(params),
+    mutationFn: async (params: CreateAgentsTeamReq) => api.agentsTeams.createAgentsTeam(params),
   });
 }
 

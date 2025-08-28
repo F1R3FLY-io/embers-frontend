@@ -3,7 +3,7 @@ import "@szhsin/react-menu/dist/index.css";
 
 import { Text } from "@/lib/components/Text";
 
-export type MenuItem = {
+export type ContextMenuItem = {
   content: string;
   hidden?: boolean;
   onClick: () => void;
@@ -11,7 +11,7 @@ export type MenuItem = {
 };
 
 type ContextMenuProps = {
-  items: MenuItem[];
+  items: ContextMenuItem[];
   onClose: () => void;
   open: boolean;
   position: {
@@ -20,12 +20,7 @@ type ContextMenuProps = {
   };
 };
 
-export function ContextMenu({
-  items,
-  onClose,
-  open,
-  position,
-}: ContextMenuProps) {
+export function ContextMenu({ items, onClose, open, position }: ContextMenuProps) {
   return (
     <ControlledMenu
       anchorPoint={position}

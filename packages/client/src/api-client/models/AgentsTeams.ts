@@ -12,10 +12,7 @@
 
 import type { AgentsTeamHeader } from "./AgentsTeamHeader";
 
-import {
-  AgentsTeamHeaderFromJSON,
-  AgentsTeamHeaderToJSON,
-} from "./AgentsTeamHeader";
+import { AgentsTeamHeaderFromJSON, AgentsTeamHeaderToJSON } from "./AgentsTeamHeader";
 
 /**
  *
@@ -28,7 +25,7 @@ export interface AgentsTeams {
    * @type {Array<AgentsTeamHeader>}
    * @memberof AgentsTeams
    */
-  agentsTeams: Array<AgentsTeamHeader>;
+  agentsTeams: AgentsTeamHeader[];
 }
 
 /**
@@ -45,17 +42,12 @@ export function AgentsTeamsFromJSON(json: any): AgentsTeams {
   return AgentsTeamsFromJSONTyped(json, false);
 }
 
-export function AgentsTeamsFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): AgentsTeams {
+export function AgentsTeamsFromJSONTyped(json: any, _ignoreDiscriminator: boolean): AgentsTeams {
   if (json == null) {
     return json;
   }
   return {
-    agentsTeams: (json.agents_teams as Array<any>).map(
-      AgentsTeamHeaderFromJSON,
-    ),
+    agentsTeams: (json.agents_teams as any[]).map(AgentsTeamHeaderFromJSON),
   };
 }
 
@@ -65,13 +57,13 @@ export function AgentsTeamsToJSON(json: any): AgentsTeams {
 
 export function AgentsTeamsToJSONTyped(
   value?: AgentsTeams | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
   }
 
   return {
-    agents_teams: (value.agentsTeams as Array<any>).map(AgentsTeamHeaderToJSON),
+    agents_teams: (value.agentsTeams as any[]).map(AgentsTeamHeaderToJSON),
   };
 }

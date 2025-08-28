@@ -43,9 +43,7 @@ export interface CreateAgentResp {
 /**
  * Check if a given object implements the CreateAgentResp interface.
  */
-export function instanceOfCreateAgentResp(
-  value: object,
-): value is CreateAgentResp {
+export function instanceOfCreateAgentResp(value: object): value is CreateAgentResp {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
@@ -64,7 +62,7 @@ export function CreateAgentRespFromJSON(json: any): CreateAgentResp {
 
 export function CreateAgentRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateAgentResp {
   if (json == null) {
     return json;
@@ -82,7 +80,7 @@ export function CreateAgentRespToJSON(json: any): CreateAgentResp {
 
 export function CreateAgentRespToJSONTyped(
   value?: CreateAgentResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

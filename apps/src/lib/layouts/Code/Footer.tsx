@@ -9,11 +9,7 @@ export const Footer: React.FC = () => (
   <>
     <Accordion
       actions={
-        <Button
-          className={styles["accordion-action"]}
-          type="secondary"
-          onClick={() => {}}
-        >
+        <Button className={styles["accordion-action"]} type="secondary" onClick={() => {}}>
           {/*todo add support for JSX elements*/}
           {/*<i className="fa fa-play"/> test*/}
           Test it

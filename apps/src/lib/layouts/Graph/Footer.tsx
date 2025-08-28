@@ -1,6 +1,5 @@
-import type React from "react";
-
 import classNames from "classnames";
+import type React from "react";
 
 import { Accordion } from "@/lib/components/Accordion";
 import { Text } from "@/lib/components/Text";
@@ -34,9 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ deployments, logs }) => {
         {logs.map((log) => (
           <pre key={log.time.toISOString()}>
             <Text color="secondary">{formatTime(log.time)}</Text>
-            <Text className={logLevelClassName(log.logLevel)}>
-              [{log.logLevel}]
-            </Text>
+            <Text className={logLevelClassName(log.logLevel)}>[{log.logLevel}]</Text>
             <Text color="primary">{log.log}</Text>
           </pre>
         ))}

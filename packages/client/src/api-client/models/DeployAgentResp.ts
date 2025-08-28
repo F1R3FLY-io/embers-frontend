@@ -31,9 +31,7 @@ export interface DeployAgentResp {
 /**
  * Check if a given object implements the DeployAgentResp interface.
  */
-export function instanceOfDeployAgentResp(
-  value: object,
-): value is DeployAgentResp {
+export function instanceOfDeployAgentResp(value: object): value is DeployAgentResp {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
@@ -46,7 +44,7 @@ export function DeployAgentRespFromJSON(json: any): DeployAgentResp {
 
 export function DeployAgentRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeployAgentResp {
   if (json == null) {
     return json;
@@ -62,7 +60,7 @@ export function DeployAgentRespToJSON(json: any): DeployAgentResp {
 
 export function DeployAgentRespToJSONTyped(
   value?: DeployAgentResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

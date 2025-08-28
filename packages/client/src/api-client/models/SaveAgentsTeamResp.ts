@@ -37,9 +37,7 @@ export interface SaveAgentsTeamResp {
 /**
  * Check if a given object implements the SaveAgentsTeamResp interface.
  */
-export function instanceOfSaveAgentsTeamResp(
-  value: object,
-): value is SaveAgentsTeamResp {
+export function instanceOfSaveAgentsTeamResp(value: object): value is SaveAgentsTeamResp {
   if (!("version" in value) || value.version === undefined) {
     return false;
   }
@@ -55,7 +53,7 @@ export function SaveAgentsTeamRespFromJSON(json: any): SaveAgentsTeamResp {
 
 export function SaveAgentsTeamRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): SaveAgentsTeamResp {
   if (json == null) {
     return json;
@@ -72,7 +70,7 @@ export function SaveAgentsTeamRespToJSON(json: any): SaveAgentsTeamResp {
 
 export function SaveAgentsTeamRespToJSONTyped(
   value?: SaveAgentsTeamResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

@@ -1,9 +1,7 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { base16 } from "@scure/base";
-
-import type { PrivateKey } from "./PrivateKey";
-
 import { Address } from "./Address";
+import type { PrivateKey } from "./PrivateKey";
 
 export class PublicKey {
   private constructor(public readonly value: Uint8Array) {}

@@ -1,13 +1,8 @@
-import type {
-  CreateAgentsTeamReq,
-  HTTPHeaders,
-  SignedContract,
-} from "../api-client";
-import type { Address } from "./Address";
-import type { PrivateKey } from "./PrivateKey";
-
+import type { CreateAgentsTeamReq, HTTPHeaders, SignedContract } from "../api-client";
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
 import { deployContract } from "../functions";
+import type { Address } from "./Address";
+import type { PrivateKey } from "./PrivateKey";
 
 export type AgentsTeamsConfig = {
   basePath: string;
@@ -38,11 +33,7 @@ export class AgentsTeamsApiSdk {
         createAgentsTeamReq: agentsTeamReq,
       });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
+    const sendContract = async (contract: Uint8Array, sig: Uint8Array, sigAlgorithm: string) => {
       const signedContract: SignedContract = {
         contract,
         deployer: this.privateKey.getPublicKey().value,
@@ -53,12 +44,10 @@ export class AgentsTeamsApiSdk {
       return this.client.apiAiAgentsTeamsCreateSendPost({ signedContract });
     };
 
-    return deployContract(this.privateKey, prepareContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, prepareContract, sendContract).then((result) => {
+      const { contract: _, ...rest } = result.generateModel;
+      return rest;
+    });
   }
 
   public async getAgentsTeams() {
@@ -82,21 +71,14 @@ export class AgentsTeamsApiSdk {
     });
   }
 
-  public async saveAgentsTeamVersion(
-    agentsTeamId: string,
-    agentsTeamReq: CreateAgentsTeamReq,
-  ) {
+  public async saveAgentsTeamVersion(agentsTeamId: string, agentsTeamReq: CreateAgentsTeamReq) {
     const generateContract = async () =>
       this.client.apiAiAgentsTeamsIdSavePreparePost({
         createAgentsTeamReq: agentsTeamReq,
         id: agentsTeamId,
       });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
+    const sendContract = async (contract: Uint8Array, sig: Uint8Array, sigAlgorithm: string) => {
       const signedContract: SignedContract = {
         contract,
         deployer: this.privateKey.getPublicKey().value,
@@ -110,11 +92,9 @@ export class AgentsTeamsApiSdk {
       });
     };
 
-    return deployContract(this.privateKey, generateContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, generateContract, sendContract).then((result) => {
+      const { contract: _, ...rest } = result.generateModel;
+      return rest;
+    });
   }
 }

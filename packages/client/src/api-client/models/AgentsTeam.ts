@@ -78,17 +78,13 @@ export function AgentsTeamFromJSON(json: any): AgentsTeam {
   return AgentsTeamFromJSONTyped(json, false);
 }
 
-export function AgentsTeamFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): AgentsTeam {
+export function AgentsTeamFromJSONTyped(json: any, _ignoreDiscriminator: boolean): AgentsTeam {
   if (json == null) {
     return json;
   }
   return {
     graph: json.graph == null ? undefined : json.graph,
-    graphAst:
-      json.graph_ast == null ? undefined : GraphFromJSON(json.graph_ast),
+    graphAst: json.graph_ast == null ? undefined : GraphFromJSON(json.graph_ast),
     id: json.id,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -102,7 +98,7 @@ export function AgentsTeamToJSON(json: any): AgentsTeam {
 
 export function AgentsTeamToJSONTyped(
   value?: AgentsTeam | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

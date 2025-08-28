@@ -27,9 +27,7 @@ export interface EnvDeployFailed {
 /**
  * Check if a given object implements the EnvDeployFailed interface.
  */
-export function instanceOfEnvDeployFailed(
-  value: object,
-): value is EnvDeployFailed {
+export function instanceOfEnvDeployFailed(value: object): value is EnvDeployFailed {
   if (!("error" in value) || value.error === undefined) {
     return false;
   }
@@ -42,7 +40,7 @@ export function EnvDeployFailedFromJSON(json: any): EnvDeployFailed {
 
 export function EnvDeployFailedFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): EnvDeployFailed {
   if (json == null) {
     return json;
@@ -58,7 +56,7 @@ export function EnvDeployFailedToJSON(json: any): EnvDeployFailed {
 
 export function EnvDeployFailedToJSONTyped(
   value?: EnvDeployFailed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

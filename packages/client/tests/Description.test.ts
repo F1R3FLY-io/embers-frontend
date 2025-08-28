@@ -8,8 +8,6 @@ describe("Description class", () => {
   });
 
   test("should throw error", () => {
-    expect(() =>
-      Description.tryFrom("A".repeat(MAX_DESCRIPTION_LENGTH + 1)),
-    ).toThrow();
+    expect(() => Description.tryFrom("A".repeat(MAX_DESCRIPTION_LENGTH + 1))).toThrow();
   });
 });

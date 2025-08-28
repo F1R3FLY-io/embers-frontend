@@ -67,10 +67,7 @@ function startMockServer() {
       console.log(`Mock server: ${output.trim()}`);
 
       // Check if server has started successfully
-      if (
-        output.includes("Starting REPL") ||
-        output.includes("localhost:3100")
-      ) {
+      if (output.includes("Starting REPL") || output.includes("localhost:3100")) {
         resolve();
       }
     });

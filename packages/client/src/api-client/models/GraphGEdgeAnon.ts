@@ -52,9 +52,7 @@ export type GraphGEdgeAnonTypeEnum =
 /**
  * Check if a given object implements the GraphGEdgeAnon interface.
  */
-export function instanceOfGraphGEdgeAnon(
-  value: object,
-): value is GraphGEdgeAnon {
+export function instanceOfGraphGEdgeAnon(value: object): value is GraphGEdgeAnon {
   if (!("binding1" in value) || value.binding1 === undefined) {
     return false;
   }
@@ -73,7 +71,7 @@ export function GraphGEdgeAnonFromJSON(json: any): GraphGEdgeAnon {
 
 export function GraphGEdgeAnonFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): GraphGEdgeAnon {
   if (json == null) {
     return json;
@@ -91,7 +89,7 @@ export function GraphGEdgeAnonToJSON(json: any): GraphGEdgeAnon {
 
 export function GraphGEdgeAnonToJSONTyped(
   value?: GraphGEdgeAnon | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

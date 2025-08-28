@@ -43,9 +43,7 @@ export interface CreateAgentsTeamResp {
 /**
  * Check if a given object implements the CreateAgentsTeamResp interface.
  */
-export function instanceOfCreateAgentsTeamResp(
-  value: object,
-): value is CreateAgentsTeamResp {
+export function instanceOfCreateAgentsTeamResp(value: object): value is CreateAgentsTeamResp {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
@@ -64,7 +62,7 @@ export function CreateAgentsTeamRespFromJSON(json: any): CreateAgentsTeamResp {
 
 export function CreateAgentsTeamRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateAgentsTeamResp {
   if (json == null) {
     return json;
@@ -82,7 +80,7 @@ export function CreateAgentsTeamRespToJSON(json: any): CreateAgentsTeamResp {
 
 export function CreateAgentsTeamRespToJSONTyped(
   value?: CreateAgentsTeamResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

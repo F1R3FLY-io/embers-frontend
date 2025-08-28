@@ -9,25 +9,21 @@ async function loadLightningBug() {
   return new Promise<void>((resolve) => {
     try {
       // Use eval to prevent Vite from trying to resolve these at build time
-      // eslint-disable-next-line no-eval, @typescript-eslint/no-unsafe-assignment
+      // biome-ignore lint/security/noGlobalEval: Required for optional dependency loading
       const lightningBug = eval('require("@f1r3fly-io/lightning-bug")');
-      // eslint-disable-next-line no-eval, @typescript-eslint/no-unsafe-assignment
-      const extensions = eval(
-        'require("@f1r3fly-io/lightning-bug/extensions")',
-      );
+      // biome-ignore lint/security/noGlobalEval: Required for optional dependency loading
+      const extensions = eval('require("@f1r3fly-io/lightning-bug/extensions")');
       Editor = (lightningBug as { Editor: unknown }).Editor;
-      RholangExtension = (extensions as { RholangExtension: unknown })
-        .RholangExtension;
+      RholangExtension = (extensions as { RholangExtension: unknown }).RholangExtension;
       _EditorRef = (lightningBug as { EditorRef: unknown }).EditorRef;
     } catch {
       // eslint-disable-next-line no-console
-      console.warn(
-        "Lightning-bug package not available. Code editor will be disabled.",
-      );
+      console.warn("Lightning-bug package not available. Code editor will be disabled.");
     }
     resolve();
   });
 }
+
 import React, { useEffect, useRef, useState } from "react";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
@@ -62,17 +58,9 @@ export default function CodeEditor() {
 
         (
           editorRef.current as {
-            openDocument?: (
-              name: string,
-              content: string,
-              lang: string,
-            ) => void;
+            openDocument?: (name: string, content: string, lang: string) => void;
           }
-        ).openDocument?.(
-          "demo.rho",
-          'new x in { x!("Hello") | Nil }',
-          "rholang",
-        );
+        ).openDocument?.("demo.rho", 'new x in { x!("Hello") | Nil }', "rholang");
       }
     }, 100);
 
@@ -84,9 +72,7 @@ export default function CodeEditor() {
       <ErrorBoundary>
         <div className={styles.container}>
           {!isLightningBugLoaded ? (
-            <div
-              style={{ color: "#666", padding: "2rem", textAlign: "center" }}
-            >
+            <div style={{ color: "#666", padding: "2rem", textAlign: "center" }}>
               <p>Loading code editor...</p>
             </div>
           ) : Editor ? (
@@ -98,14 +84,9 @@ export default function CodeEditor() {
               })}
             </>
           ) : (
-            <div
-              style={{ color: "#666", padding: "2rem", textAlign: "center" }}
-            >
+            <div style={{ color: "#666", padding: "2rem", textAlign: "center" }}>
               <p>Code editor not available.</p>
-              <p>
-                Install @f1r3fly-io/lightning-bug package for full
-                functionality.
-              </p>
+              <p>Install @f1r3fly-io/lightning-bug package for full functionality.</p>
             </div>
           )}
         </div>

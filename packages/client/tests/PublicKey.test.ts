@@ -10,9 +10,7 @@ describe("PublicKey class", () => {
   });
 
   test("should throw an error", () => {
-    expect(() => PublicKey.tryFrom(Uint8Array.from([1, 2, 3, 4]))).toThrow(
-      "Invalid public key",
-    );
+    expect(() => PublicKey.tryFrom(Uint8Array.from([1, 2, 3, 4]))).toThrow("Invalid public key");
   });
 
   test("should create a PublicKey from a hex string", () => {

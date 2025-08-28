@@ -37,9 +37,7 @@ export interface DeploySignedTestReq {
 /**
  * Check if a given object implements the DeploySignedTestReq interface.
  */
-export function instanceOfDeploySignedTestReq(
-  value: object,
-): value is DeploySignedTestReq {
+export function instanceOfDeploySignedTestReq(value: object): value is DeploySignedTestReq {
   if (!("test" in value) || value.test === undefined) {
     return false;
   }
@@ -52,7 +50,7 @@ export function DeploySignedTestReqFromJSON(json: any): DeploySignedTestReq {
 
 export function DeploySignedTestReqFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): DeploySignedTestReq {
   if (json == null) {
     return json;
@@ -69,7 +67,7 @@ export function DeploySignedTestReqToJSON(json: any): DeploySignedTestReq {
 
 export function DeploySignedTestReqToJSONTyped(
   value?: DeploySignedTestReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

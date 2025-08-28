@@ -6,10 +6,7 @@ export function Base64FromJSON(json: any): Base64 {
   return Base64FromJSONTyped(json, false);
 }
 
-export function Base64FromJSONTyped(
-  json: any,
-  _ignoreDiscriminator: boolean,
-): Base64 {
+export function Base64FromJSONTyped(json: any, _ignoreDiscriminator: boolean): Base64 {
   return base64.decode(json);
 }
 

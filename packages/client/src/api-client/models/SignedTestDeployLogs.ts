@@ -25,15 +25,13 @@ export interface SignedTestDeployLogs {
    * @type {Array<Log>}
    * @memberof SignedTestDeployLogs
    */
-  logs: Array<Log>;
+  logs: Log[];
 }
 
 /**
  * Check if a given object implements the SignedTestDeployLogs interface.
  */
-export function instanceOfSignedTestDeployLogs(
-  value: object,
-): value is SignedTestDeployLogs {
+export function instanceOfSignedTestDeployLogs(value: object): value is SignedTestDeployLogs {
   if (!("logs" in value) || value.logs === undefined) {
     return false;
   }
@@ -46,13 +44,13 @@ export function SignedTestDeployLogsFromJSON(json: any): SignedTestDeployLogs {
 
 export function SignedTestDeployLogsFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): SignedTestDeployLogs {
   if (json == null) {
     return json;
   }
   return {
-    logs: (json.logs as Array<any>).map(LogFromJSON),
+    logs: (json.logs as any[]).map(LogFromJSON),
   };
 }
 
@@ -62,13 +60,13 @@ export function SignedTestDeployLogsToJSON(json: any): SignedTestDeployLogs {
 
 export function SignedTestDeployLogsToJSONTyped(
   value?: SignedTestDeployLogs | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
   }
 
   return {
-    logs: (value.logs as Array<any>).map(LogToJSON),
+    logs: (value.logs as any[]).map(LogToJSON),
   };
 }

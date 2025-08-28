@@ -49,9 +49,7 @@ export interface SignedContract {
 /**
  * Check if a given object implements the SignedContract interface.
  */
-export function instanceOfSignedContract(
-  value: object,
-): value is SignedContract {
+export function instanceOfSignedContract(value: object): value is SignedContract {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
@@ -73,7 +71,7 @@ export function SignedContractFromJSON(json: any): SignedContract {
 
 export function SignedContractFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): SignedContract {
   if (json == null) {
     return json;
@@ -92,7 +90,7 @@ export function SignedContractToJSON(json: any): SignedContract {
 
 export function SignedContractToJSONTyped(
   value?: SignedContract | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

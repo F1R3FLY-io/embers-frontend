@@ -11,11 +11,10 @@
  */
 
 import type { Direction } from "./Direction";
-import type { UInt64 } from "./UInt64";
-import type { UnixTimestamp } from "./UnixTimestamp";
-
 import { DirectionFromJSON, DirectionToJSON } from "./Direction";
+import type { UInt64 } from "./UInt64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
+import type { UnixTimestamp } from "./UnixTimestamp";
 import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
@@ -91,10 +90,7 @@ export function TransferFromJSON(json: any): Transfer {
   return TransferFromJSONTyped(json, false);
 }
 
-export function TransferFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Transfer {
+export function TransferFromJSONTyped(json: any, _ignoreDiscriminator: boolean): Transfer {
   if (json == null) {
     return json;
   }
@@ -114,7 +110,7 @@ export function TransferToJSON(json: any): Transfer {
 
 export function TransferToJSONTyped(
   value?: Transfer | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

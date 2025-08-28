@@ -40,7 +40,7 @@ export function InternalErrorFromJSON(json: any): InternalError {
 
 export function InternalErrorFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): InternalError {
   if (json == null) {
     return json;
@@ -56,7 +56,7 @@ export function InternalErrorToJSON(json: any): InternalError {
 
 export function InternalErrorToJSONTyped(
   value?: InternalError | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

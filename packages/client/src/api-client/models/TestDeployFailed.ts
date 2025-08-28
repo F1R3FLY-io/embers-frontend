@@ -27,9 +27,7 @@ export interface TestDeployFailed {
 /**
  * Check if a given object implements the TestDeployFailed interface.
  */
-export function instanceOfTestDeployFailed(
-  value: object,
-): value is TestDeployFailed {
+export function instanceOfTestDeployFailed(value: object): value is TestDeployFailed {
   if (!("error" in value) || value.error === undefined) {
     return false;
   }
@@ -42,7 +40,7 @@ export function TestDeployFailedFromJSON(json: any): TestDeployFailed {
 
 export function TestDeployFailedFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): TestDeployFailed {
   if (json == null) {
     return json;
@@ -58,7 +56,7 @@ export function TestDeployFailedToJSON(json: any): TestDeployFailed {
 
 export function TestDeployFailedToJSONTyped(
   value?: TestDeployFailed | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

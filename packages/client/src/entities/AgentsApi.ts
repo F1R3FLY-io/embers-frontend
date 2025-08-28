@@ -1,12 +1,7 @@
-import type {
-  CreateAgentReq,
-  HTTPHeaders,
-  SignedContract,
-} from "../api-client";
-import type { Address } from "./Address";
-
+import type { CreateAgentReq, HTTPHeaders, SignedContract } from "../api-client";
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
+import type { Address } from "./Address";
 import { PrivateKey } from "./PrivateKey";
 
 export type AiAgentConfig = {
@@ -48,11 +43,7 @@ export class AgentsApiSdk {
         createAgentReq: agentReq,
       });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
+    const sendContract = async (contract: Uint8Array, sig: Uint8Array, sigAlgorithm: string) => {
       // Send the signed contract
       const signedContract: SignedContract = {
         contract,
@@ -64,12 +55,10 @@ export class AgentsApiSdk {
       return this.client.apiAiAgentsCreateSendPost({ signedContract });
     };
 
-    return deployContract(this.privateKey, prepareContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, prepareContract, sendContract).then((result) => {
+      const { contract: _, ...rest } = result.generateModel;
+      return rest;
+    });
   }
 
   /**
@@ -87,11 +76,7 @@ export class AgentsApiSdk {
       });
 
     // Send the signed contract
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
+    const sendContract = async (contract: Uint8Array, sig: Uint8Array, sigAlgorithm: string) => {
       const signedContract: SignedContract = {
         contract,
         deployer: this.privateKey.getPublicKey().value,
@@ -156,11 +141,7 @@ export class AgentsApiSdk {
         id: agentId,
       });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
+    const sendContract = async (contract: Uint8Array, sig: Uint8Array, sigAlgorithm: string) => {
       // Send the signed contract
       const signedContract: SignedContract = {
         contract,
@@ -175,12 +156,10 @@ export class AgentsApiSdk {
       });
     };
 
-    return deployContract(this.privateKey, generateContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, generateContract, sendContract).then((result) => {
+      const { contract: _, ...rest } = result.generateModel;
+      return rest;
+    });
   }
 
   /**
@@ -189,11 +168,7 @@ export class AgentsApiSdk {
    * @param test The testcase
    * @param env The code that being tested
    */
-  public async testDeployAgent(
-    testKey: PrivateKey,
-    test: string,
-    env?: string,
-  ) {
+  public async testDeployAgent(testKey: PrivateKey, test: string, env?: string) {
     const response = await this.client.apiAiAgentsTestDeployPreparePost({
       deployTestReq: {
         env,
@@ -202,8 +177,7 @@ export class AgentsApiSdk {
     });
 
     const signedTestContract = sign(response.testContract, testKey);
-    const signedEnvContract =
-      response.envContract && sign(response.envContract, testKey);
+    const signedEnvContract = response.envContract && sign(response.envContract, testKey);
 
     return this.client.apiAiAgentsTestDeploySendPost({
       deploySignedTestReq: {

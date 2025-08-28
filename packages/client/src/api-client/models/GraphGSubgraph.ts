@@ -58,9 +58,7 @@ export type GraphGSubgraphTypeEnum =
 /**
  * Check if a given object implements the GraphGSubgraph interface.
  */
-export function instanceOfGraphGSubgraph(
-  value: object,
-): value is GraphGSubgraph {
+export function instanceOfGraphGSubgraph(value: object): value is GraphGSubgraph {
   if (!("graph1" in value) || value.graph1 === undefined) {
     return false;
   }
@@ -82,7 +80,7 @@ export function GraphGSubgraphFromJSON(json: any): GraphGSubgraph {
 
 export function GraphGSubgraphFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): GraphGSubgraph {
   if (json == null) {
     return json;
@@ -101,7 +99,7 @@ export function GraphGSubgraphToJSON(json: any): GraphGSubgraph {
 
 export function GraphGSubgraphToJSONTyped(
   value?: GraphGSubgraph | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

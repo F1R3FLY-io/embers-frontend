@@ -49,9 +49,7 @@ export interface CreateAgentsTeamReq {
 /**
  * Check if a given object implements the CreateAgentsTeamReq interface.
  */
-export function instanceOfCreateAgentsTeamReq(
-  value: object,
-): value is CreateAgentsTeamReq {
+export function instanceOfCreateAgentsTeamReq(value: object): value is CreateAgentsTeamReq {
   if (!("name" in value) || value.name === undefined) {
     return false;
   }
@@ -64,15 +62,14 @@ export function CreateAgentsTeamReqFromJSON(json: any): CreateAgentsTeamReq {
 
 export function CreateAgentsTeamReqFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateAgentsTeamReq {
   if (json == null) {
     return json;
   }
   return {
     graph: json.graph == null ? undefined : json.graph,
-    graphAst:
-      json.graph_ast == null ? undefined : GraphFromJSON(json.graph_ast),
+    graphAst: json.graph_ast == null ? undefined : GraphFromJSON(json.graph_ast),
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
   };
@@ -84,7 +81,7 @@ export function CreateAgentsTeamReqToJSON(json: any): CreateAgentsTeamReq {
 
 export function CreateAgentsTeamReqToJSONTyped(
   value?: CreateAgentsTeamReq | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

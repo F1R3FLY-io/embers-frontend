@@ -36,8 +36,7 @@ export interface NameNGVar {
 export const NameNGVarTypeEnum = {
   GVar: "GVar",
 } as const;
-export type NameNGVarTypeEnum =
-  (typeof NameNGVarTypeEnum)[keyof typeof NameNGVarTypeEnum];
+export type NameNGVarTypeEnum = (typeof NameNGVarTypeEnum)[keyof typeof NameNGVarTypeEnum];
 
 /**
  * Check if a given object implements the NameNGVar interface.
@@ -56,10 +55,7 @@ export function NameNGVarFromJSON(json: any): NameNGVar {
   return NameNGVarFromJSONTyped(json, false);
 }
 
-export function NameNGVarFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NameNGVar {
+export function NameNGVarFromJSONTyped(json: any, _ignoreDiscriminator: boolean): NameNGVar {
   if (json == null) {
     return json;
   }
@@ -75,7 +71,7 @@ export function NameNGVarToJSON(json: any): NameNGVar {
 
 export function NameNGVarToJSONTyped(
   value?: NameNGVar | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

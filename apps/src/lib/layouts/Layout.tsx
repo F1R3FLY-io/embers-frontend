@@ -20,14 +20,10 @@ export const Layout: React.FC<LayoutProps> = ({
   sidebar,
   sidebarWidth = 280,
 }) => {
-  const styleVar =
-    typeof sidebarWidth === "number" ? `${sidebarWidth}px` : sidebarWidth;
+  const styleVar = typeof sidebarWidth === "number" ? `${sidebarWidth}px` : sidebarWidth;
 
   return (
-    <div
-      className={styles.container}
-      style={{ ["--sidebar-width" as string]: styleVar }}
-    >
+    <div className={styles.container} style={{ ["--sidebar-width" as string]: styleVar }}>
       <Header actions={headerActions} />
 
       <div className={styles.body}>

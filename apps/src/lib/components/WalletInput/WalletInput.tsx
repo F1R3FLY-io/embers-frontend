@@ -1,8 +1,7 @@
-import type { ChangeEvent } from "react";
-
 import { deserializeKey, PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import { base16 } from "@scure/base";
 import classNames from "classnames";
+import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 import { FilePicker } from "@/lib/components/FilePicker";

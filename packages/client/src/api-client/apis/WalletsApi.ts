@@ -59,10 +59,7 @@ export class WalletsApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/wallets/{address}/state`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
+    urlPath = urlPath.replace(`{address}`, encodeURIComponent(String(requestParameters.address)));
 
     const response = await this.request(
       {
@@ -85,10 +82,7 @@ export class WalletsApi extends runtime.BaseAPI {
     requestParameters: ApiWalletsAddressStateGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<WalletStateAndHistory> {
-    const response = await this.apiWalletsAddressStateGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiWalletsAddressStateGetRaw(requestParameters, initOverrides);
     return response.value();
   }
 
@@ -124,9 +118,7 @@ export class WalletsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TransferRespFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, (jsonValue) => TransferRespFromJSON(jsonValue));
   }
 
   /**
@@ -135,10 +127,7 @@ export class WalletsApi extends runtime.BaseAPI {
     requestParameters: ApiWalletsTransferPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<TransferResp> {
-    const response = await this.apiWalletsTransferPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.apiWalletsTransferPreparePostRaw(requestParameters, initOverrides);
     return response.value();
   }
 

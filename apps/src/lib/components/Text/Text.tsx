@@ -1,6 +1,5 @@
-import type { ReactNode } from "react";
-
 import classNames from "classnames";
+import type { ReactNode } from "react";
 
 import styles from "./Text.module.scss";
 
@@ -13,14 +12,7 @@ type TextProps = {
   type?: "H1" | "H2" | "H3" | "H4" | "H5" | "large" | "normal" | "small";
 };
 
-export function Text({
-  bold,
-  children,
-  className,
-  color,
-  fontSize,
-  type,
-}: TextProps) {
+export function Text({ bold, children, className, color, fontSize, type }: TextProps) {
   const textClass = classNames(
     styles.text,
     {

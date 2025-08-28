@@ -1,11 +1,10 @@
 import type { HTTPHeaders } from "../api-client";
+import { Configuration, WalletsApi } from "../api-client";
+import { deployContract, getWalletState } from "../functions";
 import type { Address } from "./Address";
 import type { Amount } from "./Amount";
 import type { Description } from "./Description";
 import type { PrivateKey } from "./PrivateKey";
-
-import { Configuration, WalletsApi } from "../api-client";
-import { deployContract, getWalletState } from "../functions";
 
 export type WalletConfig = {
   basePath: string;
@@ -38,11 +37,7 @@ export class WalletsApiSdk {
    * @param description Description of the transaction
    * @returns A promise that resolves when the transfer is sent.
    */
-  public async sendTokens(
-    to: Address,
-    amount: Amount,
-    description?: Description,
-  ) {
+  public async sendTokens(to: Address, amount: Amount, description?: Description) {
     const preparePostCallback = async () =>
       this.client.apiWalletsTransferPreparePost({
         transferReq: {
@@ -67,11 +62,7 @@ export class WalletsApiSdk {
         },
       });
 
-    await deployContract(
-      this.privateKey,
-      preparePostCallback,
-      transferSendCallback,
-    );
+    await deployContract(this.privateKey, preparePostCallback, transferSendCallback);
   }
 
   /**

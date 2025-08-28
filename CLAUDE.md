@@ -16,10 +16,11 @@
 - Development: `cd apps/embers && pnpm dev`
 - Build: `pnpm build`
 - Test: `pnpm test`
-- Lint: `pnpm lint` (ESLint with TypeScript rules)
+- Lint: `pnpm lint` (Biome linting and formatting)
+- Format: `pnpm run format:code` (Biome code formatting)
 - Install dependencies: `pnpm install`
 - DO NOT ever `git add`, `git rm` or `git commit, or git push` code. Allow the Claude user to always manually review git changes. `git mv` and `git push` are permitted and inform the developer.
-- DO NOT ever remove tests from eslint or type checks.
+- DO NOT ever remove tests from linting or type checks.
 - Run `pnpm test && pnpm build` to test code changes before proceeding to a prompt for more instructions or the next task.
 - **Operating outside of local repository (with .git/ directory root)**: Not permitted and any file or other operations require user approval and notification
 
@@ -33,9 +34,9 @@
 - Follow existing component patterns with clear props interfaces.
 - Follow existing error handling patterns with optional chaining and fallbacks.
 - When adding source code or new files, enhance, update, and provide new unit tests using the existing testing patterns.
-- If unused variables are required, deliberately prefix them with an _, underscore and set eslint up appropriately.
+- If unused variables are required, deliberately prefix them with an _, underscore and configure Biome appropriately.
 - Maintain 90%+ test coverage target.
-- DO NOT USE emoticons in documenation or the code base
+- DO NOT USE emoticons in documentation or the code base
 
 ## Best Practices
 - Keep console logging to minimum, prefer `console.warn` or `console.error`
@@ -119,7 +120,7 @@ Required environment variables should be configured appropriately for the fronte
 - **Private Key Management**: Secure key generation and storage with Noble curves
 - **Address Validation**: Cryptographic address verification
 - **API Integration**: Auto-generated client from OpenAPI schema
-- Observe the eslint rules when writing code
+- Observe the Biome linting rules when writing code
 - Make use of browser tools if installed in MCP subsystem
 - Follow type safety with Zod runtime validation
 
@@ -145,7 +146,19 @@ Required environment variables should be configured appropriately for the fronte
 - **Cryptography**: @noble/curves, js-sha3, blakejs
 - **Testing**: Jest with React Testing Library
 - **Build Tools**: Vite, pnpm workspaces
-- **Linting**: ESLint, Prettier, Stylelint
+- **Linting & Formatting**: Biome (unified toolchain), Stylelint (CSS/SCSS)
+
+## Code Quality & Tooling Configuration
+- **Biome Configuration**: `biome.jsonc` - Unified linting and formatting with comprehensive rules
+  - Accessibility (a11y) rules enabled
+  - TypeScript-specific rules for modern development
+  - React best practices (hooks dependencies, key props)
+  - Security and performance optimizations
+  - Auto-generated code overrides for API client
+  - Custom rules for test files and mock utilities
+- **TypeScript Configuration**: Strict mode enabled across all packages
+- **Pre-push Hooks**: Husky integration runs formatting, linting, and type checking before push
+- **Monorepo Scripts**: Unified commands across workspace packages
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.

@@ -17,8 +17,11 @@ pnpm build
 # Run all tests
 pnpm test
 
-# Lint all code
+# Lint and format all code
 pnpm lint
+
+# Format code only
+pnpm run format:code
 ```
 
 ## 📦 Monorepo Workspace
@@ -82,6 +85,7 @@ When using LLM tools, start by providing context from:
 embers-frontend/
 ├── package.json              # Root package.json with workspaces: ["apps", "packages/*"]
 ├── pnpm-workspace.yaml       # pnpm workspace configuration
+├── biome.jsonc               # Biome linting & formatting configuration
 ├── tsconfig.json             # Root tsconfig with project references
 ├── tsconfig.base.json        # Base config for shared compiler options
 ├── node_modules/             # Shared dependencies (pnpm workspaces)
@@ -183,7 +187,7 @@ pnpm typecheck
 - **Cryptography**: @noble/curves, js-sha3, blakejs
 - **Testing**: Jest with React Testing Library
 - **Build Tools**: Vite, pnpm workspaces
-- **Linting**: ESLint, Prettier, Stylelint
+- **Linting & Formatting**: Biome (unified toolchain), Stylelint (CSS/SCSS)
 
 ## 🔐 Security & Architecture
 

@@ -45,9 +45,7 @@ export interface AgentsTeamHeader {
 /**
  * Check if a given object implements the AgentsTeamHeader interface.
  */
-export function instanceOfAgentsTeamHeader(
-  value: object,
-): value is AgentsTeamHeader {
+export function instanceOfAgentsTeamHeader(value: object): value is AgentsTeamHeader {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
@@ -66,7 +64,7 @@ export function AgentsTeamHeaderFromJSON(json: any): AgentsTeamHeader {
 
 export function AgentsTeamHeaderFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): AgentsTeamHeader {
   if (json == null) {
     return json;
@@ -85,7 +83,7 @@ export function AgentsTeamHeaderToJSON(json: any): AgentsTeamHeader {
 
 export function AgentsTeamHeaderToJSONTyped(
   value?: AgentsTeamHeader | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

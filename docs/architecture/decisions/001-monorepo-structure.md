@@ -16,7 +16,7 @@ We will use a monorepo structure with pnpm workspaces to manage the frontend app
 
 ### Benefits of Monorepo Approach
 
-1. **Shared Dependencies**: Common development tools (TypeScript, ESLint, testing) can be shared at the root level
+1. **Shared Dependencies**: Common development tools (TypeScript, Biome, testing) can be shared at the root level
 2. **Consistent Versioning**: All packages can be versioned together for coordinated releases
 3. **Cross-Package Development**: Frontend can directly reference the SDK during development without publishing
 4. **Simplified CI/CD**: Single repository with coordinated build and test pipelines

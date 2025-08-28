@@ -27,9 +27,7 @@ export interface CreateTestwalletResp {
 /**
  * Check if a given object implements the CreateTestwalletResp interface.
  */
-export function instanceOfCreateTestwalletResp(
-  value: object,
-): value is CreateTestwalletResp {
+export function instanceOfCreateTestwalletResp(value: object): value is CreateTestwalletResp {
   if (!("key" in value) || value.key === undefined) {
     return false;
   }
@@ -42,7 +40,7 @@ export function CreateTestwalletRespFromJSON(json: any): CreateTestwalletResp {
 
 export function CreateTestwalletRespFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): CreateTestwalletResp {
   if (json == null) {
     return json;
@@ -58,7 +56,7 @@ export function CreateTestwalletRespToJSON(json: any): CreateTestwalletResp {
 
 export function CreateTestwalletRespToJSONTyped(
   value?: CreateTestwalletResp | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;

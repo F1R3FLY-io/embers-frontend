@@ -46,9 +46,7 @@ export type NameNQuoteVertexTypeEnum =
 /**
  * Check if a given object implements the NameNQuoteVertex interface.
  */
-export function instanceOfNameNQuoteVertex(
-  value: object,
-): value is NameNQuoteVertex {
+export function instanceOfNameNQuoteVertex(value: object): value is NameNQuoteVertex {
   if (!("value" in value) || value.value === undefined) {
     return false;
   }
@@ -64,7 +62,7 @@ export function NameNQuoteVertexFromJSON(json: any): NameNQuoteVertex {
 
 export function NameNQuoteVertexFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  _ignoreDiscriminator: boolean,
 ): NameNQuoteVertex {
   if (json == null) {
     return json;
@@ -81,7 +79,7 @@ export function NameNQuoteVertexToJSON(json: any): NameNQuoteVertex {
 
 export function NameNQuoteVertexToJSONTyped(
   value?: NameNQuoteVertex | null,
-  ignoreDiscriminator: boolean = false,
+  _ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
     return value;
