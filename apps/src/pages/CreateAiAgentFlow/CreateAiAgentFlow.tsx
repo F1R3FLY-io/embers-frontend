@@ -4,29 +4,29 @@ let RholangExtension: unknown = null;
 // @ts-expect-error - EditorRef is assigned but not used, kept for future extension support
 let _EditorRef: unknown = null;
 
-// Function to load lightning-bug at runtime using conditional require
+// Function to load lightning-bug at runtime using conditional imports
 async function loadLightningBug() {
-  return new Promise<void>((resolve) => {
-    try {
-      // Use eval to prevent Vite from trying to resolve these at build time
-      // eslint-disable-next-line no-eval, @typescript-eslint/no-unsafe-assignment
-      const lightningBug = eval('require("@f1r3fly-io/lightning-bug")');
-      // eslint-disable-next-line no-eval, @typescript-eslint/no-unsafe-assignment
-      const extensions = eval(
-        'require("@f1r3fly-io/lightning-bug/extensions")',
-      );
+  try {
+    // Use a function to avoid static analysis during build
+    const dynamicImport = (packageName: string) => import(packageName);
+    
+    const [lightningBug, extensions] = await Promise.all([
+      dynamicImport("@f1r3fly-io/lightning-bug").catch(() => null),
+      dynamicImport("@f1r3fly-io/lightning-bug/extensions").catch(() => null)
+    ]);
+    
+    if (lightningBug && extensions) {
       Editor = (lightningBug as { Editor: unknown }).Editor;
       RholangExtension = (extensions as { RholangExtension: unknown })
         .RholangExtension;
       _EditorRef = (lightningBug as { EditorRef: unknown }).EditorRef;
-    } catch {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "Lightning-bug package not available. Code editor will be disabled.",
-      );
     }
-    resolve();
-  });
+  } catch {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "Lightning-bug package not available. Code editor will be disabled.",
+    );
+  }
 }
 import React, { useEffect, useRef, useState } from "react";
 
