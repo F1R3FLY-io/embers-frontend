@@ -30,6 +30,7 @@ This project uses **pnpm workspaces** for efficient monorepo management:
 - **Dependency sharing**: Common packages shared between workspaces  
 - **Local package linking**: Frontend imports client SDK directly
 - **Efficient storage**: Hard linking saves disk space
+- **Single PR & CI/CD**: `git push` will run the same checks locally as on the remote for a Pull Request
 - **Consistent versions**: Shared dependencies use same versions
 
 ### Workspace Commands
