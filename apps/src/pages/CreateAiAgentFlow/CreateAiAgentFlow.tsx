@@ -8,7 +8,8 @@ let _EditorRef: unknown = null;
 async function loadLightningBug() {
   try {
     // Use a function to avoid static analysis during build
-    const dynamicImport = async (packageName: string): Promise<unknown> => import(packageName);
+    const dynamicImport = async (packageName: string): Promise<unknown> =>
+      import(packageName);
 
     const [lightningBug, extensions] = await Promise.all([
       dynamicImport("@f1r3fly-io/lightning-bug").catch(() => null),
