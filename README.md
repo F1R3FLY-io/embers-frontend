@@ -8,7 +8,7 @@ Blockchain-based AI agent deployment and management platform with integrated wal
 # Install dependencies for all workspace packages
 pnpm install
 
-# Start development server (frontend app)
+# Start development server (builds client SDK first, then runs frontend app)
 pnpm dev
 
 # Build all packages
