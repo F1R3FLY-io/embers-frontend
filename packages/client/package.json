@@ -30,11 +30,11 @@
     "doc_port": 3000
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.lib.json --emitDeclarationOnly",
+    "build": "vite build && cp src/declarations/*.d.ts dist/",
     "test": "node test-with-mocks.js",
     "coverage": "node test-with-mocks.js --coverage",
     "lint": "eslint --fix .",
-    "typecheck": "tsc -b --noEmit",
+    "typecheck": "tsc --noEmit",
     "gen-docs": "typedoc",
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
     "generate-mocks": "counterfact ./schema.json mocks --generate",

@@ -9,14 +9,14 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/embers.yaml"
-      - "apps/embers/**"
+      - "apps/**"
       - "packages/client/**"
       - "*"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/embers.yaml"
-      - "apps/embers/**"
+      - "apps/**"
       - "packages/client/**"
       - "*"
       - "!**/*.md"
@@ -30,7 +30,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: apps/embers
+        working-directory: apps
 
     steps:
       - name: Checkout code
