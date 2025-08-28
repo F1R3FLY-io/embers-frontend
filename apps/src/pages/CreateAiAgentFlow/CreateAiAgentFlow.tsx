@@ -7,9 +7,9 @@ let _EditorRef: unknown = null;
 // Function to load lightning-bug at runtime using conditional imports
 async function loadLightningBug() {
   try {
-    // Use a function to avoid static analysis during build
+    // Use Vite-ignore comment to suppress dynamic import warnings
     const dynamicImport = async (packageName: string): Promise<unknown> =>
-      import(packageName);
+      import(/* @vite-ignore */ packageName);
 
     const [lightningBug, extensions] = await Promise.all([
       dynamicImport("@f1r3fly-io/lightning-bug").catch(() => null),
