@@ -8,13 +8,13 @@ let _EditorRef: unknown = null;
 async function loadLightningBug() {
   try {
     // Use a function to avoid static analysis during build
-    const dynamicImport = (packageName: string) => import(packageName);
-    
+    const dynamicImport = async (packageName: string) => import(packageName);
+
     const [lightningBug, extensions] = await Promise.all([
       dynamicImport("@f1r3fly-io/lightning-bug").catch(() => null),
-      dynamicImport("@f1r3fly-io/lightning-bug/extensions").catch(() => null)
-    ]);
-    
+      dynamicImport("@f1r3fly-io/lightning-bug/extensions").catch(() => null),
+    ]) as [unknown, unknown];
+
     if (lightningBug && extensions) {
       Editor = (lightningBug as { Editor: unknown }).Editor;
       RholangExtension = (extensions as { RholangExtension: unknown })
