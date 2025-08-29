@@ -53,7 +53,7 @@ export default function Dashboard() {
             >
               <RobotIcon />
               <Text bold color="primary" type="large">
-                Agents
+                {t("agents.agents")}
               </Text>
             </button>
           </div>
@@ -63,13 +63,13 @@ export default function Dashboard() {
               <button className={styles["icon-button"]}>
                 <DocumentationIcon />
                 <Text color="primary" type="large">
-                  Documentation
+                  {t("dashboard.documentation")}
                 </Text>
               </button>
               <button className={styles["icon-button"]} onClick={logout}>
                 <LogoutIcon />
                 <Text color="primary" type="large">
-                  Logout
+                  {t("dashboard.logout")}
                 </Text>
               </button>
             </div>
@@ -78,7 +78,7 @@ export default function Dashboard() {
         <div className={styles["content-area"]}>
           <div className={styles["content-header"]}>
             <Text bold color="primary" type="H2">
-              Agents
+              {t("agents.agents")}
             </Text>
           </div>
           <div className={styles["grid-container"]}>
@@ -88,14 +88,14 @@ export default function Dashboard() {
             >
               <RobotIcon className={styles["create-robot-icon"]} />
               <Text color="secondary" type="large">
-                Create new Agent
+                {t("agents.createNewAgent")}
               </Text>
             </div>
             {isSuccess &&
               data.agents.map((agent) => (
                 <div key={agent.id} className={styles["grid-box"]}>
                   <Text color="secondary" type="large">
-                    Agent {agent.name}
+                    {t("agents.agentWithName", { name: agent.name })}
                   </Text>
                 </div>
               ))}
