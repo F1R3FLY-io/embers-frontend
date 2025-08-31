@@ -16,7 +16,7 @@ export function AgentTeamsGrid() {
           data-agent-teams
           className={styles["create-robot-icon"]}
         />
-        <Text color="secondary" type="H4">
+        <Text color="secondary" type="large">
           Create new Agent Team
         </Text>
       </div>

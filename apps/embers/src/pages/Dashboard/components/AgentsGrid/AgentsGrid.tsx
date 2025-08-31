@@ -18,7 +18,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
       >
         <AgentIcon className={styles["create-robot-icon"]} />
-        <Text color="secondary" type="H4">
+        <Text color="secondary" type="large">
           Create new Agent
         </Text>
       </div>

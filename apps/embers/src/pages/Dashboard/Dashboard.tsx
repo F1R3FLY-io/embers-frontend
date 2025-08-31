@@ -41,7 +41,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text bold color="primary" type="H4">
+          <Text fontSize={24} color="primary" bold>
             F1R3FLY
           </Text>
         </div>
@@ -93,7 +93,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text bold color="primary" type="H4">
+              <Text fontSize={16} color="primary" bold>
                 Agents
               </Text>
             </AgentsButton>
@@ -110,7 +110,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text color="primary" type="H4">
+              <Text fontSize={16} color="primary" bold>
                 Agent Teams
               </Text>
             </AgentsButton>
@@ -119,12 +119,12 @@ export default function Dashboard() {
             <div className={styles["dashboard-divider"]} />
             <div className={styles["dashboard-buttons"]}>
               <IconButton icon={<DocumentationIcon />}>
-                <Text color="primary" type="H4">
+                <Text fontSize={16} color="secondary">
                   Documentation
                 </Text>
               </IconButton>
               <IconButton icon={<LogoutIcon />} onClick={logout}>
-                <Text color="primary" type="H4">
+                <Text fontSize={16} color="secondary">
                   Logout
                 </Text>
               </IconButton>

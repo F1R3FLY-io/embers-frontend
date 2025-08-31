@@ -29,9 +29,21 @@
     border-width: 2.5px;
 
     &:hover {
+      border-color: #B580FF;
+      
       span {
         color: var(--text-color-primary);
       }
+    }
+
+    /* Dark mode specific hover background */
+    :root &:hover {
+      background-color: #48247A33;
+    }
+
+    /* Light mode hover background */
+    .light-theme &:hover {
+      background-color: color-mix(in srgb, #B580FF 20%, transparent);
     }
 
     .create-robot-icon {
