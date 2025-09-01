@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import i18n from "@/i18n";
 import { Select } from "@/lib/components/Select";
 
+import styles from "./LanguageSelect.module.scss";
+
 type Option = {
   label: string;
   value: string;
@@ -24,8 +26,7 @@ export const LanguageSelect: React.FC = () => {
 
   return (
     <Select
-      className="container"
-      label="Language"
+      className={styles.container}
       options={options}
       value={value}
       onChange={setValue}
