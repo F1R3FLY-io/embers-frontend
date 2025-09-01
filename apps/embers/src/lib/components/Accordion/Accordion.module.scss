@@ -11,6 +11,15 @@
     background: var(--background-neutral-hover);
   }
 
+  &.icon-end {
+    .title-wrapper {
+      flex: 1;
+    }
+    .icon {
+      margin-left: auto;
+    }
+  }
+
   i {
     margin-left: 10px;
   }

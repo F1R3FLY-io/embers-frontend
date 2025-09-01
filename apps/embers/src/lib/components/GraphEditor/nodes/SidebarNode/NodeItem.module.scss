@@ -1,0 +1,22 @@
+.node-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  background: #1f2937;
+  margin: 4px 0;
+  border-radius: 6px;
+  cursor: grab;
+
+  i {
+    cursor: grab;
+  }
+  &:hover {
+    background: #374151;
+  }
+}
+
+.drag-handle {
+  cursor: grab;
+  opacity: 0.7;
+}
