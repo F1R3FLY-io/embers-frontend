@@ -1,0 +1,32 @@
+{
+  "welcome": "Bienvenue",
+  "selectLanguage": "Sélectionnez la langue",
+  "f1r3fly": "F1R3FLY",
+  "login": {
+    "getStarted": "Commencez avec F1R3SKY",
+    "signInWithWallet": "Connectez-vous avec le portefeuille F1R3SKY",
+    "createWallet": "Créer un portefeuille",
+    "agreeTerms": "En utilisant F1R3SKY, vous acceptez les",
+    "termsPrivacy": "conditions et la politique de confidentialité",
+    "enterPrivateKey": "Veuillez entrer votre clé privée ou télécharger un fichier clé pour vous connecter.",
+    "useSecureCredentials": "Assurez-vous d'utiliser des informations d'identification correctes et sécurisées.",
+    "signIn": "Se connecter",
+    "dontHaveWallet": "Vous n’avez pas de portefeuille F1R3SKY?",
+    "createOne": "Créez-en un"
+  },
+  "aiTeam": {
+    "newAiTeam": "Nouvelle équipe AI"
+  },
+  "agents": {
+    "agents": "Agents",
+    "createNewAgent": "Créer un nouvel agent",
+    "agentWithName": "Agent {{name}}"
+  },
+  "dashboard": {
+    "documentation": "Documentation",
+    "logout": "Se déconnecter"
+  },
+  "aiAgent": {
+    "bioAgent": "Agent BioMatch"
+  }
+}
