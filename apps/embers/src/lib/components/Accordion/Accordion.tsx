@@ -15,17 +15,18 @@ export interface AccordionProps {
   defaultOpen?: boolean;
   iconPosition?: "inline" | "end";
   openedIcon?: React.ReactNode;
+  overflow?: "hidden" | "auto";
   title: string;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
   actions,
   children,
-  className,
   closedIcon,
   defaultOpen = false,
-  iconPosition = 'inline',
+  iconPosition = "inline",
   openedIcon,
+  overflow = "auto",
   title,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
@@ -34,7 +35,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   const openIcon = openedIcon ?? <i className="fa fa-chevron-down" />;
   const closeIcon = closedIcon ?? <i className="fa fa-chevron-up" />;
   return (
-    <div className={className}>
+    <div>
       <div
         className={classNames(styles["accordion-header"], {
           [styles.open]: open,
@@ -42,7 +43,7 @@ export const Accordion: React.FC<AccordionProps> = ({
         })}
         onClick={toggleOpen}
       >
-        <div className={styles['title-wrapper']}>
+        <div className={styles["title-wrapper"]}>
           <Text color="primary" type="large">
             {title}
           </Text>
@@ -58,6 +59,7 @@ export const Accordion: React.FC<AccordionProps> = ({
       <div
         className={classNames(styles["accordion-content"], {
           [styles.open]: open,
+          [styles["overflow-hidden"]]: overflow === "hidden",
         })}
       >
         {children}

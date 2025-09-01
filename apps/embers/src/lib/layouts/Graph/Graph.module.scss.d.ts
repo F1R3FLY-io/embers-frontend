@@ -3,11 +3,10 @@ declare const classNames: {
   readonly "error-log": "error-log";
   readonly sidebar: "sidebar";
   readonly body: "body";
-  readonly footer: "footer";
-  readonly fa: "fa";
+  readonly "sidebar-footer": "sidebar-footer";
+  readonly "plus-icon": "plus-icon";
   readonly "search-bar": "search-bar";
   readonly input: "input";
-  readonly accordion: "accordion";
-  readonly text: "text";
+  readonly footer: "footer";
 };
 export default classNames;

@@ -1,4 +1,4 @@
-import "font-awesome/css/font-awesome.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Modal from "react-modal";

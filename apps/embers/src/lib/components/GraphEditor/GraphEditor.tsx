@@ -22,7 +22,7 @@ import type { NodeTypes } from "./nodes";
 import styles from "./GraphEditor.module.scss";
 import { nodeTypes } from "./nodes";
 
-type Node = {
+export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
 }[keyof NodeTypes];
 
@@ -207,6 +207,21 @@ export function GraphEditor() {
         nodes={nodes}
         nodeTypes={nodeTypes}
         onConnect={onConnect}
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={(event) => {
+          event.preventDefault();
+          const type = event.dataTransfer.getData("application/reactflow");
+          if (!type) {
+            return;
+          }
+
+          const position = screenToFlowPosition({
+            x: event.clientX,
+            y: event.clientY,
+          });
+
+          onNodesChange(createNodeChange(type as keyof NodeTypes, position));
+        }}
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openContextMenu}
@@ -229,19 +244,16 @@ export function GraphEditor() {
   );
 }
 
-function createNodeChange<T extends string>(
-  type: T,
-  position: Node["position"],
-) {
+function createNodeChange(type: keyof NodeTypes, position: Node["position"]) {
   return [
     {
       item: {
         className: styles["no-node-style"],
-        data: {},
+        data: {} as Parameters<NodeTypes[keyof NodeTypes]>[0]["data"],
         id: crypto.randomUUID(),
         position,
         type,
-      },
+      } as Node,
       type: "add" as const,
     },
   ];
