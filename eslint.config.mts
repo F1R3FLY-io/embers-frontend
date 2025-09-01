@@ -13,7 +13,12 @@ export const JS_FILES = "**/*.{js,jsx}";
 export const TS_FILES = "**/*.{ts,tsx}";
 
 export default tseslint.config(
-  globalIgnores(["dist", "node_modules"]),
+  globalIgnores([
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/mocks/**",
+    "**/coverage/**",
+  ]),
   {
     extends: [
       js.configs.recommended,
@@ -296,7 +301,7 @@ export default tseslint.config(
     files: ["**/*.test.{js,jsx,ts,tsx}"],
   },
   {
-    files: ["**/eslint.config.{js,ts}"],
+    files: ["**/eslint.config.{js,ts,mts}"],
     languageOptions: {
       globals: globals.node,
     },
