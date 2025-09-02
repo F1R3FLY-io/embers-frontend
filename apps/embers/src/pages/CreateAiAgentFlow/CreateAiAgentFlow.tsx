@@ -3,6 +3,7 @@ import type { EditorRef } from "@f1r3fly-io/lightning-bug";
 import { Editor } from "@f1r3fly-io/lightning-bug";
 import { RholangExtension } from "@f1r3fly-io/lightning-bug/extensions";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
@@ -13,8 +14,11 @@ import styles from "./CreateAiAgentFlow.module.scss";
 export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { setHeaderTitle } = useLayout();
+  const { t } = useTranslation();
+
   useEffect(() => {
-    setHeaderTitle("BioMatch Agent");
+    setHeaderTitle(t("aiAgent.bioAgent"));
+
     if (!editorRef.current) {
       return;
     }
@@ -32,7 +36,7 @@ export default function CodeEditor() {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [setHeaderTitle]);
+  }, [setHeaderTitle, t]);
 
   return (
     <CodeLayout>

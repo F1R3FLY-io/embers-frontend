@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { FooterProps } from "@/lib/layouts/Graph";
 
@@ -14,7 +15,9 @@ type Logs = FooterProps["logs"][number];
 // Half-baked. Demo only
 export default function CreateAiTeamFlow() {
   const { setHeaderTitle } = useLayout();
-  useEffect(() => setHeaderTitle("New AI team"), [setHeaderTitle]);
+  const { t } = useTranslation();
+
+  useEffect(() => setHeaderTitle(t("aiTeam.newAiTeam")), [setHeaderTitle, t]);
 
   const deployDemo = useDeployDemo();
   const runDemo = useRunDemo();
