@@ -26,7 +26,7 @@ export const NodeItem: React.FC<NodeItemProps> = ({ name, type }) => {
       onDragStart={handleDragStart}
     >
       <img alt="" src={defaultNodeIcon} />
-      <Text className={styles["node-name"]} type="small">
+      <Text bold className={styles["node-name"]} type="small">
         {name}
       </Text>
       <div className={styles["node-actions"]}>

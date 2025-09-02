@@ -44,7 +44,7 @@ export const Accordion: React.FC<AccordionProps> = ({
         onClick={toggleOpen}
       >
         <div className={styles["title-wrapper"]}>
-          <Text color="primary" type="large">
+          <Text bold color="primary" type="large">
             {title}
           </Text>
           {iconPosition === "inline" && (open ? openIcon : closeIcon)}

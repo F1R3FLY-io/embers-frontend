@@ -28,6 +28,20 @@ export type Node = {
 
 type Edge = REdge;
 
+type NodeData<T extends keyof NodeTypes> = Extract<Node, { type: T }>["data"];
+type DefaultNodeKeys = Exclude<keyof NodeTypes, "deploy-container">;
+
+const defaultNodeData: {
+  [K in DefaultNodeKeys]: NodeData<K>;
+} = {
+  compress: {},
+  "manual-input": {},
+  "send-to-channel": {},
+  "text-model": {},
+  "tti-model": {},
+  "tts-model": {},
+};
+
 export function GraphEditor() {
   const [nodes, , onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
@@ -73,6 +87,7 @@ export function GraphEditor() {
             createNodeChange(
               "manual-input",
               screenToFlowPosition(contextMenuPosition),
+              defaultNodeData["manual-input"],
             ),
           ),
         type: "text",
@@ -85,6 +100,7 @@ export function GraphEditor() {
             createNodeChange(
               "send-to-channel",
               screenToFlowPosition(contextMenuPosition),
+              defaultNodeData["send-to-channel"],
             ),
           ),
         type: "text",
@@ -97,6 +113,7 @@ export function GraphEditor() {
             createNodeChange(
               "compress",
               screenToFlowPosition(contextMenuPosition),
+              defaultNodeData.compress,
             ),
           ),
         type: "text",
@@ -109,6 +126,7 @@ export function GraphEditor() {
             createNodeChange(
               "text-model",
               screenToFlowPosition(contextMenuPosition),
+              defaultNodeData["text-model"],
             ),
           ),
         type: "text",
@@ -121,6 +139,7 @@ export function GraphEditor() {
             createNodeChange(
               "tti-model",
               screenToFlowPosition(contextMenuPosition),
+              defaultNodeData["tti-model"],
             ),
           ),
         type: "text",
@@ -133,6 +152,7 @@ export function GraphEditor() {
             createNodeChange(
               "tts-model",
               screenToFlowPosition(contextMenuPosition),
+              defaultNodeData["tts-model"],
             ),
           ),
         type: "text",
@@ -210,17 +230,19 @@ export function GraphEditor() {
         onDragOver={(event) => event.preventDefault()}
         onDrop={(event) => {
           event.preventDefault();
-          const type = event.dataTransfer.getData("application/reactflow");
-          if (!type) {
-            return;
+          const type = event.dataTransfer.getData(
+            "application/reactflow",
+          ) as DefaultNodeKeys;
+          if (type in defaultNodeData) {
+            const position = screenToFlowPosition({
+              x: event.clientX,
+              y: event.clientY,
+            });
+
+            onNodesChange(
+              createNodeChange(type, position, defaultNodeData[type]),
+            );
           }
-
-          const position = screenToFlowPosition({
-            x: event.clientX,
-            y: event.clientY,
-          });
-
-          onNodesChange(createNodeChange(type as keyof NodeTypes, position));
         }}
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
@@ -244,16 +266,20 @@ export function GraphEditor() {
   );
 }
 
-function createNodeChange(type: keyof NodeTypes, position: Node["position"]) {
+function createNodeChange<T extends keyof NodeTypes>(
+  type: T,
+  position: Node["position"],
+  data: NodeData<T>,
+) {
   return [
     {
       item: {
         className: styles["no-node-style"],
-        data: {} as Parameters<NodeTypes[keyof NodeTypes]>[0]["data"],
+        data,
         id: crypto.randomUUID(),
         position,
         type,
-      } as Node,
+      },
       type: "add" as const,
     },
   ];
