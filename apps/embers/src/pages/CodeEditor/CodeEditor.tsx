@@ -25,7 +25,25 @@ export default function CodeEditor() {
 
         editorRef.current.openDocument(
           "demo.rho",
-          'new x in { x!("Hello") | Nil }',
+          `contract @"fibo"(return, @x) = {
+    if (x < 2) {
+        return!(x)
+    } else {
+        new r1, r2 in {
+            @"fibo"!(*r1, x - 1) |
+            @"fibo"!(*r2, x - 2) |
+            for (@x1 <- r1 & @x2 <- r2) {
+                return!(x1 + x2)
+            }
+        }
+    }
+} |
+new return, stdout(\`rho:io:stdout\`) in {
+    @"fibo"!(*return, 8) |
+    for (@fib8 <- return) {
+        stdout!(["fibonacci(8)", fib8])
+    }
+}`,
           "rholang",
         );
       }
