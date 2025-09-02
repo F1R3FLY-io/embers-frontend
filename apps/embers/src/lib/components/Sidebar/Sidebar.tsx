@@ -10,12 +10,18 @@ interface SidebarProps {
   title?: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ actions, children, title }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  actions,
+  children,
+  title,
+}) => {
   return (
     <div className={styles.container}>
       {(title || actions) && (
         <div className={styles.header}>
-          <Text fontSize={20}>{title}</Text>
+          <Text color="primary" type="H5">
+            {title}
+          </Text>
           <div className={styles.actions} onClick={(e) => e.stopPropagation()}>
             {actions}
           </div>
@@ -25,5 +31,3 @@ const Sidebar: React.FC<SidebarProps> = ({ actions, children, title }) => {
     </div>
   );
 };
-
-export default Sidebar;

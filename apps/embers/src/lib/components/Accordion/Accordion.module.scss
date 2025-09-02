@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 24px;
-  color: var(--text-color-primary);
   cursor: pointer;
   background: var(--background-color);
   transition: background 0.2s;
@@ -27,7 +26,6 @@
   max-height: 0;
   padding: 0 16px;
   overflow: hidden;
-  color: var(--text-color-primary);
   background: var(--background-color);
   border-bottom: 1px solid var(--background-neutral-surface-secondary);
   transition:

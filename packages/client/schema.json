@@ -570,6 +570,267 @@
           }
         }
       }
+    },
+    "/api/ai-agents-teams/{address}": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentsTeams"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/versions": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentsTeams"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/versions/{version}": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "version",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentsTeam"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/create/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgentsTeamReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAgentsTeamResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/create/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/{id}/save/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgentsTeamReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveAgentsTeamResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/{id}/save/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
@@ -628,6 +889,79 @@
           }
         }
       },
+      "AgentsTeam": {
+        "type": "object",
+        "title": "AgentsTeam",
+        "required": ["id", "version", "name"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shard": {
+            "type": "string"
+          },
+          "graph": {
+            "type": "string"
+          },
+          "graph_ast": {
+            "$ref": "#/components/schemas/Graph"
+          }
+        }
+      },
+      "AgentsTeamHeader": {
+        "type": "object",
+        "title": "AgentsTeamHeader",
+        "required": ["id", "version", "name"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shard": {
+            "type": "string"
+          }
+        }
+      },
+      "AgentsTeams": {
+        "type": "object",
+        "title": "AgentsTeams",
+        "required": ["agents_teams"],
+        "properties": {
+          "agents_teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentsTeamHeader"
+            }
+          }
+        }
+      },
+      "Binding": {
+        "type": "object",
+        "title": "Binding",
+        "required": ["graph", "var", "vertex"],
+        "properties": {
+          "graph": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "var": {
+            "type": "string"
+          },
+          "vertex": {
+            "$ref": "#/components/schemas/Vertex"
+          }
+        }
+      },
       "Boost": {
         "type": "object",
         "title": "Boost",
@@ -674,6 +1008,42 @@
       "CreateAgentResp": {
         "type": "object",
         "title": "CreateAgentResp",
+        "required": ["id", "version", "contract"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
+      "CreateAgentsTeamReq": {
+        "type": "object",
+        "title": "CreateAgentsTeamReq",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "shard": {
+            "type": "string"
+          },
+          "graph": {
+            "type": "string"
+          },
+          "graph_ast": {
+            "$ref": "#/components/schemas/Graph"
+          }
+        }
+      },
+      "CreateAgentsTeamResp": {
+        "type": "object",
+        "title": "CreateAgentsTeamResp",
         "required": ["id", "version", "contract"],
         "properties": {
           "id": {
@@ -854,6 +1224,349 @@
         "type": "object",
         "title": "Exchange"
       },
+      "GEdgeAnon": {
+        "type": "object",
+        "title": "GEdgeAnon",
+        "required": ["binding_1", "binding_2"],
+        "properties": {
+          "binding_1": {
+            "$ref": "#/components/schemas/Binding"
+          },
+          "binding_2": {
+            "$ref": "#/components/schemas/Binding"
+          }
+        }
+      },
+      "GEdgeNamed": {
+        "type": "object",
+        "title": "GEdgeNamed",
+        "required": ["binding_1", "binding_2", "name"],
+        "properties": {
+          "binding_1": {
+            "$ref": "#/components/schemas/Binding"
+          },
+          "binding_2": {
+            "$ref": "#/components/schemas/Binding"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          }
+        }
+      },
+      "GRuleAnon": {
+        "type": "object",
+        "title": "GRuleAnon",
+        "required": ["graph_1", "graph_2"],
+        "properties": {
+          "graph_1": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "graph_2": {
+            "$ref": "#/components/schemas/Graph"
+          }
+        }
+      },
+      "GRuleNamed": {
+        "type": "object",
+        "title": "GRuleNamed",
+        "required": ["graph_1", "graph_2", "name"],
+        "properties": {
+          "graph_1": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "graph_2": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          }
+        }
+      },
+      "GSubgraph": {
+        "type": "object",
+        "title": "GSubgraph",
+        "required": ["graph_1", "graph_2", "var"],
+        "properties": {
+          "graph_1": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "graph_2": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "var": {
+            "type": "string"
+          }
+        }
+      },
+      "GTensor": {
+        "type": "object",
+        "title": "GTensor",
+        "required": ["graph_1", "graph_2"],
+        "properties": {
+          "graph_1": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "graph_2": {
+            "$ref": "#/components/schemas/Graph"
+          }
+        }
+      },
+      "GVar": {
+        "type": "object",
+        "title": "GVar",
+        "required": ["graph", "var"],
+        "properties": {
+          "graph": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "var": {
+            "type": "string"
+          }
+        }
+      },
+      "GVertex": {
+        "type": "object",
+        "title": "GVertex",
+        "required": ["graph", "vertex"],
+        "properties": {
+          "graph": {
+            "$ref": "#/components/schemas/Graph"
+          },
+          "vertex": {
+            "$ref": "#/components/schemas/Vertex"
+          }
+        }
+      },
+      "Graph": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Graph_Unit"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GVertex"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GVar"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_Binding"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GEdgeAnon"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GEdgeNamed"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GRuleAnon"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GRuleNamed"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GSubgraph"
+          },
+          {
+            "$ref": "#/components/schemas/Graph_GTensor"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "Nil": "#/components/schemas/Graph_Unit",
+            "Vertex": "#/components/schemas/Graph_GVertex",
+            "Var": "#/components/schemas/Graph_GVar",
+            "Nominate": "#/components/schemas/Graph_Binding",
+            "EdgeAnon": "#/components/schemas/Graph_GEdgeAnon",
+            "EdgeNamed": "#/components/schemas/Graph_GEdgeNamed",
+            "RuleAnon": "#/components/schemas/Graph_GRuleAnon",
+            "RuleNamed": "#/components/schemas/Graph_GRuleNamed",
+            "Subgraph": "#/components/schemas/Graph_GSubgraph",
+            "Tensor": "#/components/schemas/Graph_GTensor"
+          }
+        }
+      },
+      "Graph_Binding": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Nominate"],
+                "example": "Nominate"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/Binding"
+          }
+        ]
+      },
+      "Graph_GEdgeAnon": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["EdgeAnon"],
+                "example": "EdgeAnon"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GEdgeAnon"
+          }
+        ]
+      },
+      "Graph_GEdgeNamed": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["EdgeNamed"],
+                "example": "EdgeNamed"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GEdgeNamed"
+          }
+        ]
+      },
+      "Graph_GRuleAnon": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["RuleAnon"],
+                "example": "RuleAnon"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GRuleAnon"
+          }
+        ]
+      },
+      "Graph_GRuleNamed": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["RuleNamed"],
+                "example": "RuleNamed"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GRuleNamed"
+          }
+        ]
+      },
+      "Graph_GSubgraph": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Subgraph"],
+                "example": "Subgraph"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GSubgraph"
+          }
+        ]
+      },
+      "Graph_GTensor": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Tensor"],
+                "example": "Tensor"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GTensor"
+          }
+        ]
+      },
+      "Graph_GVar": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Var"],
+                "example": "Var"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GVar"
+          }
+        ]
+      },
+      "Graph_GVertex": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Vertex"],
+                "example": "Vertex"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/GVertex"
+          }
+        ]
+      },
+      "Graph_Unit": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Nil"],
+                "example": "Nil"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/Unit"
+          }
+        ]
+      },
       "InternalError": {
         "type": "object",
         "title": "InternalError",
@@ -880,6 +1593,166 @@
       "LogLevel": {
         "type": "string",
         "enum": ["debug", "info", "error"]
+      },
+      "NGVar": {
+        "type": "object",
+        "title": "NGVar",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "NQuoteGraph": {
+        "type": "object",
+        "title": "NQuoteGraph",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/Graph"
+          }
+        }
+      },
+      "NQuoteVertex": {
+        "type": "object",
+        "title": "NQuoteVertex",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/Vertex"
+          }
+        }
+      },
+      "NVVar": {
+        "type": "object",
+        "title": "NVVar",
+        "required": ["value"],
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "Name": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Name_Unit"
+          },
+          {
+            "$ref": "#/components/schemas/Name_NVVar"
+          },
+          {
+            "$ref": "#/components/schemas/Name_NGVar"
+          },
+          {
+            "$ref": "#/components/schemas/Name_NQuoteGraph"
+          },
+          {
+            "$ref": "#/components/schemas/Name_NQuoteVertex"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "Wildcard": "#/components/schemas/Name_Unit",
+            "VVar": "#/components/schemas/Name_NVVar",
+            "GVar": "#/components/schemas/Name_NGVar",
+            "QuoteGraph": "#/components/schemas/Name_NQuoteGraph",
+            "QuoteVertex": "#/components/schemas/Name_NQuoteVertex"
+          }
+        }
+      },
+      "Name_NGVar": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["GVar"],
+                "example": "GVar"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/NGVar"
+          }
+        ]
+      },
+      "Name_NQuoteGraph": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["QuoteGraph"],
+                "example": "QuoteGraph"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/NQuoteGraph"
+          }
+        ]
+      },
+      "Name_NQuoteVertex": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["QuoteVertex"],
+                "example": "QuoteVertex"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/NQuoteVertex"
+          }
+        ]
+      },
+      "Name_NVVar": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["VVar"],
+                "example": "VVar"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/NVVar"
+          }
+        ]
+      },
+      "Name_Unit": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Wildcard"],
+                "example": "Wildcard"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/Unit"
+          }
+        ]
       },
       "Request": {
         "type": "object",
@@ -922,6 +1795,20 @@
       "SaveAgentResp": {
         "type": "object",
         "title": "SaveAgentResp",
+        "required": ["version", "contract"],
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
+      "SaveAgentsTeamResp": {
+        "type": "object",
+        "title": "SaveAgentsTeamResp",
         "required": ["version", "contract"],
         "properties": {
           "version": {
@@ -1034,6 +1921,20 @@
           "contract": {
             "type": "string",
             "format": "bytes"
+          }
+        }
+      },
+      "Unit": {
+        "type": "object",
+        "title": "Unit"
+      },
+      "Vertex": {
+        "type": "object",
+        "title": "Vertex",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/Name"
           }
         }
       },

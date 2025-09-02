@@ -1,6 +1,6 @@
 import { secp256k1 } from "@noble/curves/secp256k1";
 
-import { PrivateKey, PublicKey } from "../src/index";
+import { PrivateKey, PublicKey } from "../src";
 
 describe("PublicKey class", () => {
   test("should create a new PublicKey", () => {

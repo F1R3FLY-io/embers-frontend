@@ -5,12 +5,9 @@ import type {
   RequestStatus,
   Transfer,
   WalletStateAndHistory,
-} from "../src/api-client";
+} from "../src";
 
-import { PrivateKey } from "../src";
-import { Amount } from "../src/entities/Amount";
-import { Description } from "../src/entities/Description";
-import { Wallet } from "../src/entities/Wallet";
+import { Amount, Description, PrivateKey, WalletsApiSdk } from "../src";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -24,7 +21,7 @@ describe("Wallet Transfer", () => {
     const description = Description.tryFrom(
       "This is a test transfer with a valid description.",
     );
-    const wallet = new Wallet({
+    const wallet = new WalletsApiSdk({
       basePath: "http://localhost:3100",
       privateKey,
     });
@@ -35,7 +32,7 @@ describe("Wallet Transfer", () => {
   });
 
   test("Wallet.getWalletState method", async () => {
-    const client = new Wallet({
+    const client = new WalletsApiSdk({
       basePath: "http://localhost:3100",
       privateKey: PrivateKey.new(),
     });
