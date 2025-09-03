@@ -2,6 +2,7 @@ import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import type { Location } from "react-router-dom";
 
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
@@ -23,6 +24,8 @@ export default function Login() {
   const [pageState, setPageState] = useState<PageState>("init");
   const toSigning = useCallback(() => setPageState("signin"), []);
   const redirectToFiresky = useCallback(() => {}, []);
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation() as Location<{ from?: string } | undefined>;
@@ -53,21 +56,21 @@ export default function Login() {
         <>
           <div className={styles.title}>
             <Text bold color="primary" type="H2">
-              Get started with F1R3SKY
+              {t("login.getStarted")}
             </Text>
           </div>
           <div className={styles.buttons}>
             <Button type="primary" onClick={toSigning}>
-              Sign in with F1R3SKY Wallet
+              {t("login.signInWithWallet")}
             </Button>
             <Button type="secondary" onClick={redirectToFiresky}>
-              Create Wallet
+              {t("login.createWallet")}
             </Button>
           </div>
           <div className={styles.note}>
             <Text color="secondary" type="normal">
-              By using F1R3SKY, you agree to the{" "}
-              <TextLink onClick={() => {}}>terms and privacy policy</TextLink>
+              {t("login.agreeTerms")}{" "}
+              <TextLink onClick={() => {}}>{t("login.termsPrivacy")}</TextLink>
             </Text>
           </div>
         </>
@@ -79,14 +82,14 @@ export default function Login() {
           <div className={styles["picker-container"]}>
             <div className={styles.title}>
               <Text bold color="primary" type="H2">
-                Sign in with F1R3SKY Wallet
+                {t("login.signInWithWallet")}
               </Text>
             </div>
             <div className={styles.note}>
               <Text color="secondary" type="normal">
-                Please enter your private key or upload a key file to sign in.
+                {t("login.enterPrivateKey")}
                 <br />
-                Make sure you&apos;re using the correct credentials.
+                {t("login.useSecureCredentials")}
               </Text>
             </div>
             <WalletInput
@@ -98,12 +101,14 @@ export default function Login() {
           </div>
           <div className={styles.buttons}>
             <Button type="primary" onClick={signin}>
-              Sign In
+              {t("login.signIn")}
             </Button>
             <div className={styles.note}>
               <Text color="secondary" type="normal">
-                Don&apos;t have F1R3SKY Wallet?{" "}
-                <TextLink onClick={redirectToFiresky}>Create one</TextLink>
+                {t("login.dontHaveWallet")}{" "}
+                <TextLink onClick={redirectToFiresky}>
+                  {t("login.createOne")}
+                </TextLink>
               </Text>
             </div>
           </div>

@@ -8,3 +8,5 @@ export * from "./entities/PrivateKey";
 export * from "./entities/PublicKey";
 export * from "./entities/WalletsApi";
 export * from "./serialization";
+
+export type { Graph } from "@f1r3fly-io/graphl-parser";

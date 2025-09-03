@@ -41,7 +41,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text fontSize={24} color="primary" bold>
+          <Text bold color="primary" type="H3">
             F1R3FLY
           </Text>
         </div>
@@ -49,24 +49,16 @@ export default function Dashboard() {
           <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
               <option value="en">
-                <Text color="secondary" type="normal">
-                  English
-                </Text>
+                <Text color="secondary" type="normal">English</Text>
               </option>
               <option value="es">
-                <Text color="secondary" type="normal">
-                  Español
-                </Text>
+                <Text color="secondary" type="normal">Español</Text>
               </option>
               <option value="fr">
-                <Text color="secondary" type="normal">
-                  Français
-                </Text>
+                <Text color="secondary" type="normal">Français</Text>
               </option>
               <option value="de">
-                <Text color="secondary" type="normal">
-                  Deutsch
-                </Text>
+                <Text color="secondary" type="normal">Deutsch</Text>
               </option>
             </select>
             <ChevronIcon className={styles.chevron} />
@@ -93,7 +85,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text fontSize={16} color="primary" bold>
+              <Text bold color="primary" type="H4">
                 Agents
               </Text>
             </AgentsButton>
@@ -110,7 +102,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text fontSize={16} color="primary" bold>
+              <Text color="primary" type="H4">
                 Agent Teams
               </Text>
             </AgentsButton>
@@ -119,12 +111,12 @@ export default function Dashboard() {
             <div className={styles["dashboard-divider"]} />
             <div className={styles["dashboard-buttons"]}>
               <IconButton icon={<DocumentationIcon />}>
-                <Text fontSize={16} color="secondary">
+                <Text color="primary" type="H4">
                   Documentation
                 </Text>
               </IconButton>
               <IconButton icon={<LogoutIcon />} onClick={logout}>
-                <Text fontSize={16} color="secondary">
+                <Text color="primary" type="H4">
                   Logout
                 </Text>
               </IconButton>
@@ -158,11 +150,6 @@ export default function Dashboard() {
               styles["tab-content"],
               isTransitioning ? styles.entering : styles.entered,
             )}
-            onClick={() => {
-              if (selectedTab === "agents") {
-                void navigate("/create-ai-agent");
-              }
-            }}
           >
             {selectedTab === "agents" ? (
               <AgentsGrid agents={data?.agents || []} isSuccess={isSuccess} />

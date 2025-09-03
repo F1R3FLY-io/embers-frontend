@@ -1,3 +1,7 @@
+import type { Graph, InitOutput } from "@f1r3fly-io/graphl-parser";
+
+import init, { astToGraphl, parseToAst } from "@f1r3fly-io/graphl-parser";
+
 import type {
   CreateAgentsTeamReq,
   HTTPHeaders,
@@ -8,6 +12,15 @@ import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
 import { deployContract } from "../functions";
+
+let graphModule: InitOutput | null = null;
+
+async function getGraphModule() {
+  if (graphModule === null) {
+    graphModule = await init();
+  }
+  return { astToGraphl, parseToAst };
+}
 
 export type AgentsTeamsConfig = {
   basePath: string;
@@ -32,10 +45,15 @@ export class AgentsTeamsApiSdk {
     this.client = new AIAgentsTeamsApi(configuration);
   }
 
-  public async createAgentsTeam(agentsTeamReq: CreateAgentsTeamReq) {
+  public async createAgentsTeam(
+    agentsTeamReq: Omit<CreateAgentsTeamReq, "graph"> & { graph?: Graph },
+  ) {
+    const graphCode =
+      agentsTeamReq.graph &&
+      (await getGraphModule()).astToGraphl(agentsTeamReq.graph);
     const prepareContract = async () =>
       this.client.apiAiAgentsTeamsCreatePreparePost({
-        createAgentsTeamReq: agentsTeamReq,
+        createAgentsTeamReq: { ...agentsTeamReq, graph: graphCode },
       });
 
     const sendContract = async (
@@ -68,11 +86,19 @@ export class AgentsTeamsApiSdk {
   }
 
   public async getAgentsTeamVersion(agentsTeamId: string, version: string) {
-    return this.client.apiAiAgentsTeamsAddressIdVersionsVersionGet({
-      address: this.address.value,
-      id: agentsTeamId,
-      version,
-    });
+    return this.client
+      .apiAiAgentsTeamsAddressIdVersionsVersionGet({
+        address: this.address.value,
+        id: agentsTeamId,
+        version,
+      })
+      .then(async ({ graph, ...rest }) => {
+        const graphAst =
+          graph !== undefined
+            ? (await getGraphModule()).parseToAst(graph)
+            : undefined;
+        return { ...rest, graph: graphAst };
+      });
   }
 
   public async getAgentsTeamVersions(agentsTeamId: string) {
@@ -84,11 +110,14 @@ export class AgentsTeamsApiSdk {
 
   public async saveAgentsTeamVersion(
     agentsTeamId: string,
-    agentsTeamReq: CreateAgentsTeamReq,
+    agentsTeamReq: Omit<CreateAgentsTeamReq, "graph"> & { graph?: Graph },
   ) {
+    const graphCode =
+      agentsTeamReq.graph &&
+      (await getGraphModule()).astToGraphl(agentsTeamReq.graph);
     const generateContract = async () =>
       this.client.apiAiAgentsTeamsIdSavePreparePost({
-        createAgentsTeamReq: agentsTeamReq,
+        createAgentsTeamReq: { ...agentsTeamReq, graph: graphCode },
         id: agentsTeamId,
       });
 
