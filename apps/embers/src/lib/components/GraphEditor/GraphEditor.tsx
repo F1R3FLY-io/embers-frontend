@@ -22,11 +22,11 @@ import type { NodeTypes } from "./nodes";
 import styles from "./GraphEditor.module.scss";
 import { nodeTypes } from "./nodes";
 
-type Node = {
+export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
 }[keyof NodeTypes];
 
-type Edge = REdge;
+export type Edge = REdge;
 
 export function GraphEditor() {
   const [nodes, , onNodesChange] = useNodesState<Node>([]);
