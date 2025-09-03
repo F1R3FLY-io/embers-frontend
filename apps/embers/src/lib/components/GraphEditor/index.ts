@@ -1,1 +1,1 @@
-export { GraphEditor } from "./GraphEditor";
+export { type Edge, GraphEditor, type Node } from "./GraphEditor";

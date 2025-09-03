@@ -1,6 +1,6 @@
 import type {
+  AgentsTeamsApiSdk,
   CreateAgentReq,
-  CreateAgentsTeamReq,
   PrivateKey,
 } from "@f1r3fly-io/embers-client-sdk";
 
@@ -8,6 +8,10 @@ import { AIAgentsTeamsApi, Configuration } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useApi } from "@/lib/providers/wallet/useApi";
+
+import type { Edge, Node } from "./components/GraphEditor";
+
+import { toApiGraph } from "./graph";
 
 export function useAgents() {
   const api = useApi();
@@ -132,12 +136,23 @@ export function useAgentsTeam(id: string, version: string) {
   });
 }
 
+type WithGraph<T> = Omit<T, "graph"> & {
+  edges: Edge[];
+  nodes: Node[];
+};
+
 export function useCreateAgentsTeamMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.createAgentsTeam(params),
+    mutationFn: async ({
+      edges,
+      nodes,
+      ...rest
+    }: WithGraph<Parameters<AgentsTeamsApiSdk["createAgentsTeam"]>[0]>) => {
+      const graph = toApiGraph(nodes, edges);
+      return api.agentsTeams.createAgentsTeam({ ...rest, graph });
+    },
   });
 }
 
@@ -145,7 +160,15 @@ export function useSaveAgentsTeamMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.saveAgentsTeamVersion(id, params),
+    mutationFn: async ({
+      edges,
+      nodes,
+      ...rest
+    }: WithGraph<
+      Parameters<AgentsTeamsApiSdk["saveAgentsTeamVersion"]>[1]
+    >) => {
+      const graph = toApiGraph(nodes, edges);
+      return api.agentsTeams.saveAgentsTeamVersion(id, { ...rest, graph });
+    },
   });
 }
