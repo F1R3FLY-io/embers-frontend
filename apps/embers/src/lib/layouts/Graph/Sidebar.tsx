@@ -3,7 +3,7 @@ import type React from "react";
 import type { AccordionProps } from "@/lib/components/Accordion/Accordion";
 
 import { Accordion } from "@/lib/components/Accordion";
-import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
+import { NODE_REGISTRY } from "@/lib/components/GraphEditor/nodes/nodes.registry";
 import { NodeItem } from "@/lib/components/GraphEditor/nodes/SidebarNode";
 import { Text } from "@/lib/components/Text";
 
@@ -28,8 +28,13 @@ export const Sidebar: React.FC = () => {
     <div className={styles.sidebar}>
       <div className={styles.body}>
         <NodeAccordion defaultOpen title="All Nodes">
-          {Object.keys(nodeTypes).map((key) => (
-            <NodeItem key={key} name={key} type={key} />
+          {Object.entries(NODE_REGISTRY).map(([key, def]) => (
+            <NodeItem
+              key={key}
+              iconSrc={def.iconSrc}
+              name={def.displayName}
+              type={key}
+            />
           ))}
         </NodeAccordion>
 
@@ -42,7 +47,7 @@ export const Sidebar: React.FC = () => {
           <NodeItem name="Placeholder Service" />
         </NodeAccordion>
       </div>
-      {/* Add Custom Component button */}
+
       <div className={styles["sidebar-footer"]}>
         <Text bold color="hover" type="normal">
           <i className={`fa fa-plus ${styles["plus-icon"]}`} /> Add Custom
