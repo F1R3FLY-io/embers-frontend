@@ -28,9 +28,9 @@
     border-width: 2.5px;
 
     &:hover {
-      border-color: #B580FF;
       background-color: var(--create-button-hover-bg);
-      
+      border-color: #b580ff;
+
       span {
         color: var(--text-color-primary);
       }

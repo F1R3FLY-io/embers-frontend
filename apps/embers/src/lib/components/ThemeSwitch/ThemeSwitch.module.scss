@@ -37,31 +37,35 @@
   position: absolute;
   top: -4px;
   left: -2px;
+  z-index: 1;
   width: 18px;
   height: 18px;
-  z-index: 1;
-  transition: all 0.6s ease, opacity 0.6s ease;
-  fill: white;
   opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
+  fill: white;
+  transition:
+    all 0.6s ease,
+    opacity 0.6s ease;
+  animation: fade-in 0.6s ease forwards;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: scale(0.8);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-@keyframes fadeInTranslated {
+@keyframes fade-in-translated {
   from {
     opacity: 0;
     transform: translateX(20px) scale(0.8);
   }
+
   to {
     opacity: 1;
     transform: translateX(20px) scale(1);
@@ -73,5 +77,5 @@ input:checked + .slider::before {
 }
 
 input:checked + .slider .icon {
-  animation: fadeInTranslated 0.8s ease forwards;
+  animation: fade-in-translated 0.8s ease forwards;
 }

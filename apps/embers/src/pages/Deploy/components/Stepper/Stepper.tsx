@@ -20,22 +20,20 @@ export default function Stepper({
       {Array.from({ length: steps }, (_, index) => (
         <div key={index} className={styles["step-container"]}>
           <div className={styles["step-content"]}>
-            <div 
+            <div
               className={`${styles.circle} ${
-                index < currentStep 
-                  ? styles.completed 
-                  : index === currentStep - 1 
-                  ? styles.current 
-                  : styles.pending
+                index < currentStep
+                  ? styles.completed
+                  : index === currentStep - 1
+                    ? styles.current
+                    : styles.pending
               }`}
             >
               <StepperCircleIcon />
               {index < currentStep && index < currentStep - 1 && (
                 <CheckIcon className={styles.checkmark} />
               )}
-              {index === currentStep - 1 && (
-                <div className={styles.dot} />
-              )}
+              {index === currentStep - 1 && <div className={styles.dot} />}
             </div>
             {index < steps - 1 && (
               <div className={styles.line}>

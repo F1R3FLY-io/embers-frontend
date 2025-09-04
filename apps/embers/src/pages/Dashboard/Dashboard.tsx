@@ -43,16 +43,24 @@ export default function Dashboard() {
           <div className={styles["language-dropdown"]}>
             <select className={styles.dropdown}>
               <option value="en">
-                <Text color="secondary" type="normal">English</Text>
+                <Text color="secondary" type="normal">
+                  English
+                </Text>
               </option>
               <option value="es">
-                <Text color="secondary" type="normal">Español</Text>
+                <Text color="secondary" type="normal">
+                  Español
+                </Text>
               </option>
               <option value="fr">
-                <Text color="secondary" type="normal">Français</Text>
+                <Text color="secondary" type="normal">
+                  Français
+                </Text>
               </option>
               <option value="de">
-                <Text color="secondary" type="normal">Deutsch</Text>
+                <Text color="secondary" type="normal">
+                  Deutsch
+                </Text>
               </option>
             </select>
             <ChevronIcon className={styles.chevron} />
@@ -113,7 +121,7 @@ export default function Dashboard() {
           <div
             className={classNames(
               styles["content-header"],
-              styles["tab-content"]
+              styles["tab-content"],
             )}
           >
             <AgentsTitle
@@ -132,7 +140,7 @@ export default function Dashboard() {
           <div
             className={classNames(
               styles["grid-container"],
-              styles["tab-content"]
+              styles["tab-content"],
             )}
           >
             {selectedTab === "agents" ? (

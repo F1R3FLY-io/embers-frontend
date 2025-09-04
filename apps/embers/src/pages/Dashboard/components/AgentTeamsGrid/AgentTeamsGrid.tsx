@@ -1,7 +1,6 @@
+import classNames from "classnames";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
-import classNames from "classnames";
 
 import { Text } from "@/lib/components/Text";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
