@@ -4,6 +4,7 @@ import type { FooterProps, HeaderProps } from "@/lib/layouts/Graph";
 
 import { Layout } from "@/lib/layouts";
 import { Footer, Header } from "@/lib/layouts/Graph";
+import { Sidebar } from "@/lib/layouts/Graph/Sidebar";
 
 interface GraphLayoutProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ export const GraphLayout: React.FC<GraphLayoutProps> = ({
   <Layout
     footer={<Footer {...footerProps} />}
     headerActions={<Header {...headerProps} />}
+    sidebar={<Sidebar />}
   >
     {children}
   </Layout>
