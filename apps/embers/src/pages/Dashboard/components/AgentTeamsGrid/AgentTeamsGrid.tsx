@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 import classNames from "classnames";
 
 import { Text } from "@/lib/components/Text";
@@ -6,11 +9,17 @@ import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import styles from "./AgentTeamsGrid.module.scss";
 
 export function AgentTeamsGrid() {
+  const navigate = useNavigate();
+  const createAiTeam = useCallback(() => {
+    void navigate("/create-ai-team");
+  }, [navigate]);
+
   return (
     <>
       <div
         className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
+        onClick={createAiTeam}
       >
         <AgentTeamIcon
           data-agent-teams
