@@ -22,7 +22,7 @@
   &.create-box {
     flex-direction: column;
     gap: 8px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     cursor: pointer;
     border-style: dashed;
@@ -30,20 +30,11 @@
 
     &:hover {
       border-color: #B580FF;
+      background-color: var(--create-button-hover-bg);
       
       span {
         color: var(--text-color-primary);
       }
-    }
-
-    /* Dark mode specific hover background */
-    :root &:hover {
-      background-color: #48247A33;
-    }
-
-    /* Light mode hover background */
-    .light-theme &:hover {
-      background-color: color-mix(in srgb, #B580FF 20%, transparent);
     }
 
     .create-robot-icon {

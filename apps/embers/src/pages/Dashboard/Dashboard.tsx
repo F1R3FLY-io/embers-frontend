@@ -85,7 +85,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text bold color="primary" type="H4">
+              <Text color="primary" type="large">
                 Agents
               </Text>
             </AgentsButton>
@@ -102,7 +102,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text color="primary" type="H4">
+              <Text color="primary" type="large">
                 Agent Teams
               </Text>
             </AgentsButton>
@@ -111,12 +111,12 @@ export default function Dashboard() {
             <div className={styles["dashboard-divider"]} />
             <div className={styles["dashboard-buttons"]}>
               <IconButton icon={<DocumentationIcon />}>
-                <Text color="primary" type="H4">
+                <Text color="primary" type="large">
                   Documentation
                 </Text>
               </IconButton>
               <IconButton icon={<LogoutIcon />} onClick={logout}>
-                <Text color="primary" type="H4">
+                <Text color="primary" type="large">
                   Logout
                 </Text>
               </IconButton>
