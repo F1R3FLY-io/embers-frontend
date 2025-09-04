@@ -16,7 +16,6 @@
       height: 24px;
       fill: var(--text-color-secondary);
       stroke: var(--text-color-secondary);
-      transition: all 0.3s ease;
     }
 
     .search-input {
@@ -28,7 +27,6 @@
       background-color: var(--background-neutral-hover);
       border: none;
       border-radius: 6px;
-      transition: all 0.3s ease;
 
       &::placeholder {
         color: var(--text-color-secondary);

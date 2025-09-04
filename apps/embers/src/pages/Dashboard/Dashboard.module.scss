@@ -51,7 +51,6 @@
       background-color: var(--background-color);
       border: none;
       border-radius: 6px;
-      transition: background-color 0.3s ease;
     }
 
     .chevron {
@@ -62,7 +61,6 @@
       fill: var(--text-color-secondary);
       stroke: var(--text-color-secondary);
       transform: translateY(-50%);
-      transition: none;
     }
 
     &:hover {
@@ -90,11 +88,8 @@
     background: transparent;
     border: none;
     border-radius: 6px;
-    transition: all 0.3s ease;
-
     svg {
       fill: var(--text-color-secondary);
-      transition: all 0.3s ease;
     }
 
     &:hover {
@@ -158,13 +153,11 @@
 
   .content-header {
     margin-bottom: 24px;
-    transition: all 0.3s ease;
   }
 
   .tab-content {
     opacity: 1;
     transform: translateY(0);
-    transition: all 0.3s ease;
 
     &.entering {
       opacity: 0;
@@ -183,6 +176,5 @@
     grid-template-rows: repeat(3, minmax(150px, 1fr));
     grid-template-columns: repeat(4, minmax(200px, 1fr));
     gap: 16px;
-    transition: all 0.3s ease;
   }
 }

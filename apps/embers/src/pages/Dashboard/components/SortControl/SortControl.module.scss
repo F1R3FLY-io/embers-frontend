@@ -6,7 +6,6 @@
   .sort-icon {
     fill: var(--text-color-primary);
     stroke: var(--text-color-primary);
-    transition: all 0.3s ease;
   }
 
   .sort-dropdown {
@@ -24,7 +23,6 @@
       background-color: var(--background-color);
       border: none;
       border-radius: 6px;
-      transition: all 0.3s ease;
     }
 
     .chevron {
@@ -35,7 +33,6 @@
       fill: var(--text-color-secondary);
       stroke: var(--text-color-secondary);
       transform: translateY(-50%);
-      transition: none;
     }
 
     &:hover {

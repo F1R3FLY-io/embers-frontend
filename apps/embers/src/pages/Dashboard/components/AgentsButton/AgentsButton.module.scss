@@ -11,7 +11,6 @@
   background-color: transparent;
   border: none;
   border-radius: 8px;
-  transition: all 0.3s ease;
 
   /* Default styling for agent icon (RobotIcon) */
   svg[data-agent] {
@@ -92,7 +91,6 @@
 
   &.selected {
     background-color: var(--secondary-button-color) !important;
-    transition: all 0.3s ease;
 
     /* Default styling for agent icon (RobotIcon) */
     svg[data-agent] {

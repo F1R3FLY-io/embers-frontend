@@ -8,16 +8,13 @@
   background-color: transparent;
   border: none;
   border-radius: 8px;
-  transition: background-color 0.2s ease;
 
   svg {
     fill: var(--text-color-secondary);
-    transition: all 0.3s ease;
   }
 
   span {
     color: var(--text-color-secondary) !important;
-    transition: all 0.3s ease;
   }
 
   &:hover {
