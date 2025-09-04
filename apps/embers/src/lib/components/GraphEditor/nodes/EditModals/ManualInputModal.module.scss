@@ -1,0 +1,53 @@
+.nim-modal {
+  padding: 8px 6px 6px;
+}
+
+.nim-title {
+  margin: 6px 8px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.nim-field {
+  display: grid;
+  gap: 8px;
+  margin: 12px 8px;
+}
+
+.nim-label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.nim-input,
+.nim-select {
+  width: 100%;
+  padding: 10px 12px;
+  color: inherit;
+  outline: none;
+  background: rgb(255 255 255 / 6%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 10px;
+}
+
+.nim-error {
+  margin: 8px;
+  font-size: 13px;
+  color: #ff6b6b;
+}
+
+.nim-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  margin: 18px 8px 6px;
+}
+
+.nim-btn {
+  padding: 10px 16px;
+  cursor: pointer;
+  border: 0;
+  border-radius: 999px;
+}

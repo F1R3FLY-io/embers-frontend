@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { EditManualInputNodeValues } from "@/lib/components/GraphEditor/nodes/EditModals/ManualInputModal";
 import type { FooterProps } from "@/lib/layouts/Graph";
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
+import { ManualInputModal } from "@/lib/components/GraphEditor/nodes/EditModals/ManualInputModal";
 import { Spinner } from "@/lib/components/Spinner";
 import { GraphLayout } from "@/lib/layouts/Graph";
 import { useLayout } from "@/lib/providers/layout/useLayout";
+import { useModal } from "@/lib/providers/modal/useModal";
 import { useDeployDemo, useRunDemo } from "@/lib/queries";
 
 type Deployment = FooterProps["deployments"][number];
@@ -16,6 +19,7 @@ type Logs = FooterProps["logs"][number];
 export default function CreateAiTeamFlow() {
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
+  const { open } = useModal();
 
   useEffect(() => setHeaderTitle(t("aiTeam.newAiTeam")), [setHeaderTitle, t]);
 
@@ -65,18 +69,37 @@ export default function CreateAiTeamFlow() {
     [addDeploy, logError],
   );
 
-  return (
-    <GraphLayout
-      footerProps={{
-        deployments,
-        logs,
-      }}
-      headerProps={{
-        onDeploy: () =>
-          void deployDemo
+  const handleDeployClick = useCallback(() => {
+    const initial: EditManualInputNodeValues = {
+      deploymentContainer: "localhost",
+      inputType: "Text",
+      nodeLabel: "Manual Input",
+      outputPortName: "_user_health_data",
+    };
+
+    open(
+      <ManualInputModal
+        initial={initial}
+        onSave={(_vals) => {
+          deployDemo
             .mutateAsync("demoName")
             .then(onSuccessfulDeploy)
-            .catch(onFailedDeploy),
+            .catch(onFailedDeploy);
+        }}
+      />,
+      {
+        ariaLabel: "Edit Manual Input Node",
+        closeOnBlur: true,
+        maxWidth: 520,
+      },
+    );
+  }, [open, deployDemo, onSuccessfulDeploy, onFailedDeploy]);
+
+  return (
+    <GraphLayout
+      footerProps={{ deployments, logs }}
+      headerProps={{
+        onDeploy: handleDeployClick,
         onRun: () =>
           void runDemo
             .mutateAsync({
