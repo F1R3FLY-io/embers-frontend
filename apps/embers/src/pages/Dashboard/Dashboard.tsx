@@ -25,7 +25,6 @@ export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
     "agents",
   );
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const { setKey } = useWalletState();
@@ -41,7 +40,7 @@ export default function Dashboard() {
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
-          <Text bold color="primary" type="H3">
+          <Text bold color="primary" type="H4">
             F1R3FLY
           </Text>
         </div>
@@ -77,11 +76,7 @@ export default function Dashboard() {
               isSelected={selectedTab === "agents"}
               onClick={() => {
                 if (selectedTab !== "agents") {
-                  setIsTransitioning(true);
-                  setTimeout(() => {
-                    setSelectedTab("agents");
-                    setIsTransitioning(false);
-                  }, 150);
+                  setSelectedTab("agents");
                 }
               }}
             >
@@ -94,11 +89,7 @@ export default function Dashboard() {
               isSelected={selectedTab === "agent-teams"}
               onClick={() => {
                 if (selectedTab !== "agent-teams") {
-                  setIsTransitioning(true);
-                  setTimeout(() => {
-                    setSelectedTab("agent-teams");
-                    setIsTransitioning(false);
-                  }, 150);
+                  setSelectedTab("agent-teams");
                 }
               }}
             >
@@ -127,8 +118,7 @@ export default function Dashboard() {
           <div
             className={classNames(
               styles["content-header"],
-              styles["tab-content"],
-              isTransitioning ? styles.entering : styles.entered,
+              styles["tab-content"]
             )}
           >
             <AgentsTitle
@@ -147,8 +137,7 @@ export default function Dashboard() {
           <div
             className={classNames(
               styles["grid-container"],
-              styles["tab-content"],
-              isTransitioning ? styles.entering : styles.entered,
+              styles["tab-content"]
             )}
           >
             {selectedTab === "agents" ? (
