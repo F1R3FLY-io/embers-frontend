@@ -3,6 +3,11 @@ declare const classNames: {
   readonly "step-container": "step-container";
   readonly "step-content": "step-content";
   readonly circle: "circle";
+  readonly completed: "completed";
+  readonly current: "current";
+  readonly pending: "pending";
+  readonly checkmark: "checkmark";
+  readonly dot: "dot";
   readonly line: "line";
   readonly label: "label";
 };

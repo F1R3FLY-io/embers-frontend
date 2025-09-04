@@ -1,3 +1,7 @@
+import CheckIcon from "@/public/icons/check-icon.svg?react";
+import StepperCircleIcon from "@/public/icons/stepper-circle-icon.svg?react";
+import StepperLineIcon from "@/public/icons/stepper-line-icon.svg?react";
+
 import styles from "./Stepper.module.scss";
 
 type StepperProps = {
@@ -16,61 +20,26 @@ export default function Stepper({
       {Array.from({ length: steps }, (_, index) => (
         <div key={index} className={styles["step-container"]}>
           <div className={styles["step-content"]}>
-            <svg
-              className={styles.circle}
-              fill="none"
-              height="24"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
+            <div 
+              className={`${styles.circle} ${
+                index < currentStep 
+                  ? styles.completed 
+                  : index === currentStep - 1 
+                  ? styles.current 
+                  : styles.pending
+              }`}
             >
-              <circle
-                cx="12"
-                cy="12"
-                fill={
-                  index < currentStep ? "var(--icon-accent)" : "transparent"
-                }
-                r="10"
-                stroke="var(--icon-accent)"
-                strokeWidth="2"
-              />
+              <StepperCircleIcon />
               {index < currentStep && index < currentStep - 1 && (
-                <path
-                  d="M9 12l2 2 4-4"
-                  fill="none"
-                  stroke="var(--text-color-primary)"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                />
+                <CheckIcon className={styles.checkmark} />
               )}
               {index === currentStep - 1 && (
-                <circle
-                  cx="12"
-                  cy="12"
-                  fill="var(--text-color-primary)"
-                  r="4"
-                />
+                <div className={styles.dot} />
               )}
-            </svg>
+            </div>
             {index < steps - 1 && (
               <div className={styles.line}>
-                <svg
-                  fill="none"
-                  height="2"
-                  viewBox="0 0 60 2"
-                  width="60"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <line
-                    stroke="var(--icon-accent)"
-                    strokeWidth="2"
-                    x1="0"
-                    x2="60"
-                    y1="1"
-                    y2="1"
-                  />
-                </svg>
+                <StepperLineIcon />
               </div>
             )}
           </div>
