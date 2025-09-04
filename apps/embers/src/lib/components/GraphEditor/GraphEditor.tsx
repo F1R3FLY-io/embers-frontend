@@ -30,7 +30,6 @@ export type Node = {
 
 type Edge = REdge;
 type NodeData<T extends keyof NodeTypes> = Extract<Node, { type: T }>["data"];
-type DefaultNodeKeys = Exclude<keyof NodeTypes, "deploy-container">;
 
 function createNodeChange<T extends keyof NodeTypes>(
   type: T,
@@ -173,7 +172,7 @@ export function GraphEditor() {
           event.preventDefault();
           const type = event.dataTransfer.getData(
             "application/reactflow",
-          ) as DefaultNodeKeys;
+          ) as NodeKind;
 
           if (type in NODE_REGISTRY) {
             const position = screenToFlowPosition({
@@ -181,8 +180,7 @@ export function GraphEditor() {
               y: event.clientY,
             });
 
-            const data = NODE_REGISTRY[type as NodeKind]
-              .defaultData as NodeData<typeof type>;
+            const data = NODE_REGISTRY[type].defaultData;
             onNodesChange(createNodeChange(type, position, data));
           }
         }}
