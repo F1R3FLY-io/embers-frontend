@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 import classNames from "classnames";
 
 import { Text } from "@/lib/components/Text";
@@ -11,11 +14,17 @@ interface AgentsGridProps {
 }
 
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
+  const navigate = useNavigate();
+  const createAiAgent = useCallback(() => {
+    void navigate("/create-ai-agent");
+  }, [navigate]);
+
   return (
     <>
       <div
         className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
+        onClick={createAiAgent}
       >
         <AgentIcon className={styles["create-robot-icon"]} />
         <Text color="secondary" type="large">

@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
@@ -29,10 +28,6 @@ export default function Dashboard() {
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const { setKey } = useWalletState();
   const logout = useCallback(() => setKey(), [setKey]);
-  const navigate = useNavigate();
-  const createAiAgent = useCallback(() => {
-    void navigate("/create-ai-agent");
-  }, [navigate]);
 
   const { data, isSuccess } = useAgents();
 
