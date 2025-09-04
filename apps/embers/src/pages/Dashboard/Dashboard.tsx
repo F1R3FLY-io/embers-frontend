@@ -80,7 +80,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text color="primary" type="large">
+              <Text color="secondary" type="large">
                 Agents
               </Text>
             </AgentsButton>
@@ -93,7 +93,7 @@ export default function Dashboard() {
                 }
               }}
             >
-              <Text color="primary" type="large">
+              <Text color="secondary" type="large">
                 Agent Teams
               </Text>
             </AgentsButton>

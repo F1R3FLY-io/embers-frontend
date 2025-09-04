@@ -14,7 +14,7 @@
   }
 
   span {
-    color: var(--text-color-secondary) !important;
+    color: var(--text-color-secondary);
   }
 
   &:hover {
@@ -25,7 +25,7 @@
     }
 
     span {
-      color: var(--text-color-primary) !important;
+      color: var(--text-color-primary);
     }
   }
 }
