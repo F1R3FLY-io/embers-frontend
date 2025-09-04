@@ -28,7 +28,7 @@ export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
 }[keyof NodeTypes];
 
-type Edge = REdge;
+export type Edge = REdge;
 type NodeData<T extends keyof NodeTypes> = Extract<Node, { type: T }>["data"];
 
 function createNodeChange<T extends keyof NodeTypes>(
