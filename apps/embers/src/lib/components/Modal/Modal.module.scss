@@ -1,0 +1,63 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-color: var(--background-neutral-overlay, rgb(0 0 0 / 80%));
+  animation: fade 0.12s ease-out;
+}
+
+.dialog {
+  position: relative;
+  width: 100%;
+  color: var(--text-color-primary);
+  background: var(--background-neutral-surface-primary);
+  border: 1px solid var(--background-neutral-surface-secondary);
+  border-radius: 10px;
+  animation: pop 0.14s ease-out;
+}
+
+.content {
+  padding: 20px 24px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  padding: 4px 8px;
+  font-size: 24px;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+}
+
+.close:hover {
+  background: rgb(255 255 255 / 6%);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
