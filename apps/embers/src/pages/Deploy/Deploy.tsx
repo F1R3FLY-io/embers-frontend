@@ -1,5 +1,4 @@
 import { Text } from "@/lib/components/Text";
-import ChevronDownIcon from "@/public/icons/chevron-down-icon.svg?react";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "./components/Stepper";
