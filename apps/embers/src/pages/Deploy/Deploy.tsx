@@ -140,13 +140,17 @@ export default function Deploy({
             </div>
           </div>
           <div className={styles["button-container"]}>
-            <button className={styles["back-button"]}>{t("deploy.back")}</button>
+            <button className={styles["back-button"]}>
+              {t("deploy.back")}
+            </button>
             <div className={styles["button-group"]}>
               <button className={styles["draft-button"]}>
                 <DraftIcon />
                 Save as Draft
               </button>
-              <button className={styles["deploy-button"]}>{t("deploy.deploy")}</button>
+              <button className={styles["deploy-button"]}>
+                {t("deploy.deploy")}
+              </button>
             </div>
           </div>
           <div className={styles["footer-container"]}>

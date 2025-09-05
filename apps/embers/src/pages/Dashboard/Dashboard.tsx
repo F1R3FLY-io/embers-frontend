@@ -103,7 +103,9 @@ export default function Dashboard() {
           >
             <AgentsTitle
               getTitle={() =>
-                selectedTab === "agents" ? t("agents.agents") : t("agents.agentTeams")
+                selectedTab === "agents"
+                  ? t("agents.agents")
+                  : t("agents.agentTeams")
               }
             />
             <ControlsRow
