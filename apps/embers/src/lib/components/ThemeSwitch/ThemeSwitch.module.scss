@@ -33,6 +33,49 @@
   }
 }
 
+.icon {
+  position: absolute;
+  top: -4px;
+  left: -2px;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  fill: white;
+  transition:
+    all 0.6s ease,
+    opacity 0.6s ease;
+  animation: fade-in 0.6s ease forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in-translated {
+  from {
+    opacity: 0;
+    transform: translateX(20px) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(20px) scale(1);
+  }
+}
+
 input:checked + .slider::before {
   transform: translateX(20px);
+}
+
+input:checked + .slider .icon {
+  animation: fade-in-translated 0.8s ease forwards;
 }

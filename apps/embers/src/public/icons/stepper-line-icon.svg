@@ -1,0 +1,9 @@
+<svg
+  fill="none"
+  height="2"
+  viewBox="0 0 60 2"
+  width="60"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <line stroke="currentColor" strokeWidth="2" x1="0" x2="60" y1="1" y2="1" />
+</svg>

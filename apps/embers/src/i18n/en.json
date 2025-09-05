@@ -3,13 +3,13 @@
   "selectLanguage": "Select language",
   "f1r3fly": "F1R3FLY",
   "login": {
-    "getStarted": "Get started F1R3SKY",
-    "signInWithWallet": "Sign In with F1R3SKY Wallet",
+    "getStarted": "Get started with F1R3SKY",
+    "signInWithWallet": "Sign in with F1R3SKY Wallet",
     "createWallet": "Create Wallet",
     "agreeTerms": "By using F1R3SKY, you agree to the",
     "termsPrivacy": "terms and privacy policy",
-    "enterPrivateKey": "Please enter your private key or upload a key file to Sign In.",
-    "useSecureCredentials": "Make sure you’re using the correct and secure credentials.",
+    "enterPrivateKey": "Please enter your private key or upload a key file to sign in.",
+    "useSecureCredentials": "Make sure you're using the correct credentials.",
     "signIn": "Sign In",
     "dontHaveWallet": "Don’t have F1R3SKY Wallet?",
     "createOne": "Create one"
@@ -20,7 +20,9 @@
   "agents": {
     "agents": "Agents",
     "createNewAgent": "Create new Agent",
-    "agentWithName": "Agent {{name}}"
+    "agentWithName": "Agent {{name}}",
+    "agentTeams": "Agent Teams",
+    "createNewAgentTeam": "Create new Agent Team"
   },
   "dashboard": {
     "documentation": "Documentation",
@@ -28,5 +30,28 @@
   },
   "aiAgent": {
     "bioAgent": "BioMatch Agent"
+  },
+  "deploy": {
+    "deployAgent": "Deploy {{agentName}} Agent",
+    "reviewDetails": "Review the details and confirm where and how your agent will run.",
+    "agentDetails": "Agent Details",
+    "agentAddress": "Agent address",
+    "blockchainShard": "Blockchain shard",
+    "agentName": "Agent name",
+    "agentDescription": "Agent description",
+    "welcomeInterface": "Welcome Interface",
+    "welcomeMessage": "Welcome message",
+    "enterWelcomeMessage": "Enter welcome message",
+    "inputPrompt": "Input prompt",
+    "enterInputPrompt": "Enter input prompt",
+    "versionAndNotes": "Version & Notes",
+    "enterDeploymentNotes": "Enter deployment notes or comments",
+    "version": "Version",
+    "notes": "Notes",
+    "deploy": "Deploy",
+    "saveAsDraft": "Save as Draft",
+    "back": "Back",
+    "havingTrouble": "Having trouble?",
+    "contactSupport": "Contact support"
   }
 }

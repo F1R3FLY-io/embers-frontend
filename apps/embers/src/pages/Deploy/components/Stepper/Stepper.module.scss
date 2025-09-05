@@ -1,0 +1,94 @@
+.stepper {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.step-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.step-content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.circle {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon-accent);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.completed {
+    color: var(--icon-accent);
+  }
+
+  &.current {
+    color: var(--icon-accent);
+
+    svg circle {
+      fill: transparent;
+    }
+  }
+
+  &.pending {
+    color: var(--icon-accent);
+
+    svg circle {
+      fill: transparent;
+    }
+  }
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  color: white;
+  fill: white;
+  stroke: white;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.line {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: var(--icon-accent);
+
+  svg {
+    width: 60px;
+    height: 2px;
+  }
+}
+
+.label {
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  color: var(--text-color-secondary);
+  text-align: left;
+  white-space: nowrap;
+}
