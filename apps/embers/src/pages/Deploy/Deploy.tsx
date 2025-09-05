@@ -4,6 +4,8 @@ import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "./components/Stepper";
 import styles from "./Deploy.module.scss";
+import { t } from "i18next";
+import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 
 type DeployProps = {
   agentAddress?: string;
@@ -35,22 +37,22 @@ export default function Deploy({
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" fontSize={32} type="H2">
-            Deploy {agentName} Agent
+            {t("deploy.deployAgent", { agentName })}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" fontSize={16} type="H4">
-              Review the details and confirm where and how your agent will run.
+              {t("deploy.reviewDetails")}
             </Text>
           </div>
         </div>
         <div className={styles["details-container"]}>
           <Text bold color="primary" fontSize={20} type="H3">
-            Agent Details
+            {t("deploy.agentDetails")}
           </Text>
           <div className={styles["detail-row"]}>
             <div className={styles["label-container"]}>
               <Text color="secondary" fontSize={12}>
-                Agent address
+                {t("deploy.agentAddress")}
               </Text>
             </div>
             <Text color="primary" fontSize={12}>
@@ -60,7 +62,7 @@ export default function Deploy({
           <div className={styles["detail-row"]}>
             <div className={styles["label-container"]}>
               <Text color="secondary" fontSize={12}>
-                Blockchain shard
+                {t("deploy.blockchainShard")}
               </Text>
             </div>
             <Text color="primary" fontSize={12}>
@@ -70,7 +72,7 @@ export default function Deploy({
           <div className={styles.divider} />
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
-              Agent name
+              {t("deploy.agentName")}
             </Text>
             <input
               className={styles["form-input"]}
@@ -80,7 +82,7 @@ export default function Deploy({
           </div>
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
-              Agent description
+              {t("deploy.agentDescription")}
             </Text>
             <textarea
               className={styles["form-textarea"]}
@@ -89,16 +91,16 @@ export default function Deploy({
           </div>
           <div className={styles["form-section"]}>
             <Text bold color="primary" fontSize={20} type="H3">
-              Welcome Interface
+              {t("deploy.welcomeInterface")}
             </Text>
             <div className={styles["form-fields"]}>
               <div>
                 <Text color="secondary" fontSize={12}>
-                  Welcome message
+                  {t("deploy.welcomeMessage")}
                 </Text>
                 <textarea
                   className={styles["form-textarea"]}
-                  placeholder="Enter welcome message"
+                  placeholder={t("deploy.enterWelcomeMessage")}
                 />
               </div>
               <div>
@@ -107,19 +109,19 @@ export default function Deploy({
                 </Text>
                 <textarea
                   className={styles["form-textarea"]}
-                  placeholder="Enter input prompt"
+                  placeholder={t("deploy.enterInputPrompt")}
                 />
               </div>
             </div>
           </div>
           <div className={styles["form-section"]}>
             <Text bold color="primary" fontSize={20} type="H3">
-              Version & Notes
+              {t("deploy.versionAndNotes")}
             </Text>
             <div className={styles["form-fields"]}>
               <div>
                 <Text color="secondary" fontSize={12}>
-                  Version
+                  {t("deploy.version")}
                 </Text>
                 <input
                   className={styles["form-input"]}
@@ -129,41 +131,33 @@ export default function Deploy({
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
-                  Notes
+                  {t("deploy.notes")}
                 </Text>
                 <textarea
                   className={styles["form-textarea"]}
-                  placeholder="Enter deployment notes or comments"
+                  placeholder={t("deploy.enterDeploymentNotes")}
                 />
               </div>
             </div>
           </div>
           <div className={styles["button-container"]}>
-            <button className={styles["back-button"]}>Back</button>
+            <button className={styles["back-button"]}>{t("deploy.back")}</button>
             <div className={styles["button-group"]}>
               <button className={styles["draft-button"]}>
                 <DraftIcon />
                 Save as Draft
               </button>
-              <button className={styles["deploy-button"]}>Deploy</button>
+              <button className={styles["deploy-button"]}>{t("deploy.deploy")}</button>
             </div>
           </div>
           <div className={styles["footer-container"]}>
-            <div className={styles["language-container"]}>
-              <select className={styles["language-select"]}>
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-              </select>
-              <ChevronDownIcon className={styles["language-icon"]} />
-            </div>
+            <LanguageSelect />
             <div className={styles["support-container"]}>
               <Text color="secondary" fontSize={14}>
-                Having trouble?
+                {t("deploy.havingTrouble")}
               </Text>
               <a className={styles["support-link"]} href="#">
-                Contact support
+                {t("deploy.contactSupport")}
               </a>
             </div>
           </div>

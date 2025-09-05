@@ -6,6 +6,7 @@ import { Text } from "@/lib/components/Text";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 
 import styles from "./AgentsGrid.module.scss";
+import { t } from "i18next";
 
 interface AgentsGridProps {
   agents: Array<{ id: string; name: string }>;
@@ -27,7 +28,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
       >
         <AgentIcon className={styles["create-robot-icon"]} />
         <Text color="secondary" type="large">
-          Create new Agent
+          {t("agents.createNewAgent")}
         </Text>
       </div>
       {isSuccess &&

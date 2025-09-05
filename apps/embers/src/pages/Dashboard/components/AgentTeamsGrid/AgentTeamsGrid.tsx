@@ -6,6 +6,7 @@ import { Text } from "@/lib/components/Text";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 
 import styles from "./AgentTeamsGrid.module.scss";
+import { t } from "i18next";
 
 export function AgentTeamsGrid() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export function AgentTeamsGrid() {
           className={styles["create-robot-icon"]}
         />
         <Text color="secondary" type="large">
-          Create new Agent Team
+          {t("agents.createNewAgentTeam")}
         </Text>
       </div>
       {Array.from({ length: 0 }, (_, index) => (

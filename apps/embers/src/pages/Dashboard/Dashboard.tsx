@@ -7,7 +7,6 @@ import { useWalletState } from "@/lib/providers/wallet/useApi";
 import { useAgents } from "@/lib/queries";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
-import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
@@ -19,6 +18,8 @@ import { AgentTeamsGrid } from "./components/AgentTeamsGrid";
 import { ControlsRow } from "./components/ControlsRow";
 import { IconButton } from "./components/IconButton";
 import styles from "./Dashboard.module.scss";
+import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
+import { t } from "i18next";
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
@@ -36,35 +37,11 @@ export default function Dashboard() {
       <div className={styles["header-bar"]}>
         <div className={styles["app-title"]}>
           <Text bold color="primary" type="H4">
-            F1R3FLY
+            {t("f1r3fly")}
           </Text>
         </div>
         <div className={styles["header-right"]}>
-          <div className={styles["language-dropdown"]}>
-            <select className={styles.dropdown}>
-              <option value="en">
-                <Text color="secondary" type="normal">
-                  English
-                </Text>
-              </option>
-              <option value="es">
-                <Text color="secondary" type="normal">
-                  Español
-                </Text>
-              </option>
-              <option value="fr">
-                <Text color="secondary" type="normal">
-                  Français
-                </Text>
-              </option>
-              <option value="de">
-                <Text color="secondary" type="normal">
-                  Deutsch
-                </Text>
-              </option>
-            </select>
-            <ChevronIcon className={styles.chevron} />
-          </div>
+          <LanguageSelect />
           <ThemeSwitch />
           <button className={styles["settings-icon"]}>
             <SettingsIcon />
@@ -84,7 +61,7 @@ export default function Dashboard() {
               }}
             >
               <Text color="secondary" type="large">
-                Agents
+                {t("agents.agents")}
               </Text>
             </AgentsButton>
             <AgentsButton
@@ -97,7 +74,7 @@ export default function Dashboard() {
               }}
             >
               <Text color="secondary" type="large">
-                Agent Teams
+                {t("agents.agentTeams")}
               </Text>
             </AgentsButton>
           </div>
@@ -106,12 +83,12 @@ export default function Dashboard() {
             <div className={styles["dashboard-buttons"]}>
               <IconButton icon={<DocumentationIcon />}>
                 <Text color="primary" type="large">
-                  Documentation
+                  {t("dashboard.documentation")}
                 </Text>
               </IconButton>
               <IconButton icon={<LogoutIcon />} onClick={logout}>
                 <Text color="primary" type="large">
-                  Logout
+                  {t("dashboard.logout")}
                 </Text>
               </IconButton>
             </div>
@@ -126,7 +103,7 @@ export default function Dashboard() {
           >
             <AgentsTitle
               getTitle={() =>
-                selectedTab === "agents" ? "Agents" : "Agent Teams"
+                selectedTab === "agents" ? t("agents.agents") : t("agents.agentTeams")
               }
             />
             <ControlsRow
