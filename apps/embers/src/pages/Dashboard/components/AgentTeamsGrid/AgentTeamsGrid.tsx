@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { t } from "i18next";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +7,6 @@ import { Text } from "@/lib/components/Text";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 
 import styles from "./AgentTeamsGrid.module.scss";
-import { t } from "i18next";
 
 export function AgentTeamsGrid() {
   const navigate = useNavigate();

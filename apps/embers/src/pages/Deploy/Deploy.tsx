@@ -1,10 +1,11 @@
+import { t } from "i18next";
+
+import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "./components/Stepper";
 import styles from "./Deploy.module.scss";
-import { t } from "i18next";
-import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 
 type DeployProps = {
   agentAddress?: string;

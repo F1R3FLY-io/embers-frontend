@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { t } from "i18next";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +7,6 @@ import { Text } from "@/lib/components/Text";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 
 import styles from "./AgentsGrid.module.scss";
-import { t } from "i18next";
 
 interface AgentsGridProps {
   agents: Array<{ id: string; name: string }>;

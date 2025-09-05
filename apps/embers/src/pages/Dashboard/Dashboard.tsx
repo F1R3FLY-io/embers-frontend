@@ -1,6 +1,8 @@
 import classNames from "classnames";
+import { t } from "i18next";
 import { useCallback, useState } from "react";
 
+import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
@@ -18,8 +20,6 @@ import { AgentTeamsGrid } from "./components/AgentTeamsGrid";
 import { ControlsRow } from "./components/ControlsRow";
 import { IconButton } from "./components/IconButton";
 import styles from "./Dashboard.module.scss";
-import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
-import { t } from "i18next";
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
