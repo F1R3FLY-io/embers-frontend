@@ -38,10 +38,10 @@ function buildSubgraphs(groups: ContainerGroup[], edges: Edge[]): Graph {
   const [head, ...tail] = groups;
 
   return {
-    graph_1: buildGraph(head.nodes, edges),
-    graph_2: buildSubgraphs(tail, edges),
+    _var: head.container.id,
+    graph1: buildGraph(head.nodes, edges),
+    graph2: buildSubgraphs(tail, edges),
     type: "Subgraph",
-    var: head.container.id,
   };
 }
 
@@ -65,8 +65,8 @@ function buildEdges(groups: NodeGroup[]): Graph {
   const [head, ...tail] = groups;
 
   return {
-    graph_1: buildEdge(head.node, head.edges),
-    graph_2: buildEdges(tail),
+    graph1: buildEdge(head.node, head.edges),
+    graph2: buildEdges(tail),
     type: "Tensor",
   };
 }
@@ -88,9 +88,9 @@ function buildEdge(node: Node, edges: Edge[]): Graph {
   const [edge, ...tail] = edges;
 
   return {
-    binding_1: {
+    binding1: {
+      _var: `var_${node.id}_${tail.length}`,
       graph: buildEdge(node, tail),
-      var: `var_${node.id}_${tail.length}`,
       vertex: {
         name: {
           type: "VVar",
@@ -98,13 +98,13 @@ function buildEdge(node: Node, edges: Edge[]): Graph {
         },
       },
     },
-    binding_2: {
+    binding2: {
+      _var: `var_${edge.source}_${edge.target}`,
       graph: {
+        _var: `var_${edge.target}_0`,
         graph: NIL,
         type: "Var",
-        var: `var_${edge.target}_0`,
       },
-      var: `var_${edge.source}_${edge.target}`,
       vertex: {
         name: {
           type: "VVar",

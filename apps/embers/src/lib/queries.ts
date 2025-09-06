@@ -102,10 +102,13 @@ export function useRunDemo() {
   const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({
-    mutationFn: async (props: { name: string; prompt: string }) =>
+    mutationFn: async (props: {
+      name: string;
+      prompt: string;
+    }): Promise<unknown> =>
       client.apiAiAgentsTeamsRunDemoPost({
         runDemoReq: props,
-      }) as Promise<unknown>,
+      }),
   });
 }
 
