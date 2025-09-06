@@ -119,6 +119,35 @@ embers-frontend/
 2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/`
 3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
 
+### Local npm Package Development & Testing
+
+This branch demonstrates **local npm package build and consumption** without publishing to any registry:
+
+#### How It Works
+- **Workspace Linking**: Frontend app uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"`
+- **Local Build Process**: Client SDK builds to `packages/client/dist/` with full TypeScript declarations
+- **Direct Import**: Frontend imports SDK as if it were from npm, but uses local build
+- **Development Flow**: `pnpm dev` automatically builds SDK first, then starts frontend
+
+#### Key Benefits
+- ✅ **No Registry Needed**: Test npm package integration without publishing
+- ✅ **Real Distribution**: Tests actual bundled output, not source files
+- ✅ **Type Safety**: Full TypeScript support with generated `.d.ts` files
+- ✅ **Multiple Formats**: Generates ES, CJS, and UMD bundles
+- ✅ **True npm Experience**: Frontend consumes SDK exactly like a published package
+
+#### Testing Local Package Changes
+```bash
+# Make changes to client SDK source
+edit packages/client/src/functions.ts
+
+# Rebuild SDK (generates new dist/ files)
+pnpm --filter @f1r3fly-io/embers-client-sdk build
+
+# Frontend automatically picks up changes
+pnpm --filter @f1r3fly-io/embers-frontend dev
+```
+
 ### Workspace Management
 
 #### Installing Dependencies
@@ -133,7 +162,7 @@ pnpm --filter @f1r3fly-io/embers-client-sdk add zod
 
 #### Development Scripts
 ```bash
-# Start frontend development server
+# Start frontend development server (builds SDK first)
 pnpm dev
 
 # Build all packages in dependency order  
