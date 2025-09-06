@@ -3,18 +3,11 @@ import { globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-import baseConfig from "../../eslint.config.js";
+import baseConfig from "../../eslint.config.mts";
 
 export default tseslint.config(
   baseConfig,
   globalIgnores(["coverage", "docs", "mocks"]),
-  {
-    settings: {
-      react: {
-        version: "18.0",
-      },
-    },
-  },
   {
     files: ["src/api-client/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
