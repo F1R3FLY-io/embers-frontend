@@ -11,14 +11,18 @@ on:
       - ".github/workflows/embers.yaml"
       - "apps/**"
       - "packages/client/**"
-      - "*"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".husky/**"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/**"
       - "packages/client/**"
-      - "*"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".husky/**"
       - "!**/*.md"
 
 jobs:
