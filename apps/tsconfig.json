@@ -16,9 +16,7 @@
   "include": [
     "src/**/*",
     "vite.config.ts",
-    "index.html",
-    "eslint.config.mts",
-    "eslint-base.config.mts"
+    "index.html"
   ],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "eslint.config.mts", "eslint-base.config.mts"]
 }

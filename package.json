@@ -11,6 +11,7 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
     "ci:lint": "pnpm -r ci:lint",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",
     "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'",

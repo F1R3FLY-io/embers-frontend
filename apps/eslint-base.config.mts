@@ -12,7 +12,7 @@ import tseslint from "typescript-eslint";
 export const JS_FILES = "**/*.{js,jsx}";
 export const TS_FILES = "**/*.{ts,tsx}";
 
-export default tseslint.config(
+const config = tseslint.config(
   globalIgnores(["dist", "node_modules"]),
   {
     extends: [
@@ -302,3 +302,5 @@ export default tseslint.config(
     },
   },
 );
+
+export default config;

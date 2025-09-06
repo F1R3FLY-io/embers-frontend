@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint";
 
 import baseConfig from "./eslint-base.config.mts";
 
-export default tseslint.config(
+const config = tseslint.config(
   baseConfig,
   globalIgnores([
     "dist/**",
@@ -11,3 +11,5 @@ export default tseslint.config(
     "**/*.module.scss.d.ts",
   ]),
 );
+
+export default config;
