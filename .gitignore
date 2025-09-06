@@ -34,3 +34,5 @@ CLAUDE.md
 tmp/
 coverage/
 .env
+
+/apps/embers/public/*
