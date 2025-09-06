@@ -1,9 +1,15 @@
 import { globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-import baseConfig from "../eslint.config.mts";
+import baseConfig from "./eslint-base.config.mts";
 
-export default tseslint.config(
+const config = tseslint.config(
   baseConfig,
-  globalIgnores(["**/*.module.scss.d.ts"]),
+  globalIgnores([
+    "dist/**",
+    "node_modules/**",
+    "**/*.module.scss.d.ts",
+  ]),
 );
+
+export default config;

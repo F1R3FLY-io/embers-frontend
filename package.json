@@ -7,11 +7,12 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "pnpm --filter @f1r3fly-io/embers-frontend dev",
+    "dev": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/embers-frontend dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "lint": "eslint --fix '*'",
-    "ci:lint": "eslint '*'",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "ci:lint": "pnpm -r ci:lint",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",
     "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'",
     "prepare": "husky"

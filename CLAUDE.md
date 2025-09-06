@@ -13,7 +13,7 @@
 - If the user does not provide enough information with their prompts, ask the user to clarify before executing the task. This should be included in all tasks including writing unit tests, scaffolding the project, as well as implementation of individual modules. In general, follow a test driven development approach whereby unit tests are developed in parallel with the individual components, and features.
 
 ## Commands
-- Development: `cd apps/embers && pnpm dev`
+- Development: `pnpm dev` (automatically builds client SDK first, then starts frontend)
 - Build: `pnpm build`
 - Test: `pnpm test`
 - Lint: `pnpm lint` (ESLint with TypeScript rules)

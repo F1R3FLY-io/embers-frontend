@@ -8,7 +8,7 @@ Blockchain-based AI agent deployment and management platform with integrated wal
 # Install dependencies for all workspace packages
 pnpm install
 
-# Start development server (frontend app)
+# Start development server (automatically builds client SDK first, then runs frontend app)
 pnpm dev
 
 # Build all packages
@@ -30,6 +30,7 @@ This project uses **pnpm workspaces** for efficient monorepo management:
 - **Dependency sharing**: Common packages shared between workspaces  
 - **Local package linking**: Frontend imports client SDK directly
 - **Efficient storage**: Hard linking saves disk space
+- **Single PR & CI/CD**: `git push` will run the same checks locally as on the remote for a Pull Request
 - **Consistent versions**: Shared dependencies use same versions
 
 ### Workspace Commands
