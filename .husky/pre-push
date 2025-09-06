@@ -1,3 +1,12 @@
+#!/bin/sh
+# Check if we're pushing to a new branch (no upstream)
+if ! git rev-parse --abbrev-ref @{upstream} >/dev/null 2>&1; then
+  echo "Pushing branch to remote..."
+elif ! git status | grep -q "Your branch is ahead"; then
+  echo "Error: No changes to push or no committed changes. Your branch is not ahead of the remote."
+  exit 1
+fi
+
 pnpm run format:code
 pnpm --filter @f1r3fly-io/embers-frontend run format:code
 pnpm --filter @f1r3fly-io/embers-client-sdk run format:code

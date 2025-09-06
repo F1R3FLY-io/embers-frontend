@@ -1,8 +1,23 @@
-import type { CreateAgentsTeamReq, HTTPHeaders, SignedContract } from "../api-client";
+import type {
+  CreateAgentsTeamReq,
+  HTTPHeaders,
+  SignedContract,
+} from "../api-client";
+import type { Graph } from "../api-client/models/Graph";
+
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
 import { deployContract } from "../functions";
 import type { Address } from "./Address";
 import type { PrivateKey } from "./PrivateKey";
+
+// Temporarily disabled graph conversion until graphl-parser is available
+// let graphModule: InitOutput | null = null;
+// async function getGraphModule() {
+//   if (graphModule === null) {
+//     graphModule = await init();
+//   }
+//   return { astToGraphl, parseToAst };
+// }
 
 export type AgentsTeamsConfig = {
   basePath: string;
@@ -27,10 +42,16 @@ export class AgentsTeamsApiSdk {
     this.client = new AIAgentsTeamsApi(configuration);
   }
 
-  public async createAgentsTeam(agentsTeamReq: CreateAgentsTeamReq) {
+  public async createAgentsTeam(
+    agentsTeamReq: Omit<CreateAgentsTeamReq, "graph"> & { graph?: Graph },
+  ) {
+    // Temporarily pass graph directly as string
+    const graphCode = agentsTeamReq.graph
+      ? JSON.stringify(agentsTeamReq.graph)
+      : undefined;
     const prepareContract = async () =>
       this.client.apiAiAgentsTeamsCreatePreparePost({
-        createAgentsTeamReq: agentsTeamReq,
+        createAgentsTeamReq: { ...agentsTeamReq, graph: graphCode },
       });
 
     const sendContract = async (contract: Uint8Array, sig: Uint8Array, sigAlgorithm: string) => {
@@ -57,11 +78,18 @@ export class AgentsTeamsApiSdk {
   }
 
   public async getAgentsTeamVersion(agentsTeamId: string, version: string) {
-    return this.client.apiAiAgentsTeamsAddressIdVersionsVersionGet({
-      address: this.address.value,
-      id: agentsTeamId,
-      version,
-    });
+    return this.client
+      .apiAiAgentsTeamsAddressIdVersionsVersionGet({
+        address: this.address.value,
+        id: agentsTeamId,
+        version,
+      })
+      .then(({ graph, ...rest }) => {
+        // Temporarily return graph as-is
+        const graphAst =
+          graph !== undefined ? (JSON.parse(graph) as Graph) : undefined;
+        return { ...rest, graph: graphAst };
+      });
   }
 
   public async getAgentsTeamVersions(agentsTeamId: string) {
@@ -71,10 +99,17 @@ export class AgentsTeamsApiSdk {
     });
   }
 
-  public async saveAgentsTeamVersion(agentsTeamId: string, agentsTeamReq: CreateAgentsTeamReq) {
+  public async saveAgentsTeamVersion(
+    agentsTeamId: string,
+    agentsTeamReq: Omit<CreateAgentsTeamReq, "graph"> & { graph?: Graph },
+  ) {
+    // Temporarily pass graph directly as string
+    const graphCode = agentsTeamReq.graph
+      ? JSON.stringify(agentsTeamReq.graph)
+      : undefined;
     const generateContract = async () =>
       this.client.apiAiAgentsTeamsIdSavePreparePost({
-        createAgentsTeamReq: agentsTeamReq,
+        createAgentsTeamReq: { ...agentsTeamReq, graph: graphCode },
         id: agentsTeamId,
       });
 

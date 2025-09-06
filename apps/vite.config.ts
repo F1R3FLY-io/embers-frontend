@@ -8,6 +8,22 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig({
   build: {
     outDir: "dist",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          reactflow: ["@xyflow/react"],
+          router: ["react-router-dom"],
+          vendor: ["react", "react-dom"],
+        },
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
   },
   plugins: [
     react(),

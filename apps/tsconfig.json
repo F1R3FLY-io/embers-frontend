@@ -13,6 +13,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["src/**/*", "vite.config.ts", "index.html", "eslint.config.js"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*", "vite.config.ts", "index.html"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "eslint.config.mts",
+    "eslint-base.config.mts"
+  ]
 }

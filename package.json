@@ -7,10 +7,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "pnpm --filter @f1r3fly-io/embers-frontend dev",
+    "dev": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/embers-frontend dev",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "lint": "biome check --write .",
+    "typecheck": "pnpm -r typecheck",
     "ci:lint": "biome check .",
     "format:code": "biome format --write .",
     "ci:check:code": "biome format .",
