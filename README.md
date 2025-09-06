@@ -12,72 +12,117 @@ pnpm install
 cd apps/embers
 pnpm dev
 
-# Build project
+# Build project  
+cd apps/embers
 pnpm build
 
-# Run tests
-pnpm test
+# Run lint checks
+pnpm ci:lint
 ```
 
-## 📚 Documentation
+## 📦 Local npm Package Development & Testing
 
-Our project follows a documentation-first approach designed for both human contributors and LLM-assisted development:
+This branch demonstrates **local npm package build and consumption** using pnpm workspaces without publishing to any registry:
 
-### Core Documentation
+### How It Works
+- **Workspace Configuration**: Uses `apps/*` and `packages/*` in `pnpm-workspace.yaml`
+- **Local Dependency**: Frontend app uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"`
+- **Local Build Process**: Client SDK builds to `packages/client/dist/` with TypeScript declarations
+- **Direct Import**: Frontend imports SDK as if it were from npm, but uses local build
 
-- **[📋 Requirements](docs/requirements/)** - User stories, business requirements, and acceptance criteria
-- **[📐 Specifications](docs/specifications/)** - Technical specifications and design documents
-- **[🏗️ Architecture](docs/architecture/)** - System design and architectural decisions
-  - [Decision Records](docs/architecture/decisions/) - ADRs documenting important architectural choices
-  - [System Diagrams](docs/architecture/diagrams/) - Visual representations of system components
-  - [Design Patterns](docs/architecture/patterns/) - Established patterns and conventions
+### Key Benefits
+- ✅ **No Registry Needed**: Test npm package integration without publishing
+- ✅ **Real Distribution**: Tests actual bundled output, not source files
+- ✅ **Type Safety**: Full TypeScript support with generated `.d.ts` files
+- ✅ **Multiple Formats**: Generates ES, CJS, and UMD bundles
+- ✅ **True npm Experience**: Frontend consumes SDK exactly like a published package
 
-### For Contributors
+### Testing Local Package Changes
+```bash
+# Make changes to client SDK source
+edit packages/client/src/functions.ts
 
-- **[🤝 Contributing Guide](CONTRIBUTING.md)** - Complete workflow for LLM-enhanced development
-- **[🔧 Development Setup](docs/development-setup.md)** - Environment configuration and tools
-- **[🧪 Testing Guide](docs/testing.md)** - Testing strategies and conventions
+# Rebuild SDK (generates new dist/ files)
+pnpm --filter @f1r3fly-io/embers-client-sdk build
 
-### For LLM Assistance
+# Build frontend that consumes the updated SDK
+pnpm --filter @f1r3fly-io/embers-frontend build
 
-When using LLM tools, start by providing context from:
+# Or start development server
+cd apps/embers && pnpm dev
+```
 
-1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
-2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
-3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
-4. Source code context from directory-level READMEs
+### Workspace Commands
+```bash
+# Install all workspace dependencies
+pnpm install
+
+# Run script in specific workspace
+pnpm --filter <package-name> <script-name>
+
+# Examples:
+pnpm --filter @f1r3fly-io/embers-frontend dev
+pnpm --filter @f1r3fly-io/embers-frontend build
+pnpm --filter @f1r3fly-io/embers-client-sdk build
+```
 
 ## Project Structure
 
 ```
 embers-frontend/
-├── docs/                    # Documentation hierarchy (see above)
-├── apps/
-│   └── embers/              # React frontend application
-│       ├── src/
-│       │   ├── lib/         # Shared components and utilities
-│       │   ├── pages/       # Route components
-│       │   └── public/      # Static assets
-│       └── package.json     # Frontend dependencies
+├── package.json              # Root package.json with basic tooling
+├── pnpm-workspace.yaml       # Workspace: ["apps/*", "packages/*"]
+├── CLAUDE.md                 # LLM development guidelines and context
+│
+├── docs/                     # Documentation hierarchy
+│   ├── requirements/         # User stories and business requirements  
+│   ├── specifications/       # Technical specifications
+│   └── architecture/         # System design and decisions
+│
 ├── packages/
-│   └── client/              # TypeScript client SDK
-│       ├── src/
-│       │   ├── api-client/  # Auto-generated API client
-│       │   ├── entities/    # Core blockchain entities
-│       │   └── functions.ts # Wallet operations
-│       └── tests/           # SDK test suites
-├── .github/workflows/       # CI/CD pipelines
-├── CLAUDE.md                # Project context for LLM assistance
-└── pnpm-workspace.yaml      # Monorepo configuration
+│   └── client/              # @f1r3fly-io/embers-client-sdk
+│       ├── src/             # TypeScript source code
+│       ├── dist/            # Built library output (when built)
+│       └── package.json     # SDK package configuration
+│
+└── apps/
+    └── embers/              # @f1r3fly-io/embers-frontend
+        ├── src/             # React 19 + TypeScript source
+        ├── dist/            # Vite build output (when built)
+        └── package.json     # Frontend dependencies including "workspace:*"
 ```
 
-## Development Workflow
+## Workspace Packages
 
-1. **📖 Read Documentation** - Start with `docs/requirements/`
-2. **🤖 LLM Integration** - Use comprehensive context from our docs structure
-3. **⚙️ Traditional Practices** - Follow CI/CD, testing, and code review standards
-4. **📝 Update Documentation** - Keep all documentation current with changes
-5. **🔍 Context Files** - This project uses CLAUDE.md for LLM system context
+1. **Root Package** (`embers`) - Basic linting and formatting tools
+2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/embers/`
+3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
+
+## Available Commands
+
+### Root Level
+```bash
+pnpm lint              # ESLint with --fix on all files
+pnpm ci:lint           # ESLint check only  
+pnpm format:code       # Prettier formatting
+pnpm ci:check:code     # Prettier check only
+```
+
+### Frontend App (`apps/embers/`)
+```bash
+pnpm dev               # Start Vite development server
+pnpm build             # TypeScript compile + Vite build
+pnpm preview           # Preview production build
+pnpm typecheck         # TypeScript type checking only
+pnpm lint              # ESLint with --fix
+```
+
+### Client SDK (`packages/client/`)
+```bash
+pnpm build             # Vite build + TypeScript declarations
+pnpm test              # Run tests
+pnpm lint              # ESLint with --fix
+```
 
 ## 🚀 Features
 
@@ -105,13 +150,32 @@ embers-frontend/
 - **Build Tools**: Vite, pnpm workspaces
 - **Linting**: ESLint, Prettier, Stylelint
 
-## 🔐 Security & Architecture
+## 📚 Documentation
 
-- **Private Key Management**: Secure key generation and storage
-- **Address Validation**: Cryptographic address verification
-- **Type Safety**: Runtime validation with Zod schemas
-- **Authentication**: Protected routes with wallet-based auth
-- **API Integration**: Auto-generated client from OpenAPI schema
+Our project follows a documentation-first approach designed for both human contributors and LLM-assisted development:
+
+### Core Documentation
+
+- **[📋 Requirements](docs/requirements/)** - User stories, business requirements, and acceptance criteria
+- **[📐 Specifications](docs/specifications/)** - Technical specifications and design documents
+- **[🏗️ Architecture](docs/architecture/)** - System design and architectural decisions
+
+### For LLM Assistance
+
+When using LLM tools, start by providing context from:
+
+1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
+2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
+3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
+4. Source code context from directory-level READMEs
+
+## Development Workflow
+
+1. **📖 Read Documentation** - Start with `docs/requirements/`
+2. **🤖 LLM Integration** - Use comprehensive context from our docs structure
+3. **⚙️ Traditional Practices** - Follow CI/CD, testing, and code review standards
+4. **📝 Update Documentation** - Keep all documentation current with changes
+5. **🔍 Context Files** - This project uses CLAUDE.md for LLM system context
 
 ## License
 
