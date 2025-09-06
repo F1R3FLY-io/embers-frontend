@@ -1,5 +1,5 @@
-import unusedImports from "eslint-plugin-unused-imports";
 import { globalIgnores } from "eslint/config";
+import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 

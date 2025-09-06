@@ -1,11 +1,6 @@
-import type {
-  CreateAgentsTeamReq,
-  HTTPHeaders,
-  SignedContract,
-} from "../api-client";
-import type { Graph } from "../api-client/models/Graph";
-
+import type { CreateAgentsTeamReq, HTTPHeaders, SignedContract } from "../api-client";
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
+import type { Graph } from "../api-client/models/Graph";
 import { deployContract } from "../functions";
 import type { Address } from "./Address";
 import type { PrivateKey } from "./PrivateKey";
@@ -46,9 +41,7 @@ export class AgentsTeamsApiSdk {
     agentsTeamReq: Omit<CreateAgentsTeamReq, "graph"> & { graph?: Graph },
   ) {
     // Temporarily pass graph directly as string
-    const graphCode = agentsTeamReq.graph
-      ? JSON.stringify(agentsTeamReq.graph)
-      : undefined;
+    const graphCode = agentsTeamReq.graph ? JSON.stringify(agentsTeamReq.graph) : undefined;
     const prepareContract = async () =>
       this.client.apiAiAgentsTeamsCreatePreparePost({
         createAgentsTeamReq: { ...agentsTeamReq, graph: graphCode },
@@ -86,8 +79,7 @@ export class AgentsTeamsApiSdk {
       })
       .then(({ graph, ...rest }) => {
         // Temporarily return graph as-is
-        const graphAst =
-          graph !== undefined ? (JSON.parse(graph) as Graph) : undefined;
+        const graphAst = graph !== undefined ? (JSON.parse(graph) as Graph) : undefined;
         return { ...rest, graph: graphAst };
       });
   }
@@ -104,9 +96,7 @@ export class AgentsTeamsApiSdk {
     agentsTeamReq: Omit<CreateAgentsTeamReq, "graph"> & { graph?: Graph },
   ) {
     // Temporarily pass graph directly as string
-    const graphCode = agentsTeamReq.graph
-      ? JSON.stringify(agentsTeamReq.graph)
-      : undefined;
+    const graphCode = agentsTeamReq.graph ? JSON.stringify(agentsTeamReq.graph) : undefined;
     const generateContract = async () =>
       this.client.apiAiAgentsTeamsIdSavePreparePost({
         createAgentsTeamReq: { ...agentsTeamReq, graph: graphCode },

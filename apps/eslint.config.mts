@@ -5,11 +5,7 @@ import baseConfig from "./eslint-base.config.mts";
 
 const config = tseslint.config(
   baseConfig,
-  globalIgnores([
-    "dist/**",
-    "node_modules/**",
-    "**/*.module.scss.d.ts",
-  ]),
+  globalIgnores(["dist/**", "node_modules/**", "**/*.module.scss.d.ts"]),
 );
 
 export default config;

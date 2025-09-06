@@ -1,11 +1,11 @@
 import js from "@eslint/js";
+import { globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
 import jest from "eslint-plugin-jest";
 import perfectionist from "eslint-plugin-perfectionist";
 import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import { globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -56,11 +56,7 @@ const config = tseslint.config(
       "dot-notation": ["error", { allowKeywords: true }],
       eqeqeq: "error",
       "func-style": ["error", "declaration", { allowArrowFunctions: true }],
-      "grouped-accessor-pairs": [
-        "error",
-        "getBeforeSet",
-        { enforceForTSTypes: true },
-      ],
+      "grouped-accessor-pairs": ["error", "getBeforeSet", { enforceForTSTypes: true }],
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
       "import/extensions": [
         "error",
@@ -105,10 +101,7 @@ const config = tseslint.config(
       "no-unmodified-loop-condition": "error",
       "no-unneeded-ternary": "error",
       "no-unreachable-loop": "error",
-      "no-unused-expressions": [
-        "error",
-        { allowShortCircuit: true, enforceForJSX: true },
-      ],
+      "no-unused-expressions": ["error", { allowShortCircuit: true, enforceForJSX: true }],
       "no-unused-vars": [
         "error",
         {
@@ -229,10 +222,7 @@ const config = tseslint.config(
     },
   },
   {
-    extends: [
-      tseslint.configs.eslintRecommended,
-      tseslint.configs.recommendedTypeChecked,
-    ],
+    extends: [tseslint.configs.eslintRecommended, tseslint.configs.recommendedTypeChecked],
     files: [TS_FILES],
     rules: {
       "@typescript-eslint/consistent-type-exports": "error",
@@ -244,15 +234,9 @@ const config = tseslint.config(
         },
       ],
       "@typescript-eslint/dot-notation": ["error", { allowKeywords: true }],
-      "@typescript-eslint/explicit-member-accessibility": [
-        "error",
-        { accessibility: "explicit" },
-      ],
+      "@typescript-eslint/explicit-member-accessibility": ["error", { accessibility: "explicit" }],
       "@typescript-eslint/method-signature-style": "error",
-      "@typescript-eslint/no-confusing-void-expression": [
-        "error",
-        { ignoreArrowShorthand: true },
-      ],
+      "@typescript-eslint/no-confusing-void-expression": ["error", { ignoreArrowShorthand: true }],
       "@typescript-eslint/no-deprecated": "error",
       "@typescript-eslint/no-dynamic-delete": "error",
       "@typescript-eslint/no-extraneous-class": "error",
@@ -264,8 +248,7 @@ const config = tseslint.config(
       "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "error",
       "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
       "@typescript-eslint/no-unnecessary-condition": "error",
-      "@typescript-eslint/no-unnecessary-parameter-property-assignment":
-        "error",
+      "@typescript-eslint/no-unnecessary-parameter-property-assignment": "error",
       "@typescript-eslint/no-unnecessary-qualifier": "error",
       "@typescript-eslint/no-unnecessary-template-expression": "error",
       "@typescript-eslint/no-unnecessary-type-arguments": "error",

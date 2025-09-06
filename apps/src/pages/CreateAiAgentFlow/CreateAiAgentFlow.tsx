@@ -23,9 +23,7 @@ async function loadLightningBug() {
     }
   } catch {
     // eslint-disable-next-line no-console
-    console.warn(
-      "Lightning-bug package not available. Code editor will be disabled.",
-    );
+    console.warn("Lightning-bug package not available. Code editor will be disabled.");
   }
 }
 
