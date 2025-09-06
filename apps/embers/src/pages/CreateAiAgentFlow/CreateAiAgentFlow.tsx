@@ -2,9 +2,12 @@ import type { EditorRef } from "@f1r3fly-io/lightning-bug";
 
 import { Editor } from "@f1r3fly-io/lightning-bug";
 import { RholangExtension } from "@f1r3fly-io/lightning-bug/extensions";
-import { treeSitterWasmUrl } from '@f1r3fly-io/lightning-bug/tree-sitter';
-import { highlightsQueryUrl, indentsQueryUrl } from '@f1r3fly-io/lightning-bug/extensions/lang/rholang/tree-sitter/queries';
-import { wasm } from '@f1r3fly-io/tree-sitter-rholang-js-with-comments';
+import {
+  highlightsQueryUrl,
+  indentsQueryUrl,
+} from "@f1r3fly-io/lightning-bug/extensions/lang/rholang/tree-sitter/queries";
+import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
+import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -43,15 +46,16 @@ export default function CodeEditor() {
         <div className={styles.container}>
           <Editor
             ref={editorRef}
-            treeSitterWasm={treeSitterWasmUrl}
             languages={{
               rholang: {
                 ...RholangExtension,
                 grammarWasm: wasm,
                 highlightsQueryPath: highlightsQueryUrl,
-                indentsQueryPath: indentsQueryUrl
-              }
-            }} />
+                indentsQueryPath: indentsQueryUrl,
+              },
+            }}
+            treeSitterWasm={treeSitterWasmUrl}
+          />
         </div>
       </ErrorBoundary>
     </CodeLayout>
