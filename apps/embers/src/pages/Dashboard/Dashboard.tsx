@@ -1,3 +1,5 @@
+import type { AgentHeader } from "@f1r3fly-io/embers-client-sdk";
+
 import classNames from "classnames";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -92,7 +94,7 @@ export default function Dashboard() {
               </Text>
             </div>
             {isSuccess &&
-              data.agents.map((agent) => (
+              data.agents.map((agent: AgentHeader) => (
                 <div key={agent.id} className={styles["grid-box"]}>
                   <Text color="secondary" type="large">
                     {t("agents.agentWithName", { name: agent.name })}
