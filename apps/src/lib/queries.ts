@@ -1,4 +1,5 @@
 import type {
+  Agents,
   AgentsTeamsApiSdk,
   CreateAgentReq,
   PrivateKey,
@@ -16,7 +17,7 @@ import { toApiGraph } from "./graph";
 export function useAgents() {
   const api = useApi();
 
-  return useQuery({
+  return useQuery<Agents>({
     queryFn: async () => api.agents.getAgents(),
     queryKey: ["agents", api.wallets.address],
   });
