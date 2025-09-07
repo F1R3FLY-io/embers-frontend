@@ -112,11 +112,15 @@ describe('CI/CD Workflow Consistency', () => {
       expect(buildSection).not.toContain('npm.pkg.github.com');
     });
 
-    test('Embers workflow should build SDK locally before frontend tests', () => {
+    test('Embers workflow has proper GitHub Packages auth and builds SDK', () => {
       const embersWorkflow = fs.readFileSync(
         path.join(rootDir, '.github', 'workflows', 'embers.yaml'),
         'utf8'
       );
+      
+      // Should have GitHub Packages authentication configured
+      expect(embersWorkflow).toContain('registry-url: \'https://npm.pkg.github.com\'');
+      expect(embersWorkflow).toContain('//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}');
       
       // Should build client SDK before frontend operations
       expect(embersWorkflow).toMatch(/Build client SDK/i);
