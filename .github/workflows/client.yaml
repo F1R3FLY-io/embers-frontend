@@ -25,6 +25,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: packages/client
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,29 +43,24 @@ jobs:
         with:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-          registry-url: 'https://npm.pkg.github.com'
 
-      - name: Configure npm authentication for GitHub Packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
-
-      - name: Install dependencies (recursive)
-        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install dependencies (client SDK only)
+        run: pnpm install --frozen-lockfile
 
       - name: Build client SDK locally
-        run: pnpm --filter @f1r3fly-io/embers-client-sdk build
+        run: pnpm build
 
       - name: Type check
-        run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
+        run: pnpm typecheck
 
       - name: Code format check
-        run: pnpm --filter @f1r3fly-io/embers-client-sdk ci:check:code
+        run: pnpm ci:check:code
 
       - name: Lint
-        run: pnpm --filter @f1r3fly-io/embers-client-sdk lint
+        run: pnpm lint
 
       - name: Test
-        run: pnpm --filter @f1r3fly-io/embers-client-sdk test
+        run: pnpm test
 
   publish:
     runs-on: ubuntu-latest
@@ -97,6 +96,8 @@ jobs:
 
       - name: Install dependencies (recursive)
         run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build client SDK
         run: pnpm --filter @f1r3fly-io/embers-client-sdk build
@@ -107,7 +108,7 @@ jobs:
       - name: Publish
         run: pnpm --filter @f1r3fly-io/embers-client-sdk publish --no-git-checks --access public
         env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update package.json
         uses: stefanzweifel/git-auto-commit-action@v6
