@@ -44,8 +44,11 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
+      - name: Remove workspace configuration  
+        run: rm -f ../../pnpm-workspace.yaml
+
       - name: Install dependencies (client SDK only)
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build client SDK locally
         run: pnpm build
