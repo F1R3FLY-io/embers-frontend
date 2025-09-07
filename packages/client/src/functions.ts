@@ -49,6 +49,7 @@ export function sign(
   });
 
   return {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     sig: sig.toBytes("der"),
     sigAlgorithm: "secp256k1",
   };
