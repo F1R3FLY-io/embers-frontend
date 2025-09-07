@@ -87,8 +87,8 @@ export function useDeployDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const client = new AIAgentsTeamsApi(configuration as any);
+  // @ts-expect-error - Configuration type mismatch between client SDK versions
+  const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({
     mutationFn: async (name: string) =>
@@ -100,8 +100,8 @@ export function useRunDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const client = new AIAgentsTeamsApi(configuration as any);
+  // @ts-expect-error - Configuration type mismatch between client SDK versions
+  const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({
     mutationFn: async (props: {
