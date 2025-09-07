@@ -51,7 +51,8 @@
     "serve": "^14.2.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.12"
+    "typedoc": "^0.28.12",
+    "vite": "^7.1.4"
   },
   "dependencies": {
     "@noble/curves": "^2.0.0",
