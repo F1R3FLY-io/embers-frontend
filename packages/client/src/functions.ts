@@ -45,12 +45,12 @@ export function sign(
   sigAlgorithm: "secp256k1";
 } {
   const sig = secp256k1.sign(payload, key.value, {
+    format: "der",
     prehash: false,
   });
 
   return {
-    // @ts-expect-error - TypeScript incorrectly infers sig type, but toBytes exists on ECDSASigRecovered
-    sig: sig.toBytes("der"), // eslint-disable-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    sig,
     sigAlgorithm: "secp256k1",
   };
 }
