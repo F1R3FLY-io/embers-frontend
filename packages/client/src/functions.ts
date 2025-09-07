@@ -49,7 +49,8 @@ export function sign(
   });
 
   return {
-    sig: sig.toBytes("der"),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+    sig: (sig as any).toBytes("der") as Uint8Array,
     sigAlgorithm: "secp256k1",
   };
 }
