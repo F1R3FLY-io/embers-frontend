@@ -1,3 +1,5 @@
+// @ts-expect-error - @jest/globals not available in ESM mode
+import { expect, jest, test } from "@jest/globals";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
 import { PrivateKey } from "../src";
@@ -9,9 +11,10 @@ test("deployContract function", async () => {
   const senderPublicKey = senderPrivateKey.getPublicKey();
 
   const contract = new Uint8Array(32);
-  const expectedSignature = secp256k1
-    .sign(blake2b(contract, undefined, 32), senderPrivateKey.value)
-    .toBytes("der");
+  const expectedSignature = secp256k1.sign(
+    blake2b(contract, undefined, 32),
+    senderPrivateKey.value,
+  );
   const mockPreparePostCallback = jest
     .fn<
       ReturnType<GetContractCallback<{ contract: Uint8Array<ArrayBuffer> }>>,
@@ -34,10 +37,7 @@ test("deployContract function", async () => {
 
   expect(mockTransferSendCallback).toHaveBeenCalledWith(contract, expectedSignature, "secp256k1");
 
-  const signature = secp256k1.Signature.fromBytes(
-    mockTransferSendCallback.mock.calls[0][1],
-    "der",
-  ).toBytes();
+  const signature = mockTransferSendCallback.mock.calls[0][1];
 
   expect(secp256k1.verify(signature, blake2b(contract, undefined, 32), senderPublicKey.value)).toBe(
     true,

@@ -7,12 +7,14 @@ elif ! git status | grep -q "Your branch is ahead"; then
   exit 1
 fi
 
-pnpm run format:code
-pnpm --filter @f1r3fly-io/embers-frontend run format:code
-pnpm --filter @f1r3fly-io/embers-client-sdk run format:code
-pnpm --filter @f1r3fly-io/embers-frontend run ci:check:code
-pnpm --filter @f1r3fly-io/embers-client-sdk run ci:check:code
-pnpm --filter @f1r3fly-io/embers-client-sdk run lint
-pnpm --filter @f1r3fly-io/embers-frontend run ci:lint
-pnpm --filter @f1r3fly-io/embers-frontend run typecheck
-pnpm --filter @f1r3fly-io/embers-client-sdk run typecheck
+pnpm format:code
+pnpm --filter @f1r3fly-io/embers-frontend format:code
+pnpm --filter @f1r3fly-io/embers-client-sdk format:code
+pnpm --filter @f1r3fly-io/embers-frontend ci:check:code
+pnpm --filter @f1r3fly-io/embers-client-sdk ci:check:code
+pnpm --filter @f1r3fly-io/embers-client-sdk lint
+pnpm --filter @f1r3fly-io/embers-frontend ci:lint
+pnpm --filter @f1r3fly-io/embers-frontend typecheck
+pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
+pnpm --filter @f1r3fly-io/embers-client-sdk test
+pnpm --filter @f1r3fly-io/embers-client-sdk build

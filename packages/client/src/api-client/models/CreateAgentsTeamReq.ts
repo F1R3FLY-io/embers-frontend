@@ -10,10 +10,6 @@
  * Do not edit the class manually.
  */
 
-import type { Graph } from "./Graph";
-
-import { GraphFromJSON, GraphToJSON } from "./Graph";
-
 /**
  *
  * @export
@@ -26,12 +22,6 @@ export interface CreateAgentsTeamReq {
    * @memberof CreateAgentsTeamReq
    */
   graph?: string;
-  /**
-   *
-   * @type {Graph}
-   * @memberof CreateAgentsTeamReq
-   */
-  graphAst?: Graph;
   /**
    *
    * @type {string}
@@ -69,7 +59,6 @@ export function CreateAgentsTeamReqFromJSONTyped(
   }
   return {
     graph: json.graph == null ? undefined : json.graph,
-    graphAst: json.graph_ast == null ? undefined : GraphFromJSON(json.graph_ast),
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
   };
@@ -89,7 +78,6 @@ export function CreateAgentsTeamReqToJSONTyped(
 
   return {
     graph: value.graph,
-    graph_ast: GraphToJSON(value.graphAst),
     name: value.name,
     shard: value.shard,
   };

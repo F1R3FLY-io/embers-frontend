@@ -1,5 +1,4 @@
 import js from "@eslint/js";
-import { globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
 import jest from "eslint-plugin-jest";
 import perfectionist from "eslint-plugin-perfectionist";
@@ -13,7 +12,9 @@ export const JS_FILES = "**/*.{js,jsx}";
 export const TS_FILES = "**/*.{ts,tsx}";
 
 const config = tseslint.config(
-  globalIgnores(["dist", "node_modules"]),
+  {
+    ignores: ["dist/**", "node_modules/**"],
+  },
   {
     extends: [
       js.configs.recommended,

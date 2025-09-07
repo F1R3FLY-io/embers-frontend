@@ -1,68 +1,28 @@
-import { Position } from "@xyflow/react";
-
-import inputNodeIcon from "@/public/icons/input-node.png";
-import defaultNodeIcon from "@/public/icons/placeholder-node.png";
-import ttsNodeIcon from "@/public/icons/tts-node.png";
-
 import { DeployContainerNode } from "./DeployContainer";
 import { NodeTemplate } from "./NodeTemplate";
 import styles from "./nodes.module.scss";
+import type { NodeRegistry } from "./nodes.registry";
+import { NODE_REGISTRY } from "./nodes.registry";
+
+type NodeTemplateProps = Parameters<typeof NodeTemplate>[0];
+
+function makeNodeTypes(registry: NodeRegistry) {
+  const entries = Object.entries(registry).map(([type, def]) => {
+    const props: NodeTemplateProps = {
+      className: styles[def.className],
+      displayName: def.displayName,
+      handlers: def.handlers,
+      icon: def.iconSrc ? <img alt={def.displayName} src={def.iconSrc} /> : undefined,
+      title: def.title,
+    };
+    return [type, NodeTemplate(props)] as const;
+  });
+  return Object.fromEntries(entries) as Record<keyof NodeRegistry, ReturnType<typeof NodeTemplate>>;
+}
 
 export const nodeTypes = {
-  compress: NodeTemplate({
-    className: styles["data-package"],
-    displayName: "Compress",
-    handlers: [
-      { position: Position.Left, type: "target" },
-      { position: Position.Right, type: "source" },
-    ],
-    icon: <img src={defaultNodeIcon} />,
-    title: "Compress",
-  }),
-  "deploy-container": DeployContainerNode,
-  "manual-input": NodeTemplate({
-    className: styles.source,
-    displayName: "Manual Input",
-    handlers: [{ position: Position.Right, type: "source" }],
-    icon: <img src={inputNodeIcon} />,
-    title: "Manual Input",
-  }),
-  "send-to-channel": NodeTemplate({
-    className: styles.sink,
-    displayName: "Send to channel",
-    handlers: [{ position: Position.Left, type: "target" }],
-    icon: <img src={defaultNodeIcon} />,
-    title: "Send to channel",
-  }),
-  "text-model": NodeTemplate({
-    className: styles.service,
-    displayName: "Text model",
-    handlers: [
-      { position: Position.Left, type: "target" },
-      { position: Position.Right, type: "source" },
-    ],
-    icon: <img src={defaultNodeIcon} />,
-    title: "Text model",
-  }),
-  "tti-model": NodeTemplate({
-    className: styles.service,
-    displayName: "TTI model",
-    handlers: [
-      { position: Position.Left, type: "target" },
-      { position: Position.Right, type: "source" },
-    ],
-    icon: <img src={defaultNodeIcon} />,
-    title: "Text to image model",
-  }),
-  "tts-model": NodeTemplate({
-    className: styles.service,
-    displayName: "TTS model",
-    handlers: [
-      { position: Position.Left, type: "target" },
-      { position: Position.Right, type: "source" },
-    ],
-    icon: <img src={ttsNodeIcon} />,
-    title: "Text to speech model",
-  }),
-};
+  ...makeNodeTypes(NODE_REGISTRY),
+  "deploy-container": DeployContainerNode, // special
+} as const;
+
 export type NodeTypes = typeof nodeTypes;

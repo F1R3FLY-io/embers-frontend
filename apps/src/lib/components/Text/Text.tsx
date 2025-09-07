@@ -7,7 +7,7 @@ type TextProps = {
   bold?: true;
   children: ReactNode;
   className?: string;
-  color?: "primary" | "secondary";
+  color?: "primary" | "secondary" | "hover";
   fontSize?: number;
   type?: "H1" | "H2" | "H3" | "H4" | "H5" | "large" | "normal" | "small";
 };
@@ -22,6 +22,7 @@ export function Text({ bold, children, className, color, fontSize, type }: TextP
       [styles.h3]: type === "H3",
       [styles.h4]: type === "H4",
       [styles.h5]: type === "H5",
+      [styles.hover]: color === "hover",
       [styles.large]: type === "large",
       [styles.normal]: type === "normal" || type === undefined,
       [styles.primary]: color === "primary",

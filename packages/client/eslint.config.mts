@@ -9,6 +9,13 @@ export default tseslint.config(
   baseConfig,
   globalIgnores(["coverage", "docs", "mocks"]),
   {
+    settings: {
+      react: {
+        version: "99.99.99", // Disable React version detection since this is not a React project
+      },
+    },
+  },
+  {
     files: ["src/api-client/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
       noInlineConfig: true,
@@ -50,6 +57,17 @@ export default tseslint.config(
     },
     rules: {
       "no-console": "off",
+    },
+  },
+  {
+    files: ["tests/**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "import/no-unresolved": "off", // Disable for @jest/globals import
     },
   },
 );

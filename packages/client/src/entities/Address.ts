@@ -1,6 +1,9 @@
 import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
-import { keccak256 } from "js-sha3";
+import sha3 from "js-sha3";
+
+const { keccak256 } = sha3;
+
 import { verifyAddress } from "../functions";
 import type { PublicKey } from "./PublicKey";
 
