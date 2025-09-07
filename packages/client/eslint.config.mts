@@ -9,6 +9,13 @@ export default tseslint.config(
   baseConfig,
   globalIgnores(["coverage", "docs", "mocks"]),
   {
+    settings: {
+      react: {
+        version: "99.99.99", // Disable React version detection since this is not a React project
+      },
+    },
+  },
+  {
     files: ["src/api-client/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
       noInlineConfig: true,

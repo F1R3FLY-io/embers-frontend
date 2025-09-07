@@ -1,6 +1,7 @@
 import type { Edge, Node } from "./components/GraphEditor";
 
 // TODO: Import from @f1r3fly-io/embers-client-sdk when types are properly exported
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Graph = any;
 
 const NIL = {
