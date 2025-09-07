@@ -87,7 +87,7 @@ export function useDeployDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  const client = new AIAgentsTeamsApi(configuration);
+  const client = new AIAgentsTeamsApi(configuration.config);
 
   return useMutation({
     mutationFn: async (name: string) =>
@@ -101,7 +101,7 @@ export function useRunDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  const client = new AIAgentsTeamsApi(configuration);
+  const client = new AIAgentsTeamsApi(configuration.config);
 
   return useMutation({
     mutationFn: async (props: {

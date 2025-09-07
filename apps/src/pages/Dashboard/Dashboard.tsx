@@ -29,7 +29,7 @@ export default function Dashboard() {
   const { data, isSuccess } = useAgents();
 
   const agents: AgentHeader[] =
-    isSuccess && "agents" in data
+    isSuccess && data && typeof data === "object" && "agents" in data
       ? (data as { agents: AgentHeader[] }).agents
       : [];
 
