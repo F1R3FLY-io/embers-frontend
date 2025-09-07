@@ -1,13 +1,17 @@
 import type {
+  AgentsTeamsApiSdk,
   CreateAgentReq,
-  CreateAgentsTeamReq,
   PrivateKey,
 } from "@f1r3fly-io/embers-client-sdk";
 
-import { AIAgentsTeamsApi } from "@f1r3fly-io/embers-client-sdk";
+import { AIAgentsTeamsApi, Configuration } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useApi } from "@/lib/providers/wallet/useApi";
+
+import type { Edge, Node } from "./components/GraphEditor";
+
+import { toApiGraph } from "./graph";
 
 export function useAgents() {
   const api = useApi();
@@ -80,10 +84,10 @@ export function useDeployTestMutation() {
 }
 
 export function useDeployDemo() {
-  const configuration = {
+  const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
-  };
-  const client = new AIAgentsTeamsApi(configuration);
+  });
+  const client = new AIAgentsTeamsApi(configuration.config);
 
   return useMutation({
     mutationFn: async (name: string) =>
@@ -94,13 +98,16 @@ export function useDeployDemo() {
 }
 
 export function useRunDemo() {
-  const configuration = {
+  const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
-  };
-  const client = new AIAgentsTeamsApi(configuration);
+  });
+  const client = new AIAgentsTeamsApi(configuration.config);
 
   return useMutation({
-    mutationFn: async (props: { name: string; prompt: string }) =>
+    mutationFn: async (props: {
+      name: string;
+      prompt: string;
+    }): Promise<unknown> =>
       client.apiAiAgentsTeamsRunDemoPost({
         runDemoReq: props,
       }),
@@ -134,12 +141,25 @@ export function useAgentsTeam(id: string, version: string) {
   });
 }
 
+type WithGraph<T> = Omit<T, "graph"> & {
+  edges: Edge[];
+  nodes: Node[];
+};
+
 export function useCreateAgentsTeamMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.createAgentsTeam(params),
+    mutationFn: async ({
+      edges,
+      nodes,
+      ...rest
+    }: WithGraph<Parameters<AgentsTeamsApiSdk["createAgentsTeam"]>[0]>) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const graph = toApiGraph(nodes, edges);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      return api.agentsTeams.createAgentsTeam({ ...rest, graph });
+    },
   });
 }
 
@@ -147,7 +167,17 @@ export function useSaveAgentsTeamMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentsTeamReq) =>
-      api.agentsTeams.saveAgentsTeamVersion(id, params),
+    mutationFn: async ({
+      edges,
+      nodes,
+      ...rest
+    }: WithGraph<
+      Parameters<AgentsTeamsApiSdk["saveAgentsTeamVersion"]>[1]
+    >) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const graph = toApiGraph(nodes, edges);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      return api.agentsTeams.saveAgentsTeamVersion(id, { ...rest, graph });
+    },
   });
 }

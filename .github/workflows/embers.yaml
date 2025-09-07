@@ -29,9 +29,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,9 +43,17 @@ jobs:
         with:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Configure npm authentication for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+          echo "@f1r3fly-io:registry=https://npm.pkg.github.com" >> ~/.npmrc
 
       - name: Install dependencies (recursive)
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build client SDK
         run: pnpm --filter @f1r3fly-io/embers-client-sdk build

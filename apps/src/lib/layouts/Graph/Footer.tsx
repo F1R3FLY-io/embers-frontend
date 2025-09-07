@@ -59,5 +59,5 @@ export const Footer: React.FC<FooterProps> = ({ deployments, logs }) => {
 };
 
 function formatTime(time: Date) {
-  return time.toISOString().replace("T", " ").substring(0, 19);
+  return time.toLocaleString();
 }

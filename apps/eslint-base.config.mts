@@ -5,7 +5,6 @@ import perfectionist from "eslint-plugin-perfectionist";
 import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import { globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -13,7 +12,9 @@ export const JS_FILES = "**/*.{js,jsx}";
 export const TS_FILES = "**/*.{ts,tsx}";
 
 const config = tseslint.config(
-  globalIgnores(["dist", "node_modules"]),
+  {
+    ignores: ["dist/**", "node_modules/**"],
+  },
   {
     extends: [
       js.configs.recommended,

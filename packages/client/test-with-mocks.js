@@ -108,7 +108,8 @@ function runTests() {
 
     const coverage = process.argv[2] === "--coverage" ? "--coverage" : "";
 
-    const testProcess = spawn("jest", [coverage, "--no-cache"], {
+    const testProcess = spawn("npx", ["jest", coverage, "--no-cache"], {
+      env: { ...process.env, NODE_OPTIONS: "--experimental-vm-modules" },
       stdio: "inherit",
     });
 

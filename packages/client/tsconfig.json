@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./",
     "composite": true,
     "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "declaration": true,
@@ -15,6 +14,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "tests/**/*", "mocks/**/*", "vite.config.ts"],
+  "include": ["src/**/*", "tests/**/*", "vite.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

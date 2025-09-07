@@ -32,6 +32,7 @@ export function verifyAddress(value: string): boolean {
 /**
  * Signs a payload using the specified private key.
  * This function uses the secp256k1 algorithm to create a digital signature.
+ * Updated for consist_pre-push_local-build branch with modern API.
  * @param payload - The payload to sign, typically a hash of the transaction data.
  * @param key - The private key to sign the payload with.
  * @returns An object containing the signature algorithm, the deployer public key, and the signature.
@@ -43,10 +44,21 @@ export function sign(
   sig: Uint8Array;
   sigAlgorithm: "secp256k1";
 } {
-  const sig = secp256k1.sign(payload, key.value).toBytes("der");
+  const sig = secp256k1.sign(payload, key.value);
+
+  // The signature object may have different methods depending on the version
+  interface SignatureWithCompactBytes {
+    toCompactBytes: () => Uint8Array;
+  }
+
+  // Handle both old and new signature formats
+  const sigBytes: Uint8Array =
+    "toCompactBytes" in sig
+      ? (sig as SignatureWithCompactBytes).toCompactBytes()
+      : sig;
 
   return {
-    sig,
+    sig: sigBytes,
     sigAlgorithm: "secp256k1",
   };
 }
