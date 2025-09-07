@@ -44,13 +44,16 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies (client SDK only)
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies (standalone)
+        run: |
+          # Remove workspace references to install as standalone package
+          rm -f ../../pnpm-workspace.yaml
+          pnpm install --no-frozen-lockfile
 
       - name: Type check
         run: pnpm typecheck
 
-      - name: Code format check
+      - name: Code format check  
         run: pnpm ci:check:code
 
       - name: Lint
