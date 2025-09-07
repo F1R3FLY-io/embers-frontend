@@ -50,11 +50,12 @@ export function sign(
   interface SignatureWithCompactBytes {
     toCompactBytes: () => Uint8Array;
   }
-  
+
   // Handle both old and new signature formats
-  const sigBytes: Uint8Array = 'toCompactBytes' in sig 
-    ? (sig as SignatureWithCompactBytes).toCompactBytes()
-    : sig;
+  const sigBytes: Uint8Array =
+    "toCompactBytes" in sig
+      ? (sig as SignatureWithCompactBytes).toCompactBytes()
+      : sig;
 
   return {
     sig: sigBytes,
