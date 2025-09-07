@@ -25,10 +25,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: packages/client
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,23 +40,20 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies (standalone)
-        run: |
-          # Remove workspace references to install as standalone package
-          rm -f ../../pnpm-workspace.yaml
-          pnpm install --no-frozen-lockfile
+      - name: Install dependencies (filtered)
+        run: pnpm install --frozen-lockfile --filter @f1r3fly-io/embers-client-sdk
 
       - name: Type check
-        run: pnpm typecheck
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
 
-      - name: Code format check  
-        run: pnpm ci:check:code
+      - name: Code format check
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk ci:check:code
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk lint
 
       - name: Test
-        run: pnpm test
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk test
 
   publish:
     runs-on: ubuntu-latest
