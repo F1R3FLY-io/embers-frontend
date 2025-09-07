@@ -1,9 +1,4 @@
-import type {
-  Agents,
-  CreateAgentReq,
-  HTTPHeaders,
-  SignedContract,
-} from "../api-client";
+import type { Agents, CreateAgentReq, HTTPHeaders, SignedContract } from "../api-client";
 import { AIAgentsApi, Configuration } from "../api-client";
 import { deployContract, sign } from "../functions";
 import type { Address } from "./Address";

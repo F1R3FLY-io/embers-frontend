@@ -56,12 +56,7 @@ export default function Dashboard() {
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
-            <button
-              className={classNames(
-                styles["icon-button"],
-                styles["agents-button"],
-              )}
-            >
+            <button className={classNames(styles["icon-button"], styles["agents-button"])}>
               <RobotIcon />
               <Text bold color="primary" type="large">
                 {t("agents.agents")}
