@@ -48,7 +48,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies (recursive)
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build client SDK
         run: pnpm --filter @f1r3fly-io/embers-client-sdk build

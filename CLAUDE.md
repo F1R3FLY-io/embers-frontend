@@ -2,7 +2,7 @@
 
 ## Project Context
 - This is the Embers Platform - a blockchain-based AI agent deployment and management platform with integrated wallet functionality.
-- This is a React 19 project using TypeScript, Vite, and SCSS Modules (monorepo structure with pnpm workspaces).
+- This is a React 19 project using TypeScript, Vite, and TailWind (monorepo structure with pnpm workspaces).
 - The platform enables users to create, edit, and deploy AI agents to blockchain with secure wallet operations.
 - **Monorepo Structure**: Root package.json defines workspaces: `["packages/*", "apps/*"]`
 - The project consists of:

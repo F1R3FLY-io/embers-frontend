@@ -40,8 +40,13 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies (filtered)
-        run: pnpm install --frozen-lockfile --filter @f1r3fly-io/embers-client-sdk
+      - name: Configure registry to use standard npm
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          echo "@f1r3fly-io:registry=https://registry.npmjs.org/" >> ~/.npmrc
+
+      - name: Install dependencies (workspace aware)
+        run: pnpm install --frozen-lockfile --filter @f1r3fly-io/embers-client-sdk...
 
       - name: Type check
         run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
@@ -51,6 +56,9 @@ jobs:
 
       - name: Lint
         run: pnpm --filter @f1r3fly-io/embers-client-sdk lint
+
+      - name: Build client SDK
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk build
 
       - name: Test
         run: pnpm --filter @f1r3fly-io/embers-client-sdk test
