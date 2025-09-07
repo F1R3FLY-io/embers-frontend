@@ -25,9 +25,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,9 +39,17 @@ jobs:
         with:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Configure npm authentication for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Install dependencies (recursive)
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Build client SDK locally
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk build
 
       - name: Type check
         run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
@@ -68,9 +73,6 @@ jobs:
       contents: write
       packages: write
 
-    env:
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -87,6 +89,11 @@ jobs:
         with:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Configure npm authentication for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Install dependencies (recursive)
         run: pnpm install --frozen-lockfile
