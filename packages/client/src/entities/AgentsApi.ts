@@ -1,4 +1,5 @@
 import type {
+  Agents,
   CreateAgentReq,
   HTTPHeaders,
   SignedContract,
@@ -113,7 +114,7 @@ export class AgentsApiSdk {
   /**
    * Gets all agents owned by the current address.
    */
-  public async getAgents() {
+  public async getAgents(): Promise<Agents> {
     return this.client.apiAiAgentsAddressGet({
       address: this.address.value,
     });

@@ -30,7 +30,7 @@
     "doc_port": 3000
   },
   "scripts": {
-    "build": "vite build && cp src/declarations/*.d.ts dist/",
+    "build": "vite build && tsc --project tsconfig.build.json && cp src/declarations/*.d.ts dist/",
     "test": "node test-with-mocks.js",
     "coverage": "node test-with-mocks.js --coverage",
     "lint": "eslint --fix .",

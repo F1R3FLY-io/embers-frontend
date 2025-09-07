@@ -17,6 +17,10 @@ import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
 import styles from "./Dashboard.module.scss";
 
+interface AgentsResponse {
+  agents: AgentHeader[];
+}
+
 export default function Dashboard() {
   const { t } = useTranslation();
   const { setKey } = useWalletState();
@@ -28,7 +32,7 @@ export default function Dashboard() {
 
   const { data, isSuccess } = useAgents();
 
-  const agents: AgentHeader[] = isSuccess ? data.agents : [];
+  const agents: AgentHeader[] = isSuccess && data && typeof data === 'object' && 'agents' in data ? (data as AgentsResponse).agents : [];
 
   return (
     <div className={styles.page}>
