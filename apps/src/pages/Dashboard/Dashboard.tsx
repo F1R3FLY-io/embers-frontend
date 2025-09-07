@@ -98,17 +98,6 @@ export default function Dashboard() {
                 {t("agents.createNewAgent")}
               </Text>
             </div>
-<<<<<<< HEAD:apps/src/pages/Dashboard/Dashboard.tsx
-            {isSuccess &&
-              agentsData?.agents &&
-              agentsData.agents.map((agent: { id: string; name: string }) => (
-                <div key={agent.id} className={styles["grid-box"]}>
-                  <Text color="secondary" type="large">
-                    {t("agents.agentWithName", { name: agent.name })}
-                  </Text>
-                </div>
-              ))}
-=======
             {agents.map((agent: AgentHeader) => (
               <div key={agent.id} className={styles["grid-box"]}>
                 <Text color="secondary" type="large">
@@ -116,7 +105,6 @@ export default function Dashboard() {
                 </Text>
               </div>
             ))}
->>>>>>> @{-1}:apps/embers/src/pages/Dashboard/Dashboard.tsx
           </div>
         </div>
       </div>
