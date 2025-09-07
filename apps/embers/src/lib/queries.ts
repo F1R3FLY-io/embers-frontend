@@ -87,7 +87,6 @@ export function useDeployDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  // @ts-expect-error - Configuration type mismatch between client SDK versions
   const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({
@@ -100,7 +99,6 @@ export function useRunDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  // @ts-expect-error - Configuration type mismatch between client SDK versions
   const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({

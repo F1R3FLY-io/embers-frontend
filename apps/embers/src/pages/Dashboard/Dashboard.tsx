@@ -92,13 +92,9 @@ export default function Dashboard() {
               </Text>
             </div>
             {isSuccess &&
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-              // @ts-expect-error - data type inference issue from useQuery
               data.agents.map((agent) => (
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 <div key={agent.id} className={styles["grid-box"]}>
                   <Text color="secondary" type="large">
-                    {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
                     {t("agents.agentWithName", { name: agent.name })}
                   </Text>
                 </div>
