@@ -93,7 +93,7 @@ export default function Dashboard() {
             </div>
             {isSuccess &&
               // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-              data.agents.map((agent) => (
+              (data as any).agents.map((agent: any) => (
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                 <div key={agent.id} className={styles["grid-box"]}>
                   <Text color="secondary" type="large">

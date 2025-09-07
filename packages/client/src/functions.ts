@@ -50,6 +50,7 @@ export function sign(
 
   return {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    // @ts-ignore - TypeScript incorrectly infers sig type, but toBytes exists on ECDSASigRecovered
     sig: sig.toBytes("der"),
     sigAlgorithm: "secp256k1",
   };

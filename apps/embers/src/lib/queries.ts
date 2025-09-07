@@ -87,7 +87,8 @@ export function useDeployDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  const client = new AIAgentsTeamsApi(configuration);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const client = new AIAgentsTeamsApi(configuration as any);
 
   return useMutation({
     mutationFn: async (name: string) =>
@@ -99,7 +100,8 @@ export function useRunDemo() {
   const configuration = new Configuration({
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
   });
-  const client = new AIAgentsTeamsApi(configuration);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const client = new AIAgentsTeamsApi(configuration as any);
 
   return useMutation({
     mutationFn: async (props: {
