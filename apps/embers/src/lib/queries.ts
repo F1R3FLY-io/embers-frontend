@@ -3,8 +3,10 @@ import type {
   CreateAgentReq,
   PrivateKey,
 } from "@f1r3fly-io/embers-client-sdk";
+import type { Agents } from "@f1r3fly-io/embers-client-sdk";
 
-import { AIAgentsTeamsApi, Configuration } from "@f1r3fly-io/embers-client-sdk";
+import { AIAgentsTeamsApi } from "@f1r3fly-io/embers-client-sdk";
+import { Configuration } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useApi } from "@/lib/providers/wallet/useApi";
@@ -16,7 +18,7 @@ import { toApiGraph } from "./graph";
 export function useAgents() {
   const api = useApi();
 
-  return useQuery({
+  return useQuery<Agents>({
     queryFn: async () => api.agents.getAgents(),
     queryKey: ["agents", api.wallets.address],
   });
