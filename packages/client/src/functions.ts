@@ -49,7 +49,8 @@ export function sign(
   });
 
   return {
-    sig: sig.toBytes("der"),
+    // @ts-expect-error - TypeScript incorrectly infers sig type, but toBytes exists on ECDSASigRecovered
+    sig: sig.toBytes("der"), // eslint-disable-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     sigAlgorithm: "secp256k1",
   };
 }

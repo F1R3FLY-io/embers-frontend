@@ -1,6 +1,8 @@
-import type { Graph } from "@f1r3fly-io/embers-client-sdk";
-
 import type { Edge, Node } from "./components/GraphEditor";
+
+// TODO: Import from @f1r3fly-io/embers-client-sdk when types are properly exported
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Graph = any;
 
 const NIL = {
   type: "Nil",
@@ -39,7 +41,9 @@ function buildSubgraphs(groups: ContainerGroup[], edges: Edge[]): Graph {
 
   return {
     _var: head.container.id,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     graph1: buildGraph(head.nodes, edges),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     graph2: buildSubgraphs(tail, edges),
     type: "Subgraph",
   };
@@ -65,7 +69,9 @@ function buildEdges(groups: NodeGroup[]): Graph {
   const [head, ...tail] = groups;
 
   return {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     graph1: buildEdge(head.node, head.edges),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     graph2: buildEdges(tail),
     type: "Tensor",
   };
@@ -90,6 +96,7 @@ function buildEdge(node: Node, edges: Edge[]): Graph {
   return {
     binding1: {
       _var: `var_${node.id}_${tail.length}`,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       graph: buildEdge(node, tail),
       vertex: {
         name: {
