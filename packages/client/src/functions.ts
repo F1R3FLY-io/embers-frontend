@@ -49,7 +49,7 @@ export function sign(
   });
 
   return {
-    sig: sig.toDERRawBytes(),
+    sig: sig.toBytes("der"),
     sigAlgorithm: "secp256k1",
   };
 }
