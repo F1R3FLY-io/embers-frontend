@@ -32,7 +32,10 @@ export default function Dashboard() {
 
   const { data, isSuccess } = useAgents();
 
-  const agents: AgentHeader[] = isSuccess && data && typeof data === 'object' && 'agents' in data ? (data as AgentsResponse).agents : [];
+  const agents: AgentHeader[] =
+    isSuccess && data && typeof data === "object" && "agents" in data
+      ? (data as AgentsResponse).agents
+      : [];
 
   return (
     <div className={styles.page}>
