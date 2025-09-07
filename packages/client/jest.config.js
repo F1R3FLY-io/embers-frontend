@@ -1,17 +1,14 @@
+import { createDefaultEsmPreset } from "ts-jest";
+
+const tsJestTransformCfg = createDefaultEsmPreset({
+  tsconfig: "./tsconfig.json",
+}).transform;
+
+/** @type {import("jest").Config} **/
 export default {
   coveragePathIgnorePatterns: ["<rootDir>/src/api-client"],
-  preset: "ts-jest/presets/default-esm",
   testEnvironment: "node",
   transform: {
-    "^.+\\.[tj]sx?$": [
-      "ts-jest",
-      {
-        tsconfig: "./tsconfig.tests.json",
-        useESM: true,
-      },
-    ],
+    ...tsJestTransformCfg,
   },
-  transformIgnorePatterns: [
-    "../../node_modules/(?!(jest-runner|@noble|@scure)/)",
-  ],
 };

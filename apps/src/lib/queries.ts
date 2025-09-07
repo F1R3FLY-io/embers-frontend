@@ -4,7 +4,7 @@ import type {
   PrivateKey,
 } from "@f1r3fly-io/embers-client-sdk";
 
-import { AIAgentsTeamsApi, Configuration } from "@f1r3fly-io/embers-client-sdk";
+import { AIAgentsTeamsApi } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useApi } from "@/lib/providers/wallet/useApi";
@@ -84,21 +84,23 @@ export function useDeployTestMutation() {
 }
 
 export function useDeployDemo() {
-  const configuration = new Configuration({
+  const configuration = {
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
-  });
+  };
   const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({
     mutationFn: async (name: string) =>
-      client.apiAiAgentsTeamsDeployDemoPost({ deployDemoReq: { name } }),
+      client.apiAiAgentsTeamsDeployDemoPost({
+        deployDemoReq: { name },
+      }),
   });
 }
 
 export function useRunDemo() {
-  const configuration = new Configuration({
+  const configuration = {
     basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
-  });
+  };
   const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({

@@ -9,16 +9,20 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/embers.yaml"
-      - "apps/embers/**"
+      - "apps/**"
       - "packages/client/**"
-      - "*"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".husky/**"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/embers.yaml"
-      - "apps/embers/**"
+      - "apps/**"
       - "packages/client/**"
-      - "*"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".husky/**"
       - "!**/*.md"
 
 jobs:
@@ -27,10 +31,6 @@ jobs:
 
     env:
       NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    defaults:
-      run:
-        working-directory: apps/embers
 
     steps:
       - name: Checkout code
@@ -47,32 +47,37 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies for client
-        run: pnpm install
-        working-directory: packages/client
-
-      - name: Build client
-        run: pnpm build
-        working-directory: packages/client
-
-      - name: Install dependencies
+      - name: Install dependencies (recursive)
         run: pnpm install
 
-      - name: Type check
-        run: pnpm run typecheck
+      - name: Build client SDK
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk build
+
+      - name: Type check (client)
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
         continue-on-error: false
 
-      - name: Code format check
-        run: pnpm run ci:check:code
+      - name: Type check (frontend)
+        run: pnpm --filter @f1r3fly-io/embers-frontend typecheck
+        continue-on-error: false
 
-      - name: CSS format check
-        run: pnpm run ci:check:css
+      - name: Code format check (client)
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk ci:check:code
 
-      - name: Lint
-        run: pnpm run ci:lint
+      - name: Code format check (frontend)
+        run: pnpm --filter @f1r3fly-io/embers-frontend ci:check:code
 
-      - name: Build project
-        run: pnpm run build
+      - name: CSS format check (frontend)
+        run: pnpm --filter @f1r3fly-io/embers-frontend ci:check:css
+
+      - name: Lint (client)
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk lint
+
+      - name: Lint (frontend)
+        run: pnpm --filter @f1r3fly-io/embers-frontend ci:lint
+
+      - name: Build frontend
+        run: pnpm --filter @f1r3fly-io/embers-frontend build
         continue-on-error: false
 
       - name: Verify .module.scss.d.ts

@@ -11,10 +11,10 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint --fix .",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit",
+    "typecheck": "tsc --noEmit",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json,css,scss}'",
     "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",

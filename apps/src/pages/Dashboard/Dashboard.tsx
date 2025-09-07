@@ -26,6 +26,10 @@ export default function Dashboard() {
 
   const { data, isSuccess } = useAgents();
 
+  const agentsData = data as
+    | { agents: Array<{ id: string; name: string }> }
+    | undefined;
+
   return (
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
@@ -92,7 +96,8 @@ export default function Dashboard() {
               </Text>
             </div>
             {isSuccess &&
-              data.agents.map((agent) => (
+              agentsData?.agents &&
+              agentsData.agents.map((agent: { id: string; name: string }) => (
                 <div key={agent.id} className={styles["grid-box"]}>
                   <Text color="secondary" type="large">
                     {t("agents.agentWithName", { name: agent.name })}

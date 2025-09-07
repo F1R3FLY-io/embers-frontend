@@ -3,14 +3,19 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "apps/*",
+    "apps",
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint --fix '*'",
-    "ci:lint": "eslint '*'",
+    "dev": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/embers-frontend dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "ci:lint": "pnpm -r ci:lint",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",
-    "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'"
+    "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

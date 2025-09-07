@@ -7,6 +7,25 @@ import sassDts from "vite-plugin-sass-dts";
 // Vite configuration for consist_pre-push_local-build branch
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "dist",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          reactflow: ["@xyflow/react"],
+          router: ["react-router-dom"],
+          vendor: ["react", "react-dom"],
+        },
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
+  },
   plugins: [
     react(),
     sassDts({

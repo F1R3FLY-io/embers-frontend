@@ -5,39 +5,138 @@ Blockchain-based AI agent deployment and management platform with integrated wal
 ## Quick Start
 
 ```bash
-# Install dependencies
+# Install dependencies for all workspace packages
 pnpm install
 
-# Start development server
-cd apps/embers
+# Start development server (automatically builds client SDK first, then runs frontend app)
 pnpm dev
 
-# Build project  
-cd apps/embers
+# Build all packages
 pnpm build
 
-# Run lint checks
-pnpm ci:lint
+# Run all tests
+pnpm test
+
+# Lint all code
+pnpm lint
 ```
 
-## 📦 Local npm Package Development & Testing
+## 📦 Monorepo Workspace
 
-This branch demonstrates **local npm package build and consumption** using pnpm workspaces without publishing to any registry:
-
-### How It Works
-- **Workspace Configuration**: Uses `apps/*` and `packages/*` in `pnpm-workspace.yaml`
-- **Local Dependency**: Frontend app uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"`
-- **Local Build Process**: Client SDK builds to `packages/client/dist/` with TypeScript declarations
-- **Direct Import**: Frontend imports SDK as if it were from npm, but uses local build
+This project uses **pnpm workspaces** for efficient monorepo management:
 
 ### Key Benefits
+- **Single command setup**: `pnpm install` installs all workspace dependencies
+- **Dependency sharing**: Common packages shared between workspaces  
+- **Local package linking**: Frontend imports client SDK directly
+- **Efficient storage**: Hard linking saves disk space
+- **Single PR & CI/CD**: `git push` will run the same checks locally as on the remote for a Pull Request
+- **Consistent versions**: Shared dependencies use same versions
+
+### Workspace Commands
+```bash
+# Install all workspace dependencies
+pnpm install
+
+# Run script in all workspaces
+pnpm -r <script-name>
+
+# Run script in specific workspace
+pnpm --filter <package-name> <script-name>
+
+# Examples:
+pnpm --filter @f1r3fly-io/embers-frontend dev
+pnpm --filter @f1r3fly-io/embers-client-sdk build
+```
+
+## 📚 Documentation
+
+Our project follows a documentation-first approach designed for both human contributors and LLM-assisted development:
+
+### Core Documentation
+
+- **[📋 Requirements](docs/requirements/)** - User stories, business requirements, and acceptance criteria
+- **[📐 Specifications](docs/specifications/)** - Technical specifications and design documents
+- **[🏗️ Architecture](docs/architecture/)** - System design and architectural decisions
+  - [Decision Records](docs/architecture/decisions/) - ADRs documenting important architectural choices
+  - [System Diagrams](docs/architecture/diagrams/) - Visual representations of system components
+  - [Design Patterns](docs/architecture/patterns/) - Established patterns and conventions
+
+### For Contributors
+
+- **[🤝 Contributing Guide](CONTRIBUTING.md)** - Complete workflow for LLM-enhanced development
+- **[🔧 Development Setup](docs/development-setup.md)** - Environment configuration and tools
+- **[🧪 Testing Guide](docs/testing.md)** - Testing strategies and conventions
+
+### For LLM Assistance
+
+When using LLM tools, start by providing context from:
+
+1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
+2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
+3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
+4. Source code context from directory-level READMEs
+
+## Project Structure
+
+```
+embers-frontend/
+├── package.json              # Root package.json with workspaces: ["apps", "packages/*"]
+├── pnpm-workspace.yaml       # pnpm workspace configuration
+├── tsconfig.json             # Root tsconfig with project references
+├── tsconfig.base.json        # Base config for shared compiler options
+├── node_modules/             # Shared dependencies (pnpm workspaces)
+├── CLAUDE.md                 # LLM development guidelines and context
+│
+├── docs/                     # Documentation-first approach
+│   ├── requirements/         # User stories and business requirements  
+│   ├── specifications/       # Technical specifications
+│   └── architecture/         # System design and decisions
+│
+├── packages/                 # Publishable library packages
+│   └── client/              # @f1r3fly-io/embers-client-sdk
+│       ├── src/             # TypeScript source code
+│       ├── dist/            # Built library output  
+│       ├── tests/           # Unit tests with Jest
+│       ├── mocks/           # API mocks for testing
+│       ├── package.json     # SDK package configuration
+│       └── tsconfig.json    # TypeScript config (extends base)
+│
+└── apps/                    # Frontend application (single directory)
+    ├── src/                 # React 19 + TypeScript source
+    │   ├── pages/           # Route components
+    │   ├── lib/             # Shared components and utilities
+    │   └── public/          # Static assets
+    ├── dist/                # Vite build output
+    ├── package.json         # Private app package config
+    ├── tsconfig.json        # TypeScript config (extends base)
+    └── vite.config.ts       # Vite configuration
+```
+
+### Workspace Packages
+
+1. **Root Package** (`embers`) - Development tooling and shared dependencies
+2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/`
+3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
+
+### Local npm Package Development & Testing
+
+This branch demonstrates **local npm package build and consumption** without publishing to any registry:
+
+#### How It Works
+- **Workspace Linking**: Frontend app uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"`
+- **Local Build Process**: Client SDK builds to `packages/client/dist/` with full TypeScript declarations
+- **Direct Import**: Frontend imports SDK as if it were from npm, but uses local build
+- **Development Flow**: `pnpm dev` automatically builds SDK first, then starts frontend
+
+#### Key Benefits
 - ✅ **No Registry Needed**: Test npm package integration without publishing
 - ✅ **Real Distribution**: Tests actual bundled output, not source files
 - ✅ **Type Safety**: Full TypeScript support with generated `.d.ts` files
 - ✅ **Multiple Formats**: Generates ES, CJS, and UMD bundles
 - ✅ **True npm Experience**: Frontend consumes SDK exactly like a published package
 
-### Testing Local Package Changes
+#### Testing Local Package Changes
 ```bash
 # Make changes to client SDK source
 edit packages/client/src/functions.ts
@@ -45,84 +144,50 @@ edit packages/client/src/functions.ts
 # Rebuild SDK (generates new dist/ files)
 pnpm --filter @f1r3fly-io/embers-client-sdk build
 
-# Build frontend that consumes the updated SDK
-pnpm --filter @f1r3fly-io/embers-frontend build
-
-# Or start development server
-cd apps/embers && pnpm dev
+# Frontend automatically picks up changes
+pnpm --filter @f1r3fly-io/embers-frontend dev
 ```
 
-### Workspace Commands
+### Workspace Management
+
+#### Installing Dependencies
 ```bash
-# Install all workspace dependencies
+# Install root + all workspace dependencies
 pnpm install
 
-# Run script in specific workspace
-pnpm --filter <package-name> <script-name>
-
-# Examples:
-pnpm --filter @f1r3fly-io/embers-frontend dev
-pnpm --filter @f1r3fly-io/embers-frontend build
-pnpm --filter @f1r3fly-io/embers-client-sdk build
+# Add dependency to specific workspace
+pnpm --filter @f1r3fly-io/embers-frontend add react-query
+pnpm --filter @f1r3fly-io/embers-client-sdk add zod
 ```
 
-## Project Structure
-
-```
-embers-frontend/
-├── package.json              # Root package.json with basic tooling
-├── pnpm-workspace.yaml       # Workspace: ["apps/*", "packages/*"]
-├── CLAUDE.md                 # LLM development guidelines and context
-│
-├── docs/                     # Documentation hierarchy
-│   ├── requirements/         # User stories and business requirements  
-│   ├── specifications/       # Technical specifications
-│   └── architecture/         # System design and decisions
-│
-├── packages/
-│   └── client/              # @f1r3fly-io/embers-client-sdk
-│       ├── src/             # TypeScript source code
-│       ├── dist/            # Built library output (when built)
-│       └── package.json     # SDK package configuration
-│
-└── apps/
-    └── embers/              # @f1r3fly-io/embers-frontend
-        ├── src/             # React 19 + TypeScript source
-        ├── dist/            # Vite build output (when built)
-        └── package.json     # Frontend dependencies including "workspace:*"
-```
-
-## Workspace Packages
-
-1. **Root Package** (`embers`) - Basic linting and formatting tools
-2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/embers/`
-3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
-
-## Available Commands
-
-### Root Level
+#### Development Scripts
 ```bash
-pnpm lint              # ESLint with --fix on all files
-pnpm ci:lint           # ESLint check only  
-pnpm format:code       # Prettier formatting
-pnpm ci:check:code     # Prettier check only
+# Start frontend development server (builds SDK first)
+pnpm dev
+
+# Build all packages in dependency order  
+pnpm build
+
+# Run all test suites
+pnpm test
+
+# Type-check all packages
+pnpm typecheck
 ```
 
-### Frontend App (`apps/embers/`)
-```bash
-pnpm dev               # Start Vite development server
-pnpm build             # TypeScript compile + Vite build
-pnpm preview           # Preview production build
-pnpm typecheck         # TypeScript type checking only
-pnpm lint              # ESLint with --fix
-```
+#### TypeScript Configuration
+- **Consolidated Structure**: 4 total tsconfig files (reduced from 12)
+- **Project References**: Root references workspace packages 
+- **Shared Base**: Common compiler options in `tsconfig.base.json`
+- **Path Resolution**: Automatic linking between workspace packages
 
-### Client SDK (`packages/client/`)
-```bash
-pnpm build             # Vite build + TypeScript declarations
-pnpm test              # Run tests
-pnpm lint              # ESLint with --fix
-```
+## Development Workflow
+
+1. **📖 Read Documentation** - Start with `docs/requirements/`
+2. **🤖 LLM Integration** - Use comprehensive context from our docs structure
+3. **⚙️ Traditional Practices** - Follow CI/CD, testing, and code review standards
+4. **📝 Update Documentation** - Keep all documentation current with changes
+5. **🔍 Context Files** - This project uses CLAUDE.md for LLM system context
 
 ## 🚀 Features
 
@@ -150,32 +215,13 @@ pnpm lint              # ESLint with --fix
 - **Build Tools**: Vite, pnpm workspaces
 - **Linting**: ESLint, Prettier, Stylelint
 
-## 📚 Documentation
+## 🔐 Security & Architecture
 
-Our project follows a documentation-first approach designed for both human contributors and LLM-assisted development:
-
-### Core Documentation
-
-- **[📋 Requirements](docs/requirements/)** - User stories, business requirements, and acceptance criteria
-- **[📐 Specifications](docs/specifications/)** - Technical specifications and design documents
-- **[🏗️ Architecture](docs/architecture/)** - System design and architectural decisions
-
-### For LLM Assistance
-
-When using LLM tools, start by providing context from:
-
-1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
-2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
-3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
-4. Source code context from directory-level READMEs
-
-## Development Workflow
-
-1. **📖 Read Documentation** - Start with `docs/requirements/`
-2. **🤖 LLM Integration** - Use comprehensive context from our docs structure
-3. **⚙️ Traditional Practices** - Follow CI/CD, testing, and code review standards
-4. **📝 Update Documentation** - Keep all documentation current with changes
-5. **🔍 Context Files** - This project uses CLAUDE.md for LLM system context
+- **Private Key Management**: Secure key generation and storage
+- **Address Validation**: Cryptographic address verification
+- **Type Safety**: Runtime validation with Zod schemas
+- **Authentication**: Protected routes with wallet-based auth
+- **API Integration**: Auto-generated client from OpenAPI schema
 
 ## License
 

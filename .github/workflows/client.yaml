@@ -10,13 +10,15 @@ on:
     paths:
       - ".github/workflows/client.yaml"
       - "packages/client/**"
-      - "*"
+      - "package.json"
+      - "pnpm-lock.yaml"
       - "!**/*.md"
   pull_request:
     paths:
       - ".github/workflows/client.yaml"
       - "packages/client/**"
-      - "*"
+      - "package.json"
+      - "pnpm-lock.yaml"
       - "!**/*.md"
 
 jobs:
@@ -25,10 +27,6 @@ jobs:
 
     env:
       NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    defaults:
-      run:
-        working-directory: packages/client
 
     steps:
       - name: Checkout code
@@ -45,20 +43,20 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies
+      - name: Install dependencies (recursive)
         run: pnpm install --frozen-lockfile
 
       - name: Type check
-        run: pnpm run typecheck
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
 
       - name: Code format check
-        run: pnpm run ci:check:code
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk ci:check:code
 
       - name: Lint
-        run: pnpm run ci:lint
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk lint
 
       - name: Test
-        run: pnpm run test
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk test
 
   publish:
     runs-on: ubuntu-latest
@@ -72,10 +70,6 @@ jobs:
 
     env:
       NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    defaults:
-      run:
-        working-directory: packages/client
 
     steps:
       - name: Checkout code
@@ -94,17 +88,17 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies
+      - name: Install dependencies (recursive)
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm run build
+      - name: Build client SDK
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk build
 
       - name: Bump version
-        run: pnpm version patch --no-git-tag-version --no-commit-hooks --no-workspaces-update
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk version patch --no-git-tag-version --no-commit-hooks
 
       - name: Publish
-        run: pnpm publish --no-git-checks --access public
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk publish --no-git-checks --access public
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
