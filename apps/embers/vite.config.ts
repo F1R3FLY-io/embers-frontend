@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 import sassDts from "vite-plugin-sass-dts";
 // import svgr from "vite-plugin-svgr";
 
+// Vite configuration for consist_pre-push_local-build branch
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [

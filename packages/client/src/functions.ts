@@ -32,6 +32,7 @@ export function verifyAddress(value: string): boolean {
 /**
  * Signs a payload using the specified private key.
  * This function uses the secp256k1 algorithm to create a digital signature.
+ * Updated for consist_pre-push_local-build branch with modern API.
  * @param payload - The payload to sign, typically a hash of the transaction data.
  * @param key - The private key to sign the payload with.
  * @returns An object containing the signature algorithm, the deployer public key, and the signature.

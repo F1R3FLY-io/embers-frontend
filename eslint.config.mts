@@ -11,9 +11,10 @@ import tseslint from "typescript-eslint";
 export const JS_FILES = "**/*.{js,jsx}";
 export const TS_FILES = "**/*.{ts,tsx}";
 
+// Root ESLint configuration - consist_pre-push_local-build branch
 export default tseslint.config(
   {
-    ignores: ["dist/**", "node_modules/**"],
+    ignores: ["dist/**", "node_modules/**"], // Ignore build artifacts
   },
   {
     extends: [
