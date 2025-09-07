@@ -14,11 +14,14 @@ pnpm dev
 # Build all packages
 pnpm build
 
-# Run all tests
+# Run all tests (includes SDK unit tests + workflow validation)
 pnpm test
 
 # Lint all code
 pnpm lint
+
+# Type check all packages
+pnpm typecheck
 ```
 
 ## 📦 Monorepo Workspace
@@ -88,6 +91,14 @@ embers-frontend/
 ├── node_modules/             # Shared dependencies (pnpm workspaces)
 ├── CLAUDE.md                 # LLM development guidelines and context
 │
+├── .github/                  # GitHub Actions and CI/CD
+│   ├── workflows/           # CI/CD workflow definitions
+│   │   ├── client.yaml      # Client SDK build and publish workflow
+│   │   └── embers.yaml      # Frontend application workflow
+│   ├── tests/               # Workflow validation tests
+│   │   └── workflow.test.ts # TypeScript tests for CI/CD consistency
+│   └── tsconfig.json        # TypeScript config for GitHub tests
+│
 ├── docs/                     # Documentation-first approach
 │   ├── requirements/         # User stories and business requirements  
 │   ├── specifications/       # Technical specifications
@@ -128,10 +139,12 @@ embers-frontend/
 - **Development Flow**: `pnpm dev` automatically builds SDK first, then starts frontend
 
 ### Pull Request Builds
-- **Mirrors Local Development**: PR builds should build SDK locally and use it (not fetch from npm registries)
+- **Mirrors Local Development**: PR builds build SDK locally and use it (not fetch from npm registries)
 - **No Publishing**: SDK is built locally but not published to any registry
 - **Testing**: All linting, type checking, and testing runs against locally built SDK
-- **No Registry Dependencies**: Should not require authentication to GitHub Packages or other registries
+- **Authentication Handling**: 
+  - Client workflow uses standard npm registry for SDK dependencies
+  - Embers workflow requires GitHub Packages auth for `@f1r3fly-io/lightning-bug` dependency
 
 ### Main Branch Merges
 - **Publish SDK**: Build and publish SDK to GitHub Packages (npm registry)
@@ -163,7 +176,7 @@ pnpm --filter @f1r3fly-io/embers-frontend dev
    - Builds SDK locally (same as `pnpm build`)
    - Frontend uses locally built SDK via `workspace:*`
    - Runs all checks against local build
-   - No publishing or registry access needed
+   - Handles GitHub Packages authentication for external @f1r3fly-io dependencies
 
 2. **Main Branch Merge**:
    - Builds SDK locally
@@ -171,6 +184,15 @@ pnpm --filter @f1r3fly-io/embers-frontend dev
    - Publishes SDK to GitHub Packages
    - Increments version
    - Commits version change back to repository
+
+### CI/CD Testing & Validation
+The project includes comprehensive workflow tests in `.github/tests/workflow.test.ts` that validate:
+- **Local Development**: Workspace configuration, build scripts, and SDK output
+- **PR Workflows**: Authentication handling, build isolation, and registry configuration
+- **Publishing**: Main branch conditions, version bumping, and GitHub Packages setup
+- **Consistency**: Unified tooling versions and build commands across workflows
+
+Run workflow tests with: `pnpm test` (includes both SDK unit tests and workflow validation)
 
 ### Workspace Management
 
