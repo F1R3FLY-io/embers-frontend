@@ -44,20 +44,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Create isolated environment
-        run: |
-          # Remove workspace configuration and lockfile
-          rm -f ../../pnpm-workspace.yaml ../../pnpm-lock.yaml
-          # Remove any .npmrc that might reference GitHub Packages
-          rm -f ../../.npmrc ~/.npmrc
-          # Create a clean .npmrc for standard npm registry
-          echo "registry=https://registry.npmjs.org/" > .npmrc
-
       - name: Install dependencies (client SDK only)
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Build client SDK locally
-        run: pnpm build
+        run: pnpm install --frozen-lockfile
 
       - name: Type check
         run: pnpm typecheck
