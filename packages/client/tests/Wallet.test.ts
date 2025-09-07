@@ -1,5 +1,5 @@
-// @ts-ignore
-import { jest, beforeEach, describe, test, expect } from "@jest/globals";
+// @ts-expect-error - @jest/globals not available in ESM mode
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 
 import type {
   Boost,

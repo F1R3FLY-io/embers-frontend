@@ -1,5 +1,5 @@
-// @ts-ignore
-import { jest, beforeEach, describe, it, expect } from "@jest/globals";
+// @ts-expect-error - @jest/globals not available in ESM mode
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 import type { AgentHeader, DeploySignedTestResp } from "../src";
 

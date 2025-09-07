@@ -7,27 +7,25 @@ const tsJestTransformCfg = createDefaultEsmPreset({
 
 /** @type {import("jest").Config} **/
 export default {
-  preset: "ts-jest/presets/default-esm",
   coveragePathIgnorePatterns: ["<rootDir>/src/api-client"],
+  extensionsToTreatAsEsm: [".ts"],
+  globals: {
+    "ts-jest": {
+      tsconfig: {
+        module: "esnext",
+        target: "esnext",
+      },
+      useESM: true,
+    },
+  },
+  injectGlobals: true,
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+  preset: "ts-jest/presets/default-esm",
   testEnvironment: "node",
   transform: {
     ...tsJestTransformCfg,
   },
-  transformIgnorePatterns: [
-    "node_modules/(?!(@noble|@scure)/)"
-  ],
-  extensionsToTreatAsEsm: [".ts"],
-  moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
-  },
-  globals: {
-    "ts-jest": {
-      useESM: true,
-      tsconfig: {
-        module: "esnext",
-        target: "esnext",
-      }
-    }
-  },
-  injectGlobals: true,
+  transformIgnorePatterns: ["node_modules/(?!(@noble|@scure)/)"],
 };

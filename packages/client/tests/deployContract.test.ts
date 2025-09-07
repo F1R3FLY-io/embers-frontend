@@ -1,5 +1,5 @@
-// @ts-ignore
-import { jest, test, expect } from "@jest/globals";
+// @ts-expect-error - @jest/globals not available in ESM mode
+import { expect, jest, test } from "@jest/globals";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
 
