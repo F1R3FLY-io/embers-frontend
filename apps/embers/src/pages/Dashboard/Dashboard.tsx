@@ -28,6 +28,11 @@ export default function Dashboard() {
 
   const { data, isSuccess } = useAgents();
 
+  const agents: AgentHeader[] =
+    isSuccess && data && typeof data === "object" && "agents" in data
+      ? (data as { agents: AgentHeader[] }).agents
+      : [];
+
   return (
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
@@ -93,14 +98,13 @@ export default function Dashboard() {
                 {t("agents.createNewAgent")}
               </Text>
             </div>
-            {isSuccess &&
-              data.agents.map((agent: AgentHeader) => (
-                <div key={agent.id} className={styles["grid-box"]}>
-                  <Text color="secondary" type="large">
-                    {t("agents.agentWithName", { name: agent.name })}
-                  </Text>
-                </div>
-              ))}
+            {agents.map((agent: AgentHeader) => (
+              <div key={agent.id} className={styles["grid-box"]}>
+                <Text color="secondary" type="large">
+                  {t("agents.agentWithName", { name: agent.name })}
+                </Text>
+              </div>
+            ))}
           </div>
         </div>
       </div>
