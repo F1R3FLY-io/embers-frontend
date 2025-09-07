@@ -45,6 +45,7 @@ export function sign(
   sigAlgorithm: "secp256k1";
 } {
   const sig = secp256k1.sign(payload, key.value, {
+    format: "der",
     prehash: false,
   });
 

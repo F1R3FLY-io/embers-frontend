@@ -1,3 +1,5 @@
+import type { AgentHeader } from "@f1r3fly-io/embers-client-sdk";
+
 import classNames from "classnames";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,9 +28,10 @@ export default function Dashboard() {
 
   const { data, isSuccess } = useAgents();
 
-  const agentsData = data as
-    | { agents: Array<{ id: string; name: string }> }
-    | undefined;
+  const agents: AgentHeader[] =
+    isSuccess && "agents" in data
+      ? (data as { agents: AgentHeader[] }).agents
+      : [];
 
   return (
     <div className={styles.page}>
@@ -95,6 +98,7 @@ export default function Dashboard() {
                 {t("agents.createNewAgent")}
               </Text>
             </div>
+<<<<<<< HEAD:apps/src/pages/Dashboard/Dashboard.tsx
             {isSuccess &&
               agentsData?.agents &&
               agentsData.agents.map((agent: { id: string; name: string }) => (
@@ -104,6 +108,15 @@ export default function Dashboard() {
                   </Text>
                 </div>
               ))}
+=======
+            {agents.map((agent: AgentHeader) => (
+              <div key={agent.id} className={styles["grid-box"]}>
+                <Text color="secondary" type="large">
+                  {t("agents.agentWithName", { name: agent.name })}
+                </Text>
+              </div>
+            ))}
+>>>>>>> @{-1}:apps/embers/src/pages/Dashboard/Dashboard.tsx
           </div>
         </div>
       </div>
