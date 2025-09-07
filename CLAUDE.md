@@ -104,6 +104,36 @@ Required environment variables should be configured appropriately for the fronte
 - `VITE_CHAIN_ID`: Blockchain network ID
 - Additional environment variables as needed for API keys and service integrations
 
+## CI/CD & Development Workflow
+
+### Local Development Workflow
+- **Build Process**: `pnpm build` from root builds client SDK locally to `packages/client/dist/`
+- **Workspace Linking**: Frontend uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"` which resolves to locally built SDK
+- **Development Server**: `pnpm dev` automatically builds SDK first, then starts frontend
+- **No Registry Access**: All development happens with locally built packages
+
+### Pull Request (PR) Workflow  
+**CRITICAL**: PR builds should mirror local development exactly
+- **Build SDK Locally**: Build client SDK to `packages/client/dist/` (same as local)
+- **Use Local SDK**: Frontend should consume locally built SDK via `workspace:*`
+- **No Publishing**: SDK is built but not published to any registry
+- **No Registry Authentication**: Should not require GitHub Packages or npm registry access
+- **Testing**: All checks run against locally built SDK
+
+### Main Branch Merge Workflow
+- **Build SDK Locally**: Same local build process
+- **Publish SDK**: Publish built SDK to GitHub Packages registry
+- **Version Increment**: Automatically bump version (patch increment)  
+- **Commit Version**: Commit updated package.json back to repository
+
+### Key Principle
+The behavior should be **identical** for:
+1. Local development (`pnpm build` + `pnpm dev`)
+2. PR builds (build locally, test locally)
+3. Main branch merge (build locally, then publish)
+
+Only the final publishing step differs between PR and main branch workflows.
+
 ## Common Tasks
 - If connected to a `mcp-shell-server` also known as just a "shell", run all shell commands through that mcp server. This approach will automatically restrict which commands can be run and properly configure the shell environment.
 - Review `git history` to determine how code base evolved or history for particular files and functions.

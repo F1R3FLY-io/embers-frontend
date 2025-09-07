@@ -119,24 +119,34 @@ embers-frontend/
 2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/`
 3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
 
-### Local npm Package Development & Testing
+## 🔄 Development & CI/CD Workflow
 
-This branch demonstrates **local npm package build and consumption** without publishing to any registry:
-
-#### How It Works
+### Local Development
 - **Workspace Linking**: Frontend app uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"`
-- **Local Build Process**: Client SDK builds to `packages/client/dist/` with full TypeScript declarations
+- **Local Build Process**: `pnpm build` from root builds client SDK to `packages/client/dist/` with full TypeScript declarations
 - **Direct Import**: Frontend imports SDK as if it were from npm, but uses local build
 - **Development Flow**: `pnpm dev` automatically builds SDK first, then starts frontend
 
-#### Key Benefits
-- ✅ **No Registry Needed**: Test npm package integration without publishing
-- ✅ **Real Distribution**: Tests actual bundled output, not source files
+### Pull Request Builds
+- **Mirrors Local Development**: PR builds should build SDK locally and use it (not fetch from npm registries)
+- **No Publishing**: SDK is built locally but not published to any registry
+- **Testing**: All linting, type checking, and testing runs against locally built SDK
+- **No Registry Dependencies**: Should not require authentication to GitHub Packages or other registries
+
+### Main Branch Merges
+- **Publish SDK**: Build and publish SDK to GitHub Packages (npm registry)
+- **Version Increment**: Automatically bump version (patch increment)
+- **Registry Update**: New version becomes available for future development
+
+### Key Benefits
+- ✅ **No Registry Needed for Development**: Test npm package integration without publishing
+- ✅ **Real Distribution Testing**: Tests actual bundled output, not source files
 - ✅ **Type Safety**: Full TypeScript support with generated `.d.ts` files
 - ✅ **Multiple Formats**: Generates ES, CJS, and UMD bundles
 - ✅ **True npm Experience**: Frontend consumes SDK exactly like a published package
+- ✅ **Consistent Behavior**: Local development, PR builds, and production use same build process
 
-#### Testing Local Package Changes
+### Testing Local Package Changes
 ```bash
 # Make changes to client SDK source
 edit packages/client/src/functions.ts
@@ -147,6 +157,20 @@ pnpm --filter @f1r3fly-io/embers-client-sdk build
 # Frontend automatically picks up changes
 pnpm --filter @f1r3fly-io/embers-frontend dev
 ```
+
+### CI/CD Behavior
+1. **PR Submission**: 
+   - Builds SDK locally (same as `pnpm build`)
+   - Frontend uses locally built SDK via `workspace:*`
+   - Runs all checks against local build
+   - No publishing or registry access needed
+
+2. **Main Branch Merge**:
+   - Builds SDK locally
+   - Runs all checks
+   - Publishes SDK to GitHub Packages
+   - Increments version
+   - Commits version change back to repository
 
 ### Workspace Management
 
