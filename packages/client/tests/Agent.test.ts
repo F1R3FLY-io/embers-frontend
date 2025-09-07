@@ -1,3 +1,6 @@
+// @ts-ignore
+import { jest, beforeEach, describe, it, expect } from "@jest/globals";
+
 import type { AgentHeader, DeploySignedTestResp } from "../src";
 
 import { AgentsApiSdk, LogLevel, PrivateKey } from "../src";

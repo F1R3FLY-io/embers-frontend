@@ -1,3 +1,6 @@
+// @ts-ignore
+import { jest, beforeEach, describe, test, expect } from "@jest/globals";
+
 import type {
   Boost,
   Direction,

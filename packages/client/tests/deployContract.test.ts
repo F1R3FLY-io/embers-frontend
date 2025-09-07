@@ -1,3 +1,5 @@
+// @ts-ignore
+import { jest, test, expect } from "@jest/globals";
 import { secp256k1 } from "@noble/curves/secp256k1";
 import { blake2b } from "blakejs";
 
@@ -17,10 +19,6 @@ test("deployContract function", async () => {
   const expectedSignature = secp256k1.sign(
     blake2b(contract, undefined, 32),
     senderPrivateKey.value,
-    {
-      format: "der",
-      prehash: false,
-    },
   );
   const mockPreparePostCallback = jest
     .fn<
@@ -58,7 +56,6 @@ test("deployContract function", async () => {
       signature,
       blake2b(contract, undefined, 32),
       senderPublicKey.value,
-      { format: "der", prehash: false },
     ),
   ).toBe(true);
 });

@@ -44,14 +44,14 @@ export function sign(
   sig: Uint8Array;
   sigAlgorithm: "secp256k1";
 } {
-  const sig = secp256k1.sign(payload, key.value, {
-    format: "der",
-    prehash: false,
-  });
+  const sig = secp256k1.sign(payload, key.value);
+  
+  // The signature is returned as raw bytes in newer versions
+  // @ts-ignore - Type issue with signature object
+  const sigBytes = sig.toCompactBytes ? sig.toCompactBytes() : sig;
 
   return {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-    sig: (sig as any).toBytes("der") as Uint8Array,
+    sig: sigBytes,
     sigAlgorithm: "secp256k1",
   };
 }
