@@ -46,12 +46,18 @@ export function sign(
 } {
   const sig = secp256k1.sign(payload, key.value);
 
-  // The signature is returned as raw bytes in newer versions
-  // @ts-expect-error - Type issue with signature object
-  const sigBytes = sig.toCompactBytes ? sig.toCompactBytes() : sig;
+  // The signature object may have different methods depending on the version
+  interface SignatureWithCompactBytes {
+    toCompactBytes: () => Uint8Array;
+  }
+  
+  // Handle both old and new signature formats
+  const sigBytes: Uint8Array = 'toCompactBytes' in sig 
+    ? (sig as SignatureWithCompactBytes).toCompactBytes()
+    : sig;
 
   return {
-    sig: sigBytes as Uint8Array,
+    sig: sigBytes,
     sigAlgorithm: "secp256k1",
   };
 }

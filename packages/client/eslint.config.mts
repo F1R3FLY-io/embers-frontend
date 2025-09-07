@@ -59,4 +59,15 @@ export default tseslint.config(
       "no-console": "off",
     },
   },
+  {
+    files: ["tests/**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "import/no-unresolved": "off", // Disable for @jest/globals import
+    },
+  },
 );
