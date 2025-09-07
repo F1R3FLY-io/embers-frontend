@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/embers-frontend dev",
     "build": "pnpm -r build",
-    "test": "pnpm -r test",
+    "test": "pnpm -r test && jest .github/tests/workflow.test.ts --testEnvironment=node --preset ts-jest",
     "lint": "biome check --write .",
     "typecheck": "pnpm -r typecheck",
     "ci:lint": "biome check .",

@@ -1,4 +1,8 @@
-import type { AgentsTeamsApiSdk, CreateAgentReq, PrivateKey } from "@f1r3fly-io/embers-client-sdk";
+import type {
+  AgentsTeamsApiSdk,
+  CreateAgentReq,
+  PrivateKey,
+} from "@f1r3fly-io/embers-client-sdk";
 
 import { AIAgentsTeamsApi, Configuration } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";

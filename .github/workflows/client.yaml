@@ -25,9 +25,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,8 +40,13 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install dependencies (recursive)
-        run: pnpm install --frozen-lockfile
+      - name: Configure registry to use standard npm
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          echo "@f1r3fly-io:registry=https://registry.npmjs.org/" >> ~/.npmrc
+
+      - name: Install dependencies (workspace aware)
+        run: pnpm install --frozen-lockfile --filter @f1r3fly-io/embers-client-sdk...
 
       - name: Type check
         run: pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
@@ -54,6 +56,9 @@ jobs:
 
       - name: Lint
         run: pnpm --filter @f1r3fly-io/embers-client-sdk lint
+
+      - name: Build client SDK
+        run: pnpm --filter @f1r3fly-io/embers-client-sdk build
 
       - name: Test
         run: pnpm --filter @f1r3fly-io/embers-client-sdk test
@@ -67,9 +72,6 @@ jobs:
     permissions:
       contents: write
       packages: write
-
-    env:
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -87,9 +89,16 @@ jobs:
         with:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Configure npm authentication for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - name: Install dependencies (recursive)
         run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build client SDK
         run: pnpm --filter @f1r3fly-io/embers-client-sdk build
@@ -100,7 +109,7 @@ jobs:
       - name: Publish
         run: pnpm --filter @f1r3fly-io/embers-client-sdk publish --no-git-checks --access public
         env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update package.json
         uses: stefanzweifel/git-auto-commit-action@v6

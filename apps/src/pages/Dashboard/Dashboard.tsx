@@ -17,6 +17,10 @@ import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
 import styles from "./Dashboard.module.scss";
 
+interface AgentsResponse {
+  agents: AgentHeader[];
+}
+
 export default function Dashboard() {
   const { t } = useTranslation();
   const { setKey } = useWalletState();
@@ -30,7 +34,7 @@ export default function Dashboard() {
 
   const agents: AgentHeader[] =
     isSuccess && data && typeof data === "object" && "agents" in data
-      ? (data as { agents: AgentHeader[] }).agents
+      ? (data as AgentsResponse).agents
       : [];
 
   return (
@@ -52,7 +56,12 @@ export default function Dashboard() {
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
-            <button className={classNames(styles["icon-button"], styles["agents-button"])}>
+            <button
+              className={classNames(
+                styles["icon-button"],
+                styles["agents-button"],
+              )}
+            >
               <RobotIcon />
               <Text bold color="primary" type="large">
                 {t("agents.agents")}
