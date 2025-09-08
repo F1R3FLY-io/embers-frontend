@@ -119,7 +119,7 @@ describe("CI/CD Workflow Consistency", () => {
       // Should have GitHub Packages authentication configured
       expect(embersWorkflow).toContain("registry-url: 'https://npm.pkg.github.com'");
       expect(embersWorkflow).toContain(
-        "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}",
+        `//npm.pkg.github.com/:_authToken=\${{ secrets.GITHUB_TOKEN }}`,
       );
 
       // Should build client SDK before frontend operations
@@ -186,7 +186,7 @@ describe("CI/CD Workflow Consistency", () => {
 
       // Publish job should have GitHub Packages registry setup
       expect(clientWorkflow).toContain("registry-url: 'https://npm.pkg.github.com'");
-      expect(clientWorkflow).toContain("NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}");
+      expect(clientWorkflow).toContain(`NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}`);
 
       // Publish job should build before publishing
       const publishSection = clientWorkflow.split("publish:")[1];
