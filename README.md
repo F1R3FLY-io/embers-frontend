@@ -2,9 +2,36 @@
 
 Blockchain-based AI agent deployment and management platform with integrated wallet functionality
 
+## Prerequisites
+
+### GitHub Package Authentication
+
+This project uses the `@f1r3fly-io/lightning-bug` package from GitHub Packages. Even though it's a public package, GitHub requires authentication to install packages from their registry.
+
+#### Setup NPM_TOKEN
+
+1. Create a GitHub Personal Access Token:
+   - Go to GitHub Settings → Developer settings → Personal access tokens
+   - Generate a new token (classic) with `read:packages` scope
+   - Copy the generated token
+
+2. Set the environment variable:
+   ```bash
+   export NPM_TOKEN=your_github_token_here
+   ```
+
+3. Alternatively, add it to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.):
+   ```bash
+   echo 'export NPM_TOKEN=your_github_token_here' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
 ## Quick Start
 
 ```bash
+# Ensure NPM_TOKEN is set (see Prerequisites above)
+export NPM_TOKEN=your_github_token_here
+
 # Install dependencies
 pnpm install
 
