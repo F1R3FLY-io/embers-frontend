@@ -8,10 +8,10 @@ Blockchain-based AI agent deployment and management platform with integrated wal
 # Install dependencies for all workspace packages
 pnpm install
 
-# Start development server (automatically builds client SDK first, then runs frontend app)
+# Start development server (builds SDK, then starts frontend)
 pnpm dev
 
-# Build all packages
+# Build project
 pnpm build
 
 # Run all tests (includes SDK unit tests + workflow validation)
@@ -206,19 +206,75 @@ pnpm --filter @f1r3fly-io/embers-frontend add react-query
 pnpm --filter @f1r3fly-io/embers-client-sdk add zod
 ```
 
-#### Development Scripts
+## Project Structure
+
+```
+embers-frontend/
+├── package.json              # Root package.json with basic tooling
+├── pnpm-workspace.yaml       # Workspace: ["apps/*", "packages/*"]
+├── eslint.config.mts         # Root ESLint configuration
+├── CLAUDE.md                 # LLM development guidelines and context
+│
+├── docs/                     # Documentation hierarchy
+│   ├── requirements/         # User stories and business requirements  
+│   ├── specifications/       # Technical specifications
+│   └── architecture/         # System design and decisions
+│
+├── packages/
+│   └── client/              # @f1r3fly-io/embers-client-sdk
+│       ├── src/             # TypeScript source code
+│       ├── dist/            # Built library output (when built)
+│       ├── eslint.config.mts # Client SDK ESLint configuration
+│       └── package.json     # SDK package configuration
+│
+└── apps/
+    ├── eslint-base.config.mts    # Base ESLint rules for all apps
+    ├── eslint.config.mts         # Apps-level ESLint configuration
+    └── embers/                   # @f1r3fly-io/embers-frontend
+        ├── src/                  # React 19 + TypeScript source
+        ├── dist/                 # Vite build output (when built)
+        ├── eslint.config.mts     # Embers-specific ESLint overrides
+        ├── sync-i18n.mts         # i18n synchronization script
+        └── package.json          # Frontend dependencies including "workspace:*"
+```
+
+### ESLint Configuration Architecture
+
+The project uses a hierarchical ESLint configuration system:
+
+**Configuration Hierarchy:**
+1. **`eslint.config.mts`** (root) - Base configuration with React setup
+2. **`apps/eslint-base.config.mts`** - Shared rules for all applications
+3. **`apps/eslint.config.mts`** - Apps-level configuration (extends base config)
+4. **`apps/embers/eslint.config.mts`** - Embers-specific overrides (extends root)
+5. **`packages/client/eslint.config.mts`** - Client SDK configuration (extends root)
+
+**Why This Structure:**
+- **Consistency**: Shared rules across all applications via base config
+- **Flexibility**: Each package can override rules as needed
+- **Maintainability**: Changes to base rules automatically apply to all apps
+- **Performance**: React is installed at root for proper version detection
+
+## Workspace Packages
+
+1. **Root Package** (`embers`) - Basic linting and formatting tools
+2. **Frontend App** (`@f1r3fly-io/embers-frontend`) - React application in `apps/embers/`
+3. **Client SDK** (`@f1r3fly-io/embers-client-sdk`) - TypeScript library in `packages/client/`
+
+## Available Commands
+
+### Root Level
 ```bash
-# Start frontend development server (builds SDK first)
-pnpm dev
-
-# Build all packages in dependency order  
-pnpm build
-
-# Run all test suites
-pnpm test
-
-# Type-check all packages
-pnpm typecheck
+pnpm dev               # Build SDK and start frontend dev server
+pnpm lint              # ESLint with --fix on all files
+pnpm ci:lint           # ESLint check only  
+pnpm format:code       # Prettier formatting
+pnpm ci:check:code     # Prettier check only
+pnpm test              # Run tests in all workspaces
+pnpm test:watch        # Run tests in watch mode (all workspaces)
+pnpm build             # Build all workspaces
+pnpm typecheck         # TypeScript checking in all workspaces
+>>>>>>> @{-1}
 ```
 
 #### TypeScript Configuration

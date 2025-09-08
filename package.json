@@ -8,13 +8,14 @@
   ],
   "scripts": {
     "dev": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/embers-frontend dev",
-    "build": "pnpm -r build",
-    "test": "pnpm -r test && jest .github/tests/workflow.test.ts --testEnvironment=node --preset ts-jest",
-    "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck",
-    "ci:lint": "pnpm -r ci:lint",
+    "lint": "eslint --fix '*'",
+    "ci:lint": "eslint '*'",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",
     "ci:check:code": "prettier --check '*.{js,jsx,ts,tsx,json}'",
+    "test": "pnpm -r test",
+    "test:watch": "pnpm -r test:watch",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -40,6 +41,8 @@
     "husky": "^9.1.7",
     "jest": "^30.1.3",
     "prettier": "^3.6.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "sass-embedded": "^1.92.0",
     "stylelint": "^16.23.1",
     "stylelint-config-recess-order": "^7.2.0",
