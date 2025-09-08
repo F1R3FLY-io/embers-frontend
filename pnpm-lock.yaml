@@ -74,6 +74,12 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      react:
+        specifier: ^19.1.1
+        version: 19.1.1
+      react-dom:
+        specifier: ^19.1.1
+        version: 19.1.1(react@19.1.1)
       sass-embedded:
         specifier: ^1.92.0
         version: 1.92.1

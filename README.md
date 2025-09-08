@@ -72,6 +72,7 @@ pnpm --filter @f1r3fly-io/embers-client-sdk build
 embers-frontend/
 ├── package.json              # Root package.json with basic tooling
 ├── pnpm-workspace.yaml       # Workspace: ["apps/*", "packages/*"]
+├── eslint.config.mts         # Root ESLint configuration
 ├── CLAUDE.md                 # LLM development guidelines and context
 │
 ├── docs/                     # Documentation hierarchy
@@ -83,14 +84,36 @@ embers-frontend/
 │   └── client/              # @f1r3fly-io/embers-client-sdk
 │       ├── src/             # TypeScript source code
 │       ├── dist/            # Built library output (when built)
+│       ├── eslint.config.mts # Client SDK ESLint configuration
 │       └── package.json     # SDK package configuration
 │
 └── apps/
-    └── embers/              # @f1r3fly-io/embers-frontend
-        ├── src/             # React 19 + TypeScript source
-        ├── dist/            # Vite build output (when built)
-        └── package.json     # Frontend dependencies including "workspace:*"
+    ├── eslint-base.config.mts    # Base ESLint rules for all apps
+    ├── eslint.config.mts         # Apps-level ESLint configuration
+    └── embers/                   # @f1r3fly-io/embers-frontend
+        ├── src/                  # React 19 + TypeScript source
+        ├── dist/                 # Vite build output (when built)
+        ├── eslint.config.mts     # Embers-specific ESLint overrides
+        ├── sync-i18n.mts         # i18n synchronization script
+        └── package.json          # Frontend dependencies including "workspace:*"
 ```
+
+### ESLint Configuration Architecture
+
+The project uses a hierarchical ESLint configuration system:
+
+**Configuration Hierarchy:**
+1. **`eslint.config.mts`** (root) - Base configuration with React setup
+2. **`apps/eslint-base.config.mts`** - Shared rules for all applications
+3. **`apps/eslint.config.mts`** - Apps-level configuration (extends base config)
+4. **`apps/embers/eslint.config.mts`** - Embers-specific overrides (extends root)
+5. **`packages/client/eslint.config.mts`** - Client SDK configuration (extends root)
+
+**Why This Structure:**
+- **Consistency**: Shared rules across all applications via base config
+- **Flexibility**: Each package can override rules as needed
+- **Maintainability**: Changes to base rules automatically apply to all apps
+- **Performance**: React is installed at root for proper version detection
 
 ## Workspace Packages
 
@@ -106,6 +129,10 @@ pnpm lint              # ESLint with --fix on all files
 pnpm ci:lint           # ESLint check only  
 pnpm format:code       # Prettier formatting
 pnpm ci:check:code     # Prettier check only
+pnpm test              # Run tests in all workspaces
+pnpm test:watch        # Run tests in watch mode (all workspaces)
+pnpm build             # Build all workspaces
+pnpm typecheck         # TypeScript checking in all workspaces
 ```
 
 ### Frontend App (`apps/embers/`)
