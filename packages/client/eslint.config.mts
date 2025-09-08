@@ -71,5 +71,3 @@ export default tseslint.config(
     },
   },
 );
-
-export default config;
