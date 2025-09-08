@@ -1,3 +1,5 @@
+import type { AgentHeader } from "@f1r3fly-io/embers-client-sdk";
+
 import classNames from "classnames";
 import { t } from "i18next";
 import { useCallback, useState } from "react";
@@ -30,7 +32,11 @@ export default function Dashboard() {
   const { setKey } = useWalletState();
   const logout = useCallback(() => setKey(), [setKey]);
 
-  const { data, isSuccess } = useAgents();
+  const agentsQuery = useAgents();
+  const agents: AgentHeader[] = agentsQuery.data
+    ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+      ((agentsQuery.data as any).agents as AgentHeader[])
+    : [];
 
   return (
     <div className={styles.page}>
@@ -123,7 +129,7 @@ export default function Dashboard() {
             )}
           >
             {selectedTab === "agents" ? (
-              <AgentsGrid agents={data?.agents || []} isSuccess={isSuccess} />
+              <AgentsGrid agents={agents} isSuccess={agentsQuery.isSuccess} />
             ) : (
               <AgentTeamsGrid />
             )}
