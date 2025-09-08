@@ -11,7 +11,7 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
+  overflow: hidden auto;
   background-color: var(--background-color);
   transition:
     background-color 0.3s ease,
@@ -40,6 +40,7 @@ body {
   --text-color-primary: #f1f3f5;
   --text-color-secondary: #93a5b7;
   --text-link-color: #208bfe;
+  --create-button-hover-bg: #48247a33;
 
   /* Theme independent */
   --background-blue-transparent: #208bfe4d;
@@ -61,6 +62,7 @@ body {
   --border-primary: #a9b7c5;
   --button-hover: #5a12be;
   --color-scheme: light;
+  --create-button-hover-bg: #9b6dda0d;
   --secondary-button-color: #9a52ff;
   --text-color-primary: #0b0f14;
   --text-color-secondary: #42576c;

@@ -20,13 +20,43 @@
   "agents": {
     "agents": "Agents",
     "createNewAgent": "Créer un nouvel agent",
-    "agentWithName": "Agent {{name}}"
+    "agentWithName": "Agent {{name}}",
+    "agentTeams": "",
+    "createNewAgentTeam": ""
   },
   "dashboard": {
     "documentation": "Documentation",
     "logout": "Se déconnecter"
   },
   "aiAgent": {
-    "bioAgent": "Agent BioMatch"
+    "bioAgent": "Agent BioMatch",
+    "create": ""
+  },
+  "basic": {
+    "inputPrompt": "",
+    "saveDraft": ""
+  },
+  "deploy": {
+    "deployAgent": "",
+    "reviewDetails": "",
+    "agentDetails": "",
+    "agentAddress": "",
+    "blockchainShard": "",
+    "agentName": "",
+    "agentDescription": "",
+    "welcomeInterface": "",
+    "welcomeMessage": "",
+    "enterWelcomeMessage": "",
+    "inputPrompt": "",
+    "enterInputPrompt": "",
+    "versionAndNotes": "",
+    "enterDeploymentNotes": "",
+    "version": "",
+    "notes": "",
+    "deploy": "",
+    "saveAsDraft": "",
+    "back": "",
+    "havingTrouble": "",
+    "contactSupport": ""
   }
 }
