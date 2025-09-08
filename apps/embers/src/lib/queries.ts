@@ -1,5 +1,4 @@
 import type {
-  Agents,
   AgentsTeamsApiSdk,
   CreateAgentReq,
   PrivateKey,
@@ -17,7 +16,7 @@ import { toApiGraph } from "./graph";
 export function useAgents() {
   const api = useApi();
 
-  return useQuery<Agents>({
+  return useQuery({
     queryFn: async () => api.agents.getAgents(),
     queryKey: ["agents", api.wallets.address],
   });
@@ -103,13 +102,10 @@ export function useRunDemo() {
   const client = new AIAgentsTeamsApi(configuration);
 
   return useMutation({
-    mutationFn: async (props: {
-      name: string;
-      prompt: string;
-    }): Promise<unknown> =>
+    mutationFn: async (props: { name: string; prompt: string }) =>
       client.apiAiAgentsTeamsRunDemoPost({
         runDemoReq: props,
-      }),
+      }) as Promise<unknown>,
   });
 }
 
@@ -154,9 +150,7 @@ export function useCreateAgentsTeamMutation() {
       nodes,
       ...rest
     }: WithGraph<Parameters<AgentsTeamsApiSdk["createAgentsTeam"]>[0]>) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const graph = toApiGraph(nodes, edges);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       return api.agentsTeams.createAgentsTeam({ ...rest, graph });
     },
   });
@@ -173,9 +167,7 @@ export function useSaveAgentsTeamMutation(id: string) {
     }: WithGraph<
       Parameters<AgentsTeamsApiSdk["saveAgentsTeamVersion"]>[1]
     >) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const graph = toApiGraph(nodes, edges);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       return api.agentsTeams.saveAgentsTeamVersion(id, { ...rest, graph });
     },
   });
