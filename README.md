@@ -8,12 +8,10 @@ Blockchain-based AI agent deployment and management platform with integrated wal
 # Install dependencies
 pnpm install
 
-# Start development server
-cd apps/embers
+# Start development server (builds SDK, then starts frontend)
 pnpm dev
 
 # Build project  
-cd apps/embers
 pnpm build
 
 # Run lint checks
@@ -125,6 +123,7 @@ The project uses a hierarchical ESLint configuration system:
 
 ### Root Level
 ```bash
+pnpm dev               # Build SDK and start frontend dev server
 pnpm lint              # ESLint with --fix on all files
 pnpm ci:lint           # ESLint check only  
 pnpm format:code       # Prettier formatting

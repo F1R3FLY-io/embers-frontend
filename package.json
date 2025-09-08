@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/embers-frontend dev",
     "lint": "eslint --fix '*'",
     "ci:lint": "eslint '*'",
     "format:code": "prettier --write '*.{js,jsx,ts,tsx,json}'",
