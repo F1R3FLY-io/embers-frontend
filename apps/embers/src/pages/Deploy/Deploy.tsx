@@ -25,7 +25,7 @@ export default function Deploy({
   return (
     <div className={styles["deploy-container"]}>
       <Text bold color="primary" fontSize={40} type="H2">
-        Create AI Agent
+        {t("aiAgent.create")}
       </Text>
       <div className={styles["stepper-container"]}>
         <Stepper
@@ -105,7 +105,7 @@ export default function Deploy({
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
-                  Input prompt
+                  {t("basic.inputPrompt")}
                 </Text>
                 <textarea
                   className={styles["form-textarea"]}
@@ -147,7 +147,7 @@ export default function Deploy({
             <div className={styles["button-group"]}>
               <button className={styles["draft-button"]}>
                 <DraftIcon />
-                Save as Draft
+                {t("basic.saveDraft")}
               </button>
               <button className={styles["deploy-button"]}>
                 {t("deploy.deploy")}
