@@ -1,4 +1,25 @@
 declare const classNames: {
   readonly container: "container";
+  readonly "code-editor": "code-editor";
+  readonly "cm-editor": "cm-editor";
+  readonly "cm-content": "cm-content";
+  readonly "cm-gutters": "cm-gutters";
+  readonly "cm-lineNumbers": "cm-lineNumbers";
+  readonly "cm-gutterElement": "cm-gutterElement";
+  readonly "cm-keyword": "cm-keyword";
+  readonly "cm-number": "cm-number";
+  readonly "cm-string": "cm-string";
+  readonly "cm-boolean": "cm-boolean";
+  readonly "cm-variable": "cm-variable";
+  readonly "cm-comment": "cm-comment";
+  readonly "cm-operator": "cm-operator";
+  readonly "cm-type": "cm-type";
+  readonly "cm-function": "cm-function";
+  readonly "cm-constant": "cm-constant";
+  readonly "cm-error-underline": "cm-error-underline";
+  readonly "cm-warning-underline": "cm-warning-underline";
+  readonly "cm-info-underline": "cm-info-underline";
+  readonly "cm-hint-underline": "cm-hint-underline";
+  readonly "cm-highlight": "cm-highlight";
 };
 export default classNames;
