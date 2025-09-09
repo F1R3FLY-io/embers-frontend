@@ -13,10 +13,10 @@ RUN pnpm run build
 
 FROM nginx:stable-alpine
 COPY apps/embers/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/apps/embers/dist /usr/share/nginx/html
-
-COPY entrypoint.sh /entrypoint.sh
+COPY apps/embers/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+COPY --from=build /app/apps/embers/dist /usr/share/nginx/html
 
 EXPOSE 80
 
