@@ -5,14 +5,14 @@ import perfectionist from "eslint-plugin-perfectionist";
 import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import { globalIgnores } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export const JS_FILES = "**/*.{js,jsx}";
 export const TS_FILES = "**/*.{ts,tsx}";
 
-export default tseslint.config(
+export default defineConfig(
   globalIgnores(["dist", "node_modules"]),
   {
     extends: [

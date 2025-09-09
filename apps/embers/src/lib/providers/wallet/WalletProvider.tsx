@@ -11,7 +11,7 @@ import type { EmbersAPI } from "./useApi";
 
 import { WalletContext } from "./useApi";
 
-const FIREFLY_API_URL = import.meta.env.VITE_FIREFLY_API_URL as string;
+const FIREFLY_API_URL = window.API_URL;
 
 export function WalletProvider({ children }: React.PropsWithChildren) {
   const [embers, dispatch] = useReducer<

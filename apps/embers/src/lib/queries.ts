@@ -85,7 +85,7 @@ export function useDeployTestMutation() {
 
 export function useDeployDemo() {
   const configuration = new Configuration({
-    basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
+    basePath: window.API_URL,
   });
   const client = new AIAgentsTeamsApi(configuration);
 
@@ -97,7 +97,7 @@ export function useDeployDemo() {
 
 export function useRunDemo() {
   const configuration = new Configuration({
-    basePath: import.meta.env.VITE_FIREFLY_API_URL as string,
+    basePath: window.API_URL,
   });
   const client = new AIAgentsTeamsApi(configuration);
 
