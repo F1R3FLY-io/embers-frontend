@@ -26,6 +26,8 @@ updates:
     schedule:
       interval: weekly
     versioning-strategy: increase
+    registries:
+      - npm-github
     groups:
       all:
         patterns:
