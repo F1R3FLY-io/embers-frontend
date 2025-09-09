@@ -33,7 +33,7 @@ export default defineConfig({
       targets: [
         {
           dest: "",
-          src: ["src/config.js"],
+          src: ["config.js"],
         },
       ],
     }),
