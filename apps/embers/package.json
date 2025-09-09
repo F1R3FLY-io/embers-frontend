@@ -15,10 +15,10 @@
     "lint": "eslint --fix .",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
-    "format:code": "prettier --write '**/*.{js,jsx,cjs,ts,tsx,html,svg,json,css,scss}'",
+    "format:code": "prettier --write '**/*.{js,jsx,cjs,ts,tsx,mts,html,svg,json,css,scss}'",
     "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
-    "ci:check:code": "prettier --check '**/*.{js,jsx,cjs,ts,tsx,html,svg,json,css,scss}'",
+    "ci:check:code": "prettier --check '**/*.{js,jsx,cjs,ts,tsx,mts,html,svg,json,css,scss}'",
     "ci:check:css": "stylelint '**/*.{css,scss}'",
     "sync-i18n": "node --loader ts-node/esm sync-i18n.mts"
   },
@@ -26,11 +26,11 @@
     "@codemirror/commands": "^6.8.1",
     "@codemirror/state": "^6.5.2",
     "@f1r3fly-io/embers-client-sdk": "workspace:*",
-    "@f1r3fly-io/lightning-bug": "^0.6.4",
+    "@f1r3fly-io/lightning-bug": "^0.6.5",
     "@f1r3fly-io/tree-sitter-rholang-js-with-comments": "^1.1.9",
     "@fortawesome/fontawesome-free": "^7.0.1",
     "@scure/base": "^2.0.0",
-    "@szhsin/react-menu": "^4.4.1",
+    "@szhsin/react-menu": "^4.5.0",
     "@tanstack/react-query": "^5.87.1",
     "@xyflow/react": "^12.8.4",
     "classnames": "^2.5.1",
@@ -50,6 +50,7 @@
     "@types/react-modal": "^3.16.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
+    "vite-plugin-static-copy": "^3.1.2",
     "vite-plugin-svgr": "^4.5.0"
   }
 }
