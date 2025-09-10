@@ -37,7 +37,7 @@ export default function CodeEditor() {
       editor.openDocument(fileName);
       const events = editor.getEvents();
       events.subscribe((event) => {
-        if (event.type == "ready") {
+        if (event.type === "ready") {
           editor.openDocument(fileName);
         }
       });
@@ -59,21 +59,19 @@ export default function CodeEditor() {
   }, []);
 
   // Handle Vite HMR updates: shutdown LSP before update, reconnect after
-  if (import.meta.hot) {
-    useEffect(() => {
-      const handleBeforeUpdate = () => {
-        if (editorRef.current && editorRef.current.isReady()) {
-          editorRef.current.shutdownLsp();
-        }
-      };
+  useEffect(() => {
+    const handleBeforeUpdate = () => {
+      if (editorRef.current && editorRef.current.isReady()) {
+        editorRef.current.shutdownLsp();
+      }
+    };
 
-      import.meta.hot?.on("vite:beforeUpdate", handleBeforeUpdate);
+    import.meta.hot?.on("vite:beforeUpdate", handleBeforeUpdate);
 
-      return () => {
-        import.meta.hot?.off("vite:beforeUpdate", handleBeforeUpdate);
-      };
-    }, []);
-  }
+    return () => {
+      import.meta.hot?.off("vite:beforeUpdate", handleBeforeUpdate);
+    };
+  }, []);
 
   return (
     <CodeLayout>
