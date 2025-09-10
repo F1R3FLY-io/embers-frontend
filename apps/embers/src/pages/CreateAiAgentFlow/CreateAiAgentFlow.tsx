@@ -67,10 +67,10 @@ export default function CodeEditor() {
         }
       };
 
-      import.meta.hot.on('vite:beforeUpdate', handleBeforeUpdate);
+      import.meta.hot?.on('vite:beforeUpdate', handleBeforeUpdate);
 
       return () => {
-        import.meta.hot.off('vite:beforeUpdate', handleBeforeUpdate);
+        import.meta.hot?.off('vite:beforeUpdate', handleBeforeUpdate);
       };
     }, []);
   }
