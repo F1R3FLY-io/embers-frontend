@@ -13,6 +13,7 @@ import styles from "./App.module.scss";
 import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
+const Deploy = lazy(async () => import("@/pages/Deploy/Deploy"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
 const CreateAiTeamFlow = lazy(async () => import("@/pages/CreateAiTeamFlow"));
@@ -37,7 +38,8 @@ export default function App() {
                         element={<CreateAiTeamFlow />}
                         path="/create-ai-team"
                       />
-                      <Route element={<ProtectedRoute />}>
+                      <Route element={<Deploy />} path="/deploy" />
+                    <Route element={<ProtectedRoute />}>
                         <Route element={<Dashboard />} path="/dashboard" />
                         <Route
                           element={<CreateAiAgentFlow />}

@@ -1,28 +1,34 @@
 import classNames from "classnames";
-import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { t } from "i18next";
+import { useCallback, useState } from "react";
 
-import { LanguageSelect } from "@/lib/components/Select/LanguageSelect/LanguageSelect";
+import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 import { useAgents } from "@/lib/queries";
-import RobotIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
+import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
+import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
+import { AgentsButton } from "./components/AgentsButton";
+import { AgentsGrid } from "./components/AgentsGrid";
+import { AgentsTitle } from "./components/AgentsTitle";
+import { AgentTeamsGrid } from "./components/AgentTeamsGrid";
+import { ControlsRow } from "./components/ControlsRow";
+import { IconButton } from "./components/IconButton";
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
-  const { t } = useTranslation();
+  const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
+    "agents",
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const { setKey } = useWalletState();
   const logout = useCallback(() => setKey(), [setKey]);
-  const navigate = useNavigate();
-  const createAiAgent = useCallback(() => {
-    void navigate("/create-ai-agent");
-  }, [navigate]);
 
   const { data, isSuccess } = useAgents();
 
@@ -45,60 +51,82 @@ export default function Dashboard() {
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
-            <button
-              className={classNames(
-                styles["icon-button"],
-                styles["agents-button"],
-              )}
+            <AgentsButton
+              icon={<AgentIcon data-agent />}
+              isSelected={selectedTab === "agents"}
+              onClick={() => {
+                if (selectedTab !== "agents") {
+                  setSelectedTab("agents");
+                }
+              }}
             >
-              <RobotIcon />
-              <Text bold color="primary" type="large">
+              <Text color="secondary" type="large">
                 {t("agents.agents")}
               </Text>
-            </button>
+            </AgentsButton>
+            <AgentsButton
+              icon={<AgentTeamIcon data-agent-teams />}
+              isSelected={selectedTab === "agent-teams"}
+              onClick={() => {
+                if (selectedTab !== "agent-teams") {
+                  setSelectedTab("agent-teams");
+                }
+              }}
+            >
+              <Text color="secondary" type="large">
+                {t("agents.agentTeams")}
+              </Text>
+            </AgentsButton>
           </div>
           <div className={styles["dashboard-column"]}>
             <div className={styles["dashboard-divider"]} />
             <div className={styles["dashboard-buttons"]}>
-              <button className={styles["icon-button"]}>
-                <DocumentationIcon />
+              <IconButton icon={<DocumentationIcon />}>
                 <Text color="primary" type="large">
                   {t("dashboard.documentation")}
                 </Text>
-              </button>
-              <button className={styles["icon-button"]} onClick={logout}>
-                <LogoutIcon />
+              </IconButton>
+              <IconButton icon={<LogoutIcon />} onClick={logout}>
                 <Text color="primary" type="large">
                   {t("dashboard.logout")}
                 </Text>
-              </button>
+              </IconButton>
             </div>
           </div>
         </div>
         <div className={styles["content-area"]}>
-          <div className={styles["content-header"]}>
-            <Text bold color="primary" type="H2">
-              {t("agents.agents")}
-            </Text>
+          <div
+            className={classNames(
+              styles["content-header"],
+              styles["tab-content"],
+            )}
+          >
+            <AgentsTitle
+              getTitle={() =>
+                selectedTab === "agents"
+                  ? t("agents.agents")
+                  : t("agents.agentTeams")
+              }
+            />
+            <ControlsRow
+              searchQuery={searchQuery}
+              selectedTab={selectedTab}
+              sortBy={sortBy}
+              onSearchChange={setSearchQuery}
+              onSortChange={setSortBy}
+            />
           </div>
-          <div className={styles["grid-container"]}>
-            <div
-              className={classNames(styles["grid-box"], styles["create-box"])}
-              onClick={createAiAgent}
-            >
-              <RobotIcon className={styles["create-robot-icon"]} />
-              <Text color="secondary" type="large">
-                {t("agents.createNewAgent")}
-              </Text>
-            </div>
-            {isSuccess &&
-              data.agents.map((agent) => (
-                <div key={agent.id} className={styles["grid-box"]}>
-                  <Text color="secondary" type="large">
-                    {t("agents.agentWithName", { name: agent.name })}
-                  </Text>
-                </div>
-              ))}
+          <div
+            className={classNames(
+              styles["grid-container"],
+              styles["tab-content"],
+            )}
+          >
+            {selectedTab === "agents" ? (
+              <AgentsGrid agents={data?.agents || []} isSuccess={isSuccess} />
+            ) : (
+              <AgentTeamsGrid />
+            )}
           </div>
         </div>
       </div>

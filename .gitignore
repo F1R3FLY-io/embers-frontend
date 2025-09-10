@@ -28,9 +28,10 @@ dist-ssr
 
 # LLM Coding Synth
 .mcp.json
-CLAUDE.md
 
 # location to store LLM artifacts
 tmp/
 coverage/
 .env
+
+/apps/embers/public/*

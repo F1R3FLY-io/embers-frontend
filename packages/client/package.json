@@ -1,6 +1,6 @@
 {
   "name": "@f1r3fly-io/embers-client-sdk",
-  "version": "0.0.36",
+  "version": "0.0.41",
   "main": "dist/embers-client-sdk.cjs.js",
   "module": "dist/embers-client-sdk.es.js",
   "browser": "dist/embers-client-sdk.umd.js",
@@ -45,16 +45,16 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
-    "counterfact": "^1.4.2",
+    "counterfact": "^1.4.5",
     "eslint-plugin-unused-imports": "^4.2.0",
     "express": "^5.1.0",
-    "serve": "^14.2.4",
+    "serve": "^14.2.5",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typedoc": "^0.28.12"
   },
   "dependencies": {
-    "@f1r3fly-io/graphl-parser": "^0.0.2",
+    "@f1r3fly-io/graphl-parser": "^0.0.6",
     "@noble/curves": "^2.0.0",
     "@scure/base": "^2.0.0",
     "blakejs": "^1.2.1",
