@@ -5,6 +5,7 @@ import { Button } from "@/lib/components/Button";
 import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./ManualInputModal.module.scss";
+import { Text } from "@/lib/components/Text";
 
 export type ManualInputType = "Text" | "JSON" | "Number" | "File";
 
@@ -62,7 +63,9 @@ export function ManualInputModal({
   // todo also we need to add an input component!!!
   return (
     <div className={styles["nim-modal"]}>
-      <h2 className={styles["nim-title"]}>Edit Manual Input Node</h2>
+      <Text className={styles["nim-title"]} type="H2">
+        Edit Manual Input Node
+      </Text>
 
       <div className={styles["nim-field"]}>
         <label className={styles["nim-label"]}>Node Label</label>
@@ -74,7 +77,7 @@ export function ManualInputModal({
         />
       </div>
 
-      {error && <div className={styles["nim-error"]}>{error}</div>}
+      {error && <Text className={styles["nim-error"]}>{error}</Text>}
 
       <div className={styles["nim-actions"]}>
         <Button
