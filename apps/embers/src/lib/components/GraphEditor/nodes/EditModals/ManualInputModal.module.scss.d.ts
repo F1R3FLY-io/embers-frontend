@@ -7,6 +7,7 @@ declare const classNames: {
   readonly "nim-select": "nim-select";
   readonly "nim-error": "nim-error";
   readonly "nim-actions": "nim-actions";
+  readonly "nim-btn-cancel": "nim-btn-cancel";
   readonly "nim-btn": "nim-btn";
 };
 export default classNames;

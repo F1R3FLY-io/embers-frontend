@@ -28,7 +28,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       isOpen,
       maxWidth = 720,
       onClose,
-      showCloseButton = true,
+      showCloseButton = false,
       ...rest
     },
     ref,

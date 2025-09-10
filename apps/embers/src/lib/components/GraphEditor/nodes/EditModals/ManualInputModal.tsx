@@ -1,52 +1,30 @@
+import type React from "react";
+
 import classNames from "classnames";
 import { useState } from "react";
 
+import type { NodeModalProps } from "@/lib/components/GraphEditor/nodes";
+
 import { Button } from "@/lib/components/Button";
+import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./ManualInputModal.module.scss";
-import { Text } from "@/lib/components/Text";
 
-export type ManualInputType = "Text" | "JSON" | "Number" | "File";
-
-export interface EditManualInputNodeValues {
-  deploymentContainer: string;
-  inputType: ManualInputType;
-  nodeLabel: string;
-  outputPortName: string;
-}
-
-export function ManualInputModal({
+export const ManualInputModal: React.FC<NodeModalProps<"manual-input">> = ({
   initial,
   onSave,
-}: {
-  initial: EditManualInputNodeValues;
-  onSave: (values: EditManualInputNodeValues) => void;
-}) {
+}) => {
   const { close } = useModal();
 
-  const [values, setValues] = useState<EditManualInputNodeValues>(initial);
+  const [values] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const update = <K extends keyof EditManualInputNodeValues>(
-    key: K,
-    v: EditManualInputNodeValues[K],
-  ) => setValues((s) => ({ ...s, [key]: v }));
 
   const handleSubmit = () => {
     setError(null);
 
     //@todo mb we need to add formik or something to work with validations and error states
-
-    if (!values.nodeLabel.trim()) {
-      setError("Node label is required.");
-      return;
-    }
-    if (!values.outputPortName.trim()) {
-      setError("Output port name is required.");
-      return;
-    }
 
     try {
       setSaving(true);
@@ -66,17 +44,6 @@ export function ManualInputModal({
       <Text className={styles["nim-title"]} type="H2">
         Edit Manual Input Node
       </Text>
-
-      <div className={styles["nim-field"]}>
-        <label className={styles["nim-label"]}>Node Label</label>
-        <input
-          className={styles["nim-input"]}
-          placeholder="Manual Input"
-          value={values.nodeLabel}
-          onChange={(e) => update("nodeLabel", e.target.value)}
-        />
-      </div>
-
       {error && <Text className={styles["nim-error"]}>{error}</Text>}
 
       <div className={styles["nim-actions"]}>
@@ -88,7 +55,7 @@ export function ManualInputModal({
           {saving ? "Saving…" : "Save"}
         </Button>
         <Button
-          className={classNames(styles["nim-btn"])}
+          className={classNames(styles["nim-btn"], styles["nim-btn-cancel"])}
           type="secondary"
           onClick={close}
         >
@@ -97,4 +64,4 @@ export function ManualInputModal({
       </div>
     </div>
   );
-}
+};

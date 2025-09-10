@@ -13,14 +13,12 @@ export type ResolvedModalOptions = {
   closeOnBlur: boolean;
   closeOnEsc: boolean;
   maxWidth: number | string;
-  showCloseButton: boolean;
 };
 const defaultOptions: ResolvedModalOptions = {
   ariaLabel: "Dialog",
   closeOnBlur: true,
   closeOnEsc: true,
   maxWidth: 720,
-  showCloseButton: true,
 };
 
 export function ModalProvider({ children }: PropsWithChildren) {
@@ -48,7 +46,6 @@ export function ModalProvider({ children }: PropsWithChildren) {
         closeOnEsc={opts.closeOnEsc ?? true}
         isOpen={content !== null}
         maxWidth={opts.maxWidth}
-        showCloseButton={opts.showCloseButton ?? false}
         onClose={close}
       >
         {content}

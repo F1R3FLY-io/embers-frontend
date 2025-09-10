@@ -1,3 +1,5 @@
+import type { NodeData } from "@/lib/components/GraphEditor/GraphEditor";
+
 import type { NodeRegistry } from "./nodes.registry";
 
 import { DeployContainerNode } from "./DeployContainer";
@@ -26,6 +28,11 @@ function makeNodeTypes(registry: NodeRegistry) {
   >;
 }
 
+export interface NodeModalProps<T extends keyof NodeTypes> {
+  initial: NodeData<T>;
+  onCancel?: () => void;
+  onSave: (data: NodeData<T>) => void;
+}
 export const nodeTypes = {
   ...makeNodeTypes(NODE_REGISTRY),
   "deploy-container": DeployContainerNode, // special

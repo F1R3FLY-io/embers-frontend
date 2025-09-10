@@ -18,18 +18,22 @@ import type { NodeTypes } from "@/lib/components/GraphEditor/nodes";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
+import { useModal } from "@/lib/providers/modal/useModal";
 
 import type { NodeKind } from "./nodes/nodes.registry";
 
 import styles from "./GraphEditor.module.scss";
-import { NODE_REGISTRY } from "./nodes/nodes.registry";
+import { MODAL_REGISTRY, NODE_REGISTRY } from "./nodes/nodes.registry";
 
 export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
 }[keyof NodeTypes];
 
 export type Edge = REdge;
-type NodeData<T extends keyof NodeTypes> = Extract<Node, { type: T }>["data"];
+export type NodeData<T extends keyof NodeTypes> = Extract<
+  Node,
+  { type: T }
+>["data"];
 
 function createNodeChange<T extends keyof NodeTypes>(
   type: T,
@@ -53,6 +57,8 @@ function createNodeChange<T extends keyof NodeTypes>(
 export function GraphEditor() {
   const [nodes, , onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  const { open } = useModal();
 
   const onConnect = useCallback(
     (connection: Connection) =>
@@ -96,11 +102,30 @@ export function GraphEditor() {
       onClick: () => {
         const pos = screenToFlowPosition(contextMenuPosition);
         const data = NODE_REGISTRY[type].defaultData;
-        onNodesChange(createNodeChange(type, pos, data));
+        const ModalComponent = MODAL_REGISTRY[type];
+        open(
+          <ModalComponent
+            initial={data}
+            onSave={(updatedData) => {
+              onNodesChange(createNodeChange(type, pos, updatedData));
+            }}
+          />,
+          {
+            ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+            closeOnBlur: true,
+            maxWidth: 520,
+          },
+        );
       },
       type: "text",
     }));
-  }, [contextMenuPosition, onNodesChange, screenToFlowPosition, selectedNodes]);
+  }, [
+    contextMenuPosition,
+    onNodesChange,
+    open,
+    screenToFlowPosition,
+    selectedNodes.length,
+  ]);
 
   const deployItem: MenuItem = useMemo(
     () => ({
@@ -181,7 +206,20 @@ export function GraphEditor() {
             });
 
             const data = NODE_REGISTRY[type].defaultData;
-            onNodesChange(createNodeChange(type, position, data));
+            const ModalComponent = MODAL_REGISTRY[type];
+            open(
+              <ModalComponent
+                initial={data}
+                onSave={(updatedData) => {
+                  onNodesChange(createNodeChange(type, position, updatedData));
+                }}
+              />,
+              {
+                ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                closeOnBlur: true,
+                maxWidth: 520,
+              },
+            );
           }
         }}
         onEdgesChange={onEdgesChange}

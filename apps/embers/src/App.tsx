@@ -39,7 +39,7 @@ export default function App() {
                         path="/create-ai-team"
                       />
                       <Route element={<Deploy />} path="/deploy" />
-                    <Route element={<ProtectedRoute />}>
+                      <Route element={<ProtectedRoute />}>
                         <Route element={<Dashboard />} path="/dashboard" />
                         <Route
                           element={<CreateAiAgentFlow />}

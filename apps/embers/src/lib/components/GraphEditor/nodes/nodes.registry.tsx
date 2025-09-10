@@ -1,5 +1,6 @@
 import { Position } from "@xyflow/react";
 
+import { ManualInputModal } from "@/lib/components/GraphEditor/nodes/EditModals";
 import inputNodeIcon from "@/public/icons/input-node.png";
 import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 import ttsNodeIcon from "@/public/icons/tts-node.png";
@@ -12,7 +13,7 @@ export interface NodeDefinition<
   displayName: string;
   handlers?: Array<{ position: Position; type: "source" | "target" }>;
   hideInMenu?: boolean;
-  iconSrc?: string; // ← string path, not JSX
+  iconSrc?: string;
   menuLabel?: string;
   title: string;
 }
@@ -83,6 +84,16 @@ export const NODE_REGISTRY = {
   },
 } as const satisfies Record<string, NodeDefinition>;
 
+export const MODAL_REGISTRY = {
+  compress: ManualInputModal,
+  "manual-input": ManualInputModal,
+  "send-to-channel": ManualInputModal,
+  "text-model": ManualInputModal,
+  "tti-model": ManualInputModal,
+  "tts-model": ManualInputModal,
+} as const;
+
+export type NodeModalType = keyof typeof MODAL_REGISTRY;
 export type NodeRegistry = typeof NODE_REGISTRY;
 export type NodeKind = keyof NodeRegistry;
 export type NodeDataOf<K extends NodeKind> = NodeRegistry[K]["defaultData"];
