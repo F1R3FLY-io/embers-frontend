@@ -36,7 +36,7 @@ export default function CodeEditor() {
       editor.setLogLevel(logLevel);
       editor.openDocument(fileName);
       const events = editor.getEvents();
-      events.subscribe(event => {
+      events.subscribe((event) => {
         if (event.type == "ready") {
           editor.openDocument(fileName);
         }
@@ -67,10 +67,10 @@ export default function CodeEditor() {
         }
       };
 
-      import.meta.hot?.on('vite:beforeUpdate', handleBeforeUpdate);
+      import.meta.hot?.on("vite:beforeUpdate", handleBeforeUpdate);
 
       return () => {
-        import.meta.hot?.off('vite:beforeUpdate', handleBeforeUpdate);
+        import.meta.hot?.off("vite:beforeUpdate", handleBeforeUpdate);
       };
     }, []);
   }
