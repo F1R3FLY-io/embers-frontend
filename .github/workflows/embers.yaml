@@ -1,5 +1,11 @@
 name: Embers
-run-name: Embers ${{ github.event_name == 'push' && 'main' || format('MR {0}', github.event.pull_request.title) }}
+run-name: >-
+  Embers ${{
+    github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && github.ref_name ||
+    github.event_name == 'push' && github.ref_name == 'main' && 'main' ||
+    github.event_name == 'pull_request' && format('MR {0}', github.event.pull_request.title) ||
+    github.ref_name
+  }}
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -7,6 +13,7 @@ concurrency:
 on:
   push:
     branches: [main]
+    tags: ["*"]
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
@@ -79,11 +86,20 @@ jobs:
   publish-docker:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref_type == 'tag'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: f1r3flyindustries/embers-frontend
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -106,9 +122,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            f1r3flyindustries/embers-frontend:latest
-            f1r3flyindustries/embers-frontend:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           secrets: |
             "npmrc=@f1r3fly-io:registry=https://npm.pkg.github.com
             //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
