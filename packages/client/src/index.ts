@@ -6,6 +6,7 @@ export * from "./entities/Amount";
 export * from "./entities/Description";
 export * from "./entities/PrivateKey";
 export * from "./entities/PublicKey";
+export * from "./entities/TestnetApi";
 export * from "./entities/WalletsApi";
 export * from "./serialization";
 

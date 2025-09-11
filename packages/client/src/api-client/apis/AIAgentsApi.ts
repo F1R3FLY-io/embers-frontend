@@ -15,12 +15,7 @@ import type {
   Agents,
   CreateAgentReq,
   CreateAgentResp,
-  CreateTestwalletResp,
   DeployAgentResp,
-  DeploySignedTestReq,
-  DeploySignedTestResp,
-  DeployTestReq,
-  DeployTestResp,
   SaveAgentResp,
   SignedContract,
 } from "../models/index";
@@ -30,12 +25,7 @@ import {
   AgentsFromJSON,
   CreateAgentReqToJSON,
   CreateAgentRespFromJSON,
-  CreateTestwalletRespFromJSON,
   DeployAgentRespFromJSON,
-  DeploySignedTestReqToJSON,
-  DeploySignedTestRespFromJSON,
-  DeployTestReqToJSON,
-  DeployTestRespFromJSON,
   SaveAgentRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
@@ -85,14 +75,6 @@ export interface ApiAiAgentsIdSavePreparePostRequest {
 export interface ApiAiAgentsIdSaveSendPostRequest {
   id: string;
   signedContract: SignedContract;
-}
-
-export interface ApiAiAgentsTestDeployPreparePostRequest {
-  deployTestReq: DeployTestReq;
-}
-
-export interface ApiAiAgentsTestDeploySendPostRequest {
-  deploySignedTestReq: DeploySignedTestReq;
 }
 
 /**
@@ -647,140 +629,5 @@ export class AIAgentsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
     await this.apiAiAgentsIdSaveSendPostRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeployPreparePostRaw(
-    requestParameters: ApiAiAgentsTestDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployTestResp>> {
-    if (requestParameters.deployTestReq == null) {
-      throw new runtime.RequiredError(
-        "deployTestReq",
-        'Required parameter "deployTestReq" was null or undefined when calling apiAiAgentsTestDeployPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents/test/deploy/prepare`;
-
-    const response = await this.request(
-      {
-        body: DeployTestReqToJSON(requestParameters.deployTestReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployTestRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeployPreparePost(
-    requestParameters: ApiAiAgentsTestDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployTestResp> {
-    const response = await this.apiAiAgentsTestDeployPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeploySendPostRaw(
-    requestParameters: ApiAiAgentsTestDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeploySignedTestResp>> {
-    if (requestParameters.deploySignedTestReq == null) {
-      throw new runtime.RequiredError(
-        "deploySignedTestReq",
-        'Required parameter "deploySignedTestReq" was null or undefined when calling apiAiAgentsTestDeploySendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents/test/deploy/send`;
-
-    const response = await this.request(
-      {
-        body: DeploySignedTestReqToJSON(requestParameters.deploySignedTestReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeploySignedTestRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeploySendPost(
-    requestParameters: ApiAiAgentsTestDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeploySignedTestResp> {
-    const response = await this.apiAiAgentsTestDeploySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsTestWalletPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateTestwalletResp>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const urlPath = `/api/ai-agents/test/wallet`;
-
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CreateTestwalletRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTestWalletPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<CreateTestwalletResp> {
-    const response = await this.apiAiAgentsTestWalletPostRaw(initOverrides);
-    return response.value();
   }
 }

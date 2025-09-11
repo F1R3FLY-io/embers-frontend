@@ -4,10 +4,10 @@ import type {
   SignedContract,
 } from "../api-client";
 import type { Address } from "./Address";
+import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
-import { deployContract, sign } from "../functions";
-import { PrivateKey } from "./PrivateKey";
+import { deployContract } from "../functions";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -181,54 +181,5 @@ export class AgentsApiSdk {
         return rest;
       },
     );
-  }
-
-  /**
-   * Deploys an AI agent test.
-   * @param testKey The private key for testnet
-   * @param test The testcase
-   * @param env The code that being tested
-   */
-  public async testDeployAgent(
-    testKey: PrivateKey,
-    test: string,
-    env?: string,
-  ) {
-    const response = await this.client.apiAiAgentsTestDeployPreparePost({
-      deployTestReq: {
-        env,
-        test,
-      },
-    });
-
-    const signedTestContract = sign(response.testContract, testKey);
-    const signedEnvContract =
-      response.envContract && sign(response.envContract, testKey);
-
-    return this.client.apiAiAgentsTestDeploySendPost({
-      deploySignedTestReq: {
-        env: signedEnvContract && {
-          contract: response.envContract!,
-          deployer: this.privateKey.getPublicKey().value,
-          sig: signedEnvContract.sig,
-          sigAlgorithm: signedEnvContract.sigAlgorithm,
-        },
-        test: {
-          contract: response.testContract,
-          deployer: this.privateKey.getPublicKey().value,
-          sig: signedTestContract.sig,
-          sigAlgorithm: signedTestContract.sigAlgorithm,
-        },
-      },
-    });
-  }
-
-  /**
-   * Generate new test wallet private key
-   * @returns Wallet key
-   */
-  public async getTestWalletKey() {
-    const { key } = await this.client.apiAiAgentsTestWalletPost();
-    return PrivateKey.tryFromHex(key);
   }
 }

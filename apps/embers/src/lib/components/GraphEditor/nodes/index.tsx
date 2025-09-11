@@ -13,9 +13,7 @@ function makeNodeTypes(registry: NodeRegistry) {
       className: styles[def.className],
       displayName: def.displayName,
       handlers: def.handlers,
-      icon: def.iconSrc ? (
-        <img alt={def.displayName} src={def.iconSrc} />
-      ) : undefined,
+      icon: <img alt={def.displayName} src={def.iconSrc} />,
       title: def.title,
     };
     return [type, NodeTemplate(props)] as const;
