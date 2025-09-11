@@ -44,7 +44,7 @@ export function useTestKey() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getTestWalletKey(),
+    queryFn: async () => api.testnet.getWallet(),
     queryKey: ["agents", "test-key"],
   });
 }
@@ -79,7 +79,7 @@ export function useDeployTestMutation() {
       env?: string;
       test: string;
       testKey: PrivateKey;
-    }) => api.agents.testDeployAgent(testKey, test, env),
+    }) => api.testnet.deploy(testKey, test, env),
   });
 }
 
