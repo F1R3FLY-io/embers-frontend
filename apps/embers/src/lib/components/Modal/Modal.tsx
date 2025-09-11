@@ -4,6 +4,8 @@ import classNames from "classnames";
 import { forwardRef, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
+import { Button } from "@/lib/components/Button";
+
 import styles from "./Modal.module.scss";
 
 export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
@@ -92,13 +94,14 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           {...rest}
         >
           {showCloseButton && (
-            <button
+            <Button
               aria-label="Close"
               className={styles.close}
+              type="secondary"
               onClick={onClose}
             >
               ×
-            </button>
+            </Button>
           )}
           <div className={styles.content}>{children}</div>
         </div>

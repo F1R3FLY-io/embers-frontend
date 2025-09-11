@@ -1,4 +1,4 @@
-import type { NodeData } from "@/lib/components/GraphEditor/GraphEditor";
+import type {Edge as REdge, Node as RNode } from "@xyflow/react";
 
 import type { NodeRegistry } from "./nodes.registry";
 
@@ -8,6 +8,16 @@ import { NODE_REGISTRY } from "./nodes.registry";
 import { NodeTemplate } from "./NodeTemplate";
 
 type NodeTemplateProps = Parameters<typeof NodeTemplate>[0];
+
+export type Node = {
+  [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
+}[keyof NodeTypes];
+
+export type Edge = REdge;
+export type NodeData<T extends keyof NodeTypes> = Extract<
+  Node,
+  { type: T }
+>["data"];
 
 function makeNodeTypes(registry: NodeRegistry) {
   const entries = Object.entries(registry).map(([type, def]) => {

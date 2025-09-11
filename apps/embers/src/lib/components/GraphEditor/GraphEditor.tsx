@@ -1,4 +1,4 @@
-import type { Connection, Edge as REdge, Node as RNode } from "@xyflow/react";
+import type { Connection } from "@xyflow/react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 
 import {
@@ -14,7 +14,7 @@ import "@xyflow/react/dist/style.css";
 import { useCallback, useMemo, useState } from "react";
 
 import type { MenuItem } from "@/lib/components/ContextMenu";
-import type { NodeTypes } from "@/lib/components/GraphEditor/nodes";
+import type { Edge, Node, NodeData, NodeTypes } from "@/lib/components/GraphEditor/nodes";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
@@ -25,15 +25,6 @@ import type { NodeKind } from "./nodes/nodes.registry";
 import styles from "./GraphEditor.module.scss";
 import { MODAL_REGISTRY, NODE_REGISTRY } from "./nodes/nodes.registry";
 
-export type Node = {
-  [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
-}[keyof NodeTypes];
-
-export type Edge = REdge;
-export type NodeData<T extends keyof NodeTypes> = Extract<
-  Node,
-  { type: T }
->["data"];
 
 function createNodeChange<T extends keyof NodeTypes>(
   type: T,
