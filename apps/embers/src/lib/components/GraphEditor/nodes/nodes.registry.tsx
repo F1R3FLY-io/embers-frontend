@@ -12,9 +12,7 @@ export interface NodeDefinition<
   defaultData: Data;
   displayName: string;
   handlers?: Array<{ position: Position; type: "source" | "target" }>;
-  hideInMenu?: boolean;
   iconSrc?: string;
-  menuLabel?: string;
   title: string;
 }
 
@@ -44,7 +42,6 @@ export const NODE_REGISTRY = {
     displayName: "Send to channel",
     handlers: [{ position: Position.Left, type: "target" }],
     iconSrc: defaultNodeIcon,
-    menuLabel: "Add sink",
     title: "Send to channel",
   },
   "text-model": {
@@ -67,7 +64,6 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
-    menuLabel: "Add text to image model",
     title: "Text to image model",
   },
   "tts-model": {
@@ -79,7 +75,6 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: ttsNodeIcon,
-    menuLabel: "Add text to speech model",
     title: "Text to speech model",
   },
 } as const satisfies Record<string, NodeDefinition>;
