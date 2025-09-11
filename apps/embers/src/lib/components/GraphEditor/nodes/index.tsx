@@ -1,4 +1,4 @@
-import type {Edge as REdge, Node as RNode } from "@xyflow/react";
+import type { Edge as REdge, Node as RNode } from "@xyflow/react";
 
 import type { NodeRegistry } from "./nodes.registry";
 

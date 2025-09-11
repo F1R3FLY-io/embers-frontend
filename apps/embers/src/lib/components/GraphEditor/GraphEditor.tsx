@@ -14,7 +14,12 @@ import "@xyflow/react/dist/style.css";
 import { useCallback, useMemo, useState } from "react";
 
 import type { MenuItem } from "@/lib/components/ContextMenu";
-import type { Edge, Node, NodeData, NodeTypes } from "@/lib/components/GraphEditor/nodes";
+import type {
+  Edge,
+  Node,
+  NodeData,
+  NodeTypes,
+} from "@/lib/components/GraphEditor/nodes";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
@@ -24,7 +29,6 @@ import type { NodeKind } from "./nodes/nodes.registry";
 
 import styles from "./GraphEditor.module.scss";
 import { MODAL_REGISTRY, NODE_REGISTRY } from "./nodes/nodes.registry";
-
 
 function createNodeChange<T extends keyof NodeTypes>(
   type: T,
