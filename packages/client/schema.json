@@ -13,10 +13,84 @@
       "name": "AIAgentsTeams"
     },
     {
+      "name": "Testnet"
+    },
+    {
       "name": "Wallets"
     }
   ],
   "paths": {
+    "/api/testnet/wallet": {
+      "post": {
+        "tags": ["Testnet"],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTestwalletResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/testnet/deploy/prepare": {
+      "post": {
+        "tags": ["Testnet"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployTestReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeployTestResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/testnet/deploy/send": {
+      "post": {
+        "tags": ["Testnet"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/DeploySignedTestReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeploySignedTestResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wallets/{address}/state": {
       "get": {
         "tags": ["Wallets"],
@@ -279,77 +353,6 @@
         "responses": {
           "200": {
             "description": ""
-          }
-        }
-      }
-    },
-    "/api/ai-agents/test/wallet": {
-      "post": {
-        "tags": ["AIAgents"],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateTestwalletResp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/ai-agents/test/deploy/prepare": {
-      "post": {
-        "tags": ["AIAgents"],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/DeployTestReq"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeployTestResp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/ai-agents/test/deploy/send": {
-      "post": {
-        "tags": ["AIAgents"],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/DeploySignedTestReq"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeploySignedTestResp"
-                }
-              }
-            }
           }
         }
       }
