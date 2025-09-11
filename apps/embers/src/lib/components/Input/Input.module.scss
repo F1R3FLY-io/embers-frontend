@@ -27,7 +27,7 @@
   &.outline {
     background-color: transparent;
     border: 1px solid var(--border-primary);
-    
+
     &:focus-within {
       box-shadow: inset 0 0 0 2px var(--border-selected);
       border-color: transparent;
@@ -42,29 +42,29 @@
     padding: 16px 20px;
   }
 
-  &.hasLeftIcon {
+  &.has-left-icon {
     padding-left: 12px;
   }
 
-  &.hasRightIcon {
+  &.has-right-icon {
     padding-right: 12px;
   }
 
   // Background types
-  &.backgroundNeutral {
+  &.background-neutral {
     background-color: var(--background-neutral-surface);
   }
 
-  &.backgroundSurface {
+  &.background-surface {
     background-color: var(--background-neutral-surface-secondary);
   }
 
-  &.backgroundTransparent {
+  &.background-transparent {
     background-color: transparent;
   }
 
   // Border types
-  &.borderNone {
+  &.border-none {
     border: none;
     box-shadow: none;
 
@@ -73,7 +73,7 @@
     }
   }
 
-  &.borderPrimary {
+  &.border-primary {
     border: 1px solid var(--border-primary);
     box-shadow: none;
 
@@ -83,7 +83,7 @@
     }
   }
 
-  &.borderSelected {
+  &.border-selected {
     border: 1px solid var(--border-selected);
     box-shadow: none;
 
@@ -93,7 +93,7 @@
     }
   }
 
-  &.borderDanger {
+  &.border-danger {
     border: 1px solid var(--text-danger);
     box-shadow: none;
 
@@ -103,7 +103,7 @@
     }
   }
 
-  &.borderSubtle {
+  &.border-subtle {
     border: 1px solid var(--background-neutral-surface-secondary);
     box-shadow: none;
 
@@ -119,15 +119,15 @@
   flex: 1;
   font-family: Manrope, sans-serif;
 
-  &.textPrimary {
+  &.text-primary {
     color: var(--text-color-primary);
   }
 
-  &.textSecondary {
+  &.text-secondary {
     color: var(--text-color-secondary);
   }
 
-  &.textHover {
+  &.text-hover {
     color: var(--button-hover);
   }
 
@@ -143,51 +143,51 @@
     font-size: 16px;
   }
 
-  &.placeholderPrimary::placeholder {
+  &.placeholder-primary::placeholder {
     color: var(--text-color-primary);
   }
 
-  &.placeholderSecondary::placeholder {
+  &.placeholder-secondary::placeholder {
     color: var(--text-color-secondary);
   }
 
-  &.placeholderHover::placeholder {
+  &.placeholder-hover::placeholder {
     color: var(--button-hover);
   }
 
-  &.placeholderSmall::placeholder {
+  &.placeholder-small::placeholder {
     font-size: 12px;
   }
 
-  &.placeholderMedium::placeholder {
+  &.placeholder-medium::placeholder {
     font-size: 14px;
   }
 
-  &.placeholderLarge::placeholder {
+  &.placeholder-large::placeholder {
     font-size: 16px;
   }
 
-  &.placeholderH1::placeholder {
+  &.placeholder-h1::placeholder {
     font-size: 40px;
   }
 
-  &.placeholderH2::placeholder {
+  &.placeholder-h2::placeholder {
     font-size: 32px;
   }
 
-  &.placeholderH3::placeholder {
+  &.placeholder-h3::placeholder {
     font-size: 28px;
   }
 
-  &.placeholderH4::placeholder {
+  &.placeholder-h4::placeholder {
     font-size: 24px;
   }
 
-  &.placeholderH5::placeholder {
+  &.placeholder-h5::placeholder {
     font-size: 20px;
   }
 
-  &.placeholderNormal::placeholder {
+  &.placeholder-normal::placeholder {
     font-size: 14px;
   }
 }
@@ -199,15 +199,15 @@
   resize: none;
   font-family: Manrope, sans-serif;
 
-  &.textPrimary {
+  &.text-primary {
     color: var(--text-color-primary);
   }
 
-  &.textSecondary {
+  &.text-secondary {
     color: var(--text-color-secondary);
   }
 
-  &.textHover {
+  &.text-hover {
     color: var(--button-hover);
   }
 
@@ -226,57 +226,57 @@
     min-height: 160px;
   }
 
-  &.placeholderPrimary::placeholder {
+  &.placeholder-primary::placeholder {
     color: var(--text-color-primary);
   }
 
-  &.placeholderSecondary::placeholder {
+  &.placeholder-secondary::placeholder {
     color: var(--text-color-secondary);
   }
 
-  &.placeholderHover::placeholder {
+  &.placeholder-hover::placeholder {
     color: var(--button-hover);
   }
 
-  &.placeholderSmall::placeholder {
+  &.placeholder-small::placeholder {
     font-size: 12px;
   }
 
-  &.placeholderMedium::placeholder {
+  &.placeholder-medium::placeholder {
     font-size: 14px;
   }
 
-  &.placeholderLarge::placeholder {
+  &.placeholder-large::placeholder {
     font-size: 16px;
   }
 
-  &.placeholderH1::placeholder {
+  &.placeholder-h1::placeholder {
     font-size: 40px;
   }
 
-  &.placeholderH2::placeholder {
+  &.placeholder-h2::placeholder {
     font-size: 32px;
   }
 
-  &.placeholderH3::placeholder {
+  &.placeholder-h3::placeholder {
     font-size: 28px;
   }
 
-  &.placeholderH4::placeholder {
+  &.placeholder-h4::placeholder {
     font-size: 24px;
   }
 
-  &.placeholderH5::placeholder {
+  &.placeholder-h5::placeholder {
     font-size: 20px;
   }
 
-  &.placeholderNormal::placeholder {
+  &.placeholder-normal::placeholder {
     font-size: 14px;
   }
 }
 
-.leftIcon,
-.rightIcon {
+.left-icon,
+.right-icon {
   display: flex;
   align-items: center;
   color: var(--text-color-secondary);

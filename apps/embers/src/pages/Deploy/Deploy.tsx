@@ -75,19 +75,13 @@ export default function Deploy({
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <Input
-              placeholder={agentName}
-              type="text"
-            />
+            <Input placeholder={agentName} type="text" />
           </div>
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentDescription")}
             </Text>
-            <Input
-              as="textarea"
-              placeholder={agentDescription}
-            />
+            <Input as="textarea" placeholder={agentDescription} />
           </div>
           <div className={styles["form-section"]}>
             <Text bold color="primary" fontSize={20} type="H3">
@@ -123,10 +117,7 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.version")}
                 </Text>
-                <Input
-                  placeholder={agentVersion}
-                  type="text"
-                />
+                <Input placeholder={agentVersion} type="text" />
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
