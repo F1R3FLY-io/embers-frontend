@@ -41,7 +41,7 @@ function createNodeChange<T extends keyof NodeTypes>(
       item: {
         className: styles["no-node-style"],
         data,
-        id: crypto.randomUUID(),
+        id: Math.random().toString(),
         position,
         type,
       },
@@ -117,7 +117,7 @@ export function GraphEditor() {
           ...selectedNodes.map((n) => n.position.y + (n.measured!.height ?? 0)),
         );
 
-        const parentId = crypto.randomUUID();
+        const parentId = Math.random().toString();
 
         const subflowNode: Node = {
           className: styles["no-node-style"],
