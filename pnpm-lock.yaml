@@ -120,7 +120,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/client
       '@f1r3fly-io/lightning-bug':
-        specifier: 0.7.1
+        specifier: ^0.7.1
         version: 0.7.1(@popperjs/core@2.11.8)
       '@f1r3fly-io/tree-sitter-rholang-js-with-comments':
         specifier: ^1.1.9
