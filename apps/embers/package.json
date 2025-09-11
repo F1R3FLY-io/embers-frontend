@@ -26,7 +26,7 @@
     "@codemirror/commands": "^6.8.1",
     "@codemirror/state": "^6.5.2",
     "@f1r3fly-io/embers-client-sdk": "workspace:*",
-    "@f1r3fly-io/lightning-bug": "0.7.0",
+    "@f1r3fly-io/lightning-bug": "0.7.1",
     "@f1r3fly-io/tree-sitter-rholang-js-with-comments": "^1.1.9",
     "@fortawesome/fontawesome-free": "^7.0.1",
     "@scure/base": "^2.0.0",
