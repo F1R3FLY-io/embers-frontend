@@ -11,10 +11,12 @@
  */
 
 import type { Direction } from "./Direction";
+import type { Int64 } from "./Int64";
 import type { UInt64 } from "./UInt64";
 import type { UnixTimestamp } from "./UnixTimestamp";
 
 import { DirectionFromJSON, DirectionToJSON } from "./Direction";
+import { Int64FromJSON, Int64ToJSON } from "./Int64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
 import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
@@ -26,10 +28,10 @@ import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 export interface Transfer {
   /**
    *
-   * @type {UInt64}
+   * @type {Int64}
    * @memberof Transfer
    */
-  amount: UInt64;
+  amount: Int64;
   /**
    *
    * @type {UInt64}
@@ -99,7 +101,7 @@ export function TransferFromJSONTyped(
     return json;
   }
   return {
-    amount: UInt64FromJSON(json.amount),
+    amount: Int64FromJSON(json.amount),
     cost: UInt64FromJSON(json.cost),
     date: UnixTimestampFromJSON(json.date),
     direction: DirectionFromJSON(json.direction),
@@ -121,7 +123,7 @@ export function TransferToJSONTyped(
   }
 
   return {
-    amount: UInt64ToJSON(value.amount),
+    amount: Int64ToJSON(value.amount),
     cost: UInt64ToJSON(value.cost),
     date: UnixTimestampToJSON(value.date),
     direction: DirectionToJSON(value.direction),

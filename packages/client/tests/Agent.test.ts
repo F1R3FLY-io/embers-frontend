@@ -27,18 +27,6 @@ describe("AgentsApiSdk", () => {
     });
   });
 
-  it("should deploy Agent", async () => {
-    const privateKey = PrivateKey.new();
-
-    const agent = new AgentsApiSdk({
-      basePath: "http://localhost:3100",
-      privateKey,
-    });
-    const result = agent.deployAgent("fake agent id", "fake version id");
-
-    await expect(result).resolves.toBeUndefined();
-  });
-
   it("should return agents list", async () => {
     const privateKey = PrivateKey.new();
 

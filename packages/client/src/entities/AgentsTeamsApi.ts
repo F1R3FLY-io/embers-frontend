@@ -8,6 +8,7 @@ import type {
   SignedContract,
 } from "../api-client";
 import type { Address } from "./Address";
+import type { Amount } from "./Amount";
 import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
@@ -106,6 +107,74 @@ export class AgentsTeamsApiSdk {
       address: this.address.value,
       id: agentsTeamId,
     });
+  }
+
+  public async deployGraph(graph: Graph, phloLimit: Amount) {
+    const graphCode = (await getGraphModule()).astToGraphl(graph);
+
+    const contract = async () =>
+      this.client.apiAiAgentsTeamsDeployPreparePost({
+        deployAgentsTeamReq: {
+          graph: graphCode,
+          phloLimit: phloLimit.value,
+          type: "Graph",
+        },
+      });
+
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
+      const signedContract: SignedContract = {
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
+        sigAlgorithm,
+      };
+
+      return this.client.apiAiAgentsTeamsDeploySendPost({
+        signedContract,
+      });
+    };
+
+    await deployContract(this.privateKey, contract, sendContract);
+  }
+
+  public async deployAgetnsTeam(
+    agentsTeamId: string,
+    version: string,
+    phloLimit: Amount,
+  ) {
+    const contract = async () =>
+      this.client.apiAiAgentsTeamsDeployPreparePost({
+        deployAgentsTeamReq: {
+          address: this.address.value,
+          id: agentsTeamId,
+          phloLimit: phloLimit.value,
+          type: "AgentsTeam",
+          version,
+        },
+      });
+
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
+      const signedContract: SignedContract = {
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
+        sigAlgorithm,
+      };
+
+      return this.client.apiAiAgentsTeamsDeploySendPost({
+        signedContract,
+      });
+    };
+
+    await deployContract(this.privateKey, contract, sendContract);
   }
 
   public async saveAgentsTeamVersion(

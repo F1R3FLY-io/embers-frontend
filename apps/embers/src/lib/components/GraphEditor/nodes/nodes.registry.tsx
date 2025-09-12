@@ -13,8 +13,8 @@ export interface NodeDefinition<
   className: string;
   defaultData: Data;
   displayName: string;
-  handlers?: Array<{ position: Position; type: "source" | "target" }>;
-  iconSrc?: string;
+  handlers: Array<{ position: Position; type: "source" | "target" }>;
+  iconSrc: string;
   modal?: React.ComponentType<{
     initial: Data;
     onCancel?: (() => void) | undefined;
@@ -94,4 +94,3 @@ export const NODE_REGISTRY = {
 
 export type NodeRegistry = typeof NODE_REGISTRY;
 export type NodeKind = keyof NodeRegistry;
-export type NodeDataOf<K extends NodeKind> = NodeRegistry[K]["defaultData"];

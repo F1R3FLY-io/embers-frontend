@@ -1,13 +1,17 @@
-import type { Connection } from "@xyflow/react";
-import type { MouseEvent as ReactMouseEvent } from "react";
+import type { Connection, EdgeChange, NodeChange } from "@xyflow/react";
+import type {
+  Dispatch,
+  MouseEvent as ReactMouseEvent,
+  SetStateAction,
+} from "react";
 
 import {
   addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   Background,
   Controls,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
@@ -30,31 +34,31 @@ import type { NodeKind } from "./nodes/nodes.registry";
 import styles from "./GraphEditor.module.scss";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
-function createNodeChange<T extends keyof NodeTypes>(
-  type: T,
-  position: Node["position"],
-  data: NodeData<T>,
-) {
-  return [
-    {
-      item: {
-        className: styles["no-node-style"],
-        data,
-        id: Math.random().toString(),
-        position,
-        type,
-      },
-      type: "add" as const,
-    },
-  ];
-}
+type GraphEditorProps = {
+  edges: Edge[];
+  nodes: Node[];
+  setEdges: Dispatch<SetStateAction<Edge[]>>;
+  setNodes: Dispatch<SetStateAction<Node[]>>;
+};
 
-export function GraphEditor() {
-  const [nodes, , onNodesChange] = useNodesState<Node>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-
+export function GraphEditor({
+  edges,
+  nodes,
+  setEdges,
+  setNodes,
+}: GraphEditorProps) {
   const { open } = useModal();
 
+  const onNodesChange = useCallback(
+    (changes: NodeChange<Node>[]) =>
+      setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+    [setNodes],
+  );
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange<Edge>[]) =>
+      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+    [setEdges],
+  );
   const onConnect = useCallback(
     (connection: Connection) =>
       setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot)),
@@ -137,7 +141,7 @@ export function GraphEditor() {
           ...selectedNodes.map((n) => n.position.y + (n.measured!.height ?? 0)),
         );
 
-        const parentId = Math.random().toString();
+        const parentId = crypto.randomUUID();
 
         const subflowNode: Node = {
           className: styles["no-node-style"],
@@ -237,4 +241,23 @@ export function GraphEditor() {
       </ReactFlow>
     </div>
   );
+}
+
+function createNodeChange<T extends keyof NodeTypes>(
+  type: T,
+  position: Node["position"],
+  data: NodeData<T>,
+) {
+  return [
+    {
+      item: {
+        className: styles["no-node-style"],
+        data,
+        id: crypto.randomUUID(),
+        position,
+        type,
+      },
+      type: "add" as const,
+    },
+  ];
 }
