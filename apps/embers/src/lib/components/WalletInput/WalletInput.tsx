@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 
 import { FilePicker } from "@/lib/components/FilePicker";
+import { Input } from "@/lib/components/Input";
 import { Text } from "@/lib/components/Text";
 import UploadIcon from "@/public/icons/download-icon.svg?react";
 
@@ -74,7 +75,9 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
         Private Key
       </Text>
       <div className={inputAreaClass}>
-        <input
+        <Input
+          backgroundType="transparent"
+          borderType="none"
           className={styles.input}
           type="password"
           value={content}
