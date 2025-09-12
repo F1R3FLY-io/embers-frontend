@@ -357,6 +357,53 @@
         }
       }
     },
+    "/api/ai-agents/deploy/prepare": {
+      "post": {
+        "tags": ["AIAgents"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployAgentReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeployAgentResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents/deploy/send": {
+      "post": {
+        "tags": ["AIAgents"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/ai-agents/{id}/save/prepare": {
       "post": {
         "tags": ["AIAgents"],
@@ -416,127 +463,6 @@
             "application/json; charset=utf-8": {
               "schema": {
                 "$ref": "#/components/schemas/SignedContract"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/ai-agents/{address}/{id}/versions/{version}/deploy/prepare": {
-      "post": {
-        "tags": ["AIAgents"],
-        "parameters": [
-          {
-            "name": "address",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          },
-          {
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          },
-          {
-            "name": "version",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeployAgentResp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/ai-agents/{address}/{id}/versions/{version}/deploy/send": {
-      "post": {
-        "tags": ["AIAgents"],
-        "parameters": [
-          {
-            "name": "address",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          },
-          {
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          },
-          {
-            "name": "version",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/SignedContract"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/ai-agents-teams/deploy-demo": {
-      "post": {
-        "tags": ["AIAgentsTeams"],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/DeployDemoReq"
               }
             }
           },
@@ -764,6 +690,53 @@
         }
       }
     },
+    "/api/ai-agents-teams/deploy/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployAgentsTeamReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeployAgentsTeamResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/deploy/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/ai-agents-teams/{id}/save/prepare": {
       "post": {
         "tags": ["AIAgentsTeams"],
@@ -966,7 +939,7 @@
           },
           "amount": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "post": {
             "type": "string"
@@ -1049,6 +1022,80 @@
           }
         }
       },
+      "DeployAgent": {
+        "type": "object",
+        "title": "DeployAgent",
+        "required": ["id", "version", "address", "phlo_limit"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phlo_limit": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      },
+      "DeployAgentReq": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/DeployAgentReq_DeployAgent"
+          },
+          {
+            "$ref": "#/components/schemas/DeployAgentReq_DeployCode"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "Agent": "#/components/schemas/DeployAgentReq_DeployAgent",
+            "Code": "#/components/schemas/DeployAgentReq_DeployCode"
+          }
+        }
+      },
+      "DeployAgentReq_DeployAgent": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Agent"],
+                "example": "Agent"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/DeployAgent"
+          }
+        ]
+      },
+      "DeployAgentReq_DeployCode": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Code"],
+                "example": "Code"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/DeployCode"
+          }
+        ]
+      },
       "DeployAgentResp": {
         "type": "object",
         "title": "DeployAgentResp",
@@ -1060,13 +1107,116 @@
           }
         }
       },
-      "DeployDemoReq": {
+      "DeployAgentsTeam": {
         "type": "object",
-        "title": "DeployDemoReq",
-        "required": ["name"],
+        "title": "DeployAgentsTeam",
+        "required": ["id", "version", "address", "phlo_limit"],
         "properties": {
-          "name": {
+          "id": {
             "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phlo_limit": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      },
+      "DeployAgentsTeamReq": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/DeployAgentsTeamReq_DeployAgentsTeam"
+          },
+          {
+            "$ref": "#/components/schemas/DeployAgentsTeamReq_DeployGraph"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "AgentsTeam": "#/components/schemas/DeployAgentsTeamReq_DeployAgentsTeam",
+            "Graph": "#/components/schemas/DeployAgentsTeamReq_DeployGraph"
+          }
+        }
+      },
+      "DeployAgentsTeamReq_DeployAgentsTeam": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["AgentsTeam"],
+                "example": "AgentsTeam"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/DeployAgentsTeam"
+          }
+        ]
+      },
+      "DeployAgentsTeamReq_DeployGraph": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Graph"],
+                "example": "Graph"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/DeployGraph"
+          }
+        ]
+      },
+      "DeployAgentsTeamResp": {
+        "type": "object",
+        "title": "DeployAgentsTeamResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
+      "DeployCode": {
+        "type": "object",
+        "title": "DeployCode",
+        "required": ["code", "phlo_limit"],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "phlo_limit": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      },
+      "DeployGraph": {
+        "type": "object",
+        "title": "DeployGraph",
+        "required": ["graph", "phlo_limit"],
+        "properties": {
+          "graph": {
+            "type": "string"
+          },
+          "phlo_limit": {
+            "type": "string",
+            "format": "int64"
           }
         }
       },
@@ -1246,7 +1396,7 @@
           },
           "amount": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "status": {
             "$ref": "#/components/schemas/RequestStatus"
@@ -1360,7 +1510,7 @@
           },
           "amount": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "to_address": {
             "type": "string"
