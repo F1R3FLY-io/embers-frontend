@@ -1,6 +1,7 @@
 import type React from "react";
 
 import type { AccordionProps } from "@/lib/components/Accordion/Accordion";
+import type { NodeKind } from "@/lib/components/GraphEditor/nodes/nodes.registry";
 
 import { Accordion } from "@/lib/components/Accordion";
 import { NODE_REGISTRY } from "@/lib/components/GraphEditor/nodes/nodes.registry";
@@ -33,18 +34,9 @@ export const Sidebar: React.FC = () => {
               key={key}
               iconSrc={def.iconSrc}
               name={def.displayName}
-              type={key}
+              type={key as NodeKind}
             />
           ))}
-        </NodeAccordion>
-
-        <NodeAccordion title="AI Agents">
-          <NodeItem name="Health Data Analyzer" />
-          <NodeItem name="Nutritional Planner Agent" />
-        </NodeAccordion>
-
-        <NodeAccordion title="Services">
-          <NodeItem name="Placeholder Service" />
         </NodeAccordion>
       </div>
 

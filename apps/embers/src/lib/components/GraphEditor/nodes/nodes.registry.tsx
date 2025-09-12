@@ -1,5 +1,8 @@
+import type React from "react";
+
 import { Position } from "@xyflow/react";
 
+import { ManualInputModal } from "@/lib/components/GraphEditor/nodes/EditModals";
 import inputNodeIcon from "@/public/icons/input-node.png";
 import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 import ttsNodeIcon from "@/public/icons/tts-node.png";
@@ -11,74 +14,80 @@ export interface NodeDefinition<
   defaultData: Data;
   displayName: string;
   handlers?: Array<{ position: Position; type: "source" | "target" }>;
-  hideInMenu?: boolean;
-  iconSrc?: string; // ← string path, not JSX
-  menuLabel?: string;
+  iconSrc?: string;
+  modal?: React.ComponentType<{
+    initial: Data;
+    onCancel?: (() => void) | undefined;
+    onSave: (data: Data) => void;
+  }>;
   title: string;
 }
 
 export const NODE_REGISTRY = {
   compress: {
     className: "data-package",
-    defaultData: {},
+    defaultData: {} as Record<string, unknown>,
     displayName: "Compress",
     handlers: [
       { position: Position.Left, type: "target" },
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
+    modal: ManualInputModal,
     title: "Compress",
   },
   "manual-input": {
     className: "source",
-    defaultData: {},
+    defaultData: {} as Record<string, unknown>,
     displayName: "Manual Input",
     handlers: [{ position: Position.Right, type: "source" }],
     iconSrc: inputNodeIcon,
+    modal: ManualInputModal,
     title: "Manual Input",
   },
   "send-to-channel": {
     className: "sink",
-    defaultData: {},
+    defaultData: {} as Record<string, unknown>,
     displayName: "Send to channel",
     handlers: [{ position: Position.Left, type: "target" }],
     iconSrc: defaultNodeIcon,
-    menuLabel: "Add sink",
+    modal: ManualInputModal,
     title: "Send to channel",
   },
   "text-model": {
     className: "service",
-    defaultData: {},
+    defaultData: {} as Record<string, unknown>,
     displayName: "Text model",
     handlers: [
       { position: Position.Left, type: "target" },
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
+    modal: ManualInputModal,
     title: "Text model",
   },
   "tti-model": {
     className: "service",
-    defaultData: {},
+    defaultData: {} as Record<string, unknown>,
     displayName: "TTI model",
     handlers: [
       { position: Position.Left, type: "target" },
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
-    menuLabel: "Add text to image model",
+    modal: ManualInputModal,
     title: "Text to image model",
   },
   "tts-model": {
     className: "service",
-    defaultData: {},
+    defaultData: {} as Record<string, unknown>,
     displayName: "TTS model",
     handlers: [
       { position: Position.Left, type: "target" },
       { position: Position.Right, type: "source" },
     ],
     iconSrc: ttsNodeIcon,
-    menuLabel: "Add text to speech model",
+    modal: ManualInputModal,
     title: "Text to speech model",
   },
 } as const satisfies Record<string, NodeDefinition>;

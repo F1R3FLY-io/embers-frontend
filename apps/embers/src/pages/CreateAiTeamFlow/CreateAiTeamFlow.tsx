@@ -67,10 +67,7 @@ export default function CreateAiTeamFlow() {
 
   return (
     <GraphLayout
-      footerProps={{
-        deployments,
-        logs,
-      }}
+      footerProps={{ deployments, logs }}
       headerProps={{
         onDeploy: () =>
           void deployDemo
