@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
 import type { FooterProps } from "@/lib/layouts/Graph";
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
 import { Spinner } from "@/lib/components/Spinner";
 import { GraphLayout } from "@/lib/layouts/Graph";
 import { useLayout } from "@/lib/providers/layout/useLayout";
-import { useDeployDemo, useRunDemo } from "@/lib/queries";
+import { useDeployGraphMutation, useRunDemo } from "@/lib/queries";
 
 type Deployment = FooterProps["deployments"][number];
 type Logs = FooterProps["logs"][number];
@@ -19,7 +20,10 @@ export default function CreateAiTeamFlow() {
 
   useEffect(() => setHeaderTitle(t("aiTeam.newAiTeam")), [setHeaderTitle, t]);
 
-  const deployDemo = useDeployDemo();
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
+
+  const deployGraph = useDeployGraphMutation();
   const runDemo = useRunDemo();
 
   const [deployments, setDeployments] = useState<Deployment[]>([]);
@@ -70,14 +74,14 @@ export default function CreateAiTeamFlow() {
       footerProps={{ deployments, logs }}
       headerProps={{
         onDeploy: () =>
-          void deployDemo
-            .mutateAsync("demoName")
+          void deployGraph
+            .mutateAsync({ edges, nodes, rhoLimit: 1_000_000n })
             .then(onSuccessfulDeploy)
             .catch(onFailedDeploy),
         onRun: () =>
           void runDemo
             .mutateAsync({
-              name: "demoName",
+              name: "demo_agents_team",
               prompt: "Describe an appearance of human-like robot",
             })
             .then((result) =>
@@ -102,8 +106,13 @@ export default function CreateAiTeamFlow() {
             .catch(logError),
       }}
     >
-      <GraphEditor />
-      <Spinner isOpen={deployDemo.isPending || runDemo.isPending} />
+      <GraphEditor
+        edges={edges}
+        nodes={nodes}
+        setEdges={setEdges}
+        setNodes={setNodes}
+      />
+      <Spinner isOpen={deployGraph.isPending || runDemo.isPending} />
     </GraphLayout>
   );
 }

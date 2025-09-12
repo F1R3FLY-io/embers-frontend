@@ -1,13 +1,12 @@
 import type { Edge as REdge, Node as RNode } from "@xyflow/react";
 
 import type { NodeRegistry } from "./nodes.registry";
+import type { NodeTemplateProps } from "./NodeTemplate";
 
 import { DeployContainerNode } from "./DeployContainer";
 import styles from "./nodes.module.scss";
 import { NODE_REGISTRY } from "./nodes.registry";
 import { NodeTemplate } from "./NodeTemplate";
-
-type NodeTemplateProps = Parameters<typeof NodeTemplate>[0];
 
 export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
@@ -36,11 +35,6 @@ function makeNodeTypes(registry: NodeRegistry) {
   >;
 }
 
-export interface NodeModalProps<T extends keyof NodeTypes> {
-  initial: NodeData<T>;
-  onCancel?: () => void;
-  onSave: (data: NodeData<T>) => void;
-}
 export const nodeTypes = {
   ...makeNodeTypes(NODE_REGISTRY),
   "deploy-container": DeployContainerNode, // special

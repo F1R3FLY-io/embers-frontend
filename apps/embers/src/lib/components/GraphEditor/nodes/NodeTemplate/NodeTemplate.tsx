@@ -9,7 +9,7 @@ import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
 import styles from "./NodeTemplate.module.scss";
 
-type NodeTemplateProps = {
+export type NodeTemplateProps = {
   className?: string;
   displayName: string;
   handlers?: {

@@ -4,6 +4,7 @@ import type {
   SignedContract,
 } from "../api-client";
 import type { Address } from "./Address";
+import type { Amount } from "./Amount";
 import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
@@ -72,18 +73,14 @@ export class AgentsApiSdk {
     );
   }
 
-  /**
-   * Deploys an AI agent version.
-   * @param agentId The ID of the agent
-   * @param version The version to deploy
-   */
-  public async deployAgent(agentId: string, version: string) {
-    // Get the contract and sign it
+  public async deployCode(code: string, phloLimit: Amount) {
     const contract = async () =>
-      this.client.apiAiAgentsAddressIdVersionsVersionDeployPreparePost({
-        address: this.address.value,
-        id: agentId,
-        version,
+      this.client.apiAiAgentsDeployPreparePost({
+        deployAgentReq: {
+          code,
+          phloLimit: phloLimit.value,
+          type: "Code",
+        },
       });
 
     // Send the signed contract
@@ -99,11 +96,51 @@ export class AgentsApiSdk {
         sigAlgorithm,
       };
 
-      return this.client.apiAiAgentsAddressIdVersionsVersionDeploySendPost({
-        address: this.address.value,
-        id: agentId,
+      return this.client.apiAiAgentsDeploySendPost({
         signedContract,
-        version,
+      });
+    };
+
+    await deployContract(this.privateKey, contract, sendContract);
+  }
+
+  /**
+   * Deploys an AI agent version.
+   * @param agentId The ID of the agent
+   * @param version The version to deploy
+   */
+  public async deployAgent(
+    agentId: string,
+    version: string,
+    phloLimit: Amount,
+  ) {
+    // Get the contract and sign it
+    const contract = async () =>
+      this.client.apiAiAgentsDeployPreparePost({
+        deployAgentReq: {
+          address: this.address.value,
+          id: agentId,
+          phloLimit: phloLimit.value,
+          type: "Agent",
+          version,
+        },
+      });
+
+    // Send the signed contract
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
+      const signedContract: SignedContract = {
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
+        sigAlgorithm,
+      };
+
+      return this.client.apiAiAgentsDeploySendPost({
+        signedContract,
       });
     };
 
