@@ -1,1 +1,0 @@
-export { ManualInputModal } from "./ManualInputModal";

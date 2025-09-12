@@ -32,6 +32,7 @@ import { useModal } from "@/lib/providers/modal/useModal";
 import type { NodeKind } from "./nodes/nodes.registry";
 
 import styles from "./GraphEditor.module.scss";
+import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
 type GraphEditorProps = {
@@ -99,22 +100,27 @@ export function GraphEditor({
       content: `Add ${NODE_REGISTRY[type].displayName}`,
       hidden: selectedNodes.length !== 0,
       onClick: () => {
-        const pos = screenToFlowPosition(contextMenuPosition);
-        const data = NODE_REGISTRY[type].defaultData;
-        const ModalComponent = NODE_REGISTRY[type].modal;
-        open(
-          <ModalComponent
-            initial={data}
-            onSave={(updatedData) => {
-              onNodesChange(createNodeChange(type, pos, updatedData));
-            }}
-          />,
-          {
-            ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
-            closeOnBlur: true,
-            maxWidth: 520,
-          },
-        );
+        const position = screenToFlowPosition(contextMenuPosition);
+        if (NODE_REGISTRY[type].modalInputs.length === 0) {
+          onNodesChange(
+            createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
+          );
+        } else {
+          open(
+            <EditModal
+              initial={NODE_REGISTRY[type].defaultData}
+              inputs={NODE_REGISTRY[type].modalInputs}
+              onSave={(updatedData) => {
+                onNodesChange(createNodeChange(type, position, updatedData));
+              }}
+            />,
+            {
+              ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+              closeOnBlur: true,
+              maxWidth: 520,
+            },
+          );
+        }
       },
       type: "text",
     }));
@@ -204,21 +210,32 @@ export function GraphEditor({
               y: event.clientY,
             });
 
-            const data = NODE_REGISTRY[type].defaultData;
-            const ModalComponent = NODE_REGISTRY[type].modal;
-            open(
-              <ModalComponent
-                initial={data}
-                onSave={(updatedData) => {
-                  onNodesChange(createNodeChange(type, position, updatedData));
-                }}
-              />,
-              {
-                ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
-                closeOnBlur: true,
-                maxWidth: 520,
-              },
-            );
+            if (NODE_REGISTRY[type].modalInputs.length === 0) {
+              onNodesChange(
+                createNodeChange(
+                  type,
+                  position,
+                  NODE_REGISTRY[type].defaultData,
+                ),
+              );
+            } else {
+              open(
+                <EditModal
+                  initial={NODE_REGISTRY[type].defaultData}
+                  inputs={NODE_REGISTRY[type].modalInputs}
+                  onSave={(updatedData) => {
+                    onNodesChange(
+                      createNodeChange(type, position, updatedData),
+                    );
+                  }}
+                />,
+                {
+                  ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                  closeOnBlur: true,
+                  maxWidth: 520,
+                },
+              );
+            }
           }
         }}
         onEdgesChange={onEdgesChange}

@@ -196,8 +196,8 @@ importers:
   packages/client:
     dependencies:
       '@f1r3fly-io/graphl-parser':
-        specifier: ^0.0.8
-        version: 0.0.8
+        specifier: ^0.0.9
+        version: 0.0.9
       '@noble/curves':
         specifier: ^2.0.0
         version: 2.0.0
@@ -756,8 +756,8 @@ packages:
     resolution: {integrity: sha512-Z5kJ+wU3oA7MMIqVR9tyZRtjYPr4OC004Q4Rw7pgOKUOKkJfZ3O24nz3WYfGRpMDNmcOi3TwQOmgm7B7Tpii0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@f1r3fly-io/graphl-parser@0.0.8':
-    resolution: {integrity: sha512-Dp5x31pSbJRAIVO13g+yn6yhKq4LPJBqWypcKpYyBLlQ3TZRPyJQNFTfohf2Bc0HOgRiAO6GuyKlAW1IOPXWMw==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/graphl-parser/0.0.8/6311612fe6f5ade4197c499d2973b5aff5582e75}
+  '@f1r3fly-io/graphl-parser@0.0.9':
+    resolution: {integrity: sha512-RYDqK7LwfR7vZQL7VdCz5OP+yguuILtpqJ/a+ZWlhE2kbZ1n1Sp9Tshf6CJ5VVKhJc+cUuMkXl1G+Z+7e4Aesw==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/graphl-parser/0.0.9/839b48501d1e8efe06887e3f127072e0b555307a}
 
   '@f1r3fly-io/lightning-bug@0.7.1':
     resolution: {integrity: sha512-sCltn6o4NE+/Fs88kSB0harLLpy0arv4ClGhA58vF3WljZaf7oKVbu6SHhU3gzPKl0xxI6Tuf8Im6UukDA67HA==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/lightning-bug/0.7.1/8b7be3fee9f43cf1b060c983cd6bfd21f0927d7e}
@@ -3843,8 +3843,8 @@ packages:
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
-  node-releases@2.0.20:
-    resolution: {integrity: sha512-7gK6zSXEH6neM212JgfYFXe+GmZQM+fia5SsusuBIUgnPheLFBmIPhtFoAQRj8/7wASYQnbDlHPVwY0BefoFgA==}
+  node-releases@2.0.21:
+    resolution: {integrity: sha512-5b0pgg78U3hwXkCM8Z9b2FJdPZlr9Psr9V2gQPESdGHqbntyFJKFW4r5TeWGFzafGY3hzs1JC62VEQMbl1JFkw==}
 
   node-source-walk@7.0.1:
     resolution: {integrity: sha512-3VW/8JpPqPvnJvseXowjZcirPisssnBuDikk6JIZ8jQzF7KJQX52iPFX4RYYxLycYH7IbMRSPUOga/esVjy5Yg==}
@@ -5767,7 +5767,7 @@ snapshots:
       '@eslint/core': 0.15.2
       levn: 0.4.1
 
-  '@f1r3fly-io/graphl-parser@0.0.8': {}
+  '@f1r3fly-io/graphl-parser@0.0.9': {}
 
   '@f1r3fly-io/lightning-bug@0.7.1(@popperjs/core@2.11.8)':
     dependencies:
@@ -7062,7 +7062,7 @@ snapshots:
     dependencies:
       caniuse-lite: 1.0.30001741
       electron-to-chromium: 1.5.218
-      node-releases: 2.0.20
+      node-releases: 2.0.21
       update-browserslist-db: 1.1.3(browserslist@4.25.4)
 
   bs-logger@0.2.6:
@@ -9366,7 +9366,7 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-releases@2.0.20: {}
+  node-releases@2.0.21: {}
 
   node-source-walk@7.0.1:
     dependencies:
