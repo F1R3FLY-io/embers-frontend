@@ -1,5 +1,3 @@
-import type React from "react";
-
 import classNames from "classnames";
 import { useState } from "react";
 
@@ -7,20 +5,30 @@ import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 
-import styles from "./ManualInputModal.module.scss";
+import styles from "./EditModal.module.scss";
 
-export type ManualInputData = Record<string, unknown>;
+export type ModalInput<T extends Record<string, string | number>> = {
+  [K in keyof T]: {
+    name: K;
+    type: T[K] extends string
+      ? "string"
+      : T[K] extends number
+        ? "number"
+        : never;
+  };
+}[keyof T];
 
-export type ManualInputModalProps = {
-  initial: ManualInputData;
-  onCancel?: (() => void) | undefined;
-  onSave: (data: ManualInputData) => void;
+type EditModalProps<T extends Record<string, string | number>> = {
+  initial: T;
+  inputs: ModalInput<T>[];
+  onCancel?: () => void;
+  onSave: (data: T) => void;
 };
 
-export const ManualInputModal: React.FC<ManualInputModalProps> = ({
+export function EditModal<T extends Record<string, string | number>>({
   initial,
   onSave,
-}) => {
+}: EditModalProps<T>) {
   const { close } = useModal();
 
   const [values] = useState(initial);
@@ -70,4 +78,4 @@ export const ManualInputModal: React.FC<ManualInputModalProps> = ({
       </div>
     </div>
   );
-};
+}
