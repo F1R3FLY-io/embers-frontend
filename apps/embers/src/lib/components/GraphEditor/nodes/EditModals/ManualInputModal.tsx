@@ -3,15 +3,21 @@ import type React from "react";
 import classNames from "classnames";
 import { useState } from "react";
 
-import type { NodeModalProps } from "@/lib/components/GraphEditor/nodes";
-
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./ManualInputModal.module.scss";
 
-export const ManualInputModal: React.FC<NodeModalProps<"manual-input">> = ({
+export type ManualInputData = Record<string, unknown>;
+
+export type ManualInputModalProps = {
+  initial: ManualInputData;
+  onCancel?: (() => void) | undefined;
+  onSave: (data: ManualInputData) => void;
+};
+
+export const ManualInputModal: React.FC<ManualInputModalProps> = ({
   initial,
   onSave,
 }) => {

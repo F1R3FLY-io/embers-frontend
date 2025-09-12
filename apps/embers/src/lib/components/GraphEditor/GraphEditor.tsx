@@ -28,7 +28,7 @@ import { useModal } from "@/lib/providers/modal/useModal";
 import type { NodeKind } from "./nodes/nodes.registry";
 
 import styles from "./GraphEditor.module.scss";
-import { MODAL_REGISTRY, NODE_REGISTRY } from "./nodes/nodes.registry";
+import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
 function createNodeChange<T extends keyof NodeTypes>(
   type: T,
@@ -97,7 +97,7 @@ export function GraphEditor() {
       onClick: () => {
         const pos = screenToFlowPosition(contextMenuPosition);
         const data = NODE_REGISTRY[type].defaultData;
-        const ModalComponent = MODAL_REGISTRY[type];
+        const ModalComponent = NODE_REGISTRY[type].modal;
         open(
           <ModalComponent
             initial={data}
@@ -201,7 +201,7 @@ export function GraphEditor() {
             });
 
             const data = NODE_REGISTRY[type].defaultData;
-            const ModalComponent = MODAL_REGISTRY[type];
+            const ModalComponent = NODE_REGISTRY[type].modal;
             open(
               <ModalComponent
                 initial={data}
