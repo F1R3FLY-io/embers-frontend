@@ -1,3 +1,4 @@
+import { Input } from "@/lib/components/Input";
 import SearchIcon from "@/public/icons/search-light-line-icon.svg?react";
 
 import styles from "./SearchControl.module.scss";
@@ -16,9 +17,9 @@ export function SearchControl({
   return (
     <div className={styles["search-control"]}>
       <div className={styles["search-input-container"]}>
-        <SearchIcon className={styles["search-icon"]} />
-        <input
+        <Input
           className={styles["search-input"]}
+          leftIcon={<SearchIcon className={styles["search-icon"]} />}
           placeholder={placeholder}
           type="text"
           value={searchQuery}
