@@ -17,17 +17,17 @@
   pointer-events: none;
 }
 
-.sm .box {
+.box .sm {
   width: 14px;
   height: 14px;
 }
 
-.md .box {
+.box .md {
   width: 16px;
   height: 16px;
 }
 
-.lg .box {
+.box .lg {
   width: 20px;
   height: 20px;
 }
@@ -39,22 +39,27 @@
   display: inline-grid;
   place-items: center;
   position: relative;
-  transition: background 120ms ease, border-color 120ms ease;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
 }
 
+.error .box {
+  border-color: var(--text-danger);
+}
+
+.icon .error {
+  stroke: var(--accent-success);
+}
 
 .input:checked + .box,
-.checkedBox {
+.checked-box {
   background: var(--background-blue-select);
   border-color: var(--border-pressed);
 }
 
+.indeterminate-box,
 .input:indeterminate + .box {
-  background: var(--background-blue-select);
-  border-color: var(--border-pressed);
-}
-
-.indeterminateBox {
   background: var(--background-blue-select);
   border-color: var(--border-pressed);
 }
@@ -65,14 +70,16 @@
   stroke: var(--accent-success);
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
   pointer-events: none;
 }
 
+.checked-box .icon,
+.indeterminate-box .icon,
 .input:checked + .box .icon,
-.input:indeterminate + .box .icon,
-.indeterminateBox .icon,
-.checkedBox .icon {
+.input:indeterminate + .box .icon {
   opacity: 1;
   transform: scale(1);
 }
@@ -82,17 +89,9 @@
   flex-direction: column;
 }
 
-.error .box {
-  border-color: var(--text-danger);
-}
-
 .error .input:checked + .box,
 .error .input:indeterminate + .box,
-.error .checkedBox,
-.error .indeterminateBox {
+.error .checked-box,
+.error .indeterminate-box {
   border-color: var(--text-danger);
-}
-
-.error .icon {
-  stroke: var(--accent-success);
 }

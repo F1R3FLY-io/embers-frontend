@@ -71,7 +71,9 @@ export function Checkbox({
   }, [triState, checked, indeterminate]);
 
   const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
-    if (!triState || disabled) {return;}
+    if (!triState || disabled) {
+      return;
+    }
     e.preventDefault();
     const next: TriState =
       localState === "mixed"

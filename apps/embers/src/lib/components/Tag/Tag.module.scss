@@ -18,7 +18,7 @@
   line-height: 1.2;
 }
 
-.closeBtn {
+.close-btn {
   appearance: none;
   background: transparent;
   border: 0;
@@ -35,7 +35,8 @@
   line-height: 0;
   margin-bottom: -1px;
 }
-.closeIcon {
+
+.close-icon {
   width: 12px;
   height: 12px;
   display: block;
@@ -69,6 +70,6 @@
 }
 
 .disabled {
-  opacity: .55;
+  opacity: 0.55;
   cursor: not-allowed;
 }

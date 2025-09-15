@@ -17,12 +17,21 @@
   pointer-events: none;
 }
 
-.sm .dot { --size: 14px; }
-.md .dot { --size: 16px; }
-.lg .dot { --size: 20px; }
+.dot .sm {
+  --size: 14px;
+}
+
+.dot .md {
+  --size: 16px;
+}
+
+.dot .lg {
+  --size: 20px;
+}
 
 .dot {
   --size: 16px;
+
   width: var(--size);
   height: var(--size);
   border-radius: 999px;
@@ -30,7 +39,9 @@
   background: var(--background-color);
   position: relative;
   display: inline-block;
-  transition: border-color 120ms ease, background 120ms ease;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease;
 }
 
 .dot::after {
@@ -45,25 +56,27 @@
   transition: background 120ms ease;
 }
 
-.input:checked + .dot {
+.dot + .input:checked {
   border-color: var(--border-selected);
 }
+
 .input:checked + .dot::after {
   background: var(--icon-accent);
 }
 
-
 .wrapper:hover:not(.disabled) .input:not(:checked) + .dot::after {
   background: var(--background-neutral-hover);
 }
+
 .wrapper:hover:not(.disabled) .input:checked + .dot {
   border-color: var(--border-pressed);
 }
 
-.error .dot {
+.dot .error {
   border-color: var(--text-danger);
 }
-.error .input:checked + .dot {
+
+.dot + .error .input:checked {
   border-color: var(--text-danger);
 }
 

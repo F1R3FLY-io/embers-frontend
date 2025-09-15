@@ -6,7 +6,7 @@
 }
 
 .disabled {
-  opacity: .55;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
@@ -20,13 +20,16 @@
   --w: 46px;
   --h: 26px;
   --p: 3px;
+
   width: var(--w);
   height: var(--h);
   border-radius: 999px;
   background: var(--background-neutral-surface-primary);
   border: 1px solid var(--border-primary);
   position: relative;
-  transition: background 120ms ease, border-color 120ms ease;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
 }
 
 .thumb {
@@ -38,7 +41,11 @@
   border-radius: 999px;
   background: var(--border-primary);
   transform: translateY(-50%);
-  transition: transform 150ms ease, background 120ms ease, border-color 120ms ease;
+  transition:
+    transform 150ms ease,
+    background 120ms ease,
+    border-color 120ms ease;
+
   :hover {
     background: var(--background-neutral-hover);
   }

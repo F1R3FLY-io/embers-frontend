@@ -14,10 +14,24 @@ export type ToggleSwitchProps = {
   onChange?: (checked: boolean) => void;
 };
 
-export function ToggleSwitch({ checked, className, disabled, label, name, onChange }: ToggleSwitchProps) {
+export function ToggleSwitch({
+  checked,
+  className,
+  disabled,
+  label,
+  name,
+  onChange,
+}: ToggleSwitchProps) {
   const id = useId();
   return (
-    <label className={classNames(styles.wrapper, disabled && styles.disabled, className)} htmlFor={id}>
+    <label
+      className={classNames(
+        styles.wrapper,
+        disabled && styles.disabled,
+        className,
+      )}
+      htmlFor={id}
+    >
       <input
         checked={checked}
         className={styles.input}
