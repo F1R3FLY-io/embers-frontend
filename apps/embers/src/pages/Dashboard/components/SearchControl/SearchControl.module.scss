@@ -6,7 +6,21 @@
   .search-icon {
     width: 20px;
     height: 20px;
-    fill: var(--text-color-primary);
-    stroke: var(--text-color-primary);
+    fill: var(--text-color-secondary);
+    stroke: var(--text-color-secondary);
+  }
+
+  &:focus-within {
+    .search-icon {
+      fill: var(--text-color-primary);
+      stroke: var(--text-color-primary);
+    }
+  }
+
+  &:hover {
+    .search-icon {
+      fill: var(--text-color-primary);
+      stroke: var(--text-color-primary);
+    }
   }
 }
