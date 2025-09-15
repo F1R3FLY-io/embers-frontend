@@ -132,15 +132,15 @@
   }
 
   &.small {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
 
   &.medium {
-    font-size: 14px;
+    font-size: var(--font-normal);
   }
 
   &.large {
-    font-size: 16px;
+    font-size: var(--font-large);
   }
 
   &.placeholder-primary::placeholder {
@@ -156,39 +156,39 @@
   }
 
   &.placeholder-small::placeholder {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
 
   &.placeholder-medium::placeholder {
-    font-size: 14px;
+    font-size: var(--font-normal);
   }
 
   &.placeholder-large::placeholder {
-    font-size: 16px;
+    font-size: var(--font-large);
   }
 
   &.placeholder-h1::placeholder {
-    font-size: 40px;
+    font-size: var(--font-h1);
   }
 
   &.placeholder-h2::placeholder {
-    font-size: 32px;
+    font-size: var(--font-h2);
   }
 
   &.placeholder-h3::placeholder {
-    font-size: 28px;
+    font-size: var(--font-h3);
   }
 
   &.placeholder-h4::placeholder {
-    font-size: 24px;
+    font-size: var(--font-h4);
   }
 
   &.placeholder-h5::placeholder {
-    font-size: 20px;
+    font-size: var(--font-h5);
   }
 
   &.placeholder-normal::placeholder {
-    font-size: 14px;
+    font-size: var(--font-normal);
   }
 }
 
@@ -212,17 +212,17 @@
   }
 
   &.small {
-    font-size: 12px;
+    font-size: var(--font-small);
     min-height: 80px;
   }
 
   &.medium {
-    font-size: 14px;
+    font-size: var(--font-normal);
     min-height: 120px;
   }
 
   &.large {
-    font-size: 16px;
+    font-size: var(--font-large);
     min-height: 160px;
   }
 
@@ -239,39 +239,39 @@
   }
 
   &.placeholder-small::placeholder {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
 
   &.placeholder-medium::placeholder {
-    font-size: 14px;
+    font-size: var(--font-normal);
   }
 
   &.placeholder-large::placeholder {
-    font-size: 16px;
+    font-size: var(--font-large);
   }
 
   &.placeholder-h1::placeholder {
-    font-size: 40px;
+    font-size: var(--font-h1);
   }
 
   &.placeholder-h2::placeholder {
-    font-size: 32px;
+    font-size: var(--font-h2);
   }
 
   &.placeholder-h3::placeholder {
-    font-size: 28px;
+    font-size: var(--font-h3);
   }
 
   &.placeholder-h4::placeholder {
-    font-size: 24px;
+    font-size: var(--font-h4);
   }
 
   &.placeholder-h5::placeholder {
-    font-size: 20px;
+    font-size: var(--font-h5);
   }
 
   &.placeholder-normal::placeholder {
-    font-size: 14px;
+    font-size: var(--font-normal);
   }
 }
 

@@ -16,16 +16,13 @@ export function SearchControl({
 }: SearchControlProps) {
   return (
     <div className={styles["search-control"]}>
-      <div className={styles["search-input-container"]}>
-        <Input
-          className={styles["search-input"]}
-          leftIcon={<SearchIcon className={styles["search-icon"]} />}
-          placeholder={placeholder}
-          type="text"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
-      </div>
+      <Input
+        leftIcon={<SearchIcon className={styles["search-icon"]} />}
+        placeholder={placeholder}
+        type="text"
+        value={searchQuery}
+        onChange={(e) => onSearchChange(e.target.value)}
+      />
     </div>
   );
 }

@@ -3,48 +3,8 @@
   max-width: 300px;
   margin-left: 24px;
 
-  .search-input-container {
-    position: relative;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-
-    .search-icon {
-      position: absolute;
-      left: 10px;
-      width: 24px;
-      height: 24px;
-      fill: var(--text-color-secondary);
-      stroke: var(--text-color-secondary);
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 8px 24px 8px 40px;
-      font-size: 14px;
-      color: var(--text-color-primary);
-      outline: none;
-      background-color: var(--background-neutral-hover);
-      border: none;
-      border-radius: 6px;
-
-      &::placeholder {
-        color: var(--text-color-secondary);
-      }
-
-      &:focus {
-        border-color: var(--text-color-primary);
-        box-shadow: 0 0 0 2px rgb(var(--text-color-primary) / 10%);
-
-        & + .search-icon {
-          fill: var(--text-color-primary);
-          stroke: var(--text-color-primary);
-        }
-      }
-
-      &:hover {
-        border-color: var(--text-color-primary);
-      }
-    }
+  .search-icon {
+    width: 20px;
+    height: 20px;
   }
 }

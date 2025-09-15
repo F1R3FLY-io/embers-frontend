@@ -65,28 +65,23 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
     [onChange],
   );
 
-  const inputAreaClass = classNames(styles["input-area"], {
-    [styles.error]: errorState,
-  });
-
   return (
     <div className={styles.container}>
       <Text bold color="secondary" fontSize={13}>
         Private Key
       </Text>
-      <div className={inputAreaClass}>
-        <Input
-          backgroundType="transparent"
-          borderType="none"
-          className={styles.input}
-          type="password"
-          value={content}
-          onChange={setWalletFromInput}
-        />
-        <FilePicker onChange={setWalletFromFile}>
-          <UploadIcon className={styles.icon} />
-        </FilePicker>
-      </div>
+      <Input
+        error={errorState}
+        color="secondary"
+        type="password"
+        value={content}
+        onChange={setWalletFromInput}
+        rightIcon={
+          <FilePicker onChange={setWalletFromFile}>
+            <UploadIcon className={styles.icon} />
+          </FilePicker>
+        }
+      />
     </div>
   );
 }
