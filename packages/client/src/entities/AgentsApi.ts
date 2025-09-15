@@ -4,10 +4,11 @@ import type {
   SignedContract,
 } from "../api-client";
 import type { Address } from "./Address";
+import type { Amount } from "./Amount";
+import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
-import { deployContract, sign } from "../functions";
-import { PrivateKey } from "./PrivateKey";
+import { deployContract } from "../functions";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -72,18 +73,14 @@ export class AgentsApiSdk {
     );
   }
 
-  /**
-   * Deploys an AI agent version.
-   * @param agentId The ID of the agent
-   * @param version The version to deploy
-   */
-  public async deployAgent(agentId: string, version: string) {
-    // Get the contract and sign it
+  public async deployCode(code: string, phloLimit: Amount) {
     const contract = async () =>
-      this.client.apiAiAgentsAddressIdVersionsVersionDeployPreparePost({
-        address: this.address.value,
-        id: agentId,
-        version,
+      this.client.apiAiAgentsDeployPreparePost({
+        deployAgentReq: {
+          code,
+          phloLimit: phloLimit.value,
+          type: "Code",
+        },
       });
 
     // Send the signed contract
@@ -99,11 +96,51 @@ export class AgentsApiSdk {
         sigAlgorithm,
       };
 
-      return this.client.apiAiAgentsAddressIdVersionsVersionDeploySendPost({
-        address: this.address.value,
-        id: agentId,
+      return this.client.apiAiAgentsDeploySendPost({
         signedContract,
-        version,
+      });
+    };
+
+    await deployContract(this.privateKey, contract, sendContract);
+  }
+
+  /**
+   * Deploys an AI agent version.
+   * @param agentId The ID of the agent
+   * @param version The version to deploy
+   */
+  public async deployAgent(
+    agentId: string,
+    version: string,
+    phloLimit: Amount,
+  ) {
+    // Get the contract and sign it
+    const contract = async () =>
+      this.client.apiAiAgentsDeployPreparePost({
+        deployAgentReq: {
+          address: this.address.value,
+          id: agentId,
+          phloLimit: phloLimit.value,
+          type: "Agent",
+          version,
+        },
+      });
+
+    // Send the signed contract
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
+      const signedContract: SignedContract = {
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
+        sigAlgorithm,
+      };
+
+      return this.client.apiAiAgentsDeploySendPost({
+        signedContract,
       });
     };
 
@@ -181,54 +218,5 @@ export class AgentsApiSdk {
         return rest;
       },
     );
-  }
-
-  /**
-   * Deploys an AI agent test.
-   * @param testKey The private key for testnet
-   * @param test The testcase
-   * @param env The code that being tested
-   */
-  public async testDeployAgent(
-    testKey: PrivateKey,
-    test: string,
-    env?: string,
-  ) {
-    const response = await this.client.apiAiAgentsTestDeployPreparePost({
-      deployTestReq: {
-        env,
-        test,
-      },
-    });
-
-    const signedTestContract = sign(response.testContract, testKey);
-    const signedEnvContract =
-      response.envContract && sign(response.envContract, testKey);
-
-    return this.client.apiAiAgentsTestDeploySendPost({
-      deploySignedTestReq: {
-        env: signedEnvContract && {
-          contract: response.envContract!,
-          deployer: this.privateKey.getPublicKey().value,
-          sig: signedEnvContract.sig,
-          sigAlgorithm: signedEnvContract.sigAlgorithm,
-        },
-        test: {
-          contract: response.testContract,
-          deployer: this.privateKey.getPublicKey().value,
-          sig: signedTestContract.sig,
-          sigAlgorithm: signedTestContract.sigAlgorithm,
-        },
-      },
-    });
-  }
-
-  /**
-   * Generate new test wallet private key
-   * @returns Wallet key
-   */
-  public async getTestWalletKey() {
-    const { key } = await this.client.apiAiAgentsTestWalletPost();
-    return PrivateKey.tryFromHex(key);
   }
 }

@@ -1,11 +1,22 @@
+import type { Edge as REdge, Node as RNode } from "@xyflow/react";
+
 import type { NodeRegistry } from "./nodes.registry";
+import type { NodeTemplateProps } from "./NodeTemplate";
 
 import { DeployContainerNode } from "./DeployContainer";
 import styles from "./nodes.module.scss";
 import { NODE_REGISTRY } from "./nodes.registry";
 import { NodeTemplate } from "./NodeTemplate";
 
-type NodeTemplateProps = Parameters<typeof NodeTemplate>[0];
+export type Node = {
+  [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
+}[keyof NodeTypes];
+
+export type Edge = REdge;
+export type NodeData<T extends keyof NodeTypes> = Extract<
+  Node,
+  { type: T }
+>["data"];
 
 function makeNodeTypes(registry: NodeRegistry) {
   const entries = Object.entries(registry).map(([type, def]) => {
@@ -13,9 +24,7 @@ function makeNodeTypes(registry: NodeRegistry) {
       className: styles[def.className],
       displayName: def.displayName,
       handlers: def.handlers,
-      icon: def.iconSrc ? (
-        <img alt={def.displayName} src={def.iconSrc} />
-      ) : undefined,
+      icon: <img alt={def.displayName} src={def.iconSrc} />,
       title: def.title,
     };
     return [type, NodeTemplate(props)] as const;

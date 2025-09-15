@@ -2,6 +2,7 @@ import type {
   AgentsApiSdk,
   AgentsTeamsApiSdk,
   PrivateKey,
+  TestnetApiSdk,
   WalletsApiSdk,
 } from "@f1r3fly-io/embers-client-sdk";
 
@@ -10,6 +11,7 @@ import { createContext, useContext } from "react";
 export type EmbersAPI = {
   agents: AgentsApiSdk;
   agentsTeams: AgentsTeamsApiSdk;
+  testnet: TestnetApiSdk;
   wallets: WalletsApiSdk;
 };
 

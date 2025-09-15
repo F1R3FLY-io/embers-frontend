@@ -1,59 +1,65 @@
-import type { Connection, Edge as REdge, Node as RNode } from "@xyflow/react";
-import type { MouseEvent as ReactMouseEvent } from "react";
+import type { Connection, EdgeChange, NodeChange } from "@xyflow/react";
+import type {
+  Dispatch,
+  MouseEvent as ReactMouseEvent,
+  SetStateAction,
+} from "react";
 
 import {
   addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
   Background,
   Controls,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useMemo, useState } from "react";
 
 import type { MenuItem } from "@/lib/components/ContextMenu";
-import type { NodeTypes } from "@/lib/components/GraphEditor/nodes";
+import type {
+  Edge,
+  Node,
+  NodeData,
+  NodeTypes,
+} from "@/lib/components/GraphEditor/nodes";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
+import { useModal } from "@/lib/providers/modal/useModal";
 
 import type { NodeKind } from "./nodes/nodes.registry";
 
 import styles from "./GraphEditor.module.scss";
+import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
-export type Node = {
-  [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
-}[keyof NodeTypes];
+type GraphEditorProps = {
+  edges: Edge[];
+  nodes: Node[];
+  setEdges: Dispatch<SetStateAction<Edge[]>>;
+  setNodes: Dispatch<SetStateAction<Node[]>>;
+};
 
-export type Edge = REdge;
-type NodeData<T extends keyof NodeTypes> = Extract<Node, { type: T }>["data"];
+export function GraphEditor({
+  edges,
+  nodes,
+  setEdges,
+  setNodes,
+}: GraphEditorProps) {
+  const { open } = useModal();
 
-function createNodeChange<T extends keyof NodeTypes>(
-  type: T,
-  position: Node["position"],
-  data: NodeData<T>,
-) {
-  return [
-    {
-      item: {
-        className: styles["no-node-style"],
-        data,
-        id: crypto.randomUUID(),
-        position,
-        type,
-      },
-      type: "add" as const,
-    },
-  ];
-}
-
-export function GraphEditor() {
-  const [nodes, , onNodesChange] = useNodesState<Node>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-
+  const onNodesChange = useCallback(
+    (changes: NodeChange<Node>[]) =>
+      setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+    [setNodes],
+  );
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange<Edge>[]) =>
+      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+    [setEdges],
+  );
   const onConnect = useCallback(
     (connection: Connection) =>
       setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot)),
@@ -94,13 +100,37 @@ export function GraphEditor() {
       content: `Add ${NODE_REGISTRY[type].displayName}`,
       hidden: selectedNodes.length !== 0,
       onClick: () => {
-        const pos = screenToFlowPosition(contextMenuPosition);
-        const data = NODE_REGISTRY[type].defaultData;
-        onNodesChange(createNodeChange(type, pos, data));
+        const position = screenToFlowPosition(contextMenuPosition);
+        if (NODE_REGISTRY[type].modalInputs.length === 0) {
+          onNodesChange(
+            createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
+          );
+        } else {
+          open(
+            <EditModal
+              initial={NODE_REGISTRY[type].defaultData}
+              inputs={NODE_REGISTRY[type].modalInputs}
+              onSave={(updatedData) => {
+                onNodesChange(createNodeChange(type, position, updatedData));
+              }}
+            />,
+            {
+              ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+              closeOnBlur: true,
+              maxWidth: 520,
+            },
+          );
+        }
       },
       type: "text",
     }));
-  }, [contextMenuPosition, onNodesChange, screenToFlowPosition, selectedNodes]);
+  }, [
+    contextMenuPosition,
+    onNodesChange,
+    open,
+    screenToFlowPosition,
+    selectedNodes.length,
+  ]);
 
   const deployItem: MenuItem = useMemo(
     () => ({
@@ -180,8 +210,32 @@ export function GraphEditor() {
               y: event.clientY,
             });
 
-            const data = NODE_REGISTRY[type].defaultData;
-            onNodesChange(createNodeChange(type, position, data));
+            if (NODE_REGISTRY[type].modalInputs.length === 0) {
+              onNodesChange(
+                createNodeChange(
+                  type,
+                  position,
+                  NODE_REGISTRY[type].defaultData,
+                ),
+              );
+            } else {
+              open(
+                <EditModal
+                  initial={NODE_REGISTRY[type].defaultData}
+                  inputs={NODE_REGISTRY[type].modalInputs}
+                  onSave={(updatedData) => {
+                    onNodesChange(
+                      createNodeChange(type, position, updatedData),
+                    );
+                  }}
+                />,
+                {
+                  ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                  closeOnBlur: true,
+                  maxWidth: 520,
+                },
+              );
+            }
           }
         }}
         onEdgesChange={onEdgesChange}
@@ -204,4 +258,23 @@ export function GraphEditor() {
       </ReactFlow>
     </div>
   );
+}
+
+function createNodeChange<T extends keyof NodeTypes>(
+  type: T,
+  position: Node["position"],
+  data: NodeData<T>,
+) {
+  return [
+    {
+      item: {
+        className: styles["no-node-style"],
+        data,
+        id: crypto.randomUUID(),
+        position,
+        type,
+      },
+      type: "add" as const,
+    },
+  ];
 }

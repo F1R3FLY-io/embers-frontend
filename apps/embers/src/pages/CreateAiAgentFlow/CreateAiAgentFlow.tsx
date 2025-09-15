@@ -17,27 +17,53 @@ import { useLayout } from "@/lib/providers/layout/useLayout";
 
 import styles from "./CreateAiAgentFlow.module.scss";
 
+const fileName = "agent.rho";
+const logLevel = "trace"; // "trace" | "debug" | "info" | "warn" | "error" | "fatal" | "report"
+
 export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
 
+  useEffect(() => setHeaderTitle(t("aiAgent.bioAgent")), [setHeaderTitle, t]);
+
   useEffect(() => {
-    setHeaderTitle(t("aiAgent.bioAgent"));
-
-    if (!editorRef.current) {
-      return;
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      editor.setLogLevel(logLevel);
+      const events = editor.getEvents();
+      const subscription = events.subscribe((event) => {
+        // This handler initializes the document when the Editor first becomes
+        // ready and each time it is realoaded by the HMR.
+        if (event.type === "ready") {
+          editor.openDocument(fileName);
+        }
+      });
+      return () => subscription.unsubscribe();
     }
+  }, []);
 
-    const interval = setInterval(() => {
-      if (editorRef.current?.isReady()) {
-        clearInterval(interval);
-        editorRef.current.openDocument("demo.rho");
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [setHeaderTitle, t]);
+  // Handle Vite HMR updates: HMR unloads the Editor component which triggers
+  // its clean-up logic. The clean-up logic consists of shutting down
+  // existing LSP connections. If the connections are not reestablished, then no
+  // further communication with the LSP server will be performed. The HMR
+  // handlers harmlessly exploit `openDocument` (in the "ready" event handler,
+  // above) to restablish these connections. The clean-up logic will be
+  // triggered regardless whether the LSP connections are manually cleaned-up,
+  // but if they are not manually cleaned-up prior to the HMR then a race
+  // condition occurs during the "ready" event handler when it calls
+  // `openDocument` while the clean-up logic for the unload event is being
+  // performed.
+  useEffect(() => {
+    if (import.meta.hot) {
+      const hmr = import.meta.hot;
+      const handleBeforeUpdate = () => editorRef.current?.shutdownLsp();
+      hmr.on("vite:beforeUpdate", handleBeforeUpdate);
+      return () => {
+        hmr.off("vite:beforeUpdate", handleBeforeUpdate);
+      };
+    }
+  }, []);
 
   return (
     <CodeLayout>

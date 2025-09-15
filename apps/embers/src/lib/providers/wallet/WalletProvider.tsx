@@ -3,6 +3,7 @@ import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import {
   AgentsApiSdk,
   AgentsTeamsApiSdk,
+  TestnetApiSdk,
   WalletsApiSdk,
 } from "@f1r3fly-io/embers-client-sdk";
 import { useReducer } from "react";
@@ -25,6 +26,10 @@ export function WalletProvider({ children }: React.PropsWithChildren) {
           privateKey,
         }),
         agentsTeams: new AgentsTeamsApiSdk({
+          basePath: FIREFLY_API_URL,
+          privateKey,
+        }),
+        testnet: new TestnetApiSdk({
           basePath: FIREFLY_API_URL,
           privateKey,
         }),

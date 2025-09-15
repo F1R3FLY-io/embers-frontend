@@ -4,21 +4,25 @@ import inputNodeIcon from "@/public/icons/input-node.png";
 import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 import ttsNodeIcon from "@/public/icons/tts-node.png";
 
-export interface NodeDefinition<
-  Data extends Record<string, unknown> = Record<string, unknown>,
-> {
-  className: string;
+import type { ModalInput } from "./EditModal";
+import type styles from "./nodes.module.scss";
+
+interface NodeDefinition<Data extends Record<string, string | number>> {
+  className: keyof typeof styles;
   defaultData: Data;
   displayName: string;
-  handlers?: Array<{ position: Position; type: "source" | "target" }>;
-  hideInMenu?: boolean;
-  iconSrc?: string; // ← string path, not JSX
-  menuLabel?: string;
+  handlers: Array<{ position: Position; type: "source" | "target" }>;
+  iconSrc: string;
+  modalInputs: ModalInput<Data>[];
   title: string;
 }
 
+const defineNode = <D extends Record<string, string | number>>(
+  definition: NodeDefinition<D>,
+) => definition;
+
 export const NODE_REGISTRY = {
-  compress: {
+  compress: defineNode({
     className: "data-package",
     defaultData: {},
     displayName: "Compress",
@@ -27,26 +31,28 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
+    modalInputs: [],
     title: "Compress",
-  },
-  "manual-input": {
+  }),
+  "manual-input": defineNode({
     className: "source",
     defaultData: {},
     displayName: "Manual Input",
     handlers: [{ position: Position.Right, type: "source" }],
     iconSrc: inputNodeIcon,
+    modalInputs: [],
     title: "Manual Input",
-  },
-  "send-to-channel": {
+  }),
+  "send-to-channel": defineNode({
     className: "sink",
     defaultData: {},
     displayName: "Send to channel",
     handlers: [{ position: Position.Left, type: "target" }],
     iconSrc: defaultNodeIcon,
-    menuLabel: "Add sink",
+    modalInputs: [],
     title: "Send to channel",
-  },
-  "text-model": {
+  }),
+  "text-model": defineNode({
     className: "service",
     defaultData: {},
     displayName: "Text model",
@@ -55,9 +61,10 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
+    modalInputs: [],
     title: "Text model",
-  },
-  "tti-model": {
+  }),
+  "tti-model": defineNode({
     className: "service",
     defaultData: {},
     displayName: "TTI model",
@@ -66,10 +73,10 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
-    menuLabel: "Add text to image model",
+    modalInputs: [],
     title: "Text to image model",
-  },
-  "tts-model": {
+  }),
+  "tts-model": defineNode({
     className: "service",
     defaultData: {},
     displayName: "TTS model",
@@ -78,11 +85,10 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: ttsNodeIcon,
-    menuLabel: "Add text to speech model",
+    modalInputs: [],
     title: "Text to speech model",
-  },
-} as const satisfies Record<string, NodeDefinition>;
+  }),
+} as const;
 
 export type NodeRegistry = typeof NODE_REGISTRY;
 export type NodeKind = keyof NodeRegistry;
-export type NodeDataOf<K extends NodeKind> = NodeRegistry[K]["defaultData"];

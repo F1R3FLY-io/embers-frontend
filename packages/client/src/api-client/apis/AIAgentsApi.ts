@@ -15,12 +15,8 @@ import type {
   Agents,
   CreateAgentReq,
   CreateAgentResp,
-  CreateTestwalletResp,
+  DeployAgentReq,
   DeployAgentResp,
-  DeploySignedTestReq,
-  DeploySignedTestResp,
-  DeployTestReq,
-  DeployTestResp,
   SaveAgentResp,
   SignedContract,
 } from "../models/index";
@@ -30,12 +26,8 @@ import {
   AgentsFromJSON,
   CreateAgentReqToJSON,
   CreateAgentRespFromJSON,
-  CreateTestwalletRespFromJSON,
+  DeployAgentReqToJSON,
   DeployAgentRespFromJSON,
-  DeploySignedTestReqToJSON,
-  DeploySignedTestRespFromJSON,
-  DeployTestReqToJSON,
-  DeployTestRespFromJSON,
   SaveAgentRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
@@ -48,19 +40,6 @@ export interface ApiAiAgentsAddressGetRequest {
 export interface ApiAiAgentsAddressIdVersionsGetRequest {
   address: string;
   id: string;
-}
-
-export interface ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest {
-  address: string;
-  id: string;
-  version: string;
-}
-
-export interface ApiAiAgentsAddressIdVersionsVersionDeploySendPostRequest {
-  address: string;
-  id: string;
-  signedContract: SignedContract;
-  version: string;
 }
 
 export interface ApiAiAgentsAddressIdVersionsVersionGetRequest {
@@ -77,6 +56,14 @@ export interface ApiAiAgentsCreateSendPostRequest {
   signedContract: SignedContract;
 }
 
+export interface ApiAiAgentsDeployPreparePostRequest {
+  deployAgentReq: DeployAgentReq;
+}
+
+export interface ApiAiAgentsDeploySendPostRequest {
+  signedContract: SignedContract;
+}
+
 export interface ApiAiAgentsIdSavePreparePostRequest {
   createAgentReq: CreateAgentReq;
   id: string;
@@ -85,14 +72,6 @@ export interface ApiAiAgentsIdSavePreparePostRequest {
 export interface ApiAiAgentsIdSaveSendPostRequest {
   id: string;
   signedContract: SignedContract;
-}
-
-export interface ApiAiAgentsTestDeployPreparePostRequest {
-  deployTestReq: DeployTestReq;
-}
-
-export interface ApiAiAgentsTestDeploySendPostRequest {
-  deploySignedTestReq: DeploySignedTestReq;
 }
 
 /**
@@ -210,160 +189,6 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
     return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionsVersionDeployPreparePostRaw(
-    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployAgentResp>> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeployPreparePost().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeployPreparePost().',
-      );
-    }
-
-    if (requestParameters.version == null) {
-      throw new runtime.RequiredError(
-        "version",
-        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeployPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}/deploy/prepare`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
-
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployAgentRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionsVersionDeployPreparePost(
-    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployAgentResp> {
-    const response =
-      await this.apiAiAgentsAddressIdVersionsVersionDeployPreparePostRaw(
-        requestParameters,
-        initOverrides,
-      );
-    return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionsVersionDeploySendPostRaw(
-    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
-      );
-    }
-
-    if (requestParameters.version == null) {
-      throw new runtime.RequiredError(
-        "version",
-        'Required parameter "version" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
-      );
-    }
-
-    if (requestParameters.signedContract == null) {
-      throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsAddressIdVersionsVersionDeploySendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}/deploy/send`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
-
-    const response = await this.request(
-      {
-        body: SignedContractToJSON(requestParameters.signedContract),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   */
-  async apiAiAgentsAddressIdVersionsVersionDeploySendPost(
-    requestParameters: ApiAiAgentsAddressIdVersionsVersionDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsAddressIdVersionsVersionDeploySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
   }
 
   /**
@@ -535,6 +360,100 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
   /**
    */
+  async apiAiAgentsDeployPreparePostRaw(
+    requestParameters: ApiAiAgentsDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeployAgentResp>> {
+    if (requestParameters.deployAgentReq == null) {
+      throw new runtime.RequiredError(
+        "deployAgentReq",
+        'Required parameter "deployAgentReq" was null or undefined when calling apiAiAgentsDeployPreparePost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents/deploy/prepare`;
+
+    const response = await this.request(
+      {
+        body: DeployAgentReqToJSON(requestParameters.deployAgentReq),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      DeployAgentRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsDeployPreparePost(
+    requestParameters: ApiAiAgentsDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<DeployAgentResp> {
+    const response = await this.apiAiAgentsDeployPreparePostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsDeploySendPostRaw(
+    requestParameters: ApiAiAgentsDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.signedContract == null) {
+      throw new runtime.RequiredError(
+        "signedContract",
+        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsDeploySendPost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents/deploy/send`;
+
+    const response = await this.request(
+      {
+        body: SignedContractToJSON(requestParameters.signedContract),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async apiAiAgentsDeploySendPost(
+    requestParameters: ApiAiAgentsDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.apiAiAgentsDeploySendPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
   async apiAiAgentsIdSavePreparePostRaw(
     requestParameters: ApiAiAgentsIdSavePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
@@ -647,140 +566,5 @@ export class AIAgentsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
     await this.apiAiAgentsIdSaveSendPostRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeployPreparePostRaw(
-    requestParameters: ApiAiAgentsTestDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployTestResp>> {
-    if (requestParameters.deployTestReq == null) {
-      throw new runtime.RequiredError(
-        "deployTestReq",
-        'Required parameter "deployTestReq" was null or undefined when calling apiAiAgentsTestDeployPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents/test/deploy/prepare`;
-
-    const response = await this.request(
-      {
-        body: DeployTestReqToJSON(requestParameters.deployTestReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployTestRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeployPreparePost(
-    requestParameters: ApiAiAgentsTestDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployTestResp> {
-    const response = await this.apiAiAgentsTestDeployPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeploySendPostRaw(
-    requestParameters: ApiAiAgentsTestDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeploySignedTestResp>> {
-    if (requestParameters.deploySignedTestReq == null) {
-      throw new runtime.RequiredError(
-        "deploySignedTestReq",
-        'Required parameter "deploySignedTestReq" was null or undefined when calling apiAiAgentsTestDeploySendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents/test/deploy/send`;
-
-    const response = await this.request(
-      {
-        body: DeploySignedTestReqToJSON(requestParameters.deploySignedTestReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeploySignedTestRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTestDeploySendPost(
-    requestParameters: ApiAiAgentsTestDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeploySignedTestResp> {
-    const response = await this.apiAiAgentsTestDeploySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   */
-  async apiAiAgentsTestWalletPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateTestwalletResp>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const urlPath = `/api/ai-agents/test/wallet`;
-
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CreateTestwalletRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTestWalletPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<CreateTestwalletResp> {
-    const response = await this.apiAiAgentsTestWalletPostRaw(initOverrides);
-    return response.value();
   }
 }

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
 import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider";
+import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
@@ -12,7 +13,7 @@ import styles from "./App.module.scss";
 import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
-const Deploy = lazy(async () => import("@/pages/Deploy/Deploy"));
+const Deploy = lazy(async () => import("@/pages/Deploy"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
 const CreateAiTeamFlow = lazy(async () => import("@/pages/CreateAiTeamFlow"));
@@ -27,26 +28,28 @@ export default function App() {
         <ThemeProvider>
           <LayoutProvider>
             <ReactFlowProvider>
-              <BrowserRouter>
-                <div className={styles.background}>
-                  <Routes>
-                    <Route element={<Home />} path="/" />
-                    <Route element={<Login />} path="/login" />
-                    <Route
-                      element={<CreateAiTeamFlow />}
-                      path="/create-ai-team"
-                    />
-                    <Route element={<Deploy />} path="/deploy" />
-                    <Route element={<ProtectedRoute />}>
-                      <Route element={<Dashboard />} path="/dashboard" />
-                      <Route
-                        element={<CreateAiAgentFlow />}
-                        path="/create-ai-agent"
-                      />
-                    </Route>
-                  </Routes>
-                </div>
-              </BrowserRouter>
+              <ModalProvider>
+                <BrowserRouter>
+                  <div className={styles.background}>
+                    <Routes>
+                      <Route element={<Home />} path="/" />
+                      <Route element={<Login />} path="/login" />
+                      <Route element={<Deploy />} path="/deploy" />
+                      <Route element={<ProtectedRoute />}>
+                        <Route
+                          element={<CreateAiTeamFlow />}
+                          path="/create-ai-team"
+                        />
+                        <Route element={<Dashboard />} path="/dashboard" />
+                        <Route
+                          element={<CreateAiAgentFlow />}
+                          path="/create-ai-agent"
+                        />
+                      </Route>
+                    </Routes>
+                  </div>
+                </BrowserRouter>
+              </ModalProvider>
             </ReactFlowProvider>
           </LayoutProvider>
         </ThemeProvider>
