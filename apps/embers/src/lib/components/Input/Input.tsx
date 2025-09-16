@@ -34,7 +34,6 @@ type ErrorTextColor = "primary" | "secondary" | "hover" | "danger";
 type ErrorTextType = PlaceholderType;
 
 type CommonProps = {
-  inputType: "input" | "textarea";
   backgroundType?: BackgroundType;
   borderType?: BorderType;
   className?: string;
@@ -43,6 +42,7 @@ type CommonProps = {
   errorText?: string;
   errorTextColor?: ErrorTextColor;
   errorTextType?: ErrorTextType;
+  inputType: "input" | "textarea";
   leftIcon?: ReactNode;
   placeholderColor?: PlaceholderColor;
   placeholderType?: PlaceholderType;
@@ -64,7 +64,6 @@ type InputAsTextarea = CommonProps &
 type InputProps = InputAsInput | InputAsTextarea;
 
 export function Input({
-  inputType = "input",
   backgroundType = "default",
   borderType = "default",
   className,
@@ -73,6 +72,7 @@ export function Input({
   errorText,
   errorTextColor = "danger",
   errorTextType = "small",
+  inputType = "input",
   leftIcon,
   placeholderColor = "secondary",
   placeholderType = "normal",
@@ -146,23 +146,20 @@ export function Input({
       </div>
       {errorText && (
         <div
-          className={classNames(
-            styles["error-text"],
-            {
-              [styles["error-text-h1"]]: errorTextType === "H1",
-              [styles["error-text-h2"]]: errorTextType === "H2",
-              [styles["error-text-h3"]]: errorTextType === "H3",
-              [styles["error-text-h4"]]: errorTextType === "H4",
-              [styles["error-text-h5"]]: errorTextType === "H5",
-              [styles["error-text-large"]]: errorTextType === "large",
-              [styles["error-text-normal"]]: errorTextType === "normal",
-              [styles["error-text-small"]]: errorTextType === "small",
-              [styles["error-text-primary"]]: errorTextColor === "primary",
-              [styles["error-text-secondary"]]: errorTextColor === "secondary",
-              [styles["error-text-hover"]]: errorTextColor === "hover",
-              [styles["error-text-danger"]]: errorTextColor === "danger",
-            },
-          )}
+          className={classNames(styles["error-text"], {
+            [styles["error-text-danger"]]: errorTextColor === "danger",
+            [styles["error-text-h1"]]: errorTextType === "H1",
+            [styles["error-text-h2"]]: errorTextType === "H2",
+            [styles["error-text-h3"]]: errorTextType === "H3",
+            [styles["error-text-h4"]]: errorTextType === "H4",
+            [styles["error-text-h5"]]: errorTextType === "H5",
+            [styles["error-text-hover"]]: errorTextColor === "hover",
+            [styles["error-text-large"]]: errorTextType === "large",
+            [styles["error-text-normal"]]: errorTextType === "normal",
+            [styles["error-text-primary"]]: errorTextColor === "primary",
+            [styles["error-text-secondary"]]: errorTextColor === "secondary",
+            [styles["error-text-small"]]: errorTextType === "small",
+          })}
         >
           {errorText}
         </div>

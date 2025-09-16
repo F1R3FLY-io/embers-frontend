@@ -75,7 +75,7 @@ export default function Deploy({
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <Input placeholder={agentName} inputType="input" />
+            <Input inputType="input" placeholder={agentName} />
           </div>
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
@@ -117,7 +117,7 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.version")}
                 </Text>
-                <Input placeholder={agentVersion} inputType="input" />
+                <Input inputType="input" placeholder={agentVersion} />
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>

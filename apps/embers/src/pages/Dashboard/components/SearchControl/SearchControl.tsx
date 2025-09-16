@@ -17,9 +17,9 @@ export function SearchControl({
   return (
     <div className={styles["search-control"]}>
       <Input
+        inputType="input"
         leftIcon={<SearchIcon className={styles["search-icon"]} />}
         placeholder={placeholder}
-        inputType="input"
         value={searchQuery}
         onChange={(e) => onSearchChange(e.target.value)}
       />

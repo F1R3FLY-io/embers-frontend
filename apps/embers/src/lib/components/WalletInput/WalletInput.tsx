@@ -72,12 +72,12 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
       <Input
         color="secondary"
         error={errorState}
+        inputType="input"
         rightIcon={
           <FilePicker onChange={setWalletFromFile}>
             <UploadIcon className={styles.icon} />
           </FilePicker>
         }
-        inputType="input"
         type="password"
         value={content}
         onChange={setWalletFromInput}
