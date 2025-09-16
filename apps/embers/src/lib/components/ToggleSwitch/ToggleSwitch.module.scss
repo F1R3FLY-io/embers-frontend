@@ -1,0 +1,66 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.track {
+  --w: 46px;
+  --h: 26px;
+  --p: 3px;
+
+  width: var(--w);
+  height: var(--h);
+  border-radius: 999px;
+  background: var(--background-neutral-surface-primary);
+  border: 1px solid var(--border-primary);
+  position: relative;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.thumb {
+  position: absolute;
+  left: var(--p);
+  top: 50%;
+  width: calc(var(--h) - var(--p) * 2);
+  height: calc(var(--h) - var(--p) * 2);
+  border-radius: 999px;
+  background: var(--border-primary);
+  transform: translateY(-50%);
+  transition:
+    transform 150ms ease,
+    background 120ms ease,
+    border-color 120ms ease;
+
+  :hover {
+    background: var(--background-neutral-hover);
+  }
+}
+
+.input:checked + .track {
+  background: var(--background-blue-select);
+  border-color: var(--border-selected);
+}
+
+.input:checked + .track .thumb {
+  transform: translate(calc(var(--w) - var(--h)), -50%);
+  background: var(--icon-accent);
+}
+
+.input:focus-visible + .track {
+  box-shadow: 0 0 0 2px var(--focus-ring, var(--accent, #6e46ff));
+}

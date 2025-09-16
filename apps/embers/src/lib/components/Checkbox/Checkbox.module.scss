@@ -1,0 +1,97 @@
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.box .sm {
+  width: 14px;
+  height: 14px;
+}
+
+.box .md {
+  width: 16px;
+  height: 16px;
+}
+
+.box .lg {
+  width: 20px;
+  height: 20px;
+}
+
+.box {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--background-color);
+  display: inline-grid;
+  place-items: center;
+  position: relative;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.error .box {
+  border-color: var(--text-danger);
+}
+
+.icon .error {
+  stroke: var(--accent-success);
+}
+
+.input:checked + .box,
+.checked-box {
+  background: var(--background-blue-select);
+  border-color: var(--border-pressed);
+}
+
+.indeterminate-box,
+.input:indeterminate + .box {
+  background: var(--background-blue-select);
+  border-color: var(--border-pressed);
+}
+
+.icon {
+  width: 70%;
+  height: 70%;
+  stroke: var(--accent-success);
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+  pointer-events: none;
+}
+
+.checked-box .icon,
+.indeterminate-box .icon,
+.input:checked + .box .icon,
+.input:indeterminate + .box .icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.error .input:checked + .box,
+.error .input:indeterminate + .box,
+.error .checked-box,
+.error .indeterminate-box {
+  border-color: var(--text-danger);
+}

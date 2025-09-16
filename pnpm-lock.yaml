@@ -120,8 +120,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/client
       '@f1r3fly-io/lightning-bug':
-        specifier: ^0.7.1
-        version: 0.7.1(@popperjs/core@2.11.8)
+        specifier: ^0.7.3
+        version: 0.7.3(@popperjs/core@2.11.8)
       '@f1r3fly-io/tree-sitter-rholang-js-with-comments':
         specifier: ^1.1.9
         version: 1.1.9
@@ -759,8 +759,8 @@ packages:
   '@f1r3fly-io/graphl-parser@0.0.9':
     resolution: {integrity: sha512-RYDqK7LwfR7vZQL7VdCz5OP+yguuILtpqJ/a+ZWlhE2kbZ1n1Sp9Tshf6CJ5VVKhJc+cUuMkXl1G+Z+7e4Aesw==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/graphl-parser/0.0.9/839b48501d1e8efe06887e3f127072e0b555307a}
 
-  '@f1r3fly-io/lightning-bug@0.7.1':
-    resolution: {integrity: sha512-sCltn6o4NE+/Fs88kSB0harLLpy0arv4ClGhA58vF3WljZaf7oKVbu6SHhU3gzPKl0xxI6Tuf8Im6UukDA67HA==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/lightning-bug/0.7.1/8b7be3fee9f43cf1b060c983cd6bfd21f0927d7e}
+  '@f1r3fly-io/lightning-bug@0.7.3':
+    resolution: {integrity: sha512-lZYu0dB1lC45iA4clCJrTYqAJCQq9vP/sgpmcURuIWqWn9nZVvfYNykPE7uJaJye1KjODUBaXp4EN5KTL0jjkw==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/lightning-bug/0.7.3/29c057c56feb853927bdca3b5878fd10db182d4a}
 
   '@f1r3fly-io/tree-sitter-rholang-js-with-comments@1.1.9':
     resolution: {integrity: sha512-B22b5y7xH1nAu00Y8BCf5jua3IaF3h4yFlJRUj0lujqzAn+JJ0GsCjcsQ1CTOXzXxzXaxqQtZB73JmUB8xYPOw==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/tree-sitter-rholang-js-with-comments/1.1.9/21459db299fd91bc3300f0cb40a02dab806524d2}
@@ -5769,7 +5769,7 @@ snapshots:
 
   '@f1r3fly-io/graphl-parser@0.0.9': {}
 
-  '@f1r3fly-io/lightning-bug@0.7.1(@popperjs/core@2.11.8)':
+  '@f1r3fly-io/lightning-bug@0.7.3(@popperjs/core@2.11.8)':
     dependencies:
       '@codemirror/autocomplete': 6.18.7
       '@codemirror/commands': 6.8.1
