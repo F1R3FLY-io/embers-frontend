@@ -210,7 +210,7 @@ export function GraphEditor({
               y: event.clientY,
             });
 
-            if (NODE_REGISTRY[type].modalInputs.length === 1) {
+            if (NODE_REGISTRY[type].modalInputs.length === 0) {
               onNodesChange(
                 createNodeChange(
                   type,
