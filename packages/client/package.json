@@ -49,12 +49,12 @@
     "eslint-plugin-unused-imports": "^4.2.0",
     "express": "^5.1.0",
     "serve": "^14.2.5",
-    "ts-jest": "^29.4.1",
+    "ts-jest": "^29.4.2",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.12"
+    "typedoc": "^0.28.13"
   },
   "dependencies": {
-    "@f1r3fly-io/graphl-parser": "^0.0.9",
+    "@f1r3fly-io/graphl-parser": "^0.0.12",
     "@noble/curves": "^2.0.0",
     "@scure/base": "^2.0.0",
     "blakejs": "^1.2.1",
