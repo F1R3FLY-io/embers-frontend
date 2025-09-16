@@ -5,6 +5,7 @@ import type {
 } from "react";
 
 import classNames from "classnames";
+import { useId } from "react";
 
 import styles from "./Input.module.scss";
 
@@ -39,6 +40,7 @@ type CommonProps = {
   className?: string;
   color?: TextColor;
   error?: boolean;
+  errorMessage?: string;
   errorText?: string;
   errorTextColor?: ErrorTextColor;
   errorTextType?: ErrorTextType;
@@ -69,6 +71,7 @@ export function Input({
   className,
   color = "primary",
   error,
+  errorMessage,
   errorText,
   errorTextColor = "danger",
   errorTextType = "small",
@@ -81,6 +84,21 @@ export function Input({
   variant = "default",
   ...nativeProps
 }: InputProps) {
+  const reactGeneratedId = useId();
+  const nativeId = (nativeProps as { id?: string }).id;
+  const inputId = nativeId ?? `input-${reactGeneratedId}`;
+  const message = errorMessage ?? errorText;
+  const errorId = `${inputId}-error`;
+  const existingDescribedBy = (
+    nativeProps as {
+      "aria-describedby"?: string;
+    }
+  )["aria-describedby"];
+  const ariaDescribedBy =
+    [existingDescribedBy, message ? errorId : undefined]
+      .filter(Boolean)
+      .join(" ") || undefined;
+  const ariaInvalid = error || !!message || undefined;
   const containerClass = classNames(
     styles.container,
     {
@@ -133,18 +151,22 @@ export function Input({
         {leftIcon && <div className={styles["left-icon"]}>{leftIcon}</div>}
         {inputType === "textarea" ? (
           <textarea
+            aria-describedby={ariaDescribedBy}
+            aria-invalid={ariaInvalid}
             className={inputClass}
             {...(nativeProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
           />
         ) : (
           <input
+            aria-describedby={ariaDescribedBy}
+            aria-invalid={ariaInvalid}
             className={inputClass}
             {...(nativeProps as InputHTMLAttributes<HTMLInputElement>)}
           />
         )}
         {rightIcon && <div className={styles["right-icon"]}>{rightIcon}</div>}
       </div>
-      {errorText && (
+      {message && (
         <div
           className={classNames(styles["error-text"], {
             [styles["error-text-danger"]]: errorTextColor === "danger",
@@ -160,8 +182,9 @@ export function Input({
             [styles["error-text-secondary"]]: errorTextColor === "secondary",
             [styles["error-text-small"]]: errorTextType === "small",
           })}
+          id={errorId}
         >
-          {errorText}
+          {message}
         </div>
       )}
     </>
