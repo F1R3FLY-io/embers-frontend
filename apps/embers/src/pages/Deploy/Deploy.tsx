@@ -75,13 +75,13 @@ export default function Deploy({
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <Input placeholder={agentName} type="text" />
+            <Input placeholder={agentName} inputType="input" />
           </div>
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentDescription")}
             </Text>
-            <Input as="textarea" placeholder={agentDescription} />
+            <Input inputType="textarea" placeholder={agentDescription} />
           </div>
           <div className={styles["form-section"]}>
             <Text bold color="primary" fontSize={20} type="H3">
@@ -93,7 +93,7 @@ export default function Deploy({
                   {t("deploy.welcomeMessage")}
                 </Text>
                 <Input
-                  as="textarea"
+                  inputType="textarea"
                   placeholder={t("deploy.enterWelcomeMessage")}
                 />
               </div>
@@ -102,7 +102,7 @@ export default function Deploy({
                   {t("basic.inputPrompt")}
                 </Text>
                 <Input
-                  as="textarea"
+                  inputType="textarea"
                   placeholder={t("deploy.enterInputPrompt")}
                 />
               </div>
@@ -117,14 +117,14 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.version")}
                 </Text>
-                <Input placeholder={agentVersion} type="text" />
+                <Input placeholder={agentVersion} inputType="input" />
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.notes")}
                 </Text>
                 <Input
-                  as="textarea"
+                  inputType="textarea"
                   placeholder={t("deploy.enterDeploymentNotes")}
                 />
               </div>

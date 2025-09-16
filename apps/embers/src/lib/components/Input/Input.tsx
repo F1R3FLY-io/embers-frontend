@@ -10,7 +10,6 @@ import styles from "./Input.module.scss";
 
 type InputSize = "small" | "medium" | "large";
 type InputVariant = "default" | "filled" | "outline";
-type InputType = "input" | "textarea";
 type PlaceholderType =
   | "H1"
   | "H2"
@@ -31,41 +30,56 @@ type BorderType =
   | "danger"
   | "subtle";
 
-interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  as?: InputType;
+type ErrorTextColor = "primary" | "secondary" | "hover" | "danger";
+type ErrorTextType = PlaceholderType;
+
+type CommonProps = {
+  inputType: "input" | "textarea";
   backgroundType?: BackgroundType;
   borderType?: BorderType;
   className?: string;
   color?: TextColor;
-  cols?: number;
   error?: boolean;
+  errorText?: string;
+  errorTextColor?: ErrorTextColor;
+  errorTextType?: ErrorTextType;
   leftIcon?: ReactNode;
   placeholderColor?: PlaceholderColor;
   placeholderType?: PlaceholderType;
   rightIcon?: ReactNode;
-  // Allow textarea-specific props when as="textarea"
-  rows?: number;
   size?: InputSize;
   variant?: InputVariant;
-}
+};
+
+type InputAsInput = CommonProps &
+  Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
+    inputType: "input";
+  };
+
+type InputAsTextarea = CommonProps &
+  TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    inputType: "textarea";
+  };
+
+type InputProps = InputAsInput | InputAsTextarea;
 
 export function Input({
-  as = "input",
+  inputType = "input",
   backgroundType = "default",
   borderType = "default",
   className,
   color = "primary",
-  cols,
   error,
+  errorText,
+  errorTextColor = "danger",
+  errorTextType = "small",
   leftIcon,
   placeholderColor = "secondary",
   placeholderType = "normal",
   rightIcon,
-  rows,
   size = "medium",
   variant = "default",
-  ...inputProps
+  ...nativeProps
 }: InputProps) {
   const containerClass = classNames(
     styles.container,
@@ -91,7 +105,7 @@ export function Input({
   );
 
   const inputClass = classNames(
-    as === "textarea" ? styles.textarea : styles.input,
+    inputType === "textarea" ? styles.textarea : styles.input,
     {
       [styles.large]: size === "large",
       [styles.medium]: size === "medium",
@@ -114,22 +128,45 @@ export function Input({
   );
 
   return (
-    <div className={containerClass}>
-      {leftIcon && <div className={styles["left-icon"]}>{leftIcon}</div>}
-      {as === "textarea" ? (
-        <textarea
-          className={inputClass}
-          cols={cols}
-          rows={rows}
-          {...(inputProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
-        />
-      ) : (
-        <input
-          className={inputClass}
-          {...(inputProps as InputHTMLAttributes<HTMLInputElement>)}
-        />
+    <>
+      <div className={containerClass}>
+        {leftIcon && <div className={styles["left-icon"]}>{leftIcon}</div>}
+        {inputType === "textarea" ? (
+          <textarea
+            className={inputClass}
+            {...(nativeProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+          />
+        ) : (
+          <input
+            className={inputClass}
+            {...(nativeProps as InputHTMLAttributes<HTMLInputElement>)}
+          />
+        )}
+        {rightIcon && <div className={styles["right-icon"]}>{rightIcon}</div>}
+      </div>
+      {errorText && (
+        <div
+          className={classNames(
+            styles["error-text"],
+            {
+              [styles["error-text-h1"]]: errorTextType === "H1",
+              [styles["error-text-h2"]]: errorTextType === "H2",
+              [styles["error-text-h3"]]: errorTextType === "H3",
+              [styles["error-text-h4"]]: errorTextType === "H4",
+              [styles["error-text-h5"]]: errorTextType === "H5",
+              [styles["error-text-large"]]: errorTextType === "large",
+              [styles["error-text-normal"]]: errorTextType === "normal",
+              [styles["error-text-small"]]: errorTextType === "small",
+              [styles["error-text-primary"]]: errorTextColor === "primary",
+              [styles["error-text-secondary"]]: errorTextColor === "secondary",
+              [styles["error-text-hover"]]: errorTextColor === "hover",
+              [styles["error-text-danger"]]: errorTextColor === "danger",
+            },
+          )}
+        >
+          {errorText}
+        </div>
       )}
-      {rightIcon && <div className={styles["right-icon"]}>{rightIcon}</div>}
-    </div>
+    </>
   );
 }

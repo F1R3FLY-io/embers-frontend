@@ -77,6 +77,7 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
             <UploadIcon className={styles.icon} />
           </FilePicker>
         }
+        inputType="input"
         type="password"
         value={content}
         onChange={setWalletFromInput}

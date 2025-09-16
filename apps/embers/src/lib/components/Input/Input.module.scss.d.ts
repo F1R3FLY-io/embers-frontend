@@ -35,5 +35,18 @@ declare const classNames: {
   readonly textarea: "textarea";
   readonly "left-icon": "left-icon";
   readonly "right-icon": "right-icon";
+  readonly "error-text": "error-text";
+  readonly "error-text-primary": "error-text-primary";
+  readonly "error-text-secondary": "error-text-secondary";
+  readonly "error-text-hover": "error-text-hover";
+  readonly "error-text-danger": "error-text-danger";
+  readonly "error-text-small": "error-text-small";
+  readonly "error-text-normal": "error-text-normal";
+  readonly "error-text-large": "error-text-large";
+  readonly "error-text-h1": "error-text-h1";
+  readonly "error-text-h2": "error-text-h2";
+  readonly "error-text-h3": "error-text-h3";
+  readonly "error-text-h4": "error-text-h4";
+  readonly "error-text-h5": "error-text-h5";
 };
 export default classNames;

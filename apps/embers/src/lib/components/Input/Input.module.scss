@@ -286,3 +286,55 @@
     height: 20px;
   }
 }
+
+.error-text {
+  margin-top: 6px;
+}
+
+.error-text-primary {
+  color: var(--text-color-primary);
+}
+
+.error-text-secondary {
+  color: var(--text-color-secondary);
+}
+
+.error-text-hover {
+  color: var(--button-hover);
+}
+
+.error-text-danger {
+  color: var(--text-danger);
+}
+
+.error-text-small {
+  font-size: var(--font-small);
+}
+
+.error-text-normal {
+  font-size: var(--font-normal);
+}
+
+.error-text-large {
+  font-size: var(--font-large);
+}
+
+.error-text-h1 {
+  font-size: var(--font-h1);
+}
+
+.error-text-h2 {
+  font-size: var(--font-h2);
+}
+
+.error-text-h3 {
+  font-size: var(--font-h3);
+}
+
+.error-text-h4 {
+  font-size: var(--font-h4);
+}
+
+.error-text-h5 {
+  font-size: var(--font-h5);
+}
