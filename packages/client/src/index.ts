@@ -10,4 +10,4 @@ export * from "./entities/TestnetApi";
 export * from "./entities/WalletsApi";
 export * from "./serialization";
 
-export type { Graph } from "@f1r3fly-io/graphl-parser";
+export type { Graph, Name, Vertex } from "@f1r3fly-io/graphl-parser";
