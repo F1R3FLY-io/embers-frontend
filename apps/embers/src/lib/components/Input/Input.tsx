@@ -31,7 +31,6 @@ type BorderType =
   | "danger"
   | "subtle";
 
-type ErrorTextColor = "primary" | "secondary" | "hover" | "danger";
 type ErrorTextType = PlaceholderType;
 
 type CommonProps = {
@@ -42,7 +41,6 @@ type CommonProps = {
   error?: boolean;
   errorMessage?: string;
   errorText?: string;
-  errorTextColor?: ErrorTextColor;
   errorTextType?: ErrorTextType;
   inputType: "input" | "textarea";
   leftIcon?: ReactNode;
@@ -73,7 +71,6 @@ export function Input({
   error,
   errorMessage,
   errorText,
-  errorTextColor = "danger",
   errorTextType = "small",
   inputType = "input",
   leftIcon,
@@ -168,18 +165,14 @@ export function Input({
       </div>
       {message && (
         <div
-          className={classNames(styles["error-text"], {
-            [styles["error-text-danger"]]: errorTextColor === "danger",
+          className={classNames(styles["error-text"], styles["error-text-danger"], {
             [styles["error-text-h1"]]: errorTextType === "H1",
             [styles["error-text-h2"]]: errorTextType === "H2",
             [styles["error-text-h3"]]: errorTextType === "H3",
             [styles["error-text-h4"]]: errorTextType === "H4",
             [styles["error-text-h5"]]: errorTextType === "H5",
-            [styles["error-text-hover"]]: errorTextColor === "hover",
             [styles["error-text-large"]]: errorTextType === "large",
             [styles["error-text-normal"]]: errorTextType === "normal",
-            [styles["error-text-primary"]]: errorTextColor === "primary",
-            [styles["error-text-secondary"]]: errorTextColor === "secondary",
             [styles["error-text-small"]]: errorTextType === "small",
           })}
           id={errorId}
