@@ -11,11 +11,13 @@ This project uses the `@f1r3fly-io/lightning-bug` package from GitHub Packages. 
 #### Setup NPM_TOKEN
 
 1. Create a GitHub Personal Access Token:
-  - Go to GitHub Settings → Developer settings → Personal access tokens
-  - Generate a new token (classic) with `read:packages` scope
-  - Copy the generated token
+
+- Go to GitHub Settings → Developer settings → Personal access tokens
+- Generate a new token (classic) with `read:packages` scope
+- Copy the generated token
 
 2. Set the environment variable:
+
    ```bash
    export NPM_TOKEN=your_github_token_here
    ```
@@ -39,7 +41,7 @@ pnpm install
 cd apps/embers
 pnpm dev
 
-# Build project  
+# Build project
 cd apps/embers
 pnpm build
 
@@ -52,12 +54,14 @@ pnpm ci:lint
 This branch demonstrates **local npm package build and consumption** using pnpm workspaces without publishing to any registry:
 
 ### How It Works
+
 - **Workspace Configuration**: Uses `apps/*` and `packages/*` in `pnpm-workspace.yaml`
 - **Local Dependency**: Frontend app uses `"@f1r3fly-io/embers-client-sdk": "workspace:*"`
 - **Local Build Process**: Client SDK builds to `packages/client/dist/` with TypeScript declarations
 - **Direct Import**: Frontend imports SDK as if it were from npm, but uses local build
 
 ### Key Benefits
+
 - ✅ **No Registry Needed**: Test npm package integration without publishing
 - ✅ **Real Distribution**: Tests actual bundled output, not source files
 - ✅ **Type Safety**: Full TypeScript support with generated `.d.ts` files
@@ -65,6 +69,7 @@ This branch demonstrates **local npm package build and consumption** using pnpm 
 - ✅ **True npm Experience**: Frontend consumes SDK exactly like a published package
 
 ### Testing Local Package Changes
+
 ```bash
 # Make changes to client SDK source
 edit packages/client/src/functions.ts
@@ -80,6 +85,7 @@ cd apps/embers && pnpm dev
 ```
 
 ### Workspace Commands
+
 ```bash
 # Install all workspace dependencies
 pnpm install
@@ -102,7 +108,7 @@ embers-frontend/
 ├── CLAUDE.md                 # LLM development guidelines and context
 │
 ├── docs/                     # Documentation hierarchy
-│   ├── requirements/         # User stories and business requirements  
+│   ├── requirements/         # User stories and business requirements
 │   ├── specifications/       # Technical specifications
 │   └── architecture/         # System design and decisions
 │
@@ -128,14 +134,16 @@ embers-frontend/
 ## Available Commands
 
 ### Root Level
+
 ```bash
 pnpm lint              # ESLint with --fix on all files
-pnpm ci:lint           # ESLint check only  
+pnpm ci:lint           # ESLint check only
 pnpm format:code       # Prettier formatting
 pnpm ci:check:code     # Prettier check only
 ```
 
 ### Frontend App (`apps/embers/`)
+
 ```bash
 pnpm dev               # Start Vite development server
 pnpm build             # TypeScript compile + Vite build
@@ -145,6 +153,7 @@ pnpm lint              # ESLint with --fix
 ```
 
 ### Client SDK (`packages/client/`)
+
 ```bash
 pnpm build             # Vite build + TypeScript declarations
 pnpm test              # Run tests
