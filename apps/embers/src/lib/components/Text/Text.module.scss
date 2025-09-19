@@ -19,33 +19,33 @@
 }
 
 .h1 {
-  font-size: 40px;
+  font-size: var(--font-h1);
 }
 
 .h2 {
-  font-size: 32px;
+  font-size: var(--font-h2);
 }
 
 .h3 {
-  font-size: 28px;
+  font-size: var(--font-h3);
 }
 
 .h4 {
-  font-size: 24px;
+  font-size: var(--font-h4);
 }
 
 .h5 {
-  font-size: 20px;
+  font-size: var(--font-h5);
 }
 
 .large {
-  font-size: 16px;
+  font-size: var(--font-large);
 }
 
 .normal {
-  font-size: 14px;
+  font-size: var(--font-normal);
 }
 
 .small {
-  font-size: 12px;
+  font-size: var(--font-small);
 }

@@ -2,10 +2,10 @@ import type { ChangeEvent } from "react";
 
 import { deserializeKey, PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import { base16 } from "@scure/base";
-import classNames from "classnames";
 import { useCallback, useEffect, useState } from "react";
 
 import { FilePicker } from "@/lib/components/FilePicker";
+import { Input } from "@/lib/components/Input";
 import { Text } from "@/lib/components/Text";
 import UploadIcon from "@/public/icons/download-icon.svg?react";
 
@@ -64,26 +64,24 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
     [onChange],
   );
 
-  const inputAreaClass = classNames(styles["input-area"], {
-    [styles.error]: errorState,
-  });
-
   return (
     <div className={styles.container}>
       <Text bold color="secondary" fontSize={13}>
         Private Key
       </Text>
-      <div className={inputAreaClass}>
-        <input
-          className={styles.input}
-          type="password"
-          value={content}
-          onChange={setWalletFromInput}
-        />
-        <FilePicker onChange={setWalletFromFile}>
-          <UploadIcon className={styles.icon} />
-        </FilePicker>
-      </div>
+      <Input
+        color="secondary"
+        error={errorState}
+        inputType="input"
+        rightIcon={
+          <FilePicker onChange={setWalletFromFile}>
+            <UploadIcon className={styles.icon} />
+          </FilePicker>
+        }
+        type="password"
+        value={content}
+        onChange={setWalletFromInput}
+      />
     </div>
   );
 }

@@ -5,36 +5,9 @@
   justify-content: center;
 }
 
-.input-area {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-  align-items: center;
-  padding: 9px 12px;
-  background-color: var(--background-neutral-hover);
-  border: 2px solid transparent;
-  border-radius: 8px;
+/* Input component now provides container, hover, focus, error state */
 
-  &:hover {
-    border-color: var(--border-primary);
-  }
-
-  &:focus-within {
-    border-color: var(--border-selected);
-  }
-
-  &.error {
-    border-color: var(--text-danger);
-  }
-}
-
-.input {
-  all: unset;
-  font-family: Manrope, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-color-secondary);
-}
+/* Keep only icon styles and container spacing */
 
 .icon {
   display: flex;
