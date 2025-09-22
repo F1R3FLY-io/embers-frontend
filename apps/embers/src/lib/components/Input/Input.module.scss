@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Size configuration via SCSS map and mixin
 $input-sizes: (
   small: (
@@ -20,17 +22,18 @@ $input-sizes: (
     pad-x: 20px,
     pad-y: 16px,
     min-h: 160px,
-  )
+  ),
 );
 
 @mixin input-size($key) {
-  $cfg: map-get($input-sizes, $key);
-  padding: map-get($cfg, pad-y) map-get($cfg, pad-x);
+  $cfg: map.get($input-sizes, $key);
+
+  padding: map.get($cfg, pad-y) map.get($cfg, pad-x);
 
   .input,
   .textarea {
-    font-size: map-get($cfg, font);
-    line-height: map-get($cfg, line);
+    font-size: map.get($cfg, font);
+    line-height: map.get($cfg, line);
 
     &::placeholder {
       font-size: inherit;
@@ -39,14 +42,14 @@ $input-sizes: (
   }
 
   .textarea {
-    min-height: map-get($cfg, min-h);
+    min-height: map.get($cfg, min-h);
   }
 }
 
 $placeholder-colors: (
   primary: var(--text-color-primary),
   secondary: var(--text-color-secondary),
-  hover: var(--button-hover)
+  hover: var(--button-hover),
 );
 
 @mixin placeholder-color-classes() {
@@ -77,31 +80,32 @@ $input-variants: (
     background: var(--background-neutral-hover),
     border: none,
     focus-box: inset 0 0 0 2px var(--border-selected),
-    focus-border-color: transparent
+    focus-border-color: transparent,
   ),
   filled: (
     background: var(--background-neutral-surface),
     border: none,
     focus-box: inset 0 0 0 2px var(--border-selected),
-    focus-border-color: transparent
+    focus-border-color: transparent,
   ),
   outline: (
     background: transparent,
     border: 1px solid var(--border-primary),
     focus-box: inset 0 0 0 2px var(--border-selected),
-    focus-border-color: transparent
-  )
+    focus-border-color: transparent,
+  ),
 );
 
 @mixin input-variant($key) {
-  $cfg: map-get($input-variants, $key);
-  background-color: map-get($cfg, background);
-  border: map-get($cfg, border);
+  $cfg: map.get($input-variants, $key);
+
+  background-color: map.get($cfg, background);
+  border: map.get($cfg, border);
   box-shadow: none;
 
   &:focus-within {
-    box-shadow: map-get($cfg, focus-box);
-    border-color: map-get($cfg, focus-border-color);
+    box-shadow: map.get($cfg, focus-box);
+    border-color: map.get($cfg, focus-border-color);
   }
 }
 
@@ -172,9 +176,8 @@ $input-variants: (
   flex: 1;
   font-family: Manrope, sans-serif;
 
-  @include text-color-classes();
-  /* sizes now applied via container data-size */
-  @include placeholder-color-classes();
+  @include text-color-classes;
+  @include placeholder-color-classes;
 }
 
 .textarea {
@@ -184,9 +187,8 @@ $input-variants: (
   resize: none;
   font-family: Manrope, sans-serif;
 
-  @include text-color-classes();
-  /* sizes now applied via container data-size */
-  @include placeholder-color-classes();
+  @include text-color-classes;
+  @include placeholder-color-classes;
 }
 
 .left-icon,
@@ -203,9 +205,5 @@ $input-variants: (
 
 .error-text {
   margin-top: 6px;
-  color: var(--text-danger);
-}
-
-.error-text-danger {
   color: var(--text-danger);
 }

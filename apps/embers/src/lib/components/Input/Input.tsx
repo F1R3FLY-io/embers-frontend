@@ -50,22 +50,29 @@ type InputAsTextarea = CommonProps &
 
 type InputProps = InputAsInput | InputAsTextarea;
 
-export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(function Input({
-  backgroundType = "default",
-  borderType = "default",
-  className,
-  error,
-  errorMessage,
-  inputType = "input",
-  leftIcon,
-  rightIcon,
-  size = "medium",
-  variant = "default",
-  ...nativeProps
-}: InputProps, ref) {
+export const Input = forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  InputProps
+>(function Input(
+  {
+    backgroundType = "default",
+    borderType = "default",
+    className,
+    error,
+    errorMessage,
+    inputType = "input",
+    leftIcon,
+    rightIcon,
+    size = "medium",
+    variant = "default",
+    ...nativeProps
+  }: InputProps,
+  ref,
+) {
   const reactGeneratedId = useId();
   const nativeId = (nativeProps as { id?: string }).id;
   const inputId = nativeId ?? `input-${reactGeneratedId}`;
+  const hasError = error || !!errorMessage;
   const errorId = `${inputId}-error`;
   const existingDescribedBy = (
     nativeProps as {
@@ -76,10 +83,11 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
     [existingDescribedBy, errorMessage ? errorId : undefined]
       .filter(Boolean)
       .join(" ") || undefined;
-  const ariaInvalid = error || undefined;
+  const ariaInvalid = hasError || undefined;
   const containerClass = classNames(
     styles.container,
     {
+      [styles.error]: hasError,
       [styles["has-left-icon"]]: leftIcon,
       [styles["has-right-icon"]]: rightIcon,
     },
@@ -88,8 +96,7 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
 
   const inputClass = classNames(
     inputType === "textarea" ? styles.textarea : styles.input,
-    {
-    },
+    {},
   );
 
   return (
@@ -116,7 +123,13 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
         {rightIcon && <div className={styles["right-icon"]}>{rightIcon}</div>}
       </div>
       {errorMessage && (
-        <div className={classNames(styles["error-text"], styles["error-text-danger"]) } id={errorId}>
+        <div
+          className={classNames(
+            styles["error-text"],
+            styles["error-text-danger"],
+          )}
+          id={errorId}
+        >
           {errorMessage}
         </div>
       )}
