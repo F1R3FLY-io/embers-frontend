@@ -34,17 +34,15 @@ export default function App() {
                     <Routes>
                       <Route element={<Home />} path="/" />
                       <Route element={<Login />} path="/login" />
-                      <Route element={<Deploy />} path="/agents/:agentId/deploy" />
                       <Route element={<ProtectedRoute />}>
                         <Route
                           element={<CreateAiTeamFlow />}
                           path="/create-ai-team"
                         />
+                        <Route element={<Deploy />} path="/agents/:agentId/deploy/:version" />
                         <Route element={<Dashboard />} path="/dashboard" />
-                        <Route
-                          element={<CreateAiAgentFlow />}
-                          path="/create-ai-agent"
-                        />
+                        <Route element={<CreateAiAgentFlow />} path="/create-ai-agent" />
+                        <Route element={<CreateAiAgentFlow />} path="/agents/:agentId/edit/:version" />
                       </Route>
                     </Routes>
                   </div>

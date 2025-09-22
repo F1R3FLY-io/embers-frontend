@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
@@ -31,14 +31,13 @@ function parseBigIntOrNull(v: string): bigint | null {
 
 export default function Deploy({
   agentAddress,
-  agentName,
   blockchainShard,
 }: DeployProps) {
-  const { agentId = "" } = useParams<{ agentId: string }>();
+  const { agentId = "", version = "" } = useParams<{ agentId: string; version: string }>();
   const search = new URLSearchParams(useLocation().search);
-  const version = search.get("version") ?? "";
+  const agentName = search.get("agentName") ?? "";
+  const navigate = useNavigate();
 
-  const [name, setName] = useState(agentName);
   const [rhoLimitInput, setRhoLimitInput] = useState("1000000");
 
   const deployMutation = useDeployAgentMutation();
@@ -64,6 +63,7 @@ export default function Deploy({
         },
         onSuccess: () => {
           // todo add modal here
+          void navigate("/dashboard");
         },
       },
     );
@@ -86,7 +86,7 @@ export default function Deploy({
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" fontSize={32} type="H2">
-            {t("deploy.deployAgent", { agentName: name })}
+            {t("deploy.deployAgent", { agentName })}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" fontSize={16} type="H4">
@@ -129,11 +129,11 @@ export default function Deploy({
               {t("deploy.agentName")}
             </Text>
             <input
+              disabled
               className={styles["form-input"]}
               placeholder={agentName}
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={agentName}
             />
           </div>
 

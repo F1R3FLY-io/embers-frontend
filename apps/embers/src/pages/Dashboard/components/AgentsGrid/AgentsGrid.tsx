@@ -8,8 +8,14 @@ import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 
 import styles from "./AgentsGrid.module.scss";
 
+export interface Agent {
+  id: string;
+  name: string;
+  shard?: string;
+  version: string;
+}
 interface AgentsGridProps {
-  agents: Array<{ id: string; name: string }>;
+  agents: Array<Agent>;
   isSuccess: boolean;
 }
 
@@ -17,6 +23,10 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const navigate = useNavigate();
   const createAiAgent = useCallback(() => {
     void navigate("/create-ai-agent");
+  }, [navigate]);
+
+  const navigateToAgent = useCallback((id: string, version: string) => {
+    void navigate(`/agents/${id}/edit/${version}`);
   }, [navigate]);
 
   return (
@@ -35,12 +45,13 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
         agents.map((agent, index) => (
           <div
             key={agent.id}
-            className={styles["grid-box"]}
+            className={classNames(styles["grid-box"])}
             style={
               {
                 "--tile-delay": `${0.2 + index * 0.1}s`,
               } as React.CSSProperties
             }
+            onClick={() => navigateToAgent(agent.id, agent.version)}
           >
             <Text color="secondary" type="H4">
               Agent {agent.name}

@@ -8,14 +8,18 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   opacity: 0;
+  cursor: pointer;
   transform: translateY(20px);
   animation: tile-enter 0.5s ease-in-out forwards;
   animation-delay: var(--tile-delay, 0s);
 
   &:hover {
-    border-color: var(--text-color-primary);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-    transform: translateY(-2px);
+    background-color: var(--create-button-hover-bg);
+    border-color: #b580ff;
+
+    span {
+      color: var(--text-color-primary);
+    }
   }
 
   &.create-box {
@@ -23,18 +27,8 @@
     gap: 8px;
     align-items: flex-start;
     justify-content: center;
-    cursor: pointer;
     border-style: dashed;
     border-width: 2.5px;
-
-    &:hover {
-      background-color: var(--create-button-hover-bg);
-      border-color: #b580ff;
-
-      span {
-        color: var(--text-color-primary);
-      }
-    }
 
     .create-robot-icon {
       display: flex;

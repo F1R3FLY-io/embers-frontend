@@ -10,10 +10,12 @@ import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
 import { useLayout } from "@/lib/providers/layout/useLayout";
+import { useAgent } from "@/lib/queries";
 
 import styles from "./CreateAiAgentFlow.module.scss";
 
@@ -24,6 +26,8 @@ export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
+  const { agentId = "", version = "" } = useParams<{ agentId: string; version: string }>();
+  const { data: agent } = useAgent(agentId, version);
 
   useEffect(() => setHeaderTitle(t("aiAgent.bioAgent")), [setHeaderTitle, t]);
 
@@ -65,14 +69,21 @@ export default function CodeEditor() {
     }
   }, []);
 
+  useEffect(() => {
+    if (agent) {
+      editorRef.current?.openDocument(fileName, agent.code);
+    }
+  }, [agent]);
+
   const getCode = useCallback(() => {
     return editorRef.current?.getText();
   }, []);
 
   return (
-    <CodeLayout getCode={getCode}>
+    <CodeLayout agentId={agent?.id} agentName={agent?.name} getCode={getCode}>
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
+        <button onClick={() => console.log(agent)} >asassa </button>
         <div className={styles.container}>
           <Editor
             ref={editorRef}

@@ -6,14 +6,16 @@ import { Layout } from "@/lib/layouts";
 import { Footer, Header } from "@/lib/layouts/Code";
 
 interface CodeLayoutProps {
+  agentId?: string | undefined;
+  agentName?: string | undefined;
   children: React.ReactNode;
   getCode: () => string | undefined | null;
 }
 
-export const CodeLayout: React.FC<CodeLayoutProps> = ({ children, getCode }) => (
+export const CodeLayout: React.FC<CodeLayoutProps> = ({ agentId, agentName, children, getCode }) => (
   <Layout
     footer={<Footer />}
-    headerActions={<Header getCode={getCode} />}
+    headerActions={<Header agentId={agentId} agentName={agentName} getCode={getCode} />}
     sidebar={
       <Sidebar
         actions={
