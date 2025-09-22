@@ -1,5 +1,6 @@
 import { t } from "i18next";
 
+import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
@@ -74,20 +75,13 @@ export default function Deploy({
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <input
-              className={styles["form-input"]}
-              placeholder={agentName}
-              type="text"
-            />
+            <Input inputType="input" placeholder={agentName} />
           </div>
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentDescription")}
             </Text>
-            <textarea
-              className={styles["form-textarea"]}
-              placeholder={agentDescription}
-            />
+            <Input inputType="textarea" placeholder={agentDescription} />
           </div>
           <div className={styles["form-section"]}>
             <Text bold color="primary" fontSize={20} type="H3">
@@ -98,8 +92,8 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.welcomeMessage")}
                 </Text>
-                <textarea
-                  className={styles["form-textarea"]}
+                <Input
+                  inputType="textarea"
                   placeholder={t("deploy.enterWelcomeMessage")}
                 />
               </div>
@@ -107,8 +101,8 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("basic.inputPrompt")}
                 </Text>
-                <textarea
-                  className={styles["form-textarea"]}
+                <Input
+                  inputType="textarea"
                   placeholder={t("deploy.enterInputPrompt")}
                 />
               </div>
@@ -123,18 +117,14 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.version")}
                 </Text>
-                <input
-                  className={styles["form-input"]}
-                  placeholder={agentVersion}
-                  type="text"
-                />
+                <Input inputType="input" placeholder={agentVersion} />
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.notes")}
                 </Text>
-                <textarea
-                  className={styles["form-textarea"]}
+                <Input
+                  inputType="textarea"
                   placeholder={t("deploy.enterDeploymentNotes")}
                 />
               </div>
