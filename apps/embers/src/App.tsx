@@ -34,7 +34,7 @@ export default function App() {
                     <Routes>
                       <Route element={<Home />} path="/" />
                       <Route element={<Login />} path="/login" />
-                      <Route element={<Deploy />} path="/deploy" />
+                      <Route element={<Deploy />} path="/agents/:agentId/deploy" />
                       <Route element={<ProtectedRoute />}>
                         <Route
                           element={<CreateAiTeamFlow />}

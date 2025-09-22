@@ -8,7 +8,7 @@ import {
 } from "@f1r3fly-io/lightning-bug/extensions/lang/rholang/tree-sitter/queries";
 import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
@@ -65,8 +65,12 @@ export default function CodeEditor() {
     }
   }, []);
 
+  const getCode = useCallback(() => {
+    return editorRef.current?.getText();
+  }, []);
+
   return (
-    <CodeLayout>
+    <CodeLayout getCode={getCode}>
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
         <div className={styles.container}>

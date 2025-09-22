@@ -7,12 +7,13 @@ import { Footer, Header } from "@/lib/layouts/Code";
 
 interface CodeLayoutProps {
   children: React.ReactNode;
+  getCode: () => string | undefined | null;
 }
 
-export const CodeLayout: React.FC<CodeLayoutProps> = ({ children }) => (
+export const CodeLayout: React.FC<CodeLayoutProps> = ({ children, getCode }) => (
   <Layout
     footer={<Footer />}
-    headerActions={<Header />}
+    headerActions={<Header getCode={getCode} />}
     sidebar={
       <Sidebar
         actions={
