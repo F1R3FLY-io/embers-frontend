@@ -2,10 +2,11 @@ import type {
   InputHTMLAttributes,
   ReactNode,
   TextareaHTMLAttributes,
+  Ref,
 } from "react";
 
 import classNames from "classnames";
-import { useId } from "react";
+import { useId, forwardRef } from "react";
 
 import styles from "./Input.module.scss";
 
@@ -30,7 +31,6 @@ type CommonProps = {
   className?: string;
   error?: boolean;
   errorMessage?: string;
-  errorText?: string;
   inputType: "input" | "textarea";
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
@@ -50,24 +50,22 @@ type InputAsTextarea = CommonProps &
 
 type InputProps = InputAsInput | InputAsTextarea;
 
-export function Input({
+export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(function Input({
   backgroundType = "default",
   borderType = "default",
   className,
   error,
   errorMessage,
-  errorText,
   inputType = "input",
   leftIcon,
   rightIcon,
   size = "medium",
   variant = "default",
   ...nativeProps
-}: InputProps) {
+}: InputProps, ref) {
   const reactGeneratedId = useId();
   const nativeId = (nativeProps as { id?: string }).id;
   const inputId = nativeId ?? `input-${reactGeneratedId}`;
-  const message = errorMessage ?? errorText;
   const errorId = `${inputId}-error`;
   const existingDescribedBy = (
     nativeProps as {
@@ -75,14 +73,13 @@ export function Input({
     }
   )["aria-describedby"];
   const ariaDescribedBy =
-    [existingDescribedBy, message ? errorId : undefined]
+    [existingDescribedBy, errorMessage ? errorId : undefined]
       .filter(Boolean)
       .join(" ") || undefined;
-  const ariaInvalid = error || !!message || undefined;
+  const ariaInvalid = error || undefined;
   const containerClass = classNames(
     styles.container,
     {
-      // error visuals handled via ARIA in CSS
       [styles["has-left-icon"]]: leftIcon,
       [styles["has-right-icon"]]: rightIcon,
     },
@@ -104,6 +101,7 @@ export function Input({
             aria-describedby={ariaDescribedBy}
             aria-invalid={ariaInvalid}
             className={inputClass}
+            ref={ref as Ref<HTMLTextAreaElement>}
             {...(nativeProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
           />
         ) : (
@@ -111,16 +109,17 @@ export function Input({
             aria-describedby={ariaDescribedBy}
             aria-invalid={ariaInvalid}
             className={inputClass}
+            ref={ref as Ref<HTMLInputElement>}
             {...(nativeProps as InputHTMLAttributes<HTMLInputElement>)}
           />
         )}
         {rightIcon && <div className={styles["right-icon"]}>{rightIcon}</div>}
       </div>
-      {message && (
+      {errorMessage && (
         <div className={classNames(styles["error-text"], styles["error-text-danger"]) } id={errorId}>
-          {message}
+          {errorMessage}
         </div>
       )}
     </>
   );
-}
+});
