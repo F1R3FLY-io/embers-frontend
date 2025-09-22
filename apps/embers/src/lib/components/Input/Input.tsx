@@ -124,13 +124,7 @@ export const Input = forwardRef<
           {rightIcon && <div className={styles["right-icon"]}>{rightIcon}</div>}
         </div>
         {errorMessage && (
-          <div
-            className={classNames(
-              styles["error-text"],
-              styles["error-text-danger"],
-            )}
-            id={errorId}
-          >
+          <div className={styles["error-text"]} id={errorId}>
             {errorMessage}
           </div>
         )}
