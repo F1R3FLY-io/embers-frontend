@@ -1,5 +1,6 @@
 apis/AIAgentsApi.ts
 apis/AIAgentsTeamsApi.ts
+apis/ServiceApi.ts
 apis/TestnetApi.ts
 apis/WalletsApi.ts
 apis/index.ts
