@@ -1,13 +1,10 @@
+import { PrivateKey } from "@";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { blake2b } from "blakejs";
 
-import type {
-  DeployContractCallback,
-  GetContractCallback,
-} from "../src/functions";
+import type { DeployContractCallback, GetContractCallback } from "@/functions";
 
-import { PrivateKey } from "../src";
-import { deployContract } from "../src/functions";
+import { deployContract } from "@/functions";
 
 test("deployContract function", async () => {
   const senderPrivateKey = PrivateKey.new();

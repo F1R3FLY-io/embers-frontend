@@ -1,11 +1,12 @@
-import type { HTTPHeaders } from "../api-client";
+import type { HTTPHeaders } from "@/api-client";
+
+import { Configuration, WalletsApi } from "@/api-client";
+import { deployContract } from "@/functions";
+
 import type { Address } from "./Address";
 import type { Amount } from "./Amount";
 import type { Description } from "./Description";
 import type { PrivateKey } from "./PrivateKey";
-
-import { Configuration, WalletsApi } from "../api-client";
-import { deployContract } from "../functions";
 
 export type WalletConfig = {
   basePath: string;

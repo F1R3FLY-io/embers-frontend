@@ -1,10 +1,8 @@
 import type { Graph } from "@f1r3fly-io/graphl-parser";
 
-import init, { astToGraphl, parseToAst } from "@f1r3fly-io/graphl-parser";
+import { astToGraphl, parseToAst } from "@f1r3fly-io/graphl-parser";
 
 export type { Graph } from "@f1r3fly-io/graphl-parser";
-
-void init();
 
 export function GraphFromJSON(json: any): Graph {
   return GraphFromJSONTyped(json, false);

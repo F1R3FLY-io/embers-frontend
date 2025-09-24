@@ -2,9 +2,9 @@ import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 import { keccak256 } from "js-sha3";
 
-import type { PublicKey } from "./PublicKey";
+import { verifyAddress } from "@/functions";
 
-import { verifyAddress } from "../functions";
+import type { PublicKey } from "./PublicKey";
 
 export const F1R3CAP_TOKE_ID = [0, 0, 0];
 export const F1R3CAP_VERSION = [0];

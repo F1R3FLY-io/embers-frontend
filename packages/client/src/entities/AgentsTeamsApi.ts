@@ -4,13 +4,14 @@ import type {
   CreateAgentsTeamReq,
   HTTPHeaders,
   SignedContract,
-} from "../api-client";
+} from "@/api-client";
+
+import { AIAgentsTeamsApi, Configuration } from "@/api-client";
+import { deployContract } from "@/functions";
+
 import type { Address } from "./Address";
 import type { Amount } from "./Amount";
 import type { PrivateKey } from "./PrivateKey";
-
-import { AIAgentsTeamsApi, Configuration } from "../api-client";
-import { deployContract } from "../functions";
 
 export type AgentsTeamsConfig = {
   basePath: string;

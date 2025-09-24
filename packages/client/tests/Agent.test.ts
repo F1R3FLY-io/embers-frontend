@@ -1,6 +1,6 @@
-import type { AgentHeader } from "../src";
+import type { AgentHeader } from "@";
 
-import { AgentsApiSdk, PrivateKey } from "../src";
+import { AgentsApiSdk, PrivateKey } from "@";
 
 beforeEach(() => {
   jest.clearAllMocks();

@@ -1,7 +1,7 @@
 import { base16 } from "@scure/base";
 import { z } from "zod/mini";
 
-import { PrivateKey } from "./entities/PrivateKey";
+import { PrivateKey } from "@/entities/PrivateKey";
 
 export const ValueFormat = z.enum(["hex"]);
 export type ValueFormat = z.infer<typeof ValueFormat>;

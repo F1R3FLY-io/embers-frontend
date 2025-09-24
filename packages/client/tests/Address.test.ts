@@ -1,4 +1,4 @@
-import { Address } from "@/index";
+import { Address } from "@";
 
 describe("Address class", () => {
   test("should create an Address", () => {

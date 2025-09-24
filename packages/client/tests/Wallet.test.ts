@@ -5,15 +5,9 @@ import type {
   RequestStatus,
   Transfer,
   WalletStateAndHistory,
-} from "../src";
+} from "@";
 
-import {
-  Address,
-  Amount,
-  Description,
-  PrivateKey,
-  WalletsApiSdk,
-} from "../src";
+import { Address, Amount, Description, PrivateKey, WalletsApiSdk } from "@";
 
 beforeEach(() => {
   jest.clearAllMocks();

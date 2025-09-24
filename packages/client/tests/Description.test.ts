@@ -1,4 +1,4 @@
-import { Description, MAX_DESCRIPTION_LENGTH } from "../src";
+import { Description, MAX_DESCRIPTION_LENGTH } from "@";
 
 describe("Description class", () => {
   test("should create a Description", () => {

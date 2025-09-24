@@ -1,6 +1,7 @@
 export default {
   coveragePathIgnorePatterns: ["<rootDir>/src/api-client"],
   moduleNameMapper: {
+    "^@$": "<rootDir>/src",
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   preset: "ts-jest/presets/default-esm",

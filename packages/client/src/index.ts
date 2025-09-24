@@ -1,3 +1,7 @@
+import init from "@f1r3fly-io/graphl-parser";
+
+void init();
+
 export * from "./api-client";
 export * from "./entities/Address";
 export * from "./entities/AgentsApi";
