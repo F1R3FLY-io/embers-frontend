@@ -10,6 +10,10 @@
  * Do not edit the class manually.
  */
 
+import type { Graph } from "./Graph";
+
+import { GraphFromJSON, GraphToJSON } from "./Graph";
+
 /**
  *
  * @export
@@ -18,10 +22,10 @@
 export interface AgentsTeam {
   /**
    *
-   * @type {string}
+   * @type {Graph}
    * @memberof AgentsTeam
    */
-  graph?: string;
+  graph?: Graph;
   /**
    *
    * @type {string}
@@ -76,7 +80,7 @@ export function AgentsTeamFromJSONTyped(
     return json;
   }
   return {
-    graph: json.graph == null ? undefined : json.graph,
+    graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
     id: json.id,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -97,7 +101,7 @@ export function AgentsTeamToJSONTyped(
   }
 
   return {
-    graph: value.graph,
+    graph: GraphToJSON(value.graph),
     id: value.id,
     name: value.name,
     shard: value.shard,

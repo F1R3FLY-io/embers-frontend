@@ -37,11 +37,11 @@ function buildSubgraphs(groups: ContainerGroup[]): Graph {
         graph_1: buildNodes(group.nodes),
         graph_2: acc,
         type: "Subgraph",
-        var: group.container.id,
+        var: makeGVar(group.container.id),
       },
       name: {
         type: "GVar",
-        value: group.container.id,
+        value: makeGVar(group.container.id),
       },
       string: JSON.stringify(group.container.data),
       type: "Context",
@@ -54,7 +54,7 @@ function buildNodes(nodes: Node[]): Graph {
   return nodes.reduceRight((acc, node): Graph => {
     const name: Name = {
       type: "VVar",
-      value: node.id,
+      value: makeVVar(node.id),
     };
 
     const vertex: Vertex = {
@@ -69,7 +69,7 @@ function buildNodes(nodes: Node[]): Graph {
           vertex,
         },
         type: "Nominate",
-        var: node.id,
+        var: makeVVar(node.id),
         vertex,
       },
       name,
@@ -85,21 +85,21 @@ function buildEdges(edges: Edge[]): Graph {
       graph_1: {
         binding_1: {
           graph: NIL,
-          var: edge.source,
+          var: makeVVar(edge.source),
           vertex: {
             name: {
               type: "VVar",
-              value: edge.source,
+              value: makeVVar(edge.source),
             },
           },
         },
         binding_2: {
           graph: NIL,
-          var: edge.target,
+          var: makeVVar(edge.target),
           vertex: {
             name: {
               type: "VVar",
-              value: edge.target,
+              value: makeVVar(edge.target),
             },
           },
         },
@@ -110,4 +110,12 @@ function buildEdges(edges: Edge[]): Graph {
     }),
     NIL,
   );
+}
+
+function makeVVar(name: string) {
+  return `a${name.replace(/-/g, "")}`;
+}
+
+function makeGVar(name: string) {
+  return `A${name.replace(/-/g, "")}`;
 }

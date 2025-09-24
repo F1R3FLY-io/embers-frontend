@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/AIAgentsApi.ts
 apis/AIAgentsTeamsApi.ts
 apis/ServiceApi.ts

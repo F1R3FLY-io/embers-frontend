@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "@/entities/Address";
+
 import type {
   Agent,
   Agents,
@@ -34,16 +36,16 @@ import {
 import * as runtime from "../runtime";
 
 export interface ApiAiAgentsAddressGetRequest {
-  address: string;
+  address: Address;
 }
 
 export interface ApiAiAgentsAddressIdVersionsGetRequest {
-  address: string;
+  address: Address;
   id: string;
 }
 
 export interface ApiAiAgentsAddressIdVersionsVersionGetRequest {
-  address: string;
+  address: Address;
   id: string;
   version: string;
 }
@@ -98,7 +100,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     let urlPath = `/api/ai-agents/{address}`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
+      encodeURIComponent(String(requestParameters.address.value)),
     );
 
     const response = await this.request(
@@ -156,7 +158,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     let urlPath = `/api/ai-agents/{address}/{id}/versions`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
+      encodeURIComponent(String(requestParameters.address.value)),
     );
     urlPath = urlPath.replace(
       `{id}`,
@@ -225,7 +227,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     let urlPath = `/api/ai-agents/{address}/{id}/versions/{version}`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
+      encodeURIComponent(String(requestParameters.address.value)),
     );
     urlPath = urlPath.replace(
       `{id}`,

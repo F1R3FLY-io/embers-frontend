@@ -5,7 +5,7 @@ import type { Description } from "./Description";
 import type { PrivateKey } from "./PrivateKey";
 
 import { Configuration, WalletsApi } from "../api-client";
-import { deployContract, getWalletState } from "../functions";
+import { deployContract } from "../functions";
 
 export type WalletConfig = {
   basePath: string;
@@ -48,8 +48,8 @@ export class WalletsApiSdk {
         transferReq: {
           amount: amount.value,
           description: description?.value,
-          from: this.privateKey.getPublicKey().getAddress().value,
-          to: to.value,
+          from: this.privateKey.getPublicKey().getAddress(),
+          to,
         },
       });
 
@@ -79,6 +79,8 @@ export class WalletsApiSdk {
    * @returns A promise that resolves with the wallet state.
    */
   public async getWalletState() {
-    return getWalletState(this.address, this.client);
+    return this.client.apiWalletsAddressStateGet({
+      address: this.address,
+    });
   }
 }

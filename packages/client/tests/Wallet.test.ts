@@ -7,7 +7,13 @@ import type {
   WalletStateAndHistory,
 } from "../src";
 
-import { Amount, Description, PrivateKey, WalletsApiSdk } from "../src";
+import {
+  Address,
+  Amount,
+  Description,
+  PrivateKey,
+  WalletsApiSdk,
+} from "../src";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -76,7 +82,7 @@ describe("Wallet Transfer", () => {
         date: expect.any(Date) as Date,
         direction: expect.any(String) as Direction,
         id: expect.any(String) as string,
-        toAddress: expect.any(String) as string,
+        toAddress: expect.any(Address) as Address,
       }),
     );
   });

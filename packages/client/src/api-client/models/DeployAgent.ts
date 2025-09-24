@@ -10,8 +10,10 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "./Address";
 import type { Int64 } from "./Int64";
 
+import { AddressFromJSON, AddressToJSON } from "./Address";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 
 /**
@@ -22,10 +24,10 @@ import { Int64FromJSON, Int64ToJSON } from "./Int64";
 export interface DeployAgent {
   /**
    *
-   * @type {string}
+   * @type {Address}
    * @memberof DeployAgent
    */
-  address: string;
+  address: Address;
   /**
    *
    * @type {string}
@@ -77,7 +79,7 @@ export function DeployAgentFromJSONTyped(
     return json;
   }
   return {
-    address: json.address,
+    address: AddressFromJSON(json.address),
     id: json.id,
     phloLimit: Int64FromJSON(json.phlo_limit),
     version: json.version,
@@ -97,7 +99,7 @@ export function DeployAgentToJSONTyped(
   }
 
   return {
-    address: value.address,
+    address: AddressToJSON(value.address),
     id: value.id,
     phlo_limit: Int64ToJSON(value.phloLimit),
     version: value.version,

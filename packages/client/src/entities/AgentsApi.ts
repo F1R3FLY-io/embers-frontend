@@ -1,3 +1,5 @@
+import { deployContract } from "@/functions";
+
 import type {
   CreateAgentReq,
   HTTPHeaders,
@@ -8,7 +10,6 @@ import type { Amount } from "./Amount";
 import type { PrivateKey } from "./PrivateKey";
 
 import { AIAgentsApi, Configuration } from "../api-client";
-import { deployContract } from "../functions";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -39,14 +40,14 @@ export class AgentsApiSdk {
 
   /**
    * Creates a new AI agent.
-   * @param agentReq The agent creation request
+   * @param createAgentReq The agent creation request
    * @return Promise with Agent entity or reject with error
    */
-  public async createAgent(agentReq: CreateAgentReq) {
+  public async createAgent(createAgentReq: CreateAgentReq) {
     // First prepare the contract for creating an agent
     const prepareContract = async () =>
       this.client.apiAiAgentsCreatePreparePost({
-        createAgentReq: agentReq,
+        createAgentReq,
       });
 
     const sendContract = async (
@@ -106,20 +107,16 @@ export class AgentsApiSdk {
 
   /**
    * Deploys an AI agent version.
-   * @param agentId The ID of the agent
+   * @param id The ID of the agent
    * @param version The version to deploy
    */
-  public async deployAgent(
-    agentId: string,
-    version: string,
-    phloLimit: Amount,
-  ) {
+  public async deployAgent(id: string, version: string, phloLimit: Amount) {
     // Get the contract and sign it
     const contract = async () =>
       this.client.apiAiAgentsDeployPreparePost({
         deployAgentReq: {
-          address: this.address.value,
-          id: agentId,
+          address: this.address,
+          id,
           phloLimit: phloLimit.value,
           type: "Agent",
           version,
@@ -152,45 +149,45 @@ export class AgentsApiSdk {
    */
   public async getAgents() {
     return this.client.apiAiAgentsAddressGet({
-      address: this.address.value,
+      address: this.address,
     });
   }
 
   /**
    * Gets a specific agent version.
-   * @param agentId The ID of the agent
+   * @param id The ID of the agent
    * @param version The version to retrieve
    */
-  public async getAgentVersion(agentId: string, version: string) {
+  public async getAgentVersion(id: string, version: string) {
     return this.client.apiAiAgentsAddressIdVersionsVersionGet({
-      address: this.address.value,
-      id: agentId,
+      address: this.address,
+      id,
       version,
     });
   }
 
   /**
    * Gets all versions of a specific agent.
-   * @param agentId The ID of the agent
+   * @param id The ID of the agent
    */
-  public async getAgentVersions(agentId: string) {
+  public async getAgentVersions(id: string) {
     return this.client.apiAiAgentsAddressIdVersionsGet({
-      address: this.address.value,
-      id: agentId,
+      address: this.address,
+      id,
     });
   }
 
   /**
    * Saves a new version of an existing agent.
-   * @param agentId The ID of the agent
+   * @param id The ID of the agent
    * @param agentReq The agent update request
    * @return Promise with Agent entity or reject with error
    */
-  public async saveAgentVersion(agentId: string, agentReq: CreateAgentReq) {
+  public async saveAgentVersion(id: string, agentReq: CreateAgentReq) {
     const generateContract = async () =>
       this.client.apiAiAgentsIdSavePreparePost({
         createAgentReq: agentReq,
-        id: agentId,
+        id,
       });
 
     const sendContract = async (
@@ -207,7 +204,7 @@ export class AgentsApiSdk {
       };
 
       return this.client.apiAiAgentsIdSaveSendPost({
-        id: agentId,
+        id,
         signedContract,
       });
     };
