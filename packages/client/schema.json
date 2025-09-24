@@ -13,6 +13,9 @@
       "name": "AIAgentsTeams"
     },
     {
+      "name": "Service"
+    },
+    {
       "name": "Testnet"
     },
     {
@@ -20,6 +23,16 @@
     }
   ],
   "paths": {
+    "/api/service/ready": {
+      "get": {
+        "tags": ["Service"],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/testnet/wallet": {
       "post": {
         "tags": ["Testnet"],
