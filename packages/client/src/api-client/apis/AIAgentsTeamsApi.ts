@@ -106,7 +106,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     let urlPath = `/api/ai-agents-teams/{address}`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address.value)),
+      encodeURIComponent(String(requestParameters.address)),
     );
 
     const response = await this.request(
@@ -164,7 +164,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     let urlPath = `/api/ai-agents-teams/{address}/{id}/versions`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address.value)),
+      encodeURIComponent(String(requestParameters.address)),
     );
     urlPath = urlPath.replace(
       `{id}`,
@@ -233,7 +233,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     let urlPath = `/api/ai-agents-teams/{address}/{id}/versions/{version}`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address.value)),
+      encodeURIComponent(String(requestParameters.address)),
     );
     urlPath = urlPath.replace(
       `{id}`,

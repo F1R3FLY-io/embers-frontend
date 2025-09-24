@@ -17,4 +17,8 @@ export class Description {
     }
     throw new Error("Value greater then 100 characters");
   }
+
+  public toString() {
+    return this.value;
+  }
 }

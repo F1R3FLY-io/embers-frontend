@@ -63,7 +63,7 @@ export class WalletsApi extends runtime.BaseAPI {
     let urlPath = `/api/wallets/{address}/state`;
     urlPath = urlPath.replace(
       `{address}`,
-      encodeURIComponent(String(requestParameters.address.value)),
+      encodeURIComponent(String(requestParameters.address)),
     );
 
     const response = await this.request(

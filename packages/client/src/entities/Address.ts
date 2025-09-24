@@ -55,4 +55,8 @@ export class Address {
     }
     throw new Error("Invalid address");
   }
+
+  public toString() {
+    return this.value;
+  }
 }
