@@ -30,7 +30,7 @@
     "doc_port": 3000
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.lib.json --emitDeclarationOnly",
+    "build": "vite build",
     "test": "node test-with-mocks.js",
     "coverage": "node test-with-mocks.js --coverage",
     "lint": "eslint --fix .",
@@ -51,7 +51,8 @@
     "serve": "^14.2.5",
     "ts-jest": "^29.4.4",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.13"
+    "typedoc": "^0.28.13",
+    "vite-plugin-dts": "^4.5.4"
   },
   "dependencies": {
     "@f1r3fly-io/graphl-parser": "^0.0.17",

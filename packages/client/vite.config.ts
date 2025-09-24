@@ -1,5 +1,6 @@
 import path from "path";
 import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
   build: {
@@ -10,6 +11,11 @@ export default defineConfig({
       name: "EmbersClientSdk",
     },
   },
+  plugins: [
+    dts({
+      tsconfigPath: "tsconfig.lib.json",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

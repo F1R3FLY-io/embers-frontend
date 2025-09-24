@@ -18,9 +18,7 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "esModuleInterop": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "declarationDir": "dist",
+    "noEmit": true,
     "noEmitOnError": true,
 
     /* Linting */
