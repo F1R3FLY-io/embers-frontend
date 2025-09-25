@@ -37,11 +37,11 @@ function buildSubgraphs(groups: ContainerGroup[]): Graph {
         graph_1: buildNodes(group.nodes),
         graph_2: acc,
         type: "Subgraph",
-        var: makeGVar(group.container.id),
+        var: group.container.id,
       },
       name: {
         type: "GVar",
-        value: makeGVar(group.container.id),
+        value: group.container.id,
       },
       string: JSON.stringify(group.container.data),
       type: "Context",
@@ -54,7 +54,7 @@ function buildNodes(nodes: Node[]): Graph {
   return nodes.reduceRight((acc, node): Graph => {
     const name: Name = {
       type: "VVar",
-      value: makeVVar(node.id),
+      value: node.id,
     };
 
     const vertex: Vertex = {
@@ -69,7 +69,7 @@ function buildNodes(nodes: Node[]): Graph {
           vertex,
         },
         type: "Nominate",
-        var: makeVVar(node.id),
+        var: node.id,
         vertex,
       },
       name,
@@ -85,21 +85,21 @@ function buildEdges(edges: Edge[]): Graph {
       graph_1: {
         binding_1: {
           graph: NIL,
-          var: makeVVar(edge.source),
+          var: edge.source,
           vertex: {
             name: {
               type: "VVar",
-              value: makeVVar(edge.source),
+              value: edge.source,
             },
           },
         },
         binding_2: {
           graph: NIL,
-          var: makeVVar(edge.target),
+          var: edge.target,
           vertex: {
             name: {
               type: "VVar",
-              value: makeVVar(edge.target),
+              value: edge.target,
             },
           },
         },
@@ -112,10 +112,12 @@ function buildEdges(edges: Edge[]): Graph {
   );
 }
 
-function makeVVar(name: string) {
-  return `a${name.replace(/-/g, "")}`;
+export function makeNodeId() {
+  // VVar in graphl
+  return `a${crypto.randomUUID().replace(/-/g, "")}`;
 }
 
-function makeGVar(name: string) {
-  return `A${name.replace(/-/g, "")}`;
+export function makeSubgraphId() {
+  // GVar in graphl
+  return `A${crypto.randomUUID().replace(/-/g, "")}`;
 }
