@@ -8,7 +8,10 @@
   cursor: pointer;
   user-select: none;
   border-radius: 4px;
-  transition: background 160ms ease, box-shadow 160ms ease, color 160ms ease;
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease;
 
   > span:first-child {
     margin: 12px 18px;
@@ -31,13 +34,21 @@
 .rounded {
   border-radius: 20px;
   color: var(--text-color-primary);
-  background: linear-gradient(180deg, var(--button-primary) 0%, var(--button-gradient) 100%);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+  background: linear-gradient(
+    180deg,
+    var(--button-primary) 0%,
+    var(--button-gradient) 100%
+  );
+  box-shadow: 0 2px 0 rgb(0 0 0 / 15%);
 }
 
 .rounded:not(.disabled):hover {
-  background: linear-gradient(180deg, var(--button-gradient-hover) 0%, var(--icon-accent) 100%);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+  background: linear-gradient(
+    180deg,
+    var(--button-gradient-hover) 0%,
+    var(--icon-accent) 100%
+  );
+  box-shadow: 0 3px 0 rgb(0 0 0 / 18%);
 }
 
 .disabled {

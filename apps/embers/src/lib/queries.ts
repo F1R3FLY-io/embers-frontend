@@ -49,7 +49,8 @@ export function useAgent(agentId?: string, versionId?: string) {
       }
 
       if (typeof error === "object" && error !== null && "response" in error) {
-        const status = (error as { response?: { status?: number } }).response?.status;
+        const status = (error as { response?: { status?: number } }).response
+          ?.status;
         if (status === 404) {
           return true;
         }

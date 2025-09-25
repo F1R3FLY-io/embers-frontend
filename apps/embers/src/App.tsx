@@ -13,6 +13,7 @@ import styles from "./App.module.scss";
 import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
+const CreateAgent = lazy(async () => import("@/pages/CreateAgent"));
 const Deploy = lazy(async () => import("@/pages/Deploy"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
@@ -36,13 +37,26 @@ export default function App() {
                       <Route element={<Login />} path="/login" />
                       <Route element={<ProtectedRoute />}>
                         <Route
+                          element={<CreateAgent />}
+                          path="/agents/create"
+                        />
+                        <Route
                           element={<CreateAiTeamFlow />}
                           path="/create-ai-team"
                         />
-                        <Route element={<Deploy />} path="/agents/:agentId/deploy/:version" />
+                        <Route
+                          element={<Deploy />}
+                          path="/agents/:agentId/deploy/:version"
+                        />
                         <Route element={<Dashboard />} path="/dashboard" />
-                        <Route element={<CreateAiAgentFlow />} path="/create-ai-agent" />
-                        <Route element={<CreateAiAgentFlow />} path="/agents/:agentId/edit/:version" />
+                        <Route
+                          element={<CreateAiAgentFlow />}
+                          path="/create-ai-agent"
+                        />
+                        <Route
+                          element={<CreateAiAgentFlow />}
+                          path="/agents/:agentId/edit/:version"
+                        />
                       </Route>
                     </Routes>
                   </div>

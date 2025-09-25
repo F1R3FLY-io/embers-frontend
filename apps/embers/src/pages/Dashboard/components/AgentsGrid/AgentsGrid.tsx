@@ -22,12 +22,15 @@ interface AgentsGridProps {
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const navigate = useNavigate();
   const createAiAgent = useCallback(() => {
-    void navigate("/create-ai-agent");
+    void navigate("/agents/create");
   }, [navigate]);
 
-  const navigateToAgent = useCallback((id: string, version: string) => {
-    void navigate(`/agents/${id}/edit/${version}`);
-  }, [navigate]);
+  const navigateToAgent = useCallback(
+    (id: string, version: string) => {
+      void navigate(`/agents/${id}/edit/${version}`);
+    },
+    [navigate],
+  );
 
   return (
     <>

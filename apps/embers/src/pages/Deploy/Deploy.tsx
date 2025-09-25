@@ -5,19 +5,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
-import { useDeployAgentMutation } from "@/lib/queries"; // your hook from the snippet
+import { useDeployAgentMutation } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "./components/Stepper";
 import styles from "./Deploy.module.scss";
-
-type DeployProps = {
-  agentAddress?: string;
-  agentDescription?: string;
-  agentName?: string;
-  agentVersion?: string;
-  blockchainShard?: string;
-};
 
 function parseBigIntOrNull(v: string): bigint | null {
   try {
@@ -30,11 +22,11 @@ function parseBigIntOrNull(v: string): bigint | null {
   }
 }
 
-export default function Deploy({
-  agentAddress,
-  blockchainShard,
-}: DeployProps) {
-  const { agentId = "", version = "" } = useParams<{ agentId: string; version: string }>();
+export default function Deploy() {
+  const { agentId = "", version = "" } = useParams<{
+    agentId: string;
+    version: string;
+  }>();
   const search = new URLSearchParams(useLocation().search);
   const agentName = search.get("agentName") ?? "";
   const navigate = useNavigate();
@@ -47,8 +39,7 @@ export default function Deploy({
   const rhoLimit = parseBigIntOrNull(rhoLimitInput);
   const rhoLimitError = rhoLimitInput.trim() !== "" && rhoLimit === null;
 
-  const canDeploy =
-    !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying;
+  const canDeploy = !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying;
 
   const handleDeploy = () => {
     if (!canDeploy) {
@@ -79,7 +70,11 @@ export default function Deploy({
       <div className={styles["stepper-container"]}>
         <Stepper
           currentStep={3}
-          labels={["Create", "Configure", "Deploy"]}
+          labels={[
+            t("deploy.generalInfo"),
+            t("deploy.creation"),
+            t("deploy.deployment"),
+          ]}
           steps={3}
         />
       </div>
@@ -101,35 +96,16 @@ export default function Deploy({
             {t("deploy.agentDetails")}
           </Text>
 
-          <div className={styles["detail-row"]}>
-            <div className={styles["label-container"]}>
-              <Text color="secondary" fontSize={12}>
-                {t("deploy.agentAddress")}
-              </Text>
-            </div>
-            <Text color="primary" fontSize={12}>
-              {agentAddress}
-            </Text>
-          </div>
-
-          <div className={styles["detail-row"]}>
-            <div className={styles["label-container"]}>
-              <Text color="secondary" fontSize={12}>
-                {t("deploy.blockchainShard")}
-              </Text>
-            </div>
-            <Text color="primary" fontSize={12}>
-              {blockchainShard}
-            </Text>
-          </div>
-
-          <div className={styles.divider} />
-
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <Input disabled inputType="input" placeholder={agentName} value={agentName} />
+            <Input
+              disabled
+              inputType="input"
+              placeholder={agentName}
+              value={agentName}
+            />
           </div>
 
           <div className={styles["form-section"]}>
@@ -150,37 +126,27 @@ export default function Deploy({
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
-                  {t("basic.inputPrompt")}
-                </Text>
-                <Input
-                  inputType="textarea"
-                  placeholder={t("deploy.enterInputPrompt")}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Rho Limit input (required for deploy) */}
-          <div className={styles["form-section"]}>
-            <Text bold color="primary" fontSize={20} type="H3">
-              rhoLimit (bigint)
-            </Text>
-            <div className={styles["form-fields"]}>
-              <div>
-                <Text color="secondary" fontSize={12}>
-                  {t("deploy.version")}
-                </Text>
-                <Input inputType="input"
-                       placeholder={rhoLimitInput} value={rhoLimitInput}
-                       onChange={(e) => setRhoLimitInput(e.target.value) } />
-              </div>
-              <div>
-                <Text color="secondary" fontSize={12}>
                   {t("deploy.notes")}
                 </Text>
                 <Input
                   inputType="textarea"
                   placeholder={t("deploy.enterDeploymentNotes")}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={styles["form-section"]}>
+            <div className={styles["form-fields"]}>
+              <div>
+                <Text color="secondary" fontSize={12}>
+                  {t("deploy.rhoLimit")}
+                </Text>
+                <Input
+                  inputType="input"
+                  placeholder={rhoLimitInput}
+                  value={rhoLimitInput}
+                  onChange={(e) => setRhoLimitInput(e.target.value)}
                 />
               </div>
             </div>

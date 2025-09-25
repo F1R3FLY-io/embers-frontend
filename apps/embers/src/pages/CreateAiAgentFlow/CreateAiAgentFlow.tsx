@@ -10,7 +10,7 @@ import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
@@ -26,8 +26,14 @@ export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
-  const { agentId = "", version = "" } = useParams<{ agentId: string; version: string }>();
+  const { agentId = "", version = "" } = useParams<{
+    agentId: string;
+    version: string;
+  }>();
   const { data: agent } = useAgent(agentId, version);
+  const search = new URLSearchParams(useLocation().search);
+
+  const agentName = agent?.name || (search.get("agentName") ?? "");
 
   useEffect(() => setHeaderTitle(t("aiAgent.bioAgent")), [setHeaderTitle, t]);
 
@@ -70,20 +76,17 @@ export default function CodeEditor() {
   }, []);
 
   useEffect(() => {
-    if (agent) {
-      editorRef.current?.openDocument(fileName, agent.code);
-    }
+    editorRef.current?.openDocument(fileName, agent ? agent.code : "");
   }, [agent]);
 
   const getCode = useCallback(() => {
-    return editorRef.current?.getText();
+    return editorRef.current?.getText(fileName);
   }, []);
 
   return (
-    <CodeLayout agentId={agent?.id} agentName={agent?.name} getCode={getCode}>
+    <CodeLayout agentId={agent?.id} agentName={agentName} getCode={getCode}>
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
-        <button onClick={() => console.log(agent)} >asassa </button>
         <div className={styles.container}>
           <Editor
             ref={editorRef}

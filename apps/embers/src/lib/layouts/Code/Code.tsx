@@ -12,10 +12,17 @@ interface CodeLayoutProps {
   getCode: () => string | undefined | null;
 }
 
-export const CodeLayout: React.FC<CodeLayoutProps> = ({ agentId, agentName, children, getCode }) => (
+export const CodeLayout: React.FC<CodeLayoutProps> = ({
+  agentId,
+  agentName,
+  children,
+  getCode,
+}) => (
   <Layout
     footer={<Footer />}
-    headerActions={<Header agentId={agentId} agentName={agentName} getCode={getCode} />}
+    headerActions={
+      <Header agentId={agentId} agentName={agentName} getCode={getCode} />
+    }
     sidebar={
       <Sidebar
         actions={
