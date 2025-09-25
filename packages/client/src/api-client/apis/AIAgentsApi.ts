@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "@/entities/Address";
+
 import type {
   Agent,
   Agents,
@@ -34,16 +36,16 @@ import {
 import * as runtime from "../runtime";
 
 export interface ApiAiAgentsAddressGetRequest {
-  address: string;
+  address: Address;
 }
 
 export interface ApiAiAgentsAddressIdVersionsGetRequest {
-  address: string;
+  address: Address;
   id: string;
 }
 
 export interface ApiAiAgentsAddressIdVersionsVersionGetRequest {
-  address: string;
+  address: Address;
   id: string;
   version: string;
 }

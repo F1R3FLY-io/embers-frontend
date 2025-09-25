@@ -10,8 +10,10 @@
  * Do not edit the class manually.
  */
 
+import type { Graph } from "./Graph";
 import type { Int64 } from "./Int64";
 
+import { GraphFromJSON, GraphToJSON } from "./Graph";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 
 /**
@@ -22,10 +24,10 @@ import { Int64FromJSON, Int64ToJSON } from "./Int64";
 export interface DeployAgentsTeamReqDeployGraph {
   /**
    *
-   * @type {string}
+   * @type {Graph}
    * @memberof DeployAgentsTeamReqDeployGraph
    */
-  graph: string;
+  graph: Graph;
   /**
    *
    * @type {Int64}
@@ -81,7 +83,7 @@ export function DeployAgentsTeamReqDeployGraphFromJSONTyped(
     return json;
   }
   return {
-    graph: json.graph,
+    graph: GraphFromJSON(json.graph),
     phloLimit: Int64FromJSON(json.phlo_limit),
     type: json.type,
   };
@@ -102,7 +104,7 @@ export function DeployAgentsTeamReqDeployGraphToJSONTyped(
   }
 
   return {
-    graph: value.graph,
+    graph: GraphToJSON(value.graph),
     phlo_limit: Int64ToJSON(value.phloLimit),
     type: value.type,
   };

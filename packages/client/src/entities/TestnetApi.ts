@@ -1,8 +1,10 @@
-import type { HTTPHeaders } from "../api-client";
+import type { HTTPHeaders } from "@/api-client";
+
+import { Configuration, TestnetApi } from "@/api-client";
+import { sign } from "@/functions";
+
 import type { Address } from "./Address";
 
-import { Configuration, TestnetApi } from "../api-client";
-import { sign } from "../functions";
 import { PrivateKey } from "./PrivateKey";
 
 export type TestnetConfig = {

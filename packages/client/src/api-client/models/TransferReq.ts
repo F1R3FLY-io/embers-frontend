@@ -10,8 +10,10 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "./Address";
 import type { Int64 } from "./Int64";
 
+import { AddressFromJSON, AddressToJSON } from "./Address";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 
 /**
@@ -34,16 +36,16 @@ export interface TransferReq {
   description?: string;
   /**
    *
-   * @type {string}
+   * @type {Address}
    * @memberof TransferReq
    */
-  from: string;
+  from: Address;
   /**
    *
-   * @type {string}
+   * @type {Address}
    * @memberof TransferReq
    */
-  to: string;
+  to: Address;
 }
 
 /**
@@ -76,8 +78,8 @@ export function TransferReqFromJSONTyped(
   return {
     amount: Int64FromJSON(json.amount),
     description: json.description == null ? undefined : json.description,
-    from: json.from,
-    to: json.to,
+    from: AddressFromJSON(json.from),
+    to: AddressFromJSON(json.to),
   };
 }
 
@@ -96,7 +98,7 @@ export function TransferReqToJSONTyped(
   return {
     amount: Int64ToJSON(value.amount),
     description: value.description,
-    from: value.from,
-    to: value.to,
+    from: AddressToJSON(value.from),
+    to: AddressToJSON(value.to),
   };
 }

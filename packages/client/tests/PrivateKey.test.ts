@@ -1,7 +1,6 @@
-import { secp256k1 } from "@noble/curves/secp256k1";
+import { PrivateKey } from "@";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { randomBytes } from "crypto";
-
-import { PrivateKey } from "../src";
 
 describe("PrivateKey class", () => {
   test("should check if private key is valid", () => {

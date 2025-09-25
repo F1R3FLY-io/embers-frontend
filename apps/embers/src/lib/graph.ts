@@ -111,3 +111,13 @@ function buildEdges(edges: Edge[]): Graph {
     NIL,
   );
 }
+
+export function makeNodeId() {
+  // VVar in graphl
+  return `a${crypto.randomUUID().replace(/-/g, "")}`;
+}
+
+export function makeSubgraphId() {
+  // GVar in graphl
+  return `A${crypto.randomUUID().replace(/-/g, "")}`;
+}
