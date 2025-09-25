@@ -10,11 +10,13 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "./Address";
 import type { Direction } from "./Direction";
 import type { Int64 } from "./Int64";
 import type { UInt64 } from "./UInt64";
 import type { UnixTimestamp } from "./UnixTimestamp";
 
+import { AddressFromJSON, AddressToJSON } from "./Address";
 import { DirectionFromJSON, DirectionToJSON } from "./Direction";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
@@ -58,10 +60,10 @@ export interface Transfer {
   id: string;
   /**
    *
-   * @type {string}
+   * @type {Address}
    * @memberof Transfer
    */
-  toAddress: string;
+  toAddress: Address;
 }
 
 /**
@@ -106,7 +108,7 @@ export function TransferFromJSONTyped(
     date: UnixTimestampFromJSON(json.date),
     direction: DirectionFromJSON(json.direction),
     id: json.id,
-    toAddress: json.to_address,
+    toAddress: AddressFromJSON(json.to_address),
   };
 }
 
@@ -128,6 +130,6 @@ export function TransferToJSONTyped(
     date: UnixTimestampToJSON(value.date),
     direction: DirectionToJSON(value.direction),
     id: value.id,
-    to_address: value.toAddress,
+    to_address: AddressToJSON(value.toAddress),
   };
 }

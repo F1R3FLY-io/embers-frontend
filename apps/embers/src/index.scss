@@ -45,6 +45,7 @@ body {
   --create-button-hover-bg: #48247a33;
 
   /* Theme independent */
+  --accent-success: #4ef880;
   --background-blue-select: #2d0b5d;
   --background-blue-transparent: #208bfe4d;
   --border-selected: #6a00ff;
@@ -58,7 +59,16 @@ body {
   --text-danger: #f52958;
   --text-white: #f1f3f5;
   --text-disabled: #5b7795cc;
-  --accent-success: #4ef880;
+
+  /* Typography scale */
+  --font-h1: 40px;
+  --font-h2: 32px;
+  --font-h3: 28px;
+  --font-h4: 24px;
+  --font-h5: 20px;
+  --font-large: 16px;
+  --font-normal: 14px;
+  --font-small: 12px;
 }
 
 .light-theme {

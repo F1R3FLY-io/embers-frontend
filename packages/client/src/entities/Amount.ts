@@ -12,4 +12,8 @@ export class Amount {
     }
     return new Amount(value);
   }
+
+  public toString() {
+    return this.value.toString();
+  }
 }

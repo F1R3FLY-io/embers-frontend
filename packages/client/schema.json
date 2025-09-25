@@ -13,6 +13,9 @@
       "name": "AIAgentsTeams"
     },
     {
+      "name": "Service"
+    },
+    {
       "name": "Testnet"
     },
     {
@@ -20,6 +23,16 @@
     }
   ],
   "paths": {
+    "/api/service/ready": {
+      "get": {
+        "tags": ["Service"],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/testnet/wallet": {
       "post": {
         "tags": ["Testnet"],
@@ -98,7 +111,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -174,7 +188,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -203,7 +218,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -255,7 +271,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -507,7 +524,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -536,7 +554,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -588,7 +607,8 @@
           {
             "name": "address",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "blockchain-address"
             },
             "in": "path",
             "required": true,
@@ -883,7 +903,8 @@
             "type": "string"
           },
           "graph": {
-            "type": "string"
+            "type": "string",
+            "format": "graphl"
           }
         }
       },
@@ -991,7 +1012,8 @@
             "type": "string"
           },
           "graph": {
-            "type": "string"
+            "type": "string",
+            "format": "graphl"
           }
         }
       },
@@ -1034,7 +1056,8 @@
             "type": "string"
           },
           "address": {
-            "type": "string"
+            "type": "string",
+            "format": "blockchain-address"
           },
           "phlo_limit": {
             "type": "string",
@@ -1119,7 +1142,8 @@
             "type": "string"
           },
           "address": {
-            "type": "string"
+            "type": "string",
+            "format": "blockchain-address"
           },
           "phlo_limit": {
             "type": "string",
@@ -1212,7 +1236,8 @@
         "required": ["graph", "phlo_limit"],
         "properties": {
           "graph": {
-            "type": "string"
+            "type": "string",
+            "format": "graphl"
           },
           "phlo_limit": {
             "type": "string",
@@ -1513,7 +1538,8 @@
             "format": "int64"
           },
           "to_address": {
-            "type": "string"
+            "type": "string",
+            "format": "blockchain-address"
           },
           "cost": {
             "type": "string",
@@ -1527,10 +1553,12 @@
         "required": ["from", "to", "amount"],
         "properties": {
           "from": {
-            "type": "string"
+            "type": "string",
+            "format": "blockchain-address"
           },
           "to": {
-            "type": "string"
+            "type": "string",
+            "format": "blockchain-address"
           },
           "amount": {
             "type": "string",

@@ -1,6 +1,5 @@
+import { deserializeKey, PrivateKey, serializeKey } from "@";
 import { base16 } from "@scure/base";
-
-import { deserializeKey, PrivateKey, serializeKey } from "../src";
 
 describe("serializeKey/deserializeKey", () => {
   it("should roundtrip private key through serialization", () => {

@@ -1,10 +1,8 @@
-import { secp256k1 } from "@noble/curves/secp256k1";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 
-import type { WalletsApi } from "./api-client/index";
-import type { Address } from "./entities/Address";
-import type { PrivateKey } from "./entities/PrivateKey";
+import type { PrivateKey } from "@/entities/PrivateKey";
 
 /**
  * Verifies F1R3Cap an address by checking its checksum.
@@ -52,17 +50,6 @@ export function sign(
     sig,
     sigAlgorithm: "secp256k1",
   };
-}
-
-/**
- * Return Wallet State for a given address.
- * @param address - The address to check the wallet state for.
- * @returns A promise that resolves to the wallet state.
- */
-export async function getWalletState(address: Address, client: WalletsApi) {
-  return client.apiWalletsAddressStateGet({
-    address: address.value,
-  });
 }
 
 export type GetContractCallback<T> = () => Promise<T>;

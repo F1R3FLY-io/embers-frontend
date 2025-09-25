@@ -2,6 +2,7 @@ import { t } from "i18next";
 import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { useDeployAgentMutation } from "@/lib/queries"; // your hook from the snippet
@@ -128,13 +129,7 @@ export default function Deploy({
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <input
-              disabled
-              className={styles["form-input"]}
-              placeholder={agentName}
-              type="text"
-              value={agentName}
-            />
+            <Input disabled inputType="input" placeholder={agentName} value={agentName} />
           </div>
 
           <div className={styles["form-section"]}>
@@ -146,12 +141,20 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.version")}
                 </Text>
-                <input
+                <Input
                   disabled
-                  className={styles["form-input"]}
+                  inputType="input"
                   placeholder={version}
-                  type="text"
                   value={version}
+                />
+              </div>
+              <div>
+                <Text color="secondary" fontSize={12}>
+                  {t("basic.inputPrompt")}
+                </Text>
+                <Input
+                  inputType="textarea"
+                  placeholder={t("deploy.enterInputPrompt")}
                 />
               </div>
             </div>
@@ -159,21 +162,28 @@ export default function Deploy({
 
           {/* Rho Limit input (required for deploy) */}
           <div className={styles["form-section"]}>
-            <Text color="secondary" fontSize={12}>
+            <Text bold color="primary" fontSize={20} type="H3">
               rhoLimit (bigint)
             </Text>
-            <input
-              className={styles["form-input"]}
-              placeholder="e.g. 1000000"
-              type="text"
-              value={rhoLimitInput}
-              onChange={(e) => setRhoLimitInput(e.target.value)}
-            />
-            {rhoLimitError && (
-              <Text color="secondary" fontSize={12} type="H4">
-                Invalid bigint value
-              </Text>
-            )}
+            <div className={styles["form-fields"]}>
+              <div>
+                <Text color="secondary" fontSize={12}>
+                  {t("deploy.version")}
+                </Text>
+                <Input inputType="input"
+                       placeholder={rhoLimitInput} value={rhoLimitInput}
+                       onChange={(e) => setRhoLimitInput(e.target.value) } />
+              </div>
+              <div>
+                <Text color="secondary" fontSize={12}>
+                  {t("deploy.notes")}
+                </Text>
+                <Input
+                  inputType="textarea"
+                  placeholder={t("deploy.enterDeploymentNotes")}
+                />
+              </div>
+            </div>
           </div>
 
           <div className={styles["button-container"]}>

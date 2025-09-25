@@ -10,6 +10,8 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "@/entities/Address";
+
 import type {
   SignedContract,
   TransferReq,
@@ -26,7 +28,7 @@ import {
 import * as runtime from "../runtime";
 
 export interface ApiWalletsAddressStateGetRequest {
-  address: string;
+  address: Address;
 }
 
 export interface ApiWalletsTransferPreparePostRequest {

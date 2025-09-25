@@ -1,4 +1,4 @@
-import { Amount } from "../src";
+import { Amount } from "@";
 
 describe("Amount class", () => {
   test("should create an Amount", () => {

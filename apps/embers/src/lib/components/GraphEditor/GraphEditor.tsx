@@ -27,6 +27,7 @@ import type {
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
+import { makeNodeId, makeSubgraphId } from "@/lib/graph";
 import { useModal } from "@/lib/providers/modal/useModal";
 
 import type { NodeKind } from "./nodes/nodes.registry";
@@ -147,7 +148,7 @@ export function GraphEditor({
           ...selectedNodes.map((n) => n.position.y + (n.measured!.height ?? 0)),
         );
 
-        const parentId = crypto.randomUUID();
+        const parentId = makeSubgraphId();
 
         const subflowNode: Node = {
           className: styles["no-node-style"],
@@ -270,7 +271,7 @@ function createNodeChange<T extends keyof NodeTypes>(
       item: {
         className: styles["no-node-style"],
         data,
-        id: crypto.randomUUID(),
+        id: makeNodeId(),
         position,
         type,
       },

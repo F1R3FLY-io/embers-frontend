@@ -1,10 +1,10 @@
-import type { Graph } from "@f1r3fly-io/embers-client-sdk";
+import type { Graph, Name, Vertex } from "@f1r3fly-io/embers-client-sdk";
 
 import type { Edge, Node } from "./components/GraphEditor";
 
-const NIL = {
+const NIL: Graph = {
   type: "Nil",
-} as const;
+};
 
 type ContainerGroup = {
   container: Node;
@@ -33,29 +33,50 @@ function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
 function buildSubgraphs(groups: ContainerGroup[]): Graph {
   return groups.reduceRight(
     (acc, group): Graph => ({
-      graph_1: buildNodes(group.nodes),
-      graph_2: acc,
-      type: "Subgraph",
-      var: group.container.id,
+      graph: {
+        graph_1: buildNodes(group.nodes),
+        graph_2: acc,
+        type: "Subgraph",
+        var: group.container.id,
+      },
+      name: {
+        type: "GVar",
+        value: group.container.id,
+      },
+      string: JSON.stringify(group.container.data),
+      type: "Context",
     }),
     NIL,
   );
 }
 
 function buildNodes(nodes: Node[]): Graph {
-  return nodes.reduceRight(
-    (acc, node): Graph => ({
-      graph: acc,
-      type: "Vertex",
-      vertex: {
-        name: {
-          type: "VVar",
-          value: node.id,
+  return nodes.reduceRight((acc, node): Graph => {
+    const name: Name = {
+      type: "VVar",
+      value: node.id,
+    };
+
+    const vertex: Vertex = {
+      name,
+    };
+
+    return {
+      graph: {
+        graph: {
+          graph: acc,
+          type: "Vertex",
+          vertex,
         },
+        type: "Nominate",
+        var: node.id,
+        vertex,
       },
-    }),
-    NIL,
-  );
+      name,
+      string: JSON.stringify(node.data),
+      type: "Context",
+    };
+  }, NIL);
 }
 
 function buildEdges(edges: Edge[]): Graph {
@@ -89,4 +110,14 @@ function buildEdges(edges: Edge[]): Graph {
     }),
     NIL,
   );
+}
+
+export function makeNodeId() {
+  // VVar in graphl
+  return `a${crypto.randomUUID().replace(/-/g, "")}`;
+}
+
+export function makeSubgraphId() {
+  // GVar in graphl
+  return `A${crypto.randomUUID().replace(/-/g, "")}`;
 }
