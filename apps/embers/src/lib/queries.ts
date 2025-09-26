@@ -35,12 +35,29 @@ export function useAgentVersions(id: string) {
   });
 }
 
-export function useAgent(id: string, version: string) {
+export function useAgent(agentId?: string, versionId?: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgentVersion(id, version),
-    queryKey: ["agents", api.wallets.address, id, version],
+    enabled: !!agentId && !!versionId,
+    queryFn: async () => api.agents.getAgentVersion(agentId!, versionId!),
+    queryKey: ["agents", api.wallets.address, agentId, versionId],
+
+    retry: (failureCount, error: unknown) => {
+      if (failureCount >= 30) {
+        return false;
+      }
+
+      if (typeof error === "object" && error !== null && "response" in error) {
+        const status = (error as { response?: { status?: number } }).response
+          ?.status;
+        if (status === 404) {
+          return true;
+        }
+      }
+      return false;
+    },
+    retryDelay: 2000,
   });
 }
 

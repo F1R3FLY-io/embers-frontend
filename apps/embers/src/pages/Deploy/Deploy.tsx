@@ -1,40 +1,84 @@
 import { t } from "i18next";
+import { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
+import { useDeployAgentMutation } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "./components/Stepper";
 import styles from "./Deploy.module.scss";
 
-type DeployProps = {
-  agentAddress?: string;
-  agentDescription?: string;
-  agentName?: string;
-  agentVersion?: string;
-  blockchainShard?: string;
-};
+function parseBigIntOrNull(v: string): bigint | null {
+  try {
+    if (!v.trim()) {
+      return null;
+    }
+    return BigInt(v.trim());
+  } catch {
+    return null;
+  }
+}
 
-export default function Deploy({
-  agentAddress = "#7839937799911",
-  agentDescription = "Enter agent description",
-  agentName = "BioMatch",
-  agentVersion = "1.0.0",
-  blockchainShard = "shard://ai-health.open.mettacycle.net",
-}: DeployProps) {
+export default function Deploy() {
+  const { agentId = "", version = "" } = useParams<{
+    agentId: string;
+    version: string;
+  }>();
+  const search = new URLSearchParams(useLocation().search);
+  const agentName = search.get("agentName") ?? "";
+  const navigate = useNavigate();
+
+  const [rhoLimitInput, setRhoLimitInput] = useState("1000000");
+
+  const deployMutation = useDeployAgentMutation();
+  const isDeploying = deployMutation.isPending;
+
+  const rhoLimit = parseBigIntOrNull(rhoLimitInput);
+  const rhoLimitError = rhoLimitInput.trim() !== "" && rhoLimit === null;
+
+  const canDeploy = !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying;
+
+  const handleDeploy = () => {
+    if (!canDeploy) {
+      return;
+    }
+
+    deployMutation.mutate(
+      { agentId, rhoLimit, version },
+      {
+        onError: (e) => {
+          // eslint-disable-next-line no-console
+          console.error("Deployment failed:", e);
+        },
+        onSuccess: () => {
+          // todo add modal here
+          void navigate("/dashboard");
+        },
+      },
+    );
+  };
+
   return (
     <div className={styles["deploy-container"]}>
       <Text bold color="primary" fontSize={40} type="H2">
         {t("aiAgent.create")}
       </Text>
+
       <div className={styles["stepper-container"]}>
         <Stepper
           currentStep={3}
-          labels={["Create", "Configure", "Deploy"]}
+          labels={[
+            t("deploy.generalInfo"),
+            t("deploy.creation"),
+            t("deploy.deployment"),
+          ]}
           steps={3}
         />
       </div>
+
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" fontSize={32} type="H2">
@@ -46,68 +90,24 @@ export default function Deploy({
             </Text>
           </div>
         </div>
+
         <div className={styles["details-container"]}>
           <Text bold color="primary" fontSize={20} type="H3">
             {t("deploy.agentDetails")}
           </Text>
-          <div className={styles["detail-row"]}>
-            <div className={styles["label-container"]}>
-              <Text color="secondary" fontSize={12}>
-                {t("deploy.agentAddress")}
-              </Text>
-            </div>
-            <Text color="primary" fontSize={12}>
-              {agentAddress}
-            </Text>
-          </div>
-          <div className={styles["detail-row"]}>
-            <div className={styles["label-container"]}>
-              <Text color="secondary" fontSize={12}>
-                {t("deploy.blockchainShard")}
-              </Text>
-            </div>
-            <Text color="primary" fontSize={12}>
-              {blockchainShard}
-            </Text>
-          </div>
-          <div className={styles.divider} />
+
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>
               {t("deploy.agentName")}
             </Text>
-            <Input inputType="input" placeholder={agentName} />
+            <Input
+              disabled
+              inputType="input"
+              placeholder={agentName}
+              value={agentName}
+            />
           </div>
-          <div className={styles["form-section"]}>
-            <Text color="secondary" fontSize={12}>
-              {t("deploy.agentDescription")}
-            </Text>
-            <Input inputType="textarea" placeholder={agentDescription} />
-          </div>
-          <div className={styles["form-section"]}>
-            <Text bold color="primary" fontSize={20} type="H3">
-              {t("deploy.welcomeInterface")}
-            </Text>
-            <div className={styles["form-fields"]}>
-              <div>
-                <Text color="secondary" fontSize={12}>
-                  {t("deploy.welcomeMessage")}
-                </Text>
-                <Input
-                  inputType="textarea"
-                  placeholder={t("deploy.enterWelcomeMessage")}
-                />
-              </div>
-              <div>
-                <Text color="secondary" fontSize={12}>
-                  {t("basic.inputPrompt")}
-                </Text>
-                <Input
-                  inputType="textarea"
-                  placeholder={t("deploy.enterInputPrompt")}
-                />
-              </div>
-            </div>
-          </div>
+
           <div className={styles["form-section"]}>
             <Text bold color="primary" fontSize={20} type="H3">
               {t("deploy.versionAndNotes")}
@@ -117,7 +117,12 @@ export default function Deploy({
                 <Text color="secondary" fontSize={12}>
                   {t("deploy.version")}
                 </Text>
-                <Input inputType="input" placeholder={agentVersion} />
+                <Input
+                  disabled
+                  inputType="input"
+                  placeholder={version}
+                  value={version}
+                />
               </div>
               <div>
                 <Text color="secondary" fontSize={12}>
@@ -130,20 +135,45 @@ export default function Deploy({
               </div>
             </div>
           </div>
+
+          <div className={styles["form-section"]}>
+            <div className={styles["form-fields"]}>
+              <div>
+                <Text color="secondary" fontSize={12}>
+                  {t("deploy.rhoLimit")}
+                </Text>
+                <Input
+                  inputType="input"
+                  placeholder={rhoLimitInput}
+                  value={rhoLimitInput}
+                  onChange={(e) => setRhoLimitInput(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
           <div className={styles["button-container"]}>
             <button className={styles["back-button"]}>
               {t("deploy.back")}
             </button>
+
             <div className={styles["button-group"]}>
               <button className={styles["draft-button"]}>
                 <DraftIcon />
                 {t("basic.saveDraft")}
               </button>
-              <button className={styles["deploy-button"]}>
-                {t("deploy.deploy")}
+
+              <button
+                aria-busy={isDeploying}
+                className={styles["deploy-button"]}
+                disabled={!canDeploy}
+                onClick={handleDeploy}
+              >
+                {isDeploying ? t("deploy.deploying") : t("deploy.deploy")}
               </button>
             </div>
           </div>
+
           <div className={styles["footer-container"]}>
             <LanguageSelect />
             <div className={styles["support-container"]}>

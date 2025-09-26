@@ -1,0 +1,22 @@
+declare const classNames: {
+  readonly "create-container": "create-container";
+  readonly "stepper-container": "stepper-container";
+  readonly "content-container": "content-container";
+  readonly "title-container": "title-container";
+  readonly "description-container": "description-container";
+  readonly "details-container": "details-container";
+  readonly "form-section": "form-section";
+  readonly "form-fields": "form-fields";
+  readonly select: "select";
+  readonly "select-input": "select-input";
+  readonly "estimation-bar": "estimation-bar";
+  readonly "estimation-value": "estimation-value";
+  readonly "button-container": "button-container";
+  readonly "back-button": "back-button";
+  readonly "button-group": "button-group";
+  readonly "continue-button": "continue-button";
+  readonly "footer-container": "footer-container";
+  readonly "support-container": "support-container";
+  readonly "support-link": "support-link";
+};
+export default classNames;

@@ -1,5 +1,7 @@
 import type React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { Text } from "@/lib/components/Text";
 import { useLayout } from "@/lib/providers/layout/useLayout";
 
@@ -11,10 +13,14 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ actions }) => {
   const { headerTitle } = useLayout();
+  const navigate = useNavigate();
   return (
     <header className={styles["header-bar"]}>
       <div className={styles["header-content"]}>
-        <div className={styles["app-title"]}>
+        <div
+          className={styles["app-title"]}
+          onClick={() => void navigate("/dashboard")}
+        >
           <Text color="primary" type="H4">
             {headerTitle}
           </Text>

@@ -1,8 +1,8 @@
 declare const classNames: {
   readonly container: "container";
-  readonly error: "error";
   readonly input: "input";
   readonly textarea: "textarea";
+  readonly error: "error";
   readonly "has-left-icon": "has-left-icon";
   readonly "has-right-icon": "has-right-icon";
   readonly "text-primary": "text-primary";
