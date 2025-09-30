@@ -93,8 +93,8 @@ export default function CreateAiTeamFlow() {
                 log: JSON.stringify(
                   result,
                   (_, value) => {
-                    if (typeof value === "string") {
-                      return `${value.slice(0, 500)}...`;
+                    if (typeof value === "string" && value.length > 2000) {
+                      return `${value.slice(0, 2000)}...`;
                     }
                     return value as unknown;
                   },
