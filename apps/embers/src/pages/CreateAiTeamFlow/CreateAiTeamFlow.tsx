@@ -22,6 +22,7 @@ export default function CreateAiTeamFlow() {
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
+  const [lastDeploy, setLastDeploy] = useState<string | undefined>();
 
   const deployGraph = useDeployGraphMutation();
   const runDemo = useRunDemo();
@@ -50,11 +51,13 @@ export default function CreateAiTeamFlow() {
   );
 
   const onSuccessfulDeploy = useCallback(
-    () =>
+    ({ name }: { name: string }) => {
+      setLastDeploy(name);
       addDeploy({
         success: true,
         time: new Date(),
-      }),
+      });
+    },
     [addDeploy],
   );
 
@@ -79,21 +82,19 @@ export default function CreateAiTeamFlow() {
             .then(onSuccessfulDeploy)
             .catch(onFailedDeploy),
         onRun: () =>
+          lastDeploy &&
           void runDemo
             .mutateAsync({
-              name: "demo_agents_team",
+              name: lastDeploy,
               prompt: "Describe an appearance of human-like robot",
             })
             .then((result) =>
               addLog({
                 log: JSON.stringify(
                   result,
-                  (key, value) => {
-                    if (
-                      typeof value === "string" &&
-                      key === "textToAudioAnswer"
-                    ) {
-                      return `${value.slice(0, 120)}...`;
+                  (_, value) => {
+                    if (typeof value === "string") {
+                      return `${value.slice(0, 500)}...`;
                     }
                     return value as unknown;
                   },

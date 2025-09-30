@@ -34,23 +34,23 @@ export const NODE_REGISTRY = {
     modalInputs: [],
     title: "Compress",
   }),
-  "manual-input": defineNode({
+  input: defineNode({
     className: "source",
     defaultData: {},
-    displayName: "Manual Input",
+    displayName: "Input",
     handlers: [{ position: Position.Right, type: "source" }],
     iconSrc: inputNodeIcon,
     modalInputs: [],
-    title: "Manual Input",
+    title: "Input",
   }),
-  "send-to-channel": defineNode({
+  output: defineNode({
     className: "sink",
     defaultData: {},
-    displayName: "Send to channel",
+    displayName: "Output",
     handlers: [{ position: Position.Left, type: "target" }],
     iconSrc: defaultNodeIcon,
     modalInputs: [],
-    title: "Send to channel",
+    title: "Output",
   }),
   "text-model": defineNode({
     className: "service",
