@@ -113,7 +113,12 @@ export class AgentsTeamsApiSdk {
       });
     };
 
-    await deployContract(this.privateKey, contract, sendContract);
+    return deployContract(this.privateKey, contract, sendContract).then(
+      (result) => {
+        const { contract: _, ...rest } = result.generateModel;
+        return rest;
+      },
+    );
   }
 
   public async deployAgetnsTeam(
@@ -149,7 +154,12 @@ export class AgentsTeamsApiSdk {
       });
     };
 
-    await deployContract(this.privateKey, contract, sendContract);
+    return deployContract(this.privateKey, contract, sendContract).then(
+      (result) => {
+        const { contract: _, ...rest } = result.generateModel;
+        return rest;
+      },
+    );
   }
 
   public async saveAgentsTeamVersion(

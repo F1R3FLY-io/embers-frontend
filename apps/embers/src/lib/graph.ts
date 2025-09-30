@@ -43,7 +43,7 @@ function buildSubgraphs(groups: ContainerGroup[]): Graph {
         type: "GVar",
         value: group.container.id,
       },
-      string: JSON.stringify(group.container.data),
+      string: buildNodeContext(group.container),
       type: "Context",
     }),
     NIL,
@@ -73,7 +73,7 @@ function buildNodes(nodes: Node[]): Graph {
         vertex,
       },
       name,
-      string: JSON.stringify(node.data),
+      string: buildNodeContext(node),
       type: "Context",
     };
   }, NIL);
@@ -110,6 +110,32 @@ function buildEdges(edges: Edge[]): Graph {
     }),
     NIL,
   );
+}
+
+function buildNodeContext(node: Node) {
+  switch (node.type) {
+    case "compress": {
+      return JSON.stringify({ type: "compress" });
+    }
+    case "input": {
+      return JSON.stringify({ type: "input" });
+    }
+    case "output": {
+      return JSON.stringify({ type: "output" });
+    }
+    case "text-model": {
+      return JSON.stringify({ type: "text-model" });
+    }
+    case "tti-model": {
+      return JSON.stringify({ type: "tti-model" });
+    }
+    case "tts-model": {
+      return JSON.stringify({ type: "tts-model" });
+    }
+    case "deploy-container": {
+      return JSON.stringify({});
+    }
+  }
 }
 
 export function makeNodeId() {
