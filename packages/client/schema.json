@@ -1208,8 +1208,11 @@
       "DeployAgentsTeamResp": {
         "type": "object",
         "title": "DeployAgentsTeamResp",
-        "required": ["contract"],
+        "required": ["name", "contract"],
         "properties": {
+          "name": {
+            "type": "string"
+          },
           "contract": {
             "type": "string",
             "format": "bytes"
