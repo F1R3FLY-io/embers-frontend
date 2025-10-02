@@ -8,24 +8,34 @@ import {
 } from "@f1r3fly-io/lightning-bug/extensions/lang/rholang/tree-sitter/queries";
 import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
 import { useLayout } from "@/lib/providers/layout/useLayout";
+import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useAgent } from "@/lib/queries";
 
-import styles from "./CreateAiAgentFlow.module.scss";
+import styles from "./EditAgent.module.scss";
 
 const fileName = "agent.rho";
 const logLevel = "trace"; // "trace" | "debug" | "info" | "warn" | "error" | "fatal" | "report"
 
 export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
-  const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
+  const { setHeaderTitle } = useLayout();
+  const { data } = useStepper();
+  const { agentId, version } = data;
+  const { data: agent } = useAgent(agentId, version);
+  const search = new URLSearchParams(useLocation().search);
+  console.log(agent);
 
-  useEffect(() => setHeaderTitle(t("aiAgent.bioAgent")), [setHeaderTitle, t]);
+  const agentName = agent?.name || (search.get("agentName"));
+
+  useEffect(() => setHeaderTitle(t('agents.agentWithName', {name: agentName})), [agentName, setHeaderTitle, t]);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -65,8 +75,16 @@ export default function CodeEditor() {
     }
   }, []);
 
+  useEffect(() => {
+    editorRef.current?.openDocument(fileName, agent ? agent.code : data.code);
+  }, [agent, data.code]);
+
+  const getCode = useCallback(() => {
+    return editorRef.current?.getText(fileName);
+  }, []);
+
   return (
-    <CodeLayout>
+    <CodeLayout getCode={getCode}>
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
         <div className={styles.container}>

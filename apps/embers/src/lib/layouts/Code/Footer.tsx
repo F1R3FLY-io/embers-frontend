@@ -11,7 +11,7 @@ export const Footer: React.FC = () => (
       actions={
         <Button
           className={styles["accordion-action"]}
-          type="secondary"
+          type="subtle"
           onClick={() => {}}
         >
           {/*todo add support for JSX elements*/}

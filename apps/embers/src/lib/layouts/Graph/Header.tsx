@@ -13,7 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ onDeploy, onRun }) => {
       <Button type="primary" onClick={onDeploy}>
         Deploy
       </Button>
-      <Button type="secondary" onClick={onRun}>
+      <Button type="subtle" onClick={onRun}>
         Run
       </Button>
     </>

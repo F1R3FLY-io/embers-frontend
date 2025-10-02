@@ -7,22 +7,42 @@ import styles from "./Button.module.scss";
 type ButtonProps = {
   children: string;
   className?: string;
+  disabled?: boolean;
   onClick: () => void;
-  type: "primary" | "secondary";
+  rounded?: boolean;
+  type: "primary" | "secondary" | "subtle";
 };
 
-export function Button({ children, className, onClick, type }: ButtonProps) {
+export function Button({
+  children,
+  className,
+  disabled,
+  onClick,
+  rounded,
+  type,
+}: ButtonProps) {
   const btnClass = classNames(
     styles.button,
     {
+      [styles.disabled]: disabled,
       [styles.primary]: type === "primary",
+      [styles.rounded]: rounded,
       [styles.secondary]: type === "secondary",
+      [styles.subtle]: type === "subtle",
     },
     className,
   );
 
   return (
-    <button className={btnClass} onClick={onClick}>
+    <button
+      aria-disabled={disabled || undefined}
+      className={btnClass}
+      onClick={() => {
+        if (!disabled) {
+          onClick();
+        }
+      }}
+    >
       <Text bold type="normal">
         {children}
       </Text>

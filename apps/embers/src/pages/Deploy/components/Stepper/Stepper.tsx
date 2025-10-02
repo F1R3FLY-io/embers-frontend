@@ -11,7 +11,7 @@ type StepperProps = {
 };
 
 export default function Stepper({
-  currentStep = 1,
+  currentStep = 0,
   labels = [],
   steps = 3,
 }: StepperProps) {
@@ -24,16 +24,16 @@ export default function Stepper({
               className={`${styles.circle} ${
                 index < currentStep
                   ? styles.completed
-                  : index === currentStep - 1
+                  : index === currentStep
                     ? styles.current
                     : styles.pending
               }`}
             >
               <StepperCircleIcon />
-              {index < currentStep && index < currentStep - 1 && (
+              {index < currentStep && (
                 <CheckIcon className={styles.checkmark} />
               )}
-              {index === currentStep - 1 && <div className={styles.dot} />}
+              {index === currentStep && <div className={styles.dot} />}
             </div>
             {index < steps - 1 && (
               <div className={styles.line}>
