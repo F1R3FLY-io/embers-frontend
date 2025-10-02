@@ -28,6 +28,11 @@
 }
 
 .secondary {
+  color: var(--text-white);
+  background-color: var(--background-neutral-hover);
+}
+
+.subtle {
   color: var(--button-hover);
 }
 

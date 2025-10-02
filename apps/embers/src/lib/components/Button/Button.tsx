@@ -10,7 +10,7 @@ type ButtonProps = {
   disabled?: boolean;
   onClick: () => void;
   rounded?: boolean;
-  type: "primary" | "secondary";
+  type: "primary" | "secondary" | "subtle";
 };
 
 export function Button({
@@ -28,6 +28,7 @@ export function Button({
       [styles.primary]: type === "primary",
       [styles.rounded]: rounded,
       [styles.secondary]: type === "secondary",
+      [styles.subtle]: type === "subtle",
     },
     className,
   );

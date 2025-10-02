@@ -62,7 +62,7 @@
 
 .dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 6px);
   right: 0;
   left: 0;
   z-index: 10;
@@ -96,4 +96,9 @@
 
 .error {
   color: var(--text-danger);
+}
+
+.up {
+  top: auto;
+  bottom: calc(100% + 6px);
 }

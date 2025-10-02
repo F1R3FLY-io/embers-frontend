@@ -97,7 +97,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
             <Button
               aria-label="Close"
               className={styles.close}
-              type="secondary"
+              type="subtle"
               onClick={onClose}
             >
               ×

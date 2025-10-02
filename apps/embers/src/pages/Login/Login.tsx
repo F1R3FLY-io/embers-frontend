@@ -61,7 +61,7 @@ export default function Login() {
             <Button type="primary" onClick={toSigning}>
               {t("login.signInWithWallet")}
             </Button>
-            <Button type="secondary" onClick={redirectToFiresky}>
+            <Button type="subtle" onClick={redirectToFiresky}>
               {t("login.createWallet")}
             </Button>
           </div>

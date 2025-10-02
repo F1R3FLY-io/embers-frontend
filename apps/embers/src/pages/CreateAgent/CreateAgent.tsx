@@ -1,14 +1,15 @@
-// src/pages/CreateAgent/CreateAgent.tsx
 import { t } from "i18next";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import type { Option } from "@/lib/components/Select";
 
+import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
+import { useStepper } from "@/lib/providers/stepper/useStepper";
 import Stepper from "@/pages/Deploy/components/Stepper";
 
 import styles from "./CreateAgent.module.scss";
@@ -16,7 +17,7 @@ import styles from "./CreateAgent.module.scss";
 export default function CreateAgent() {
   const navigate = useNavigate();
 
-  // form state
+  const { nextStep, step, updateData } = useStepper();
   const [name, setName] = useState("");
   const [environment, setEnvironment] = useState<string>("");
 
@@ -30,9 +31,9 @@ export default function CreateAgent() {
   );
 
   const shardByEnv: Record<string, string> = {
-    dev: "shard://dev.open.mettacycle.net",
-    prod: "shard://ai-health.open.mettacycle.net",
-    staging: "shard://staging.open.mettacycle.net",
+    dev: "shard://dev.test.net",
+    prod: "shard://prod.test.net",
+    staging: "shard://staging.test.net",
   };
 
   const selectedShard = environment ? (shardByEnv[environment] ?? "") : "";
@@ -42,12 +43,14 @@ export default function CreateAgent() {
   const canContinue = name.trim().length > 0 && environment.length > 0;
 
   const handleCancel = () => void navigate(-1);
-  const handleContinue = () => {
-    if (!canContinue) {
-      return;
-    }
-    void navigate(`/create-ai-agent?agentName=${encodeURIComponent(name)}`);
+
+  const submitForm = () => {
+    updateData("agentName", name);
+    updateData("environment", environment);
+    nextStep();
+    void navigate("/create-ai-agent");
   };
+
 
   return (
     <div className={styles["create-container"]}>
@@ -57,7 +60,7 @@ export default function CreateAgent() {
 
       <div className={styles["stepper-container"]}>
         <Stepper
-          currentStep={1}
+          currentStep={step}
           labels={[
             t("deploy.generalInfo"),
             t("deploy.creation"),
@@ -126,21 +129,20 @@ export default function CreateAgent() {
           </div>
 
           <div className={styles["button-container"]}>
-            <button className={styles["back-button"]} onClick={handleCancel}>
+            <Button type="secondary" onClick={handleCancel}>
               {t("basic.cancel")}
-            </button>
+            </Button>
             <div className={styles["button-group"]}>
               <button
                 className={styles["continue-button"]}
                 disabled={!canContinue}
-                onClick={handleContinue}
+                onClick={submitForm}
               >
                 {t("basic.continue")}
               </button>
             </div>
           </div>
 
-          {/* Bottom footer (language + support) */}
           <div className={styles["footer-container"]}>
             <LanguageSelect />
             <div className={styles["support-container"]}>

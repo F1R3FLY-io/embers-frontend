@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Text } from "@/lib/components/Text";
+import { useStepper } from "@/lib/providers/stepper/useStepper";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 
 import styles from "./AgentsGrid.module.scss";
@@ -21,15 +22,21 @@ interface AgentsGridProps {
 
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const navigate = useNavigate();
+  const { nextStep, reset, updateData } = useStepper();
   const createAiAgent = useCallback(() => {
-    void navigate("/agents/create");
-  }, [navigate]);
+    reset();
+    void navigate("/create-ai-agent/create");
+  }, [navigate, reset]);
 
   const navigateToAgent = useCallback(
-    (id: string, version: string) => {
-      void navigate(`/agents/${id}/edit/${version}`);
+    (agent: Agent) => {
+      updateData('agentId', agent.id);
+      updateData('agentName', agent.name);
+      updateData('version', agent.version);
+      nextStep();
+      void navigate(`/create-ai-agent`);
     },
-    [navigate],
+    [navigate, nextStep, updateData],
   );
 
   return (
@@ -54,7 +61,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
                 "--tile-delay": `${0.2 + index * 0.1}s`,
               } as React.CSSProperties
             }
-            onClick={() => navigateToAgent(agent.id, agent.version)}
+            onClick={() => navigateToAgent(agent)}
           >
             <Text color="secondary" type="H4">
               Agent {agent.name}

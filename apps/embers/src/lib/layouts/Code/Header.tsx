@@ -1,25 +1,27 @@
 import type React from "react";
 
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
+import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useCreateAgentMutation, useSaveAgentMutation } from "@/lib/queries";
 
 type HeaderProps = {
-  agentId: string | undefined;
-  agentName: string | undefined;
   getCode: () => string | null | undefined;
 };
 
 export const Header: React.FC<HeaderProps> = ({
-  agentId,
-  agentName = "Agent",
   getCode,
 }) => {
   const navigate = useNavigate();
 
+  const { data, nextStep, updateData } = useStepper();
+
+  const { agentId, agentName } = data;
+  const id = useMemo(() => agentId ?? "", [agentId]);
   const createMutation = useCreateAgentMutation();
-  const saveMutation = useSaveAgentMutation(agentId ?? "");
+  const saveMutation = useSaveAgentMutation(id);
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
@@ -28,13 +30,11 @@ export const Header: React.FC<HeaderProps> = ({
     version: string;
   }> => {
     const code = getCode()?.toString() ?? "";
-    if (!code.trim()) {
-      throw new Error("Empty code");
-    }
+    updateData('code', code);
 
-    if (agentId) {
+    if (id) {
       const res = await saveMutation.mutateAsync({ code, name: agentName });
-      return { agentId, version: res.version };
+      return { agentId: id, version: res.version };
     }
 
     const res = await createMutation.mutateAsync({ code, name: agentName });
@@ -58,11 +58,11 @@ export const Header: React.FC<HeaderProps> = ({
       return;
     }
     try {
-      const { agentId: id, version } = await saveOrCreate();
-      void navigate(
-        `/agents/${id}/deploy/${encodeURIComponent(version)}?agentName=${encodeURIComponent(agentName)}`,
-        { replace: false },
-      );
+      const { agentId, version } = await saveOrCreate();
+      updateData('agentId', agentId);
+      updateData('version', version);
+      nextStep();
+      void navigate('/create-ai-agent/deploy');
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error("Pre-deploy save failed:", e);
@@ -73,10 +73,10 @@ export const Header: React.FC<HeaderProps> = ({
     <>
       <Button
         disabled={isLoading}
-        type="secondary"
+        type="subtle"
         onClick={() => void handleSave()}
       >
-        {isLoading ? "Saving..." : agentId ? "Save changes" : "Save as draft"}
+        {isLoading ? "Saving..." : id ? "Save changes" : "Save as draft"}
       </Button>
 
       <Button

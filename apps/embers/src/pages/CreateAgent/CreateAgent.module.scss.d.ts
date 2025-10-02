@@ -12,7 +12,6 @@ declare const classNames: {
   readonly "estimation-bar": "estimation-bar";
   readonly "estimation-value": "estimation-value";
   readonly "button-container": "button-container";
-  readonly "back-button": "back-button";
   readonly "button-group": "button-group";
   readonly "continue-button": "continue-button";
   readonly "footer-container": "footer-container";

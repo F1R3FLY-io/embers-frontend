@@ -1,10 +1,12 @@
 import { t } from "i18next";
-import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
+import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useDeployAgentMutation } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
@@ -23,12 +25,9 @@ function parseBigIntOrNull(v: string): bigint | null {
 }
 
 export default function Deploy() {
-  const { agentId = "", version = "" } = useParams<{
-    agentId: string;
-    version: string;
-  }>();
-  const search = new URLSearchParams(useLocation().search);
-  const agentName = search.get("agentName") ?? "";
+  const { data, prevStep, step, updateData } = useStepper();
+  const {agentId, version} = data;
+
   const navigate = useNavigate();
 
   const [rhoLimitInput, setRhoLimitInput] = useState("1000000");
@@ -39,7 +38,9 @@ export default function Deploy() {
   const rhoLimit = parseBigIntOrNull(rhoLimitInput);
   const rhoLimitError = rhoLimitInput.trim() !== "" && rhoLimit === null;
 
-  const canDeploy = !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying;
+  const canDeploy = !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying && !!version;
+
+  const agentName = data.agentName;
 
   const handleDeploy = () => {
     if (!canDeploy) {
@@ -61,6 +62,11 @@ export default function Deploy() {
     );
   };
 
+  const backClick = useCallback(() => {
+    prevStep();
+    void navigate("/create-ai-agent");
+  }, [navigate, prevStep]);
+
   return (
     <div className={styles["deploy-container"]}>
       <Text bold color="primary" fontSize={40} type="H2">
@@ -69,7 +75,7 @@ export default function Deploy() {
 
       <div className={styles["stepper-container"]}>
         <Stepper
-          currentStep={3}
+          currentStep={step}
           labels={[
             t("deploy.generalInfo"),
             t("deploy.creation"),
@@ -82,7 +88,7 @@ export default function Deploy() {
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" fontSize={32} type="H2">
-            {t("deploy.deployAgent", { agentName })}
+            { agentName }
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" fontSize={16} type="H4">
@@ -145,17 +151,22 @@ export default function Deploy() {
                 <Input
                   inputType="input"
                   placeholder={rhoLimitInput}
+                  type="number"
                   value={rhoLimitInput}
-                  onChange={(e) => setRhoLimitInput(e.target.value)}
+                  onChange={(e) => {
+                    updateData('rhoLimit', Number(e.target.value));
+                    setRhoLimitInput(e.target.value);
+                  }
+                }
                 />
               </div>
             </div>
           </div>
 
           <div className={styles["button-container"]}>
-            <button className={styles["back-button"]}>
+            <Button className={styles["back-button"]} type="secondary" onClick={() => backClick()}>
               {t("deploy.back")}
-            </button>
+            </Button>
 
             <div className={styles["button-group"]}>
               <button className={styles["draft-button"]}>

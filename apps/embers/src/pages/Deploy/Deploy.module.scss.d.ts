@@ -15,7 +15,6 @@ declare const classNames: {
   readonly "section-title": "section-title";
   readonly "form-fields": "form-fields";
   readonly "button-container": "button-container";
-  readonly "back-button": "back-button";
   readonly "button-group": "button-group";
   readonly "draft-button": "draft-button";
   readonly "deploy-button": "deploy-button";

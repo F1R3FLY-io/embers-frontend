@@ -70,7 +70,7 @@ export function EditModal<T extends Record<string, string | number>>({
         </Button>
         <Button
           className={classNames(styles["nim-btn"], styles["nim-btn-cancel"])}
-          type="secondary"
+          type="subtle"
           onClick={close}
         >
           Cancel
