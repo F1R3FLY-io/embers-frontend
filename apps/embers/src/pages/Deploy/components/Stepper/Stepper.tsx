@@ -1,3 +1,4 @@
+import { useStepper } from "@/lib/providers/stepper/useStepper";
 import CheckIcon from "@/public/icons/check-icon.svg?react";
 import StepperCircleIcon from "@/public/icons/stepper-circle-icon.svg?react";
 import StepperLineIcon from "@/public/icons/stepper-line-icon.svg?react";
@@ -15,10 +16,19 @@ export default function Stepper({
   labels = [],
   steps = 3,
 }: StepperProps) {
+  const { navigateToStep } = useStepper();
+
   return (
     <div className={styles.stepper}>
       {Array.from({ length: steps }, (_, index) => (
-        <div key={index} className={styles["step-container"]}>
+        <div
+          key={index}
+          className={styles["step-container"]}
+          style={{
+            cursor: index <= currentStep ? "pointer" : "not-allowed",
+          }}
+          onClick={() => navigateToStep(index)}
+        >
           <div className={styles["step-content"]}>
             <div
               className={`${styles.circle} ${

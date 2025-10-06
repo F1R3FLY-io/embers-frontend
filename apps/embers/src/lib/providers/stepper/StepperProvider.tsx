@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type React from "react";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import type { StepperData } from "@/lib/providers/stepper/useStepper";
 
@@ -12,15 +13,25 @@ const defaultData = {
   rhoLimit: 100000,
 };
 
+const stepRoutes = ["/agents/create", "/create-ai-agent", "/agents/deploy"];
+
 export const StepperProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<StepperData>(defaultData);
+  const navigate = useNavigate();
 
   const reset = () => {
     setStep(0);
     setData(defaultData);
+  };
+
+  const navigateToStep = (targetStep: number) => {
+    if (targetStep >= 0 && targetStep < stepRoutes.length) {
+      setStep(targetStep);
+      void navigate(stepRoutes[targetStep]);
+    }
   };
 
   const updateData = <K extends keyof StepperData>(
@@ -38,6 +49,7 @@ export const StepperProvider: React.FC<{ children: ReactNode }> = ({
     <StepperContext.Provider
       value={{
         data,
+        navigateToStep,
         nextStep,
         prevStep,
         reset,

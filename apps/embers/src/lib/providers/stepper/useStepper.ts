@@ -11,6 +11,7 @@ export type StepperData = {
 
 export type StepperState = {
   data: StepperData;
+  navigateToStep: (step: number) => void;
   nextStep: () => void;
   prevStep: () => void;
   reset: () => void;

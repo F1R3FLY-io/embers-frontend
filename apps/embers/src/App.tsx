@@ -31,8 +31,8 @@ export default function App() {
           <LayoutProvider>
             <ReactFlowProvider>
               <ModalProvider>
-                <StepperProvider>
-                  <BrowserRouter>
+                <BrowserRouter>
+                  <StepperProvider>
                     <div className={styles.background}>
                       <Routes>
                         <Route element={<Home />} path="/" />
@@ -58,8 +58,8 @@ export default function App() {
                         </Route>
                       </Routes>
                     </div>
-                  </BrowserRouter>
-                </StepperProvider>
+                  </StepperProvider>
+                </BrowserRouter>
               </ModalProvider>
             </ReactFlowProvider>
           </LayoutProvider>
