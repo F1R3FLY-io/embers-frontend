@@ -25,7 +25,7 @@ export default function Stepper({
           key={index}
           className={styles["step-container"]}
           style={{
-            cursor: index <= currentStep ? "pointer" : "not-allowed",
+            cursor: index < currentStep ? "pointer" : "not-allowed",
           }}
           onClick={() => navigateToStep(index)}
         >
