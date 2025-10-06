@@ -78,7 +78,7 @@ export default function CodeEditor() {
   }, []);
 
   useEffect(() => {
-    editorRef.current?.openDocument(fileName, agent ? agent.code : data.code);
+    editorRef.current?.openDocument(fileName, (agent ? agent.code : data.code) ?? "");
   }, [agent, data.code]);
 
   const getCode = useCallback(() => {
