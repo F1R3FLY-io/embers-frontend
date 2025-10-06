@@ -13,7 +13,11 @@ const defaultData = {
   rhoLimit: 100000,
 };
 
-const stepRoutes = ["/create-ai-agent/create", "/create-ai-agent", "/create-ai-agent/deploy"];
+const stepRoutes = [
+  "/create-ai-agent/create",
+  "/create-ai-agent",
+  "/create-ai-agent/deploy",
+];
 
 export const StepperProvider: React.FC<{ children: ReactNode }> = ({
   children,
