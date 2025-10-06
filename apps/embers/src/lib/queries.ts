@@ -38,7 +38,6 @@ export function useAgentVersions(id: string) {
 export function useAgent(agentId?: string, versionId?: string) {
   const api = useApi();
 
-  console.log(agentId, versionId);
   return useQuery({
     enabled: !!agentId && !!versionId,
     queryFn: async () => api.agents.getAgentVersion(agentId!, versionId!),

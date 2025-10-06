@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({ actions, headerClick }) => {
       <div className={styles["header-content"]}>
         <div
           className={styles["app-title"]}
-          onClick={() => headerClick ? headerClick() : null}
+          onClick={() => (headerClick ? headerClick() : null)}
         >
           <Text color="primary" type="H4">
             {headerTitle}

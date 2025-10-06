@@ -31,7 +31,6 @@ export function useConfirm() {
           cancelLabel={cancelLabel}
           confirmLabel={confirmLabel}
           message={message}
-          title={title}
           onCancel={() => resolve(false)}
           onConfirm={() => resolve(true)}
         />,

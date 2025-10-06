@@ -26,7 +26,7 @@ function parseBigIntOrNull(v: string): bigint | null {
 
 export default function Deploy() {
   const { data, prevStep, step, updateData } = useStepper();
-  const {agentId, version} = data;
+  const { agentId, version } = data;
 
   const navigate = useNavigate();
 
@@ -38,7 +38,8 @@ export default function Deploy() {
   const rhoLimit = parseBigIntOrNull(rhoLimitInput);
   const rhoLimitError = rhoLimitInput.trim() !== "" && rhoLimit === null;
 
-  const canDeploy = !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying && !!version;
+  const canDeploy =
+    !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying && !!version;
 
   const agentName = data.agentName;
 
@@ -88,7 +89,7 @@ export default function Deploy() {
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" fontSize={32} type="H2">
-            { agentName }
+            {agentName}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" fontSize={16} type="H4">
@@ -154,17 +155,16 @@ export default function Deploy() {
                   type="number"
                   value={rhoLimitInput}
                   onChange={(e) => {
-                    updateData('rhoLimit', Number(e.target.value));
+                    updateData("rhoLimit", Number(e.target.value));
                     setRhoLimitInput(e.target.value);
-                  }
-                }
+                  }}
                 />
               </div>
             </div>
           </div>
 
           <div className={styles["button-container"]}>
-            <Button className={styles["back-button"]} type="secondary" onClick={() => backClick()}>
+            <Button type="secondary" onClick={() => backClick()}>
               {t("deploy.back")}
             </Button>
 

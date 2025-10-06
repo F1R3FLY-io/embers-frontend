@@ -18,26 +18,21 @@ export const CodeLayout: React.FC<CodeLayoutProps> = ({
   children,
   getCode,
 }) => {
-
   const confirm = useConfirm();
   const navigate = useNavigate();
 
   const headerClick = useCallback(() => {
-    confirm(
-      {
-        message: "Do you want to leave this page?",
-      }
-    ).then(
-      (ok) => ok && void navigate('/dashboard')
-    ).catch(() => {})
+    confirm({
+      message: "Do you want to leave this page?",
+    })
+      .then((ok) => ok && void navigate("/dashboard"))
+      .catch(() => {});
   }, [confirm, navigate]);
 
   return (
     <Layout
       footer={<Footer />}
-      headerActions={
-        <Header getCode={getCode} />
-      }
+      headerActions={<Header getCode={getCode} />}
       headerClickAction={headerClick}
       sidebar={
         <Sidebar

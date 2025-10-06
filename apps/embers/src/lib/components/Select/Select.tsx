@@ -38,18 +38,18 @@ interface MultiSelectProps extends BaseProps {
 type SelectProps = SingleSelectProps | MultiSelectProps;
 
 export const Select: React.FC<SelectProps> = ({
-                                                className,
-                                                disabled,
-                                                error,
-                                                helperText,
-                                                label,
-                                                multiple,
-                                                onChange,
-                                                options,
-                                                placeholder = "Select value",
-                                                placement = "auto",
-                                                value,
-                                              }) => {
+  className,
+  disabled,
+  error,
+  helperText,
+  label,
+  multiple,
+  onChange,
+  options,
+  placeholder = "Select value",
+  placement = "auto",
+  value,
+}) => {
   const [open, setOpen] = useState(false);
   const [dropUp, setDropUp] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -57,8 +57,11 @@ export const Select: React.FC<SelectProps> = ({
   const handleSelect = (val: string) => {
     if (multiple) {
       const current = Array.isArray(value) ? value : [];
-      if (current.includes(val)) {onChange(current.filter((v) => v !== val));}
-      else {onChange([...current, val]);}
+      if (current.includes(val)) {
+        onChange(current.filter((v) => v !== val));
+      } else {
+        onChange([...current, val]);
+      }
     } else {
       onChange(val);
       setOpen(false);
@@ -69,7 +72,9 @@ export const Select: React.FC<SelectProps> = ({
     multiple ? Array.isArray(value) && value.includes(val) : value === val;
 
   useEffect(() => {
-    if (!open) {return;}
+    if (!open) {
+      return;
+    }
 
     const decide = () => {
       if (placement === "top") {
@@ -82,7 +87,9 @@ export const Select: React.FC<SelectProps> = ({
       }
 
       const el = triggerRef.current;
-      if (!el) {return;}
+      if (!el) {
+        return;
+      }
 
       const rect = el.getBoundingClientRect();
       const spaceBelow = window.innerHeight - rect.bottom;
@@ -152,9 +159,7 @@ export const Select: React.FC<SelectProps> = ({
       </div>
 
       {open && !disabled && (
-        <div
-          className={classNames(styles.dropdown, { [styles.up]: dropUp })}
-        >
+        <div className={classNames(styles.dropdown, { [styles.up]: dropUp })}>
           {options.map((opt) => (
             <div
               key={opt.value}

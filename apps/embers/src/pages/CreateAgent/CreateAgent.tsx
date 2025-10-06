@@ -51,7 +51,6 @@ export default function CreateAgent() {
     void navigate("/create-ai-agent");
   };
 
-
   return (
     <div className={styles["create-container"]}>
       <Text bold color="primary" fontSize={40} type="H2">

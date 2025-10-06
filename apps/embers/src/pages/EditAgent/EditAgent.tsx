@@ -31,11 +31,13 @@ export default function CodeEditor() {
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
   const search = new URLSearchParams(useLocation().search);
-  console.log(agent);
 
-  const agentName = agent?.name || (search.get("agentName"));
+  const agentName = agent?.name || search.get("agentName");
 
-  useEffect(() => setHeaderTitle(t('agents.agentWithName', {name: agentName})), [agentName, setHeaderTitle, t]);
+  useEffect(
+    () => setHeaderTitle(t("agents.agentWithName", { name: agentName })),
+    [agentName, setHeaderTitle, t],
+  );
 
   useEffect(() => {
     if (editorRef.current) {

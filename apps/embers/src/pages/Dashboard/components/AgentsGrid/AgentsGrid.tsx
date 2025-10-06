@@ -30,9 +30,9 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
 
   const navigateToAgent = useCallback(
     (agent: Agent) => {
-      updateData('agentId', agent.id);
-      updateData('agentName', agent.name);
-      updateData('version', agent.version);
+      updateData("agentId", agent.id);
+      updateData("agentName", agent.name);
+      updateData("version", agent.version);
       nextStep();
       void navigate(`/create-ai-agent`);
     },

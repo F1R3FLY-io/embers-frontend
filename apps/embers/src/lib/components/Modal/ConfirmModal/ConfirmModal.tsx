@@ -31,7 +31,11 @@ export const ConfirmModal = ({
 
   return (
     <div className={styles.confirm}>
-      {message ? <Text className={styles.message} type="normal">{message}</Text> : null}
+      {message ? (
+        <Text className={styles.message} type="normal">
+          {message}
+        </Text>
+      ) : null}
 
       <div className={styles.actions}>
         <Button type="secondary" onClick={handleCancel}>
@@ -43,4 +47,4 @@ export const ConfirmModal = ({
       </div>
     </div>
   );
-}
+};

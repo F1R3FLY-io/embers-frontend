@@ -23,7 +23,7 @@ export const Layout: React.FC<LayoutProps> = ({
   headerActions,
   headerClickAction,
   sidebar,
-  sidebarWidth = 280
+  sidebarWidth = 280,
 }) => {
   const styleVar =
     typeof sidebarWidth === "number" ? `${sidebarWidth}px` : sidebarWidth;

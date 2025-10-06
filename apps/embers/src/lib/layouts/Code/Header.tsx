@@ -11,9 +11,7 @@ type HeaderProps = {
   getCode: () => string | null | undefined;
 };
 
-export const Header: React.FC<HeaderProps> = ({
-  getCode,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const navigate = useNavigate();
 
   const { data, nextStep, updateData } = useStepper();
@@ -30,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
     version: string;
   }> => {
     const code = getCode()?.toString() ?? "";
-    updateData('code', code);
+    updateData("code", code);
 
     if (id) {
       const res = await saveMutation.mutateAsync({ code, name: agentName });
@@ -59,10 +57,10 @@ export const Header: React.FC<HeaderProps> = ({
     }
     try {
       const { agentId, version } = await saveOrCreate();
-      updateData('agentId', agentId);
-      updateData('version', version);
+      updateData("agentId", agentId);
+      updateData("version", version);
       nextStep();
-      void navigate('/create-ai-agent/deploy');
+      void navigate("/create-ai-agent/deploy");
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error("Pre-deploy save failed:", e);

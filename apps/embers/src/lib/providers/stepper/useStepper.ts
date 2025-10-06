@@ -15,10 +15,15 @@ export type StepperState = {
   prevStep: () => void;
   reset: () => void;
   step: number;
-  updateData: <K extends keyof StepperData>(key: K, value: StepperData[K]) => void;
+  updateData: <K extends keyof StepperData>(
+    key: K,
+    value: StepperData[K],
+  ) => void;
 };
 
-export const StepperContext = createContext<StepperState | undefined>(undefined);
+export const StepperContext = createContext<StepperState | undefined>(
+  undefined,
+);
 
 export const useStepper = () => {
   const context = useContext(StepperContext);
