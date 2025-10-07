@@ -53,7 +53,7 @@ export default function CodeEditor() {
       });
       return () => subscription.unsubscribe();
     }
-  }, []);
+  }, [editorRef.current]);
 
   // Handle Vite HMR updates: HMR unloads the Editor component which triggers
   // its clean-up logic. The clean-up logic consists of shutting down
@@ -71,9 +71,7 @@ export default function CodeEditor() {
       const hmr = import.meta.hot;
       const handleBeforeUpdate = () => editorRef.current?.shutdownLsp();
       hmr.on("vite:beforeUpdate", handleBeforeUpdate);
-      return () => {
-        hmr.off("vite:beforeUpdate", handleBeforeUpdate);
-      };
+      return () => hmr.off("vite:beforeUpdate", handleBeforeUpdate);
     }
   }, []);
 
