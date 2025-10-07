@@ -55,11 +55,11 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "dependencies": {
-    "@f1r3fly-io/graphl-parser": "^0.0.19",
+    "@f1r3fly-io/graphl-parser": "^0.0.21",
     "@noble/curves": "^2.0.1",
     "@scure/base": "^2.0.0",
     "blakejs": "^1.2.1",
     "js-sha3": "^0.9.3",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   }
 }

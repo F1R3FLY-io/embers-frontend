@@ -10,8 +10,9 @@
  * Do not edit the class manually.
  */
 
+import type { Address } from "@/entities/Address";
+
 import type {
-  Address,
   AgentsTeam,
   AgentsTeams,
   CreateAgentsTeamReq,
