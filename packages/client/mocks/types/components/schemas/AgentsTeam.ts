@@ -1,8 +1,9 @@
 export type AgentsTeam = {
   id: string;
   version: string;
+  created_at: string;
   name: string;
   shard?: string;
-  created_at: string;
+  logo?: string;
   graph?: string;
 };
