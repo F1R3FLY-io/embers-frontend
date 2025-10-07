@@ -88,12 +88,15 @@ export default function CodeEditor() {
     return editorRef.current?.getText(fileName);
   }, []);
 
+  const editorKey = `${agentId ?? "new"}:${version ?? "v0"}`;
+
   return (
     <CodeLayout getCode={getCode}>
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
         <div className={styles.container}>
           <Editor
+            key={editorKey}
             ref={editorRef}
             languages={{
               rholang: {
