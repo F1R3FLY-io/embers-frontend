@@ -834,7 +834,7 @@
       "Agent": {
         "type": "object",
         "title": "Agent",
-        "required": ["id", "version", "name", "created_at"],
+        "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -842,15 +842,18 @@
           "version": {
             "type": "string"
           },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
+          },
           "name": {
             "type": "string"
           },
           "shard": {
             "type": "string"
           },
-          "created_at": {
-            "type": "string",
-            "format": "unix-timestamp"
+          "logo": {
+            "type": "string"
           },
           "code": {
             "type": "string"
@@ -860,7 +863,7 @@
       "AgentHeader": {
         "type": "object",
         "title": "AgentHeader",
-        "required": ["id", "version", "name", "created_at"],
+        "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -868,15 +871,18 @@
           "version": {
             "type": "string"
           },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
+          },
           "name": {
             "type": "string"
           },
           "shard": {
             "type": "string"
           },
-          "created_at": {
-            "type": "string",
-            "format": "unix-timestamp"
+          "logo": {
+            "type": "string"
           }
         }
       },
@@ -896,7 +902,7 @@
       "AgentsTeam": {
         "type": "object",
         "title": "AgentsTeam",
-        "required": ["id", "version", "name", "created_at"],
+        "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -904,15 +910,18 @@
           "version": {
             "type": "string"
           },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
+          },
           "name": {
             "type": "string"
           },
           "shard": {
             "type": "string"
           },
-          "created_at": {
-            "type": "string",
-            "format": "unix-timestamp"
+          "logo": {
+            "type": "string"
           },
           "graph": {
             "type": "string",
@@ -923,7 +932,7 @@
       "AgentsTeamHeader": {
         "type": "object",
         "title": "AgentsTeamHeader",
-        "required": ["id", "version", "name", "created_at"],
+        "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -931,15 +940,18 @@
           "version": {
             "type": "string"
           },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
+          },
           "name": {
             "type": "string"
           },
           "shard": {
             "type": "string"
           },
-          "created_at": {
-            "type": "string",
-            "format": "unix-timestamp"
+          "logo": {
+            "type": "string"
           }
         }
       },
@@ -994,6 +1006,9 @@
           "shard": {
             "type": "string"
           },
+          "logo": {
+            "type": "string"
+          },
           "code": {
             "type": "string"
           }
@@ -1025,6 +1040,9 @@
             "type": "string"
           },
           "shard": {
+            "type": "string"
+          },
+          "logo": {
             "type": "string"
           },
           "graph": {

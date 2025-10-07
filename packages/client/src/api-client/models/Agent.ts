@@ -43,6 +43,12 @@ export interface Agent {
    * @type {string}
    * @memberof Agent
    */
+  logo?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Agent
+   */
   name: string;
   /**
    *
@@ -68,10 +74,10 @@ export function instanceOfAgent(value: object): value is Agent {
   if (!("version" in value) || value.version === undefined) {
     return false;
   }
-  if (!("name" in value) || value.name === undefined) {
+  if (!("createdAt" in value) || value.createdAt === undefined) {
     return false;
   }
-  if (!("createdAt" in value) || value.createdAt === undefined) {
+  if (!("name" in value) || value.name === undefined) {
     return false;
   }
   return true;
@@ -92,6 +98,7 @@ export function AgentFromJSONTyped(
     code: json.code == null ? undefined : json.code,
     createdAt: UnixTimestampFromJSON(json.created_at),
     id: json.id,
+    logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
     version: json.version,
@@ -114,6 +121,7 @@ export function AgentToJSONTyped(
     code: value.code,
     created_at: UnixTimestampToJSON(value.createdAt),
     id: value.id,
+    logo: value.logo,
     name: value.name,
     shard: value.shard,
     version: value.version,
