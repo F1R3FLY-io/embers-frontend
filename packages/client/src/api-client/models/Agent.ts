@@ -10,6 +10,10 @@
  * Do not edit the class manually.
  */
 
+import type { UnixTimestamp } from "./UnixTimestamp";
+
+import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
+
 /**
  *
  * @export
@@ -22,6 +26,12 @@ export interface Agent {
    * @memberof Agent
    */
   code?: string;
+  /**
+   *
+   * @type {UnixTimestamp}
+   * @memberof Agent
+   */
+  createdAt: UnixTimestamp;
   /**
    *
    * @type {string}
@@ -61,6 +71,9 @@ export function instanceOfAgent(value: object): value is Agent {
   if (!("name" in value) || value.name === undefined) {
     return false;
   }
+  if (!("createdAt" in value) || value.createdAt === undefined) {
+    return false;
+  }
   return true;
 }
 
@@ -77,6 +90,7 @@ export function AgentFromJSONTyped(
   }
   return {
     code: json.code == null ? undefined : json.code,
+    createdAt: UnixTimestampFromJSON(json.created_at),
     id: json.id,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -98,6 +112,7 @@ export function AgentToJSONTyped(
 
   return {
     code: value.code,
+    created_at: UnixTimestampToJSON(value.createdAt),
     id: value.id,
     name: value.name,
     shard: value.shard,

@@ -3,5 +3,6 @@ export type Agent = {
   version: string;
   name: string;
   shard?: string;
+  created_at: string;
   code?: string;
 };

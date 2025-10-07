@@ -834,7 +834,7 @@
       "Agent": {
         "type": "object",
         "title": "Agent",
-        "required": ["id", "version", "name"],
+        "required": ["id", "version", "name", "created_at"],
         "properties": {
           "id": {
             "type": "string"
@@ -847,6 +847,10 @@
           },
           "shard": {
             "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
           },
           "code": {
             "type": "string"
@@ -856,7 +860,7 @@
       "AgentHeader": {
         "type": "object",
         "title": "AgentHeader",
-        "required": ["id", "version", "name"],
+        "required": ["id", "version", "name", "created_at"],
         "properties": {
           "id": {
             "type": "string"
@@ -869,6 +873,10 @@
           },
           "shard": {
             "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
           }
         }
       },
@@ -888,7 +896,7 @@
       "AgentsTeam": {
         "type": "object",
         "title": "AgentsTeam",
-        "required": ["id", "version", "name"],
+        "required": ["id", "version", "name", "created_at"],
         "properties": {
           "id": {
             "type": "string"
@@ -901,6 +909,10 @@
           },
           "shard": {
             "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
           },
           "graph": {
             "type": "string",
@@ -911,7 +923,7 @@
       "AgentsTeamHeader": {
         "type": "object",
         "title": "AgentsTeamHeader",
-        "required": ["id", "version", "name"],
+        "required": ["id", "version", "name", "created_at"],
         "properties": {
           "id": {
             "type": "string"
@@ -924,6 +936,10 @@
           },
           "shard": {
             "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "unix-timestamp"
           }
         }
       },

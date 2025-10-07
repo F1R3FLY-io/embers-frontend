@@ -3,4 +3,5 @@ export type AgentHeader = {
   version: string;
   name: string;
   shard?: string;
+  created_at: string;
 };
