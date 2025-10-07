@@ -202,6 +202,7 @@ export default defineConfig(
       "prefer-const": "error",
       "prefer-promise-reject-errors": "error",
       "prefer-template": "error",
+      "react-hooks/set-state-in-effect": "off",
       "react/jsx-curly-brace-presence": ["error", "never"],
       "react/jsx-no-useless-fragment": "error",
       "react/jsx-sort-props": [

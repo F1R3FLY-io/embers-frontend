@@ -7,5 +7,6 @@ export const GET: HTTP_GET = ($) => {
     name: "incididunt nostrud",
     shard: "test shard",
     version: "ullamco",
+    created_at: "1234",
   });
 };
