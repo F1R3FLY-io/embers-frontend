@@ -10,7 +10,6 @@ import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
@@ -20,7 +19,6 @@ import { useAgent } from "@/lib/queries";
 
 import styles from "./EditAgent.module.scss";
 
-const fileName = "agent.rho";
 const logLevel = "trace"; // "trace" | "debug" | "info" | "warn" | "error" | "fatal" | "report"
 
 export default function CodeEditor() {
@@ -30,10 +28,10 @@ export default function CodeEditor() {
   const { data } = useStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
-  const search = new URLSearchParams(useLocation().search);
 
-  const agentName = agent?.name || search.get("agentName");
+  const agentName = agent?.name;
 
+  const fileName = `${agentName}.rho`;
   useEffect(
     () => setHeaderTitle(t("agents.agentWithName", { name: agentName })),
     [agentName, setHeaderTitle, t],
@@ -53,7 +51,7 @@ export default function CodeEditor() {
       });
       return () => subscription.unsubscribe();
     }
-  }, []);
+  }, [fileName]);
 
   // Handle Vite HMR updates: HMR unloads the Editor component which triggers
   // its clean-up logic. The clean-up logic consists of shutting down
@@ -71,9 +69,7 @@ export default function CodeEditor() {
       const hmr = import.meta.hot;
       const handleBeforeUpdate = () => editorRef.current?.shutdownLsp();
       hmr.on("vite:beforeUpdate", handleBeforeUpdate);
-      return () => {
-        hmr.off("vite:beforeUpdate", handleBeforeUpdate);
-      };
+      return () => hmr.off("vite:beforeUpdate", handleBeforeUpdate);
     }
   }, []);
 
@@ -82,11 +78,11 @@ export default function CodeEditor() {
       fileName,
       (agent ? agent.code : data.code) ?? "",
     );
-  }, [agent, data.code]);
+  }, [agent, data.code, fileName]);
 
   const getCode = useCallback(() => {
     return editorRef.current?.getText(fileName);
-  }, []);
+  }, [fileName]);
 
   const editorKey = `${agentId ?? "new"}:${version ?? "v0"}`;
 
