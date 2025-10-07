@@ -10,12 +10,22 @@
  * Do not edit the class manually.
  */
 
+import type { UnixTimestamp } from "./UnixTimestamp";
+
+import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
+
 /**
  *
  * @export
  * @interface AgentsTeamHeader
  */
 export interface AgentsTeamHeader {
+  /**
+   *
+   * @type {UnixTimestamp}
+   * @memberof AgentsTeamHeader
+   */
+  createdAt: UnixTimestamp;
   /**
    *
    * @type {string}
@@ -57,6 +67,9 @@ export function instanceOfAgentsTeamHeader(
   if (!("name" in value) || value.name === undefined) {
     return false;
   }
+  if (!("createdAt" in value) || value.createdAt === undefined) {
+    return false;
+  }
   return true;
 }
 
@@ -72,6 +85,7 @@ export function AgentsTeamHeaderFromJSONTyped(
     return json;
   }
   return {
+    createdAt: UnixTimestampFromJSON(json.created_at),
     id: json.id,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -92,6 +106,7 @@ export function AgentsTeamHeaderToJSONTyped(
   }
 
   return {
+    created_at: UnixTimestampToJSON(value.createdAt),
     id: value.id,
     name: value.name,
     shard: value.shard,

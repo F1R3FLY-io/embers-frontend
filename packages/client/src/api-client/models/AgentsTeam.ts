@@ -11,8 +11,10 @@
  */
 
 import type { Graph } from "./Graph";
+import type { UnixTimestamp } from "./UnixTimestamp";
 
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
  *
@@ -20,6 +22,12 @@ import { GraphFromJSON, GraphToJSON } from "./Graph";
  * @interface AgentsTeam
  */
 export interface AgentsTeam {
+  /**
+   *
+   * @type {UnixTimestamp}
+   * @memberof AgentsTeam
+   */
+  createdAt: UnixTimestamp;
   /**
    *
    * @type {Graph}
@@ -65,6 +73,9 @@ export function instanceOfAgentsTeam(value: object): value is AgentsTeam {
   if (!("name" in value) || value.name === undefined) {
     return false;
   }
+  if (!("createdAt" in value) || value.createdAt === undefined) {
+    return false;
+  }
   return true;
 }
 
@@ -80,6 +91,7 @@ export function AgentsTeamFromJSONTyped(
     return json;
   }
   return {
+    createdAt: UnixTimestampFromJSON(json.created_at),
     graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
     id: json.id,
     name: json.name,
@@ -101,6 +113,7 @@ export function AgentsTeamToJSONTyped(
   }
 
   return {
+    created_at: UnixTimestampToJSON(value.createdAt),
     graph: GraphToJSON(value.graph),
     id: value.id,
     name: value.name,
