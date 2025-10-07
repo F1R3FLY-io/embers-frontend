@@ -42,6 +42,7 @@ describe("AgentsApiSdk", () => {
     expect(result.agents).toBeDefined();
     expect(result.agents).toEqual(
       expect.arrayOf<AgentHeader>({
+        createdAt: expect.any(Date) as Date,
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,
@@ -64,6 +65,7 @@ describe("AgentsApiSdk", () => {
     const result = await agent.getAgentVersions("fake agent id");
     expect(result.agents).toEqual(
       expect.arrayOf<AgentHeader>({
+        createdAt: expect.any(Date) as Date,
         id: expect.any(String) as string,
         name: expect.any(String) as string,
         shard: expect.any(String) as string,

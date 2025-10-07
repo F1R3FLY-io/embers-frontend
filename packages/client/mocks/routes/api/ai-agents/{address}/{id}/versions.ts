@@ -9,6 +9,7 @@ export const GET: HTTP_GET = ($) => {
           name: "fake name",
           version: "fake version",
           shard: "fake shard",
+          created_at: "1234",
         },
       ],
     });
@@ -19,6 +20,7 @@ export const GET: HTTP_GET = ($) => {
           id: "fake id",
           name: "fake name",
           version: "fake version",
+          created_at: "1234",
         },
       ],
     });
