@@ -31,6 +31,12 @@ export interface CreateAgentsTeamReq {
    * @type {string}
    * @memberof CreateAgentsTeamReq
    */
+  logo?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreateAgentsTeamReq
+   */
   name: string;
   /**
    *
@@ -65,6 +71,7 @@ export function CreateAgentsTeamReqFromJSONTyped(
   }
   return {
     graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
+    logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
   };
@@ -84,6 +91,7 @@ export function CreateAgentsTeamReqToJSONTyped(
 
   return {
     graph: GraphToJSON(value.graph),
+    logo: value.logo,
     name: value.name,
     shard: value.shard,
   };

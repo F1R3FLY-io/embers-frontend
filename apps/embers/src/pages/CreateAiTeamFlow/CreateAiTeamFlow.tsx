@@ -30,13 +30,13 @@ export default function CreateAiTeamFlow() {
   const [deployments, setDeployments] = useState<Deployment[]>([]);
   const addDeploy = useCallback(
     (deployment: Deployment) =>
-      setDeployments((snapshot) => [...snapshot, deployment]),
+      setDeployments((snapshot) => [deployment, ...snapshot]),
     [],
   );
 
   const [logs, setLogs] = useState<Logs[]>([]);
   const addLog = useCallback(
-    (log: Logs) => setLogs((snapshot) => [...snapshot, log]),
+    (log: Logs) => setLogs((snapshot) => [log, ...snapshot]),
     [],
   );
 
