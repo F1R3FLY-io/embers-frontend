@@ -24,6 +24,9 @@
     "newAiTeam": "New AI team"
   },
   "agents": {
+    "edit": "Edit Agent",
+    "details": "Details",
+    "updated": "Updated",
     "agents": "Agents",
     "createNewAgent": "Create new Agent",
     "agentWithName": "Agent {{name}}",
@@ -42,6 +45,8 @@
     "create": "Create AI Agent"
   },
   "deploy": {
+    "iconUrl": "Icon URL",
+    "iconLoadFailed": "Could not load the image from this URL.",
     "deployAgent": "Deploy {{agentName}} Agent",
     "reviewDetails": "Review the details and confirm where and how your agent will run.",
     "agentDetails": "Agent Details",

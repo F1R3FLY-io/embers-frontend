@@ -7,8 +7,11 @@ declare const classNames: {
   readonly "details-container": "details-container";
   readonly "form-section": "form-section";
   readonly "form-fields": "form-fields";
-  readonly select: "select";
-  readonly "select-input": "select-input";
+  readonly "icon-section": "icon-section";
+  readonly "icon-preview": "icon-preview";
+  readonly "icon-image": "icon-image";
+  readonly "icon-placeholder": "icon-placeholder";
+  readonly "icon-input-container": "icon-input-container";
   readonly "estimation-bar": "estimation-bar";
   readonly "estimation-value": "estimation-value";
   readonly "button-container": "button-container";

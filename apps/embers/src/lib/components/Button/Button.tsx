@@ -1,3 +1,5 @@
+import type React from "react";
+
 import classNames from "classnames";
 
 import { Text } from "@/lib/components/Text";
@@ -8,6 +10,7 @@ type ButtonProps = {
   children: string;
   className?: string;
   disabled?: boolean;
+  icon?: React.ReactNode;
   onClick: () => void;
   rounded?: boolean;
   type: "primary" | "secondary" | "subtle";
@@ -17,6 +20,7 @@ export function Button({
   children,
   className,
   disabled,
+  icon,
   onClick,
   rounded,
   type,
@@ -37,12 +41,14 @@ export function Button({
     <button
       aria-disabled={disabled || undefined}
       className={btnClass}
+      type="button"
       onClick={() => {
         if (!disabled) {
           onClick();
         }
       }}
     >
+      {icon ? <div className={styles.icon}>{icon}</div> : null}
       <Text bold type="normal">
         {children}
       </Text>

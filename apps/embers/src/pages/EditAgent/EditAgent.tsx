@@ -33,7 +33,7 @@ export default function CodeEditor() {
 
   const fileName = `${agentName}.rho`;
   useEffect(
-    () => setHeaderTitle(t("agents.agentWithName", { name: agentName })),
+    () => setHeaderTitle(agentName ?? ""),
     [agentName, setHeaderTitle, t],
   );
 

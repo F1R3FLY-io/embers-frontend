@@ -16,7 +16,7 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
 
   const { data, nextStep, updateData } = useStepper();
 
-  const { agentId, agentName } = data;
+  const { agentIconUrl, agentId, agentName } = data;
   const id = useMemo(() => agentId ?? "", [agentId]);
   const createMutation = useCreateAgentMutation();
   const saveMutation = useSaveAgentMutation(id);
@@ -29,13 +29,17 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   }> => {
     const code = getCode()?.toString() ?? "";
     updateData("code", code);
-
+    const payload = {
+      code,
+      name: agentName,
+      ...(agentIconUrl ? { logo: agentIconUrl } : {}),
+    };
     if (id) {
-      const res = await saveMutation.mutateAsync({ code, name: agentName });
+      const res = await saveMutation.mutateAsync(payload);
       return { agentId: id, version: res.version };
     }
 
-    const res = await createMutation.mutateAsync({ code, name: agentName });
+    const res = await createMutation.mutateAsync(payload);
     return { agentId: res.id, version: res.version };
   };
 

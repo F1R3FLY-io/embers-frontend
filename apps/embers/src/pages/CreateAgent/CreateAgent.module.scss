@@ -43,31 +43,44 @@
   margin-top: 24px;
 }
 
-/* Input-like select */
-.select {
-  margin-top: 8px;
+/* === Icon section === */
+.icon-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  margin-bottom: 8px;
 }
 
-.select-input {
-  box-sizing: border-box;
-  width: 100%;
-  height: 40px;
-  padding: 0 12px;
-  font-family: Manrope, sans-serif;
-  font-size: 14px;
-  color: var(--text-color-primary);
+.icon-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
   background-color: var(--background-neutral-hover);
-  border: none;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--border-selected);
-  }
+  border: 1px solid var(--background-neutral-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* Estimation strip (like the screenshot) */
+.icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.icon-placeholder {
+  fill: var(--icon-placeholder);
+  stroke: var(--icon-placeholder);
+}
+
+.icon-input-container {
+  flex: 1;
+  min-width: 0;
+}
+
+/* === Estimation strip === */
 .estimation-bar {
   display: flex;
   align-items: center;
@@ -85,7 +98,7 @@
   gap: 4px;
 }
 
-/* Footer buttons */
+/* === Footer buttons === */
 .button-container {
   display: flex;
   align-items: center;
@@ -116,7 +129,7 @@
   }
 }
 
-/* Page footer */
+/* === Page footer === */
 .footer-container {
   display: flex;
   align-items: center;

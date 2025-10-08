@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import type { Option } from "@/lib/components/Select";
 
 import { Button } from "@/lib/components/Button";
+import { IconPreview } from "@/lib/components/IconPreview";
 import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
@@ -20,6 +21,10 @@ export default function CreateAgent() {
   const { nextStep, step, updateData } = useStepper();
   const [name, setName] = useState("");
   const [environment, setEnvironment] = useState<string>("");
+
+  // Icon URL state
+  const [iconUrl, setIconUrl] = useState("");
+  const [iconLoadError, setIconLoadError] = useState(false);
 
   const envOptions: Option[] = useMemo(
     () => [
@@ -47,6 +52,7 @@ export default function CreateAgent() {
   const submitForm = () => {
     updateData("agentName", name);
     updateData("environment", environment);
+    updateData("agentIconUrl", iconUrl.trim());
     nextStep();
     void navigate("/create-ai-agent");
   };
@@ -80,6 +86,30 @@ export default function CreateAgent() {
           <Text bold color="primary" fontSize={20} type="H3">
             {t("agents.generalSettings")}
           </Text>
+
+          <div className={styles["icon-section"]}>
+            <IconPreview url={iconUrl} />
+
+            <div className={styles["icon-input-container"]}>
+              <Text color="secondary" fontSize={12}>
+                {t("deploy.iconUrl")}
+              </Text>
+              <Input
+                inputType="input"
+                placeholder="https://example.com/icon.png"
+                value={iconUrl}
+                onChange={(e) => {
+                  setIconLoadError(false);
+                  setIconUrl(e.target.value);
+                }}
+              />
+              {iconUrl && iconLoadError ? (
+                <Text color="secondary" fontSize={12}>
+                  {t("deploy.iconLoadFailed")}
+                </Text>
+              ) : null}
+            </div>
+          </div>
 
           <div className={styles["form-section"]}>
             <Text color="secondary" fontSize={12}>

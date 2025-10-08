@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 
 export type StepperData = {
+  agentIconUrl?: string;
   agentId?: string;
   agentName: string;
   code?: string;
