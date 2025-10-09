@@ -79,7 +79,7 @@ export default function CreateAiTeamFlow() {
         onDeploy: () =>
           void deployGraph
             .mutateAsync({ edges, nodes, rhoLimit: 1_000_000n })
-            .then(() => onSuccessfulDeploy)
+            .then(onSuccessfulDeploy)
             .catch(onFailedDeploy),
         onRun: () =>
           lastDeploy &&
