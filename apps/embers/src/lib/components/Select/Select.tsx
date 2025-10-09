@@ -1,7 +1,7 @@
 import type React from "react";
 
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Text } from "@/lib/components/Text";
 
@@ -20,6 +20,7 @@ interface BaseProps {
   label?: string;
   options: Option[];
   placeholder?: string;
+  placement?: "auto" | "top" | "bottom"; // NEW
 }
 
 interface SingleSelectProps extends BaseProps {
@@ -46,9 +47,12 @@ export const Select: React.FC<SelectProps> = ({
   onChange,
   options,
   placeholder = "Select value",
+  placement = "auto",
   value,
 }) => {
   const [open, setOpen] = useState(false);
+  const [dropUp, setDropUp] = useState(false);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (val: string) => {
     if (multiple) {
@@ -67,6 +71,46 @@ export const Select: React.FC<SelectProps> = ({
   const isSelected = (val: string) =>
     multiple ? Array.isArray(value) && value.includes(val) : value === val;
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const decide = () => {
+      if (placement === "top") {
+        setDropUp(true);
+        return;
+      }
+      if (placement === "bottom") {
+        setDropUp(false);
+        return;
+      }
+
+      const el = triggerRef.current;
+      if (!el) {
+        return;
+      }
+
+      const rect = el.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      // estimate desired menu height (rows * 36px up to 240px)
+      const estHeight = Math.min(240, Math.max(36, options.length * 36));
+      const shouldFlipUp = spaceBelow < estHeight && spaceAbove > spaceBelow;
+
+      setDropUp(shouldFlipUp);
+    };
+
+    decide();
+    window.addEventListener("resize", decide);
+    window.addEventListener("scroll", decide, true);
+    return () => {
+      window.removeEventListener("resize", decide);
+      window.removeEventListener("scroll", decide, true);
+    };
+  }, [open, placement, options.length]);
+
   return (
     <div className={classNames(styles.container, className)}>
       {label && (
@@ -76,6 +120,7 @@ export const Select: React.FC<SelectProps> = ({
       )}
 
       <div
+        ref={triggerRef}
         className={classNames(styles.select, {
           [styles.disabled]: disabled,
           [styles.error]: error,
@@ -114,7 +159,7 @@ export const Select: React.FC<SelectProps> = ({
       </div>
 
       {open && !disabled && (
-        <div className={styles.dropdown}>
+        <div className={classNames(styles.dropdown, { [styles.up]: dropUp })}>
           {options.map((opt) => (
             <div
               key={opt.value}
@@ -131,9 +176,7 @@ export const Select: React.FC<SelectProps> = ({
 
       {helperText && (
         <Text
-          className={classNames({
-            [styles.error]: error,
-          })}
+          className={classNames({ [styles.error]: error })}
           color="primary"
           type="small"
         >

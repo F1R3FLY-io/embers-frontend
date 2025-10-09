@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { t } from "i18next";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
@@ -31,6 +31,27 @@ export default function Dashboard() {
   const logout = useCallback(() => setKey(), [setKey]);
 
   const { data, isSuccess } = useAgents();
+
+  const filteredAgents = useMemo(() => {
+    const agents = data?.agents ?? [];
+    const q = searchQuery.trim().toLowerCase();
+
+    const filtered = q
+      ? agents.filter((a) => {
+          const fields = [a.name, a.id, a.shard, a.version]
+            .filter(Boolean)
+            .map((v) => String(v).toLowerCase());
+          return fields.some((f) => f.includes(q));
+        })
+      : agents;
+
+    return [...filtered].sort((a, b) => {
+      if (sortBy === "name") {
+        return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+      }
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+  }, [data?.agents, searchQuery, sortBy]);
 
   return (
     <div className={styles.page}>
@@ -123,7 +144,7 @@ export default function Dashboard() {
             )}
           >
             {selectedTab === "agents" ? (
-              <AgentsGrid agents={data?.agents || []} isSuccess={isSuccess} />
+              <AgentsGrid agents={filteredAgents} isSuccess={isSuccess} />
             ) : (
               <AgentTeamsGrid />
             )}

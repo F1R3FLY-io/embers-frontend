@@ -13,5 +13,6 @@ declare const classNames: {
   readonly option: "option";
   readonly selected: "selected";
   readonly tag: "tag";
+  readonly up: "up";
 };
 export default classNames;

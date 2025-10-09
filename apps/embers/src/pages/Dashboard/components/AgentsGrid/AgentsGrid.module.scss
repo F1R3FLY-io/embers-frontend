@@ -1,52 +1,83 @@
 .grid-box {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 120px;
-  padding: 16px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: 160px;
+  padding: 24px;
   background-color: var(--background-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   opacity: 0;
+  cursor: pointer;
   transform: translateY(20px);
   animation: tile-enter 0.5s ease-in-out forwards;
   animation-delay: var(--tile-delay, 0s);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
 
   &:hover {
-    border-color: var(--text-color-primary);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
-    transform: translateY(-2px);
-  }
-
-  &.create-box {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-    justify-content: center;
-    cursor: pointer;
-    border-style: dashed;
-    border-width: 2.5px;
-
-    &:hover {
-      background-color: var(--create-button-hover-bg);
-      border-color: #b580ff;
-
-      span {
-        color: var(--text-color-primary);
-      }
-    }
-
-    .create-robot-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      fill: var(--icon-accent);
-      stroke: var(--icon-accent);
-    }
+    background-color: var(--create-button-hover-bg);
+    border-color: var(--border-selected);
   }
 }
 
-/* Animations */
+.create-box {
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  border-style: dashed;
+  border-width: 2.5px;
+
+  .create-robot-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    fill: var(--icon-accent);
+    stroke: var(--icon-accent);
+  }
+}
+
+.agent-box {
+  gap: 12px;
+}
+
+.agent-draft {
+  border-color: var(--background-neutral-surface-secondary);
+}
+
+.agent-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.status-badge {
+  color: var(--icon-accent);
+  font-family: Manrope, sans-serif;
+  font-size: 12px;
+}
+
+.agent-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.agent-icon {
+  flex-shrink: 0;
+}
+
+.agent-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Animation */
 @keyframes tile-enter {
   to {
     opacity: 1;

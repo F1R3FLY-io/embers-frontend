@@ -1,9 +1,8 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import type { Location } from "react-router-dom";
 
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
@@ -28,7 +27,6 @@ export default function Login() {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const location = useLocation() as Location<{ from?: string } | undefined>;
   const { setKey } = useWalletState();
   const [walletInputState, setWalletInputState] = useState<WalletControlState>({
     key: undefined,
@@ -42,11 +40,11 @@ export default function Login() {
   const signin = useCallback(() => {
     if (walletInputState.key) {
       setKey(walletInputState.key);
-      void navigate(location.state?.from ?? "/dashboard");
+      void navigate("/dashboard");
     } else {
       setWalletInputState((state) => ({ ...state, touched: true }));
     }
-  }, [walletInputState.key, setKey, navigate, location.state?.from]);
+  }, [walletInputState.key, setKey, navigate]);
 
   let content;
 
@@ -63,7 +61,7 @@ export default function Login() {
             <Button type="primary" onClick={toSigning}>
               {t("login.signInWithWallet")}
             </Button>
-            <Button type="secondary" onClick={redirectToFiresky}>
+            <Button type="subtle" onClick={redirectToFiresky}>
               {t("login.createWallet")}
             </Button>
           </div>

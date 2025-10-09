@@ -70,7 +70,6 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
         Private Key
       </Text>
       <Input
-        color="secondary"
         error={errorState}
         inputType="input"
         rightIcon={
