@@ -91,7 +91,7 @@ export function insertSignedSignature(
   deployerPubKey: PublicKey,
   version: number,
 ) {
-  const toSign = Par.encode(
+  const payload = Par.encode(
     Par.create({
       exprs: [
         Expr.create({
@@ -111,5 +111,6 @@ export function insertSignedSignature(
     }),
   ).finish();
 
+  const toSign = blake2b(payload, undefined, 32);
   return sign(toSign, key).sig;
 }
