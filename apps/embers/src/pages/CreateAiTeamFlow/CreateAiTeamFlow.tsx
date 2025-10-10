@@ -1,3 +1,4 @@
+import { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +9,10 @@ import { GraphEditor } from "@/lib/components/GraphEditor";
 import { Spinner } from "@/lib/components/Spinner";
 import { GraphLayout } from "@/lib/layouts/Graph";
 import { useLayout } from "@/lib/providers/layout/useLayout";
-import { useDeployGraphMutation, useRunDemo } from "@/lib/queries";
+import {
+  useDeployGraphMutation,
+  useRunAgentsTeamMutation,
+} from "@/lib/queries";
 
 type Deployment = FooterProps["deployments"][number];
 type Logs = FooterProps["logs"][number];
@@ -22,10 +26,10 @@ export default function CreateAiTeamFlow() {
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
-  const [lastDeploy, setLastDeploy] = useState<string | undefined>();
+  const [lastDeploy, setLastDeploy] = useState<PrivateKey | undefined>();
 
   const deployGraph = useDeployGraphMutation();
-  const runDemo = useRunDemo();
+  const runAgentsTeam = useRunAgentsTeamMutation();
 
   const [deployments, setDeployments] = useState<Deployment[]>([]);
   const addDeploy = useCallback(
@@ -51,8 +55,8 @@ export default function CreateAiTeamFlow() {
   );
 
   const onSuccessfulDeploy = useCallback(
-    ({ name }: { name: string }) => {
-      setLastDeploy(name);
+    (key: PrivateKey) => {
+      setLastDeploy(key);
       addDeploy({
         success: true,
         time: new Date(),
@@ -76,17 +80,26 @@ export default function CreateAiTeamFlow() {
     <GraphLayout
       footerProps={{ deployments, logs }}
       headerProps={{
-        onDeploy: () =>
+        onDeploy: () => {
+          const registryKey = PrivateKey.new();
           void deployGraph
-            .mutateAsync({ edges, nodes, rhoLimit: 1_000_000n })
-            .then(onSuccessfulDeploy)
-            .catch(onFailedDeploy),
+            .mutateAsync({
+              edges,
+              nodes,
+              registryKey,
+              registryVersion: 1n,
+              rhoLimit: 1_000_000n,
+            })
+            .then(() => onSuccessfulDeploy(registryKey))
+            .catch(onFailedDeploy);
+        },
         onRun: () =>
           lastDeploy &&
-          void runDemo
+          void runAgentsTeam
             .mutateAsync({
-              name: lastDeploy,
               prompt: "Describe an appearance of human-like robot",
+              rhoLimit: 500_000_000n,
+              uri: lastDeploy.getPublicKey().getUri(),
             })
             .then((result) =>
               addLog({
@@ -113,7 +126,7 @@ export default function CreateAiTeamFlow() {
         setEdges={setEdges}
         setNodes={setNodes}
       />
-      <Spinner isOpen={deployGraph.isPending || runDemo.isPending} />
+      <Spinner isOpen={deployGraph.isPending || runAgentsTeam.isPending} />
     </GraphLayout>
   );
 }

@@ -3,6 +3,9 @@ import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 
 import type { PrivateKey } from "@/entities/PrivateKey";
+import type { PublicKey } from "@/entities/PublicKey";
+
+import { ETuple, Expr, Par } from "@/generated/RhoTypes";
 
 /**
  * Verifies F1R3Cap an address by checking its checksum.
@@ -34,15 +37,10 @@ export function verifyAddress(value: string): boolean {
  * @param key - The private key to sign the payload with.
  * @returns An object containing the signature algorithm, the deployer public key, and the signature.
  */
-export function sign(
-  payload: Uint8Array,
-  key: PrivateKey,
-): {
-  sig: Uint8Array;
-  sigAlgorithm: "secp256k1";
-} {
+export function sign(payload: Uint8Array, key: PrivateKey) {
   const sig = secp256k1.sign(payload, key.value, {
     format: "der",
+    lowS: true,
     prehash: false,
   });
 
@@ -85,4 +83,33 @@ export async function deployContract<T extends { contract: Uint8Array }, R>(
   );
 
   return { deployModel, generateModel };
+}
+
+export function insertSignedSignature(
+  key: PrivateKey,
+  timestamp: Date,
+  deployerPubKey: PublicKey,
+  version: number,
+) {
+  const toSign = Par.encode(
+    Par.create({
+      exprs: [
+        Expr.create({
+          eTupleBody: ETuple.create({
+            ps: [
+              Par.create({
+                exprs: [Expr.create({ gInt: timestamp.getTime() })],
+              }),
+              Par.create({
+                exprs: [Expr.create({ gByteArray: deployerPubKey.value })],
+              }),
+              Par.create({ exprs: [Expr.create({ gInt: version })] }),
+            ],
+          }),
+        }),
+      ],
+    }),
+  ).finish();
+
+  return sign(toSign, key).sig;
 }

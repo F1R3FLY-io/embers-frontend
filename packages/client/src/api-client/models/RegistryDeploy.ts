@@ -12,9 +12,16 @@
 
 import type { Base64 } from "./Base64";
 import type { Int64 } from "./Int64";
+import type { PublicKey } from "./PublicKey";
+import type { TimestampMillis } from "./TimestampMillis";
 
 import { Base64FromJSON, Base64ToJSON } from "./Base64";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
+import { PublicKeyFromJSON, PublicKeyToJSON } from "./PublicKey";
+import {
+  TimestampMillisFromJSON,
+  TimestampMillisToJSON,
+} from "./TimestampMillis";
 
 /**
  *
@@ -30,16 +37,16 @@ export interface RegistryDeploy {
   signature: Base64;
   /**
    *
-   * @type {string}
+   * @type {TimestampMillis}
    * @memberof RegistryDeploy
    */
-  timestamp: string;
+  timestamp: TimestampMillis;
   /**
    *
-   * @type {string}
+   * @type {PublicKey}
    * @memberof RegistryDeploy
    */
-  uriPubKey: string;
+  uriPubKey: PublicKey;
   /**
    *
    * @type {Int64}
@@ -82,8 +89,8 @@ export function RegistryDeployFromJSONTyped(
   }
   return {
     signature: Base64FromJSON(json.signature),
-    timestamp: json.timestamp,
-    uriPubKey: json.uri_pub_key,
+    timestamp: TimestampMillisFromJSON(json.timestamp),
+    uriPubKey: PublicKeyFromJSON(json.uri_pub_key),
     version: Int64FromJSON(json.version),
   };
 }
@@ -102,8 +109,8 @@ export function RegistryDeployToJSONTyped(
 
   return {
     signature: Base64ToJSON(value.signature),
-    timestamp: value.timestamp,
-    uri_pub_key: value.uriPubKey,
+    timestamp: TimestampMillisToJSON(value.timestamp),
+    uri_pub_key: PublicKeyToJSON(value.uriPubKey),
     version: Int64ToJSON(value.version),
   };
 }

@@ -10,6 +10,13 @@
  * Do not edit the class manually.
  */
 
+import type { TimestampMillis } from "./TimestampMillis";
+
+import {
+  TimestampMillisFromJSON,
+  TimestampMillisToJSON,
+} from "./TimestampMillis";
+
 /**
  *
  * @export
@@ -18,10 +25,10 @@
 export interface AgentHeader {
   /**
    *
-   * @type {string}
+   * @type {TimestampMillis}
    * @memberof AgentHeader
    */
-  createdAt: string;
+  createdAt: TimestampMillis;
   /**
    *
    * @type {string}
@@ -85,7 +92,7 @@ export function AgentHeaderFromJSONTyped(
     return json;
   }
   return {
-    createdAt: json.created_at,
+    createdAt: TimestampMillisFromJSON(json.created_at),
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
@@ -107,7 +114,7 @@ export function AgentHeaderToJSONTyped(
   }
 
   return {
-    created_at: value.createdAt,
+    created_at: TimestampMillisToJSON(value.createdAt),
     id: value.id,
     logo: value.logo,
     name: value.name,

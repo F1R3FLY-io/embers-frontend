@@ -44,9 +44,6 @@ jobs:
       - name: Generate bindings
         run: pnpm run generate-api-client
 
-      - name: Generate mocks
-        run: pnpm run generate-mocks
-
       - name: Format code
         run: |
           find src/api-client/ -type f -name '*.ts' -exec sed -i '/\/\* tslint:disable \*\//d' {} +

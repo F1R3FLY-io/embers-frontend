@@ -11,8 +11,13 @@
  */
 
 import type { Graph } from "./Graph";
+import type { TimestampMillis } from "./TimestampMillis";
 
 import { GraphFromJSON, GraphToJSON } from "./Graph";
+import {
+  TimestampMillisFromJSON,
+  TimestampMillisToJSON,
+} from "./TimestampMillis";
 
 /**
  *
@@ -22,10 +27,10 @@ import { GraphFromJSON, GraphToJSON } from "./Graph";
 export interface AgentsTeam {
   /**
    *
-   * @type {string}
+   * @type {TimestampMillis}
    * @memberof AgentsTeam
    */
-  createdAt: string;
+  createdAt: TimestampMillis;
   /**
    *
    * @type {Graph}
@@ -95,7 +100,7 @@ export function AgentsTeamFromJSONTyped(
     return json;
   }
   return {
-    createdAt: json.created_at,
+    createdAt: TimestampMillisFromJSON(json.created_at),
     graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
@@ -118,7 +123,7 @@ export function AgentsTeamToJSONTyped(
   }
 
   return {
-    created_at: value.createdAt,
+    created_at: TimestampMillisToJSON(value.createdAt),
     graph: GraphToJSON(value.graph),
     id: value.id,
     logo: value.logo,
