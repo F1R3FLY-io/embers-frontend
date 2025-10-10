@@ -6,7 +6,10 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { FieldDescriptorProto, FieldOptions as FieldOptions1 } from "../google/protobuf/descriptor";
+import {
+  FieldDescriptorProto,
+  FieldOptions as FieldOptions1,
+} from "../google/protobuf/descriptor";
 
 export const protobufPackage = "scalapb";
 
@@ -51,18 +54,14 @@ export function matchTypeToJSON(object: MatchType): string {
 
 export interface ScalaPbOptions {
   /** If set then it overrides the java_package and package. */
-  packageName?:
-    | string
-    | undefined;
+  packageName?: string | undefined;
   /**
    * If true, the compiler does not append the proto base file name
    * into the generated package name. If false (the default), the
    * generated scala package name is the package_name.basename where
    * basename is the proto file name without the .proto extension.
    */
-  flatPackage?:
-    | boolean
-    | undefined;
+  flatPackage?: boolean | undefined;
   /**
    * Adds the following imports at the top of the file (this is meant
    * to provide implicit TypeMappers)
@@ -77,97 +76,69 @@ export interface ScalaPbOptions {
    * If true, all messages and enums (but not services) will be written
    * to a single Scala file.
    */
-  singleFile?:
-    | boolean
-    | undefined;
+  singleFile?: boolean | undefined;
   /**
    * By default, wrappers defined at
    * https://github.com/google/protobuf/blob/master/src/google/protobuf/wrappers.proto,
    * are mapped to an Option[T] where T is a primitive type. When this field
    * is set to true, we do not perform this transformation.
    */
-  noPrimitiveWrappers?:
-    | boolean
-    | undefined;
+  noPrimitiveWrappers?: boolean | undefined;
   /**
    * DEPRECATED. In ScalaPB <= 0.5.47, it was necessary to explicitly enable
    * primitive_wrappers. This field remains here for backwards compatibility,
    * but it has no effect on generated code. It is an error to set both
    * `primitive_wrappers` and `no_primitive_wrappers`.
    */
-  primitiveWrappers?:
-    | boolean
-    | undefined;
+  primitiveWrappers?: boolean | undefined;
   /**
    * Scala type to be used for repeated fields. If unspecified,
    * `scala.collection.Seq` will be used.
    */
-  collectionType?:
-    | string
-    | undefined;
+  collectionType?: string | undefined;
   /**
    * If set to true, all generated messages in this file will preserve unknown
    * fields.
    */
-  preserveUnknownFields?:
-    | boolean
-    | undefined;
+  preserveUnknownFields?: boolean | undefined;
   /**
    * If defined, sets the name of the file-level object that would be generated. This
    * object extends `GeneratedFileObject` and contains descriptors, and list of message
    * and enum companions.
    */
-  objectName?:
-    | string
-    | undefined;
+  objectName?: string | undefined;
   /** Experimental: scope to apply the given options. */
-  scope?:
-    | ScalaPbOptions_OptionsScope
-    | undefined;
+  scope?: ScalaPbOptions_OptionsScope | undefined;
   /** If true, lenses will be generated. */
-  lenses?:
-    | boolean
-    | undefined;
+  lenses?: boolean | undefined;
   /**
    * If true, then source-code info information will be included in the
    * generated code - normally the source code info is cleared out to reduce
    * code size.  The source code info is useful for extracting source code
    * location from the descriptors as well as comments.
    */
-  retainSourceCodeInfo?:
-    | boolean
-    | undefined;
+  retainSourceCodeInfo?: boolean | undefined;
   /**
    * Scala type to be used for maps. If unspecified,
    * `scala.collection.immutable.Map` will be used.
    */
-  mapType?:
-    | string
-    | undefined;
+  mapType?: string | undefined;
   /**
    * If true, no default values will be generated in message constructors.
    * This setting can be overridden at the message-level and for individual
    * fields.
    */
   noDefaultValuesInConstructor?: boolean | undefined;
-  enumValueNaming?:
-    | ScalaPbOptions_EnumValueNaming
-    | undefined;
+  enumValueNaming?: ScalaPbOptions_EnumValueNaming | undefined;
   /**
    * Indicate if prefix (enum name + optional underscore) should be removed in scala code
    * Strip is applied before enum value naming changes.
    */
-  enumStripPrefix?:
-    | boolean
-    | undefined;
+  enumStripPrefix?: boolean | undefined;
   /** Scala type to use for bytes fields. */
-  bytesType?:
-    | string
-    | undefined;
+  bytesType?: string | undefined;
   /** Enable java conversions for this file. */
-  javaConversions?:
-    | boolean
-    | undefined;
+  javaConversions?: boolean | undefined;
   /** List of message options to apply to some messages. */
   auxMessageOptions: ScalaPbOptions_AuxMessageOptions[];
   /** List of message options to apply to some fields. */
@@ -183,13 +154,9 @@ export interface ScalaPbOptions {
    * Ignores all transformations for this file. This is meant to allow specific files to
    * opt out from transformations inherited through package-scoped options.
    */
-  ignoreAllTransformations?:
-    | boolean
-    | undefined;
+  ignoreAllTransformations?: boolean | undefined;
   /** If true, getters will be generated. */
-  getters?:
-    | boolean
-    | undefined;
+  getters?: boolean | undefined;
   /**
    * For use in tests only. Inhibit Java conversions even when when generator parameters
    * request for it.
@@ -206,7 +173,9 @@ export enum ScalaPbOptions_OptionsScope {
   UNRECOGNIZED = -1,
 }
 
-export function scalaPbOptions_OptionsScopeFromJSON(object: any): ScalaPbOptions_OptionsScope {
+export function scalaPbOptions_OptionsScopeFromJSON(
+  object: any,
+): ScalaPbOptions_OptionsScope {
   switch (object) {
     case 0:
     case "FILE":
@@ -221,7 +190,9 @@ export function scalaPbOptions_OptionsScopeFromJSON(object: any): ScalaPbOptions
   }
 }
 
-export function scalaPbOptions_OptionsScopeToJSON(object: ScalaPbOptions_OptionsScope): string {
+export function scalaPbOptions_OptionsScopeToJSON(
+  object: ScalaPbOptions_OptionsScope,
+): string {
   switch (object) {
     case ScalaPbOptions_OptionsScope.FILE:
       return "FILE";
@@ -242,7 +213,9 @@ export enum ScalaPbOptions_EnumValueNaming {
   UNRECOGNIZED = -1,
 }
 
-export function scalaPbOptions_EnumValueNamingFromJSON(object: any): ScalaPbOptions_EnumValueNaming {
+export function scalaPbOptions_EnumValueNamingFromJSON(
+  object: any,
+): ScalaPbOptions_EnumValueNaming {
   switch (object) {
     case 0:
     case "AS_IN_PROTO":
@@ -257,7 +230,9 @@ export function scalaPbOptions_EnumValueNamingFromJSON(object: any): ScalaPbOpti
   }
 }
 
-export function scalaPbOptions_EnumValueNamingToJSON(object: ScalaPbOptions_EnumValueNaming): string {
+export function scalaPbOptions_EnumValueNamingToJSON(
+  object: ScalaPbOptions_EnumValueNaming,
+): string {
   switch (object) {
     case ScalaPbOptions_EnumValueNaming.AS_IN_PROTO:
       return "AS_IN_PROTO";
@@ -276,9 +251,7 @@ export function scalaPbOptions_EnumValueNamingToJSON(object: ScalaPbOptions_Enum
  */
 export interface ScalaPbOptions_AuxMessageOptions {
   /** The fully-qualified name of the message in the proto name space. */
-  target?:
-    | string
-    | undefined;
+  target?: string | undefined;
   /**
    * Options to apply to the message. If there are any options defined on the target message
    * they take precedence over the options.
@@ -293,9 +266,7 @@ export interface ScalaPbOptions_AuxMessageOptions {
  */
 export interface ScalaPbOptions_AuxFieldOptions {
   /** The fully-qualified name of the field in the proto name space. */
-  target?:
-    | string
-    | undefined;
+  target?: string | undefined;
   /**
    * Options to apply to the field. If there are any options defined on the target message
    * they take precedence over the options.
@@ -310,9 +281,7 @@ export interface ScalaPbOptions_AuxFieldOptions {
  */
 export interface ScalaPbOptions_AuxEnumOptions {
   /** The fully-qualified name of the enum in the proto name space. */
-  target?:
-    | string
-    | undefined;
+  target?: string | undefined;
   /**
    * Options to apply to the enum. If there are any options defined on the target enum
    * they take precedence over the options.
@@ -327,9 +296,7 @@ export interface ScalaPbOptions_AuxEnumOptions {
  */
 export interface ScalaPbOptions_AuxEnumValueOptions {
   /** The fully-qualified name of the enum value in the proto name space. */
-  target?:
-    | string
-    | undefined;
+  target?: string | undefined;
   /**
    * Options to apply to the enum value. If there are any options defined on
    * the target enum value they take precedence over the options.
@@ -348,9 +315,7 @@ export interface MessageOptions {
    * All instances of this message will be converted to this type. An implicit TypeMapper
    * must be present.
    */
-  type?:
-    | string
-    | undefined;
+  type?: string | undefined;
   /** Custom annotations to add to the companion object of the generated class. */
   companionAnnotations: string[];
   /** Additional classes and traits to mix in to generated sealed_oneof base trait. */
@@ -359,9 +324,7 @@ export interface MessageOptions {
    * If true, when this message is used as an optional field, do not wrap it in an `Option`.
    * This is equivalent of setting `(field).no_box` to true on each field with the message type.
    */
-  noBox?:
-    | boolean
-    | undefined;
+  noBox?: boolean | undefined;
   /** Custom annotations to add to the generated `unknownFields` case class field. */
   unknownFieldsAnnotations: string[];
   /**
@@ -369,9 +332,7 @@ export interface MessageOptions {
    * If set (to true or false), the message-level setting overrides the
    * file-level value, and can be overridden by the field-level setting.
    */
-  noDefaultValuesInConstructor?:
-    | boolean
-    | undefined;
+  noDefaultValuesInConstructor?: boolean | undefined;
   /** Additional classes and traits to mix in to generated sealed oneof base trait's companion object. */
   sealedOneofCompanionExtends: string[];
 }
@@ -382,17 +343,13 @@ export interface MessageOptions {
  */
 export interface Collection {
   /** Type of the collection */
-  type?:
-    | string
-    | undefined;
+  type?: string | undefined;
   /**
    * Set to true if this collection type is not allowed to be empty, for example
    * cats.data.NonEmptyList.  When true, ScalaPB will not generate `clearX` for the repeated
    * field and not provide a default argument in the constructor.
    */
-  nonEmpty?:
-    | boolean
-    | undefined;
+  nonEmpty?: boolean | undefined;
   /**
    * An Adapter is a Scala object available at runtime that provides certain static methods
    * that can operate on this collection type.
@@ -402,26 +359,20 @@ export interface Collection {
 
 export interface FieldOptions {
   type?: string | undefined;
-  scalaName?:
-    | string
-    | undefined;
+  scalaName?: string | undefined;
   /**
    * Can be specified only if this field is repeated. If unspecified,
    * it falls back to the file option named `collection_type`, which defaults
    * to `scala.collection.Seq`.
    */
   collectionType?: string | undefined;
-  collection?:
-    | Collection
-    | undefined;
+  collection?: Collection | undefined;
   /**
    * If the field is a map, you can specify custom Scala types for the key
    * or value.
    */
   keyType?: string | undefined;
-  valueType?:
-    | string
-    | undefined;
+  valueType?: string | undefined;
   /** Custom annotations to add to the field. */
   annotations: string[];
   /**
@@ -429,21 +380,15 @@ export interface FieldOptions {
    * it falls back to the file option named `map_type` which defaults to
    * `scala.collection.immutable.Map`
    */
-  mapType?:
-    | string
-    | undefined;
+  mapType?: string | undefined;
   /**
    * If true, no default value will be generated for this field in the message
    * constructor. If this field is set, it has the highest precedence and overrides the
    * values at the message-level and file-level.
    */
-  noDefaultValueInConstructor?:
-    | boolean
-    | undefined;
+  noDefaultValueInConstructor?: boolean | undefined;
   /** Do not box this value in Option[T]. If set, this overrides MessageOptions.no_box */
-  noBox?:
-    | boolean
-    | undefined;
+  noBox?: boolean | undefined;
   /**
    * Like no_box it does not box a value in Option[T], but also fails parsing when a value
    * is not provided. This enables to emulate required fields in proto3.
@@ -460,9 +405,7 @@ export interface EnumOptions {
    * All instances of this enum will be converted to this type. An implicit TypeMapper
    * must be present.
    */
-  type?:
-    | string
-    | undefined;
+  type?: string | undefined;
   /** Custom annotations to add to the generated enum's base class. */
   baseAnnotations: string[];
   /** Custom annotations to add to the generated trait. */
@@ -475,9 +418,7 @@ export interface EnumValueOptions {
   /** Additional classes and traits to mix in to an individual enum value. */
   extends: string[];
   /** Name in Scala to use for this enum value. */
-  scalaName?:
-    | string
-    | undefined;
+  scalaName?: string | undefined;
   /** Custom annotations to add to the generated case object for this enum value. */
   annotations: string[];
 }
@@ -538,7 +479,10 @@ function createBaseScalaPbOptions(): ScalaPbOptions {
 }
 
 export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
-  encode(message: ScalaPbOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: ScalaPbOptions,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     if (message.packageName !== undefined && message.packageName !== "") {
       writer.uint32(10).string(message.packageName);
     }
@@ -554,16 +498,25 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
     if (message.singleFile !== undefined && message.singleFile !== false) {
       writer.uint32(40).bool(message.singleFile);
     }
-    if (message.noPrimitiveWrappers !== undefined && message.noPrimitiveWrappers !== false) {
+    if (
+      message.noPrimitiveWrappers !== undefined &&
+      message.noPrimitiveWrappers !== false
+    ) {
       writer.uint32(56).bool(message.noPrimitiveWrappers);
     }
-    if (message.primitiveWrappers !== undefined && message.primitiveWrappers !== false) {
+    if (
+      message.primitiveWrappers !== undefined &&
+      message.primitiveWrappers !== false
+    ) {
       writer.uint32(48).bool(message.primitiveWrappers);
     }
     if (message.collectionType !== undefined && message.collectionType !== "") {
       writer.uint32(66).string(message.collectionType);
     }
-    if (message.preserveUnknownFields !== undefined && message.preserveUnknownFields !== true) {
+    if (
+      message.preserveUnknownFields !== undefined &&
+      message.preserveUnknownFields !== true
+    ) {
       writer.uint32(72).bool(message.preserveUnknownFields);
     }
     if (message.objectName !== undefined && message.objectName !== "") {
@@ -575,38 +528,65 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
     if (message.lenses !== undefined && message.lenses !== true) {
       writer.uint32(96).bool(message.lenses);
     }
-    if (message.retainSourceCodeInfo !== undefined && message.retainSourceCodeInfo !== false) {
+    if (
+      message.retainSourceCodeInfo !== undefined &&
+      message.retainSourceCodeInfo !== false
+    ) {
       writer.uint32(104).bool(message.retainSourceCodeInfo);
     }
     if (message.mapType !== undefined && message.mapType !== "") {
       writer.uint32(114).string(message.mapType);
     }
-    if (message.noDefaultValuesInConstructor !== undefined && message.noDefaultValuesInConstructor !== false) {
+    if (
+      message.noDefaultValuesInConstructor !== undefined &&
+      message.noDefaultValuesInConstructor !== false
+    ) {
       writer.uint32(120).bool(message.noDefaultValuesInConstructor);
     }
-    if (message.enumValueNaming !== undefined && message.enumValueNaming !== 0) {
+    if (
+      message.enumValueNaming !== undefined &&
+      message.enumValueNaming !== 0
+    ) {
       writer.uint32(128).int32(message.enumValueNaming);
     }
-    if (message.enumStripPrefix !== undefined && message.enumStripPrefix !== false) {
+    if (
+      message.enumStripPrefix !== undefined &&
+      message.enumStripPrefix !== false
+    ) {
       writer.uint32(136).bool(message.enumStripPrefix);
     }
     if (message.bytesType !== undefined && message.bytesType !== "") {
       writer.uint32(170).string(message.bytesType);
     }
-    if (message.javaConversions !== undefined && message.javaConversions !== false) {
+    if (
+      message.javaConversions !== undefined &&
+      message.javaConversions !== false
+    ) {
       writer.uint32(184).bool(message.javaConversions);
     }
     for (const v of message.auxMessageOptions) {
-      ScalaPbOptions_AuxMessageOptions.encode(v!, writer.uint32(146).fork()).join();
+      ScalaPbOptions_AuxMessageOptions.encode(
+        v!,
+        writer.uint32(146).fork(),
+      ).join();
     }
     for (const v of message.auxFieldOptions) {
-      ScalaPbOptions_AuxFieldOptions.encode(v!, writer.uint32(154).fork()).join();
+      ScalaPbOptions_AuxFieldOptions.encode(
+        v!,
+        writer.uint32(154).fork(),
+      ).join();
     }
     for (const v of message.auxEnumOptions) {
-      ScalaPbOptions_AuxEnumOptions.encode(v!, writer.uint32(162).fork()).join();
+      ScalaPbOptions_AuxEnumOptions.encode(
+        v!,
+        writer.uint32(162).fork(),
+      ).join();
     }
     for (const v of message.auxEnumValueOptions) {
-      ScalaPbOptions_AuxEnumValueOptions.encode(v!, writer.uint32(178).fork()).join();
+      ScalaPbOptions_AuxEnumValueOptions.encode(
+        v!,
+        writer.uint32(178).fork(),
+      ).join();
     }
     for (const v of message.preprocessors) {
       writer.uint32(194).string(v!);
@@ -614,20 +594,27 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
     for (const v of message.fieldTransformations) {
       FieldTransformation.encode(v!, writer.uint32(202).fork()).join();
     }
-    if (message.ignoreAllTransformations !== undefined && message.ignoreAllTransformations !== false) {
+    if (
+      message.ignoreAllTransformations !== undefined &&
+      message.ignoreAllTransformations !== false
+    ) {
       writer.uint32(208).bool(message.ignoreAllTransformations);
     }
     if (message.getters !== undefined && message.getters !== true) {
       writer.uint32(216).bool(message.getters);
     }
-    if (message.testOnlyNoJavaConversions !== undefined && message.testOnlyNoJavaConversions !== false) {
+    if (
+      message.testOnlyNoJavaConversions !== undefined &&
+      message.testOnlyNoJavaConversions !== false
+    ) {
       writer.uint32(7992).bool(message.testOnlyNoJavaConversions);
     }
     return writer;
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): ScalaPbOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseScalaPbOptions();
     while (reader.pos < end) {
@@ -790,7 +777,9 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
             break;
           }
 
-          message.auxMessageOptions.push(ScalaPbOptions_AuxMessageOptions.decode(reader, reader.uint32()));
+          message.auxMessageOptions.push(
+            ScalaPbOptions_AuxMessageOptions.decode(reader, reader.uint32()),
+          );
           continue;
         }
         case 19: {
@@ -798,7 +787,9 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
             break;
           }
 
-          message.auxFieldOptions.push(ScalaPbOptions_AuxFieldOptions.decode(reader, reader.uint32()));
+          message.auxFieldOptions.push(
+            ScalaPbOptions_AuxFieldOptions.decode(reader, reader.uint32()),
+          );
           continue;
         }
         case 20: {
@@ -806,7 +797,9 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
             break;
           }
 
-          message.auxEnumOptions.push(ScalaPbOptions_AuxEnumOptions.decode(reader, reader.uint32()));
+          message.auxEnumOptions.push(
+            ScalaPbOptions_AuxEnumOptions.decode(reader, reader.uint32()),
+          );
           continue;
         }
         case 22: {
@@ -814,7 +807,9 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
             break;
           }
 
-          message.auxEnumValueOptions.push(ScalaPbOptions_AuxEnumValueOptions.decode(reader, reader.uint32()));
+          message.auxEnumValueOptions.push(
+            ScalaPbOptions_AuxEnumValueOptions.decode(reader, reader.uint32()),
+          );
           continue;
         }
         case 24: {
@@ -830,7 +825,9 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
             break;
           }
 
-          message.fieldTransformations.push(FieldTransformation.decode(reader, reader.uint32()));
+          message.fieldTransformations.push(
+            FieldTransformation.decode(reader, reader.uint32()),
+          );
           continue;
         }
         case 26: {
@@ -868,19 +865,39 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
 
   fromJSON(object: any): ScalaPbOptions {
     return {
-      packageName: isSet(object.packageName) ? globalThis.String(object.packageName) : "",
-      flatPackage: isSet(object.flatPackage) ? globalThis.Boolean(object.flatPackage) : false,
-      import: globalThis.Array.isArray(object?.import) ? object.import.map((e: any) => globalThis.String(e)) : [],
-      preamble: globalThis.Array.isArray(object?.preamble) ? object.preamble.map((e: any) => globalThis.String(e)) : [],
-      singleFile: isSet(object.singleFile) ? globalThis.Boolean(object.singleFile) : false,
-      noPrimitiveWrappers: isSet(object.noPrimitiveWrappers) ? globalThis.Boolean(object.noPrimitiveWrappers) : false,
-      primitiveWrappers: isSet(object.primitiveWrappers) ? globalThis.Boolean(object.primitiveWrappers) : false,
-      collectionType: isSet(object.collectionType) ? globalThis.String(object.collectionType) : "",
+      packageName: isSet(object.packageName)
+        ? globalThis.String(object.packageName)
+        : "",
+      flatPackage: isSet(object.flatPackage)
+        ? globalThis.Boolean(object.flatPackage)
+        : false,
+      import: globalThis.Array.isArray(object?.import)
+        ? object.import.map((e: any) => globalThis.String(e))
+        : [],
+      preamble: globalThis.Array.isArray(object?.preamble)
+        ? object.preamble.map((e: any) => globalThis.String(e))
+        : [],
+      singleFile: isSet(object.singleFile)
+        ? globalThis.Boolean(object.singleFile)
+        : false,
+      noPrimitiveWrappers: isSet(object.noPrimitiveWrappers)
+        ? globalThis.Boolean(object.noPrimitiveWrappers)
+        : false,
+      primitiveWrappers: isSet(object.primitiveWrappers)
+        ? globalThis.Boolean(object.primitiveWrappers)
+        : false,
+      collectionType: isSet(object.collectionType)
+        ? globalThis.String(object.collectionType)
+        : "",
       preserveUnknownFields: isSet(object.preserveUnknownFields)
         ? globalThis.Boolean(object.preserveUnknownFields)
         : true,
-      objectName: isSet(object.objectName) ? globalThis.String(object.objectName) : "",
-      scope: isSet(object.scope) ? scalaPbOptions_OptionsScopeFromJSON(object.scope) : 0,
+      objectName: isSet(object.objectName)
+        ? globalThis.String(object.objectName)
+        : "",
+      scope: isSet(object.scope)
+        ? scalaPbOptions_OptionsScopeFromJSON(object.scope)
+        : 0,
       lenses: isSet(object.lenses) ? globalThis.Boolean(object.lenses) : true,
       retainSourceCodeInfo: isSet(object.retainSourceCodeInfo)
         ? globalThis.Boolean(object.retainSourceCodeInfo)
@@ -892,31 +909,51 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
       enumValueNaming: isSet(object.enumValueNaming)
         ? scalaPbOptions_EnumValueNamingFromJSON(object.enumValueNaming)
         : 0,
-      enumStripPrefix: isSet(object.enumStripPrefix) ? globalThis.Boolean(object.enumStripPrefix) : false,
-      bytesType: isSet(object.bytesType) ? globalThis.String(object.bytesType) : "",
-      javaConversions: isSet(object.javaConversions) ? globalThis.Boolean(object.javaConversions) : false,
+      enumStripPrefix: isSet(object.enumStripPrefix)
+        ? globalThis.Boolean(object.enumStripPrefix)
+        : false,
+      bytesType: isSet(object.bytesType)
+        ? globalThis.String(object.bytesType)
+        : "",
+      javaConversions: isSet(object.javaConversions)
+        ? globalThis.Boolean(object.javaConversions)
+        : false,
       auxMessageOptions: globalThis.Array.isArray(object?.auxMessageOptions)
-        ? object.auxMessageOptions.map((e: any) => ScalaPbOptions_AuxMessageOptions.fromJSON(e))
+        ? object.auxMessageOptions.map((e: any) =>
+            ScalaPbOptions_AuxMessageOptions.fromJSON(e),
+          )
         : [],
       auxFieldOptions: globalThis.Array.isArray(object?.auxFieldOptions)
-        ? object.auxFieldOptions.map((e: any) => ScalaPbOptions_AuxFieldOptions.fromJSON(e))
+        ? object.auxFieldOptions.map((e: any) =>
+            ScalaPbOptions_AuxFieldOptions.fromJSON(e),
+          )
         : [],
       auxEnumOptions: globalThis.Array.isArray(object?.auxEnumOptions)
-        ? object.auxEnumOptions.map((e: any) => ScalaPbOptions_AuxEnumOptions.fromJSON(e))
+        ? object.auxEnumOptions.map((e: any) =>
+            ScalaPbOptions_AuxEnumOptions.fromJSON(e),
+          )
         : [],
       auxEnumValueOptions: globalThis.Array.isArray(object?.auxEnumValueOptions)
-        ? object.auxEnumValueOptions.map((e: any) => ScalaPbOptions_AuxEnumValueOptions.fromJSON(e))
+        ? object.auxEnumValueOptions.map((e: any) =>
+            ScalaPbOptions_AuxEnumValueOptions.fromJSON(e),
+          )
         : [],
       preprocessors: globalThis.Array.isArray(object?.preprocessors)
         ? object.preprocessors.map((e: any) => globalThis.String(e))
         : [],
-      fieldTransformations: globalThis.Array.isArray(object?.fieldTransformations)
-        ? object.fieldTransformations.map((e: any) => FieldTransformation.fromJSON(e))
+      fieldTransformations: globalThis.Array.isArray(
+        object?.fieldTransformations,
+      )
+        ? object.fieldTransformations.map((e: any) =>
+            FieldTransformation.fromJSON(e),
+          )
         : [],
       ignoreAllTransformations: isSet(object.ignoreAllTransformations)
         ? globalThis.Boolean(object.ignoreAllTransformations)
         : false,
-      getters: isSet(object.getters) ? globalThis.Boolean(object.getters) : true,
+      getters: isSet(object.getters)
+        ? globalThis.Boolean(object.getters)
+        : true,
       testOnlyNoJavaConversions: isSet(object.testOnlyNoJavaConversions)
         ? globalThis.Boolean(object.testOnlyNoJavaConversions)
         : false,
@@ -940,16 +977,25 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
     if (message.singleFile !== undefined && message.singleFile !== false) {
       obj.singleFile = message.singleFile;
     }
-    if (message.noPrimitiveWrappers !== undefined && message.noPrimitiveWrappers !== false) {
+    if (
+      message.noPrimitiveWrappers !== undefined &&
+      message.noPrimitiveWrappers !== false
+    ) {
       obj.noPrimitiveWrappers = message.noPrimitiveWrappers;
     }
-    if (message.primitiveWrappers !== undefined && message.primitiveWrappers !== false) {
+    if (
+      message.primitiveWrappers !== undefined &&
+      message.primitiveWrappers !== false
+    ) {
       obj.primitiveWrappers = message.primitiveWrappers;
     }
     if (message.collectionType !== undefined && message.collectionType !== "") {
       obj.collectionType = message.collectionType;
     }
-    if (message.preserveUnknownFields !== undefined && message.preserveUnknownFields !== true) {
+    if (
+      message.preserveUnknownFields !== undefined &&
+      message.preserveUnknownFields !== true
+    ) {
       obj.preserveUnknownFields = message.preserveUnknownFields;
     }
     if (message.objectName !== undefined && message.objectName !== "") {
@@ -961,61 +1007,98 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
     if (message.lenses !== undefined && message.lenses !== true) {
       obj.lenses = message.lenses;
     }
-    if (message.retainSourceCodeInfo !== undefined && message.retainSourceCodeInfo !== false) {
+    if (
+      message.retainSourceCodeInfo !== undefined &&
+      message.retainSourceCodeInfo !== false
+    ) {
       obj.retainSourceCodeInfo = message.retainSourceCodeInfo;
     }
     if (message.mapType !== undefined && message.mapType !== "") {
       obj.mapType = message.mapType;
     }
-    if (message.noDefaultValuesInConstructor !== undefined && message.noDefaultValuesInConstructor !== false) {
+    if (
+      message.noDefaultValuesInConstructor !== undefined &&
+      message.noDefaultValuesInConstructor !== false
+    ) {
       obj.noDefaultValuesInConstructor = message.noDefaultValuesInConstructor;
     }
-    if (message.enumValueNaming !== undefined && message.enumValueNaming !== 0) {
-      obj.enumValueNaming = scalaPbOptions_EnumValueNamingToJSON(message.enumValueNaming);
+    if (
+      message.enumValueNaming !== undefined &&
+      message.enumValueNaming !== 0
+    ) {
+      obj.enumValueNaming = scalaPbOptions_EnumValueNamingToJSON(
+        message.enumValueNaming,
+      );
     }
-    if (message.enumStripPrefix !== undefined && message.enumStripPrefix !== false) {
+    if (
+      message.enumStripPrefix !== undefined &&
+      message.enumStripPrefix !== false
+    ) {
       obj.enumStripPrefix = message.enumStripPrefix;
     }
     if (message.bytesType !== undefined && message.bytesType !== "") {
       obj.bytesType = message.bytesType;
     }
-    if (message.javaConversions !== undefined && message.javaConversions !== false) {
+    if (
+      message.javaConversions !== undefined &&
+      message.javaConversions !== false
+    ) {
       obj.javaConversions = message.javaConversions;
     }
     if (message.auxMessageOptions?.length) {
-      obj.auxMessageOptions = message.auxMessageOptions.map((e) => ScalaPbOptions_AuxMessageOptions.toJSON(e));
+      obj.auxMessageOptions = message.auxMessageOptions.map((e) =>
+        ScalaPbOptions_AuxMessageOptions.toJSON(e),
+      );
     }
     if (message.auxFieldOptions?.length) {
-      obj.auxFieldOptions = message.auxFieldOptions.map((e) => ScalaPbOptions_AuxFieldOptions.toJSON(e));
+      obj.auxFieldOptions = message.auxFieldOptions.map((e) =>
+        ScalaPbOptions_AuxFieldOptions.toJSON(e),
+      );
     }
     if (message.auxEnumOptions?.length) {
-      obj.auxEnumOptions = message.auxEnumOptions.map((e) => ScalaPbOptions_AuxEnumOptions.toJSON(e));
+      obj.auxEnumOptions = message.auxEnumOptions.map((e) =>
+        ScalaPbOptions_AuxEnumOptions.toJSON(e),
+      );
     }
     if (message.auxEnumValueOptions?.length) {
-      obj.auxEnumValueOptions = message.auxEnumValueOptions.map((e) => ScalaPbOptions_AuxEnumValueOptions.toJSON(e));
+      obj.auxEnumValueOptions = message.auxEnumValueOptions.map((e) =>
+        ScalaPbOptions_AuxEnumValueOptions.toJSON(e),
+      );
     }
     if (message.preprocessors?.length) {
       obj.preprocessors = message.preprocessors;
     }
     if (message.fieldTransformations?.length) {
-      obj.fieldTransformations = message.fieldTransformations.map((e) => FieldTransformation.toJSON(e));
+      obj.fieldTransformations = message.fieldTransformations.map((e) =>
+        FieldTransformation.toJSON(e),
+      );
     }
-    if (message.ignoreAllTransformations !== undefined && message.ignoreAllTransformations !== false) {
+    if (
+      message.ignoreAllTransformations !== undefined &&
+      message.ignoreAllTransformations !== false
+    ) {
       obj.ignoreAllTransformations = message.ignoreAllTransformations;
     }
     if (message.getters !== undefined && message.getters !== true) {
       obj.getters = message.getters;
     }
-    if (message.testOnlyNoJavaConversions !== undefined && message.testOnlyNoJavaConversions !== false) {
+    if (
+      message.testOnlyNoJavaConversions !== undefined &&
+      message.testOnlyNoJavaConversions !== false
+    ) {
       obj.testOnlyNoJavaConversions = message.testOnlyNoJavaConversions;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ScalaPbOptions>, I>>(base?: I): ScalaPbOptions {
+  create<I extends Exact<DeepPartial<ScalaPbOptions>, I>>(
+    base?: I,
+  ): ScalaPbOptions {
     return ScalaPbOptions.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<ScalaPbOptions>, I>>(object: I): ScalaPbOptions {
+  fromPartial<I extends Exact<DeepPartial<ScalaPbOptions>, I>>(
+    object: I,
+  ): ScalaPbOptions {
     const message = createBaseScalaPbOptions();
     message.packageName = object.packageName ?? "";
     message.flatPackage = object.flatPackage ?? false;
@@ -1031,22 +1114,37 @@ export const ScalaPbOptions: MessageFns<ScalaPbOptions> = {
     message.lenses = object.lenses ?? true;
     message.retainSourceCodeInfo = object.retainSourceCodeInfo ?? false;
     message.mapType = object.mapType ?? "";
-    message.noDefaultValuesInConstructor = object.noDefaultValuesInConstructor ?? false;
+    message.noDefaultValuesInConstructor =
+      object.noDefaultValuesInConstructor ?? false;
     message.enumValueNaming = object.enumValueNaming ?? 0;
     message.enumStripPrefix = object.enumStripPrefix ?? false;
     message.bytesType = object.bytesType ?? "";
     message.javaConversions = object.javaConversions ?? false;
-    message.auxMessageOptions = object.auxMessageOptions?.map((e) => ScalaPbOptions_AuxMessageOptions.fromPartial(e)) ||
-      [];
-    message.auxFieldOptions = object.auxFieldOptions?.map((e) => ScalaPbOptions_AuxFieldOptions.fromPartial(e)) || [];
-    message.auxEnumOptions = object.auxEnumOptions?.map((e) => ScalaPbOptions_AuxEnumOptions.fromPartial(e)) || [];
+    message.auxMessageOptions =
+      object.auxMessageOptions?.map((e) =>
+        ScalaPbOptions_AuxMessageOptions.fromPartial(e),
+      ) || [];
+    message.auxFieldOptions =
+      object.auxFieldOptions?.map((e) =>
+        ScalaPbOptions_AuxFieldOptions.fromPartial(e),
+      ) || [];
+    message.auxEnumOptions =
+      object.auxEnumOptions?.map((e) =>
+        ScalaPbOptions_AuxEnumOptions.fromPartial(e),
+      ) || [];
     message.auxEnumValueOptions =
-      object.auxEnumValueOptions?.map((e) => ScalaPbOptions_AuxEnumValueOptions.fromPartial(e)) || [];
+      object.auxEnumValueOptions?.map((e) =>
+        ScalaPbOptions_AuxEnumValueOptions.fromPartial(e),
+      ) || [];
     message.preprocessors = object.preprocessors?.map((e) => e) || [];
-    message.fieldTransformations = object.fieldTransformations?.map((e) => FieldTransformation.fromPartial(e)) || [];
+    message.fieldTransformations =
+      object.fieldTransformations?.map((e) =>
+        FieldTransformation.fromPartial(e),
+      ) || [];
     message.ignoreAllTransformations = object.ignoreAllTransformations ?? false;
     message.getters = object.getters ?? true;
-    message.testOnlyNoJavaConversions = object.testOnlyNoJavaConversions ?? false;
+    message.testOnlyNoJavaConversions =
+      object.testOnlyNoJavaConversions ?? false;
     return message;
   },
 };
@@ -1055,325 +1153,378 @@ function createBaseScalaPbOptions_AuxMessageOptions(): ScalaPbOptions_AuxMessage
   return { target: "", options: undefined };
 }
 
-export const ScalaPbOptions_AuxMessageOptions: MessageFns<ScalaPbOptions_AuxMessageOptions> = {
-  encode(message: ScalaPbOptions_AuxMessageOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.target !== undefined && message.target !== "") {
-      writer.uint32(10).string(message.target);
-    }
-    if (message.options !== undefined) {
-      MessageOptions.encode(message.options, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): ScalaPbOptions_AuxMessageOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseScalaPbOptions_AuxMessageOptions();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.target = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.options = MessageOptions.decode(reader, reader.uint32());
-          continue;
-        }
+export const ScalaPbOptions_AuxMessageOptions: MessageFns<ScalaPbOptions_AuxMessageOptions> =
+  {
+    encode(
+      message: ScalaPbOptions_AuxMessageOptions,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.target !== undefined && message.target !== "") {
+        writer.uint32(10).string(message.target);
       }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
+      if (message.options !== undefined) {
+        MessageOptions.encode(message.options, writer.uint32(18).fork()).join();
       }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
+      return writer;
+    },
 
-  fromJSON(object: any): ScalaPbOptions_AuxMessageOptions {
-    return {
-      target: isSet(object.target) ? globalThis.String(object.target) : "",
-      options: isSet(object.options) ? MessageOptions.fromJSON(object.options) : undefined,
-    };
-  },
+    decode(
+      input: BinaryReader | Uint8Array,
+      length?: number,
+    ): ScalaPbOptions_AuxMessageOptions {
+      const reader =
+        input instanceof BinaryReader ? input : new BinaryReader(input);
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseScalaPbOptions_AuxMessageOptions();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
 
-  toJSON(message: ScalaPbOptions_AuxMessageOptions): unknown {
-    const obj: any = {};
-    if (message.target !== undefined && message.target !== "") {
-      obj.target = message.target;
-    }
-    if (message.options !== undefined) {
-      obj.options = MessageOptions.toJSON(message.options);
-    }
-    return obj;
-  },
+            message.target = reader.string();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
 
-  create<I extends Exact<DeepPartial<ScalaPbOptions_AuxMessageOptions>, I>>(
-    base?: I,
-  ): ScalaPbOptions_AuxMessageOptions {
-    return ScalaPbOptions_AuxMessageOptions.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<ScalaPbOptions_AuxMessageOptions>, I>>(
-    object: I,
-  ): ScalaPbOptions_AuxMessageOptions {
-    const message = createBaseScalaPbOptions_AuxMessageOptions();
-    message.target = object.target ?? "";
-    message.options = (object.options !== undefined && object.options !== null)
-      ? MessageOptions.fromPartial(object.options)
-      : undefined;
-    return message;
-  },
-};
+            message.options = MessageOptions.decode(reader, reader.uint32());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): ScalaPbOptions_AuxMessageOptions {
+      return {
+        target: isSet(object.target) ? globalThis.String(object.target) : "",
+        options: isSet(object.options)
+          ? MessageOptions.fromJSON(object.options)
+          : undefined,
+      };
+    },
+
+    toJSON(message: ScalaPbOptions_AuxMessageOptions): unknown {
+      const obj: any = {};
+      if (message.target !== undefined && message.target !== "") {
+        obj.target = message.target;
+      }
+      if (message.options !== undefined) {
+        obj.options = MessageOptions.toJSON(message.options);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<ScalaPbOptions_AuxMessageOptions>, I>>(
+      base?: I,
+    ): ScalaPbOptions_AuxMessageOptions {
+      return ScalaPbOptions_AuxMessageOptions.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<
+      I extends Exact<DeepPartial<ScalaPbOptions_AuxMessageOptions>, I>,
+    >(object: I): ScalaPbOptions_AuxMessageOptions {
+      const message = createBaseScalaPbOptions_AuxMessageOptions();
+      message.target = object.target ?? "";
+      message.options =
+        object.options !== undefined && object.options !== null
+          ? MessageOptions.fromPartial(object.options)
+          : undefined;
+      return message;
+    },
+  };
 
 function createBaseScalaPbOptions_AuxFieldOptions(): ScalaPbOptions_AuxFieldOptions {
   return { target: "", options: undefined };
 }
 
-export const ScalaPbOptions_AuxFieldOptions: MessageFns<ScalaPbOptions_AuxFieldOptions> = {
-  encode(message: ScalaPbOptions_AuxFieldOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.target !== undefined && message.target !== "") {
-      writer.uint32(10).string(message.target);
-    }
-    if (message.options !== undefined) {
-      FieldOptions.encode(message.options, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): ScalaPbOptions_AuxFieldOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseScalaPbOptions_AuxFieldOptions();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.target = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.options = FieldOptions.decode(reader, reader.uint32());
-          continue;
-        }
+export const ScalaPbOptions_AuxFieldOptions: MessageFns<ScalaPbOptions_AuxFieldOptions> =
+  {
+    encode(
+      message: ScalaPbOptions_AuxFieldOptions,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.target !== undefined && message.target !== "") {
+        writer.uint32(10).string(message.target);
       }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
+      if (message.options !== undefined) {
+        FieldOptions.encode(message.options, writer.uint32(18).fork()).join();
       }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
+      return writer;
+    },
 
-  fromJSON(object: any): ScalaPbOptions_AuxFieldOptions {
-    return {
-      target: isSet(object.target) ? globalThis.String(object.target) : "",
-      options: isSet(object.options) ? FieldOptions.fromJSON(object.options) : undefined,
-    };
-  },
+    decode(
+      input: BinaryReader | Uint8Array,
+      length?: number,
+    ): ScalaPbOptions_AuxFieldOptions {
+      const reader =
+        input instanceof BinaryReader ? input : new BinaryReader(input);
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseScalaPbOptions_AuxFieldOptions();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
 
-  toJSON(message: ScalaPbOptions_AuxFieldOptions): unknown {
-    const obj: any = {};
-    if (message.target !== undefined && message.target !== "") {
-      obj.target = message.target;
-    }
-    if (message.options !== undefined) {
-      obj.options = FieldOptions.toJSON(message.options);
-    }
-    return obj;
-  },
+            message.target = reader.string();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
 
-  create<I extends Exact<DeepPartial<ScalaPbOptions_AuxFieldOptions>, I>>(base?: I): ScalaPbOptions_AuxFieldOptions {
-    return ScalaPbOptions_AuxFieldOptions.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<ScalaPbOptions_AuxFieldOptions>, I>>(
-    object: I,
-  ): ScalaPbOptions_AuxFieldOptions {
-    const message = createBaseScalaPbOptions_AuxFieldOptions();
-    message.target = object.target ?? "";
-    message.options = (object.options !== undefined && object.options !== null)
-      ? FieldOptions.fromPartial(object.options)
-      : undefined;
-    return message;
-  },
-};
+            message.options = FieldOptions.decode(reader, reader.uint32());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): ScalaPbOptions_AuxFieldOptions {
+      return {
+        target: isSet(object.target) ? globalThis.String(object.target) : "",
+        options: isSet(object.options)
+          ? FieldOptions.fromJSON(object.options)
+          : undefined,
+      };
+    },
+
+    toJSON(message: ScalaPbOptions_AuxFieldOptions): unknown {
+      const obj: any = {};
+      if (message.target !== undefined && message.target !== "") {
+        obj.target = message.target;
+      }
+      if (message.options !== undefined) {
+        obj.options = FieldOptions.toJSON(message.options);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<ScalaPbOptions_AuxFieldOptions>, I>>(
+      base?: I,
+    ): ScalaPbOptions_AuxFieldOptions {
+      return ScalaPbOptions_AuxFieldOptions.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<
+      I extends Exact<DeepPartial<ScalaPbOptions_AuxFieldOptions>, I>,
+    >(object: I): ScalaPbOptions_AuxFieldOptions {
+      const message = createBaseScalaPbOptions_AuxFieldOptions();
+      message.target = object.target ?? "";
+      message.options =
+        object.options !== undefined && object.options !== null
+          ? FieldOptions.fromPartial(object.options)
+          : undefined;
+      return message;
+    },
+  };
 
 function createBaseScalaPbOptions_AuxEnumOptions(): ScalaPbOptions_AuxEnumOptions {
   return { target: "", options: undefined };
 }
 
-export const ScalaPbOptions_AuxEnumOptions: MessageFns<ScalaPbOptions_AuxEnumOptions> = {
-  encode(message: ScalaPbOptions_AuxEnumOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.target !== undefined && message.target !== "") {
-      writer.uint32(10).string(message.target);
-    }
-    if (message.options !== undefined) {
-      EnumOptions.encode(message.options, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): ScalaPbOptions_AuxEnumOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseScalaPbOptions_AuxEnumOptions();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.target = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.options = EnumOptions.decode(reader, reader.uint32());
-          continue;
-        }
+export const ScalaPbOptions_AuxEnumOptions: MessageFns<ScalaPbOptions_AuxEnumOptions> =
+  {
+    encode(
+      message: ScalaPbOptions_AuxEnumOptions,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.target !== undefined && message.target !== "") {
+        writer.uint32(10).string(message.target);
       }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
+      if (message.options !== undefined) {
+        EnumOptions.encode(message.options, writer.uint32(18).fork()).join();
       }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
+      return writer;
+    },
 
-  fromJSON(object: any): ScalaPbOptions_AuxEnumOptions {
-    return {
-      target: isSet(object.target) ? globalThis.String(object.target) : "",
-      options: isSet(object.options) ? EnumOptions.fromJSON(object.options) : undefined,
-    };
-  },
+    decode(
+      input: BinaryReader | Uint8Array,
+      length?: number,
+    ): ScalaPbOptions_AuxEnumOptions {
+      const reader =
+        input instanceof BinaryReader ? input : new BinaryReader(input);
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseScalaPbOptions_AuxEnumOptions();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
 
-  toJSON(message: ScalaPbOptions_AuxEnumOptions): unknown {
-    const obj: any = {};
-    if (message.target !== undefined && message.target !== "") {
-      obj.target = message.target;
-    }
-    if (message.options !== undefined) {
-      obj.options = EnumOptions.toJSON(message.options);
-    }
-    return obj;
-  },
+            message.target = reader.string();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
 
-  create<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumOptions>, I>>(base?: I): ScalaPbOptions_AuxEnumOptions {
-    return ScalaPbOptions_AuxEnumOptions.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumOptions>, I>>(
-    object: I,
-  ): ScalaPbOptions_AuxEnumOptions {
-    const message = createBaseScalaPbOptions_AuxEnumOptions();
-    message.target = object.target ?? "";
-    message.options = (object.options !== undefined && object.options !== null)
-      ? EnumOptions.fromPartial(object.options)
-      : undefined;
-    return message;
-  },
-};
+            message.options = EnumOptions.decode(reader, reader.uint32());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): ScalaPbOptions_AuxEnumOptions {
+      return {
+        target: isSet(object.target) ? globalThis.String(object.target) : "",
+        options: isSet(object.options)
+          ? EnumOptions.fromJSON(object.options)
+          : undefined,
+      };
+    },
+
+    toJSON(message: ScalaPbOptions_AuxEnumOptions): unknown {
+      const obj: any = {};
+      if (message.target !== undefined && message.target !== "") {
+        obj.target = message.target;
+      }
+      if (message.options !== undefined) {
+        obj.options = EnumOptions.toJSON(message.options);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumOptions>, I>>(
+      base?: I,
+    ): ScalaPbOptions_AuxEnumOptions {
+      return ScalaPbOptions_AuxEnumOptions.fromPartial(base ?? ({} as any));
+    },
+    fromPartial<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumOptions>, I>>(
+      object: I,
+    ): ScalaPbOptions_AuxEnumOptions {
+      const message = createBaseScalaPbOptions_AuxEnumOptions();
+      message.target = object.target ?? "";
+      message.options =
+        object.options !== undefined && object.options !== null
+          ? EnumOptions.fromPartial(object.options)
+          : undefined;
+      return message;
+    },
+  };
 
 function createBaseScalaPbOptions_AuxEnumValueOptions(): ScalaPbOptions_AuxEnumValueOptions {
   return { target: "", options: undefined };
 }
 
-export const ScalaPbOptions_AuxEnumValueOptions: MessageFns<ScalaPbOptions_AuxEnumValueOptions> = {
-  encode(message: ScalaPbOptions_AuxEnumValueOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.target !== undefined && message.target !== "") {
-      writer.uint32(10).string(message.target);
-    }
-    if (message.options !== undefined) {
-      EnumValueOptions.encode(message.options, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): ScalaPbOptions_AuxEnumValueOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseScalaPbOptions_AuxEnumValueOptions();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.target = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.options = EnumValueOptions.decode(reader, reader.uint32());
-          continue;
-        }
+export const ScalaPbOptions_AuxEnumValueOptions: MessageFns<ScalaPbOptions_AuxEnumValueOptions> =
+  {
+    encode(
+      message: ScalaPbOptions_AuxEnumValueOptions,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.target !== undefined && message.target !== "") {
+        writer.uint32(10).string(message.target);
       }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
+      if (message.options !== undefined) {
+        EnumValueOptions.encode(
+          message.options,
+          writer.uint32(18).fork(),
+        ).join();
       }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
+      return writer;
+    },
 
-  fromJSON(object: any): ScalaPbOptions_AuxEnumValueOptions {
-    return {
-      target: isSet(object.target) ? globalThis.String(object.target) : "",
-      options: isSet(object.options) ? EnumValueOptions.fromJSON(object.options) : undefined,
-    };
-  },
+    decode(
+      input: BinaryReader | Uint8Array,
+      length?: number,
+    ): ScalaPbOptions_AuxEnumValueOptions {
+      const reader =
+        input instanceof BinaryReader ? input : new BinaryReader(input);
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseScalaPbOptions_AuxEnumValueOptions();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
 
-  toJSON(message: ScalaPbOptions_AuxEnumValueOptions): unknown {
-    const obj: any = {};
-    if (message.target !== undefined && message.target !== "") {
-      obj.target = message.target;
-    }
-    if (message.options !== undefined) {
-      obj.options = EnumValueOptions.toJSON(message.options);
-    }
-    return obj;
-  },
+            message.target = reader.string();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
 
-  create<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumValueOptions>, I>>(
-    base?: I,
-  ): ScalaPbOptions_AuxEnumValueOptions {
-    return ScalaPbOptions_AuxEnumValueOptions.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumValueOptions>, I>>(
-    object: I,
-  ): ScalaPbOptions_AuxEnumValueOptions {
-    const message = createBaseScalaPbOptions_AuxEnumValueOptions();
-    message.target = object.target ?? "";
-    message.options = (object.options !== undefined && object.options !== null)
-      ? EnumValueOptions.fromPartial(object.options)
-      : undefined;
-    return message;
-  },
-};
+            message.options = EnumValueOptions.decode(reader, reader.uint32());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
+
+    fromJSON(object: any): ScalaPbOptions_AuxEnumValueOptions {
+      return {
+        target: isSet(object.target) ? globalThis.String(object.target) : "",
+        options: isSet(object.options)
+          ? EnumValueOptions.fromJSON(object.options)
+          : undefined,
+      };
+    },
+
+    toJSON(message: ScalaPbOptions_AuxEnumValueOptions): unknown {
+      const obj: any = {};
+      if (message.target !== undefined && message.target !== "") {
+        obj.target = message.target;
+      }
+      if (message.options !== undefined) {
+        obj.options = EnumValueOptions.toJSON(message.options);
+      }
+      return obj;
+    },
+
+    create<I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumValueOptions>, I>>(
+      base?: I,
+    ): ScalaPbOptions_AuxEnumValueOptions {
+      return ScalaPbOptions_AuxEnumValueOptions.fromPartial(
+        base ?? ({} as any),
+      );
+    },
+    fromPartial<
+      I extends Exact<DeepPartial<ScalaPbOptions_AuxEnumValueOptions>, I>,
+    >(object: I): ScalaPbOptions_AuxEnumValueOptions {
+      const message = createBaseScalaPbOptions_AuxEnumValueOptions();
+      message.target = object.target ?? "";
+      message.options =
+        object.options !== undefined && object.options !== null
+          ? EnumValueOptions.fromPartial(object.options)
+          : undefined;
+      return message;
+    },
+  };
 
 function createBaseMessageOptions(): MessageOptions {
   return {
@@ -1391,7 +1542,10 @@ function createBaseMessageOptions(): MessageOptions {
 }
 
 export const MessageOptions: MessageFns<MessageOptions> = {
-  encode(message: MessageOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: MessageOptions,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     for (const v of message.extends) {
       writer.uint32(10).string(v!);
     }
@@ -1416,7 +1570,10 @@ export const MessageOptions: MessageFns<MessageOptions> = {
     for (const v of message.unknownFieldsAnnotations) {
       writer.uint32(66).string(v!);
     }
-    if (message.noDefaultValuesInConstructor !== undefined && message.noDefaultValuesInConstructor !== false) {
+    if (
+      message.noDefaultValuesInConstructor !== undefined &&
+      message.noDefaultValuesInConstructor !== false
+    ) {
       writer.uint32(72).bool(message.noDefaultValuesInConstructor);
     }
     for (const v of message.sealedOneofCompanionExtends) {
@@ -1426,7 +1583,8 @@ export const MessageOptions: MessageFns<MessageOptions> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): MessageOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMessageOptions();
     while (reader.pos < end) {
@@ -1523,7 +1681,9 @@ export const MessageOptions: MessageFns<MessageOptions> = {
 
   fromJSON(object: any): MessageOptions {
     return {
-      extends: globalThis.Array.isArray(object?.extends) ? object.extends.map((e: any) => globalThis.String(e)) : [],
+      extends: globalThis.Array.isArray(object?.extends)
+        ? object.extends.map((e: any) => globalThis.String(e))
+        : [],
       companionExtends: globalThis.Array.isArray(object?.companionExtends)
         ? object.companionExtends.map((e: any) => globalThis.String(e))
         : [],
@@ -1531,21 +1691,29 @@ export const MessageOptions: MessageFns<MessageOptions> = {
         ? object.annotations.map((e: any) => globalThis.String(e))
         : [],
       type: isSet(object.type) ? globalThis.String(object.type) : "",
-      companionAnnotations: globalThis.Array.isArray(object?.companionAnnotations)
+      companionAnnotations: globalThis.Array.isArray(
+        object?.companionAnnotations,
+      )
         ? object.companionAnnotations.map((e: any) => globalThis.String(e))
         : [],
       sealedOneofExtends: globalThis.Array.isArray(object?.sealedOneofExtends)
         ? object.sealedOneofExtends.map((e: any) => globalThis.String(e))
         : [],
       noBox: isSet(object.noBox) ? globalThis.Boolean(object.noBox) : false,
-      unknownFieldsAnnotations: globalThis.Array.isArray(object?.unknownFieldsAnnotations)
+      unknownFieldsAnnotations: globalThis.Array.isArray(
+        object?.unknownFieldsAnnotations,
+      )
         ? object.unknownFieldsAnnotations.map((e: any) => globalThis.String(e))
         : [],
       noDefaultValuesInConstructor: isSet(object.noDefaultValuesInConstructor)
         ? globalThis.Boolean(object.noDefaultValuesInConstructor)
         : false,
-      sealedOneofCompanionExtends: globalThis.Array.isArray(object?.sealedOneofCompanionExtends)
-        ? object.sealedOneofCompanionExtends.map((e: any) => globalThis.String(e))
+      sealedOneofCompanionExtends: globalThis.Array.isArray(
+        object?.sealedOneofCompanionExtends,
+      )
+        ? object.sealedOneofCompanionExtends.map((e: any) =>
+            globalThis.String(e),
+          )
         : [],
     };
   },
@@ -1576,7 +1744,10 @@ export const MessageOptions: MessageFns<MessageOptions> = {
     if (message.unknownFieldsAnnotations?.length) {
       obj.unknownFieldsAnnotations = message.unknownFieldsAnnotations;
     }
-    if (message.noDefaultValuesInConstructor !== undefined && message.noDefaultValuesInConstructor !== false) {
+    if (
+      message.noDefaultValuesInConstructor !== undefined &&
+      message.noDefaultValuesInConstructor !== false
+    ) {
       obj.noDefaultValuesInConstructor = message.noDefaultValuesInConstructor;
     }
     if (message.sealedOneofCompanionExtends?.length) {
@@ -1585,21 +1756,29 @@ export const MessageOptions: MessageFns<MessageOptions> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<MessageOptions>, I>>(base?: I): MessageOptions {
+  create<I extends Exact<DeepPartial<MessageOptions>, I>>(
+    base?: I,
+  ): MessageOptions {
     return MessageOptions.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<MessageOptions>, I>>(object: I): MessageOptions {
+  fromPartial<I extends Exact<DeepPartial<MessageOptions>, I>>(
+    object: I,
+  ): MessageOptions {
     const message = createBaseMessageOptions();
     message.extends = object.extends?.map((e) => e) || [];
     message.companionExtends = object.companionExtends?.map((e) => e) || [];
     message.annotations = object.annotations?.map((e) => e) || [];
     message.type = object.type ?? "";
-    message.companionAnnotations = object.companionAnnotations?.map((e) => e) || [];
+    message.companionAnnotations =
+      object.companionAnnotations?.map((e) => e) || [];
     message.sealedOneofExtends = object.sealedOneofExtends?.map((e) => e) || [];
     message.noBox = object.noBox ?? false;
-    message.unknownFieldsAnnotations = object.unknownFieldsAnnotations?.map((e) => e) || [];
-    message.noDefaultValuesInConstructor = object.noDefaultValuesInConstructor ?? false;
-    message.sealedOneofCompanionExtends = object.sealedOneofCompanionExtends?.map((e) => e) || [];
+    message.unknownFieldsAnnotations =
+      object.unknownFieldsAnnotations?.map((e) => e) || [];
+    message.noDefaultValuesInConstructor =
+      object.noDefaultValuesInConstructor ?? false;
+    message.sealedOneofCompanionExtends =
+      object.sealedOneofCompanionExtends?.map((e) => e) || [];
     return message;
   },
 };
@@ -1609,7 +1788,10 @@ function createBaseCollection(): Collection {
 }
 
 export const Collection: MessageFns<Collection> = {
-  encode(message: Collection, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: Collection,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     if (message.type !== undefined && message.type !== "") {
       writer.uint32(10).string(message.type);
     }
@@ -1623,7 +1805,8 @@ export const Collection: MessageFns<Collection> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): Collection {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCollection();
     while (reader.pos < end) {
@@ -1665,7 +1848,9 @@ export const Collection: MessageFns<Collection> = {
   fromJSON(object: any): Collection {
     return {
       type: isSet(object.type) ? globalThis.String(object.type) : "",
-      nonEmpty: isSet(object.nonEmpty) ? globalThis.Boolean(object.nonEmpty) : false,
+      nonEmpty: isSet(object.nonEmpty)
+        ? globalThis.Boolean(object.nonEmpty)
+        : false,
       adapter: isSet(object.adapter) ? globalThis.String(object.adapter) : "",
     };
   },
@@ -1687,7 +1872,9 @@ export const Collection: MessageFns<Collection> = {
   create<I extends Exact<DeepPartial<Collection>, I>>(base?: I): Collection {
     return Collection.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<Collection>, I>>(object: I): Collection {
+  fromPartial<I extends Exact<DeepPartial<Collection>, I>>(
+    object: I,
+  ): Collection {
     const message = createBaseCollection();
     message.type = object.type ?? "";
     message.nonEmpty = object.nonEmpty ?? false;
@@ -1713,7 +1900,10 @@ function createBaseFieldOptions(): FieldOptions {
 }
 
 export const FieldOptions: MessageFns<FieldOptions> = {
-  encode(message: FieldOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: FieldOptions,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     if (message.type !== undefined && message.type !== "") {
       writer.uint32(10).string(message.type);
     }
@@ -1738,7 +1928,10 @@ export const FieldOptions: MessageFns<FieldOptions> = {
     if (message.mapType !== undefined && message.mapType !== "") {
       writer.uint32(58).string(message.mapType);
     }
-    if (message.noDefaultValueInConstructor !== undefined && message.noDefaultValueInConstructor !== false) {
+    if (
+      message.noDefaultValueInConstructor !== undefined &&
+      message.noDefaultValueInConstructor !== false
+    ) {
       writer.uint32(72).bool(message.noDefaultValueInConstructor);
     }
     if (message.noBox !== undefined && message.noBox !== false) {
@@ -1751,7 +1944,8 @@ export const FieldOptions: MessageFns<FieldOptions> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): FieldOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFieldOptions();
     while (reader.pos < end) {
@@ -1857,11 +2051,19 @@ export const FieldOptions: MessageFns<FieldOptions> = {
   fromJSON(object: any): FieldOptions {
     return {
       type: isSet(object.type) ? globalThis.String(object.type) : "",
-      scalaName: isSet(object.scalaName) ? globalThis.String(object.scalaName) : "",
-      collectionType: isSet(object.collectionType) ? globalThis.String(object.collectionType) : "",
-      collection: isSet(object.collection) ? Collection.fromJSON(object.collection) : undefined,
+      scalaName: isSet(object.scalaName)
+        ? globalThis.String(object.scalaName)
+        : "",
+      collectionType: isSet(object.collectionType)
+        ? globalThis.String(object.collectionType)
+        : "",
+      collection: isSet(object.collection)
+        ? Collection.fromJSON(object.collection)
+        : undefined,
       keyType: isSet(object.keyType) ? globalThis.String(object.keyType) : "",
-      valueType: isSet(object.valueType) ? globalThis.String(object.valueType) : "",
+      valueType: isSet(object.valueType)
+        ? globalThis.String(object.valueType)
+        : "",
       annotations: globalThis.Array.isArray(object?.annotations)
         ? object.annotations.map((e: any) => globalThis.String(e))
         : [],
@@ -1870,7 +2072,9 @@ export const FieldOptions: MessageFns<FieldOptions> = {
         ? globalThis.Boolean(object.noDefaultValueInConstructor)
         : false,
       noBox: isSet(object.noBox) ? globalThis.Boolean(object.noBox) : false,
-      required: isSet(object.required) ? globalThis.Boolean(object.required) : false,
+      required: isSet(object.required)
+        ? globalThis.Boolean(object.required)
+        : false,
     };
   },
 
@@ -1900,7 +2104,10 @@ export const FieldOptions: MessageFns<FieldOptions> = {
     if (message.mapType !== undefined && message.mapType !== "") {
       obj.mapType = message.mapType;
     }
-    if (message.noDefaultValueInConstructor !== undefined && message.noDefaultValueInConstructor !== false) {
+    if (
+      message.noDefaultValueInConstructor !== undefined &&
+      message.noDefaultValueInConstructor !== false
+    ) {
       obj.noDefaultValueInConstructor = message.noDefaultValueInConstructor;
     }
     if (message.noBox !== undefined && message.noBox !== false) {
@@ -1912,22 +2119,28 @@ export const FieldOptions: MessageFns<FieldOptions> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<FieldOptions>, I>>(base?: I): FieldOptions {
+  create<I extends Exact<DeepPartial<FieldOptions>, I>>(
+    base?: I,
+  ): FieldOptions {
     return FieldOptions.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<FieldOptions>, I>>(object: I): FieldOptions {
+  fromPartial<I extends Exact<DeepPartial<FieldOptions>, I>>(
+    object: I,
+  ): FieldOptions {
     const message = createBaseFieldOptions();
     message.type = object.type ?? "";
     message.scalaName = object.scalaName ?? "";
     message.collectionType = object.collectionType ?? "";
-    message.collection = (object.collection !== undefined && object.collection !== null)
-      ? Collection.fromPartial(object.collection)
-      : undefined;
+    message.collection =
+      object.collection !== undefined && object.collection !== null
+        ? Collection.fromPartial(object.collection)
+        : undefined;
     message.keyType = object.keyType ?? "";
     message.valueType = object.valueType ?? "";
     message.annotations = object.annotations?.map((e) => e) || [];
     message.mapType = object.mapType ?? "";
-    message.noDefaultValueInConstructor = object.noDefaultValueInConstructor ?? false;
+    message.noDefaultValueInConstructor =
+      object.noDefaultValueInConstructor ?? false;
     message.noBox = object.noBox ?? false;
     message.required = object.required ?? false;
     return message;
@@ -1946,7 +2159,10 @@ function createBaseEnumOptions(): EnumOptions {
 }
 
 export const EnumOptions: MessageFns<EnumOptions> = {
-  encode(message: EnumOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: EnumOptions,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     for (const v of message.extends) {
       writer.uint32(10).string(v!);
     }
@@ -1969,7 +2185,8 @@ export const EnumOptions: MessageFns<EnumOptions> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): EnumOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEnumOptions();
     while (reader.pos < end) {
@@ -2034,7 +2251,9 @@ export const EnumOptions: MessageFns<EnumOptions> = {
 
   fromJSON(object: any): EnumOptions {
     return {
-      extends: globalThis.Array.isArray(object?.extends) ? object.extends.map((e: any) => globalThis.String(e)) : [],
+      extends: globalThis.Array.isArray(object?.extends)
+        ? object.extends.map((e: any) => globalThis.String(e))
+        : [],
       companionExtends: globalThis.Array.isArray(object?.companionExtends)
         ? object.companionExtends.map((e: any) => globalThis.String(e))
         : [],
@@ -2042,10 +2261,14 @@ export const EnumOptions: MessageFns<EnumOptions> = {
       baseAnnotations: globalThis.Array.isArray(object?.baseAnnotations)
         ? object.baseAnnotations.map((e: any) => globalThis.String(e))
         : [],
-      recognizedAnnotations: globalThis.Array.isArray(object?.recognizedAnnotations)
+      recognizedAnnotations: globalThis.Array.isArray(
+        object?.recognizedAnnotations,
+      )
         ? object.recognizedAnnotations.map((e: any) => globalThis.String(e))
         : [],
-      unrecognizedAnnotations: globalThis.Array.isArray(object?.unrecognizedAnnotations)
+      unrecognizedAnnotations: globalThis.Array.isArray(
+        object?.unrecognizedAnnotations,
+      )
         ? object.unrecognizedAnnotations.map((e: any) => globalThis.String(e))
         : [],
     };
@@ -2077,14 +2300,18 @@ export const EnumOptions: MessageFns<EnumOptions> = {
   create<I extends Exact<DeepPartial<EnumOptions>, I>>(base?: I): EnumOptions {
     return EnumOptions.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<EnumOptions>, I>>(object: I): EnumOptions {
+  fromPartial<I extends Exact<DeepPartial<EnumOptions>, I>>(
+    object: I,
+  ): EnumOptions {
     const message = createBaseEnumOptions();
     message.extends = object.extends?.map((e) => e) || [];
     message.companionExtends = object.companionExtends?.map((e) => e) || [];
     message.type = object.type ?? "";
     message.baseAnnotations = object.baseAnnotations?.map((e) => e) || [];
-    message.recognizedAnnotations = object.recognizedAnnotations?.map((e) => e) || [];
-    message.unrecognizedAnnotations = object.unrecognizedAnnotations?.map((e) => e) || [];
+    message.recognizedAnnotations =
+      object.recognizedAnnotations?.map((e) => e) || [];
+    message.unrecognizedAnnotations =
+      object.unrecognizedAnnotations?.map((e) => e) || [];
     return message;
   },
 };
@@ -2094,7 +2321,10 @@ function createBaseEnumValueOptions(): EnumValueOptions {
 }
 
 export const EnumValueOptions: MessageFns<EnumValueOptions> = {
-  encode(message: EnumValueOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: EnumValueOptions,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     for (const v of message.extends) {
       writer.uint32(10).string(v!);
     }
@@ -2108,7 +2338,8 @@ export const EnumValueOptions: MessageFns<EnumValueOptions> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): EnumValueOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEnumValueOptions();
     while (reader.pos < end) {
@@ -2149,8 +2380,12 @@ export const EnumValueOptions: MessageFns<EnumValueOptions> = {
 
   fromJSON(object: any): EnumValueOptions {
     return {
-      extends: globalThis.Array.isArray(object?.extends) ? object.extends.map((e: any) => globalThis.String(e)) : [],
-      scalaName: isSet(object.scalaName) ? globalThis.String(object.scalaName) : "",
+      extends: globalThis.Array.isArray(object?.extends)
+        ? object.extends.map((e: any) => globalThis.String(e))
+        : [],
+      scalaName: isSet(object.scalaName)
+        ? globalThis.String(object.scalaName)
+        : "",
       annotations: globalThis.Array.isArray(object?.annotations)
         ? object.annotations.map((e: any) => globalThis.String(e))
         : [],
@@ -2171,10 +2406,14 @@ export const EnumValueOptions: MessageFns<EnumValueOptions> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EnumValueOptions>, I>>(base?: I): EnumValueOptions {
+  create<I extends Exact<DeepPartial<EnumValueOptions>, I>>(
+    base?: I,
+  ): EnumValueOptions {
     return EnumValueOptions.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<EnumValueOptions>, I>>(object: I): EnumValueOptions {
+  fromPartial<I extends Exact<DeepPartial<EnumValueOptions>, I>>(
+    object: I,
+  ): EnumValueOptions {
     const message = createBaseEnumValueOptions();
     message.extends = object.extends?.map((e) => e) || [];
     message.scalaName = object.scalaName ?? "";
@@ -2188,7 +2427,10 @@ function createBaseOneofOptions(): OneofOptions {
 }
 
 export const OneofOptions: MessageFns<OneofOptions> = {
-  encode(message: OneofOptions, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: OneofOptions,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     for (const v of message.extends) {
       writer.uint32(10).string(v!);
     }
@@ -2199,7 +2441,8 @@ export const OneofOptions: MessageFns<OneofOptions> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): OneofOptions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOneofOptions();
     while (reader.pos < end) {
@@ -2232,8 +2475,12 @@ export const OneofOptions: MessageFns<OneofOptions> = {
 
   fromJSON(object: any): OneofOptions {
     return {
-      extends: globalThis.Array.isArray(object?.extends) ? object.extends.map((e: any) => globalThis.String(e)) : [],
-      scalaName: isSet(object.scalaName) ? globalThis.String(object.scalaName) : "",
+      extends: globalThis.Array.isArray(object?.extends)
+        ? object.extends.map((e: any) => globalThis.String(e))
+        : [],
+      scalaName: isSet(object.scalaName)
+        ? globalThis.String(object.scalaName)
+        : "",
     };
   },
 
@@ -2248,10 +2495,14 @@ export const OneofOptions: MessageFns<OneofOptions> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<OneofOptions>, I>>(base?: I): OneofOptions {
+  create<I extends Exact<DeepPartial<OneofOptions>, I>>(
+    base?: I,
+  ): OneofOptions {
     return OneofOptions.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<OneofOptions>, I>>(object: I): OneofOptions {
+  fromPartial<I extends Exact<DeepPartial<OneofOptions>, I>>(
+    object: I,
+  ): OneofOptions {
     const message = createBaseOneofOptions();
     message.extends = object.extends?.map((e) => e) || [];
     message.scalaName = object.scalaName ?? "";
@@ -2264,9 +2515,15 @@ function createBaseFieldTransformation(): FieldTransformation {
 }
 
 export const FieldTransformation: MessageFns<FieldTransformation> = {
-  encode(message: FieldTransformation, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: FieldTransformation,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     if (message.when !== undefined) {
-      FieldDescriptorProto.encode(message.when, writer.uint32(10).fork()).join();
+      FieldDescriptorProto.encode(
+        message.when,
+        writer.uint32(10).fork(),
+      ).join();
     }
     if (message.matchType !== undefined && message.matchType !== 0) {
       writer.uint32(16).int32(message.matchType);
@@ -2277,8 +2534,12 @@ export const FieldTransformation: MessageFns<FieldTransformation> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): FieldTransformation {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(
+    input: BinaryReader | Uint8Array,
+    length?: number,
+  ): FieldTransformation {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFieldTransformation();
     while (reader.pos < end) {
@@ -2319,8 +2580,12 @@ export const FieldTransformation: MessageFns<FieldTransformation> = {
 
   fromJSON(object: any): FieldTransformation {
     return {
-      when: isSet(object.when) ? FieldDescriptorProto.fromJSON(object.when) : undefined,
-      matchType: isSet(object.matchType) ? matchTypeFromJSON(object.matchType) : 0,
+      when: isSet(object.when)
+        ? FieldDescriptorProto.fromJSON(object.when)
+        : undefined,
+      matchType: isSet(object.matchType)
+        ? matchTypeFromJSON(object.matchType)
+        : 0,
       set: isSet(object.set) ? FieldOptions1.fromJSON(object.set) : undefined,
     };
   },
@@ -2339,16 +2604,24 @@ export const FieldTransformation: MessageFns<FieldTransformation> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<FieldTransformation>, I>>(base?: I): FieldTransformation {
+  create<I extends Exact<DeepPartial<FieldTransformation>, I>>(
+    base?: I,
+  ): FieldTransformation {
     return FieldTransformation.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<FieldTransformation>, I>>(object: I): FieldTransformation {
+  fromPartial<I extends Exact<DeepPartial<FieldTransformation>, I>>(
+    object: I,
+  ): FieldTransformation {
     const message = createBaseFieldTransformation();
-    message.when = (object.when !== undefined && object.when !== null)
-      ? FieldDescriptorProto.fromPartial(object.when)
-      : undefined;
+    message.when =
+      object.when !== undefined && object.when !== null
+        ? FieldDescriptorProto.fromPartial(object.when)
+        : undefined;
     message.matchType = object.matchType ?? 0;
-    message.set = (object.set !== undefined && object.set !== null) ? FieldOptions1.fromPartial(object.set) : undefined;
+    message.set =
+      object.set !== undefined && object.set !== null
+        ? FieldOptions1.fromPartial(object.set)
+        : undefined;
     return message;
   },
 };
@@ -2358,15 +2631,25 @@ function createBasePreprocessorOutput(): PreprocessorOutput {
 }
 
 export const PreprocessorOutput: MessageFns<PreprocessorOutput> = {
-  encode(message: PreprocessorOutput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: PreprocessorOutput,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
     Object.entries(message.optionsByFile).forEach(([key, value]) => {
-      PreprocessorOutput_OptionsByFileEntry.encode({ key: key as any, value }, writer.uint32(10).fork()).join();
+      PreprocessorOutput_OptionsByFileEntry.encode(
+        { key: key as any, value },
+        writer.uint32(10).fork(),
+      ).join();
     });
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): PreprocessorOutput {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(
+    input: BinaryReader | Uint8Array,
+    length?: number,
+  ): PreprocessorOutput {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePreprocessorOutput();
     while (reader.pos < end) {
@@ -2377,7 +2660,10 @@ export const PreprocessorOutput: MessageFns<PreprocessorOutput> = {
             break;
           }
 
-          const entry1 = PreprocessorOutput_OptionsByFileEntry.decode(reader, reader.uint32());
+          const entry1 = PreprocessorOutput_OptionsByFileEntry.decode(
+            reader,
+            reader.uint32(),
+          );
           if (entry1.value !== undefined) {
             message.optionsByFile[entry1.key] = entry1.value;
           }
@@ -2395,10 +2681,12 @@ export const PreprocessorOutput: MessageFns<PreprocessorOutput> = {
   fromJSON(object: any): PreprocessorOutput {
     return {
       optionsByFile: isObject(object.optionsByFile)
-        ? Object.entries(object.optionsByFile).reduce<{ [key: string]: ScalaPbOptions }>((acc, [key, value]) => {
-          acc[key] = ScalaPbOptions.fromJSON(value);
-          return acc;
-        }, {})
+        ? Object.entries(object.optionsByFile).reduce<{
+            [key: string]: ScalaPbOptions;
+          }>((acc, [key, value]) => {
+            acc[key] = ScalaPbOptions.fromJSON(value);
+            return acc;
+          }, {})
         : {},
     };
   },
@@ -2417,20 +2705,23 @@ export const PreprocessorOutput: MessageFns<PreprocessorOutput> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PreprocessorOutput>, I>>(base?: I): PreprocessorOutput {
+  create<I extends Exact<DeepPartial<PreprocessorOutput>, I>>(
+    base?: I,
+  ): PreprocessorOutput {
     return PreprocessorOutput.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<PreprocessorOutput>, I>>(object: I): PreprocessorOutput {
+  fromPartial<I extends Exact<DeepPartial<PreprocessorOutput>, I>>(
+    object: I,
+  ): PreprocessorOutput {
     const message = createBasePreprocessorOutput();
-    message.optionsByFile = Object.entries(object.optionsByFile ?? {}).reduce<{ [key: string]: ScalaPbOptions }>(
-      (acc, [key, value]) => {
-        if (value !== undefined) {
-          acc[key] = ScalaPbOptions.fromPartial(value);
-        }
-        return acc;
-      },
-      {},
-    );
+    message.optionsByFile = Object.entries(object.optionsByFile ?? {}).reduce<{
+      [key: string]: ScalaPbOptions;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = ScalaPbOptions.fromPartial(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
@@ -2439,95 +2730,122 @@ function createBasePreprocessorOutput_OptionsByFileEntry(): PreprocessorOutput_O
   return { key: "", value: undefined };
 }
 
-export const PreprocessorOutput_OptionsByFileEntry: MessageFns<PreprocessorOutput_OptionsByFileEntry> = {
-  encode(message: PreprocessorOutput_OptionsByFileEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
-    }
-    if (message.value !== undefined) {
-      ScalaPbOptions.encode(message.value, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): PreprocessorOutput_OptionsByFileEntry {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePreprocessorOutput_OptionsByFileEntry();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.key = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.value = ScalaPbOptions.decode(reader, reader.uint32());
-          continue;
-        }
+export const PreprocessorOutput_OptionsByFileEntry: MessageFns<PreprocessorOutput_OptionsByFileEntry> =
+  {
+    encode(
+      message: PreprocessorOutput_OptionsByFileEntry,
+      writer: BinaryWriter = new BinaryWriter(),
+    ): BinaryWriter {
+      if (message.key !== "") {
+        writer.uint32(10).string(message.key);
       }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
+      if (message.value !== undefined) {
+        ScalaPbOptions.encode(message.value, writer.uint32(18).fork()).join();
       }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
+      return writer;
+    },
 
-  fromJSON(object: any): PreprocessorOutput_OptionsByFileEntry {
-    return {
-      key: isSet(object.key) ? globalThis.String(object.key) : "",
-      value: isSet(object.value) ? ScalaPbOptions.fromJSON(object.value) : undefined,
-    };
-  },
+    decode(
+      input: BinaryReader | Uint8Array,
+      length?: number,
+    ): PreprocessorOutput_OptionsByFileEntry {
+      const reader =
+        input instanceof BinaryReader ? input : new BinaryReader(input);
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBasePreprocessorOutput_OptionsByFileEntry();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
 
-  toJSON(message: PreprocessorOutput_OptionsByFileEntry): unknown {
-    const obj: any = {};
-    if (message.key !== "") {
-      obj.key = message.key;
-    }
-    if (message.value !== undefined) {
-      obj.value = ScalaPbOptions.toJSON(message.value);
-    }
-    return obj;
-  },
+            message.key = reader.string();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
 
-  create<I extends Exact<DeepPartial<PreprocessorOutput_OptionsByFileEntry>, I>>(
-    base?: I,
-  ): PreprocessorOutput_OptionsByFileEntry {
-    return PreprocessorOutput_OptionsByFileEntry.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<PreprocessorOutput_OptionsByFileEntry>, I>>(
-    object: I,
-  ): PreprocessorOutput_OptionsByFileEntry {
-    const message = createBasePreprocessorOutput_OptionsByFileEntry();
-    message.key = object.key ?? "";
-    message.value = (object.value !== undefined && object.value !== null)
-      ? ScalaPbOptions.fromPartial(object.value)
-      : undefined;
-    return message;
-  },
-};
+            message.value = ScalaPbOptions.decode(reader, reader.uint32());
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    },
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+    fromJSON(object: any): PreprocessorOutput_OptionsByFileEntry {
+      return {
+        key: isSet(object.key) ? globalThis.String(object.key) : "",
+        value: isSet(object.value)
+          ? ScalaPbOptions.fromJSON(object.value)
+          : undefined,
+      };
+    },
 
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
+    toJSON(message: PreprocessorOutput_OptionsByFileEntry): unknown {
+      const obj: any = {};
+      if (message.key !== "") {
+        obj.key = message.key;
+      }
+      if (message.value !== undefined) {
+        obj.value = ScalaPbOptions.toJSON(message.value);
+      }
+      return obj;
+    },
+
+    create<
+      I extends Exact<DeepPartial<PreprocessorOutput_OptionsByFileEntry>, I>,
+    >(base?: I): PreprocessorOutput_OptionsByFileEntry {
+      return PreprocessorOutput_OptionsByFileEntry.fromPartial(
+        base ?? ({} as any),
+      );
+    },
+    fromPartial<
+      I extends Exact<DeepPartial<PreprocessorOutput_OptionsByFileEntry>, I>,
+    >(object: I): PreprocessorOutput_OptionsByFileEntry {
+      const message = createBasePreprocessorOutput_OptionsByFileEntry();
+      message.key = object.key ?? "";
+      message.value =
+        object.value !== undefined && object.value !== null
+          ? ScalaPbOptions.fromPartial(object.value)
+          : undefined;
+      return message;
+    },
+  };
+
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
+
+export type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends globalThis.Array<infer U>
+    ? globalThis.Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeepPartial<U>>
+      : T extends {}
+        ? { [K in keyof T]?: DeepPartial<T[K]> }
+        : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+export type Exact<P, I extends P> = P extends Builtin
+  ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
+      [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
+    };
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;
