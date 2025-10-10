@@ -14,13 +14,11 @@ import type { Address } from "./Address";
 import type { Direction } from "./Direction";
 import type { Int64 } from "./Int64";
 import type { UInt64 } from "./UInt64";
-import type { UnixTimestamp } from "./UnixTimestamp";
 
 import { AddressFromJSON, AddressToJSON } from "./Address";
 import { DirectionFromJSON, DirectionToJSON } from "./Direction";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
-import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
  *
@@ -42,10 +40,10 @@ export interface Transfer {
   cost: UInt64;
   /**
    *
-   * @type {UnixTimestamp}
+   * @type {string}
    * @memberof Transfer
    */
-  date: UnixTimestamp;
+  date: string;
   /**
    *
    * @type {Direction}
@@ -105,7 +103,7 @@ export function TransferFromJSONTyped(
   return {
     amount: Int64FromJSON(json.amount),
     cost: UInt64FromJSON(json.cost),
-    date: UnixTimestampFromJSON(json.date),
+    date: json.date,
     direction: DirectionFromJSON(json.direction),
     id: json.id,
     toAddress: AddressFromJSON(json.to_address),
@@ -127,7 +125,7 @@ export function TransferToJSONTyped(
   return {
     amount: Int64ToJSON(value.amount),
     cost: UInt64ToJSON(value.cost),
-    date: UnixTimestampToJSON(value.date),
+    date: value.date,
     direction: DirectionToJSON(value.direction),
     id: value.id,
     to_address: AddressToJSON(value.toAddress),

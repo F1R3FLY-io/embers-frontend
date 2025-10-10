@@ -1,1 +1,1 @@
-export type DeployAgentsTeamResp = { name: string; contract: string };
+export type DeployAgentsTeamResp = { contract: string };

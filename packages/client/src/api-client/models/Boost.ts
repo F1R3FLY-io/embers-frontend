@@ -12,11 +12,9 @@
 
 import type { Direction } from "./Direction";
 import type { Int64 } from "./Int64";
-import type { UnixTimestamp } from "./UnixTimestamp";
 
 import { DirectionFromJSON, DirectionToJSON } from "./Direction";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
-import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
  *
@@ -32,10 +30,10 @@ export interface Boost {
   amount: Int64;
   /**
    *
-   * @type {UnixTimestamp}
+   * @type {string}
    * @memberof Boost
    */
-  date: UnixTimestamp;
+  date: string;
   /**
    *
    * @type {Direction}
@@ -100,7 +98,7 @@ export function BoostFromJSONTyped(
   }
   return {
     amount: Int64FromJSON(json.amount),
-    date: UnixTimestampFromJSON(json.date),
+    date: json.date,
     direction: DirectionFromJSON(json.direction),
     id: json.id,
     post: json.post,
@@ -122,7 +120,7 @@ export function BoostToJSONTyped(
 
   return {
     amount: Int64ToJSON(value.amount),
-    date: UnixTimestampToJSON(value.date),
+    date: value.date,
     direction: DirectionToJSON(value.direction),
     id: value.id,
     post: value.post,

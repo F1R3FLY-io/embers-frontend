@@ -17,37 +17,37 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
 /**
  *
  * @export
- * @interface DeployAgentsTeamResp
+ * @interface RunAgentsTeamResp
  */
-export interface DeployAgentsTeamResp {
+export interface RunAgentsTeamResp {
   /**
    *
    * @type {Base64}
-   * @memberof DeployAgentsTeamResp
+   * @memberof RunAgentsTeamResp
    */
   contract: Base64;
 }
 
 /**
- * Check if a given object implements the DeployAgentsTeamResp interface.
+ * Check if a given object implements the RunAgentsTeamResp interface.
  */
-export function instanceOfDeployAgentsTeamResp(
+export function instanceOfRunAgentsTeamResp(
   value: object,
-): value is DeployAgentsTeamResp {
+): value is RunAgentsTeamResp {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
   return true;
 }
 
-export function DeployAgentsTeamRespFromJSON(json: any): DeployAgentsTeamResp {
-  return DeployAgentsTeamRespFromJSONTyped(json, false);
+export function RunAgentsTeamRespFromJSON(json: any): RunAgentsTeamResp {
+  return RunAgentsTeamRespFromJSONTyped(json, false);
 }
 
-export function DeployAgentsTeamRespFromJSONTyped(
+export function RunAgentsTeamRespFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): DeployAgentsTeamResp {
+): RunAgentsTeamResp {
   if (json == null) {
     return json;
   }
@@ -56,12 +56,12 @@ export function DeployAgentsTeamRespFromJSONTyped(
   };
 }
 
-export function DeployAgentsTeamRespToJSON(json: any): DeployAgentsTeamResp {
-  return DeployAgentsTeamRespToJSONTyped(json, false);
+export function RunAgentsTeamRespToJSON(json: any): RunAgentsTeamResp {
+  return RunAgentsTeamRespToJSONTyped(json, false);
 }
 
-export function DeployAgentsTeamRespToJSONTyped(
-  value?: DeployAgentsTeamResp | null,
+export function RunAgentsTeamRespToJSONTyped(
+  value?: RunAgentsTeamResp | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {

@@ -12,11 +12,9 @@
 
 import type { Int64 } from "./Int64";
 import type { RequestStatus } from "./RequestStatus";
-import type { UnixTimestamp } from "./UnixTimestamp";
 
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 import { RequestStatusFromJSON, RequestStatusToJSON } from "./RequestStatus";
-import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 
 /**
  *
@@ -32,10 +30,10 @@ export interface Request {
   amount: Int64;
   /**
    *
-   * @type {UnixTimestamp}
+   * @type {string}
    * @memberof Request
    */
-  date: UnixTimestamp;
+  date: string;
   /**
    *
    * @type {string}
@@ -82,7 +80,7 @@ export function RequestFromJSONTyped(
   }
   return {
     amount: Int64FromJSON(json.amount),
-    date: UnixTimestampFromJSON(json.date),
+    date: json.date,
     id: json.id,
     status: RequestStatusFromJSON(json.status),
   };
@@ -102,7 +100,7 @@ export function RequestToJSONTyped(
 
   return {
     amount: Int64ToJSON(value.amount),
-    date: UnixTimestampToJSON(value.date),
+    date: value.date,
     id: value.id,
     status: RequestStatusToJSON(value.status),
   };

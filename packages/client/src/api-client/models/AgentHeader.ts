@@ -10,10 +10,6 @@
  * Do not edit the class manually.
  */
 
-import type { UnixTimestamp } from "./UnixTimestamp";
-
-import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
-
 /**
  *
  * @export
@@ -22,10 +18,10 @@ import { UnixTimestampFromJSON, UnixTimestampToJSON } from "./UnixTimestamp";
 export interface AgentHeader {
   /**
    *
-   * @type {UnixTimestamp}
+   * @type {string}
    * @memberof AgentHeader
    */
-  createdAt: UnixTimestamp;
+  createdAt: string;
   /**
    *
    * @type {string}
@@ -89,7 +85,7 @@ export function AgentHeaderFromJSONTyped(
     return json;
   }
   return {
-    createdAt: UnixTimestampFromJSON(json.created_at),
+    createdAt: json.created_at,
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
@@ -111,7 +107,7 @@ export function AgentHeaderToJSONTyped(
   }
 
   return {
-    created_at: UnixTimestampToJSON(value.createdAt),
+    created_at: value.createdAt,
     id: value.id,
     logo: value.logo,
     name: value.name,
