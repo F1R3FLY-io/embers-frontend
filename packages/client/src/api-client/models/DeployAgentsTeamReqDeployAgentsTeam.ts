@@ -12,9 +12,11 @@
 
 import type { Address } from "./Address";
 import type { Int64 } from "./Int64";
+import type { RegistryDeploy } from "./RegistryDeploy";
 
 import { AddressFromJSON, AddressToJSON } from "./Address";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
+import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
 
 /**
  *
@@ -28,6 +30,12 @@ export interface DeployAgentsTeamReqDeployAgentsTeam {
    * @memberof DeployAgentsTeamReqDeployAgentsTeam
    */
   address: Address;
+  /**
+   *
+   * @type {RegistryDeploy}
+   * @memberof DeployAgentsTeamReqDeployAgentsTeam
+   */
+  deploy: RegistryDeploy;
   /**
    *
    * @type {string}
@@ -81,6 +89,9 @@ export function instanceOfDeployAgentsTeamReqDeployAgentsTeam(
   if (!("phloLimit" in value) || value.phloLimit === undefined) {
     return false;
   }
+  if (!("deploy" in value) || value.deploy === undefined) {
+    return false;
+  }
   if (!("type" in value) || value.type === undefined) {
     return false;
   }
@@ -102,6 +113,7 @@ export function DeployAgentsTeamReqDeployAgentsTeamFromJSONTyped(
   }
   return {
     address: AddressFromJSON(json.address),
+    deploy: RegistryDeployFromJSON(json.deploy),
     id: json.id,
     phloLimit: Int64FromJSON(json.phlo_limit),
     type: json.type,
@@ -125,6 +137,7 @@ export function DeployAgentsTeamReqDeployAgentsTeamToJSONTyped(
 
   return {
     address: AddressToJSON(value.address),
+    deploy: RegistryDeployToJSON(value.deploy),
     id: value.id,
     phlo_limit: Int64ToJSON(value.phloLimit),
     type: value.type,

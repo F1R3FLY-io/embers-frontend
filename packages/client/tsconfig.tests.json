@@ -29,5 +29,5 @@
     // "exactOptionalPropertyTypes": true,
     "skipLibCheck": true
   },
-  "include": ["tests", "mocks"]
+  "include": ["tests"]
 }

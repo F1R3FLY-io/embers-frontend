@@ -492,31 +492,6 @@
         }
       }
     },
-    "/api/ai-agents-teams/run-demo": {
-      "post": {
-        "tags": ["AIAgentsTeams"],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/RunDemoReq"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/ai-agents-teams/{address}": {
       "get": {
         "tags": ["AIAgentsTeams"],
@@ -757,6 +732,58 @@
         }
       }
     },
+    "/api/ai-agents-teams/run/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/RunAgentsTeamReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunAgentsTeamResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/run/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ai-agents-teams/{id}/save/prepare": {
       "post": {
         "tags": ["AIAgentsTeams"],
@@ -844,7 +871,7 @@
           },
           "created_at": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "name": {
             "type": "string"
@@ -873,7 +900,7 @@
           },
           "created_at": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "name": {
             "type": "string"
@@ -912,7 +939,7 @@
           },
           "created_at": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "name": {
             "type": "string"
@@ -942,7 +969,7 @@
           },
           "created_at": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "name": {
             "type": "string"
@@ -984,7 +1011,7 @@
           },
           "date": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "amount": {
             "type": "string",
@@ -1167,7 +1194,7 @@
       "DeployAgentsTeam": {
         "type": "object",
         "title": "DeployAgentsTeam",
-        "required": ["id", "version", "address", "phlo_limit"],
+        "required": ["id", "version", "address", "phlo_limit", "deploy"],
         "properties": {
           "id": {
             "type": "string"
@@ -1182,6 +1209,9 @@
           "phlo_limit": {
             "type": "string",
             "format": "int64"
+          },
+          "deploy": {
+            "$ref": "#/components/schemas/RegistryDeploy"
           }
         }
       },
@@ -1242,11 +1272,8 @@
       "DeployAgentsTeamResp": {
         "type": "object",
         "title": "DeployAgentsTeamResp",
-        "required": ["name", "contract"],
+        "required": ["contract"],
         "properties": {
-          "name": {
-            "type": "string"
-          },
           "contract": {
             "type": "string",
             "format": "bytes"
@@ -1270,7 +1297,7 @@
       "DeployGraph": {
         "type": "object",
         "title": "DeployGraph",
-        "required": ["graph", "phlo_limit"],
+        "required": ["graph", "phlo_limit", "deploy"],
         "properties": {
           "graph": {
             "type": "string",
@@ -1279,6 +1306,9 @@
           "phlo_limit": {
             "type": "string",
             "format": "int64"
+          },
+          "deploy": {
+            "$ref": "#/components/schemas/RegistryDeploy"
           }
         }
       },
@@ -1444,6 +1474,29 @@
         "type": "string",
         "enum": ["debug", "info", "error"]
       },
+      "RegistryDeploy": {
+        "type": "object",
+        "title": "RegistryDeploy",
+        "required": ["timestamp", "version", "uri_pub_key", "signature"],
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
+          "version": {
+            "type": "string",
+            "format": "int64"
+          },
+          "uri_pub_key": {
+            "type": "string",
+            "format": "public-key"
+          },
+          "signature": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
       "Request": {
         "type": "object",
         "title": "Request",
@@ -1454,7 +1507,7 @@
           },
           "date": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "amount": {
             "type": "string",
@@ -1469,16 +1522,31 @@
         "type": "string",
         "enum": ["done", "ongoing", "cancelled"]
       },
-      "RunDemoReq": {
+      "RunAgentsTeamReq": {
         "type": "object",
-        "title": "RunDemoReq",
-        "required": ["name", "prompt"],
+        "title": "RunAgentsTeamReq",
+        "required": ["prompt", "phlo_limit", "agents_team"],
         "properties": {
-          "name": {
-            "type": "string"
-          },
           "prompt": {
             "type": "string"
+          },
+          "phlo_limit": {
+            "type": "string",
+            "format": "int64"
+          },
+          "agents_team": {
+            "type": "string"
+          }
+        }
+      },
+      "RunAgentsTeamResp": {
+        "type": "object",
+        "title": "RunAgentsTeamResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -1568,7 +1636,7 @@
           },
           "date": {
             "type": "string",
-            "format": "unix-timestamp"
+            "format": "timestamp-millis"
           },
           "amount": {
             "type": "string",

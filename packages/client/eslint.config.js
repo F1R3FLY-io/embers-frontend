@@ -1,13 +1,11 @@
 import unusedImports from "eslint-plugin-unused-imports";
-import { globalIgnores } from "eslint/config";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import { defineConfig, globalIgnores } from "eslint/config";
 
 import baseConfig from "../../eslint.config.js";
 
-export default tseslint.config(
+export default defineConfig(
   baseConfig,
-  globalIgnores(["coverage", "docs", "mocks"]),
+  globalIgnores(["coverage", "docs", "src/generated"]),
   {
     files: ["src/api-client/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
@@ -41,15 +39,6 @@ export default tseslint.config(
       "no-control-regex": "off",
       "no-useless-escape": "off",
       "unused-imports/no-unused-imports": "error",
-    },
-  },
-  {
-    files: ["test-with-mocks.js"],
-    languageOptions: {
-      globals: globals.node,
-    },
-    rules: {
-      "no-console": "off",
     },
   },
 );

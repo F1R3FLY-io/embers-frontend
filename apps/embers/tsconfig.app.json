@@ -2,6 +2,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./.tmp/tsconfig.app.tsbuildinfo",
     "incremental": true,
+    "composite": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
     "types": ["vite-plugin-svgr/client"],

@@ -19,7 +19,7 @@ export default defineConfig(
       js.configs.recommended,
       reactPlugin.configs.flat.recommended,
       reactPlugin.configs.flat["jsx-runtime"],
-      reactHooks.configs["recommended-latest"],
+      reactHooks.configs.flat["recommended-latest"],
       reactRefresh.configs.recommended,
       reactRefresh.configs.vite,
       importPlugin.flatConfigs.recommended,

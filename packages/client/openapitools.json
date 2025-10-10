@@ -1,11 +1,12 @@
 {
   "generatorName": "typescript-fetch",
   "typeMappings": {
-    "string+unix-timestamp": "UnixTimestamp",
+    "string+timestamp-millis": "TimestampMillis",
     "string+uint64": "UInt64",
     "string+int64": "Int64",
     "string+bytes": "Base64",
     "string+blockchain-address": "Address",
-    "string+graphl": "Graph"
+    "string+graphl": "Graph",
+    "string+public-key": "PublicKey"
   }
 }

@@ -39,7 +39,7 @@ export class AgentsApiSdk {
    * @param createAgentReq The agent creation request
    * @return Promise with Agent entity or reject with error
    */
-  public async createAgent(createAgentReq: CreateAgentReq) {
+  public async create(createAgentReq: CreateAgentReq) {
     // First prepare the contract for creating an agent
     const prepareContract = async () =>
       this.client.apiAiAgentsCreatePreparePost({
@@ -106,7 +106,7 @@ export class AgentsApiSdk {
    * @param id The ID of the agent
    * @param version The version to deploy
    */
-  public async deployAgent(id: string, version: string, phloLimit: Amount) {
+  public async deploy(id: string, version: string, phloLimit: Amount) {
     // Get the contract and sign it
     const contract = async () =>
       this.client.apiAiAgentsDeployPreparePost({
@@ -143,7 +143,7 @@ export class AgentsApiSdk {
   /**
    * Gets all agents owned by the current address.
    */
-  public async getAgents() {
+  public async get() {
     return this.client.apiAiAgentsAddressGet({
       address: this.address,
     });
@@ -154,7 +154,7 @@ export class AgentsApiSdk {
    * @param id The ID of the agent
    * @param version The version to retrieve
    */
-  public async getAgentVersion(id: string, version: string) {
+  public async getVersion(id: string, version: string) {
     return this.client.apiAiAgentsAddressIdVersionsVersionGet({
       address: this.address,
       id,
@@ -166,7 +166,7 @@ export class AgentsApiSdk {
    * Gets all versions of a specific agent.
    * @param id The ID of the agent
    */
-  public async getAgentVersions(id: string) {
+  public async getVersions(id: string) {
     return this.client.apiAiAgentsAddressIdVersionsGet({
       address: this.address,
       id,
@@ -179,7 +179,7 @@ export class AgentsApiSdk {
    * @param agentReq The agent update request
    * @return Promise with Agent entity or reject with error
    */
-  public async saveAgentVersion(id: string, agentReq: CreateAgentReq) {
+  public async save(id: string, agentReq: CreateAgentReq) {
     const generateContract = async () =>
       this.client.apiAiAgentsIdSavePreparePost({
         createAgentReq: agentReq,
