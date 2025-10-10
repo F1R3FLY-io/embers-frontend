@@ -40,7 +40,7 @@ export interface Par {
 /** Either rholang code or code built in to the interpreter. */
 export interface TaggedContinuation {
   parBody?: ParWithRandom | undefined;
-  scalaBodyRef?: number | undefined;
+  scalaBodyRef?: bigint | undefined;
 }
 
 /**
@@ -54,7 +54,7 @@ export interface ParWithRandom {
 
 /** Cost of the performed operations. */
 export interface PCost {
-  cost: number;
+  cost: bigint;
 }
 
 export interface ListParWithRandom {
@@ -177,7 +177,7 @@ export interface Match {
  */
 export interface Expr {
   gBool?: boolean | undefined;
-  gInt?: number | undefined;
+  gInt?: bigint | undefined;
   gString?: string | undefined;
   gUri?: string | undefined;
   gByteArray?: Uint8Array | undefined;
@@ -676,6 +676,11 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
       ParWithRandom.encode(message.parBody, writer.uint32(10).fork()).join();
     }
     if (message.scalaBodyRef !== undefined) {
+      if (BigInt.asIntN(64, message.scalaBodyRef) !== message.scalaBodyRef) {
+        throw new globalThis.Error(
+          "value provided for field message.scalaBodyRef of type int64 too large",
+        );
+      }
       writer.uint32(16).int64(message.scalaBodyRef);
     }
     return writer;
@@ -705,7 +710,7 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
             break;
           }
 
-          message.scalaBodyRef = longToNumber(reader.int64());
+          message.scalaBodyRef = reader.int64() as bigint;
           continue;
         }
       }
@@ -723,7 +728,7 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
         ? ParWithRandom.fromJSON(object.parBody)
         : undefined,
       scalaBodyRef: isSet(object.scalaBodyRef)
-        ? globalThis.Number(object.scalaBodyRef)
+        ? BigInt(object.scalaBodyRef)
         : undefined,
     };
   },
@@ -734,7 +739,7 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
       obj.parBody = ParWithRandom.toJSON(message.parBody);
     }
     if (message.scalaBodyRef !== undefined) {
-      obj.scalaBodyRef = Math.round(message.scalaBodyRef);
+      obj.scalaBodyRef = message.scalaBodyRef.toString();
     }
     return obj;
   },
@@ -847,7 +852,7 @@ export const ParWithRandom: MessageFns<ParWithRandom> = {
 };
 
 function createBasePCost(): PCost {
-  return { cost: 0 };
+  return { cost: 0n };
 }
 
 export const PCost: MessageFns<PCost> = {
@@ -855,7 +860,12 @@ export const PCost: MessageFns<PCost> = {
     message: PCost,
     writer: BinaryWriter = new BinaryWriter(),
   ): BinaryWriter {
-    if (message.cost !== 0) {
+    if (message.cost !== 0n) {
+      if (BigInt.asUintN(64, message.cost) !== message.cost) {
+        throw new globalThis.Error(
+          "value provided for field message.cost of type uint64 too large",
+        );
+      }
       writer.uint32(8).uint64(message.cost);
     }
     return writer;
@@ -874,7 +884,7 @@ export const PCost: MessageFns<PCost> = {
             break;
           }
 
-          message.cost = longToNumber(reader.uint64());
+          message.cost = reader.uint64() as bigint;
           continue;
         }
       }
@@ -887,13 +897,13 @@ export const PCost: MessageFns<PCost> = {
   },
 
   fromJSON(object: any): PCost {
-    return { cost: isSet(object.cost) ? globalThis.Number(object.cost) : 0 };
+    return { cost: isSet(object.cost) ? BigInt(object.cost) : 0n };
   },
 
   toJSON(message: PCost): unknown {
     const obj: any = {};
-    if (message.cost !== 0) {
-      obj.cost = Math.round(message.cost);
+    if (message.cost !== 0n) {
+      obj.cost = message.cost.toString();
     }
     return obj;
   },
@@ -903,7 +913,7 @@ export const PCost: MessageFns<PCost> = {
   },
   fromPartial<I extends Exact<DeepPartial<PCost>, I>>(object: I): PCost {
     const message = createBasePCost();
-    message.cost = object.cost ?? 0;
+    message.cost = object.cost ?? 0n;
     return message;
   },
 };
@@ -2426,6 +2436,11 @@ export const Expr: MessageFns<Expr> = {
       writer.uint32(8).bool(message.gBool);
     }
     if (message.gInt !== undefined) {
+      if (BigInt.asIntN(64, message.gInt) !== message.gInt) {
+        throw new globalThis.Error(
+          "value provided for field message.gInt of type sint64 too large",
+        );
+      }
       writer.uint32(16).sint64(message.gInt);
     }
     if (message.gString !== undefined) {
@@ -2542,7 +2557,7 @@ export const Expr: MessageFns<Expr> = {
             break;
           }
 
-          message.gInt = longToNumber(reader.sint64());
+          message.gInt = reader.sint64() as bigint;
           continue;
         }
         case 3: {
@@ -2784,7 +2799,7 @@ export const Expr: MessageFns<Expr> = {
   fromJSON(object: any): Expr {
     return {
       gBool: isSet(object.gBool) ? globalThis.Boolean(object.gBool) : undefined,
-      gInt: isSet(object.gInt) ? globalThis.Number(object.gInt) : undefined,
+      gInt: isSet(object.gInt) ? BigInt(object.gInt) : undefined,
       gString: isSet(object.gString)
         ? globalThis.String(object.gString)
         : undefined,
@@ -2868,7 +2883,7 @@ export const Expr: MessageFns<Expr> = {
       obj.gBool = message.gBool;
     }
     if (message.gInt !== undefined) {
-      obj.gInt = Math.round(message.gInt);
+      obj.gInt = message.gInt.toString();
     }
     if (message.gString !== undefined) {
       obj.gString = message.gString;
@@ -6414,6 +6429,7 @@ type Builtin =
   | string
   | number
   | boolean
+  | bigint
   | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -6432,17 +6448,6 @@ export type Exact<P, I extends P> = P extends Builtin
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
       [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
     };
-
-function longToNumber(int64: { toString(): string }): number {
-  const num = globalThis.Number(int64.toString());
-  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-  }
-  return num;
-}
 
 function isObject(value: any): boolean {
   return typeof value === "object" && value !== null;

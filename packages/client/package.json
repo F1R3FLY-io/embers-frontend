@@ -38,7 +38,7 @@
     "gen-docs": "typedoc",
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
     "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
-    "compile-proto": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_out=src/generated --ts_opt=esModuleInterop=true -I=./protobuf -I=./protobuf/protobuf_external ./protobuf/RhoTypes.proto",
+    "compile-proto": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_out=src/generated --ts_opt=esModuleInterop=true,forceLong=bigint -I=./protobuf -I=./protobuf/protobuf_external ./protobuf/RhoTypes.proto",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
     "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json}'"
@@ -50,6 +50,7 @@
     "serve": "^14.2.5",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
+    "ts-proto": "^2.7.7",
     "typedoc": "^0.28.13",
     "vite-plugin-dts": "^4.5.4"
   },

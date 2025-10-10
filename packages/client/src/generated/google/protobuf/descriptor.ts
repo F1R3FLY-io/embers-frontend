@@ -943,8 +943,8 @@ export interface UninterpretedOption {
    * identified it as during parsing. Exactly one of these should be set.
    */
   identifierValue?: string | undefined;
-  positiveIntValue?: number | undefined;
-  negativeIntValue?: number | undefined;
+  positiveIntValue?: bigint | undefined;
+  negativeIntValue?: bigint | undefined;
   doubleValue?: number | undefined;
   stringValue?: Uint8Array | undefined;
   aggregateValue?: string | undefined;
@@ -4536,8 +4536,8 @@ function createBaseUninterpretedOption(): UninterpretedOption {
   return {
     name: [],
     identifierValue: "",
-    positiveIntValue: 0,
-    negativeIntValue: 0,
+    positiveIntValue: 0n,
+    negativeIntValue: 0n,
     doubleValue: 0,
     stringValue: new Uint8Array(0),
     aggregateValue: "",
@@ -4560,14 +4560,29 @@ export const UninterpretedOption: MessageFns<UninterpretedOption> = {
     }
     if (
       message.positiveIntValue !== undefined &&
-      message.positiveIntValue !== 0
+      message.positiveIntValue !== 0n
     ) {
+      if (
+        BigInt.asUintN(64, message.positiveIntValue) !==
+        message.positiveIntValue
+      ) {
+        throw new globalThis.Error(
+          "value provided for field message.positiveIntValue of type uint64 too large",
+        );
+      }
       writer.uint32(32).uint64(message.positiveIntValue);
     }
     if (
       message.negativeIntValue !== undefined &&
-      message.negativeIntValue !== 0
+      message.negativeIntValue !== 0n
     ) {
+      if (
+        BigInt.asIntN(64, message.negativeIntValue) !== message.negativeIntValue
+      ) {
+        throw new globalThis.Error(
+          "value provided for field message.negativeIntValue of type int64 too large",
+        );
+      }
       writer.uint32(40).int64(message.negativeIntValue);
     }
     if (message.doubleValue !== undefined && message.doubleValue !== 0) {
@@ -4616,7 +4631,7 @@ export const UninterpretedOption: MessageFns<UninterpretedOption> = {
             break;
           }
 
-          message.positiveIntValue = longToNumber(reader.uint64());
+          message.positiveIntValue = reader.uint64() as bigint;
           continue;
         }
         case 5: {
@@ -4624,7 +4639,7 @@ export const UninterpretedOption: MessageFns<UninterpretedOption> = {
             break;
           }
 
-          message.negativeIntValue = longToNumber(reader.int64());
+          message.negativeIntValue = reader.int64() as bigint;
           continue;
         }
         case 6: {
@@ -4669,11 +4684,11 @@ export const UninterpretedOption: MessageFns<UninterpretedOption> = {
         ? globalThis.String(object.identifierValue)
         : "",
       positiveIntValue: isSet(object.positiveIntValue)
-        ? globalThis.Number(object.positiveIntValue)
-        : 0,
+        ? BigInt(object.positiveIntValue)
+        : 0n,
       negativeIntValue: isSet(object.negativeIntValue)
-        ? globalThis.Number(object.negativeIntValue)
-        : 0,
+        ? BigInt(object.negativeIntValue)
+        : 0n,
       doubleValue: isSet(object.doubleValue)
         ? globalThis.Number(object.doubleValue)
         : 0,
@@ -4701,15 +4716,15 @@ export const UninterpretedOption: MessageFns<UninterpretedOption> = {
     }
     if (
       message.positiveIntValue !== undefined &&
-      message.positiveIntValue !== 0
+      message.positiveIntValue !== 0n
     ) {
-      obj.positiveIntValue = Math.round(message.positiveIntValue);
+      obj.positiveIntValue = message.positiveIntValue.toString();
     }
     if (
       message.negativeIntValue !== undefined &&
-      message.negativeIntValue !== 0
+      message.negativeIntValue !== 0n
     ) {
-      obj.negativeIntValue = Math.round(message.negativeIntValue);
+      obj.negativeIntValue = message.negativeIntValue.toString();
     }
     if (message.doubleValue !== undefined && message.doubleValue !== 0) {
       obj.doubleValue = message.doubleValue;
@@ -4736,8 +4751,8 @@ export const UninterpretedOption: MessageFns<UninterpretedOption> = {
       object.name?.map((e) => UninterpretedOption_NamePart.fromPartial(e)) ||
       [];
     message.identifierValue = object.identifierValue ?? "";
-    message.positiveIntValue = object.positiveIntValue ?? 0;
-    message.negativeIntValue = object.negativeIntValue ?? 0;
+    message.positiveIntValue = object.positiveIntValue ?? 0n;
+    message.negativeIntValue = object.negativeIntValue ?? 0n;
     message.doubleValue = object.doubleValue ?? 0;
     message.stringValue = object.stringValue ?? new Uint8Array(0);
     message.aggregateValue = object.aggregateValue ?? "";
@@ -5349,6 +5364,7 @@ type Builtin =
   | string
   | number
   | boolean
+  | bigint
   | undefined;
 
 export type DeepPartial<T> = T extends Builtin
@@ -5367,17 +5383,6 @@ export type Exact<P, I extends P> = P extends Builtin
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
       [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
     };
-
-function longToNumber(int64: { toString(): string }): number {
-  const num = globalThis.Number(int64.toString());
-  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-  }
-  return num;
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

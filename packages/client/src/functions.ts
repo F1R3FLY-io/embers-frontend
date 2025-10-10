@@ -89,7 +89,7 @@ export function insertSignedSignature(
   key: PrivateKey,
   timestamp: Date,
   deployerPubKey: PublicKey,
-  version: number,
+  version: bigint,
 ) {
   const payload = Par.encode(
     Par.create({
@@ -98,7 +98,7 @@ export function insertSignedSignature(
           eTupleBody: ETuple.create({
             ps: [
               Par.create({
-                exprs: [Expr.create({ gInt: timestamp.getTime() })],
+                exprs: [Expr.create({ gInt: BigInt(timestamp.getTime()) })],
               }),
               Par.create({
                 exprs: [Expr.create({ gByteArray: deployerPubKey.value })],

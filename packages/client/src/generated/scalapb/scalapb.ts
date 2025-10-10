@@ -2828,6 +2828,7 @@ type Builtin =
   | string
   | number
   | boolean
+  | bigint
   | undefined;
 
 export type DeepPartial<T> = T extends Builtin
