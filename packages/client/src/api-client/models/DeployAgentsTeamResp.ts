@@ -26,12 +26,6 @@ export interface DeployAgentsTeamResp {
    * @memberof DeployAgentsTeamResp
    */
   contract: Base64;
-  /**
-   *
-   * @type {string}
-   * @memberof DeployAgentsTeamResp
-   */
-  name: string;
 }
 
 /**
@@ -40,9 +34,6 @@ export interface DeployAgentsTeamResp {
 export function instanceOfDeployAgentsTeamResp(
   value: object,
 ): value is DeployAgentsTeamResp {
-  if (!("name" in value) || value.name === undefined) {
-    return false;
-  }
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
@@ -62,7 +53,6 @@ export function DeployAgentsTeamRespFromJSONTyped(
   }
   return {
     contract: Base64FromJSON(json.contract),
-    name: json.name,
   };
 }
 
@@ -80,6 +70,5 @@ export function DeployAgentsTeamRespToJSONTyped(
 
   return {
     contract: Base64ToJSON(value.contract),
-    name: value.name,
   };
 }

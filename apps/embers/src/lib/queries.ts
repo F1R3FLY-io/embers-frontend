@@ -4,11 +4,7 @@ import type {
   PrivateKey,
 } from "@f1r3fly-io/embers-client-sdk";
 
-import {
-  AIAgentsTeamsApi,
-  Amount,
-  Configuration,
-} from "@f1r3fly-io/embers-client-sdk";
+import { Amount } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useApi } from "@/lib/providers/wallet/useApi";
@@ -21,7 +17,7 @@ export function useAgents() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgents(),
+    queryFn: async () => api.agents.get(),
     queryKey: ["agents", api.wallets.address],
   });
 }
@@ -30,18 +26,18 @@ export function useAgentVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getAgentVersions(id),
+    queryFn: async () => api.agents.getVersions(id),
     queryKey: ["agents", api.wallets.address, id],
   });
 }
 
-export function useAgent(agentId?: string, versionId?: string) {
+export function useAgent(id?: string, version?: string) {
   const api = useApi();
 
   return useQuery({
-    enabled: !!agentId && !!versionId,
-    queryFn: async () => api.agents.getAgentVersion(agentId!, versionId!),
-    queryKey: ["agents", api.wallets.address, agentId, versionId],
+    enabled: !!id && !!version,
+    queryFn: async () => api.agents.getVersion(id!, version!),
+    queryKey: ["agents", api.wallets.address, id, version],
 
     retry: (failureCount, error: unknown) => {
       if (failureCount >= 30) {
@@ -65,8 +61,7 @@ export function useCreateAgentMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentReq) =>
-      api.agents.createAgent(params),
+    mutationFn: async (params: CreateAgentReq) => api.agents.create(params),
   });
 }
 
@@ -74,8 +69,7 @@ export function useSaveAgentMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentReq) =>
-      api.agents.saveAgentVersion(id, params),
+    mutationFn: async (params: CreateAgentReq) => api.agents.save(id, params),
   });
 }
 
@@ -97,7 +91,7 @@ export function useDeployAgentMutation() {
       rhoLimit: bigint;
       version: string;
     }) =>
-      api.agents.deployAgent(
+      api.agents.deploy(
         params.agentId,
         params.version,
         Amount.tryFrom(params.rhoLimit),
@@ -130,25 +124,11 @@ export function useDeployTestMutation() {
   });
 }
 
-export function useRunDemo() {
-  const configuration = new Configuration({
-    basePath: window.API_URL,
-  });
-  const client = new AIAgentsTeamsApi(configuration);
-
-  return useMutation({
-    mutationFn: async (props: { name: string; prompt: string }) =>
-      client.apiAiAgentsTeamsRunDemoPost({
-        runDemoReq: props,
-      }) as Promise<unknown>,
-  });
-}
-
 export function useAgentsTeams() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeams(),
+    queryFn: async () => api.agentsTeams.get(),
     queryKey: ["agents-teams", api.wallets.address],
   });
 }
@@ -157,7 +137,7 @@ export function useAgentsTeamVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeamVersions(id),
+    queryFn: async () => api.agentsTeams.getVersions(id),
     queryKey: ["agents-teams", api.wallets.address, id],
   });
 }
@@ -166,7 +146,7 @@ export function useAgentsTeam(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getAgentsTeamVersion(id, version),
+    queryFn: async () => api.agentsTeams.getVersion(id, version),
     queryKey: ["agents-teams", api.wallets.address, id, version],
   });
 }
@@ -184,9 +164,9 @@ export function useCreateAgentsTeamMutation() {
       edges,
       nodes,
       ...rest
-    }: WithGraph<Parameters<AgentsTeamsApiSdk["createAgentsTeam"]>[0]>) => {
+    }: WithGraph<Parameters<AgentsTeamsApiSdk["create"]>[0]>) => {
       const graph = toApiGraph(nodes, edges);
-      return api.agentsTeams.createAgentsTeam({ ...rest, graph });
+      return api.agentsTeams.create({ ...rest, graph });
     },
   });
 }
@@ -199,11 +179,9 @@ export function useSaveAgentsTeamMutation(id: string) {
       edges,
       nodes,
       ...rest
-    }: WithGraph<
-      Parameters<AgentsTeamsApiSdk["saveAgentsTeamVersion"]>[1]
-    >) => {
+    }: WithGraph<Parameters<AgentsTeamsApiSdk["save"]>[1]>) => {
       const graph = toApiGraph(nodes, edges);
-      return api.agentsTeams.saveAgentsTeamVersion(id, { ...rest, graph });
+      return api.agentsTeams.save(id, { ...rest, graph });
     },
   });
 }
@@ -215,12 +193,16 @@ export function useDeployGraphMutation() {
     mutationFn: async (params: {
       edges: Edge[];
       nodes: Node[];
+      registryKey: PrivateKey;
+      registryVersion: bigint;
       rhoLimit: bigint;
     }) => {
       const graph = toApiGraph(params.nodes, params.edges);
       return api.agentsTeams.deployGraph(
         graph,
         Amount.tryFrom(params.rhoLimit),
+        params.registryVersion,
+        params.registryKey,
       );
     },
   });
@@ -232,12 +214,33 @@ export function useDeployAgentsTeamMutation() {
   return useMutation({
     mutationFn: async (params: {
       agentsTeamId: string;
+      registryKey: PrivateKey;
+      registryVersion: bigint;
       rhoLimit: bigint;
       version: string;
     }) =>
-      api.agentsTeams.deployAgetnsTeam(
+      api.agentsTeams.deploy(
         params.agentsTeamId,
         params.version,
+        Amount.tryFrom(params.rhoLimit),
+        params.registryVersion,
+        params.registryKey,
+      ),
+  });
+}
+
+export function useRunAgentsTeamMutation() {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (params: {
+      prompt: string;
+      rhoLimit: bigint;
+      uri: string;
+    }) =>
+      api.agentsTeams.run(
+        params.uri,
+        params.prompt,
         Amount.tryFrom(params.rhoLimit),
       ),
   });

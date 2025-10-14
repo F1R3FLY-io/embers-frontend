@@ -79,7 +79,7 @@ export class WalletsApiSdk {
    * Get the state of the wallet.
    * @returns A promise that resolves with the wallet state.
    */
-  public async getWalletState() {
+  public async getState() {
     return this.client.apiWalletsAddressStateGet({
       address: this.address,
     });

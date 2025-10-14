@@ -12,9 +12,11 @@
 
 import type { Graph } from "./Graph";
 import type { Int64 } from "./Int64";
+import type { RegistryDeploy } from "./RegistryDeploy";
 
 import { GraphFromJSON, GraphToJSON } from "./Graph";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
+import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
 
 /**
  *
@@ -22,6 +24,12 @@ import { Int64FromJSON, Int64ToJSON } from "./Int64";
  * @interface DeployAgentsTeamReqDeployGraph
  */
 export interface DeployAgentsTeamReqDeployGraph {
+  /**
+   *
+   * @type {RegistryDeploy}
+   * @memberof DeployAgentsTeamReqDeployGraph
+   */
+  deploy: RegistryDeploy;
   /**
    *
    * @type {Graph}
@@ -63,6 +71,9 @@ export function instanceOfDeployAgentsTeamReqDeployGraph(
   if (!("phloLimit" in value) || value.phloLimit === undefined) {
     return false;
   }
+  if (!("deploy" in value) || value.deploy === undefined) {
+    return false;
+  }
   if (!("type" in value) || value.type === undefined) {
     return false;
   }
@@ -83,6 +94,7 @@ export function DeployAgentsTeamReqDeployGraphFromJSONTyped(
     return json;
   }
   return {
+    deploy: RegistryDeployFromJSON(json.deploy),
     graph: GraphFromJSON(json.graph),
     phloLimit: Int64FromJSON(json.phlo_limit),
     type: json.type,
@@ -104,6 +116,7 @@ export function DeployAgentsTeamReqDeployGraphToJSONTyped(
   }
 
   return {
+    deploy: RegistryDeployToJSON(value.deploy),
     graph: GraphToJSON(value.graph),
     phlo_limit: Int64ToJSON(value.phloLimit),
     type: value.type,

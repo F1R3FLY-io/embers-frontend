@@ -159,7 +159,6 @@ UNLICENSED
 **Testing Strategy:**
 
 - Unit tests for each entity with edge cases
-- Mock API server using Counterfact for integration tests
 - Property-based testing for cryptographic operations
 - Test vectors from blockchain specifications
 
@@ -252,18 +251,12 @@ docker run -v $PWD:/local openapitools/openapi-generator-cli generate \
 - `PublicKey.test.ts` - Key derivation and validation
 - `transferTokens.test.ts` - End-to-end transfer operations
 
-**Integration Tests:** Using Counterfact mock server
+**Integration Tests:**
 
 - API client integration with mocked responses
 - Error handling for network failures
 - Authentication and signature validation
 - Rate limiting and retry logic
-
-**Test Data:** Mock data in `mocks/` directory
-
-- API response fixtures for all endpoints
-- Test vectors for cryptographic operations
-- Error response examples for failure scenarios
 
 **Running Tests:**
 

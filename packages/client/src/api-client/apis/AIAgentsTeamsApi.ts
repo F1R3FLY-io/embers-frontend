@@ -19,7 +19,8 @@ import type {
   CreateAgentsTeamResp,
   DeployAgentsTeamReq,
   DeployAgentsTeamResp,
-  RunDemoReq,
+  RunAgentsTeamReq,
+  RunAgentsTeamResp,
   SaveAgentsTeamResp,
   SignedContract,
 } from "../models/index";
@@ -31,7 +32,8 @@ import {
   CreateAgentsTeamRespFromJSON,
   DeployAgentsTeamReqToJSON,
   DeployAgentsTeamRespFromJSON,
-  RunDemoReqToJSON,
+  RunAgentsTeamReqToJSON,
+  RunAgentsTeamRespFromJSON,
   SaveAgentsTeamRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
@@ -78,8 +80,12 @@ export interface ApiAiAgentsTeamsIdSaveSendPostRequest {
   signedContract: SignedContract;
 }
 
-export interface ApiAiAgentsTeamsRunDemoPostRequest {
-  runDemoReq: RunDemoReq;
+export interface ApiAiAgentsTeamsRunPreparePostRequest {
+  runAgentsTeamReq: RunAgentsTeamReq;
+}
+
+export interface ApiAiAgentsTeamsRunSendPostRequest {
+  signedContract: SignedContract;
 }
 
 /**
@@ -587,14 +593,14 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunDemoPostRaw(
-    requestParameters: ApiAiAgentsTeamsRunDemoPostRequest,
+  async apiAiAgentsTeamsRunPreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<any>> {
-    if (requestParameters.runDemoReq == null) {
+  ): Promise<runtime.ApiResponse<RunAgentsTeamResp>> {
+    if (requestParameters.runAgentsTeamReq == null) {
       throw new runtime.RequiredError(
-        "runDemoReq",
-        'Required parameter "runDemoReq" was null or undefined when calling apiAiAgentsTeamsRunDemoPost().',
+        "runAgentsTeamReq",
+        'Required parameter "runAgentsTeamReq" was null or undefined when calling apiAiAgentsTeamsRunPreparePost().',
       );
     }
 
@@ -604,11 +610,61 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
-    const urlPath = `/api/ai-agents-teams/run-demo`;
+    const urlPath = `/api/ai-agents-teams/run/prepare`;
 
     const response = await this.request(
       {
-        body: RunDemoReqToJSON(requestParameters.runDemoReq),
+        body: RunAgentsTeamReqToJSON(requestParameters.runAgentsTeamReq),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      RunAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunPreparePost(
+    requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RunAgentsTeamResp> {
+    const response = await this.apiAiAgentsTeamsRunPreparePostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunSendPostRaw(
+    requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<any>> {
+    if (requestParameters.signedContract == null) {
+      throw new runtime.RequiredError(
+        "signedContract",
+        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsRunSendPost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run/send`;
+
+    const response = await this.request(
+      {
+        body: SignedContractToJSON(requestParameters.signedContract),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
@@ -625,11 +681,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunDemoPost(
-    requestParameters: ApiAiAgentsTeamsRunDemoPostRequest,
+  async apiAiAgentsTeamsRunSendPost(
+    requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<any> {
-    const response = await this.apiAiAgentsTeamsRunDemoPostRaw(
+    const response = await this.apiAiAgentsTeamsRunSendPostRaw(
       requestParameters,
       initOverrides,
     );

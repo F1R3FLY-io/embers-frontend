@@ -41,9 +41,11 @@ models/EnvDeployFailed.ts
 models/InternalError.ts
 models/Log.ts
 models/LogLevel.ts
+models/RegistryDeploy.ts
 models/Request.ts
 models/RequestStatus.ts
-models/RunDemoReq.ts
+models/RunAgentsTeamReq.ts
+models/RunAgentsTeamResp.ts
 models/SaveAgentResp.ts
 models/SaveAgentsTeamResp.ts
 models/SignedContract.ts
