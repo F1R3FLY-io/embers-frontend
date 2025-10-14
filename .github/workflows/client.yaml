@@ -116,6 +116,6 @@ jobs:
         run: pnpm publish --no-git-checks --access public
 
       - name: Update package.json
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: Apply package.json changes
