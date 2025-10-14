@@ -5,7 +5,7 @@ import type {
 } from "@f1r3fly-io/embers-client-sdk";
 
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useApi } from "@/lib/providers/wallet/useApi";
 
@@ -59,25 +59,55 @@ export function useAgent(id?: string, version?: string) {
 
 export function useCreateAgentMutation() {
   const api = useApi();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) => api.agents.create(params),
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        exact: true,
+        queryKey: ["agents", api.wallets.address],
+      }),
   });
 }
 
 export function useSaveAgentMutation(id: string) {
   const api = useApi();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) => api.agents.save(id, params),
+    onSuccess: async () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          exact: true,
+          queryKey: ["agents", api.wallets.address],
+        }),
+        queryClient.invalidateQueries({
+          exact: false,
+          queryKey: ["agents", api.wallets.address, id],
+        }),
+      ]),
   });
 }
 
 export function useDeleteAgentMutation() {
   const api = useApi();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => api.agents.delete(id),
+    onSuccess: async (_, id) =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          exact: true,
+          queryKey: ["agents", api.wallets.address],
+        }),
+        queryClient.invalidateQueries({
+          exact: false,
+          queryKey: ["agents", api.wallets.address, id],
+        }),
+      ]),
   });
 }
 
@@ -107,12 +137,11 @@ export function useDeployAgentMutation() {
   });
 }
 
-export function useTestKey() {
+export function useTestWalletMutation() {
   const api = useApi();
 
-  return useQuery({
-    queryFn: async () => api.testnet.getWallet(),
-    queryKey: ["agents", "test-key"],
+  return useMutation({
+    mutationFn: async () => api.testnet.getWallet(),
   });
 }
 
@@ -166,6 +195,7 @@ type WithGraph<T> = Omit<T, "graph"> & {
 
 export function useCreateAgentsTeamMutation() {
   const api = useApi();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -176,11 +206,17 @@ export function useCreateAgentsTeamMutation() {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.create({ ...rest, graph });
     },
+    onSuccess: async () =>
+      queryClient.invalidateQueries({
+        exact: true,
+        queryKey: ["agents-teams", api.wallets.address],
+      }),
   });
 }
 
 export function useSaveAgentsTeamMutation(id: string) {
   const api = useApi();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -191,14 +227,37 @@ export function useSaveAgentsTeamMutation(id: string) {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.save(id, { ...rest, graph });
     },
+    onSuccess: async () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          exact: true,
+          queryKey: ["agents-teams", api.wallets.address],
+        }),
+        queryClient.invalidateQueries({
+          exact: false,
+          queryKey: ["agents-teams", api.wallets.address, id],
+        }),
+      ]),
   });
 }
 
 export function useDeleteAgentsTeamMutation() {
   const api = useApi();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => api.agentsTeams.delete(id),
+    onSuccess: async (_, id) =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          exact: true,
+          queryKey: ["agents-teams", api.wallets.address],
+        }),
+        queryClient.invalidateQueries({
+          exact: false,
+          queryKey: ["agents-teams", api.wallets.address, id],
+        }),
+      ]),
   });
 }
 
