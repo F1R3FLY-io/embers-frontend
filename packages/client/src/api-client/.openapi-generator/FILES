@@ -17,6 +17,8 @@ models/CreateAgentResp.ts
 models/CreateAgentsTeamReq.ts
 models/CreateAgentsTeamResp.ts
 models/CreateTestwalletResp.ts
+models/DeleteAgentResp.ts
+models/DeleteAgentsTeamResp.ts
 models/DeployAgent.ts
 models/DeployAgentReq.ts
 models/DeployAgentReqDeployAgent.ts

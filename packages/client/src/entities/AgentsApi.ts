@@ -212,4 +212,32 @@ export class AgentsApiSdk {
       },
     );
   }
+
+  public async delete(id: string) {
+    const generateContract = async () =>
+      this.client.apiAiAgentsIdDeletePreparePost({
+        id,
+      });
+
+    const sendContract = async (
+      contract: Uint8Array,
+      sig: Uint8Array,
+      sigAlgorithm: string,
+    ) => {
+      // Send the signed contract
+      const signedContract: SignedContract = {
+        contract,
+        deployer: this.privateKey.getPublicKey().value,
+        sig,
+        sigAlgorithm,
+      };
+
+      return this.client.apiAiAgentsIdDeleteSendPost({
+        id,
+        signedContract,
+      });
+    };
+
+    await deployContract(this.privateKey, generateContract, sendContract);
+  }
 }
