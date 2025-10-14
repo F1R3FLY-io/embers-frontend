@@ -73,6 +73,14 @@ export function useSaveAgentMutation(id: string) {
   });
 }
 
+export function useDeleteAgentMutation() {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (id: string) => api.agents.delete(id),
+  });
+}
+
 export function useDeployCodeMutation() {
   const api = useApi();
 
@@ -183,6 +191,14 @@ export function useSaveAgentsTeamMutation(id: string) {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.save(id, { ...rest, graph });
     },
+  });
+}
+
+export function useDeleteAgentsTeamMutation() {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (id: string) => api.agentsTeams.delete(id),
   });
 }
 
