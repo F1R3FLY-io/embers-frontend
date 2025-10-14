@@ -10,13 +10,13 @@
  * Do not edit the class manually.
  */
 
-import type { Address } from "@/entities/Address";
-
 import type {
+  Address,
   AgentsTeam,
   AgentsTeams,
   CreateAgentsTeamReq,
   CreateAgentsTeamResp,
+  DeleteAgentsTeamResp,
   DeployAgentsTeamReq,
   DeployAgentsTeamResp,
   RunAgentsTeamReq,
@@ -30,6 +30,7 @@ import {
   AgentsTeamsFromJSON,
   CreateAgentsTeamReqToJSON,
   CreateAgentsTeamRespFromJSON,
+  DeleteAgentsTeamRespFromJSON,
   DeployAgentsTeamReqToJSON,
   DeployAgentsTeamRespFromJSON,
   RunAgentsTeamReqToJSON,
@@ -67,6 +68,15 @@ export interface ApiAiAgentsTeamsDeployPreparePostRequest {
 }
 
 export interface ApiAiAgentsTeamsDeploySendPostRequest {
+  signedContract: SignedContract;
+}
+
+export interface ApiAiAgentsTeamsIdDeletePreparePostRequest {
+  id: string;
+}
+
+export interface ApiAiAgentsTeamsIdDeleteSendPostRequest {
+  id: string;
   signedContract: SignedContract;
 }
 
@@ -467,6 +477,115 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
     await this.apiAiAgentsTeamsDeploySendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdDeletePreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeleteAgentsTeamResp>> {
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsIdDeletePreparePost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{id}/delete/prepare`;
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    const response = await this.request(
+      {
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      DeleteAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdDeletePreparePost(
+    requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<DeleteAgentsTeamResp> {
+    const response = await this.apiAiAgentsTeamsIdDeletePreparePostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdDeleteSendPostRaw(
+    requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsIdDeleteSendPost().',
+      );
+    }
+
+    if (requestParameters.signedContract == null) {
+      throw new runtime.RequiredError(
+        "signedContract",
+        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsIdDeleteSendPost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{id}/delete/send`;
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    const response = await this.request(
+      {
+        body: SignedContractToJSON(requestParameters.signedContract),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdDeleteSendPost(
+    requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.apiAiAgentsTeamsIdDeleteSendPostRaw(
       requestParameters,
       initOverrides,
     );

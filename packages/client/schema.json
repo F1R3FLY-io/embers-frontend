@@ -492,6 +492,67 @@
         }
       }
     },
+    "/api/ai-agents/{id}/delete/prepare": {
+      "post": {
+        "tags": ["AIAgents"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAgentResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents/{id}/delete/send": {
+      "post": {
+        "tags": ["AIAgents"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/ai-agents-teams/{address}": {
       "get": {
         "tags": ["AIAgentsTeams"],
@@ -854,6 +915,67 @@
           }
         }
       }
+    },
+    "/api/ai-agents-teams/{id}/delete/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAgentsTeamResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/{id}/delete/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1102,6 +1224,28 @@
         "properties": {
           "key": {
             "type": "string"
+          }
+        }
+      },
+      "DeleteAgentResp": {
+        "type": "object",
+        "title": "DeleteAgentResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
+      "DeleteAgentsTeamResp": {
+        "type": "object",
+        "title": "DeleteAgentsTeamResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
           }
         }
       },

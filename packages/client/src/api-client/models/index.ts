@@ -10,6 +10,8 @@ export * from "./CreateAgentResp";
 export * from "./CreateAgentsTeamReq";
 export * from "./CreateAgentsTeamResp";
 export * from "./CreateTestwalletResp";
+export * from "./DeleteAgentResp";
+export * from "./DeleteAgentsTeamResp";
 export * from "./DeployAgent";
 export * from "./DeployAgentReq";
 export * from "./DeployAgentReqDeployAgent";
