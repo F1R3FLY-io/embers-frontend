@@ -22,11 +22,12 @@ export function useAgents() {
   });
 }
 
-export function useAgentVersions(id: string) {
+export function useAgentVersions(id?: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.getVersions(id),
+    enabled: !!id,
+    queryFn: async () => api.agents.getVersions(id!),
     queryKey: ["agents", api.wallets.address, id],
   });
 }

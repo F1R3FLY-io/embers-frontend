@@ -40,6 +40,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
       updateData("agentId", agent.id);
       updateData("agentName", agent.name);
       updateData("version", agent.version);
+      updateData("agentIconUrl", agent.logo ?? "");
       nextStep();
       void navigate(`/create-ai-agent`);
     },

@@ -6,8 +6,11 @@ import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
+import { useModal } from "@/lib/providers/modal/useModal";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useDeployAgentMutation } from "@/lib/queries";
+import { SuccessModal } from "@/pages/Deploy/components/SuccessModal";
+import { WarningModal } from "@/pages/Deploy/components/WarningModal";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "./components/Stepper";
@@ -27,6 +30,7 @@ function parseBigIntOrNull(v: string): bigint | null {
 export default function Deploy() {
   const { data, prevStep, step, updateData } = useStepper();
   const { agentId, version } = data;
+  const { open } = useModal();
 
   const navigate = useNavigate();
 
@@ -52,12 +56,16 @@ export default function Deploy() {
       { agentId, rhoLimit, version },
       {
         onError: (e) => {
-          // eslint-disable-next-line no-console
-          console.error("Deployment failed:", e);
+          open(<WarningModal error={e.message} />, {
+            ariaLabel: "Warning",
+            maxWidth: 550,
+          });
         },
         onSuccess: () => {
-          // todo add modal here
-          void navigate("/dashboard");
+          open(<SuccessModal data={data} note="note" status="status" />, {
+            ariaLabel: "Success deploy",
+            maxWidth: 550,
+          });
         },
       },
     );

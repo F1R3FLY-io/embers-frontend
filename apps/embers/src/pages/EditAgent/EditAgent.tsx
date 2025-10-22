@@ -8,14 +8,14 @@ import {
 } from "@f1r3fly-io/lightning-bug/extensions/lang/rholang/tree-sitter/queries";
 import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
 import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
-import { useAgent } from "@/lib/queries";
+import { useAgent, useAgentVersions } from "@/lib/queries";
 
 import styles from "./EditAgent.module.scss";
 
@@ -28,14 +28,12 @@ export default function CodeEditor() {
   const { data } = useStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
+  const { data: agentVersions } = useAgentVersions(agentId ?? "");
 
-  const agentName = agent?.name;
-
+  const agentName = agent?.name ?? data.agentName;
+  const currentVersion = agent?.version ?? version;
   const fileName = `${agentName}.rho`;
-  useEffect(
-    () => setHeaderTitle(agentName ?? ""),
-    [agentName, setHeaderTitle, t],
-  );
+  useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -80,6 +78,10 @@ export default function CodeEditor() {
     );
   }, [agent, data.code, fileName]);
 
+  const versions = useMemo(() => {
+    return agentVersions?.agents.map((version) => version.version);
+  }, [agentVersions]);
+
   const getCode = useCallback(() => {
     return editorRef.current?.getText(fileName);
   }, [fileName]);
@@ -87,7 +89,11 @@ export default function CodeEditor() {
   const editorKey = `${agentId ?? "new"}:${version ?? "v0"}`;
 
   return (
-    <CodeLayout getCode={getCode}>
+    <CodeLayout
+      currentVersion={currentVersion}
+      getCode={getCode}
+      versions={versions}
+    >
       {/* to make a custom error layout later on */}
       <ErrorBoundary>
         <div className={styles.container}>

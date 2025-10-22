@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
+import { useLoader } from "@/lib/providers/loader/useLoader";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useCreateAgentMutation, useSaveAgentMutation } from "@/lib/queries";
 
@@ -13,8 +14,8 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const navigate = useNavigate();
-
   const { data, nextStep, updateData } = useStepper();
+  const { hideLoader, showLoader } = useLoader();
 
   const { agentIconUrl, agentId, agentName } = data;
   const id = useMemo(() => agentId ?? "", [agentId]);
@@ -48,10 +49,13 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       return;
     }
     try {
+      showLoader();
       await saveOrCreate();
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error("Save failed:", e);
+    } finally {
+      hideLoader();
     }
   };
 
@@ -60,6 +64,7 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       return;
     }
     try {
+      showLoader();
       const { agentId, version } = await saveOrCreate();
       updateData("agentId", agentId);
       updateData("version", version);
@@ -68,6 +73,8 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error("Pre-deploy save failed:", e);
+    } finally {
+      hideLoader();
     }
   };
 
