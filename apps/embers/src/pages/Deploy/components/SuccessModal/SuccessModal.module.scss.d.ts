@@ -8,6 +8,5 @@ declare const classNames: {
   readonly "row-value": "row-value";
   readonly multiline: "multiline";
   readonly actions: "actions";
-  readonly "link-like": "link-like";
 };
 export default classNames;
