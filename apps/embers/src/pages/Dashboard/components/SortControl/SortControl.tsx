@@ -13,7 +13,7 @@ export function SortControl({ onSortChange, sortBy }: SortControlProps) {
   return (
     <div className={styles["sort-control"]}>
       <SortIcon className={styles["sort-icon"]} />
-      <Text color="primary" fontSize={14}>
+      <Text color="primary" type="normal">
         Sort by
       </Text>
       <div className={styles["sort-dropdown"]}>

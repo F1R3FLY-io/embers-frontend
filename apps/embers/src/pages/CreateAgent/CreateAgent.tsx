@@ -59,31 +59,39 @@ export default function CreateAgent() {
 
   return (
     <div className={styles["create-container"]}>
-      <Text bold color="primary" fontSize={40} type="H2">
+      <Text bold color="primary" type="H1">
         {t("aiAgent.create")}
       </Text>
 
       <div className={styles["stepper-container"]}>
         <Stepper
           currentStep={step}
-          labels={[
-            t("deploy.generalInfo"),
-            t("deploy.creation"),
-            t("deploy.deployment"),
+          steps={[
+            {
+              canClick: false,
+              label: t("deploy.generalInfo"),
+            },
+            {
+              canClick: canContinue,
+              label: t("deploy.creation"),
+            },
+            {
+              canClick: canContinue,
+              label: t("deploy.deployment"),
+            },
           ]}
-          steps={3}
         />
       </div>
 
       <div className={styles["content-container"]}>
         <div className={styles["title-container"]}>
-          <Text bold color="primary" fontSize={32} type="H2">
+          <Text bold color="primary" type="H2">
             {t("agents.tellUsAboutYourAgent")}
           </Text>
         </div>
 
         <div className={styles["details-container"]}>
-          <Text bold color="primary" fontSize={20} type="H3">
+          <Text bold color="primary" type="H5">
             {t("agents.generalSettings")}
           </Text>
 
@@ -91,7 +99,7 @@ export default function CreateAgent() {
             <IconPreview url={iconUrl} />
 
             <div className={styles["icon-input-container"]}>
-              <Text color="secondary" fontSize={12}>
+              <Text color="secondary" type="small">
                 {t("deploy.iconUrl")}
               </Text>
               <Input
@@ -104,7 +112,7 @@ export default function CreateAgent() {
                 }}
               />
               {iconUrl && iconLoadError ? (
-                <Text color="secondary" fontSize={12}>
+                <Text color="secondary" type="small">
                   {t("deploy.iconLoadFailed")}
                 </Text>
               ) : null}
@@ -112,7 +120,7 @@ export default function CreateAgent() {
           </div>
 
           <div className={styles["form-section"]}>
-            <Text color="secondary" fontSize={12}>
+            <Text color="secondary" type="small">
               {t("deploy.agentName")}
             </Text>
             <Input
@@ -133,7 +141,7 @@ export default function CreateAgent() {
             />
             {selectedShard && (
               <div className={styles["description-container"]}>
-                <Text color="secondary" fontSize={12}>
+                <Text color="secondary" type="small">
                   {selectedShard}
                 </Text>
               </div>
@@ -143,14 +151,14 @@ export default function CreateAgent() {
           {/* Estimated cost strip */}
           <div className={styles["form-section"]}>
             <div className={styles["estimation-bar"]}>
-              <Text color="secondary" fontSize={12}>
+              <Text color="secondary" type="small">
                 {t("deploy.estimatedCost")}
               </Text>
               <div className={styles["estimation-value"]}>
-                <Text color="primary" fontSize={12}>
+                <Text color="primary" type="small">
                   {estimatedCost.toLocaleString()}
                 </Text>
-                <Text color="primary" fontSize={12}>
+                <Text color="primary" type="small">
                   &nbsp;FIR3CAPS
                 </Text>
               </div>
@@ -175,7 +183,7 @@ export default function CreateAgent() {
           <div className={styles["footer-container"]}>
             <LanguageSelect />
             <div className={styles["support-container"]}>
-              <Text color="secondary" fontSize={14}>
+              <Text color="secondary" type="normal">
                 {t("deploy.havingTrouble")}
               </Text>
               <a className={styles["support-link"]} href="#">
