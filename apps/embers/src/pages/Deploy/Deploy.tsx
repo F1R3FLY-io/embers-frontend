@@ -1,5 +1,5 @@
-import { t } from "i18next";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
@@ -28,6 +28,7 @@ function parseBigIntOrNull(v: string): bigint | null {
 }
 
 export default function Deploy() {
+  const { t } = useTranslation();
   const { data, prevStep, step, updateData } = useStepper();
   const { agentId, version } = data;
   const { open } = useModal();

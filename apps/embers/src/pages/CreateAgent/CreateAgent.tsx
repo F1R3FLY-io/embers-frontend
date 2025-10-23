@@ -1,5 +1,5 @@
-import { t } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import type { Option } from "@/lib/components/Select";
@@ -16,6 +16,7 @@ import Stepper from "@/pages/Deploy/components/Stepper";
 import styles from "./CreateAgent.module.scss";
 
 export default function CreateAgent() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { nextStep, step, updateData } = useStepper();
