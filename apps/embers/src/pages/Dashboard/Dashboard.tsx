@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { t } from "i18next";
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
@@ -22,6 +22,7 @@ import { IconButton } from "./components/IconButton";
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
     "agents",
   );

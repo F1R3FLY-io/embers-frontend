@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import { useStepper } from "@/lib/providers/stepper/useStepper";
 import CheckIcon from "@/public/icons/check-icon.svg?react";
 import StepperCircleIcon from "@/public/icons/stepper-circle-icon.svg?react";
@@ -6,38 +8,34 @@ import StepperLineIcon from "@/public/icons/stepper-line-icon.svg?react";
 import styles from "./Stepper.module.scss";
 
 type StepperProps = {
-  currentStep?: number;
-  labels?: string[];
-  steps?: number;
+  currentStep: number;
+  steps: {
+    canClick: boolean;
+    label: string;
+  }[];
 };
 
-export default function Stepper({
-  currentStep = 0,
-  labels = [],
-  steps = 3,
-}: StepperProps) {
+export default function Stepper({ currentStep, steps }: StepperProps) {
   const { navigateToStep } = useStepper();
 
   return (
     <div className={styles.stepper}>
-      {Array.from({ length: steps }, (_, index) => (
+      {steps.map((step, index) => (
         <div
           key={index}
           className={styles["step-container"]}
           style={{
-            cursor: index < currentStep ? "pointer" : "not-allowed",
+            cursor: step.canClick ? "pointer" : undefined,
           }}
-          onClick={() => navigateToStep(index)}
+          onClick={() => step.canClick && navigateToStep(index)}
         >
           <div className={styles["step-content"]}>
             <div
-              className={`${styles.circle} ${
-                index < currentStep
-                  ? styles.completed
-                  : index === currentStep
-                    ? styles.current
-                    : styles.pending
-              }`}
+              className={classNames(styles.circle, {
+                [styles.completed]: index < currentStep,
+                [styles.current]: index === currentStep,
+                [styles.pending]: index > currentStep,
+              })}
             >
               <StepperCircleIcon />
               {index < currentStep && (
@@ -45,13 +43,13 @@ export default function Stepper({
               )}
               {index === currentStep && <div className={styles.dot} />}
             </div>
-            {index < steps - 1 && (
+            {index < steps.length - 1 && (
               <div className={styles.line}>
                 <StepperLineIcon />
               </div>
             )}
           </div>
-          {labels[index] && <div className={styles.label}>{labels[index]}</div>}
+          <div className={styles.label}>{step.label}</div>
         </div>
       ))}
     </div>

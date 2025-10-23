@@ -6,7 +6,7 @@ interface AgentsTitleProps {
 
 export function AgentsTitle({ getTitle }: AgentsTitleProps) {
   return (
-    <Text bold color="primary" fontSize={32}>
+    <Text bold color="primary" type="H2">
       {getTitle()}
     </Text>
   );
