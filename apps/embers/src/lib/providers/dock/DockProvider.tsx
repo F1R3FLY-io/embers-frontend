@@ -44,12 +44,12 @@ function reducer(state: State, action: Action): State {
     case ActionType.ADD_LOG:
       return {
         ...state,
-        logs: clamp([...state.logs, action.entry], state.max),
+        logs: clamp([action.entry, ...state.logs], state.max),
       };
     case ActionType.ADD_DEPLOY:
       return {
         ...state,
-        deploys: clamp([...state.deploys, action.entry], state.max),
+        deploys: clamp([action.entry, ...state.deploys], state.max),
       };
     case ActionType.CLEAR_LOGS:
       return { ...state, logs: [] };
