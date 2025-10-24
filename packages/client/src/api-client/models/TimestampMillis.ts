@@ -1,7 +1,7 @@
 export type TimestampMillis = Date;
 
 export function TimestampMillisFromJSON(json: any): TimestampMillis {
-  return TimestampMillisFromJSONTyped(json, false);
+  return TimestampMillisFromJSONTyped(parseInt(json), false);
 }
 
 export function TimestampMillisFromJSONTyped(

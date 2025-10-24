@@ -3,24 +3,21 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
-import type { FooterProps } from "@/lib/layouts/Graph";
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
 import { Spinner } from "@/lib/components/Spinner";
 import { GraphLayout } from "@/lib/layouts/Graph";
+import { useDock } from "@/lib/providers/dock/useDock";
 import { useLayout } from "@/lib/providers/layout/useLayout";
 import {
   useDeployGraphMutation,
   useRunAgentsTeamMutation,
 } from "@/lib/queries";
 
-type Deployment = FooterProps["deployments"][number];
-type Logs = FooterProps["logs"][number];
-
-// Half-baked. Demo only
 export default function CreateAiTeamFlow() {
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
+  const { appendDeploy, appendLog } = useDock();
 
   useEffect(() => setHeaderTitle(t("aiTeam.newAiTeam")), [setHeaderTitle, t]);
 
@@ -31,57 +28,33 @@ export default function CreateAiTeamFlow() {
   const deployGraph = useDeployGraphMutation();
   const runAgentsTeam = useRunAgentsTeamMutation();
 
-  const [deployments, setDeployments] = useState<Deployment[]>([]);
-  const addDeploy = useCallback(
-    (deployment: Deployment) =>
-      setDeployments((snapshot) => [deployment, ...snapshot]),
-    [],
-  );
-
-  const [logs, setLogs] = useState<Logs[]>([]);
-  const addLog = useCallback(
-    (log: Logs) => setLogs((snapshot) => [log, ...snapshot]),
-    [],
-  );
-
   const logError = useCallback(
-    (err: Error) =>
-      addLog({
-        log: err.message,
-        logLevel: "error",
-        time: new Date(),
-      }),
-    [addLog],
+    (err: Error) => appendLog(err.message, "error"),
+    [appendLog],
   );
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
       setLastDeploy(key);
-      addDeploy({
-        success: true,
-        time: new Date(),
-      });
+      appendDeploy(true);
     },
-    [addDeploy],
+    [appendDeploy],
   );
 
   const onFailedDeploy = useCallback(
     (err: Error) => {
-      addDeploy({
-        success: false,
-        time: new Date(),
-      });
+      appendDeploy(false);
       logError(err);
     },
-    [addDeploy, logError],
+    [appendDeploy, logError],
   );
 
   return (
     <GraphLayout
-      footerProps={{ deployments, logs }}
       headerProps={{
         onDeploy: () => {
           const registryKey = PrivateKey.new();
+          appendLog("Starting deploy…");
           void deployGraph
             .mutateAsync({
               edges,
@@ -90,7 +63,10 @@ export default function CreateAiTeamFlow() {
               registryVersion: 1n,
               rhoLimit: 1_000_000n,
             })
-            .then(() => onSuccessfulDeploy(registryKey))
+            .then(() => {
+              appendLog("Deploy finished");
+              onSuccessfulDeploy(registryKey);
+            })
             .catch(onFailedDeploy);
         },
         onRun: () =>
@@ -101,22 +77,19 @@ export default function CreateAiTeamFlow() {
               rhoLimit: 500_000_000n,
               uri: lastDeploy.getPublicKey().getUri(),
             })
-            .then((result) =>
-              addLog({
-                log: JSON.stringify(
+            .then((result) => {
+              appendLog(
+                JSON.stringify(
                   result,
-                  (_, value) => {
-                    if (typeof value === "string" && value.length > 2000) {
-                      return `${value.slice(0, 2000)}...`;
-                    }
-                    return value as unknown;
-                  },
+                  (_, value) =>
+                    typeof value === "string" && value.length > 2000
+                      ? `${value.slice(0, 2000)}...`
+                      : (value as unknown),
                   4,
                 ),
-                logLevel: "info",
-                time: new Date(),
-              }),
-            )
+                "info",
+              );
+            })
             .catch(logError),
       }}
     >

@@ -6,6 +6,7 @@ import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
+import { useDock } from "@/lib/providers/dock/useDock";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useDeployAgentMutation } from "@/lib/queries";
@@ -30,6 +31,7 @@ function parseBigIntOrNull(v: string): bigint | null {
 export default function Deploy() {
   const { data, prevStep, step, updateData } = useStepper();
   const { agentId, version } = data;
+  const dock = useDock();
   const { open } = useModal();
 
   const navigate = useNavigate();
@@ -56,12 +58,14 @@ export default function Deploy() {
       { agentId, rhoLimit, version },
       {
         onError: (e) => {
+          dock.appendDeploy(false);
           open(<WarningModal error={e.message} />, {
             ariaLabel: "Warning",
             maxWidth: 550,
           });
         },
         onSuccess: () => {
+          dock.appendDeploy(true);
           open(<SuccessModal data={data} note="note" status="status" />, {
             ariaLabel: "Success deploy",
             maxWidth: 550,

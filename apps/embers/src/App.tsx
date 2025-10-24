@@ -4,6 +4,7 @@ import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
+import { DockProvider } from "@/lib/providers/dock/DockProvider";
 import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider";
 import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
@@ -30,41 +31,46 @@ export default function App() {
       <WalletProvider>
         <ThemeProvider>
           <LoaderProvider>
-            <LayoutProvider>
-              <ReactFlowProvider>
-                <BrowserRouter>
-                  <StepperProvider>
-                    <ModalProvider>
-                      <div className={styles.background}>
-                        <Routes>
-                          <Route element={<Home />} path="/" />
-                          <Route element={<Login />} path="/login" />
-                          <Route element={<ProtectedRoute />}>
-                            <Route
-                              element={<CreateAgent />}
-                              path="/create-ai-agent/create"
-                            />
-                            <Route
-                              element={<CreateAiTeamFlow />}
-                              path="/create-ai-team"
-                            />
-                            <Route
-                              element={<Deploy />}
-                              path="/create-ai-agent/deploy"
-                            />
-                            <Route element={<Dashboard />} path="/dashboard" />
-                            <Route
-                              element={<EditAgent />}
-                              path="/create-ai-agent"
-                            />
-                          </Route>
-                        </Routes>
-                      </div>
-                    </ModalProvider>
-                  </StepperProvider>
-                </BrowserRouter>
-              </ReactFlowProvider>
-            </LayoutProvider>
+            <DockProvider>
+              <LayoutProvider>
+                <ReactFlowProvider>
+                  <BrowserRouter>
+                    <StepperProvider>
+                      <ModalProvider>
+                        <div className={styles.background}>
+                          <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<Login />} path="/login" />
+                            <Route element={<ProtectedRoute />}>
+                              <Route
+                                element={<CreateAgent />}
+                                path="/create-ai-agent/create"
+                              />
+                              <Route
+                                element={<CreateAiTeamFlow />}
+                                path="/create-ai-team"
+                              />
+                              <Route
+                                element={<Deploy />}
+                                path="/create-ai-agent/deploy"
+                              />
+                              <Route
+                                element={<Dashboard />}
+                                path="/dashboard"
+                              />
+                              <Route
+                                element={<EditAgent />}
+                                path="/create-ai-agent"
+                              />
+                            </Route>
+                          </Routes>
+                        </div>
+                      </ModalProvider>
+                    </StepperProvider>
+                  </BrowserRouter>
+                </ReactFlowProvider>
+              </LayoutProvider>
+            </DockProvider>
           </LoaderProvider>
         </ThemeProvider>
       </WalletProvider>

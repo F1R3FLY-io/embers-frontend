@@ -31,7 +31,10 @@ export default function CodeEditor() {
   const { data: agentVersions } = useAgentVersions(agentId ?? "");
 
   const agentName = agent?.name ?? data.agentName;
-  const currentVersion = agent?.version ?? version;
+  const currentVersion = useMemo(
+    () => agent?.version ?? version,
+    [agent?.version, version],
+  );
   const fileName = `${agentName}.rho`;
   useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
 

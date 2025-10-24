@@ -23,11 +23,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const handleSelect = (id: string) => {
     onSelect?.(id);
   };
+  const selectedVersion = selectedId ?? versions[0];
 
   return (
     <MainSide key={selectedId} title={t("agents.versions")}>
       <div
-        aria-activedescendant={selectedId ? `version-${selectedId}` : undefined}
+        aria-activedescendant={
+          selectedVersion ? `version-${selectedVersion}` : undefined
+        }
         aria-label="Versions"
         className={styles.list}
         role="listbox"
@@ -37,7 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span
               key={`version-${v}`}
               className={classNames(styles.item, {
-                [styles.active]: v === selectedId,
+                [styles.active]: v === selectedVersion,
               })}
               onClick={() => handleSelect(v)}
             >

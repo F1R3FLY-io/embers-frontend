@@ -18,12 +18,13 @@ import styles from "./CreateAgent.module.scss";
 export default function CreateAgent() {
   const navigate = useNavigate();
 
-  const { nextStep, step, updateData } = useStepper();
-  const [name, setName] = useState("");
-  const [environment, setEnvironment] = useState<string>("");
+  const { data, nextStep, step, updateData } = useStepper();
+  const [name, setName] = useState(data.agentName);
+  const [environment, setEnvironment] = useState<string>(
+    data.environment ?? "",
+  );
 
-  // Icon URL state
-  const [iconUrl, setIconUrl] = useState("");
+  const [iconUrl, setIconUrl] = useState(data.agentIconUrl ?? "");
   const [iconLoadError, setIconLoadError] = useState(false);
 
   const envOptions: Option[] = useMemo(
@@ -47,7 +48,7 @@ export default function CreateAgent() {
 
   const canContinue = name.trim().length > 0 && environment.length > 0;
 
-  const handleCancel = () => void navigate(-1);
+  const handleCancel = () => void navigate("/dashboard");
 
   const submitForm = () => {
     updateData("agentName", name);
@@ -140,7 +141,6 @@ export default function CreateAgent() {
             )}
           </div>
 
-          {/* Estimated cost strip */}
           <div className={styles["form-section"]}>
             <div className={styles["estimation-bar"]}>
               <Text color="secondary" fontSize={12}>

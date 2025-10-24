@@ -92,7 +92,7 @@ export function AgentHeaderFromJSONTyped(
     return json;
   }
   return {
-    createdAt: TimestampMillisFromJSON(parseInt(json.created_at)),
+    createdAt: TimestampMillisFromJSON(json.created_at),
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,

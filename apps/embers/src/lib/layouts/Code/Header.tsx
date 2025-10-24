@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
+import { useDock } from "@/lib/providers/dock/useDock";
 import { useLoader } from "@/lib/providers/loader/useLoader";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useCreateAgentMutation, useSaveAgentMutation } from "@/lib/queries";
@@ -15,6 +16,7 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const navigate = useNavigate();
   const { data, nextStep, updateData } = useStepper();
+  const dock = useDock();
   const { hideLoader, showLoader } = useLoader();
 
   const { agentIconUrl, agentId, agentName } = data;
@@ -39,7 +41,6 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       const res = await saveMutation.mutateAsync(payload);
       return { agentId: id, version: res.version };
     }
-
     const res = await createMutation.mutateAsync(payload);
     return { agentId: res.id, version: res.version };
   };
@@ -50,10 +51,18 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
     }
     try {
       showLoader();
-      await saveOrCreate();
+      const { agentId, version } = await saveOrCreate();
+      updateData("version", version);
+      updateData("agentId", agentId);
+      dock.appendLog(
+        `Agent ${agentId} with ${version} has been saved!`,
+        "info",
+      );
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error("Save failed:", e);
+      dock.appendLog(
+        `Save failed ${e instanceof Error ? e.message : String(e)}`,
+        "error",
+      );
     } finally {
       hideLoader();
     }
@@ -71,8 +80,10 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       nextStep();
       void navigate("/create-ai-agent/deploy");
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error("Pre-deploy save failed:", e);
+      dock.appendLog(
+        `Pre-deploy save failed with error: ${e instanceof Error ? e.message : String(e)}`,
+        "error",
+      );
     } finally {
       hideLoader();
     }
