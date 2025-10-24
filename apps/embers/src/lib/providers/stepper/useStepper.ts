@@ -16,6 +16,7 @@ export type StepperState = {
   nextStep: () => void;
   prevStep: () => void;
   reset: () => void;
+  setStep: (step: number) => void;
   step: number;
   updateData: <K extends keyof StepperData>(
     key: K,

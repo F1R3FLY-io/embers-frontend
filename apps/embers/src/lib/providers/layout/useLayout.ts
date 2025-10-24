@@ -2,7 +2,9 @@ import { createContext, useContext } from "react";
 
 interface LayoutContextValue {
   headerTitle: string;
+  isSidebarCollapsed: boolean;
   setHeaderTitle: (title: string) => void;
+  setIsSidebarCollapsed: (value: boolean) => void;
 }
 
 export const LayoutContext = createContext<LayoutContextValue | undefined>(

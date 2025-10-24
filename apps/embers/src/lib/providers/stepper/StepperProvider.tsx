@@ -9,7 +9,7 @@ import type { StepperData } from "@/lib/providers/stepper/useStepper";
 import { StepperContext } from "@/lib/providers/stepper/useStepper";
 
 const defaultData = {
-  agentName: "defaultName",
+  agentName: "",
   rhoLimit: 100000,
 };
 
@@ -57,6 +57,7 @@ export const StepperProvider: React.FC<{ children: ReactNode }> = ({
         nextStep,
         prevStep,
         reset,
+        setStep,
         step,
         updateData,
       }}

@@ -1,5 +1,8 @@
 import type React from "react";
 
+import classNames from "classnames";
+import { useTranslation } from "react-i18next";
+
 import type { AccordionProps } from "@/lib/components/Accordion/Accordion";
 import type { NodeKind } from "@/lib/components/GraphEditor/nodes/nodes.registry";
 
@@ -25,6 +28,7 @@ const NodeAccordion = (props: AccordionProps) => {
 };
 
 export const Sidebar: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className={styles.sidebar}>
       <div className={styles.body}>
@@ -42,8 +46,8 @@ export const Sidebar: React.FC = () => {
 
       <div className={styles["sidebar-footer"]}>
         <Text bold color="hover" type="normal">
-          <i className={`fa fa-plus ${styles["plus-icon"]}`} /> Add Custom
-          Component
+          <i className={classNames("fa fa-plus", styles["plus-icon"])} />
+          {t("graphEditor.addCustomComponent")}
         </Text>
       </div>
     </div>

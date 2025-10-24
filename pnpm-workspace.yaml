@@ -5,6 +5,7 @@ packages:
 onlyBuiltDependencies:
   - '@f1r3fly-io/lightning-bug'
   - '@parcel/watcher'
+  - '@swc/core'
   - counterfact
   - esbuild
   - secp256k1

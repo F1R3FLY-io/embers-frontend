@@ -22,7 +22,17 @@
     "createNewAgent": "Neuen Agenten erstellen",
     "agentWithName": "Agent {{name}}",
     "agentTeams": "",
-    "createNewAgentTeam": ""
+    "createNewAgentTeam": "",
+    "edit": "",
+    "viewAgent": "",
+    "viewAll": "",
+    "details": "",
+    "updated": "",
+    "versions": "",
+    "tellUsAboutYourAgent": "",
+    "generalSettings": "",
+    "selectEnvironment": "",
+    "createAnother": ""
   },
   "dashboard": {
     "documentation": "Dokumentation",
@@ -34,7 +44,9 @@
   },
   "basic": {
     "inputPrompt": "",
-    "saveDraft": ""
+    "saveDraft": "",
+    "cancel": "",
+    "continue": ""
   },
   "deploy": {
     "deployAgent": "",
@@ -57,6 +69,36 @@
     "saveAsDraft": "",
     "back": "",
     "havingTrouble": "",
-    "contactSupport": ""
+    "contactSupport": "",
+    "iconUrl": "",
+    "iconLoadFailed": "",
+    "deploying": "",
+    "rhoLimit": "",
+    "generalInfo": "",
+    "creation": "",
+    "deployment": "",
+    "estimatedCost": "",
+    "success": {
+      "title": "",
+      "subtitle": ""
+    },
+    "labels": {
+      "agentId": "",
+      "environment": "",
+      "status": "",
+      "note": ""
+    },
+    "failure": {
+      "title": "",
+      "subtitle": "",
+      "tryAgain": "",
+      "reviewSettings": ""
+    }
+  },
+  "graphEditor": {
+    "addCustomComponent": ""
+  },
+  "sort": {
+    "sortBy": ""
   }
 }

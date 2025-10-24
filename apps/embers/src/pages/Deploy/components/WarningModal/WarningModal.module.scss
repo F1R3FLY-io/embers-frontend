@@ -1,0 +1,46 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.warning-icon {
+  width: 60px;
+  height: 60px;
+  fill: var(--accent-warning);
+}
+
+.warning-svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--accent-warning);
+  stroke: var(--accent-warning);
+  stroke-width: 1.8;
+}
+
+.title {
+  margin-top: 4px;
+}
+
+.subtitle {
+  max-width: 480px;
+}
+
+.error-box {
+  margin-top: 4px;
+  padding: 12px 14px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

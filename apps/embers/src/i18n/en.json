@@ -25,17 +25,25 @@
   },
   "agents": {
     "edit": "Edit Agent",
+    "viewAgent": "View Agent",
+    "viewAll": "View all agents",
     "details": "Details",
     "updated": "Updated",
     "agents": "Agents",
+    "versions": "Versions",
     "createNewAgent": "Create new Agent",
     "agentWithName": "Agent {{name}}",
     "agentTeams": "Agent Teams",
     "createNewAgentTeam": "Create new Agent Team",
     "tellUsAboutYourAgent": "Tell us about your AI-Agent",
     "generalSettings": "General settings",
-    "selectEnvironment": "Select environment"
+    "selectEnvironment": "Select environment",
+    "createAnother": "Create another agent"
   },
+  "graphEditor": {
+    "addCustomComponent": "Add Custom Component"
+  },
+  "sort": { "sortBy": "Sort by" },
   "dashboard": {
     "documentation": "Documentation",
     "logout": "Logout"
@@ -73,6 +81,22 @@
     "generalInfo": "General Info",
     "creation": "Creation",
     "deployment": "Deployment",
-    "estimatedCost": "Estimated Deploy cost"
+    "estimatedCost": "Estimated Deploy cost",
+    "success": {
+      "title": "{{agentName}} Successfully Deployed",
+      "subtitle": "It can now receive tasks and collaborate with other agents in the selected shard."
+    },
+    "labels": {
+      "agentId": "Agent ID",
+      "environment": "Environment",
+      "status": "Status",
+      "note": "Note"
+    },
+    "failure": {
+      "title": "Deployment Failed",
+      "subtitle": "Something went wrong while deploying your agent. Please review the error message below and try again.",
+      "tryAgain": "Try again",
+      "reviewSettings": "Review agent settings"
+    }
   }
 }

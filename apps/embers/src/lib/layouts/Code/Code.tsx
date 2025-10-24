@@ -1,30 +1,36 @@
 import type React from "react";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/lib/components/Button";
-import { Sidebar } from "@/lib/components/Sidebar";
 import { Layout } from "@/lib/layouts";
-import { Footer, Header } from "@/lib/layouts/Code";
+import { Footer, Header, Sidebar } from "@/lib/layouts/Code";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
+import { useStepper } from "@/lib/providers/stepper/useStepper";
 
 interface CodeLayoutProps {
   children: React.ReactNode;
+  currentVersion: string | undefined;
   getCode: () => string | undefined | null;
+  versions: string[] | undefined;
 }
 
 export const CodeLayout: React.FC<CodeLayoutProps> = ({
   children,
+  currentVersion,
   getCode,
+  versions,
 }) => {
   const confirm = useConfirm();
   const navigate = useNavigate();
+  const { updateData } = useStepper();
+
+  const [selectedId, setSelectedId] = useState<string | undefined>(
+    currentVersion,
+  );
 
   const headerClick = useCallback(() => {
-    confirm({
-      message: "Do you want to leave this page?",
-    })
+    confirm({ message: "Do you want to leave this page?" })
       .then((ok) => ok && void navigate("/dashboard"))
       .catch(() => {});
   }, [confirm, navigate]);
@@ -36,15 +42,13 @@ export const CodeLayout: React.FC<CodeLayoutProps> = ({
       headerClickAction={headerClick}
       sidebar={
         <Sidebar
-          actions={
-            <Button type="subtle" onClick={() => {}}>
-              New
-            </Button>
-          }
-          title="Explorer"
-        >
-          {null}
-        </Sidebar>
+          selectedId={selectedId}
+          versions={versions ?? []}
+          onSelect={(id) => {
+            setSelectedId(id);
+            updateData("version", id);
+          }}
+        />
       }
       sidebarWidth={320}
     >

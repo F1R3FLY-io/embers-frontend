@@ -4,24 +4,15 @@ import classNames from "classnames";
 
 import { Accordion } from "@/lib/components/Accordion";
 import { Text } from "@/lib/components/Text";
+import { useDock } from "@/lib/providers/dock/useDock";
 
 import styles from "./Graph.module.scss";
 
 type LogLevel = "info" | "error";
 
-export type FooterProps = {
-  deployments: {
-    success: boolean;
-    time: Date;
-  }[];
-  logs: {
-    log: string;
-    logLevel: LogLevel;
-    time: Date;
-  }[];
-};
+export const Footer: React.FC = () => {
+  const { deploys, logs } = useDock();
 
-export const Footer: React.FC<FooterProps> = ({ deployments, logs }) => {
   const logLevelClassName = (logLevel: LogLevel) =>
     classNames({
       [styles["error-log"]]: logLevel === "error",
@@ -32,25 +23,21 @@ export const Footer: React.FC<FooterProps> = ({ deployments, logs }) => {
     <>
       <Accordion title="Logs">
         {logs.map((log) => (
-          <pre key={log.time.toISOString()}>
+          <pre key={log.id}>
             <Text color="secondary">{formatTime(log.time)}</Text>
-            <Text className={logLevelClassName(log.logLevel)}>
-              [{log.logLevel}]
-            </Text>
-            <Text color="primary">{log.log}</Text>
+            <Text className={logLevelClassName(log.level)}>[{log.level}]</Text>
+            <Text color="primary">{log.text}</Text>
           </pre>
         ))}
       </Accordion>
+
       <Accordion title="Deploy History">
-        {deployments.map((deploy) => (
-          <pre key={deploy.time.toISOString()}>
+        {deploys.map((deploy) => (
+          <pre key={deploy.id}>
             <Text color="secondary">{formatTime(deploy.time)}</Text>
-            <Text color="primary">: </Text>
-            {deploy.success ? (
-              <Text color="primary">Success</Text>
-            ) : (
-              <Text color="primary">Failure</Text>
-            )}
+            <Text color="primary">
+              : {deploy.success ? "Success" : "Failure"}
+            </Text>
           </pre>
         ))}
       </Accordion>

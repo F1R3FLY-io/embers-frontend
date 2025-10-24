@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { t } from "i18next";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
@@ -27,6 +27,7 @@ interface AgentsGridProps {
 }
 
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { nextStep, reset, updateData } = useStepper();
 
@@ -40,6 +41,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
       updateData("agentId", agent.id);
       updateData("agentName", agent.name);
       updateData("version", agent.version);
+      updateData("agentIconUrl", agent.logo ?? "");
       nextStep();
       void navigate(`/create-ai-agent`);
     },

@@ -8,7 +8,7 @@ export function TimestampMillisFromJSONTyped(
   json: any,
   _ignoreDiscriminator: boolean,
 ): TimestampMillis {
-  return new Date(json);
+  return new Date(parseInt(json));
 }
 
 export function TimestampMillisToJSON(
