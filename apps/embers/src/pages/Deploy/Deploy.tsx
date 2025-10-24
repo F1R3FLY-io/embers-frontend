@@ -1,5 +1,5 @@
-import { t } from "i18next";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
@@ -29,6 +29,7 @@ function parseBigIntOrNull(v: string): bigint | null {
 }
 
 export default function Deploy() {
+  const { t } = useTranslation();
   const { data, prevStep, step, updateData } = useStepper();
   const { agentId, version } = data;
   const dock = useDock();
@@ -82,41 +83,49 @@ export default function Deploy() {
 
   return (
     <div className={styles["deploy-container"]}>
-      <Text bold color="primary" fontSize={40} type="H2">
+      <Text bold color="primary" type="H1">
         {t("aiAgent.create")}
       </Text>
 
       <div className={styles["stepper-container"]}>
         <Stepper
           currentStep={step}
-          labels={[
-            t("deploy.generalInfo"),
-            t("deploy.creation"),
-            t("deploy.deployment"),
+          steps={[
+            {
+              canClick: true,
+              label: t("deploy.generalInfo"),
+            },
+            {
+              canClick: true,
+              label: t("deploy.creation"),
+            },
+            {
+              canClick: false,
+              label: t("deploy.deployment"),
+            },
           ]}
-          steps={3}
         />
       </div>
 
       <div className={styles["content-container"]}>
         <div>
-          <Text bold color="primary" fontSize={32} type="H2">
+          <Text bold color="primary" type="H2">
             {agentName}
           </Text>
           <div className={styles["description-container"]}>
-            <Text color="secondary" fontSize={16} type="H4">
+            <Text color="secondary" type="large">
               {t("deploy.reviewDetails")}
             </Text>
           </div>
         </div>
 
         <div className={styles["details-container"]}>
-          <Text bold color="primary" fontSize={20} type="H3">
+          <Text bold color="primary" type="H5">
             {t("deploy.agentDetails")}
           </Text>
 
           <div className={styles["form-section"]}>
-            <Text color="secondary" fontSize={12}>
+            <Text color="secondary" type="small">
               {t("deploy.agentName")}
             </Text>
             <Input
@@ -128,12 +137,12 @@ export default function Deploy() {
           </div>
 
           <div className={styles["form-section"]}>
-            <Text bold color="primary" fontSize={20} type="H3">
+            <Text bold color="primary" type="H5">
               {t("deploy.versionAndNotes")}
             </Text>
             <div className={styles["form-fields"]}>
               <div>
-                <Text color="secondary" fontSize={12}>
+                <Text color="secondary" type="small">
                   {t("deploy.version")}
                 </Text>
                 <Input
@@ -144,7 +153,7 @@ export default function Deploy() {
                 />
               </div>
               <div>
-                <Text color="secondary" fontSize={12}>
+                <Text color="secondary" type="small">
                   {t("deploy.notes")}
                 </Text>
                 <Input
@@ -158,7 +167,7 @@ export default function Deploy() {
           <div className={styles["form-section"]}>
             <div className={styles["form-fields"]}>
               <div>
-                <Text color="secondary" fontSize={12}>
+                <Text color="secondary" type="small">
                   {t("deploy.rhoLimit")}
                 </Text>
                 <Input
@@ -200,7 +209,7 @@ export default function Deploy() {
           <div className={styles["footer-container"]}>
             <LanguageSelect />
             <div className={styles["support-container"]}>
-              <Text color="secondary" fontSize={14}>
+              <Text color="secondary" type="normal">
                 {t("deploy.havingTrouble")}
               </Text>
               <a className={styles["support-link"]} href="#">

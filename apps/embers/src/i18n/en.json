@@ -40,6 +40,10 @@
     "selectEnvironment": "Select environment",
     "createAnother": "Create another agent"
   },
+  "graphEditor": {
+    "addCustomComponent": "Add Custom Component"
+  },
+  "sort": { "sortBy": "Sort by" },
   "dashboard": {
     "documentation": "Documentation",
     "logout": "Logout"

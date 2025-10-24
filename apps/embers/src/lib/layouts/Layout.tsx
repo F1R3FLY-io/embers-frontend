@@ -1,5 +1,6 @@
 import type React from "react";
 
+import classNames from "classnames";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -47,7 +48,9 @@ export const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div
-      className={`${styles.container} ${isSidebarCollapsed ? styles["is-collapsed"] : ""}`}
+      className={classNames(styles.container, {
+        [styles["is-collapsed"]]: isSidebarCollapsed,
+      })}
       style={{ ["--sidebar-width" as string]: styleVar }}
     >
       <Header actions={headerActions} headerClick={headerClick} />
@@ -67,7 +70,10 @@ export const Layout: React.FC<LayoutProps> = ({
                 onClick={toggleSidebar}
               >
                 <i
-                  className={`fa fa-chevron-${isSidebarCollapsed ? "right" : "left"}`}
+                  className={classNames("fa", {
+                    "fa-chevron-left": !isSidebarCollapsed,
+                    "fa-chevron-right": isSidebarCollapsed,
+                  })}
                 />
               </button>
             )}

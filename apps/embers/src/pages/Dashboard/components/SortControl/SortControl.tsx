@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Text } from "@/lib/components/Text";
 import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import SortIcon from "@/public/icons/sort-icon.svg?react";
@@ -10,11 +12,12 @@ interface SortControlProps {
 }
 
 export function SortControl({ onSortChange, sortBy }: SortControlProps) {
+  const { t } = useTranslation();
   return (
     <div className={styles["sort-control"]}>
       <SortIcon className={styles["sort-icon"]} />
-      <Text color="primary" fontSize={14}>
-        Sort by
+      <Text color="primary" type="normal">
+        {t("sort.sortBy")}
       </Text>
       <div className={styles["sort-dropdown"]}>
         <select
