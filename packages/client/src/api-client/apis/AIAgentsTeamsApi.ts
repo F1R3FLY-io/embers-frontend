@@ -10,9 +10,8 @@
  * Do not edit the class manually.
  */
 
-import type { Address } from "@/entities/Address";
-
 import type {
+  Address,
   AgentsTeam,
   AgentsTeams,
   CreateAgentsTeamReq,
@@ -23,6 +22,7 @@ import type {
   RunAgentsTeamReq,
   RunAgentsTeamResp,
   SaveAgentsTeamResp,
+  SendResp,
   SignedContract,
 } from "../models/index";
 
@@ -37,6 +37,7 @@ import {
   RunAgentsTeamReqToJSON,
   RunAgentsTeamRespFromJSON,
   SaveAgentsTeamRespFromJSON,
+  SendRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
@@ -344,7 +345,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsCreateSendPostRaw(
     requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.signedContract == null) {
       throw new runtime.RequiredError(
         "signedContract",
@@ -371,7 +372,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -379,11 +382,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsCreateSendPost(
     requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsTeamsCreateSendPostRaw(
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsTeamsCreateSendPostRaw(
       requestParameters,
       initOverrides,
     );
+    return response.value();
   }
 
   /**
@@ -441,7 +445,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsDeploySendPostRaw(
     requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.signedContract == null) {
       throw new runtime.RequiredError(
         "signedContract",
@@ -468,7 +472,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -476,11 +482,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsDeploySendPost(
     requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsTeamsDeploySendPostRaw(
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsTeamsDeploySendPostRaw(
       requestParameters,
       initOverrides,
     );
+    return response.value();
   }
 
   /**
@@ -539,7 +546,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdDeleteSendPostRaw(
     requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -577,7 +584,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -585,11 +594,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdDeleteSendPost(
     requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsTeamsIdDeleteSendPostRaw(
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsTeamsIdDeleteSendPostRaw(
       requestParameters,
       initOverrides,
     );
+    return response.value();
   }
 
   /**
@@ -658,7 +668,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdSaveSendPostRaw(
     requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -696,7 +706,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -704,11 +716,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdSaveSendPost(
     requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsTeamsIdSaveSendPostRaw(
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsTeamsIdSaveSendPostRaw(
       requestParameters,
       initOverrides,
     );
+    return response.value();
   }
 
   /**

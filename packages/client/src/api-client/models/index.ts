@@ -43,6 +43,7 @@ export * from "./RunAgentsTeamReq";
 export * from "./RunAgentsTeamResp";
 export * from "./SaveAgentResp";
 export * from "./SaveAgentsTeamResp";
+export * from "./SendResp";
 export * from "./SignedContract";
 export * from "./SignedTestDeployLogs";
 export * from "./TestDeployFailed";
