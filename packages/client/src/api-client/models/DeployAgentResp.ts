@@ -26,6 +26,12 @@ export interface DeployAgentResp {
    * @memberof DeployAgentResp
    */
   contract: Base64;
+  /**
+   *
+   * @type {Base64}
+   * @memberof DeployAgentResp
+   */
+  system?: Base64;
 }
 
 /**
@@ -53,6 +59,7 @@ export function DeployAgentRespFromJSONTyped(
   }
   return {
     contract: Base64FromJSON(json.contract),
+    system: json.system == null ? undefined : Base64FromJSON(json.system),
   };
 }
 
@@ -70,5 +77,6 @@ export function DeployAgentRespToJSONTyped(
 
   return {
     contract: Base64ToJSON(value.contract),
+    system: Base64ToJSON(value.system),
   };
 }

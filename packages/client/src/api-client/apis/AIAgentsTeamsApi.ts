@@ -20,6 +20,7 @@ import type {
   DeleteAgentsTeamResp,
   DeployAgentsTeamReq,
   DeployAgentsTeamResp,
+  DeploySignedAgentsTeamtReq,
   RunAgentsTeamReq,
   RunAgentsTeamResp,
   SaveAgentsTeamResp,
@@ -35,6 +36,7 @@ import {
   DeleteAgentsTeamRespFromJSON,
   DeployAgentsTeamReqToJSON,
   DeployAgentsTeamRespFromJSON,
+  DeploySignedAgentsTeamtReqToJSON,
   RunAgentsTeamReqToJSON,
   RunAgentsTeamRespFromJSON,
   SaveAgentsTeamRespFromJSON,
@@ -71,7 +73,7 @@ export interface ApiAiAgentsTeamsDeployPreparePostRequest {
 }
 
 export interface ApiAiAgentsTeamsDeploySendPostRequest {
-  signedContract: SignedContract;
+  deploySignedAgentsTeamtReq: DeploySignedAgentsTeamtReq;
 }
 
 export interface ApiAiAgentsTeamsIdDeletePreparePostRequest {
@@ -447,10 +449,10 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.signedContract == null) {
+    if (requestParameters.deploySignedAgentsTeamtReq == null) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsDeploySendPost().',
+        "deploySignedAgentsTeamtReq",
+        'Required parameter "deploySignedAgentsTeamtReq" was null or undefined when calling apiAiAgentsTeamsDeploySendPost().',
       );
     }
 
@@ -464,7 +466,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: DeploySignedAgentsTeamtReqToJSON(
+          requestParameters.deploySignedAgentsTeamtReq,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,

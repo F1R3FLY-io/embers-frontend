@@ -1,7 +1,9 @@
+import { blake2b } from "blakejs";
+
 import type { CreateAgentReq, HTTPHeaders, SignedContract } from "@/api-client";
 
 import { AIAgentsApi, Configuration } from "@/api-client";
-import { deployContract } from "@/functions";
+import { deployContract, sign } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
@@ -62,43 +64,46 @@ export class AgentsApiSdk {
       return this.client.apiAiAgentsCreateSendPost({ signedContract });
     };
 
-    return deployContract(this.privateKey, prepareContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, prepareContract, sendContract);
   }
 
   public async deployCode(code: string, phloLimit: Amount) {
-    const contract = async () =>
-      this.client.apiAiAgentsDeployPreparePost({
-        deployAgentReq: {
-          code,
-          phloLimit: phloLimit.value,
-          type: "Code",
-        },
-      });
+    const prepareModel = await this.client.apiAiAgentsDeployPreparePost({
+      deployAgentReq: {
+        code,
+        phloLimit: phloLimit.value,
+        type: "Code",
+      },
+    });
 
-    // Send the signed contract
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      const signedContract: SignedContract = {
-        contract,
+    const payload = blake2b(prepareModel.contract, undefined, 32);
+    const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+    const contract = {
+      contract: prepareModel.contract,
+      deployer: this.privateKey.getPublicKey().value,
+      sig,
+      sigAlgorithm,
+    };
+
+    let system = undefined;
+    if (prepareModel.system !== undefined) {
+      const payload = blake2b(prepareModel.system, undefined, 32);
+      const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+      system = {
+        contract: prepareModel.system,
         deployer: this.privateKey.getPublicKey().value,
         sig,
         sigAlgorithm,
       };
+    }
 
-      return this.client.apiAiAgentsDeploySendPost({
-        signedContract,
-      });
-    };
+    const sendModel = await this.client.apiAiAgentsDeploySendPost({
+      deploySignedAgentReq: { contract, system },
+    });
 
-    await deployContract(this.privateKey, contract, sendContract);
+    return { prepareModel, sendModel };
   }
 
   /**
@@ -107,37 +112,44 @@ export class AgentsApiSdk {
    * @param version The version to deploy
    */
   public async deploy(id: string, version: string, phloLimit: Amount) {
-    // Get the contract and sign it
-    const contract = async () =>
-      this.client.apiAiAgentsDeployPreparePost({
-        deployAgentReq: {
-          address: this.address,
-          id,
-          phloLimit: phloLimit.value,
-          type: "Agent",
-          version,
-        },
-      });
+    const prepareModel = await this.client.apiAiAgentsDeployPreparePost({
+      deployAgentReq: {
+        address: this.address,
+        id,
+        phloLimit: phloLimit.value,
+        type: "Agent",
+        version,
+      },
+    });
 
-    // Send the signed contract
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      const signedContract: SignedContract = {
-        contract,
+    const payload = blake2b(prepareModel.contract, undefined, 32);
+    const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+    const contract = {
+      contract: prepareModel.contract,
+      deployer: this.privateKey.getPublicKey().value,
+      sig,
+      sigAlgorithm,
+    };
+
+    let system = undefined;
+    if (prepareModel.system !== undefined) {
+      const payload = blake2b(prepareModel.system, undefined, 32);
+      const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+      system = {
+        contract: prepareModel.system,
         deployer: this.privateKey.getPublicKey().value,
         sig,
         sigAlgorithm,
       };
+    }
 
-      return this.client.apiAiAgentsDeploySendPost({
-        signedContract,
-      });
-    };
+    const sendModel = await this.client.apiAiAgentsDeploySendPost({
+      deploySignedAgentReq: { contract, system },
+    });
 
-    await deployContract(this.privateKey, contract, sendContract);
+    return { prepareModel, sendModel };
   }
 
   /**
@@ -205,12 +217,7 @@ export class AgentsApiSdk {
       });
     };
 
-    return deployContract(this.privateKey, generateContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, generateContract, sendContract);
   }
 
   public async delete(id: string) {
@@ -238,6 +245,6 @@ export class AgentsApiSdk {
       });
     };
 
-    await deployContract(this.privateKey, generateContract, sendContract);
+    return deployContract(this.privateKey, generateContract, sendContract);
   }
 }

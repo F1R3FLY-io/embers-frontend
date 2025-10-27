@@ -32,6 +32,8 @@ docs/DeployAgentsTeamReqDeployGraph.md
 docs/DeployAgentsTeamResp.md
 docs/DeployCode.md
 docs/DeployGraph.md
+docs/DeploySignedAgentReq.md
+docs/DeploySignedAgentsTeamtReq.md
 docs/DeploySignedTestReq.md
 docs/DeploySignedTestResp.md
 docs/DeploySignedTestRespEnvDeployFailed.md
@@ -89,6 +91,8 @@ models/DeployAgentsTeamReqDeployGraph.ts
 models/DeployAgentsTeamResp.ts
 models/DeployCode.ts
 models/DeployGraph.ts
+models/DeploySignedAgentReq.ts
+models/DeploySignedAgentsTeamtReq.ts
 models/DeploySignedTestReq.ts
 models/DeploySignedTestResp.ts
 models/DeploySignedTestRespEnvDeployFailed.ts
