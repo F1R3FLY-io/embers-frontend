@@ -43,6 +43,12 @@ export interface AgentHeader {
   id: string;
   /**
    *
+   * @type {TimestampMillis}
+   * @memberof AgentHeader
+   */
+  lastDeploy?: TimestampMillis;
+  /**
+   *
    * @type {string}
    * @memberof AgentHeader
    */
@@ -101,6 +107,10 @@ export function AgentHeaderFromJSONTyped(
     createdAt: TimestampMillisFromJSON(json.created_at),
     description: json.description == null ? undefined : json.description,
     id: json.id,
+    lastDeploy:
+      json.last_deploy == null
+        ? undefined
+        : TimestampMillisFromJSON(json.last_deploy),
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -124,6 +134,7 @@ export function AgentHeaderToJSONTyped(
     created_at: TimestampMillisToJSON(value.createdAt),
     description: value.description,
     id: value.id,
+    last_deploy: TimestampMillisToJSON(value.lastDeploy),
     logo: value.logo,
     name: value.name,
     shard: value.shard,

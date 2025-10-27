@@ -51,6 +51,12 @@ export interface AgentsTeam {
   id: string;
   /**
    *
+   * @type {TimestampMillis}
+   * @memberof AgentsTeam
+   */
+  lastDeploy?: TimestampMillis;
+  /**
+   *
    * @type {string}
    * @memberof AgentsTeam
    */
@@ -110,6 +116,10 @@ export function AgentsTeamFromJSONTyped(
     description: json.description == null ? undefined : json.description,
     graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
     id: json.id,
+    lastDeploy:
+      json.last_deploy == null
+        ? undefined
+        : TimestampMillisFromJSON(json.last_deploy),
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -134,6 +144,7 @@ export function AgentsTeamToJSONTyped(
     description: value.description,
     graph: GraphToJSON(value.graph),
     id: value.id,
+    last_deploy: TimestampMillisToJSON(value.lastDeploy),
     logo: value.logo,
     name: value.name,
     shard: value.shard,

@@ -10,9 +10,8 @@
  * Do not edit the class manually.
  */
 
-import type { Address } from "@/entities/Address";
-
 import type {
+  Address,
   Agent,
   Agents,
   CreateAgentReq,
@@ -20,6 +19,7 @@ import type {
   DeleteAgentResp,
   DeployAgentReq,
   DeployAgentResp,
+  DeploySignedAgentReq,
   SaveAgentResp,
   SendResp,
   SignedContract,
@@ -33,6 +33,7 @@ import {
   DeleteAgentRespFromJSON,
   DeployAgentReqToJSON,
   DeployAgentRespFromJSON,
+  DeploySignedAgentReqToJSON,
   SaveAgentRespFromJSON,
   SendRespFromJSON,
   SignedContractToJSON,
@@ -67,7 +68,7 @@ export interface ApiAiAgentsDeployPreparePostRequest {
 }
 
 export interface ApiAiAgentsDeploySendPostRequest {
-  signedContract: SignedContract;
+  deploySignedAgentReq: DeploySignedAgentReq;
 }
 
 export interface ApiAiAgentsIdDeletePreparePostRequest {
@@ -435,10 +436,10 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.signedContract == null) {
+    if (requestParameters.deploySignedAgentReq == null) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsDeploySendPost().',
+        "deploySignedAgentReq",
+        'Required parameter "deploySignedAgentReq" was null or undefined when calling apiAiAgentsDeploySendPost().',
       );
     }
 
@@ -452,7 +453,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: DeploySignedAgentReqToJSON(
+          requestParameters.deploySignedAgentReq,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
