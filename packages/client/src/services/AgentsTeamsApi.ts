@@ -1,5 +1,7 @@
 import type { Graph } from "@f1r3fly-io/graphl-parser";
 
+import { blake2b } from "blakejs";
+
 import type {
   CreateAgentsTeamReq,
   HTTPHeaders,
@@ -7,7 +9,7 @@ import type {
 } from "@/api-client";
 
 import { AIAgentsTeamsApi, Configuration } from "@/api-client";
-import { deployContract, insertSignedSignature } from "@/functions";
+import { deployContract, insertSignedSignature, sign } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
@@ -57,12 +59,7 @@ export class AgentsTeamsApiSdk {
       return this.client.apiAiAgentsTeamsCreateSendPost({ signedContract });
     };
 
-    return deployContract(this.privateKey, prepareContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, prepareContract, sendContract);
   }
 
   public async get() {
@@ -94,49 +91,53 @@ export class AgentsTeamsApiSdk {
   ) {
     const timestamp = new Date();
 
-    const contract = async () =>
-      this.client.apiAiAgentsTeamsDeployPreparePost({
-        deployAgentsTeamReq: {
-          deploy: {
-            signature: insertSignedSignature(
-              registryKey,
-              timestamp,
-              this.privateKey.getPublicKey(),
-              registryVersion,
-            ),
+    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost({
+      deployAgentsTeamReq: {
+        deploy: {
+          signature: insertSignedSignature(
+            registryKey,
             timestamp,
-            uriPubKey: registryKey.getPublicKey(),
-            version: registryVersion,
-          },
-          graph,
-          phloLimit: phloLimit.value,
-          type: "Graph",
+            this.privateKey.getPublicKey(),
+            registryVersion,
+          ),
+          timestamp,
+          uriPubKey: registryKey.getPublicKey(),
+          version: registryVersion,
         },
-      });
+        graph,
+        phloLimit: phloLimit.value,
+        type: "Graph",
+      },
+    });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      const signedContract: SignedContract = {
-        contract,
+    const payload = blake2b(prepareModel.contract, undefined, 32);
+    const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+    const contract = {
+      contract: prepareModel.contract,
+      deployer: this.privateKey.getPublicKey().value,
+      sig,
+      sigAlgorithm,
+    };
+
+    let system = undefined;
+    if (prepareModel.system !== undefined) {
+      const payload = blake2b(prepareModel.system, undefined, 32);
+      const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+      system = {
+        contract: prepareModel.system,
         deployer: this.privateKey.getPublicKey().value,
         sig,
         sigAlgorithm,
       };
+    }
 
-      return this.client.apiAiAgentsTeamsDeploySendPost({
-        signedContract,
-      });
-    };
+    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost({
+      deploySignedAgentsTeamtReq: { contract, system },
+    });
 
-    return deployContract(this.privateKey, contract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return { prepareModel, sendModel };
   }
 
   public async deploy(
@@ -148,46 +149,55 @@ export class AgentsTeamsApiSdk {
   ) {
     const timestamp = new Date();
 
-    const contract = async () =>
-      this.client.apiAiAgentsTeamsDeployPreparePost({
-        deployAgentsTeamReq: {
-          address: this.address,
-          deploy: {
-            signature: insertSignedSignature(
-              registryKey,
-              timestamp,
-              this.privateKey.getPublicKey(),
-              registryVersion,
-            ),
+    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost({
+      deployAgentsTeamReq: {
+        address: this.address,
+        deploy: {
+          signature: insertSignedSignature(
+            registryKey,
             timestamp,
-            uriPubKey: registryKey.getPublicKey(),
-            version: registryVersion,
-          },
-          id,
-          phloLimit: phloLimit.value,
-          type: "AgentsTeam",
-          version,
+            this.privateKey.getPublicKey(),
+            registryVersion,
+          ),
+          timestamp,
+          uriPubKey: registryKey.getPublicKey(),
+          version: registryVersion,
         },
-      });
+        id,
+        phloLimit: phloLimit.value,
+        type: "AgentsTeam",
+        version,
+      },
+    });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      const signedContract: SignedContract = {
-        contract,
+    const payload = blake2b(prepareModel.contract, undefined, 32);
+    const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+    const contract = {
+      contract: prepareModel.contract,
+      deployer: this.privateKey.getPublicKey().value,
+      sig,
+      sigAlgorithm,
+    };
+
+    let system = undefined;
+    if (prepareModel.system !== undefined) {
+      const payload = blake2b(prepareModel.system, undefined, 32);
+      const { sig, sigAlgorithm } = sign(payload, this.privateKey);
+
+      system = {
+        contract: prepareModel.system,
         deployer: this.privateKey.getPublicKey().value,
         sig,
         sigAlgorithm,
       };
+    }
 
-      return this.client.apiAiAgentsTeamsDeploySendPost({
-        signedContract,
-      });
-    };
+    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost({
+      deploySignedAgentsTeamtReq: { contract, system },
+    });
 
-    await deployContract(this.privateKey, contract, sendContract);
+    return { prepareModel, sendModel };
   }
 
   public async run(agentTeamUri: string, prompt: string, phloLimit: Amount) {
@@ -217,9 +227,7 @@ export class AgentsTeamsApiSdk {
       }) as Promise<unknown>;
     };
 
-    return deployContract(this.privateKey, contract, sendContract).then(
-      (result) => result.deployModel,
-    );
+    return deployContract(this.privateKey, contract, sendContract);
   }
 
   public async save(id: string, createAgentsTeamReq: CreateAgentsTeamReq) {
@@ -247,12 +255,7 @@ export class AgentsTeamsApiSdk {
       });
     };
 
-    return deployContract(this.privateKey, generateContract, sendContract).then(
-      (result) => {
-        const { contract: _, ...rest } = result.generateModel;
-        return rest;
-      },
-    );
+    return deployContract(this.privateKey, generateContract, sendContract);
   }
 
   public async delete(id: string) {
@@ -280,6 +283,6 @@ export class AgentsTeamsApiSdk {
       });
     };
 
-    await deployContract(this.privateKey, generateContract, sendContract);
+    return deployContract(this.privateKey, generateContract, sendContract);
   }
 }

@@ -39,10 +39,10 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
-      return { agentId: id, version: res.version };
+      return { agentId: id, version: res.prepareModel.version };
     }
     const res = await createMutation.mutateAsync(payload);
-    return { agentId: res.id, version: res.version };
+    return { agentId: res.prepareModel.id, version: res.prepareModel.version };
   };
 
   const handleSave = async () => {

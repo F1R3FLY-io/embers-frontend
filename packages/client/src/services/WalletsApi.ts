@@ -68,7 +68,7 @@ export class WalletsApiSdk {
         },
       });
 
-    await deployContract(
+    return deployContract(
       this.privateKey,
       preparePostCallback,
       transferSendCallback,

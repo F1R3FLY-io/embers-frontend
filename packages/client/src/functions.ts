@@ -71,18 +71,18 @@ export async function deployContract<T extends { contract: Uint8Array }, R>(
   getContractCallback: GetContractCallback<T>,
   deployContractCallback: DeployContractCallback<R>,
 ) {
-  const generateModel = await getContractCallback();
+  const prepareModel = await getContractCallback();
 
-  const payload = blake2b(generateModel.contract, undefined, 32);
+  const payload = blake2b(prepareModel.contract, undefined, 32);
   const { sig, sigAlgorithm } = sign(payload, privateKey);
 
-  const deployModel = await deployContractCallback(
-    generateModel.contract,
+  const sendModel = await deployContractCallback(
+    prepareModel.contract,
     sig,
     sigAlgorithm,
   );
 
-  return { deployModel, generateModel };
+  return { prepareModel, sendModel };
 }
 
 export function insertSignedSignature(
