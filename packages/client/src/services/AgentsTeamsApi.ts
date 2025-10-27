@@ -9,9 +9,9 @@ import type {
 import { AIAgentsTeamsApi, Configuration } from "@/api-client";
 import { deployContract, insertSignedSignature } from "@/functions";
 
-import type { Address } from "./Address";
-import type { Amount } from "./Amount";
-import type { PrivateKey } from "./PrivateKey";
+import type { Address } from "../entities/Address";
+import type { Amount } from "../entities/Amount";
+import type { PrivateKey } from "../entities/PrivateKey";
 
 export type AgentsTeamsConfig = {
   basePath: string;

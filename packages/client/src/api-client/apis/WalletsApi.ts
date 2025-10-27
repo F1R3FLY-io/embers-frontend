@@ -13,6 +13,7 @@
 import type { Address } from "@/entities/Address";
 
 import type {
+  SendResp,
   SignedContract,
   TransferReq,
   TransferResp,
@@ -20,12 +21,17 @@ import type {
 } from "../models/index";
 
 import {
+  SendRespFromJSON,
   SignedContractToJSON,
   TransferReqToJSON,
   TransferRespFromJSON,
   WalletStateAndHistoryFromJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
+
+export interface ApiWalletsAddressDeploysGetRequest {
+  address: Address;
+}
 
 export interface ApiWalletsAddressStateGetRequest {
   address: Address;
@@ -43,6 +49,51 @@ export interface ApiWalletsTransferSendPostRequest {
  *
  */
 export class WalletsApi extends runtime.BaseAPI {
+  /**
+   */
+  async apiWalletsAddressDeploysGetRaw(
+    requestParameters: ApiWalletsAddressDeploysGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling apiWalletsAddressDeploysGet().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/wallets/{address}/deploys`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+
+    const response = await this.request(
+      {
+        headers: headerParameters,
+        method: "GET",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async apiWalletsAddressDeploysGet(
+    requestParameters: ApiWalletsAddressDeploysGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.apiWalletsAddressDeploysGetRaw(requestParameters, initOverrides);
+  }
+
   /**
    */
   async apiWalletsAddressStateGetRaw(
@@ -149,7 +200,7 @@ export class WalletsApi extends runtime.BaseAPI {
   async apiWalletsTransferSendPostRaw(
     requestParameters: ApiWalletsTransferSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.signedContract == null) {
       throw new runtime.RequiredError(
         "signedContract",
@@ -176,7 +227,9 @@ export class WalletsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -184,7 +237,11 @@ export class WalletsApi extends runtime.BaseAPI {
   async apiWalletsTransferSendPost(
     requestParameters: ApiWalletsTransferSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiWalletsTransferSendPostRaw(requestParameters, initOverrides);
+  ): Promise<SendResp> {
+    const response = await this.apiWalletsTransferSendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
   }
 }

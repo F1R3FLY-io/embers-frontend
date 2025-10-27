@@ -176,7 +176,37 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wallets/{address}/deploys": {
+      "get": {
+        "tags": ["Wallets"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "A websocket response"
           }
         }
       }
@@ -369,7 +399,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -416,7 +453,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -487,7 +531,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -548,7 +599,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -741,7 +799,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -788,7 +853,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -911,7 +983,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -972,7 +1051,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -1719,6 +1805,16 @@
           "contract": {
             "type": "string",
             "format": "bytes"
+          }
+        }
+      },
+      "SendResp": {
+        "type": "object",
+        "title": "SendResp",
+        "required": ["deploy_id"],
+        "properties": {
+          "deploy_id": {
+            "type": "string"
           }
         }
       },

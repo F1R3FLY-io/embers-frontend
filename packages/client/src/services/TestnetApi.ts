@@ -3,9 +3,9 @@ import type { HTTPHeaders } from "@/api-client";
 import { Configuration, TestnetApi } from "@/api-client";
 import { sign } from "@/functions";
 
-import type { Address } from "./Address";
+import type { Address } from "../entities/Address";
 
-import { PrivateKey } from "./PrivateKey";
+import { PrivateKey } from "../entities/PrivateKey";
 
 export type TestnetConfig = {
   basePath: string;
