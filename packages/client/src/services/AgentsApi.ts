@@ -3,9 +3,9 @@ import type { CreateAgentReq, HTTPHeaders, SignedContract } from "@/api-client";
 import { AIAgentsApi, Configuration } from "@/api-client";
 import { deployContract } from "@/functions";
 
-import type { Address } from "./Address";
-import type { Amount } from "./Amount";
-import type { PrivateKey } from "./PrivateKey";
+import type { Address } from "../entities/Address";
+import type { Amount } from "../entities/Amount";
+import type { PrivateKey } from "../entities/PrivateKey";
 
 export type AiAgentConfig = {
   basePath: string;
