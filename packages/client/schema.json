@@ -1084,6 +1084,9 @@
           "name": {
             "type": "string"
           },
+          "description": {
+            "type": "string"
+          },
           "shard": {
             "type": "string"
           },
@@ -1111,6 +1114,9 @@
             "format": "timestamp-millis"
           },
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1152,6 +1158,9 @@
           "name": {
             "type": "string"
           },
+          "description": {
+            "type": "string"
+          },
           "shard": {
             "type": "string"
           },
@@ -1180,6 +1189,9 @@
             "format": "timestamp-millis"
           },
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1238,6 +1250,9 @@
           "name": {
             "type": "string"
           },
+          "description": {
+            "type": "string"
+          },
           "shard": {
             "type": "string"
           },
@@ -1272,6 +1287,9 @@
         "required": ["name"],
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {

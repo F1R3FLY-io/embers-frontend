@@ -22,6 +22,12 @@ import { GraphFromJSON, GraphToJSON } from "./Graph";
 export interface CreateAgentsTeamReq {
   /**
    *
+   * @type {string}
+   * @memberof CreateAgentsTeamReq
+   */
+  description?: string;
+  /**
+   *
    * @type {Graph}
    * @memberof CreateAgentsTeamReq
    */
@@ -70,6 +76,7 @@ export function CreateAgentsTeamReqFromJSONTyped(
     return json;
   }
   return {
+    description: json.description == null ? undefined : json.description,
     graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
@@ -90,6 +97,7 @@ export function CreateAgentsTeamReqToJSONTyped(
   }
 
   return {
+    description: value.description,
     graph: GraphToJSON(value.graph),
     logo: value.logo,
     name: value.name,

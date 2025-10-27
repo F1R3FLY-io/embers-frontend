@@ -34,6 +34,12 @@ export interface AgentHeader {
    * @type {string}
    * @memberof AgentHeader
    */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentHeader
+   */
   id: string;
   /**
    *
@@ -93,6 +99,7 @@ export function AgentHeaderFromJSONTyped(
   }
   return {
     createdAt: TimestampMillisFromJSON(json.created_at),
+    description: json.description == null ? undefined : json.description,
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
@@ -115,6 +122,7 @@ export function AgentHeaderToJSONTyped(
 
   return {
     created_at: TimestampMillisToJSON(value.createdAt),
+    description: value.description,
     id: value.id,
     logo: value.logo,
     name: value.name,

@@ -34,6 +34,12 @@ export interface AgentsTeamHeader {
    * @type {string}
    * @memberof AgentsTeamHeader
    */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentsTeamHeader
+   */
   id: string;
   /**
    *
@@ -95,6 +101,7 @@ export function AgentsTeamHeaderFromJSONTyped(
   }
   return {
     createdAt: TimestampMillisFromJSON(json.created_at),
+    description: json.description == null ? undefined : json.description,
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
@@ -117,6 +124,7 @@ export function AgentsTeamHeaderToJSONTyped(
 
   return {
     created_at: TimestampMillisToJSON(value.createdAt),
+    description: value.description,
     id: value.id,
     logo: value.logo,
     name: value.name,
