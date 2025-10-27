@@ -40,6 +40,12 @@ export interface Agent {
    * @type {string}
    * @memberof Agent
    */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Agent
+   */
   id: string;
   /**
    *
@@ -100,6 +106,7 @@ export function AgentFromJSONTyped(
   return {
     code: json.code == null ? undefined : json.code,
     createdAt: TimestampMillisFromJSON(json.created_at),
+    description: json.description == null ? undefined : json.description,
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
@@ -123,6 +130,7 @@ export function AgentToJSONTyped(
   return {
     code: value.code,
     created_at: TimestampMillisToJSON(value.createdAt),
+    description: value.description,
     id: value.id,
     logo: value.logo,
     name: value.name,

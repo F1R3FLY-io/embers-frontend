@@ -33,6 +33,12 @@ export interface AgentsTeam {
   createdAt: TimestampMillis;
   /**
    *
+   * @type {string}
+   * @memberof AgentsTeam
+   */
+  description?: string;
+  /**
+   *
    * @type {Graph}
    * @memberof AgentsTeam
    */
@@ -101,6 +107,7 @@ export function AgentsTeamFromJSONTyped(
   }
   return {
     createdAt: TimestampMillisFromJSON(json.created_at),
+    description: json.description == null ? undefined : json.description,
     graph: json.graph == null ? undefined : GraphFromJSON(json.graph),
     id: json.id,
     logo: json.logo == null ? undefined : json.logo,
@@ -124,6 +131,7 @@ export function AgentsTeamToJSONTyped(
 
   return {
     created_at: TimestampMillisToJSON(value.createdAt),
+    description: value.description,
     graph: GraphToJSON(value.graph),
     id: value.id,
     logo: value.logo,
