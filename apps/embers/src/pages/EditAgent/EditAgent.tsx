@@ -28,7 +28,7 @@ export default function CodeEditor() {
   const { data } = useStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
-  const { data: agentVersions } = useAgentVersions(agentId ?? "");
+  const { data: agentVersions } = useAgentVersions(agentId);
 
   const agentName = agent?.name ?? data.agentName;
   const currentVersion = useMemo(
@@ -45,7 +45,7 @@ export default function CodeEditor() {
       const events = editor.getEvents();
       const subscription = events.subscribe((event) => {
         // This handler initializes the document when the Editor first becomes
-        // ready and each time it is realoaded by the HMR.
+        // ready and each time it is reloaded by the HMR.
         if (event.type === "ready") {
           editor.openDocument(fileName);
         }
@@ -101,7 +101,6 @@ export default function CodeEditor() {
       <ErrorBoundary>
         <div className={styles.container}>
           <Editor
-            key={editorKey}
             ref={editorRef}
             languages={{
               rholang: {

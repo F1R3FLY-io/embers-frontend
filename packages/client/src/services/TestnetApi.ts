@@ -1,34 +1,25 @@
 import type { HTTPHeaders } from "@/api-client";
 
 import { Configuration, TestnetApi } from "@/api-client";
-import { sign } from "@/functions";
-
-import type { Address } from "../entities/Address";
+import { signContract } from "@/functions";
 
 import { PrivateKey } from "../entities/PrivateKey";
 
 export type TestnetConfig = {
   basePath: string;
   headers?: HTTPHeaders;
-  privateKey: PrivateKey;
 };
 
 export class TestnetApiSdk {
   private client: TestnetApi;
 
-  public readonly privateKey: PrivateKey;
-  public readonly address: Address;
-
   public constructor(config: TestnetConfig) {
-    this.privateKey = config.privateKey;
-
     const configuration = new Configuration({
       basePath: config.basePath,
       headers: config.headers,
     });
 
     this.client = new TestnetApi(configuration);
-    this.address = this.privateKey.getPublicKey().getAddress();
   }
 
   /**
@@ -45,24 +36,14 @@ export class TestnetApiSdk {
       },
     });
 
-    const signedTestContract = sign(response.testContract, testKey);
+    const signedTestContract = signContract(response.testContract, testKey);
     const signedEnvContract =
-      response.envContract && sign(response.envContract, testKey);
+      response.envContract && signContract(response.envContract, testKey);
 
     return this.client.apiTestnetDeploySendPost({
       deploySignedTestReq: {
-        env: signedEnvContract && {
-          contract: response.envContract!,
-          deployer: this.privateKey.getPublicKey().value,
-          sig: signedEnvContract.sig,
-          sigAlgorithm: signedEnvContract.sigAlgorithm,
-        },
-        test: {
-          contract: response.testContract,
-          deployer: this.privateKey.getPublicKey().value,
-          sig: signedTestContract.sig,
-          sigAlgorithm: signedTestContract.sigAlgorithm,
-        },
+        env: signedEnvContract,
+        test: signedTestContract,
       },
     });
   }

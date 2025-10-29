@@ -50,39 +50,15 @@ export function sign(payload: Uint8Array, key: PrivateKey) {
   };
 }
 
-export type GetContractCallback<T> = () => Promise<T>;
-
-export type DeployContractCallback<T> = (
-  contract: Uint8Array,
-  sig: Uint8Array,
-  sigAlgorithm: string,
-) => Promise<T>;
-
-/**
- * Transfers tokens from one address to another.
- * This function prepares a transfer contract, signs it with the provided private key,
- * and sends the signed contract to the wallet API. GetContractCallback is used to prepare the contract, transferTokensCallback is used to send the signed contract.
- *
- * @param privateKey - The private key of the sender's wallet.
- * @returns A promise that resolves when the transfer is sent.
- */
-export async function deployContract<T extends { contract: Uint8Array }, R>(
-  privateKey: PrivateKey,
-  getContractCallback: GetContractCallback<T>,
-  deployContractCallback: DeployContractCallback<R>,
-) {
-  const prepareModel = await getContractCallback();
-
-  const payload = blake2b(prepareModel.contract, undefined, 32);
+export function signContract(contract: Uint8Array, privateKey: PrivateKey) {
+  const payload = blake2b(contract, undefined, 32);
   const { sig, sigAlgorithm } = sign(payload, privateKey);
-
-  const sendModel = await deployContractCallback(
-    prepareModel.contract,
+  return {
+    contract,
+    deployer: privateKey.getPublicKey().value,
     sig,
     sigAlgorithm,
-  );
-
-  return { prepareModel, sendModel };
+  };
 }
 
 export function insertSignedSignature(
