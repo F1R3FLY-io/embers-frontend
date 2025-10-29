@@ -1,13 +1,14 @@
-import { blake2b } from "blakejs";
+import { base16 } from "@scure/base";
 
-import type { CreateAgentReq, HTTPHeaders, SignedContract } from "@/api-client";
+import type { CreateAgentReq, HTTPHeaders } from "@/api-client";
 
 import { AIAgentsApi, Configuration } from "@/api-client";
-import { deployContract, sign } from "@/functions";
+import { signContract } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
+import type { EmbersEvents } from "./EmbersEvents";
 
 export type AiAgentConfig = {
   basePath: string;
@@ -21,11 +22,13 @@ export type AiAgentConfig = {
  */
 export class AgentsApiSdk {
   private client: AIAgentsApi;
-
-  public readonly privateKey: PrivateKey;
+  private privateKey: PrivateKey;
   public readonly address: Address;
 
-  public constructor(config: AiAgentConfig) {
+  public constructor(
+    config: AiAgentConfig,
+    private events: EmbersEvents,
+  ) {
     this.privateKey = config.privateKey;
     this.address = this.privateKey.getPublicKey().getAddress();
 
@@ -42,29 +45,21 @@ export class AgentsApiSdk {
    * @return Promise with Agent entity or reject with error
    */
   public async create(createAgentReq: CreateAgentReq) {
-    // First prepare the contract for creating an agent
-    const prepareContract = async () =>
-      this.client.apiAiAgentsCreatePreparePost({
-        createAgentReq,
-      });
+    const prepareModel = await this.client.apiAiAgentsCreatePreparePost({
+      createAgentReq,
+    });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      // Send the signed contract
-      const signedContract: SignedContract = {
-        contract,
-        deployer: this.privateKey.getPublicKey().value,
-        sig,
-        sigAlgorithm,
-      };
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      15_000,
+    );
 
-      return this.client.apiAiAgentsCreateSendPost({ signedContract });
-    };
+    const sendModel = await this.client.apiAiAgentsCreateSendPost({
+      signedContract,
+    });
 
-    return deployContract(this.privateKey, prepareContract, sendContract);
+    return { prepareModel, sendModel, waitForFinalization };
   }
 
   public async deployCode(code: string, phloLimit: Amount) {
@@ -76,34 +71,19 @@ export class AgentsApiSdk {
       },
     });
 
-    const payload = blake2b(prepareModel.contract, undefined, 32);
-    const { sig, sigAlgorithm } = sign(payload, this.privateKey);
-
-    const contract = {
-      contract: prepareModel.contract,
-      deployer: this.privateKey.getPublicKey().value,
-      sig,
-      sigAlgorithm,
-    };
-
-    let system = undefined;
-    if (prepareModel.system !== undefined) {
-      const payload = blake2b(prepareModel.system, undefined, 32);
-      const { sig, sigAlgorithm } = sign(payload, this.privateKey);
-
-      system = {
-        contract: prepareModel.system,
-        deployer: this.privateKey.getPublicKey().value,
-        sig,
-        sigAlgorithm,
-      };
-    }
+    const contract = signContract(prepareModel.contract, this.privateKey);
+    const system =
+      prepareModel.system && signContract(prepareModel.system, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(contract.sig).toLowerCase(),
+      15_000,
+    );
 
     const sendModel = await this.client.apiAiAgentsDeploySendPost({
       deploySignedAgentReq: { contract, system },
     });
 
-    return { prepareModel, sendModel };
+    return { prepareModel, sendModel, waitForFinalization };
   }
 
   /**
@@ -122,34 +102,19 @@ export class AgentsApiSdk {
       },
     });
 
-    const payload = blake2b(prepareModel.contract, undefined, 32);
-    const { sig, sigAlgorithm } = sign(payload, this.privateKey);
-
-    const contract = {
-      contract: prepareModel.contract,
-      deployer: this.privateKey.getPublicKey().value,
-      sig,
-      sigAlgorithm,
-    };
-
-    let system = undefined;
-    if (prepareModel.system !== undefined) {
-      const payload = blake2b(prepareModel.system, undefined, 32);
-      const { sig, sigAlgorithm } = sign(payload, this.privateKey);
-
-      system = {
-        contract: prepareModel.system,
-        deployer: this.privateKey.getPublicKey().value,
-        sig,
-        sigAlgorithm,
-      };
-    }
+    const contract = signContract(prepareModel.contract, this.privateKey);
+    const system =
+      prepareModel.system && signContract(prepareModel.system, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(contract.sig).toLowerCase(),
+      15_000,
+    );
 
     const sendModel = await this.client.apiAiAgentsDeploySendPost({
       deploySignedAgentReq: { contract, system },
     });
 
-    return { prepareModel, sendModel };
+    return { prepareModel, sendModel, waitForFinalization };
   }
 
   /**
@@ -192,59 +157,41 @@ export class AgentsApiSdk {
    * @return Promise with Agent entity or reject with error
    */
   public async save(id: string, agentReq: CreateAgentReq) {
-    const generateContract = async () =>
-      this.client.apiAiAgentsIdSavePreparePost({
-        createAgentReq: agentReq,
-        id,
-      });
+    const prepareModel = await this.client.apiAiAgentsIdSavePreparePost({
+      createAgentReq: agentReq,
+      id,
+    });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      // Send the signed contract
-      const signedContract: SignedContract = {
-        contract,
-        deployer: this.privateKey.getPublicKey().value,
-        sig,
-        sigAlgorithm,
-      };
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      15_000,
+    );
 
-      return this.client.apiAiAgentsIdSaveSendPost({
-        id,
-        signedContract,
-      });
-    };
+    const sendModel = await this.client.apiAiAgentsIdSaveSendPost({
+      id,
+      signedContract,
+    });
 
-    return deployContract(this.privateKey, generateContract, sendContract);
+    return { prepareModel, sendModel, waitForFinalization };
   }
 
   public async delete(id: string) {
-    const generateContract = async () =>
-      this.client.apiAiAgentsIdDeletePreparePost({
-        id,
-      });
+    const prepareModel = await this.client.apiAiAgentsIdDeletePreparePost({
+      id,
+    });
 
-    const sendContract = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) => {
-      // Send the signed contract
-      const signedContract: SignedContract = {
-        contract,
-        deployer: this.privateKey.getPublicKey().value,
-        sig,
-        sigAlgorithm,
-      };
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      15_000,
+    );
 
-      return this.client.apiAiAgentsIdDeleteSendPost({
-        id,
-        signedContract,
-      });
-    };
+    const sendModel = await this.client.apiAiAgentsIdDeleteSendPost({
+      id,
+      signedContract,
+    });
 
-    return deployContract(this.privateKey, generateContract, sendContract);
+    return { prepareModel, sendModel, waitForFinalization };
   }
 }

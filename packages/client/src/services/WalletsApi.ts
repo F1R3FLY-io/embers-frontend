@@ -1,12 +1,15 @@
+import { base16 } from "@scure/base";
+
 import type { HTTPHeaders } from "@/api-client";
 
 import { Configuration, WalletsApi } from "@/api-client";
-import { deployContract } from "@/functions";
+import { signContract } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
 import type { Description } from "../entities/Description";
 import type { PrivateKey } from "../entities/PrivateKey";
+import type { EmbersEvents } from "./EmbersEvents";
 
 export type WalletConfig = {
   basePath: string;
@@ -16,11 +19,13 @@ export type WalletConfig = {
 
 export class WalletsApiSdk {
   private client: WalletsApi;
-
-  public readonly privateKey: PrivateKey;
+  private privateKey: PrivateKey;
   public readonly address: Address;
 
-  public constructor(config: WalletConfig) {
+  public constructor(
+    config: WalletConfig,
+    private events: EmbersEvents,
+  ) {
     this.privateKey = config.privateKey;
 
     const configuration = new Configuration({
@@ -44,35 +49,26 @@ export class WalletsApiSdk {
     amount: Amount,
     description?: Description,
   ) {
-    const preparePostCallback = async () =>
-      this.client.apiWalletsTransferPreparePost({
-        transferReq: {
-          amount: amount.value,
-          description: description?.value,
-          from: this.privateKey.getPublicKey().getAddress(),
-          to,
-        },
-      });
+    const prepareModel = await this.client.apiWalletsTransferPreparePost({
+      transferReq: {
+        amount: amount.value,
+        description: description?.value,
+        from: this.address,
+        to,
+      },
+    });
 
-    const transferSendCallback = async (
-      contract: Uint8Array,
-      sig: Uint8Array,
-      sigAlgorithm: string,
-    ) =>
-      this.client.apiWalletsTransferSendPost({
-        signedContract: {
-          contract,
-          deployer: this.privateKey.getPublicKey().value,
-          sig,
-          sigAlgorithm,
-        },
-      });
-
-    return deployContract(
-      this.privateKey,
-      preparePostCallback,
-      transferSendCallback,
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      15_000,
     );
+
+    const sendModel = await this.client.apiWalletsTransferSendPost({
+      signedContract,
+    });
+
+    return { prepareModel, sendModel, waitForFinalization };
   }
 
   /**

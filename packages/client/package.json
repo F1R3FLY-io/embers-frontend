@@ -44,19 +44,19 @@
     "ci:check:code": "prettier --check '**/*.{js,jsx,ts,tsx,html,svg,json}'"
   },
   "devDependencies": {
-    "@types/express": "^5.0.3",
+    "@types/express": "^5.0.5",
     "eslint-plugin-unused-imports": "^4.3.0",
     "express": "^5.1.0",
     "serve": "^14.2.5",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
-    "ts-proto": "^2.8.1",
+    "ts-proto": "^2.8.2",
     "typedoc": "^0.28.14",
     "vite-plugin-dts": "^4.5.4"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.10.0",
-    "@f1r3fly-io/graphl-parser": "^0.0.22",
+    "@f1r3fly-io/graphl-parser": "^0.0.24",
     "@noble/curves": "^2.0.1",
     "@scure/base": "^2.0.0",
     "blakejs": "^1.2.1",
