@@ -26,10 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
-  const saveOrCreate = async (): Promise<{
-    agentId: string;
-    version: string;
-  }> => {
+  const saveOrCreate = async () => {
     const code = getCode()?.toString() ?? "";
     updateData("code", code);
     const payload = {
@@ -39,9 +36,11 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
+      await res.waitForFinalization;
       return { agentId: id, version: res.prepareModel.version };
     }
     const res = await createMutation.mutateAsync(payload);
+    await res.waitForFinalization;
     return { agentId: res.prepareModel.id, version: res.prepareModel.version };
   };
 
