@@ -65,7 +65,7 @@ export function SelectRow({
 
       <span
         className={classNames(styles.right, {
-          [styles.rightVisible]: isSelected,
+          [styles["right-visible"]]: isSelected,
         })}
       >
         {rightAdornment ?? <i aria-hidden="true" className="fa fa-check" />}

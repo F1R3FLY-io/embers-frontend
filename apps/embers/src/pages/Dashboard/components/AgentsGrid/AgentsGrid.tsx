@@ -19,7 +19,7 @@ import styles from "./AgentsGrid.module.scss";
 export interface Agent {
   createdAt?: Date;
   id: string;
-  lastDeploy: string | null;
+  lastDeploy?: Date | undefined;
   logo?: string | null;
   name: string;
   shard?: string;
