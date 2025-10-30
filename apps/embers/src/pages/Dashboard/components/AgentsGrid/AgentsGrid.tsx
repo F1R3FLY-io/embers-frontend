@@ -10,6 +10,7 @@ import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useDeleteAgentMutation } from "@/lib/queries";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
+import DraftIcon from "@/public/icons/draft-icon.svg?react";
 import EditIcon from "@/public/icons/editbig-icon.svg?react";
 import TrashIcon from "@/public/icons/trash-icon.svg?react";
 
@@ -18,6 +19,7 @@ import styles from "./AgentsGrid.module.scss";
 export interface Agent {
   createdAt?: Date;
   id: string;
+  lastDeploy: string | null;
   logo?: string | null;
   name: string;
   shard?: string;
@@ -38,6 +40,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
     reset();
     void navigate("/create-ai-agent/create");
   }, [navigate, reset]);
+
   const deleteAgent = useDeleteAgentMutation();
   const confirm = useConfirm();
 
@@ -58,9 +61,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
       .then((ok) => ok && deleteAgent.mutate(id))
       .catch(() => {});
 
-  const formatUpdated = (value?: Date) => {
-    return value ? value.toLocaleString() : "";
-  };
+  const formatUpdated = (value?: Date) => (value ? value.toLocaleString() : "");
 
   return (
     <>
@@ -77,7 +78,8 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
 
       {isSuccess &&
         agents.map((agent, index) => {
-          const isDraft = !agent.shard;
+          const isDraft = !agent.lastDeploy;
+
           return (
             <div
               key={agent.id}
@@ -91,22 +93,32 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
               }
               onClick={() => navigateToAgent(agent)}
             >
-              <div className={styles["agent-top"]}>
-                <Text color="secondary" type="small">
-                  {t("agents.updated")} {formatUpdated(agent.createdAt)}
-                </Text>
-              </div>
-
               <div className={styles["agent-main"]}>
                 <IconPreview
                   className={styles["agent-icon"]}
                   size={40}
                   url={agent.logo}
                 />
-                <Text color="primary" type="H4">
-                  {agent.name}
-                </Text>
+
+                <div className={styles["agent-meta"]}>
+                  <Text color="secondary" type="small">
+                    {t("agents.updated")} {formatUpdated(agent.createdAt)}
+                  </Text>
+
+                  {isDraft && (
+                    <div className={styles["draft-container"]}>
+                      <DraftIcon className={styles["draft-icon"]} />
+                      <Text color="hover" type="normal">
+                        Draft
+                      </Text>
+                    </div>
+                  )}
+                </div>
               </div>
+
+              <Text color="primary" type="H4">
+                {agent.name}
+              </Text>
 
               <div
                 className={styles["agent-actions"]}

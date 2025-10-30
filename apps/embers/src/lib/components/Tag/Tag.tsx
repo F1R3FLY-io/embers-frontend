@@ -42,7 +42,7 @@ export function Tag({
       {onClose && (
         <button
           aria-label="Remove tag"
-          className={styles.closeBtn}
+          className={styles["close-btn"]}
           type="button"
           onClick={onClose}
         >

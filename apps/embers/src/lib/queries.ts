@@ -116,7 +116,7 @@ export function useDeleteAgentMutation() {
       }
 
       return { listKey, previous } as AgentContext;
-    }
+    },
   });
 }
 

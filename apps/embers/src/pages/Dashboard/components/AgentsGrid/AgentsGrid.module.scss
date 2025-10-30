@@ -51,9 +51,10 @@
 
 .agent-top {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: flex-end;
   position: absolute;
+  flex-direction: column;
   right: 20px;
 }
 
@@ -65,8 +66,8 @@
 
 .agent-main {
   display: flex;
+  align-items: flex-start;
   gap: 12px;
-  flex-direction: column;
 }
 
 .agent-icon {
@@ -92,9 +93,29 @@
   }
 }
 
+.agent-meta {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.draft-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  .draft-icon {
+    fill: transparent;
+    stroke: var(--button-hover);
+  }
+}
+
 .delete-icon {
   stroke: var(--text-danger);
-  fill: var(--background-color);
+  fill: transparent;
   cursor: pointer;
   margin-left: 12px;
   align-self: center;

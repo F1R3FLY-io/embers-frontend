@@ -10,6 +10,9 @@ declare const classNames: {
   readonly "agent-icon": "agent-icon";
   readonly "agent-actions": "agent-actions";
   readonly "agent-action-buttons": "agent-action-buttons";
+  readonly "agent-meta": "agent-meta";
+  readonly "draft-container": "draft-container";
+  readonly "draft-icon": "draft-icon";
   readonly "delete-icon": "delete-icon";
 };
 export default classNames;

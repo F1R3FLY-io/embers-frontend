@@ -5,6 +5,7 @@ export type StepperData = {
   agentId?: string;
   agentName: string;
   code?: string;
+  description?: string;
   environment?: string;
   rhoLimit: number;
   version?: string;
