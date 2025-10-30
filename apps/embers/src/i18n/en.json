@@ -25,6 +25,7 @@
   },
   "agents": {
     "edit": "Edit Agent",
+    "delete": "Delete Agent",
     "viewAgent": "View Agent",
     "viewAll": "View all agents",
     "details": "Details",

@@ -7,18 +7,29 @@ import type {
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import type { Agent } from "@/pages/Dashboard/components/AgentsGrid/AgentsGrid";
+
 import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
 
 import { toApiGraph } from "./graph";
 
+interface AgentsResponse {
+  agents: Agent[];
+}
+interface AgentContext {
+  listKey: readonly [string, string];
+  previous: AgentsResponse;
+}
+
 export function useAgents() {
   const api = useApi();
+  const walletKey = String(api.wallets.address);
 
   return useQuery({
     queryFn: async () => api.agents.get(),
-    queryKey: ["agents", api.wallets.address],
+    queryKey: ["agents", walletKey] as const,
   });
 }
 
@@ -34,27 +45,12 @@ export function useAgentVersions(id?: string) {
 
 export function useAgent(id?: string, version?: string) {
   const api = useApi();
+  const walletKey = String(api.wallets.address);
 
   return useQuery({
     enabled: !!id && !!version,
     queryFn: async () => api.agents.getVersion(id!, version!),
-    queryKey: ["agents", api.wallets.address, id, version],
-
-    retry: (failureCount, error: unknown) => {
-      if (failureCount >= 30) {
-        return false;
-      }
-
-      if (typeof error === "object" && error !== null && "response" in error) {
-        const status = (error as { response?: { status?: number } }).response
-          ?.status;
-        if (status === 404) {
-          return true;
-        }
-      }
-      return false;
-    },
-    retryDelay: 2000,
+    queryKey: ["agents", walletKey, id, version],
   });
 }
 
@@ -94,21 +90,33 @@ export function useSaveAgentMutation(id: string) {
 
 export function useDeleteAgentMutation() {
   const api = useApi();
-  const queryClient = useQueryClient();
+  const qc = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => api.agents.delete(id),
-    onSuccess: async (_, id) =>
-      Promise.all([
-        queryClient.invalidateQueries({
-          exact: true,
-          queryKey: ["agents", api.wallets.address],
-        }),
-        queryClient.invalidateQueries({
-          exact: false,
-          queryKey: ["agents", api.wallets.address, id],
-        }),
-      ]),
+
+    onError: (_err, _id, ctx) => {
+      const { listKey, previous } = ctx as AgentContext;
+      qc.setQueryData(listKey, previous);
+    },
+
+    onMutate: async (id) => {
+      const walletKey = String(api.wallets.address);
+      const listKey = ["agents", walletKey] as const;
+
+      await qc.cancelQueries({ queryKey: listKey });
+
+      const previous = qc.getQueryData<AgentsResponse>(listKey);
+
+      if (previous?.agents) {
+        qc.setQueryData<AgentsResponse>(listKey, {
+          ...previous,
+          agents: previous.agents.filter((a) => a.id !== id),
+        });
+      }
+
+      return { listKey, previous } as AgentContext;
+    }
   });
 }
 

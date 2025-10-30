@@ -145,7 +145,7 @@ export default function Dashboard() {
             )}
           >
             {selectedTab === "agents" ? (
-              <AgentsGrid agents={filteredAgents} isSuccess={isSuccess} />
+              <AgentsGrid key={filteredAgents.length} agents={filteredAgents} isSuccess={isSuccess} />
             ) : (
               <AgentTeamsGrid />
             )}

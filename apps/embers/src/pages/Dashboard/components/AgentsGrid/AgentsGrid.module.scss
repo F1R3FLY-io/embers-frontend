@@ -53,6 +53,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  position: absolute;
+  right: 20px;
 }
 
 .status-badge {
@@ -63,8 +65,8 @@
 
 .agent-main {
   display: flex;
-  align-items: center;
   gap: 12px;
+  flex-direction: column;
 }
 
 .agent-icon {
@@ -73,6 +75,11 @@
 
 .agent-actions {
   margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.agent-action-buttons {
   display: flex;
   gap: 10px;
 }
@@ -83,4 +90,12 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.delete-icon {
+  stroke: var(--text-danger);
+  fill: var(--background-color);
+  cursor: pointer;
+  margin-left: 12px;
+  align-self: center;
 }
