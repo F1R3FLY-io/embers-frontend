@@ -19,7 +19,7 @@ import { useAgent, useAgentVersions } from "@/lib/queries";
 
 import styles from "./EditAgent.module.scss";
 
-const logLevel = "trace"; // "trace" | "debug" | "info" | "warn" | "error" | "fatal" | "report"
+const logLevel = "trace";
 
 export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
@@ -28,7 +28,7 @@ export default function CodeEditor() {
   const { data } = useStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
-  const { data: agentVersions } = useAgentVersions(agentId ?? "");
+  const { data: agentVersions } = useAgentVersions(agentId);
 
   const agentName = agent?.name ?? data.agentName;
   const currentVersion = useMemo(
@@ -45,7 +45,7 @@ export default function CodeEditor() {
       const events = editor.getEvents();
       const subscription = events.subscribe((event) => {
         // This handler initializes the document when the Editor first becomes
-        // ready and each time it is realoaded by the HMR.
+        // ready and each time it is reloaded by the HMR.
         if (event.type === "ready") {
           editor.openDocument(fileName);
         }
@@ -59,7 +59,7 @@ export default function CodeEditor() {
   // existing LSP connections. If the connections are not reestablished, then no
   // further communication with the LSP server will be performed. The HMR
   // handlers harmlessly exploit `openDocument` (in the "ready" event handler,
-  // above) to restablish these connections. The clean-up logic will be
+  // above) to reestablish these connections. The clean-up logic will be
   // triggered regardless whether the LSP connections are manually cleaned-up,
   // but if they are not manually cleaned-up prior to the HMR then a race
   // condition occurs during the "ready" event handler when it calls
@@ -89,8 +89,6 @@ export default function CodeEditor() {
     return editorRef.current?.getText(fileName);
   }, [fileName]);
 
-  const editorKey = `${agentId ?? "new"}:${version ?? "v0"}`;
-
   return (
     <CodeLayout
       currentVersion={currentVersion}
@@ -101,7 +99,6 @@ export default function CodeEditor() {
       <ErrorBoundary>
         <div className={styles.container}>
           <Editor
-            key={editorKey}
             ref={editorRef}
             languages={{
               rholang: {

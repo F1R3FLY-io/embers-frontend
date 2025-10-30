@@ -1,14 +1,7 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
-import {
-  AgentsApiSdk,
-  AgentsTeamsApiSdk,
-  TestnetApiSdk,
-  WalletsApiSdk,
-} from "@f1r3fly-io/embers-client-sdk";
+import { EmbersApiSdk } from "@f1r3fly-io/embers-client-sdk";
 import { useReducer } from "react";
-
-import type { EmbersAPI } from "./useApi";
 
 import { WalletContext } from "./useApi";
 
@@ -16,28 +9,15 @@ const FIREFLY_API_URL = window.API_URL;
 
 export function WalletProvider({ children }: React.PropsWithChildren) {
   const [embers, dispatch] = useReducer<
-    EmbersAPI | undefined,
+    EmbersApiSdk | undefined,
     [PrivateKey | undefined]
   >(
     (_, privateKey) =>
-      privateKey && {
-        agents: new AgentsApiSdk({
-          basePath: FIREFLY_API_URL,
-          privateKey,
-        }),
-        agentsTeams: new AgentsTeamsApiSdk({
-          basePath: FIREFLY_API_URL,
-          privateKey,
-        }),
-        testnet: new TestnetApiSdk({
-          basePath: FIREFLY_API_URL,
-          privateKey,
-        }),
-        wallets: new WalletsApiSdk({
-          basePath: FIREFLY_API_URL,
-          privateKey,
-        }),
-      },
+      privateKey &&
+      new EmbersApiSdk({
+        basePath: FIREFLY_API_URL,
+        privateKey,
+      }),
     undefined,
   );
 

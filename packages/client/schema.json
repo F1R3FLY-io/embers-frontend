@@ -176,7 +176,37 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wallets/{address}/deploys": {
+      "get": {
+        "tags": ["Wallets"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "A websocket response"
           }
         }
       }
@@ -369,7 +399,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -408,7 +445,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/DeploySignedAgentReq"
               }
             }
           },
@@ -416,7 +453,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -487,7 +531,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -548,7 +599,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -741,7 +799,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -780,7 +845,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/DeploySignedAgentsTeamtReq"
               }
             }
           },
@@ -788,7 +853,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -911,7 +983,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -972,7 +1051,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
           }
         }
       }
@@ -995,7 +1081,14 @@
             "type": "string",
             "format": "timestamp-millis"
           },
+          "last_deploy": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1024,7 +1117,14 @@
             "type": "string",
             "format": "timestamp-millis"
           },
+          "last_deploy": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1063,7 +1163,14 @@
             "type": "string",
             "format": "timestamp-millis"
           },
+          "last_deploy": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1093,7 +1200,14 @@
             "type": "string",
             "format": "timestamp-millis"
           },
+          "last_deploy": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1152,6 +1266,9 @@
           "name": {
             "type": "string"
           },
+          "description": {
+            "type": "string"
+          },
           "shard": {
             "type": "string"
           },
@@ -1186,6 +1303,9 @@
         "required": ["name"],
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           },
           "shard": {
@@ -1332,6 +1452,10 @@
           "contract": {
             "type": "string",
             "format": "bytes"
+          },
+          "system": {
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -1421,6 +1545,10 @@
           "contract": {
             "type": "string",
             "format": "bytes"
+          },
+          "system": {
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -1453,6 +1581,32 @@
           },
           "deploy": {
             "$ref": "#/components/schemas/RegistryDeploy"
+          }
+        }
+      },
+      "DeploySignedAgentReq": {
+        "type": "object",
+        "title": "DeploySignedAgentReq",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "system": {
+            "$ref": "#/components/schemas/SignedContract"
+          }
+        }
+      },
+      "DeploySignedAgentsTeamtReq": {
+        "type": "object",
+        "title": "DeploySignedAgentsTeamtReq",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "system": {
+            "$ref": "#/components/schemas/SignedContract"
           }
         }
       },
@@ -1719,6 +1873,16 @@
           "contract": {
             "type": "string",
             "format": "bytes"
+          }
+        }
+      },
+      "SendResp": {
+        "type": "object",
+        "title": "SendResp",
+        "required": ["deploy_id"],
+        "properties": {
+          "deploy_id": {
+            "type": "string"
           }
         }
       },

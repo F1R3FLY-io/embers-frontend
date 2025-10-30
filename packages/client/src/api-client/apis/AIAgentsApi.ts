@@ -20,7 +20,9 @@ import type {
   DeleteAgentResp,
   DeployAgentReq,
   DeployAgentResp,
+  DeploySignedAgentReq,
   SaveAgentResp,
+  SendResp,
   SignedContract,
 } from "../models/index";
 
@@ -32,7 +34,9 @@ import {
   DeleteAgentRespFromJSON,
   DeployAgentReqToJSON,
   DeployAgentRespFromJSON,
+  DeploySignedAgentReqToJSON,
   SaveAgentRespFromJSON,
+  SendRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
@@ -65,7 +69,7 @@ export interface ApiAiAgentsDeployPreparePostRequest {
 }
 
 export interface ApiAiAgentsDeploySendPostRequest {
-  signedContract: SignedContract;
+  deploySignedAgentReq: DeploySignedAgentReq;
 }
 
 export interface ApiAiAgentsIdDeletePreparePostRequest {
@@ -332,7 +336,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsCreateSendPostRaw(
     requestParameters: ApiAiAgentsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.signedContract == null) {
       throw new runtime.RequiredError(
         "signedContract",
@@ -359,7 +363,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -367,8 +373,12 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsCreateSendPost(
     requestParameters: ApiAiAgentsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsCreateSendPostRaw(requestParameters, initOverrides);
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsCreateSendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
   }
 
   /**
@@ -426,11 +436,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsDeploySendPostRaw(
     requestParameters: ApiAiAgentsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters.signedContract == null) {
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    if (requestParameters.deploySignedAgentReq == null) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsDeploySendPost().',
+        "deploySignedAgentReq",
+        'Required parameter "deploySignedAgentReq" was null or undefined when calling apiAiAgentsDeploySendPost().',
       );
     }
 
@@ -444,7 +454,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: DeploySignedAgentReqToJSON(
+          requestParameters.deploySignedAgentReq,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
@@ -453,7 +465,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -461,8 +475,12 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsDeploySendPost(
     requestParameters: ApiAiAgentsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsDeploySendPostRaw(requestParameters, initOverrides);
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsDeploySendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
   }
 
   /**
@@ -521,7 +539,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsIdDeleteSendPostRaw(
     requestParameters: ApiAiAgentsIdDeleteSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -559,7 +577,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -567,8 +587,12 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsIdDeleteSendPost(
     requestParameters: ApiAiAgentsIdDeleteSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsIdDeleteSendPostRaw(requestParameters, initOverrides);
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsIdDeleteSendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
   }
 
   /**
@@ -637,7 +661,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsIdSaveSendPostRaw(
     requestParameters: ApiAiAgentsIdSaveSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<SendResp>> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -675,7 +699,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
       initOverrides,
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
   }
 
   /**
@@ -683,7 +709,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsIdSaveSendPost(
     requestParameters: ApiAiAgentsIdSaveSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsIdSaveSendPostRaw(requestParameters, initOverrides);
+  ): Promise<SendResp> {
+    const response = await this.apiAiAgentsIdSaveSendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
   }
 }

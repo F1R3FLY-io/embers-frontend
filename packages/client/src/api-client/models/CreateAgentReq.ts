@@ -27,6 +27,12 @@ export interface CreateAgentReq {
    * @type {string}
    * @memberof CreateAgentReq
    */
+  description?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CreateAgentReq
+   */
   logo?: string;
   /**
    *
@@ -67,6 +73,7 @@ export function CreateAgentReqFromJSONTyped(
   }
   return {
     code: json.code == null ? undefined : json.code,
+    description: json.description == null ? undefined : json.description,
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
@@ -87,6 +94,7 @@ export function CreateAgentReqToJSONTyped(
 
   return {
     code: value.code,
+    description: value.description,
     logo: value.logo,
     name: value.name,
     shard: value.shard,

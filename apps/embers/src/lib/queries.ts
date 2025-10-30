@@ -81,7 +81,7 @@ export function useSaveAgentMutation(id: string) {
           queryKey: ["agents", api.wallets.address],
         }),
         queryClient.invalidateQueries({
-          exact: false,
+          exact: true,
           queryKey: ["agents", api.wallets.address, id],
         }),
       ]),
@@ -243,7 +243,7 @@ export function useSaveAgentsTeamMutation(id: string) {
           queryKey: ["agents-teams", api.wallets.address],
         }),
         queryClient.invalidateQueries({
-          exact: false,
+          exact: true,
           queryKey: ["agents-teams", api.wallets.address, id],
         }),
       ]),
