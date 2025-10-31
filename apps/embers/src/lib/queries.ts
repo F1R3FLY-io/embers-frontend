@@ -20,16 +20,15 @@ interface AgentsResponse {
 }
 interface AgentContext {
   listKey: readonly [string, string];
-  previous: AgentsResponse;
+  previous: AgentsResponse | undefined;
 }
 
 export function useAgents() {
   const api = useApi();
-  const walletKey = String(api.wallets.address);
 
   return useQuery({
     queryFn: async () => api.agents.get(),
-    queryKey: ["agents", walletKey] as const,
+    queryKey: ["agents", String(api.wallets.address)],
   });
 }
 
@@ -39,18 +38,17 @@ export function useAgentVersions(id?: string) {
   return useQuery({
     enabled: !!id,
     queryFn: async () => api.agents.getVersions(id!),
-    queryKey: ["agents", api.wallets.address, id],
+    queryKey: ["agents", String(api.wallets.address), id],
   });
 }
 
 export function useAgent(id?: string, version?: string) {
   const api = useApi();
-  const walletKey = String(api.wallets.address);
 
   return useQuery({
     enabled: !!id && !!version,
     queryFn: async () => api.agents.getVersion(id!, version!),
-    queryKey: ["agents", walletKey, id, version],
+    queryKey: ["agents", String(api.wallets.address), id, version],
   });
 }
 
@@ -63,7 +61,7 @@ export function useCreateAgentMutation() {
     onSuccess: async () =>
       queryClient.invalidateQueries({
         exact: true,
-        queryKey: ["agents", api.wallets.address],
+        queryKey: ["agents", String(api.wallets.address)],
       }),
   });
 }
@@ -78,11 +76,11 @@ export function useSaveAgentMutation(id: string) {
       Promise.all([
         queryClient.invalidateQueries({
           exact: true,
-          queryKey: ["agents", api.wallets.address],
+          queryKey: ["agents", String(api.wallets.address)],
         }),
         queryClient.invalidateQueries({
           exact: true,
-          queryKey: ["agents", api.wallets.address, id],
+          queryKey: ["agents", String(api.wallets.address), id],
         }),
       ]),
   });
@@ -90,32 +88,28 @@ export function useSaveAgentMutation(id: string) {
 
 export function useDeleteAgentMutation() {
   const api = useApi();
-  const qc = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => api.agents.delete(id),
 
-    onError: (_err, _id, ctx) => {
-      const { listKey, previous } = ctx as AgentContext;
-      qc.setQueryData(listKey, previous);
-    },
+    onError: (_err, _id, ctx: AgentContext | undefined, { client }) =>
+      ctx && client.setQueryData(ctx.listKey, ctx.previous),
 
-    onMutate: async (id) => {
-      const walletKey = String(api.wallets.address);
-      const listKey = ["agents", walletKey] as const;
+    onMutate: async (id, { client }) => {
+      const listKey = ["agents", String(api.wallets.address)] as const;
 
-      await qc.cancelQueries({ queryKey: listKey });
+      await client.cancelQueries({ queryKey: listKey });
 
-      const previous = qc.getQueryData<AgentsResponse>(listKey);
+      const previous = client.getQueryData<AgentsResponse>(listKey);
 
       if (previous?.agents) {
-        qc.setQueryData<AgentsResponse>(listKey, {
+        client.setQueryData<AgentsResponse>(listKey, {
           ...previous,
           agents: previous.agents.filter((a) => a.id !== id),
         });
       }
 
-      return { listKey, previous } as AgentContext;
+      return { listKey, previous };
     },
   });
 }
@@ -175,7 +169,7 @@ export function useAgentsTeams() {
 
   return useQuery({
     queryFn: async () => api.agentsTeams.get(),
-    queryKey: ["agents-teams", api.wallets.address],
+    queryKey: ["agents-teams", String(api.wallets.address)],
   });
 }
 
@@ -184,7 +178,7 @@ export function useAgentsTeamVersions(id: string) {
 
   return useQuery({
     queryFn: async () => api.agentsTeams.getVersions(id),
-    queryKey: ["agents-teams", api.wallets.address, id],
+    queryKey: ["agents-teams", String(api.wallets.address), id],
   });
 }
 
@@ -193,7 +187,7 @@ export function useAgentsTeam(id: string, version: string) {
 
   return useQuery({
     queryFn: async () => api.agentsTeams.getVersion(id, version),
-    queryKey: ["agents-teams", api.wallets.address, id, version],
+    queryKey: ["agents-teams", String(api.wallets.address), id, version],
   });
 }
 
@@ -218,7 +212,7 @@ export function useCreateAgentsTeamMutation() {
     onSuccess: async () =>
       queryClient.invalidateQueries({
         exact: true,
-        queryKey: ["agents-teams", api.wallets.address],
+        queryKey: ["agents-teams", String(api.wallets.address)],
       }),
   });
 }
@@ -240,11 +234,11 @@ export function useSaveAgentsTeamMutation(id: string) {
       Promise.all([
         queryClient.invalidateQueries({
           exact: true,
-          queryKey: ["agents-teams", api.wallets.address],
+          queryKey: ["agents-teams", String(api.wallets.address)],
         }),
         queryClient.invalidateQueries({
           exact: true,
-          queryKey: ["agents-teams", api.wallets.address, id],
+          queryKey: ["agents-teams", String(api.wallets.address), id],
         }),
       ]),
   });
@@ -260,11 +254,11 @@ export function useDeleteAgentsTeamMutation() {
       Promise.all([
         queryClient.invalidateQueries({
           exact: true,
-          queryKey: ["agents-teams", api.wallets.address],
+          queryKey: ["agents-teams", String(api.wallets.address)],
         }),
         queryClient.invalidateQueries({
           exact: false,
-          queryKey: ["agents-teams", api.wallets.address, id],
+          queryKey: ["agents-teams", String(api.wallets.address), id],
         }),
       ]),
   });
