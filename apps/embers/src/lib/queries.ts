@@ -5,7 +5,7 @@ import type {
 } from "@f1r3fly-io/embers-client-sdk";
 
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type { Agent } from "@/pages/Dashboard/components/AgentsGrid/AgentsGrid";
 
@@ -27,7 +27,7 @@ export function useAgents() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agents.get(),
+    queryFn: async ({ signal }) => api.agents.get({ signal }),
     queryKey: ["agents", String(api.wallets.address)],
   });
 }
@@ -37,7 +37,7 @@ export function useAgentVersions(id?: string) {
 
   return useQuery({
     enabled: !!id,
-    queryFn: async () => api.agents.getVersions(id!),
+    queryFn: async ({ signal }) => api.agents.getVersions(id!, { signal }),
     queryKey: ["agents", String(api.wallets.address), id],
   });
 }
@@ -47,19 +47,19 @@ export function useAgent(id?: string, version?: string) {
 
   return useQuery({
     enabled: !!id && !!version,
-    queryFn: async () => api.agents.getVersion(id!, version!),
+    queryFn: async ({ signal }) =>
+      api.agents.getVersion(id!, version!, { signal }),
     queryKey: ["agents", String(api.wallets.address), id, version],
   });
 }
 
 export function useCreateAgentMutation() {
   const api = useApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) => api.agents.create(params),
-    onSuccess: async () =>
-      queryClient.invalidateQueries({
+    onSuccess: async (_data, _params, _result, { client }) =>
+      client.invalidateQueries({
         exact: true,
         queryKey: ["agents", String(api.wallets.address)],
       }),
@@ -68,17 +68,16 @@ export function useCreateAgentMutation() {
 
 export function useSaveAgentMutation(id: string) {
   const api = useApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) => api.agents.save(id, params),
-    onSuccess: async () =>
+    onSuccess: async (_data, _params, _result, { client }) =>
       Promise.all([
-        queryClient.invalidateQueries({
+        client.invalidateQueries({
           exact: true,
           queryKey: ["agents", String(api.wallets.address)],
         }),
-        queryClient.invalidateQueries({
+        client.invalidateQueries({
           exact: true,
           queryKey: ["agents", String(api.wallets.address), id],
         }),
@@ -168,7 +167,7 @@ export function useAgentsTeams() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.get(),
+    queryFn: async ({ signal }) => api.agentsTeams.get({ signal }),
     queryKey: ["agents-teams", String(api.wallets.address)],
   });
 }
@@ -177,7 +176,7 @@ export function useAgentsTeamVersions(id: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getVersions(id),
+    queryFn: async ({ signal }) => api.agentsTeams.getVersions(id, { signal }),
     queryKey: ["agents-teams", String(api.wallets.address), id],
   });
 }
@@ -186,7 +185,8 @@ export function useAgentsTeam(id: string, version: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async () => api.agentsTeams.getVersion(id, version),
+    queryFn: async ({ signal }) =>
+      api.agentsTeams.getVersion(id, version, { signal }),
     queryKey: ["agents-teams", String(api.wallets.address), id, version],
   });
 }
@@ -198,7 +198,6 @@ type WithGraph<T> = Omit<T, "graph"> & {
 
 export function useCreateAgentsTeamMutation() {
   const api = useApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -209,8 +208,8 @@ export function useCreateAgentsTeamMutation() {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.create({ ...rest, graph });
     },
-    onSuccess: async () =>
-      queryClient.invalidateQueries({
+    onSuccess: async (_data, _params, _result, { client }) =>
+      client.invalidateQueries({
         exact: true,
         queryKey: ["agents-teams", String(api.wallets.address)],
       }),
@@ -219,7 +218,6 @@ export function useCreateAgentsTeamMutation() {
 
 export function useSaveAgentsTeamMutation(id: string) {
   const api = useApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -230,13 +228,13 @@ export function useSaveAgentsTeamMutation(id: string) {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.save(id, { ...rest, graph });
     },
-    onSuccess: async () =>
+    onSuccess: async (_data, _params, _result, { client }) =>
       Promise.all([
-        queryClient.invalidateQueries({
+        client.invalidateQueries({
           exact: true,
           queryKey: ["agents-teams", String(api.wallets.address)],
         }),
-        queryClient.invalidateQueries({
+        client.invalidateQueries({
           exact: true,
           queryKey: ["agents-teams", String(api.wallets.address), id],
         }),
@@ -246,17 +244,16 @@ export function useSaveAgentsTeamMutation(id: string) {
 
 export function useDeleteAgentsTeamMutation() {
   const api = useApi();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => api.agentsTeams.delete(id),
-    onSuccess: async (_, id) =>
+    onSuccess: async (_data, id, _result, { client }) =>
       Promise.all([
-        queryClient.invalidateQueries({
+        client.invalidateQueries({
           exact: true,
           queryKey: ["agents-teams", String(api.wallets.address)],
         }),
-        queryClient.invalidateQueries({
+        client.invalidateQueries({
           exact: false,
           queryKey: ["agents-teams", String(api.wallets.address), id],
         }),

@@ -6,6 +6,7 @@ export * from "./api-client";
 export * from "./entities/Address";
 export * from "./entities/Amount";
 export * from "./entities/Description";
+export type * from "./entities/HttpCallConfigs";
 export * from "./entities/PrivateKey";
 export * from "./entities/PublicKey";
 export * from "./serialization";
