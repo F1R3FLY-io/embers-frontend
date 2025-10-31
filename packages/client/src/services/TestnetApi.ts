@@ -1,4 +1,5 @@
 import type { HTTPHeaders } from "@/api-client";
+import type { QueryCallConfig } from "@/entities/HttpCallConfigs";
 
 import { Configuration, TestnetApi } from "@/api-client";
 import { signContract } from "@/functions";
@@ -28,32 +29,45 @@ export class TestnetApiSdk {
    * @param test The testcase
    * @param env The code that being tested
    */
-  public async deploy(testKey: PrivateKey, test: string, env?: string) {
-    const response = await this.client.apiTestnetDeployPreparePost({
-      deployTestReq: {
-        env,
-        test,
+  public async deploy(
+    testKey: PrivateKey,
+    test: string,
+    env?: string,
+    config?: QueryCallConfig,
+  ) {
+    const response = await this.client.apiTestnetDeployPreparePost(
+      {
+        deployTestReq: {
+          env,
+          test,
+        },
       },
-    });
+      { signal: config?.signal },
+    );
 
     const signedTestContract = signContract(response.testContract, testKey);
     const signedEnvContract =
       response.envContract && signContract(response.envContract, testKey);
 
-    return this.client.apiTestnetDeploySendPost({
-      deploySignedTestReq: {
-        env: signedEnvContract,
-        test: signedTestContract,
+    return this.client.apiTestnetDeploySendPost(
+      {
+        deploySignedTestReq: {
+          env: signedEnvContract,
+          test: signedTestContract,
+        },
       },
-    });
+      { signal: config?.signal },
+    );
   }
 
   /**
    * Generate new test wallet private key
    * @returns Wallet key
    */
-  public async getWallet() {
-    const { key } = await this.client.apiTestnetWalletPost();
+  public async getWallet(config?: QueryCallConfig) {
+    const { key } = await this.client.apiTestnetWalletPost({
+      signal: config?.signal,
+    });
     return PrivateKey.tryFromHex(key);
   }
 }

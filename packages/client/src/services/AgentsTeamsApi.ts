@@ -3,6 +3,10 @@ import type { Graph } from "@f1r3fly-io/graphl-parser";
 import { base16 } from "@scure/base";
 
 import type { CreateAgentsTeamReq, HTTPHeaders } from "@/api-client";
+import type {
+  ContractCallConfig,
+  QueryCallConfig,
+} from "@/entities/HttpCallConfigs";
 
 import { AIAgentsTeamsApi, Configuration } from "@/api-client";
 import { insertSignedSignature, signContract } from "@/functions";
@@ -37,43 +41,65 @@ export class AgentsTeamsApiSdk {
     this.client = new AIAgentsTeamsApi(configuration);
   }
 
-  public async create(createAgentsTeamReq: CreateAgentsTeamReq) {
-    const prepareModel = await this.client.apiAiAgentsTeamsCreatePreparePost({
-      createAgentsTeamReq,
-    });
+  public async create(
+    createAgentsTeamReq: CreateAgentsTeamReq,
+    config?: ContractCallConfig,
+  ) {
+    const prepareModel = await this.client.apiAiAgentsTeamsCreatePreparePost(
+      {
+        createAgentsTeamReq,
+      },
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(prepareModel.contract, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      15_000,
+      config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsCreateSendPost({
-      signedContract,
-    });
+    const sendModel = await this.client.apiAiAgentsTeamsCreateSendPost(
+      {
+        signedContract,
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel, waitForFinalization };
   }
 
-  public async get() {
-    return this.client.apiAiAgentsTeamsAddressGet({
-      address: this.address,
-    });
+  public async get(config?: QueryCallConfig) {
+    return this.client.apiAiAgentsTeamsAddressGet(
+      {
+        address: this.address,
+      },
+      { signal: config?.signal },
+    );
   }
 
-  public async getVersion(id: string, version: string) {
-    return this.client.apiAiAgentsTeamsAddressIdVersionsVersionGet({
-      address: this.address,
-      id,
-      version,
-    });
+  public async getVersion(
+    id: string,
+    version: string,
+    config?: QueryCallConfig,
+  ) {
+    return this.client.apiAiAgentsTeamsAddressIdVersionsVersionGet(
+      {
+        address: this.address,
+        id,
+        version,
+      },
+      { signal: config?.signal },
+    );
   }
 
-  public async getVersions(id: string) {
-    return this.client.apiAiAgentsTeamsAddressIdVersionsGet({
-      address: this.address,
-      id,
-    });
+  public async getVersions(id: string, config?: QueryCallConfig) {
+    return this.client.apiAiAgentsTeamsAddressIdVersionsGet(
+      {
+        address: this.address,
+        id,
+      },
+      { signal: config?.signal },
+    );
   }
 
   public async deployGraph(
@@ -81,39 +107,46 @@ export class AgentsTeamsApiSdk {
     phloLimit: Amount,
     registryVersion: bigint,
     registryKey: PrivateKey,
+    config?: ContractCallConfig,
   ) {
     const timestamp = new Date();
 
-    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost({
-      deployAgentsTeamReq: {
-        deploy: {
-          signature: insertSignedSignature(
-            registryKey,
+    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost(
+      {
+        deployAgentsTeamReq: {
+          deploy: {
+            signature: insertSignedSignature(
+              registryKey,
+              timestamp,
+              this.privateKey.getPublicKey(),
+              registryVersion,
+            ),
             timestamp,
-            this.privateKey.getPublicKey(),
-            registryVersion,
-          ),
-          timestamp,
-          uriPubKey: registryKey.getPublicKey(),
-          version: registryVersion,
+            uriPubKey: registryKey.getPublicKey(),
+            version: registryVersion,
+          },
+          graph,
+          phloLimit: phloLimit.value,
+          type: "Graph",
         },
-        graph,
-        phloLimit: phloLimit.value,
-        type: "Graph",
       },
-    });
+      { signal: config?.signal },
+    );
 
     const contract = signContract(prepareModel.contract, this.privateKey);
     const system =
       prepareModel.system && signContract(prepareModel.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      15_000,
+      config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost({
-      deploySignedAgentsTeamtReq: { contract, system },
-    });
+    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost(
+      {
+        deploySignedAgentsTeamtReq: { contract, system },
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel, waitForFinalization };
   }
@@ -124,98 +157,132 @@ export class AgentsTeamsApiSdk {
     phloLimit: Amount,
     registryVersion: bigint,
     registryKey: PrivateKey,
+    config?: ContractCallConfig,
   ) {
     const timestamp = new Date();
 
-    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost({
-      deployAgentsTeamReq: {
-        address: this.address,
-        deploy: {
-          signature: insertSignedSignature(
-            registryKey,
+    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost(
+      {
+        deployAgentsTeamReq: {
+          address: this.address,
+          deploy: {
+            signature: insertSignedSignature(
+              registryKey,
+              timestamp,
+              this.privateKey.getPublicKey(),
+              registryVersion,
+            ),
             timestamp,
-            this.privateKey.getPublicKey(),
-            registryVersion,
-          ),
-          timestamp,
-          uriPubKey: registryKey.getPublicKey(),
-          version: registryVersion,
+            uriPubKey: registryKey.getPublicKey(),
+            version: registryVersion,
+          },
+          id,
+          phloLimit: phloLimit.value,
+          type: "AgentsTeam",
+          version,
         },
-        id,
-        phloLimit: phloLimit.value,
-        type: "AgentsTeam",
-        version,
       },
-    });
+      { signal: config?.signal },
+    );
 
     const contract = signContract(prepareModel.contract, this.privateKey);
     const system =
       prepareModel.system && signContract(prepareModel.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      15_000,
+      config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost({
-      deploySignedAgentsTeamtReq: { contract, system },
-    });
+    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost(
+      {
+        deploySignedAgentsTeamtReq: { contract, system },
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel, waitForFinalization };
   }
 
-  public async run(agentTeamUri: string, prompt: string, phloLimit: Amount) {
-    const prepareModel = await this.client.apiAiAgentsTeamsRunPreparePost({
-      runAgentsTeamReq: {
-        agentsTeam: agentTeamUri,
-        phloLimit: phloLimit.value,
-        prompt,
+  public async run(
+    agentTeamUri: string,
+    prompt: string,
+    phloLimit: Amount,
+    config?: ContractCallConfig,
+  ) {
+    const prepareModel = await this.client.apiAiAgentsTeamsRunPreparePost(
+      {
+        runAgentsTeamReq: {
+          agentsTeam: agentTeamUri,
+          phloLimit: phloLimit.value,
+          prompt,
+        },
       },
-    });
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(prepareModel.contract, this.privateKey);
 
-    const sendModel: unknown = await this.client.apiAiAgentsTeamsRunSendPost({
-      signedContract,
-    });
+    const sendModel: unknown = await this.client.apiAiAgentsTeamsRunSendPost(
+      {
+        signedContract,
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel };
   }
 
-  public async save(id: string, createAgentsTeamReq: CreateAgentsTeamReq) {
-    const prepareModel = await this.client.apiAiAgentsTeamsIdSavePreparePost({
-      createAgentsTeamReq,
-      id,
-    });
+  public async save(
+    id: string,
+    createAgentsTeamReq: CreateAgentsTeamReq,
+    config?: ContractCallConfig,
+  ) {
+    const prepareModel = await this.client.apiAiAgentsTeamsIdSavePreparePost(
+      {
+        createAgentsTeamReq,
+        id,
+      },
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(prepareModel.contract, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      15_000,
+      config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsIdSaveSendPost({
-      id,
-      signedContract,
-    });
+    const sendModel = await this.client.apiAiAgentsTeamsIdSaveSendPost(
+      {
+        id,
+        signedContract,
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel, waitForFinalization };
   }
 
-  public async delete(id: string) {
-    const prepareModel = await this.client.apiAiAgentsTeamsIdDeletePreparePost({
-      id,
-    });
+  public async delete(id: string, config?: ContractCallConfig) {
+    const prepareModel = await this.client.apiAiAgentsTeamsIdDeletePreparePost(
+      {
+        id,
+      },
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(prepareModel.contract, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      15_000,
+      config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsIdDeleteSendPost({
-      id,
-      signedContract,
-    });
+    const sendModel = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
+      {
+        id,
+        signedContract,
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel, waitForFinalization };
   }

@@ -1,6 +1,10 @@
 import { base16 } from "@scure/base";
 
 import type { HTTPHeaders } from "@/api-client";
+import type {
+  ContractCallConfig,
+  QueryCallConfig,
+} from "@/entities/HttpCallConfigs";
 
 import { Configuration, WalletsApi } from "@/api-client";
 import { signContract } from "@/functions";
@@ -48,25 +52,32 @@ export class WalletsApiSdk {
     to: Address,
     amount: Amount,
     description?: Description,
+    config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiWalletsTransferPreparePost({
-      transferReq: {
-        amount: amount.value,
-        description: description?.value,
-        from: this.address,
-        to,
+    const prepareModel = await this.client.apiWalletsTransferPreparePost(
+      {
+        transferReq: {
+          amount: amount.value,
+          description: description?.value,
+          from: this.address,
+          to,
+        },
       },
-    });
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(prepareModel.contract, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      15_000,
+      config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiWalletsTransferSendPost({
-      signedContract,
-    });
+    const sendModel = await this.client.apiWalletsTransferSendPost(
+      {
+        signedContract,
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareModel, sendModel, waitForFinalization };
   }
@@ -75,9 +86,12 @@ export class WalletsApiSdk {
    * Get the state of the wallet.
    * @returns A promise that resolves with the wallet state.
    */
-  public async getState() {
-    return this.client.apiWalletsAddressStateGet({
-      address: this.address,
-    });
+  public async getState(config?: QueryCallConfig) {
+    return this.client.apiWalletsAddressStateGet(
+      {
+        address: this.address,
+      },
+      { signal: config?.signal },
+    );
   }
 }
