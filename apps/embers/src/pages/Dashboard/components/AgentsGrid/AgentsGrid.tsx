@@ -6,15 +6,20 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
+import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useDeleteAgentMutation } from "@/lib/queries";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
+import DraftIcon from "@/public/icons/draft-icon.svg?react";
 import EditIcon from "@/public/icons/editbig-icon.svg?react";
+import TrashIcon from "@/public/icons/trash-icon.svg?react";
 
 import styles from "./AgentsGrid.module.scss";
 
 export interface Agent {
   createdAt?: Date;
   id: string;
+  lastDeploy?: Date | undefined;
   logo?: string | null;
   name: string;
   shard?: string;
@@ -36,6 +41,9 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
     void navigate("/create-ai-agent/create");
   }, [navigate, reset]);
 
+  const deleteAgent = useDeleteAgentMutation();
+  const confirm = useConfirm();
+
   const navigateToAgent = useCallback(
     (agent: Agent) => {
       updateData("agentId", agent.id);
@@ -48,9 +56,12 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
     [navigate, nextStep, updateData],
   );
 
-  const formatUpdated = (value?: Date) => {
-    return value ? value.toLocaleString() : "";
-  };
+  const handleDelete = async (id: string, name: string) =>
+    confirm({ message: `Are you sure you want to delete ${name} agent?` })
+      .then((ok) => ok && deleteAgent.mutate(id))
+      .catch(() => {});
+
+  const formatUpdated = (value?: Date) => (value ? value.toLocaleString() : "");
 
   return (
     <>
@@ -67,7 +78,8 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
 
       {isSuccess &&
         agents.map((agent, index) => {
-          const isDraft = !agent.shard;
+          const isDraft = !agent.lastDeploy;
+
           return (
             <div
               key={agent.id}
@@ -81,37 +93,56 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
               }
               onClick={() => navigateToAgent(agent)}
             >
-              <div className={styles["agent-top"]}>
-                <Text color="secondary" type="small">
-                  {t("agents.updated")} {formatUpdated(agent.createdAt)}
-                </Text>
-              </div>
-
               <div className={styles["agent-main"]}>
                 <IconPreview
                   className={styles["agent-icon"]}
                   size={40}
                   url={agent.logo}
                 />
-                <Text color="primary" type="H4">
-                  {agent.name}
-                </Text>
+
+                <div className={styles["agent-meta"]}>
+                  <Text color="secondary" type="small">
+                    {t("agents.updated")} {formatUpdated(agent.createdAt)}
+                  </Text>
+
+                  {isDraft && (
+                    <div className={styles["draft-container"]}>
+                      <DraftIcon className={styles["draft-icon"]} />
+                      <Text color="hover" type="normal">
+                        Draft
+                      </Text>
+                    </div>
+                  )}
+                </div>
               </div>
+
+              <Text color="primary" type="H4">
+                {agent.name}
+              </Text>
 
               <div
                 className={styles["agent-actions"]}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Button
-                  icon={<EditIcon />}
-                  type="secondary"
-                  onClick={() => navigateToAgent(agent)}
-                >
-                  {t("agents.edit")}
-                </Button>
-                <Button type="primary" onClick={() => navigateToAgent(agent)}>
-                  {t("agents.details")}
-                </Button>
+                <div className={styles["agent-action-buttons"]}>
+                  <Button
+                    icon={<EditIcon />}
+                    type="secondary"
+                    onClick={() => navigateToAgent(agent)}
+                  >
+                    {t("agents.edit")}
+                  </Button>
+                  <Button type="primary" onClick={() => navigateToAgent(agent)}>
+                    {t("agents.details")}
+                  </Button>
+                </div>
+
+                <TrashIcon
+                  className={styles["delete-icon"]}
+                  role="button"
+                  title={t("agents.delete")}
+                  onClick={() => void handleDelete(agent.id, agent.name)}
+                />
               </div>
             </div>
           );

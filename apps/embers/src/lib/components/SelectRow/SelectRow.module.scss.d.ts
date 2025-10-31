@@ -1,9 +1,9 @@
 declare const classNames: {
   readonly row: "row";
+  readonly content: "content";
   readonly disabled: "disabled";
   readonly selected: "selected";
-  readonly content: "content";
   readonly right: "right";
-  readonly rightVisible: "rightVisible";
+  readonly "right-visible": "right-visible";
 };
 export default classNames;

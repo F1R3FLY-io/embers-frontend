@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export default function CreateAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, nextStep, step, updateData } = useStepper();
+  const { data, setStep, step, updateData } = useStepper();
   const [name, setName] = useState(data.agentName);
   const [environment, setEnvironment] = useState<string>(
     data.environment ?? "",
@@ -55,9 +55,12 @@ export default function CreateAgent() {
     updateData("agentName", name);
     updateData("environment", environment);
     updateData("agentIconUrl", iconUrl.trim());
-    nextStep();
     void navigate("/create-ai-agent");
   };
+
+  useEffect(() => {
+    setStep(0);
+  }, [setStep]);
 
   return (
     <div className={styles["create-container"]}>

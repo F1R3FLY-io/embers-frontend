@@ -25,7 +25,7 @@ export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { t } = useTranslation();
   const { setHeaderTitle } = useLayout();
-  const { data } = useStepper();
+  const { data, setStep } = useStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
   const { data: agentVersions } = useAgentVersions(agentId);
@@ -75,11 +75,12 @@ export default function CodeEditor() {
   }, []);
 
   useEffect(() => {
+    setStep(1);
     editorRef.current?.openDocument(
       fileName,
       (agent ? agent.code : data.code) ?? "",
     );
-  }, [agent, data.code, fileName]);
+  }, [agent, data.code, fileName, setStep]);
 
   const versions = useMemo(() => {
     return agentVersions?.agents.map((version) => version.version);

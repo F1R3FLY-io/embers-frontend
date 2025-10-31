@@ -51,8 +51,11 @@
 
 .agent-top {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: flex-end;
+  position: absolute;
+  flex-direction: column;
+  right: 20px;
 }
 
 .status-badge {
@@ -63,7 +66,7 @@
 
 .agent-main {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 }
 
@@ -74,6 +77,11 @@
 .agent-actions {
   margin-top: 8px;
   display: flex;
+  justify-content: space-between;
+}
+
+.agent-action-buttons {
+  display: flex;
   gap: 10px;
 }
 
@@ -83,4 +91,32 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.agent-meta {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.draft-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  .draft-icon {
+    fill: transparent;
+    stroke: var(--button-hover);
+  }
+}
+
+.delete-icon {
+  stroke: var(--text-danger);
+  fill: transparent;
+  cursor: pointer;
+  margin-left: 12px;
+  align-self: center;
 }

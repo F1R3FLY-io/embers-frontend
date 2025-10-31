@@ -159,6 +159,9 @@ export default function Deploy() {
                 <Input
                   inputType="textarea"
                   placeholder={t("deploy.enterDeploymentNotes")}
+                  onChange={(e) => {
+                    updateData("description", e.target.value);
+                  }}
                 />
               </div>
             </div>

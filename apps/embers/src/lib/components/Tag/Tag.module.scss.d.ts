@@ -1,8 +1,8 @@
 declare const classNames: {
   readonly tag: "tag";
   readonly label: "label";
-  readonly closeBtn: "closeBtn";
-  readonly closeIcon: "closeIcon";
+  readonly "close-btn": "close-btn";
+  readonly "close-icon": "close-icon";
   readonly solid: "solid";
   readonly soft: "soft";
   readonly disabled: "disabled";

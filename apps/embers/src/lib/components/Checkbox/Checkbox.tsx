@@ -118,8 +118,8 @@ export function Checkbox({
         aria-hidden
         className={classNames(
           styles.box,
-          isMixed && styles.indeterminateBox,
-          isChecked && styles.checkedBox,
+          isMixed && styles["indeterminate-box"],
+          isChecked && styles["checked-box"],
         )}
       >
         <svg
