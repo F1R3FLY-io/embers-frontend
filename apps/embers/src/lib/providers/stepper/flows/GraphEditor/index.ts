@@ -12,8 +12,8 @@ export const {
     agentName: "",
   },
   routes: [
+    "/create-ai-team-flow/create",
     "/create-ai-team-flow",
-    "/create-ai-team-flow/configure",
     "/create-ai-team-flow/deploy",
   ],
 });
