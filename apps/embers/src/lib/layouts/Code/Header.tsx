@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/lib/components/Button";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useLoader } from "@/lib/providers/loader/useLoader";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useCreateAgentMutation, useSaveAgentMutation } from "@/lib/queries";
 
 type HeaderProps = {
@@ -15,7 +15,7 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const navigate = useNavigate();
-  const { data, nextStep, updateData } = useStepper();
+  const { data, nextStep, updateData } = useCodeEditorStepper();
   const dock = useDock();
   const { hideLoader, showLoader } = useLoader();
 
@@ -59,9 +59,10 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       );
     } catch (e) {
       dock.appendLog(
-        `Save failed ${e instanceof Error ? e.message : String(e)}`,
+        `Save failed: ${e instanceof Error ? e.message : String(e)}`,
         "error",
       );
+      throw e;
     } finally {
       hideLoader();
     }

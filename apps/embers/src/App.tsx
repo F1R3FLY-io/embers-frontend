@@ -8,7 +8,8 @@ import { DockProvider } from "@/lib/providers/dock/DockProvider";
 import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider";
 import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
-import { StepperProvider } from "@/lib/providers/stepper/StepperProvider";
+import { CodeEditorStepperProvider } from "@/lib/providers/stepper/flows/CodeEditor";
+import { GraphEditorStepperProvider } from "@/lib/providers/stepper/flows/GraphEditor";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
@@ -35,38 +36,40 @@ export default function App() {
               <LayoutProvider>
                 <ReactFlowProvider>
                   <BrowserRouter>
-                    <StepperProvider>
-                      <ModalProvider>
-                        <div className={styles.background}>
-                          <Routes>
-                            <Route element={<Home />} path="/" />
-                            <Route element={<Login />} path="/login" />
-                            <Route element={<ProtectedRoute />}>
-                              <Route
-                                element={<CreateAgent />}
-                                path="/create-ai-agent/create"
-                              />
-                              <Route
-                                element={<CreateAiTeamFlow />}
-                                path="/create-ai-team"
-                              />
-                              <Route
-                                element={<Deploy />}
-                                path="/create-ai-agent/deploy"
-                              />
-                              <Route
-                                element={<Dashboard />}
-                                path="/dashboard"
-                              />
-                              <Route
-                                element={<EditAgent />}
-                                path="/create-ai-agent"
-                              />
-                            </Route>
-                          </Routes>
-                        </div>
-                      </ModalProvider>
-                    </StepperProvider>
+                    <ModalProvider>
+                      <div className={styles.background}>
+                        <Routes>
+                          <Route element={<Home />} path="/" />
+                          <Route element={<Login />} path="/login" />
+                          <Route element={<ProtectedRoute />}>
+                            <Route
+                              element={
+                                <CodeEditorStepperProvider>
+                                  <Routes>
+                                    <Route
+                                      element={<CreateAgent />}
+                                      path="create"
+                                    />
+                                    <Route element={<EditAgent />} path="" />
+                                    <Route element={<Deploy />} path="deploy" />
+                                  </Routes>
+                                </CodeEditorStepperProvider>
+                              }
+                              path="/create-ai-agent/*"
+                            />
+                            <Route
+                              element={
+                                <GraphEditorStepperProvider>
+                                  <CreateAiTeamFlow />
+                                </GraphEditorStepperProvider>
+                              }
+                              path="/create-ai-team"
+                            />
+                            <Route element={<Dashboard />} path="/dashboard" />
+                          </Route>
+                        </Routes>
+                      </div>
+                    </ModalProvider>
                   </BrowserRouter>
                 </ReactFlowProvider>
               </LayoutProvider>

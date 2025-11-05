@@ -1,57 +1,64 @@
-import type { ReactNode } from "react";
-import type React from "react";
-
-import { useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
-import type { StepperData } from "@/lib/providers/stepper/useStepper";
-
-import { StepperContext } from "@/lib/providers/stepper/useStepper";
-
-const defaultData = {
-  agentName: "",
-  rhoLimit: 100000,
+export type StepperApi<TData> = {
+  data: TData;
+  navigateToStep: (n: number) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  reset: () => void;
+  setStep: (n: number) => void;
+  step: number;
+  updateData: <K extends keyof TData>(key: K, value: TData[K]) => void;
+  updateMany: (patch: Partial<TData>) => void;
 };
 
-const stepRoutes = [
-  "/create-ai-agent/create",
-  "/create-ai-agent",
-  "/create-ai-agent/deploy",
-];
+type CreateStepperOptions<TData> = {
+  initialData: TData;
+  routes: string[];
+};
 
-export const StepperProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState<StepperData>(defaultData);
-  const navigate = useNavigate();
+export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
+  const Ctx = createContext<StepperApi<TData> | null>(null);
 
-  const reset = () => {
-    setStep(0);
-    setData(defaultData);
-  };
+  function StepperProvider({ children }: { children: React.ReactNode }) {
+    const navigate = useNavigate();
+    const [step, setStep] = useState(0);
+    const [data, setData] = useState<TData>(opts.initialData);
 
-  const navigateToStep = (targetStep: number) => {
-    if (targetStep >= 0 && targetStep < stepRoutes.length) {
-      setStep(targetStep);
-      void navigate(stepRoutes[targetStep]);
-    }
-  };
+    const navigateToStep = useCallback(
+      (targetStep: number) => {
+        if (targetStep >= 0 && targetStep < opts.routes.length) {
+          setStep(targetStep);
+          void navigate(opts.routes[targetStep]);
+        }
+      },
+      [navigate],
+    );
 
-  const updateData = <K extends keyof StepperData>(
-    key: K,
-    value: StepperData[K],
-  ) => {
-    setData((prev) => ({ ...prev, [key]: value }));
-  };
+    const updateMany = (patch: Partial<TData>) => {
+      setData((prev) => ({ ...prev, ...patch }));
+    };
 
-  const nextStep = () => setStep((prev) => prev + 1);
+    const updateData = <K extends keyof TData>(key: K, value: TData[K]) => {
+      setData((prev) => ({ ...prev, [key]: value }));
+    };
 
-  const prevStep = () => setStep((prev) => Math.max(0, prev - 1));
+    const nextStep = () => setStep((prev) => prev + 1);
+    const prevStep = () => setStep((prev) => Math.max(0, prev - 1));
+    const reset = () => {
+      setStep(0);
+      setData(opts.initialData);
+    };
 
-  return (
-    <StepperContext.Provider
-      value={{
+    const value: StepperApi<TData> = useMemo(
+      () => ({
         data,
         navigateToStep,
         nextStep,
@@ -60,9 +67,23 @@ export const StepperProvider: React.FC<{ children: ReactNode }> = ({
         setStep,
         step,
         updateData,
-      }}
-    >
-      {children}
-    </StepperContext.Provider>
-  );
-};
+        updateMany,
+      }),
+      [data, navigateToStep, step],
+    );
+
+    return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+  }
+
+  function useStepper() {
+    const ctx = useContext(Ctx);
+    if (!ctx) {
+      throw new Error(
+        "useStepper must be used within this flow's StepperProvider",
+      );
+    }
+    return ctx;
+  }
+
+  return { StepperProvider, useStepper };
+}

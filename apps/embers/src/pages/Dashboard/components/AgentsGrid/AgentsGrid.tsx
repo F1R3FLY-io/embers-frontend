@@ -7,7 +7,6 @@ import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
 import { useDeleteAgentMutation } from "@/lib/queries";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
@@ -34,26 +33,27 @@ interface AgentsGridProps {
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { nextStep, reset, updateData } = useStepper();
-
   const createAiAgent = useCallback(() => {
-    reset();
-    void navigate("/create-ai-agent/create");
-  }, [navigate, reset]);
+    void navigate("/create-ai-agent/create", {
+      state: { preload: { reset: true } },
+    });
+  }, [navigate]);
 
   const deleteAgent = useDeleteAgentMutation();
   const confirm = useConfirm();
 
   const navigateToAgent = useCallback(
     (agent: Agent) => {
-      updateData("agentId", agent.id);
-      updateData("agentName", agent.name);
-      updateData("version", agent.version);
-      updateData("agentIconUrl", agent.logo ?? "");
-      nextStep();
-      void navigate(`/create-ai-agent`);
+      void navigate("/create-ai-agent", {
+        state: {
+          agentIconUrl: agent.logo ?? "",
+          agentId: agent.id,
+          agentName: agent.name,
+          version: agent.version,
+        },
+      });
     },
-    [navigate, nextStep, updateData],
+    [navigate],
   );
 
   const handleDelete = async (id: string, name: string) =>

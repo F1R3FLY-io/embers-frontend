@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
 import WarningIcon from "@/public/icons/warning-modal-icon.svg?react";
 
 import styles from "./WarningModal.module.scss";
@@ -16,7 +15,6 @@ export interface DeployFailedModalProps {
 export function WarningModal({ error }: DeployFailedModalProps) {
   const { close } = useModal();
   const navigate = useNavigate();
-  const { setStep } = useStepper();
   const { t } = useTranslation();
 
   const tryAgain = () => {
@@ -25,7 +23,6 @@ export function WarningModal({ error }: DeployFailedModalProps) {
 
   const reviewSettings = () => {
     close();
-    setStep(0);
     void navigate("/create-ai-agent/create");
   };
 
