@@ -15,7 +15,7 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const navigate = useNavigate();
-  const { data, nextStep, updateData } = useCodeEditorStepper();
+  const { data, updateData } = useCodeEditorStepper();
   const dock = useDock();
   const { hideLoader, showLoader } = useLoader();
 
@@ -77,7 +77,6 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       const { agentId, version } = await saveOrCreate();
       updateData("agentId", agentId);
       updateData("version", version);
-      nextStep();
       void navigate("/create-ai-agent/deploy");
     } catch (e) {
       dock.appendLog(

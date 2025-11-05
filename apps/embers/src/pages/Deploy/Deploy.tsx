@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -30,10 +30,14 @@ function parseBigIntOrNull(v: string): bigint | null {
 
 export default function Deploy() {
   const { t } = useTranslation();
-  const { data, prevStep, reset, step, updateData } = useCodeEditorStepper();
+  const { data, reset, setStep, step, updateData } = useCodeEditorStepper();
   const { agentId, version } = data;
   const dock = useDock();
   const { open } = useModal();
+
+  useEffect(() => {
+    setStep(2);
+  }, [setStep]);
 
   const navigate = useNavigate();
 
@@ -85,9 +89,8 @@ export default function Deploy() {
   };
 
   const backClick = useCallback(() => {
-    prevStep();
     void navigate("/create-ai-agent");
-  }, [navigate, prevStep]);
+  }, [navigate]);
 
   return (
     <div className={styles["deploy-container"]}>

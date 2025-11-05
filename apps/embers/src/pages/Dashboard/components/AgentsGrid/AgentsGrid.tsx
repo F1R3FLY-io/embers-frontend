@@ -34,9 +34,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createAiAgent = useCallback(() => {
-    void navigate("/create-ai-agent/create", {
-      state: { preload: { reset: true } },
-    });
+    void navigate("/create-ai-agent/create");
   }, [navigate]);
 
   const deleteAgent = useDeleteAgentMutation();

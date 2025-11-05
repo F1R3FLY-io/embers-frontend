@@ -10,8 +10,6 @@ import { useNavigate } from "react-router-dom";
 export type StepperApi<TData> = {
   data: TData;
   navigateToStep: (n: number) => void;
-  nextStep: () => void;
-  prevStep: () => void;
   reset: () => void;
   setStep: (n: number) => void;
   step: number;
@@ -50,8 +48,6 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
       setData((prev) => ({ ...prev, [key]: value }));
     };
 
-    const nextStep = () => setStep((prev) => prev + 1);
-    const prevStep = () => setStep((prev) => Math.max(0, prev - 1));
     const reset = () => {
       setStep(0);
       setData(opts.initialData);
@@ -61,8 +57,6 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
       () => ({
         data,
         navigateToStep,
-        nextStep,
-        prevStep,
         reset,
         setStep,
         step,
