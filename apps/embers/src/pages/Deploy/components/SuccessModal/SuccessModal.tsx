@@ -3,27 +3,31 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import type { StepperData } from "@/lib/providers/stepper/useStepper";
+import type { CodeEditorStepperData } from "@/lib/providers/stepper/flows/CodeEditor";
 
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
 
 import styles from "./SuccessModal.module.scss";
 
 export type DeploySuccessData = {
-  data: StepperData;
+  data: CodeEditorStepperData;
   note?: string;
+  resetFn: () => void;
   status: string;
 };
 
-export function SuccessModal({ data, note, status }: DeploySuccessData) {
+export function SuccessModal({
+  data,
+  note,
+  resetFn,
+  status,
+}: DeploySuccessData) {
   const navigate = useNavigate();
   const { close } = useModal();
   const { t } = useTranslation();
-  const { reset } = useStepper();
   const { agentIconUrl, agentId, agentName, environment, rhoLimit, version } =
     data;
 
@@ -39,9 +43,9 @@ export function SuccessModal({ data, note, status }: DeploySuccessData) {
 
   const onCreateAnother = useCallback(() => {
     close();
-    reset();
+    resetFn();
     void navigate("/create-ai-agent/create");
-  }, [close, navigate, reset]);
+  }, [close, navigate, resetFn]);
 
   return (
     <div className={styles.wrap}>

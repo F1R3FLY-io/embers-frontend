@@ -10,7 +10,7 @@ import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import Stepper from "@/pages/Deploy/components/Stepper";
 
 import styles from "./CreateAgent.module.scss";
@@ -19,7 +19,7 @@ export default function CreateAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, setStep, step, updateData } = useStepper();
+  const { data, setStep, step, updateData } = useCodeEditorStepper();
   const [name, setName] = useState(data.agentName);
   const [environment, setEnvironment] = useState<string>(
     data.environment ?? "",

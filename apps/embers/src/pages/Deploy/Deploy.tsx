@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +8,7 @@ import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useModal } from "@/lib/providers/modal/useModal";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useDeployAgentMutation } from "@/lib/queries";
 import { SuccessModal } from "@/pages/Deploy/components/SuccessModal";
 import { WarningModal } from "@/pages/Deploy/components/WarningModal";
@@ -30,10 +30,14 @@ function parseBigIntOrNull(v: string): bigint | null {
 
 export default function Deploy() {
   const { t } = useTranslation();
-  const { data, prevStep, step, updateData } = useStepper();
+  const { data, reset, setStep, step, updateData } = useCodeEditorStepper();
   const { agentId, version } = data;
   const dock = useDock();
   const { open } = useModal();
+
+  useEffect(() => {
+    setStep(2);
+  }, [setStep]);
 
   const navigate = useNavigate();
 
@@ -67,19 +71,26 @@ export default function Deploy() {
         },
         onSuccess: () => {
           dock.appendDeploy(true);
-          open(<SuccessModal data={data} note="note" status="status" />, {
-            ariaLabel: "Success deploy",
-            maxWidth: 550,
-          });
+          open(
+            <SuccessModal
+              data={data}
+              note="note"
+              resetFn={() => reset()}
+              status="status"
+            />,
+            {
+              ariaLabel: "Success deploy",
+              maxWidth: 550,
+            },
+          );
         },
       },
     );
   };
 
   const backClick = useCallback(() => {
-    prevStep();
     void navigate("/create-ai-agent");
-  }, [navigate, prevStep]);
+  }, [navigate]);
 
   return (
     <div className={styles["deploy-container"]}>

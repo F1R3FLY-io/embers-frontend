@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Layout } from "@/lib/layouts";
 import { Footer, Header, Sidebar } from "@/lib/layouts/Code";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 
 interface CodeLayoutProps {
   children: React.ReactNode;
@@ -23,7 +23,7 @@ export const CodeLayout: React.FC<CodeLayoutProps> = ({
 }) => {
   const confirm = useConfirm();
   const navigate = useNavigate();
-  const { updateData } = useStepper();
+  const { updateData } = useCodeEditorStepper();
 
   const [selectedId, setSelectedId] = useState<string | undefined>(
     currentVersion,

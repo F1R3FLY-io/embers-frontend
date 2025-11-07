@@ -10,11 +10,14 @@ import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import type { CodeEditorStepperData } from "@/lib/providers/stepper/flows/CodeEditor";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
 import { useLayout } from "@/lib/providers/layout/useLayout";
-import { useStepper } from "@/lib/providers/stepper/useStepper";
+import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useAgent, useAgentVersions } from "@/lib/queries";
 
 import styles from "./EditAgent.module.scss";
@@ -25,10 +28,12 @@ export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { t } = useTranslation();
   const { setHeaderTitle } = useLayout();
-  const { data, setStep } = useStepper();
+  const { data, setStep, updateMany } = useCodeEditorStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
   const { data: agentVersions } = useAgentVersions(agentId);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const agentName = agent?.name ?? data.agentName;
   const currentVersion = useMemo(
@@ -75,12 +80,20 @@ export default function CodeEditor() {
   }, []);
 
   useEffect(() => {
-    setStep(1);
     editorRef.current?.openDocument(
       fileName,
       (agent ? agent.code : data.code) ?? "",
     );
-  }, [agent, data.code, fileName, setStep]);
+  }, [agent, data.code, fileName]);
+
+  useEffect(() => {
+    setStep(1);
+    const preload = location.state as CodeEditorStepperData;
+    updateMany(preload);
+    void navigate(location.pathname, { replace: true });
+    // disabling because I need to run it only ONCE
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const versions = useMemo(() => {
     return agentVersions?.agents.map((version) => version.version);
