@@ -13,6 +13,8 @@ docs/AgentsTeam.md
 docs/AgentsTeamHeader.md
 docs/AgentsTeams.md
 docs/Boost.md
+docs/BoostReq.md
+docs/BoostResp.md
 docs/CreateAgentReq.md
 docs/CreateAgentResp.md
 docs/CreateAgentsTeamReq.md
@@ -41,7 +43,6 @@ docs/DeploySignedTestRespSignedTestDeployLogs.md
 docs/DeploySignedTestRespTestDeployFailed.md
 docs/DeployTestReq.md
 docs/DeployTestResp.md
-docs/Direction.md
 docs/EnvDeployFailed.md
 docs/InternalError.md
 docs/Log.md
@@ -72,6 +73,8 @@ models/AgentsTeam.ts
 models/AgentsTeamHeader.ts
 models/AgentsTeams.ts
 models/Boost.ts
+models/BoostReq.ts
+models/BoostResp.ts
 models/CreateAgentReq.ts
 models/CreateAgentResp.ts
 models/CreateAgentsTeamReq.ts
@@ -100,7 +103,6 @@ models/DeploySignedTestRespSignedTestDeployLogs.ts
 models/DeploySignedTestRespTestDeployFailed.ts
 models/DeployTestReq.ts
 models/DeployTestResp.ts
-models/Direction.ts
 models/EnvDeployFailed.ts
 models/InternalError.ts
 models/Log.ts

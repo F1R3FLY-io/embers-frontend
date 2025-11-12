@@ -12,69 +12,52 @@
 
 import type { Address } from "./Address";
 import type { Int64 } from "./Int64";
-import type { TimestampMillis } from "./TimestampMillis";
 
 import { AddressFromJSON, AddressToJSON } from "./Address";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
-import {
-  TimestampMillisFromJSON,
-  TimestampMillisToJSON,
-} from "./TimestampMillis";
 
 /**
  *
  * @export
- * @interface Transfer
+ * @interface BoostReq
  */
-export interface Transfer {
+export interface BoostReq {
   /**
    *
    * @type {Int64}
-   * @memberof Transfer
+   * @memberof BoostReq
    */
   amount: Int64;
   /**
    *
    * @type {string}
-   * @memberof Transfer
+   * @memberof BoostReq
    */
   description?: string;
   /**
    *
    * @type {Address}
-   * @memberof Transfer
+   * @memberof BoostReq
    */
   from: Address;
   /**
    *
    * @type {string}
-   * @memberof Transfer
+   * @memberof BoostReq
    */
-  id: string;
-  /**
-   *
-   * @type {TimestampMillis}
-   * @memberof Transfer
-   */
-  timestamp: TimestampMillis;
+  post?: string;
   /**
    *
    * @type {Address}
-   * @memberof Transfer
+   * @memberof BoostReq
    */
   to: Address;
 }
 
 /**
- * Check if a given object implements the Transfer interface.
+ * Check if a given object implements the BoostReq interface.
  */
-export function instanceOfTransfer(value: object): value is Transfer {
-  if (!("id" in value) || value.id === undefined) {
-    return false;
-  }
-  if (!("timestamp" in value) || value.timestamp === undefined) {
-    return false;
-  }
+export function instanceOfBoostReq(value: object): value is BoostReq {
   if (!("from" in value) || value.from === undefined) {
     return false;
   }
@@ -87,14 +70,14 @@ export function instanceOfTransfer(value: object): value is Transfer {
   return true;
 }
 
-export function TransferFromJSON(json: any): Transfer {
-  return TransferFromJSONTyped(json, false);
+export function BoostReqFromJSON(json: any): BoostReq {
+  return BoostReqFromJSONTyped(json, false);
 }
 
-export function TransferFromJSONTyped(
+export function BoostReqFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): Transfer {
+): BoostReq {
   if (json == null) {
     return json;
   }
@@ -102,18 +85,17 @@ export function TransferFromJSONTyped(
     amount: Int64FromJSON(json.amount),
     description: json.description == null ? undefined : json.description,
     from: AddressFromJSON(json.from),
-    id: json.id,
-    timestamp: TimestampMillisFromJSON(json.timestamp),
+    post: json.post == null ? undefined : json.post,
     to: AddressFromJSON(json.to),
   };
 }
 
-export function TransferToJSON(json: any): Transfer {
-  return TransferToJSONTyped(json, false);
+export function BoostReqToJSON(json: any): BoostReq {
+  return BoostReqToJSONTyped(json, false);
 }
 
-export function TransferToJSONTyped(
-  value?: Transfer | null,
+export function BoostReqToJSONTyped(
+  value?: BoostReq | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
@@ -124,8 +106,7 @@ export function TransferToJSONTyped(
     amount: Int64ToJSON(value.amount),
     description: value.description,
     from: AddressToJSON(value.from),
-    id: value.id,
-    timestamp: TimestampMillisToJSON(value.timestamp),
+    post: value.post,
     to: AddressToJSON(value.to),
   };
 }

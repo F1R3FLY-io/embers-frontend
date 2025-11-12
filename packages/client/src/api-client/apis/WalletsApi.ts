@@ -13,6 +13,8 @@
 import type { Address } from "@/entities/Address";
 
 import type {
+  BoostReq,
+  BoostResp,
   SendResp,
   SignedContract,
   TransferReq,
@@ -21,6 +23,8 @@ import type {
 } from "../models/index";
 
 import {
+  BoostReqToJSON,
+  BoostRespFromJSON,
   SendRespFromJSON,
   SignedContractToJSON,
   TransferReqToJSON,
@@ -35,6 +39,14 @@ export interface ApiWalletsAddressDeploysGetRequest {
 
 export interface ApiWalletsAddressStateGetRequest {
   address: Address;
+}
+
+export interface ApiWalletsBoostPreparePostRequest {
+  boostReq: BoostReq;
+}
+
+export interface ApiWalletsBoostSendPostRequest {
+  signedContract: SignedContract;
 }
 
 export interface ApiWalletsTransferPreparePostRequest {
@@ -139,6 +151,106 @@ export class WalletsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<WalletStateAndHistory> {
     const response = await this.apiWalletsAddressStateGetRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiWalletsBoostPreparePostRaw(
+    requestParameters: ApiWalletsBoostPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<BoostResp>> {
+    if (requestParameters.boostReq == null) {
+      throw new runtime.RequiredError(
+        "boostReq",
+        'Required parameter "boostReq" was null or undefined when calling apiWalletsBoostPreparePost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/wallets/boost/prepare`;
+
+    const response = await this.request(
+      {
+        body: BoostReqToJSON(requestParameters.boostReq),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      BoostRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiWalletsBoostPreparePost(
+    requestParameters: ApiWalletsBoostPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<BoostResp> {
+    const response = await this.apiWalletsBoostPreparePostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiWalletsBoostSendPostRaw(
+    requestParameters: ApiWalletsBoostSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    if (requestParameters.signedContract == null) {
+      throw new runtime.RequiredError(
+        "signedContract",
+        'Required parameter "signedContract" was null or undefined when calling apiWalletsBoostSendPost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/wallets/boost/send`;
+
+    const response = await this.request(
+      {
+        body: SignedContractToJSON(requestParameters.signedContract),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiWalletsBoostSendPost(
+    requestParameters: ApiWalletsBoostSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.apiWalletsBoostSendPostRaw(
       requestParameters,
       initOverrides,
     );
