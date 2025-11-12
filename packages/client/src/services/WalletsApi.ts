@@ -11,7 +11,6 @@ import { signContract } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
-import type { Description } from "../entities/Description";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
@@ -51,14 +50,14 @@ export class WalletsApiSdk {
   public async sendTokens(
     to: Address,
     amount: Amount,
-    description?: Description,
+    description?: string,
     config?: ContractCallConfig,
   ) {
     const prepareModel = await this.client.apiWalletsTransferPreparePost(
       {
         transferReq: {
           amount: amount.value,
-          description: description?.value,
+          description,
           from: this.address,
           to,
         },

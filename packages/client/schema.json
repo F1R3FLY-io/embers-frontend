@@ -1310,8 +1310,7 @@
             "format": "int64"
           },
           "description": {
-            "type": "string",
-            "format": "description"
+            "type": "string"
           },
           "post": {
             "type": "string"
@@ -1336,8 +1335,7 @@
             "format": "int64"
           },
           "description": {
-            "type": "string",
-            "format": "description"
+            "type": "string"
           },
           "post": {
             "type": "string"
@@ -2049,8 +2047,7 @@
             "format": "int64"
           },
           "description": {
-            "type": "string",
-            "format": "description"
+            "type": "string"
           }
         }
       },
@@ -2072,8 +2069,7 @@
             "format": "int64"
           },
           "description": {
-            "type": "string",
-            "format": "description"
+            "type": "string"
           }
         }
       },
