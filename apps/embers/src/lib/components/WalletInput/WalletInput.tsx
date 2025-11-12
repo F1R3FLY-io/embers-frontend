@@ -73,7 +73,10 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
         error={errorState}
         inputType="input"
         rightIcon={
-          <FilePicker onChange={setWalletFromFile}>
+          <FilePicker
+            accept={{ "application/json": [".json"] }}
+            onChange={setWalletFromFile}
+          >
             <UploadIcon className={styles.icon} />
           </FilePicker>
         }
