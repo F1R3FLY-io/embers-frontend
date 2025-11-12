@@ -56,7 +56,13 @@ export interface Boost {
    * @type {string}
    * @memberof Boost
    */
-  post?: string;
+  postAuthorDid: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Boost
+   */
+  postId?: string;
   /**
    *
    * @type {TimestampMillis}
@@ -90,6 +96,9 @@ export function instanceOfBoost(value: object): value is Boost {
   if (!("amount" in value) || value.amount === undefined) {
     return false;
   }
+  if (!("postAuthorDid" in value) || value.postAuthorDid === undefined) {
+    return false;
+  }
   return true;
 }
 
@@ -109,7 +118,8 @@ export function BoostFromJSONTyped(
     description: json.description == null ? undefined : json.description,
     from: AddressFromJSON(json.from),
     id: json.id,
-    post: json.post == null ? undefined : json.post,
+    postAuthorDid: json.post_author_did,
+    postId: json.post_id == null ? undefined : json.post_id,
     timestamp: TimestampMillisFromJSON(json.timestamp),
     to: AddressFromJSON(json.to),
   };
@@ -132,7 +142,8 @@ export function BoostToJSONTyped(
     description: value.description,
     from: AddressToJSON(value.from),
     id: value.id,
-    post: value.post,
+    post_author_did: value.postAuthorDid,
+    post_id: value.postId,
     timestamp: TimestampMillisToJSON(value.timestamp),
     to: AddressToJSON(value.to),
   };
