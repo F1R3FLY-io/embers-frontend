@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import type { Direction } from "./Direction";
+import type { Address } from "./Address";
 import type { Int64 } from "./Int64";
 import type { TimestampMillis } from "./TimestampMillis";
 
-import { DirectionFromJSON, DirectionToJSON } from "./Direction";
+import { AddressFromJSON, AddressToJSON } from "./Address";
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
 import {
   TimestampMillisFromJSON,
@@ -35,16 +35,16 @@ export interface Boost {
   amount: Int64;
   /**
    *
-   * @type {TimestampMillis}
+   * @type {string}
    * @memberof Boost
    */
-  date: TimestampMillis;
+  description?: string;
   /**
    *
-   * @type {Direction}
+   * @type {Address}
    * @memberof Boost
    */
-  direction: Direction;
+  from: Address;
   /**
    *
    * @type {string}
@@ -56,13 +56,19 @@ export interface Boost {
    * @type {string}
    * @memberof Boost
    */
-  post: string;
+  post?: string;
   /**
    *
-   * @type {string}
+   * @type {TimestampMillis}
    * @memberof Boost
    */
-  username: string;
+  timestamp: TimestampMillis;
+  /**
+   *
+   * @type {Address}
+   * @memberof Boost
+   */
+  to: Address;
 }
 
 /**
@@ -72,19 +78,16 @@ export function instanceOfBoost(value: object): value is Boost {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
-  if (!("username" in value) || value.username === undefined) {
+  if (!("timestamp" in value) || value.timestamp === undefined) {
     return false;
   }
-  if (!("direction" in value) || value.direction === undefined) {
+  if (!("from" in value) || value.from === undefined) {
     return false;
   }
-  if (!("date" in value) || value.date === undefined) {
+  if (!("to" in value) || value.to === undefined) {
     return false;
   }
   if (!("amount" in value) || value.amount === undefined) {
-    return false;
-  }
-  if (!("post" in value) || value.post === undefined) {
     return false;
   }
   return true;
@@ -103,11 +106,12 @@ export function BoostFromJSONTyped(
   }
   return {
     amount: Int64FromJSON(json.amount),
-    date: TimestampMillisFromJSON(json.date),
-    direction: DirectionFromJSON(json.direction),
+    description: json.description == null ? undefined : json.description,
+    from: AddressFromJSON(json.from),
     id: json.id,
-    post: json.post,
-    username: json.username,
+    post: json.post == null ? undefined : json.post,
+    timestamp: TimestampMillisFromJSON(json.timestamp),
+    to: AddressFromJSON(json.to),
   };
 }
 
@@ -125,10 +129,11 @@ export function BoostToJSONTyped(
 
   return {
     amount: Int64ToJSON(value.amount),
-    date: TimestampMillisToJSON(value.date),
-    direction: DirectionToJSON(value.direction),
+    description: value.description,
+    from: AddressToJSON(value.from),
     id: value.id,
     post: value.post,
-    username: value.username,
+    timestamp: TimestampMillisToJSON(value.timestamp),
+    to: AddressToJSON(value.to),
   };
 }

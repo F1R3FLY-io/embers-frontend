@@ -188,6 +188,60 @@
         }
       }
     },
+    "/api/wallets/boost/prepare": {
+      "post": {
+        "tags": ["Wallets"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/BoostReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoostResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wallets/boost/send": {
+      "post": {
+        "tags": ["Wallets"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wallets/{address}/deploys": {
       "get": {
         "tags": ["Wallets"],
@@ -1234,27 +1288,70 @@
       "Boost": {
         "type": "object",
         "title": "Boost",
-        "required": ["id", "username", "direction", "date", "amount", "post"],
+        "required": ["id", "timestamp", "from", "to", "amount"],
         "properties": {
           "id": {
             "type": "string"
           },
-          "username": {
-            "type": "string"
-          },
-          "direction": {
-            "$ref": "#/components/schemas/Direction"
-          },
-          "date": {
+          "timestamp": {
             "type": "string",
             "format": "timestamp-millis"
+          },
+          "from": {
+            "type": "string",
+            "format": "blockchain-address"
+          },
+          "to": {
+            "type": "string",
+            "format": "blockchain-address"
           },
           "amount": {
             "type": "string",
             "format": "int64"
           },
+          "description": {
+            "type": "string",
+            "format": "description"
+          },
           "post": {
             "type": "string"
+          }
+        }
+      },
+      "BoostReq": {
+        "type": "object",
+        "title": "BoostReq",
+        "required": ["from", "to", "amount"],
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "blockchain-address"
+          },
+          "to": {
+            "type": "string",
+            "format": "blockchain-address"
+          },
+          "amount": {
+            "type": "string",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string",
+            "format": "description"
+          },
+          "post": {
+            "type": "string"
+          }
+        }
+      },
+      "BoostResp": {
+        "type": "object",
+        "title": "BoostResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
           }
         }
       },
@@ -1727,10 +1824,6 @@
           }
         }
       },
-      "Direction": {
-        "type": "string",
-        "enum": ["incoming", "outgoing"]
-      },
       "EnvDeployFailed": {
         "type": "object",
         "title": "EnvDeployFailed",
@@ -1934,29 +2027,30 @@
       "Transfer": {
         "type": "object",
         "title": "Transfer",
-        "required": ["id", "direction", "date", "amount", "to_address", "cost"],
+        "required": ["id", "timestamp", "from", "to", "amount"],
         "properties": {
           "id": {
             "type": "string"
           },
-          "direction": {
-            "$ref": "#/components/schemas/Direction"
-          },
-          "date": {
+          "timestamp": {
             "type": "string",
             "format": "timestamp-millis"
+          },
+          "from": {
+            "type": "string",
+            "format": "blockchain-address"
+          },
+          "to": {
+            "type": "string",
+            "format": "blockchain-address"
           },
           "amount": {
             "type": "string",
             "format": "int64"
           },
-          "to_address": {
+          "description": {
             "type": "string",
-            "format": "blockchain-address"
-          },
-          "cost": {
-            "type": "string",
-            "format": "uint64"
+            "format": "description"
           }
         }
       },
@@ -1978,7 +2072,8 @@
             "format": "int64"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "format": "description"
           }
         }
       },
