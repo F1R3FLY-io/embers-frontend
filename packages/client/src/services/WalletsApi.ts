@@ -47,7 +47,7 @@ export class WalletsApiSdk {
    * @param description Description of the transaction
    * @returns A promise that resolves when the transfer is sent.
    */
-  public async sendTokens(
+  public async transfer(
     to: Address,
     amount: Amount,
     description?: string,
@@ -72,6 +72,44 @@ export class WalletsApiSdk {
     );
 
     const sendModel = await this.client.apiWalletsTransferSendPost(
+      {
+        signedContract,
+      },
+      { signal: config?.signal },
+    );
+
+    return { prepareModel, sendModel, waitForFinalization };
+  }
+
+  public async boost(
+    to: Address,
+    amount: Amount,
+    postAuthorDid: string,
+    description?: string,
+    postId?: string,
+    config?: ContractCallConfig,
+  ) {
+    const prepareModel = await this.client.apiWalletsBoostPreparePost(
+      {
+        boostReq: {
+          amount: amount.value,
+          description,
+          from: this.address,
+          postAuthorDid,
+          postId,
+          to,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      config?.maxWaitForFinalisation ?? 15_000,
+    );
+
+    const sendModel = await this.client.apiWalletsBoostSendPost(
       {
         signedContract,
       },
