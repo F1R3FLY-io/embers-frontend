@@ -23,6 +23,7 @@ jobs:
       - name: Update schema.json
         run: |
           curl -L -o schema.zip -H "Authorization: Bearer ${{ secrets.EMBERS_TOKEN }}" ${{ github.event.client_payload.schema_url }}
+          cat schema.zip
           unzip schema.zip -d output/
           mv -f output/schema.json schema.json
           rm -rf schema.zip output/
