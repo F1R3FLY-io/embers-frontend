@@ -35,12 +35,6 @@ export interface Request {
   amount: Int64;
   /**
    *
-   * @type {TimestampMillis}
-   * @memberof Request
-   */
-  date: TimestampMillis;
-  /**
-   *
    * @type {string}
    * @memberof Request
    */
@@ -51,6 +45,12 @@ export interface Request {
    * @memberof Request
    */
   status: RequestStatus;
+  /**
+   *
+   * @type {TimestampMillis}
+   * @memberof Request
+   */
+  timestamp: TimestampMillis;
 }
 
 /**
@@ -60,7 +60,7 @@ export function instanceOfRequest(value: object): value is Request {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
-  if (!("date" in value) || value.date === undefined) {
+  if (!("timestamp" in value) || value.timestamp === undefined) {
     return false;
   }
   if (!("amount" in value) || value.amount === undefined) {
@@ -85,9 +85,9 @@ export function RequestFromJSONTyped(
   }
   return {
     amount: Int64FromJSON(json.amount),
-    date: TimestampMillisFromJSON(json.date),
     id: json.id,
     status: RequestStatusFromJSON(json.status),
+    timestamp: TimestampMillisFromJSON(json.timestamp),
   };
 }
 
@@ -105,8 +105,8 @@ export function RequestToJSONTyped(
 
   return {
     amount: Int64ToJSON(value.amount),
-    date: TimestampMillisToJSON(value.date),
     id: value.id,
     status: RequestStatusToJSON(value.status),
+    timestamp: TimestampMillisToJSON(value.timestamp),
   };
 }

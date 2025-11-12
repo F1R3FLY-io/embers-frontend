@@ -1288,7 +1288,14 @@
       "Boost": {
         "type": "object",
         "title": "Boost",
-        "required": ["id", "timestamp", "from", "to", "amount"],
+        "required": [
+          "id",
+          "timestamp",
+          "from",
+          "to",
+          "amount",
+          "post_author_did"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1312,7 +1319,10 @@
           "description": {
             "type": "string"
           },
-          "post": {
+          "post_author_did": {
+            "type": "string"
+          },
+          "post_id": {
             "type": "string"
           }
         }
@@ -1320,7 +1330,7 @@
       "BoostReq": {
         "type": "object",
         "title": "BoostReq",
-        "required": ["from", "to", "amount"],
+        "required": ["from", "to", "amount", "post_author_did"],
         "properties": {
           "from": {
             "type": "string",
@@ -1337,7 +1347,10 @@
           "description": {
             "type": "string"
           },
-          "post": {
+          "post_author_did": {
+            "type": "string"
+          },
+          "post_id": {
             "type": "string"
           }
         }
@@ -1889,12 +1902,12 @@
       "Request": {
         "type": "object",
         "title": "Request",
-        "required": ["id", "date", "amount", "status"],
+        "required": ["id", "timestamp", "amount", "status"],
         "properties": {
           "id": {
             "type": "string"
           },
-          "date": {
+          "timestamp": {
             "type": "string",
             "format": "timestamp-millis"
           },

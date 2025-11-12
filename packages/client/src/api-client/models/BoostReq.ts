@@ -45,7 +45,13 @@ export interface BoostReq {
    * @type {string}
    * @memberof BoostReq
    */
-  post?: string;
+  postAuthorDid: string;
+  /**
+   *
+   * @type {string}
+   * @memberof BoostReq
+   */
+  postId?: string;
   /**
    *
    * @type {Address}
@@ -67,6 +73,9 @@ export function instanceOfBoostReq(value: object): value is BoostReq {
   if (!("amount" in value) || value.amount === undefined) {
     return false;
   }
+  if (!("postAuthorDid" in value) || value.postAuthorDid === undefined) {
+    return false;
+  }
   return true;
 }
 
@@ -85,7 +94,8 @@ export function BoostReqFromJSONTyped(
     amount: Int64FromJSON(json.amount),
     description: json.description == null ? undefined : json.description,
     from: AddressFromJSON(json.from),
-    post: json.post == null ? undefined : json.post,
+    postAuthorDid: json.post_author_did,
+    postId: json.post_id == null ? undefined : json.post_id,
     to: AddressFromJSON(json.to),
   };
 }
@@ -106,7 +116,8 @@ export function BoostReqToJSONTyped(
     amount: Int64ToJSON(value.amount),
     description: value.description,
     from: AddressToJSON(value.from),
-    post: value.post,
+    post_author_did: value.postAuthorDid,
+    post_id: value.postId,
     to: AddressToJSON(value.to),
   };
 }
