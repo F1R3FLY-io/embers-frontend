@@ -80,7 +80,7 @@ export default function CreateAiTeamFlow() {
             .then((result) => {
               appendLog(
                 JSON.stringify(
-                  result,
+                  result.sendModel,
                   (_, value) =>
                     typeof value === "string" && value.length > 2000
                       ? `${value.slice(0, 2000)}...`
