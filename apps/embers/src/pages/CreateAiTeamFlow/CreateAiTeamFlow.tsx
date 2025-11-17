@@ -42,18 +42,12 @@ export default function CreateAiTeamFlow() {
     }
     hydratedRef.current = true;
 
-    const flow = data.flow as
-      | {
-          edges?: Edge[];
-          nodes?: Node[];
-          viewport?: { x: number; y: number; zoom: number };
-        }
-      | undefined;
+    const flow = data.flow;
 
-    if (flow?.nodes?.length) {
+    if (flow?.nodes.length) {
       setNodes(flow.nodes);
     }
-    if (flow?.edges?.length) {
+    if (flow?.edges.length) {
       setEdges(flow.edges);
     }
   }, [data.flow]);
