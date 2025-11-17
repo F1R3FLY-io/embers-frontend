@@ -23,9 +23,7 @@ import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
   const { t } = useTranslation();
-  const [selectedTab, setSelectedTab] = useState<"agents" | "agent-teams">(
-    "agents",
-  );
+
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const { setKey } = useWalletState();
@@ -54,6 +52,34 @@ export default function Dashboard() {
     });
   }, [data?.agents, searchQuery, sortBy]);
 
+  const tabs = useMemo(() => {
+    return [
+      {
+        icon: <AgentIcon data-agent />,
+        id: "agents",
+        labelKey: "agents.agents" as const,
+        renderContent: () => (
+          <AgentsGrid agents={filteredAgents} isSuccess={isSuccess} />
+        ),
+      },
+      {
+        icon: <AgentTeamIcon data-agent-teams />,
+        id: "agent-teams",
+        labelKey: "agents.agentTeams" as const,
+        renderContent: () => <AgentTeamsGrid />,
+      },
+    ] as const
+  }, [filteredAgents, isSuccess])
+
+  type TabId = (typeof tabs)[number]["id"];
+
+  const [selectedTab, setSelectedTab] = useState<TabId>("agents");
+
+  const activeTab = useMemo(
+    () => tabs.find((tab) => tab.id === selectedTab) ?? tabs[0],
+    [selectedTab, tabs],
+  );
+
   return (
     <div className={styles.page}>
       <div className={styles["header-bar"]}>
@@ -73,32 +99,22 @@ export default function Dashboard() {
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
-            <AgentsButton
-              icon={<AgentIcon data-agent />}
-              isSelected={selectedTab === "agents"}
-              onClick={() => {
-                if (selectedTab !== "agents") {
-                  setSelectedTab("agents");
-                }
-              }}
-            >
-              <Text color="secondary" type="large">
-                {t("agents.agents")}
-              </Text>
-            </AgentsButton>
-            <AgentsButton
-              icon={<AgentTeamIcon data-agent-teams />}
-              isSelected={selectedTab === "agent-teams"}
-              onClick={() => {
-                if (selectedTab !== "agent-teams") {
-                  setSelectedTab("agent-teams");
-                }
-              }}
-            >
-              <Text color="secondary" type="large">
-                {t("agents.agentTeams")}
-              </Text>
-            </AgentsButton>
+            {tabs.map((tab) => (
+              <AgentsButton
+                key={tab.id}
+                icon={tab.icon}
+                isSelected={selectedTab === tab.id}
+                onClick={() => {
+                  if (selectedTab !== tab.id) {
+                    setSelectedTab(tab.id);
+                  }
+                }}
+              >
+                <Text color="secondary" type="large">
+                  {t(tab.labelKey)}
+                </Text>
+              </AgentsButton>
+            ))}
           </div>
           <div className={styles["dashboard-column"]}>
             <div className={styles["dashboard-divider"]} />
@@ -144,11 +160,7 @@ export default function Dashboard() {
               styles["tab-content"],
             )}
           >
-            {selectedTab === "agents" ? (
-              <AgentsGrid agents={filteredAgents} isSuccess={isSuccess} />
-            ) : (
-              <AgentTeamsGrid />
-            )}
+            {activeTab.renderContent()}
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
@@ -10,20 +9,22 @@ import styles from "./WarningModal.module.scss";
 
 export interface DeployFailedModalProps {
   error: string;
+  reviewSettings: () => void;
+  tryAgain: () => void;
 }
 
-export function WarningModal({ error }: DeployFailedModalProps) {
+export function WarningModal({ error, reviewSettings, tryAgain }: DeployFailedModalProps) {
   const { close } = useModal();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const tryAgain = () => {
+  const handleTryAgain = () => {
     close();
+    tryAgain();
   };
 
-  const reviewSettings = () => {
+  const handleReviewSettings = () => {
     close();
-    void navigate("/create-ai-agent/create");
+    reviewSettings();
   };
 
   const cancel = () => close();
@@ -47,11 +48,11 @@ export function WarningModal({ error }: DeployFailedModalProps) {
       </div>
 
       <div className={styles.actions}>
-        <Button type="primary" onClick={tryAgain}>
+        <Button type="primary" onClick={handleTryAgain}>
           {t("deploy.failure.tryAgain")}
         </Button>
 
-        <Button type="secondary" onClick={reviewSettings}>
+        <Button type="secondary" onClick={handleReviewSettings}>
           {t("deploy.failure.reviewSettings")}
         </Button>
 

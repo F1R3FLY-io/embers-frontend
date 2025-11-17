@@ -18,7 +18,9 @@ import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
 const CreateAgent = lazy(async () => import("@/pages/CreateAgent"));
-const Deploy = lazy(async () => import("@/pages/Deploy"));
+const CreateAiTeam = lazy(async () => import("@/pages/CreateAiTeam"));
+const DeployAgent = lazy(async () => import("@/pages/DeployAgent"));
+const DeployAiTeam = lazy(async () => import("@/pages/DeployAiTeam"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
 const CreateAiTeamFlow = lazy(async () => import("@/pages/CreateAiTeamFlow"));
@@ -51,7 +53,7 @@ export default function App() {
                                       path="create"
                                     />
                                     <Route element={<EditAgent />} path="" />
-                                    <Route element={<Deploy />} path="deploy" />
+                                    <Route element={<DeployAgent />} path="deploy" />
                                   </Routes>
                                 </CodeEditorStepperProvider>
                               }
@@ -60,10 +62,17 @@ export default function App() {
                             <Route
                               element={
                                 <GraphEditorStepperProvider>
-                                  <CreateAiTeamFlow />
+                                  <Routes>
+                                    <Route
+                                      element={<CreateAiTeam />}
+                                      path="create"
+                                    />
+                                    <Route element={<CreateAiTeamFlow />} path="" />
+                                    <Route element={<DeployAiTeam />} path="deploy" />
+                                  </Routes>
                                 </GraphEditorStepperProvider>
                               }
-                              path="/create-ai-team"
+                              path="/create-ai-team/*"
                             />
                             <Route element={<Dashboard />} path="/dashboard" />
                           </Route>

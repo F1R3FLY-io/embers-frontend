@@ -12,7 +12,7 @@ export function AgentTeamsGrid() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createAiTeam = useCallback(() => {
-    void navigate("/create-ai-team");
+    void navigate("/create-ai-team/create");
   }, [navigate]);
 
   return (

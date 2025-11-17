@@ -32,6 +32,7 @@ export const Footer: React.FC = () => {
             Test it
           </Button>
         }
+        persistKey="dock.code.test"
         title="Test Agent"
       >
         <Text color="secondary">Run the test to see results here.</Text>
@@ -47,6 +48,7 @@ export const Footer: React.FC = () => {
             Clear
           </Button>
         }
+        persistKey="dock.code.logs"
         title="Logs"
       >
         {logs.length === 0 && <Text color="secondary">No logs yet.</Text>}
@@ -59,7 +61,7 @@ export const Footer: React.FC = () => {
         ))}
       </Accordion>
 
-      <Accordion title="Deploy History">
+      <Accordion persistKey="dock.code.deploy" title="Deploy History">
         {deploys.length === 0 && (
           <Text color="secondary">No deployments yet.</Text>
         )}

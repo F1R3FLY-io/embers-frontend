@@ -2,13 +2,17 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
 
 export type StepperApi<TData> = {
   data: TData;
+  navigateToNextStep: () => void;
+  navigateToPrevStep: () => void;
   navigateToStep: (n: number) => void;
   reset: () => void;
   setStep: (n: number) => void;
@@ -30,32 +34,52 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
     const [step, setStep] = useState(0);
     const [data, setData] = useState<TData>(opts.initialData);
 
-    const navigateToStep = useCallback(
-      (targetStep: number) => {
-        if (targetStep >= 0 && targetStep < opts.routes.length) {
-          setStep(targetStep);
-          void navigate(opts.routes[targetStep]);
-        }
+    const routesRef = useRef(opts.routes);
+    const initialDataRef = useRef(opts.initialData);
+    useEffect(() => {
+      routesRef.current = opts.routes;
+      initialDataRef.current = opts.initialData;
+    }, []);
+
+    const navigateToStep = useCallback((targetStep: number) => {
+      const routes = routesRef.current;
+      if (targetStep >= 0 && targetStep < routes.length) {
+        setStep(targetStep);
+        void navigate(routes[targetStep]);
+      }
+    }, [navigate]);
+
+    const navigateToNextStep = useCallback(() => {
+      const next = step + 1;
+      navigateToStep(next);
+    }, [step, navigateToStep]);
+
+    const navigateToPrevStep = useCallback(() => {
+      const prev = Math.max(0, step - 1);
+      navigateToStep(prev);
+    }, [step, navigateToStep]);
+
+    const updateMany = useCallback((patch: Partial<TData>) => {
+      setData((prev) => ({ ...prev, ...patch }));
+    }, []);
+
+    const updateData = useCallback(
+      <K extends keyof TData>(key: K, value: TData[K]) => {
+        setData((prev) => ({ ...prev, [key]: value }));
       },
-      [navigate],
+      [],
     );
 
-    const updateMany = (patch: Partial<TData>) => {
-      setData((prev) => ({ ...prev, ...patch }));
-    };
-
-    const updateData = <K extends keyof TData>(key: K, value: TData[K]) => {
-      setData((prev) => ({ ...prev, [key]: value }));
-    };
-
-    const reset = () => {
+    const reset = useCallback(() => {
       setStep(0);
-      setData(opts.initialData);
-    };
+      setData(initialDataRef.current);
+    }, []);
 
     const value: StepperApi<TData> = useMemo(
       () => ({
         data,
+        navigateToNextStep,
+        navigateToPrevStep,
         navigateToStep,
         reset,
         setStep,
@@ -63,7 +87,16 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
         updateData,
         updateMany,
       }),
-      [data, navigateToStep, step],
+      [
+        data,
+        step,
+        reset,
+        navigateToStep,
+        navigateToNextStep,
+        navigateToPrevStep,
+        updateData,
+        updateMany,
+      ],
     );
 
     return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
@@ -72,9 +105,7 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
   function useStepper() {
     const ctx = useContext(Ctx);
     if (!ctx) {
-      throw new Error(
-        "useStepper must be used within this flow's StepperProvider",
-      );
+      throw new Error("useStepper must be used within this flow's StepperProvider");
     }
     return ctx;
   }

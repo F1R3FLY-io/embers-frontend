@@ -1,7 +1,7 @@
 import type React from "react";
 
 import classNames from "classnames";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Text } from "@/lib/components/Text";
 
@@ -16,6 +16,7 @@ export interface AccordionProps {
   iconPosition?: "inline" | "end";
   openedIcon?: React.ReactNode;
   overflow?: "hidden" | "auto";
+  persistKey?: string;
   title: string;
 }
 
@@ -27,13 +28,35 @@ export const Accordion: React.FC<AccordionProps> = ({
   iconPosition = "inline",
   openedIcon,
   overflow = "auto",
+  persistKey,
   title,
 }) => {
-  const [open, setOpen] = useState(defaultOpen);
+
+  const initialOpen = useMemo(() => {
+    if (!persistKey) {
+      return defaultOpen;
+    }
+    try {
+      const raw = localStorage.getItem(persistKey);
+      return raw === null ? defaultOpen : raw === "true";
+    } catch {
+      return defaultOpen;
+    }
+  }, [persistKey, defaultOpen]);
+
+  const [open, setOpen] = useState(initialOpen);
   const toggleOpen = useCallback(() => setOpen((prev) => !prev), []);
+
+  useEffect(() => {
+    if (!persistKey) {
+      return;
+    }
+    localStorage.setItem(persistKey, open.toString());
+  }, [open, persistKey]);
 
   const openIcon = openedIcon ?? <i className="fa fa-chevron-down" />;
   const closeIcon = closedIcon ?? <i className="fa fa-chevron-up" />;
+
   return (
     <div>
       <div

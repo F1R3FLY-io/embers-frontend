@@ -7,19 +7,19 @@ import type { Option } from "@/lib/components/Select";
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Input } from "@/lib/components/Input";
+import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Select } from "@/lib/components/Select";
-import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
-import Stepper from "@/pages/Deploy/components/Stepper";
 
+import Stepper from "../../lib/components/Stepper";
 import styles from "./CreateAgent.module.scss";
 
 export default function CreateAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, setStep, step, updateData } = useCodeEditorStepper();
+  const { data, navigateToNextStep, setStep, step, updateData } = useCodeEditorStepper();
   const [name, setName] = useState(data.agentName);
   const [environment, setEnvironment] = useState<string>(
     data.environment ?? "",
@@ -55,7 +55,7 @@ export default function CreateAgent() {
     updateData("agentName", name);
     updateData("environment", environment);
     updateData("agentIconUrl", iconUrl.trim());
-    void navigate("/create-ai-agent");
+    navigateToNextStep();
   };
 
   useEffect(() => {
@@ -184,17 +184,7 @@ export default function CreateAgent() {
             </div>
           </div>
 
-          <div className={styles["footer-container"]}>
-            <LanguageSelect />
-            <div className={styles["support-container"]}>
-              <Text color="secondary" type="normal">
-                {t("deploy.havingTrouble")}
-              </Text>
-              <a className={styles["support-link"]} href="#">
-                {t("deploy.contactSupport")}
-              </a>
-            </div>
-          </div>
+          <LanguageFooter />
         </div>
       </div>
     </div>

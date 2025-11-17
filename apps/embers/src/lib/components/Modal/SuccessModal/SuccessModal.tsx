@@ -1,9 +1,6 @@
 import classNames from "classnames";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-
-import type { CodeEditorStepperData } from "@/lib/providers/stepper/flows/CodeEditor";
 
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
@@ -13,44 +10,44 @@ import { useModal } from "@/lib/providers/modal/useModal";
 import styles from "./SuccessModal.module.scss";
 
 export type DeploySuccessData = {
-  data: CodeEditorStepperData;
-  note?: string;
-  resetFn: () => void;
-  status: string;
+  agentName: string;
+  createAnother: () => void;
+  data: Record<string, string | undefined>;
+  iconUrl?: string;
+  viewAgent: () => void;
+  viewAllAgents: () => void;
 };
 
 export function SuccessModal({
+  agentName,
+  createAnother,
   data,
-  note,
-  resetFn,
-  status,
+  iconUrl,
+  viewAgent,
+  viewAllAgents,
 }: DeploySuccessData) {
-  const navigate = useNavigate();
   const { close } = useModal();
   const { t } = useTranslation();
-  const { agentIconUrl, agentId, agentName, environment, rhoLimit, version } =
-    data;
 
-  const onViewAgent = useCallback(() => {
+  const handleViewAgent = useCallback(() => {
     close();
-    void navigate("/create-ai-agent");
-  }, [close, navigate]);
+    viewAgent();
+  }, [close, viewAgent]);
 
-  const onViewAllAgents = useCallback(() => {
+  const handleViewAllAgents = useCallback(() => {
     close();
-    void navigate("/dashboard");
-  }, [close, navigate]);
+    viewAllAgents();
+  }, [close, viewAllAgents]);
 
-  const onCreateAnother = useCallback(() => {
+  const handleCreateAnother = useCallback(() => {
     close();
-    resetFn();
-    void navigate("/create-ai-agent/create");
-  }, [close, navigate, resetFn]);
+    createAnother();
+  }, [close, createAnother]);
 
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <IconPreview size={60} url={agentIconUrl} />
+        <IconPreview size={60} url={iconUrl} />
 
         <Text bold className={styles.title} color="primary" type="H3">
           {t("deploy.success.title", { agentName })}
@@ -62,27 +59,19 @@ export function SuccessModal({
       </div>
 
       <div className={styles.details}>
-        <Row label={t("deploy.labels.agentId")} value={agentId ?? ""} />
-        <Row label={t("deploy.labels.environment")} value={environment ?? ""} />
-        <Row label={t("deploy.labels.status")} value={status} />
-        <Row label={t("deploy.rhoLimit")} value={`${rhoLimit}`} />
-        <Row
-          label={t("deploy.version")}
-          value={version ?? t("deploy.version")}
-        />
-        {note ? (
-          <Row multiline label={t("deploy.labels.note")} value={note} />
-        ) : null}
+        {Object.entries(data).map(([label, value], index) => (
+          value ? <Row key={index} label={t(label)} value={value} /> : null
+        ))}
       </div>
 
       <div className={styles.actions}>
-        <Button type="primary" onClick={onViewAgent}>
+        <Button type="primary" onClick={handleViewAgent}>
           {t("agents.viewAgent")}
         </Button>
-        <Button type="secondary" onClick={onViewAllAgents}>
+        <Button type="secondary" onClick={handleViewAllAgents}>
           {t("agents.viewAll")}
         </Button>
-        <Button type="subtle" onClick={onCreateAnother}>
+        <Button type="subtle" onClick={handleCreateAnother}>
           {t("agents.createAnother")}
         </Button>
       </div>

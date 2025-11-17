@@ -6,7 +6,10 @@
     "inputPrompt": "Input prompt",
     "saveDraft": "Save as Draft",
     "cancel": "Cancel",
-    "continue": "Continue"
+    "continue": "Continue",
+    "run": "Run",
+    "description": "Description",
+    "language": "Language"
   },
   "login": {
     "getStarted": "Get started with F1R3SKY",
@@ -21,7 +24,38 @@
     "createOne": "Create one"
   },
   "aiTeam": {
-    "newAiTeam": "New AI team"
+    "newAiTeam": "New AI team",
+    "create": "Create Agents Team",
+    "tellUsAboutYourTeam": "Tell us about your AI-Agent",
+    "teamName": "Agents Team name",
+
+    "executionContext": "Execution Context",
+    "executionContextHint": "Help us understand your team's task so we can recommend helpful services.",
+    "executionType": "Execution type",
+
+    "inputType": "Input type",
+    "inputTypeHint": "Select the type of input your team will process. This affects parsing methods, service suggestions, and gas estimates.",
+    "textualInput": "Textual input",
+    "textualInputHint": "Free-form user input, raw logs, natural language",
+    "externalData": "External data source",
+    "externalDataHint": "Documents with visual layout (PDFs, web pages, formatted but fuzzy)",
+    "mediaInput": "Media input",
+    "mediaInputHint": "Well-formed JSON, CSV, table-like format",
+
+    "outputType": "Output type",
+    "outputTypeHint": "Choose expected output formats. This affects agent behavior, service recommendations, and gas usage.",
+    "structuredData": "Structured data",
+    "structuredDataHint": "Clean, machine-readable output",
+    "humanReadable": "Human-readable explanation",
+    "humanReadableHint": "Natural-language summary of findings",
+    "visualization": "Visualization",
+    "visualizationHint": "Graphs, charts, or visual elements that help interpret the output data.",
+
+    "computeSettings": "Compute Settings",
+    "computeSettingsHint": "Help us understand your team's task so we can recommend helpful services.",
+    "flowType": "Flow type",
+    "encryptResult": "Encrypt result",
+    "encryptResultHint": "Turn on to secure your results with end-to-end encryption."
   },
   "agents": {
     "edit": "Edit Agent",

@@ -4,18 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
-import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
+import LanguageFooter from "@/lib/components/LanguageFooter";
+import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
+import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useDeployAgentMutation } from "@/lib/queries";
-import { SuccessModal } from "@/pages/Deploy/components/SuccessModal";
-import { WarningModal } from "@/pages/Deploy/components/WarningModal";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
-import Stepper from "./components/Stepper";
-import styles from "./Deploy.module.scss";
+import Stepper from "../../lib/components/Stepper";
+import styles from "./DeployAgent.module.scss";
 
 function parseBigIntOrNull(v: string): bigint | null {
   try {
@@ -28,9 +28,18 @@ function parseBigIntOrNull(v: string): bigint | null {
   }
 }
 
-export default function Deploy() {
+export default function DeployAgent() {
   const { t } = useTranslation();
-  const { data, reset, setStep, step, updateData } = useCodeEditorStepper();
+  const {
+    data,
+    navigateToPrevStep,
+    navigateToStep,
+    reset,
+    setStep,
+    step,
+    updateData,
+  } = useCodeEditorStepper();
+  const navigate = useNavigate();
   const { agentId, version } = data;
   const dock = useDock();
   const { open } = useModal();
@@ -38,8 +47,6 @@ export default function Deploy() {
   useEffect(() => {
     setStep(2);
   }, [setStep]);
-
-  const navigate = useNavigate();
 
   const [rhoLimitInput, setRhoLimitInput] = useState("1000000");
 
@@ -59,24 +66,45 @@ export default function Deploy() {
       return;
     }
 
+    /* eslint-disable perfectionist/sort-objects */
+    const modalData = {
+      "deploy.labels.agentId" : data.agentId,
+      "deploy.labels.status": "ok",
+      "deploy.rhoLimit": String(data.rhoLimit),
+      "deploy.version": data.version,
+      "deploy.labels.note": data.description,
+    }
+    /* eslint-enable perfectionist/sort-objects */
+
     deployMutation.mutate(
       { agentId, rhoLimit, version },
       {
         onError: (e) => {
           dock.appendDeploy(false);
-          open(<WarningModal error={e.message} />, {
-            ariaLabel: "Warning",
-            maxWidth: 550,
-          });
+          open(
+            <WarningModal
+              error={e.message}
+              reviewSettings={() => navigateToStep(0)}
+              tryAgain={() => {}}
+            />,
+            {
+              ariaLabel: "Warning",
+              maxWidth: 550,
+            },
+          );
         },
         onSuccess: () => {
           dock.appendDeploy(true);
           open(
             <SuccessModal
-              data={data}
-              note="note"
-              resetFn={() => reset()}
-              status="status"
+              agentName={data.agentName}
+              createAnother={() => {
+                reset();
+                navigateToStep(0);
+              }}
+              data={modalData}
+              viewAgent={() => navigateToStep(1)}
+              viewAllAgents={() => void navigate("/dashboard")}
             />,
             {
               ariaLabel: "Success deploy",
@@ -89,8 +117,8 @@ export default function Deploy() {
   };
 
   const backClick = useCallback(() => {
-    void navigate("/create-ai-agent");
-  }, [navigate]);
+    navigateToPrevStep();
+  }, [navigateToPrevStep]);
 
   return (
     <div className={styles["deploy-container"]}>
@@ -220,17 +248,7 @@ export default function Deploy() {
             </div>
           </div>
 
-          <div className={styles["footer-container"]}>
-            <LanguageSelect />
-            <div className={styles["support-container"]}>
-              <Text color="secondary" type="normal">
-                {t("deploy.havingTrouble")}
-              </Text>
-              <a className={styles["support-link"]} href="#">
-                {t("deploy.contactSupport")}
-              </a>
-            </div>
-          </div>
+          <LanguageFooter />
         </div>
       </div>
     </div>
