@@ -6,7 +6,8 @@ import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
 import { Text } from "@/lib/components/Text";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
-import { useAgents } from "@/lib/queries";
+import AgentsTab from "@/pages/Dashboard/tabs/AgentsTab";
+import AgentTeamsTab from "@/pages/Dashboard/tabs/AgentTeamsTab";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
@@ -14,71 +15,57 @@ import LogoutIcon from "@/public/icons/logout-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
 import { AgentsButton } from "./components/AgentsButton";
-import { AgentsGrid } from "./components/AgentsGrid";
 import { AgentsTitle } from "./components/AgentsTitle";
-import { AgentTeamsGrid } from "./components/AgentTeamsGrid";
 import { ControlsRow } from "./components/ControlsRow";
 import { IconButton } from "./components/IconButton";
 import styles from "./Dashboard.module.scss";
 
+type SortBy = "date" | "name";
+
+interface TabCommonProps {
+  searchQuery: string;
+  sortBy: SortBy;
+}
+
+type TabId = "agents" | "agent-teams";
+
+interface TabConfig {
+  Content: React.ComponentType<TabCommonProps>;
+  icon: React.ReactNode;
+  id: TabId;
+  labelKey: string;
+}
+
+const tabs: TabConfig[] = [
+  {
+    Content: AgentsTab,
+    icon: <AgentIcon data-agent />,
+    id: "agents",
+    labelKey: "agents.agents",
+  },
+  {
+    Content: AgentTeamsTab,
+    icon: <AgentTeamIcon data-agent-teams />,
+    id: "agent-teams",
+    labelKey: "agents.agentTeams",
+  },
+];
+
 export default function Dashboard() {
   const { t } = useTranslation();
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState<"date" | "name">("date");
   const { setKey } = useWalletState();
   const logout = useCallback(() => setKey(), [setKey]);
 
-  const { data, isSuccess } = useAgents();
-
-  const filteredAgents = useMemo(() => {
-    const agents = data?.agents ?? [];
-    const q = searchQuery.trim().toLowerCase();
-
-    const filtered = q
-      ? agents.filter((a) => {
-          const fields = [a.name, a.id, a.shard, a.version]
-            .filter(Boolean)
-            .map((v) => String(v).toLowerCase());
-          return fields.some((f) => f.includes(q));
-        })
-      : agents;
-
-    return [...filtered].sort((a, b) => {
-      if (sortBy === "name") {
-        return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
-      }
-      return b.createdAt.getTime() - a.createdAt.getTime();
-    });
-  }, [data?.agents, searchQuery, sortBy]);
-
-  const tabs = useMemo(() => {
-    return [
-      {
-        icon: <AgentIcon data-agent />,
-        id: "agents",
-        labelKey: "agents.agents" as const,
-        renderContent: () => (
-          <AgentsGrid agents={filteredAgents} isSuccess={isSuccess} />
-        ),
-      },
-      {
-        icon: <AgentTeamIcon data-agent-teams />,
-        id: "agent-teams",
-        labelKey: "agents.agentTeams" as const,
-        renderContent: () => <AgentTeamsGrid />,
-      },
-    ] as const
-  }, [filteredAgents, isSuccess])
-
-  type TabId = (typeof tabs)[number]["id"];
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<SortBy>("date");
   const [selectedTab, setSelectedTab] = useState<TabId>("agents");
 
   const activeTab = useMemo(
     () => tabs.find((tab) => tab.id === selectedTab) ?? tabs[0],
-    [selectedTab, tabs],
+    [selectedTab],
   );
+
+  const ActiveContent = activeTab.Content;
 
   return (
     <div className={styles.page}>
@@ -96,6 +83,7 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
+
       <div className={styles["main-content"]}>
         <div className={styles.dashboard}>
           <div className={styles["dashboard-top"]}>
@@ -132,6 +120,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
         <div className={styles["content-area"]}>
           <div
             className={classNames(
@@ -139,13 +128,7 @@ export default function Dashboard() {
               styles["tab-content"],
             )}
           >
-            <AgentsTitle
-              getTitle={() =>
-                selectedTab === "agents"
-                  ? t("agents.agents")
-                  : t("agents.agentTeams")
-              }
-            />
+            <AgentsTitle getTitle={() => t(activeTab.labelKey)} />
             <ControlsRow
               searchQuery={searchQuery}
               selectedTab={selectedTab}
@@ -154,13 +137,14 @@ export default function Dashboard() {
               onSortChange={setSortBy}
             />
           </div>
+
           <div
             className={classNames(
               styles["grid-container"],
               styles["tab-content"],
             )}
           >
-            {activeTab.renderContent()}
+            <ActiveContent searchQuery={searchQuery} sortBy={sortBy} />
           </div>
         </div>
       </div>

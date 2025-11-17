@@ -1,3 +1,5 @@
+import type { AgentsTeams } from "@f1r3fly-io/embers-client-sdk";
+
 import classNames from "classnames";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,13 +10,18 @@ import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 
 import styles from "./AgentTeamsGrid.module.scss";
 
-export function AgentTeamsGrid() {
+interface AgentTeamsGridProps {
+  agents: AgentsTeams | undefined;
+  isSuccess: boolean;
+}
+export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createAiTeam = useCallback(() => {
     void navigate("/create-ai-team/create");
   }, [navigate]);
 
+  console.log(agents, isSuccess);
   return (
     <>
       <div
