@@ -105,7 +105,7 @@ function loadOpenedFromStorage(): OpenedState {
   } catch {
     return {
       deploy: false,
-      logs: false
+      logs: false,
     };
   }
 }

@@ -68,12 +68,12 @@ export default function DeployAgent() {
 
     /* eslint-disable perfectionist/sort-objects */
     const modalData = {
-      "deploy.labels.agentId" : data.agentId,
+      "deploy.labels.agentId": data.agentId,
       "deploy.labels.status": "ok",
       "deploy.rhoLimit": String(data.rhoLimit),
       "deploy.version": data.version,
       "deploy.labels.note": data.description,
-    }
+    };
     /* eslint-enable perfectionist/sort-objects */
 
     deployMutation.mutate(

@@ -1,4 +1,9 @@
-import type { Connection, EdgeChange, NodeChange, ReactFlowJsonObject } from "@xyflow/react";
+import type {
+  Connection,
+  EdgeChange,
+  NodeChange,
+  ReactFlowJsonObject,
+} from "@xyflow/react";
 import type {
   Dispatch,
   MouseEvent as ReactMouseEvent,

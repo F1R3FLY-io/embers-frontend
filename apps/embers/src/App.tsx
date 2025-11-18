@@ -53,7 +53,10 @@ export default function App() {
                                       path="create"
                                     />
                                     <Route element={<EditAgent />} path="" />
-                                    <Route element={<DeployAgent />} path="deploy" />
+                                    <Route
+                                      element={<DeployAgent />}
+                                      path="deploy"
+                                    />
                                   </Routes>
                                 </CodeEditorStepperProvider>
                               }
@@ -67,8 +70,14 @@ export default function App() {
                                       element={<CreateAiTeam />}
                                       path="create"
                                     />
-                                    <Route element={<CreateAiTeamFlow />} path="" />
-                                    <Route element={<DeployAiTeam />} path="deploy" />
+                                    <Route
+                                      element={<CreateAiTeamFlow />}
+                                      path=""
+                                    />
+                                    <Route
+                                      element={<DeployAiTeam />}
+                                      path="deploy"
+                                    />
                                   </Routes>
                                 </GraphEditorStepperProvider>
                               }

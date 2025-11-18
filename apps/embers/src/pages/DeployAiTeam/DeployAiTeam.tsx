@@ -62,7 +62,7 @@ export default function DeployAiTeam() {
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
-      updateData('lastDeploy', key);
+      updateData("lastDeploy", key);
       appendDeploy(true);
     },
     [appendDeploy, updateData],
@@ -94,11 +94,11 @@ export default function DeployAiTeam() {
 
     /* eslint-disable perfectionist/sort-objects */
     const modalData = {
-      "deploy.labels.agentId" : data.agentId,
+      "deploy.labels.agentId": data.agentId,
       "deploy.version": data.version,
       "deploy.labels.status": "ok",
       "deploy.labels.note": data.description,
-    }
+    };
     /* eslint-enable perfectionist/sort-objects */
 
     setIsDeploying(true);

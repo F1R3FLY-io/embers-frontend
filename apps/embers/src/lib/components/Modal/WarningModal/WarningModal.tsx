@@ -13,7 +13,11 @@ export interface DeployFailedModalProps {
   tryAgain: () => void;
 }
 
-export function WarningModal({ error, reviewSettings, tryAgain }: DeployFailedModalProps) {
+export function WarningModal({
+  error,
+  reviewSettings,
+  tryAgain,
+}: DeployFailedModalProps) {
   const { close } = useModal();
   const { t } = useTranslation();
 

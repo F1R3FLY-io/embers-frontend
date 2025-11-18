@@ -20,10 +20,13 @@ export default function CreateAiTeam() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, setStep, step, updateData } = useGraphEditorStepper();
+  const { data, navigateToNextStep, setStep, step, updateData } =
+    useGraphEditorStepper();
 
   const [agentName, setAgentName] = useState<string>(data.agentName);
-  const [description, setDescription] = useState<string | undefined>(data.description);
+  const [description, setDescription] = useState<string | undefined>(
+    data.description,
+  );
   const [iconUrl, setIconUrl] = useState<string | undefined>(data.iconUrl);
 
   const execTypeOptions: Option[] = useMemo(
@@ -34,7 +37,9 @@ export default function CreateAiTeam() {
     ],
     [],
   );
-  const [execType, setExecType] = useState<string>(data.execType ?? execTypeOptions[0].value);
+  const [execType, setExecType] = useState<string>(
+    data.execType ?? execTypeOptions[0].value,
+  );
 
   const [inputTextual, setInputTextual] = useState<boolean>(true);
   const [inputExternal, setInputExternal] = useState<boolean>(true);
@@ -54,7 +59,9 @@ export default function CreateAiTeam() {
     [],
   );
 
-  const [flowType, setFlowType] = useState<string>(data.flowType ?? flowTypeOptions[0].value);
+  const [flowType, setFlowType] = useState<string>(
+    data.flowType ?? flowTypeOptions[0].value,
+  );
 
   const canContinue =
     agentName.trim().length > 0 &&
@@ -115,7 +122,12 @@ export default function CreateAiTeam() {
         </div>
 
         <div className={styles["details-container"]}>
-          <Text bold className={styles["section-title"]} color="primary" type="H5">
+          <Text
+            bold
+            className={styles["section-title"]}
+            color="primary"
+            type="H5"
+          >
             {t("agents.generalSettings")}
           </Text>
 
@@ -159,7 +171,12 @@ export default function CreateAiTeam() {
           </div>
 
           <div className={styles.group}>
-            <Text bold className={styles['section-title']} color="primary" type="H5">
+            <Text
+              bold
+              className={styles["section-title"]}
+              color="primary"
+              type="H5"
+            >
               {t("aiTeam.executionContext")}
             </Text>
             <Text className={styles.hint} color="secondary" type="small">
@@ -175,7 +192,12 @@ export default function CreateAiTeam() {
           </div>
 
           <div className={styles.group}>
-            <Text bold className={styles['section-title']} color="primary" type="H5">
+            <Text
+              bold
+              className={styles["section-title"]}
+              color="primary"
+              type="H5"
+            >
               {t("aiTeam.inputType")}
             </Text>
             <Text className={styles.hint} color="secondary" type="small">
@@ -203,7 +225,12 @@ export default function CreateAiTeam() {
           </div>
 
           <div className={styles.group}>
-            <Text bold className={styles['section-title']} color="primary" type="H5">
+            <Text
+              bold
+              className={styles["section-title"]}
+              color="primary"
+              type="H5"
+            >
               {t("aiTeam.outputType")}
             </Text>
             <Text className={styles.hint} color="secondary" type="small">
@@ -240,7 +267,12 @@ export default function CreateAiTeam() {
           </div>
 
           <div className={styles.group}>
-            <Text bold className={styles['section-title']} color="primary" type="H5">
+            <Text
+              bold
+              className={styles["section-title"]}
+              color="primary"
+              type="H5"
+            >
               {t("aiTeam.computeSettings")}
             </Text>
             <Text className={styles.hint} color="secondary" type="small">

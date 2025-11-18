@@ -28,13 +28,13 @@ type CreateAiTeamInputs = {
   external: boolean;
   media: boolean;
   textual: boolean;
-}
+};
 
 type CreateAiTeamOutputs = {
   explanation: boolean;
   structured: boolean;
   visualization: boolean;
-}
+};
 
 export const {
   StepperProvider: GraphEditorStepperProvider,

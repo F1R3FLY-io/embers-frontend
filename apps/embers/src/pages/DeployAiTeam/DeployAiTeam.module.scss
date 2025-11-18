@@ -68,7 +68,19 @@
   gap: 6px;
 }
 
-.text-center { text-align: center; }
-.version-notes { margin-top: 8px; }
-.welcome-interface { margin-top: 12px; }
-.disabled-input { opacity: 0.8; pointer-events: none; }
+.text-center {
+  text-align: center;
+}
+
+.version-notes {
+  margin-top: 8px;
+}
+
+.welcome-interface {
+  margin-top: 12px;
+}
+
+.disabled-input {
+  opacity: 0.8;
+  pointer-events: none;
+}

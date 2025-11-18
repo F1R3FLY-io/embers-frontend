@@ -31,7 +31,6 @@ export const Accordion: React.FC<AccordionProps> = ({
   persistKey,
   title,
 }) => {
-
   const initialOpen = useMemo(() => {
     if (!persistKey) {
       return defaultOpen;

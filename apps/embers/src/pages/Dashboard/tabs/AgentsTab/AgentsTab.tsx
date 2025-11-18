@@ -19,11 +19,11 @@ export default function AgentsTab({ searchQuery, sortBy }: AgentsTabProps) {
 
     const filtered = q
       ? agents.filter((a) => {
-        const fields = [a.name, a.id, a.shard, a.version]
-          .filter(Boolean)
-          .map((v) => String(v).toLowerCase());
-        return fields.some((f) => f.includes(q));
-      })
+          const fields = [a.name, a.id, a.shard, a.version]
+            .filter(Boolean)
+            .map((v) => String(v).toLowerCase());
+          return fields.some((f) => f.includes(q));
+        })
       : agents;
 
     return [...filtered].sort((a, b) => {

@@ -1,1 +1,1 @@
-export { default } from './DeployAiTeam';
+export { default } from "./DeployAiTeam";

@@ -34,7 +34,7 @@ export const PromptModal = ({
   };
 
   const handleConfirm = (value: string) => {
-    if(onConfirm) {
+    if (onConfirm) {
       onConfirm(value);
     }
     close();
@@ -42,7 +42,6 @@ export const PromptModal = ({
 
   return (
     <div className={styles.confirm}>
-
       <div className={styles.inputs}>
         <Text color="secondary" type="small">
           {inputLabel}

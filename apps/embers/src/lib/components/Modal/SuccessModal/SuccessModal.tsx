@@ -59,9 +59,9 @@ export function SuccessModal({
       </div>
 
       <div className={styles.details}>
-        {Object.entries(data).map(([label, value], index) => (
-          value ? <Row key={index} label={t(label)} value={value} /> : null
-        ))}
+        {Object.entries(data).map(([label, value], index) =>
+          value ? <Row key={index} label={t(label)} value={value} /> : null,
+        )}
       </div>
 
       <div className={styles.actions}>

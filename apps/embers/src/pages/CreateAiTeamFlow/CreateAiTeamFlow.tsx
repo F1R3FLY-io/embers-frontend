@@ -23,7 +23,10 @@ export default function CreateAiTeamFlow() {
   const { data, navigateToNextStep, updateData } = useGraphEditorStepper();
 
   const lastDeploy = data.lastDeploy;
-  useEffect(() => setHeaderTitle(data.agentName), [data.agentName, setHeaderTitle, t]);
+  useEffect(
+    () => setHeaderTitle(data.agentName),
+    [data.agentName, setHeaderTitle, t],
+  );
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);

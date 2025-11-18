@@ -5,8 +5,6 @@ import { Text } from "@/lib/components/Text";
 
 import styles from "./LanguageFooter.module.scss";
 
-
-
 export default function LanguageFooter() {
   const { t } = useTranslation();
   return (

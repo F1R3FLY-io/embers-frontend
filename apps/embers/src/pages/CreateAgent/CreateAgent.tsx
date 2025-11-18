@@ -19,7 +19,8 @@ export default function CreateAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, setStep, step, updateData } = useCodeEditorStepper();
+  const { data, navigateToNextStep, setStep, step, updateData } =
+    useCodeEditorStepper();
   const [name, setName] = useState(data.agentName);
   const [environment, setEnvironment] = useState<string>(
     data.environment ?? "",

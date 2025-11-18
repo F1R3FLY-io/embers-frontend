@@ -41,13 +41,16 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
       initialDataRef.current = opts.initialData;
     }, []);
 
-    const navigateToStep = useCallback((targetStep: number) => {
-      const routes = routesRef.current;
-      if (targetStep >= 0 && targetStep < routes.length) {
-        setStep(targetStep);
-        void navigate(routes[targetStep]);
-      }
-    }, [navigate]);
+    const navigateToStep = useCallback(
+      (targetStep: number) => {
+        const routes = routesRef.current;
+        if (targetStep >= 0 && targetStep < routes.length) {
+          setStep(targetStep);
+          void navigate(routes[targetStep]);
+        }
+      },
+      [navigate],
+    );
 
     const navigateToNextStep = useCallback(() => {
       const next = step + 1;
@@ -105,7 +108,9 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
   function useStepper() {
     const ctx = useContext(Ctx);
     if (!ctx) {
-      throw new Error("useStepper must be used within this flow's StepperProvider");
+      throw new Error(
+        "useStepper must be used within this flow's StepperProvider",
+      );
     }
     return ctx;
   }

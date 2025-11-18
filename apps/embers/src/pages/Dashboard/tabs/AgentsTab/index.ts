@@ -1,1 +1,1 @@
-export { default } from './AgentsTab';
+export { default } from "./AgentsTab";

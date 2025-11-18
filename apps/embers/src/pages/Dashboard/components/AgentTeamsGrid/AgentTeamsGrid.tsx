@@ -14,6 +14,7 @@ interface AgentTeamsGridProps {
   agents: AgentsTeams | undefined;
   isSuccess: boolean;
 }
+
 export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
     void navigate("/create-ai-team/create");
   }, [navigate]);
 
-  console.log(agents, isSuccess);
   return (
     <>
       <div
@@ -37,21 +37,22 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
           {t("agents.createNewAgentTeam")}
         </Text>
       </div>
-      {Array.from({ length: 0 }, (_, index) => (
-        <div
-          key={index + 1}
-          className={styles["grid-box"]}
-          style={
-            {
-              "--tile-delay": `${0.2 + index * 0.1}s`,
-            } as React.CSSProperties
-          }
-        >
-          <Text color="secondary" type="H4">
-            {`Agent Team ${index + 1}`}
-          </Text>
-        </div>
-      ))}
+      {isSuccess &&
+        agents?.agentsTeams.map((_, index) => (
+          <div
+            key={index + 1}
+            className={styles["grid-box"]}
+            style={
+              {
+                "--tile-delay": `${0.2 + index * 0.1}s`,
+              } as React.CSSProperties
+            }
+          >
+            <Text color="secondary" type="H4">
+              {`Agent Team ${index + 1}`}
+            </Text>
+          </div>
+        ))}
     </>
   );
 }
