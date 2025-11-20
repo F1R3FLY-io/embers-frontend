@@ -47,6 +47,8 @@ docs/EnvDeployFailed.md
 docs/InternalError.md
 docs/Log.md
 docs/LogLevel.md
+docs/PublishAgentsTeamToFireskyReq.md
+docs/PublishAgentsTeamToFireskyResp.md
 docs/RegistryDeploy.md
 docs/Request.md
 docs/RequestStatus.md
@@ -107,6 +109,8 @@ models/EnvDeployFailed.ts
 models/InternalError.ts
 models/Log.ts
 models/LogLevel.ts
+models/PublishAgentsTeamToFireskyReq.ts
+models/PublishAgentsTeamToFireskyResp.ts
 models/RegistryDeploy.ts
 models/Request.ts
 models/RequestStatus.ts
