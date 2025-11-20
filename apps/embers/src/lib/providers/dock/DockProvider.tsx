@@ -1,7 +1,6 @@
-// DockProvider.tsx
 import type React from "react";
 
-import { useMemo, useReducer } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 
 import { DockContext } from "./useDock";
 
@@ -14,10 +13,13 @@ export type LogEntry = {
 };
 export type DeployEntry = { id: string; success: boolean; time: Date };
 
+type OpenedState = { deploy: boolean; logs: boolean };
+
 type State = {
   deploys: DeployEntry[];
   logs: LogEntry[];
   max: number;
+  opened: OpenedState;
 };
 
 export const ActionType = {
@@ -26,14 +28,26 @@ export const ActionType = {
   CLEAR_DEPLOYS: "CLEAR_DEPLOYS",
   CLEAR_LOGS: "CLEAR_LOGS",
   SET_MAX: "SET_MAX",
+  SET_OPENED: "SET_OPENED",
 } as const;
 
 type Action =
   | { entry: LogEntry; type: typeof ActionType.ADD_LOG }
-  | { entry: DeployEntry; type: typeof ActionType.ADD_DEPLOY }
+  | {
+      entry: DeployEntry;
+      type: typeof ActionType.ADD_DEPLOY;
+    }
   | { type: typeof ActionType.CLEAR_LOGS }
   | { type: typeof ActionType.CLEAR_DEPLOYS }
-  | { max: number; type: typeof ActionType.SET_MAX };
+  | {
+      max: number;
+      type: typeof ActionType.SET_MAX;
+    }
+  | {
+      isOpen: boolean;
+      section: keyof OpenedState;
+      type: typeof ActionType.SET_OPENED;
+    };
 
 function clamp<T>(arr: T[], max: number) {
   return arr.length > max ? arr.slice(arr.length - max) : arr;
@@ -62,8 +76,37 @@ function reducer(state: State, action: Action): State {
         logs: clamp(state.logs, action.max),
         max: action.max,
       };
+    case ActionType.SET_OPENED:
+      return {
+        ...state,
+        opened: { ...state.opened, [action.section]: action.isOpen },
+      };
     default:
       return state;
+  }
+}
+
+const OPENED_LS_KEY = "dockOpened";
+
+function loadOpenedFromStorage(): OpenedState {
+  try {
+    const raw = localStorage.getItem(OPENED_LS_KEY);
+    if (!raw) {
+      return {
+        deploy: false,
+        logs: false,
+      };
+    }
+    const parsed = JSON.parse(raw) as Partial<OpenedState>;
+    return {
+      deploy: Boolean(parsed.deploy),
+      logs: Boolean(parsed.logs),
+    };
+  } catch {
+    return {
+      deploy: false,
+      logs: false,
+    };
   }
 }
 
@@ -75,7 +118,11 @@ export type DockAPI = {
   clearLogs: () => void;
   deploys: DeployEntry[];
   logs: LogEntry[];
+  opened: OpenedState;
+
   setMaxEntries: (n: number) => void;
+  setOpened: (section: keyof OpenedState, isOpen: boolean) => void;
+  toggleOpened: (section: keyof OpenedState) => void;
 };
 
 export function DockProvider({
@@ -89,7 +136,16 @@ export function DockProvider({
     deploys: [],
     logs: [],
     max: maxEntries,
+    opened: loadOpenedFromStorage(),
   });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(OPENED_LS_KEY, JSON.stringify(state.opened));
+    } catch {
+      // ignore storage errors
+    }
+  }, [state.opened]);
 
   const api = useMemo<DockAPI>(
     () => ({
@@ -107,7 +163,17 @@ export function DockProvider({
       clearLogs: () => dispatch({ type: ActionType.CLEAR_LOGS }),
       deploys: state.deploys,
       logs: state.logs,
+      opened: state.opened,
+
       setMaxEntries: (n) => dispatch({ max: n, type: ActionType.SET_MAX }),
+      setOpened: (section, isOpen) =>
+        dispatch({ isOpen, section, type: ActionType.SET_OPENED }),
+      toggleOpened: (section) =>
+        dispatch({
+          isOpen: !state.opened[section],
+          section,
+          type: ActionType.SET_OPENED,
+        }),
     }),
     [state],
   );

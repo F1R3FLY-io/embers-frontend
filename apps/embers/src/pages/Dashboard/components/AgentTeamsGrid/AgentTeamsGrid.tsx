@@ -1,3 +1,5 @@
+import type { AgentsTeams } from "@f1r3fly-io/embers-client-sdk";
+
 import classNames from "classnames";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,11 +10,16 @@ import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 
 import styles from "./AgentTeamsGrid.module.scss";
 
-export function AgentTeamsGrid() {
+interface AgentTeamsGridProps {
+  agents: AgentsTeams | undefined;
+  isSuccess: boolean;
+}
+
+export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createAiTeam = useCallback(() => {
-    void navigate("/create-ai-team");
+    void navigate("/create-ai-team/create");
   }, [navigate]);
 
   return (
@@ -30,21 +37,22 @@ export function AgentTeamsGrid() {
           {t("agents.createNewAgentTeam")}
         </Text>
       </div>
-      {Array.from({ length: 0 }, (_, index) => (
-        <div
-          key={index + 1}
-          className={styles["grid-box"]}
-          style={
-            {
-              "--tile-delay": `${0.2 + index * 0.1}s`,
-            } as React.CSSProperties
-          }
-        >
-          <Text color="secondary" type="H4">
-            {`Agent Team ${index + 1}`}
-          </Text>
-        </div>
-      ))}
+      {isSuccess &&
+        agents?.agentsTeams.map((_, index) => (
+          <div
+            key={index + 1}
+            className={styles["grid-box"]}
+            style={
+              {
+                "--tile-delay": `${0.2 + index * 0.1}s`,
+              } as React.CSSProperties
+            }
+          >
+            <Text color="secondary" type="H4">
+              {`Agent Team ${index + 1}`}
+            </Text>
+          </div>
+        ))}
     </>
   );
 }

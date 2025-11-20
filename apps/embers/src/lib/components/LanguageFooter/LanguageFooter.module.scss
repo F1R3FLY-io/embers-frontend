@@ -1,0 +1,27 @@
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-neutral-surface-secondary);
+}
+
+.support-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.support-link {
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  color: var(--text-link-color);
+  text-decoration: none;
+  cursor: pointer;
+  transition: text-decoration 0.2s ease;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

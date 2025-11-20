@@ -1,4 +1,9 @@
-import type { Connection, EdgeChange, NodeChange } from "@xyflow/react";
+import type {
+  Connection,
+  EdgeChange,
+  NodeChange,
+  ReactFlowJsonObject,
+} from "@xyflow/react";
 import type {
   Dispatch,
   MouseEvent as ReactMouseEvent,
@@ -36,35 +41,74 @@ import styles from "./GraphEditor.module.scss";
 import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
+type Viewport = { x: number; y: number; zoom: number };
 type GraphEditorProps = {
   edges: Edge[];
+  initialViewport?: Viewport | undefined;
   nodes: Node[];
+  onFlowChange?: (flow: ReactFlowJsonObject<Node, Edge>) => void;
   setEdges: Dispatch<SetStateAction<Edge[]>>;
   setNodes: Dispatch<SetStateAction<Node[]>>;
 };
 
 export function GraphEditor({
   edges,
+  initialViewport,
   nodes,
+  onFlowChange,
   setEdges,
   setNodes,
 }: GraphEditorProps) {
   const { open } = useModal();
+  const rf = useReactFlow<Node, Edge>();
+
+  const handleInit = useCallback(() => {
+    if (initialViewport) {
+      void rf.setViewport(initialViewport);
+    }
+
+    queueMicrotask(() => {
+      if (onFlowChange) {
+        onFlowChange(rf.toObject());
+      }
+    });
+  }, [initialViewport, onFlowChange, rf]);
+
+  const emitFlow = useCallback(() => {
+    if (!onFlowChange) {
+      return;
+    }
+    onFlowChange(rf.toObject());
+  }, [onFlowChange, rf]);
 
   const onNodesChange = useCallback(
-    (changes: NodeChange<Node>[]) =>
-      setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    [setNodes],
+    (changes: NodeChange<Node>[]) => {
+      setNodes((nodesSnapshot) => {
+        const next = applyNodeChanges(changes, nodesSnapshot);
+        queueMicrotask(emitFlow);
+        return next;
+      });
+    },
+    [setNodes, emitFlow],
   );
   const onEdgesChange = useCallback(
-    (changes: EdgeChange<Edge>[]) =>
-      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    [setEdges],
+    (changes: EdgeChange<Edge>[]) => {
+      setEdges((edgesSnapshot) => {
+        const next = applyEdgeChanges(changes, edgesSnapshot);
+        queueMicrotask(emitFlow);
+        return next;
+      });
+    },
+    [setEdges, emitFlow],
   );
   const onConnect = useCallback(
     (connection: Connection) =>
-      setEdges((edgesSnapshot) => addEdge(connection, edgesSnapshot)),
-    [setEdges],
+      setEdges((edgesSnapshot) => {
+        const next = addEdge(connection, edgesSnapshot);
+        queueMicrotask(emitFlow);
+        return next;
+      }),
+    [setEdges, emitFlow],
   );
 
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
@@ -94,14 +138,12 @@ export function GraphEditor({
     setContextMenuOpen(false);
   }, []);
 
-  const { screenToFlowPosition } = useReactFlow();
-
   const addItems = useMemo<MenuItem[]>(() => {
     return (Object.keys(NODE_REGISTRY) as NodeKind[]).map((type) => ({
       content: `Add ${NODE_REGISTRY[type].displayName}`,
       hidden: selectedNodes.length !== 0,
       onClick: () => {
-        const position = screenToFlowPosition(contextMenuPosition);
+        const position = rf.screenToFlowPosition(contextMenuPosition);
         if (NODE_REGISTRY[type].modalInputs.length === 0) {
           onNodesChange(
             createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
@@ -125,13 +167,7 @@ export function GraphEditor({
       },
       type: "text",
     }));
-  }, [
-    contextMenuPosition,
-    onNodesChange,
-    open,
-    screenToFlowPosition,
-    selectedNodes.length,
-  ]);
+  }, [contextMenuPosition, onNodesChange, open, rf, selectedNodes.length]);
 
   const deployItem: MenuItem = useMemo(
     () => ({
@@ -167,8 +203,7 @@ export function GraphEditor({
             item: {
               ...n,
               extent: "parent" as const,
-              parentId,
-              // position should be relative to parent
+              parentId, // position should be relative to parent
               position: {
                 x: n.position.x - subflowNode.position.x,
                 y: n.position.y - subflowNode.position.y,
@@ -206,7 +241,7 @@ export function GraphEditor({
           ) as NodeKind;
 
           if (type in NODE_REGISTRY) {
-            const position = screenToFlowPosition({
+            const position = rf.screenToFlowPosition({
               x: event.clientX,
               y: event.clientY,
             });
@@ -240,6 +275,8 @@ export function GraphEditor({
           }
         }}
         onEdgesChange={onEdgesChange}
+        onInit={handleInit}
+        onMoveEnd={() => emitFlow()}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}

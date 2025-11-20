@@ -9,12 +9,12 @@ import styles from "./SelectRow.module.scss";
 
 export type SelectRowProps = {
   className?: string;
-  defaultSelected?: boolean; // uncontrolled initial
+  defaultSelected?: boolean;
   disabled?: boolean;
   explanation?: string;
   onSelectedChange?: (next: boolean) => void;
   rightAdornment?: React.ReactNode;
-  selected?: boolean; // controlled
+  selected?: boolean;
   title: string;
 };
 

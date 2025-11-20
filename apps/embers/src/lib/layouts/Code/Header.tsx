@@ -1,7 +1,6 @@
 import type React from "react";
 
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
 import { useDock } from "@/lib/providers/dock/useDock";
@@ -14,8 +13,7 @@ type HeaderProps = {
 };
 
 export const Header: React.FC<HeaderProps> = ({ getCode }) => {
-  const navigate = useNavigate();
-  const { data, updateData } = useCodeEditorStepper();
+  const { data, navigateToNextStep, updateData } = useCodeEditorStepper();
   const dock = useDock();
   const { hideLoader, showLoader } = useLoader();
 
@@ -77,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       const { agentId, version } = await saveOrCreate();
       updateData("agentId", agentId);
       updateData("version", version);
-      void navigate("/create-ai-agent/deploy");
+      navigateToNextStep();
     } catch (e) {
       dock.appendLog(
         `Pre-deploy save failed with error: ${e instanceof Error ? e.message : String(e)}`,

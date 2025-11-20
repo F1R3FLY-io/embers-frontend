@@ -20,7 +20,7 @@ interface BaseProps {
   label?: string;
   options: Option[];
   placeholder?: string;
-  placement?: "auto" | "top" | "bottom"; // NEW
+  placement?: "auto" | "top" | "bottom";
 }
 
 interface SingleSelectProps extends BaseProps {
@@ -95,7 +95,6 @@ export const Select: React.FC<SelectProps> = ({
       const spaceBelow = window.innerHeight - rect.bottom;
       const spaceAbove = rect.top;
 
-      // estimate desired menu height (rows * 36px up to 240px)
       const estHeight = Math.min(240, Math.max(36, options.length * 36));
       const shouldFlipUp = spaceBelow < estHeight && spaceAbove > spaceBelow;
 
