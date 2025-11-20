@@ -10,7 +10,7 @@ export function UInt64FromJSONTyped(
 ): UInt64 {
   const bigInt = BigInt(json);
   if (bigInt < 0n) {
-    throw new Error("Value must be unsigned");
+    throw new Error("value must be unsigned");
   }
 
   return bigInt;

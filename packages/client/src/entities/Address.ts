@@ -53,7 +53,7 @@ export class Address {
     if (verifyAddress(address)) {
       return new Address(address);
     }
-    throw new Error("Invalid address");
+    throw new Error("invalid address");
   }
 
   public toString() {

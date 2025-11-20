@@ -8,7 +8,7 @@ export class Amount {
 
   public static tryFrom(value: bigint): Amount {
     if (value <= 0n || value > MAX_AMOUNT) {
-      throw new Error("Amount cannot be negative or zero");
+      throw new Error("amount cannot be negative or zero");
     }
     return new Amount(value);
   }

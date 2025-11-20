@@ -11,8 +11,10 @@
  */
 
 import type { Int64 } from "./Int64";
+import type { Uri } from "./Uri";
 
 import { Int64FromJSON, Int64ToJSON } from "./Int64";
+import { UriFromJSON, UriToJSON } from "./Uri";
 
 /**
  *
@@ -22,10 +24,10 @@ import { Int64FromJSON, Int64ToJSON } from "./Int64";
 export interface RunAgentsTeamReq {
   /**
    *
-   * @type {string}
+   * @type {Uri}
    * @memberof RunAgentsTeamReq
    */
-  agentsTeam: string;
+  agentsTeam: Uri;
   /**
    *
    * @type {Int64}
@@ -70,7 +72,7 @@ export function RunAgentsTeamReqFromJSONTyped(
     return json;
   }
   return {
-    agentsTeam: json.agents_team,
+    agentsTeam: UriFromJSON(json.agents_team),
     phloLimit: Int64FromJSON(json.phlo_limit),
     prompt: json.prompt,
   };
@@ -89,7 +91,7 @@ export function RunAgentsTeamReqToJSONTyped(
   }
 
   return {
-    agents_team: value.agentsTeam,
+    agents_team: UriToJSON(value.agentsTeam),
     phlo_limit: Int64ToJSON(value.phloLimit),
     prompt: value.prompt,
   };

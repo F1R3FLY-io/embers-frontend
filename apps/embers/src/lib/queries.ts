@@ -1,7 +1,10 @@
 import type {
-  AgentsTeamsApiSdk,
+  Address,
   CreateAgentReq,
+  CreateAgentsTeamReq,
   PrivateKey,
+  PublishAgentsTeamToFireskyReq,
+  Uri,
 } from "@f1r3fly-io/embers-client-sdk";
 
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
@@ -151,15 +154,11 @@ export function useDeployTestMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async ({
-      env,
-      test,
-      testKey,
-    }: {
+    mutationFn: async (params: {
       env?: string;
       test: string;
       testKey: PrivateKey;
-    }) => api.testnet.deploy(testKey, test, env),
+    }) => api.testnet.deploy(params.testKey, params.test, params.env),
   });
 }
 
@@ -204,7 +203,7 @@ export function useCreateAgentsTeamMutation() {
       edges,
       nodes,
       ...rest
-    }: WithGraph<Parameters<AgentsTeamsApiSdk["create"]>[0]>) => {
+    }: WithGraph<CreateAgentsTeamReq>) => {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.create({ ...rest, graph });
     },
@@ -224,7 +223,7 @@ export function useSaveAgentsTeamMutation(id: string) {
       edges,
       nodes,
       ...rest
-    }: WithGraph<Parameters<AgentsTeamsApiSdk["save"]>[1]>) => {
+    }: WithGraph<CreateAgentsTeamReq>) => {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.save(id, { ...rest, graph });
     },
@@ -311,12 +310,24 @@ export function useRunAgentsTeamMutation() {
     mutationFn: async (params: {
       prompt: string;
       rhoLimit: bigint;
-      uri: string;
+      uri: Uri;
     }) =>
       api.agentsTeams.run(
         params.uri,
         params.prompt,
         Amount.tryFrom(params.rhoLimit),
       ),
+  });
+}
+
+export function usePublishAgentsTeamToFireskyMutation(
+  address: Address,
+  id: string,
+) {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (params: PublishAgentsTeamToFireskyReq) =>
+      api.agentsTeams.publishToFiresky(address, id, params),
   });
 }
