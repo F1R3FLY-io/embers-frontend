@@ -78,6 +78,12 @@ export interface AgentsTeam {
    * @type {string}
    * @memberof AgentsTeam
    */
+  uri?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentsTeam
+   */
   version: string;
 }
 
@@ -123,6 +129,7 @@ export function AgentsTeamFromJSONTyped(
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
+    uri: json.uri == null ? undefined : json.uri,
     version: json.version,
   };
 }
@@ -148,6 +155,7 @@ export function AgentsTeamToJSONTyped(
     logo: value.logo,
     name: value.name,
     shard: value.shard,
+    uri: value.uri,
     version: value.version,
   };
 }

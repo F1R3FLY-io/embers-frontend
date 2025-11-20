@@ -1116,6 +1116,106 @@
           }
         }
       }
+    },
+    "/api/ai-agents-teams/{address}/{id}/publish-to-firesky/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishAgentsTeamToFireskyReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishAgentsTeamToFireskyResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/publish-to-firesky/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SignedContract"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1220,6 +1320,10 @@
           "last_deploy": {
             "type": "string",
             "format": "timestamp-millis"
+          },
+          "uri": {
+            "type": "string",
+            "format": "blockchain-uri"
           },
           "name": {
             "type": "string"
@@ -1876,6 +1980,39 @@
         "type": "string",
         "enum": ["debug", "info", "error"]
       },
+      "PublishAgentsTeamToFireskyReq": {
+        "type": "object",
+        "title": "PublishAgentsTeamToFireskyReq",
+        "required": ["pds_url", "email", "handle", "password"],
+        "properties": {
+          "pds_url": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "invite_code": {
+            "type": "string"
+          }
+        }
+      },
+      "PublishAgentsTeamToFireskyResp": {
+        "type": "object",
+        "title": "PublishAgentsTeamToFireskyResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
       "RegistryDeploy": {
         "type": "object",
         "title": "RegistryDeploy",
@@ -1937,7 +2074,8 @@
             "format": "int64"
           },
           "agents_team": {
-            "type": "string"
+            "type": "string",
+            "format": "blockchain-uri"
           }
         }
       },

@@ -39,6 +39,8 @@ export * from "./EnvDeployFailed";
 export * from "./InternalError";
 export * from "./Log";
 export * from "./LogLevel";
+export * from "./PublishAgentsTeamToFireskyReq";
+export * from "./PublishAgentsTeamToFireskyResp";
 export * from "./RegistryDeploy";
 export * from "./Request";
 export * from "./RequestStatus";
