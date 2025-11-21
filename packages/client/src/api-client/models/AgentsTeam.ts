@@ -12,12 +12,14 @@
 
 import type { Graph } from "./Graph";
 import type { TimestampMillis } from "./TimestampMillis";
+import type { Uri } from "./Uri";
 
 import { GraphFromJSON, GraphToJSON } from "./Graph";
 import {
   TimestampMillisFromJSON,
   TimestampMillisToJSON,
 } from "./TimestampMillis";
+import { UriFromJSON, UriToJSON } from "./Uri";
 
 /**
  *
@@ -75,6 +77,12 @@ export interface AgentsTeam {
   shard?: string;
   /**
    *
+   * @type {Uri}
+   * @memberof AgentsTeam
+   */
+  uri?: Uri;
+  /**
+   *
    * @type {string}
    * @memberof AgentsTeam
    */
@@ -123,6 +131,7 @@ export function AgentsTeamFromJSONTyped(
     logo: json.logo == null ? undefined : json.logo,
     name: json.name,
     shard: json.shard == null ? undefined : json.shard,
+    uri: json.uri == null ? undefined : UriFromJSON(json.uri),
     version: json.version,
   };
 }
@@ -148,6 +157,7 @@ export function AgentsTeamToJSONTyped(
     logo: value.logo,
     name: value.name,
     shard: value.shard,
+    uri: UriToJSON(value.uri),
     version: value.version,
   };
 }

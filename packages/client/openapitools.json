@@ -7,6 +7,7 @@
     "string+bytes": "Base64",
     "string+blockchain-address": "Address",
     "string+graphl": "Graph",
-    "string+public-key": "PublicKey"
+    "string+public-key": "PublicKey",
+    "string+blockchain-uri": "Uri"
   }
 }

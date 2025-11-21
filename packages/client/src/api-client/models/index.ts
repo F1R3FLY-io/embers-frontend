@@ -1,3 +1,4 @@
+export * from "./Address";
 export * from "./Agent";
 export * from "./AgentHeader";
 export * from "./Agents";
@@ -39,6 +40,8 @@ export * from "./EnvDeployFailed";
 export * from "./InternalError";
 export * from "./Log";
 export * from "./LogLevel";
+export * from "./PublishAgentsTeamToFireskyReq";
+export * from "./PublishAgentsTeamToFireskyResp";
 export * from "./RegistryDeploy";
 export * from "./Request";
 export * from "./RequestStatus";

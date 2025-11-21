@@ -2,11 +2,16 @@ import type { Graph } from "@f1r3fly-io/graphl-parser";
 
 import { base16 } from "@scure/base";
 
-import type { CreateAgentsTeamReq, HTTPHeaders } from "@/api-client";
+import type {
+  CreateAgentsTeamReq,
+  HTTPHeaders,
+  PublishAgentsTeamToFireskyReq,
+} from "@/api-client";
 import type {
   ContractCallConfig,
   QueryCallConfig,
 } from "@/entities/HttpCallConfigs";
+import type { Uri } from "@/entities/Uri";
 
 import { AIAgentsTeamsApi, Configuration } from "@/api-client";
 import { insertSignedSignature, signContract } from "@/functions";
@@ -204,7 +209,7 @@ export class AgentsTeamsApiSdk {
   }
 
   public async run(
-    agentTeamUri: string,
+    agentTeamUri: Uri,
     prompt: string,
     phloLimit: Amount,
     config?: ContractCallConfig,
@@ -283,6 +288,41 @@ export class AgentsTeamsApiSdk {
       },
       { signal: config?.signal },
     );
+
+    return { prepareModel, sendModel, waitForFinalization };
+  }
+
+  public async publishToFiresky(
+    address: Address,
+    id: string,
+    publishAgentsTeamToFireskyReq: PublishAgentsTeamToFireskyReq,
+    config?: ContractCallConfig,
+  ) {
+    const prepareModel =
+      await this.client.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
+        {
+          address,
+          id,
+          publishAgentsTeamToFireskyReq,
+        },
+        { signal: config?.signal },
+      );
+
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      config?.maxWaitForFinalisation ?? 15_000,
+    );
+
+    const sendModel =
+      await this.client.apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
+        {
+          address,
+          id,
+          signedContract,
+        },
+        { signal: config?.signal },
+      );
 
     return { prepareModel, sendModel, waitForFinalization };
   }
