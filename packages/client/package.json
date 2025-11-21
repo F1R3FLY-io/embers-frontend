@@ -1,6 +1,6 @@
 {
   "name": "@f1r3fly-io/embers-client-sdk",
-  "version": "0.0.70",
+  "version": "0.0.71",
   "main": "dist/embers-client-sdk.cjs.js",
   "module": "dist/embers-client-sdk.es.js",
   "browser": "dist/embers-client-sdk.umd.js",
