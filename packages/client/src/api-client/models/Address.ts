@@ -1,5 +1,5 @@
-export type { Address } from "@/entities/Address";
 import { Address } from "@/entities/Address";
+export { Address } from "@/entities/Address";
 
 export function AddressFromJSON(json: any): Address {
   return AddressFromJSONTyped(json, false);

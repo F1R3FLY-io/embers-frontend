@@ -12,7 +12,7 @@ export class PrivateKey {
 
   public static tryFrom(value: Uint8Array): PrivateKey {
     if (!secp256k1.utils.isValidSecretKey(value)) {
-      throw new Error("Invalid private key");
+      throw new Error("invalid private key");
     }
     return new PrivateKey(value);
   }

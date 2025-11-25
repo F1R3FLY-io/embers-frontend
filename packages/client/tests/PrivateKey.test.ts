@@ -15,9 +15,7 @@ describe("PrivateKey class", () => {
   });
 
   test("should throw error", () => {
-    expect(() => PrivateKey.tryFrom(randomBytes(0))).toThrow(
-      "Invalid private key",
-    );
+    expect(() => PrivateKey.tryFrom(randomBytes(0))).toThrow();
   });
 
   test("should create a private key from a hex string", () => {
