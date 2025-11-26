@@ -12,7 +12,7 @@ import styles from "./Code.module.scss";
 type LogLevel = "info" | "error";
 
 export const Footer: React.FC = () => {
-  const { clearLogs, deploys, logs } = useDock();
+  const { clearLogs, deploys, logs, markDeploysRead, markLogsRead, unread  } = useDock();
 
   const levelClass = (lvl: LogLevel) =>
     classNames({
@@ -49,7 +49,12 @@ export const Footer: React.FC = () => {
           </Button>
         }
         persistKey="dock.code.logs"
-        title="Logs"
+        title={unread.logs ? "Logs *" : "Logs"}
+        onToggle={(open) => {
+          if (open) {
+            markLogsRead();
+          }
+        }}
       >
         {logs.length === 0 && <Text color="secondary">No logs yet.</Text>}
         {logs.map((l) => (
@@ -61,7 +66,15 @@ export const Footer: React.FC = () => {
         ))}
       </Accordion>
 
-      <Accordion persistKey="dock.code.deploy" title="Deploy History">
+      <Accordion
+        persistKey="dock.code.deploy"
+        title={unread.deploy ? "Deploy History *" : "Deploy History"}
+        onToggle={(open) => {
+          if (open) {
+            markDeploysRead();
+          }
+        }}
+      >
         {deploys.length === 0 && (
           <Text color="secondary">No deployments yet.</Text>
         )}

@@ -1,3 +1,4 @@
+// Accordion.tsx
 import type React from "react";
 
 import classNames from "classnames";
@@ -14,6 +15,7 @@ export interface AccordionProps {
   closedIcon?: React.ReactNode;
   defaultOpen?: boolean;
   iconPosition?: "inline" | "end";
+  onToggle?: (open: boolean) => void;
   openedIcon?: React.ReactNode;
   overflow?: "hidden" | "auto";
   persistKey?: string;
@@ -26,6 +28,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   closedIcon,
   defaultOpen = false,
   iconPosition = "inline",
+  onToggle,
   openedIcon,
   overflow = "auto",
   persistKey,
@@ -44,7 +47,14 @@ export const Accordion: React.FC<AccordionProps> = ({
   }, [persistKey, defaultOpen]);
 
   const [open, setOpen] = useState(initialOpen);
-  const toggleOpen = useCallback(() => setOpen((prev) => !prev), []);
+
+  const toggleOpen = useCallback(() => {
+    setOpen((prev) => {
+      const next = !prev;
+      onToggle?.(next);
+      return next;
+    });
+  }, [onToggle]);
 
   useEffect(() => {
     if (!persistKey) {

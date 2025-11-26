@@ -25,7 +25,7 @@ export default function CreateAiTeam() {
 
   const [agentName, setAgentName] = useState<string>(data.agentName);
   const [description, setDescription] = useState<string | undefined>(
-    data.description,
+    data.description
   );
   const [iconUrl, setIconUrl] = useState<string | undefined>(data.iconUrl);
 
@@ -164,7 +164,7 @@ export default function CreateAiTeam() {
             </Text>
             <Input
               inputType="textarea"
-              placeholder="Placeholder"
+              placeholder={t("basic.description")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

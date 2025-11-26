@@ -42,6 +42,7 @@ import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
 type Viewport = { x: number; y: number; zoom: number };
+
 type GraphEditorProps = {
   edges: Edge[];
   initialViewport?: Viewport | undefined;
@@ -91,6 +92,7 @@ export function GraphEditor({
     },
     [setNodes, emitFlow],
   );
+
   const onEdgesChange = useCallback(
     (changes: EdgeChange<Edge>[]) => {
       setEdges((edgesSnapshot) => {
@@ -101,6 +103,7 @@ export function GraphEditor({
     },
     [setEdges, emitFlow],
   );
+
   const onConnect = useCallback(
     (connection: Connection) =>
       setEdges((edgesSnapshot) => {
@@ -133,6 +136,14 @@ export function GraphEditor({
     [openContextMenu],
   );
 
+  const openNodeContextMenu = useCallback(
+    (event: ReactMouseEvent, node: Node) => {
+      setSelectedNodes([node]);
+      openContextMenu(event);
+    },
+    [openContextMenu],
+  );
+
   const closeContextMenu = useCallback(() => {
     setSelectedNodes([]);
     setContextMenuOpen(false);
@@ -144,6 +155,7 @@ export function GraphEditor({
       hidden: selectedNodes.length !== 0,
       onClick: () => {
         const position = rf.screenToFlowPosition(contextMenuPosition);
+
         if (NODE_REGISTRY[type].modalInputs.length === 0) {
           onNodesChange(
             createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
@@ -196,14 +208,13 @@ export function GraphEditor({
         };
 
         onNodesChange([
-          // parent should come before children
           { index: 0, item: subflowNode, type: "add" },
           ...selectedNodes.map((n) => ({
             id: n.id,
             item: {
               ...n,
               extent: "parent" as const,
-              parentId, // position should be relative to parent
+              parentId,
               position: {
                 x: n.position.x - subflowNode.position.x,
                 y: n.position.y - subflowNode.position.y,
@@ -218,9 +229,123 @@ export function GraphEditor({
     [onNodesChange, selectedNodes],
   );
 
+  const deleteDeployItem: MenuItem = useMemo(() => {
+    const deployContainers = selectedNodes.filter(
+      (n) => n.type === "deploy-container",
+    );
+
+    return {
+      content: "Remove deploy container",
+      hidden: deployContainers.length !== 1,
+      onClick: () => {
+        const container = deployContainers[0];
+
+        const children = nodes.filter((n) => n.parentId === container.id);
+
+        const changes: NodeChange<Node>[] = [
+          ...children.map((child) => {
+            const { extent: _extent, parentId: _parentId, ...rest } = child;
+
+            return {
+              id: child.id,
+              item: {
+                ...rest,
+                position: {
+                  x: container.position.x + child.position.x,
+                  y: container.position.y + child.position.y,
+                },
+              },
+              type: "replace" as const,
+            };
+          }),
+          { id: container.id, type: "remove" as const },
+        ];
+
+        onNodesChange(changes);
+      },
+      type: "text",
+    };
+  }, [nodes, onNodesChange, selectedNodes]);
+
+  const deleteNodesItem: MenuItem = useMemo(
+    () => ({
+      content:
+        selectedNodes.length > 1 ? "Delete selected nodes" : "Delete node",
+      hidden: selectedNodes.length === 0,
+      onClick: () => {
+        const selectedIds = new Set(selectedNodes.map((n) => n.id));
+        const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+        const containersToRemove = new Set<string>();
+
+        for (const node of selectedNodes) {
+          if (node.type === "deploy-container") {
+            containersToRemove.add(node.id);
+          }
+
+          let current: Node | undefined = node;
+          while (current.parentId) {
+            const parent = nodeMap.get(current.parentId);
+            if (!parent) {
+              break;
+            }
+            if (parent.type === "deploy-container") {
+              containersToRemove.add(parent.id);
+            }
+            current = parent;
+          }
+        }
+
+        const changes: NodeChange<Node>[] = [];
+
+        containersToRemove.forEach((containerId) => {
+          const container = nodeMap.get(containerId);
+          if (!container) {
+            return;
+          }
+
+          const children = nodes.filter((n) => n.parentId === container.id);
+
+          for (const child of children) {
+            if (selectedIds.has(child.id)) {
+              continue;
+            }
+
+            const { extent: _extent, parentId: _parentId, ...rest } = child;
+
+            changes.push({
+              id: child.id,
+              item: {
+                ...rest,
+                position: {
+                  x: container.position.x + child.position.x,
+                  y: container.position.y + child.position.y,
+                },
+              },
+              type: "replace" as const,
+            });
+          }
+
+          changes.push({ id: container.id, type: "remove" as const });
+        });
+
+        selectedIds.forEach((id) => {
+          if (containersToRemove.has(id)) {
+            return;
+          }
+          changes.push({ id, type: "remove" as const });
+        });
+
+        onNodesChange(changes);
+      },
+      type: "text",
+    }),
+    [nodes, onNodesChange, selectedNodes],
+  );
+
   const menuItems = useMemo<MenuItem[]>(
-    () => [...addItems, deployItem],
-    [addItems, deployItem],
+    () => [...addItems, deployItem, deleteDeployItem, deleteNodesItem],
+    [addItems, deployItem, deleteDeployItem, deleteNodesItem],
   );
 
   return (
@@ -277,6 +402,7 @@ export function GraphEditor({
         onEdgesChange={onEdgesChange}
         onInit={handleInit}
         onMoveEnd={() => emitFlow()}
+        onNodeContextMenu={openNodeContextMenu}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}

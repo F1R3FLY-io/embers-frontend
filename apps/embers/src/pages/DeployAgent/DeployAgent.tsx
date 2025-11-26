@@ -66,15 +66,13 @@ export default function DeployAgent() {
       return;
     }
 
-    /* eslint-disable perfectionist/sort-objects */
-    const modalData = {
-      "deploy.labels.agentId": data.agentId,
-      "deploy.labels.status": "ok",
-      "deploy.rhoLimit": String(data.rhoLimit),
-      "deploy.version": data.version,
-      "deploy.labels.note": data.description,
-    };
-    /* eslint-enable perfectionist/sort-objects */
+    const modalData = [
+      {label: "deploy.labels.agentId", value: data.agentId},
+      {label: "deploy.version", value: data.version},
+      {label: "deploy.labels.status", value: "ok"},
+      {label: "deploy.rhoLimit", value: String(data.rhoLimit)},
+      {label: "deploy.labels.note", value: data.description}
+    ];
 
     deployMutation.mutate(
       { agentId, rhoLimit, version },

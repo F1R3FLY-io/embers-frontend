@@ -171,21 +171,23 @@ export function useAgentsTeams() {
   });
 }
 
-export function useAgentsTeamVersions(id: string) {
+export function useAgentsTeamVersions(id?: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async ({ signal }) => api.agentsTeams.getVersions(id, { signal }),
+    enabled: !!id,
+    queryFn: async ({ signal }) => api.agentsTeams.getVersions(id!, { signal }),
     queryKey: ["agents-teams", String(api.wallets.address), id],
   });
 }
 
-export function useAgentsTeam(id: string, version: string) {
+export function useAgentsTeam(id?: string, version?: string) {
   const api = useApi();
 
   return useQuery({
+    enabled: !!id && !!version,
     queryFn: async ({ signal }) =>
-      api.agentsTeams.getVersion(id, version, { signal }),
+      api.agentsTeams.getVersion(id!, version!, { signal }),
     queryKey: ["agents-teams", String(api.wallets.address), id, version],
   });
 }
