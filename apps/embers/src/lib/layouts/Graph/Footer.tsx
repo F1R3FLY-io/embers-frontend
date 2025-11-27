@@ -11,7 +11,7 @@ import styles from "./Graph.module.scss";
 type LogLevel = "info" | "error";
 
 export const Footer: React.FC = () => {
-  const { deploys, logs } = useDock();
+  const { deploys, logs, markDeploysRead, markLogsRead, unread } = useDock();
 
   const logLevelClassName = (logLevel: LogLevel) =>
     classNames({
@@ -21,7 +21,15 @@ export const Footer: React.FC = () => {
 
   return (
     <>
-      <Accordion title="Logs">
+      <Accordion
+        persistKey="dock.graph.logs"
+        title={unread.logs ? "Logs *" : "Logs"}
+        onToggle={(open) => {
+          if (open) {
+            markLogsRead();
+          }
+        }}
+      >
         {logs.map((log) => (
           <pre key={log.id}>
             <Text color="secondary">{formatTime(log.time)}</Text>
@@ -31,7 +39,15 @@ export const Footer: React.FC = () => {
         ))}
       </Accordion>
 
-      <Accordion title="Deploy History">
+      <Accordion
+        persistKey="dock.graph.deploy"
+        title={unread.deploy ? "Deploy History *" : "Deploy History"}
+        onToggle={(open) => {
+          if (open) {
+            markDeploysRead();
+          }
+        }}
+      >
         {deploys.map((deploy) => (
           <pre key={deploy.id}>
             <Text color="secondary">{formatTime(deploy.time)}</Text>

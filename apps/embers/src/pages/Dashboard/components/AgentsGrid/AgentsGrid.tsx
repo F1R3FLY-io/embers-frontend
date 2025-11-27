@@ -47,7 +47,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
           agentIconUrl: agent.logo ?? "",
           agentId: agent.id,
           agentName: agent.name,
-          version: agent.version,
+          version: agent.version
         },
       });
     },

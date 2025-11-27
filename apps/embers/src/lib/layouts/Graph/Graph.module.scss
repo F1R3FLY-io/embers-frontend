@@ -64,3 +64,15 @@ pre {
     color: white;
   }
 }
+
+.sidebar-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--divider-primary);
+
+  > * {
+    width: 100%;
+  }
+}

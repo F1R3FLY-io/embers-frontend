@@ -2,8 +2,10 @@ import type { ReactFlowJsonObject } from "@xyflow/react";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
+import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
 import { PromptModal } from "@/lib/components/Modal/PromptModal";
@@ -13,21 +15,24 @@ import { useDock } from "@/lib/providers/dock/useDock";
 import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
-import { useRunAgentsTeamMutation } from "@/lib/queries";
+import { useAgentsTeam, useRunAgentsTeamMutation } from "@/lib/queries";
 
 export default function CreateAiTeamFlow() {
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
   const { open } = useModal();
   const { appendLog } = useDock();
-  const { data, navigateToNextStep, updateData } = useGraphEditorStepper();
+  const { data, navigateToNextStep, setStep, updateData, updateMany } =
+    useGraphEditorStepper();
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const { data: agent } = useAgentsTeam(data.agentId, data.version);
+
+  const agentName = agent?.name ?? data.agentName;
   const lastDeploy = data.lastDeploy;
-  useEffect(
-    () => setHeaderTitle(data.agentName),
-    [data.agentName, setHeaderTitle, t],
-  );
 
+  useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
 
@@ -37,6 +42,11 @@ export default function CreateAiTeamFlow() {
     (err: Error) => appendLog(err.message, "error"),
     [appendLog],
   );
+
+  useEffect(() => {
+    setEdges(agent?.edges ?? []);
+    setNodes(agent?.nodes ?? []);
+  }, [agent]);
 
   const hydratedRef = useRef(false);
   useEffect(() => {
@@ -69,6 +79,15 @@ export default function CreateAiTeamFlow() {
   useEffect(() => {
     updateData("edges", edges);
   }, [edges, updateData]);
+
+  useEffect(() => {
+    setStep(1);
+    const preload = location.state as GraphEditorStepperData;
+    updateMany(preload);
+    void navigate(location.pathname, { replace: true });
+    // disabling because I need to run it only ONCE
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <GraphLayout

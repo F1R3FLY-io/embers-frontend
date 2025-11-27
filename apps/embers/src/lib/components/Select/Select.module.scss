@@ -48,6 +48,10 @@
 .value {
   display: flex;
   flex-wrap: wrap;
+  width: 85%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   gap: 12px;
 }
 
@@ -62,15 +66,16 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   right: 0;
   left: 0;
   z-index: 10;
   max-height: 200px;
   margin-top: 4px;
   overflow-y: auto;
-  background: var(--background-neutral-hover);
+  background: var(--background-color);
   border-radius: 6px;
+  border: 1px solid var(--border-primary);
 }
 
 .option {
