@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
-import type {GraphEditorStepperData} from "@/lib/providers/stepper/flows/GraphEditor";
+import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
 import { PromptModal } from "@/lib/components/Modal/PromptModal";
@@ -14,76 +14,8 @@ import { GraphLayout } from "@/lib/layouts/Graph";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useModal } from "@/lib/providers/modal/useModal";
-import {  useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
+import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 import { useAgentsTeam, useRunAgentsTeamMutation } from "@/lib/queries";
-
-
-const testEdges = [{
-  "animated": true,
-  "className": "_edge_8tub8_15",
-  "id": "xy-edge__a18ca89d5810f434a9a4cf5752168e318-a7829075463884b6faf90405eced3391b",
-  "selected": false,
-  "source": "a18ca89d5810f434a9a4cf5752168e318",
-  "target": "a7829075463884b6faf90405eced3391b"
-}];
-const testNodes = [
-  {
-    "className": "_no-node-style_8tub8_19",
-    "data": {
-      "containerId": "default"
-    },
-    "id": "Ab02bd41e21194a48858c485f7ad3da46",
-    "measured": {
-      "height": 68,
-      "width": 370
-    },
-    "position": {
-      "x": 188.5,
-      "y": 200.5227279663086
-    },
-    "style": {
-      "height": 68.0113639831543,
-      "width": 370.25
-    },
-    "type": "deploy-container"
-  },
-  {
-    "className": "_no-node-style_8tub8_19",
-    "data": {},
-    "dragging": false,
-    "extent": "parent",
-    "id": "a18ca89d5810f434a9a4cf5752168e318",
-    "measured": {
-      "height": 58,
-      "width": 150
-    },
-    "parentId": "Ab02bd41e21194a48858c485f7ad3da46",
-    "position": {
-      "x": 0,
-      "y": 5.5
-    },
-    "selected": false,
-    "type": "input"
-  },
-  {
-    "className": "_no-node-style_8tub8_19",
-    "data": {},
-    "dragging": false,
-    "extent": "parent",
-    "id": "a7829075463884b6faf90405eced3391b",
-    "measured": {
-      "height": 58,
-      "width": 150
-    },
-    "parentId": "Ab02bd41e21194a48858c485f7ad3da46",
-    "position": {
-      "x": 209.75,
-      "y": 5.511363983154297
-    },
-    "selected": false,
-    "type": "output"
-  }
-];
 
 export default function CreateAiTeamFlow() {
   const { setHeaderTitle } = useLayout();
@@ -112,10 +44,8 @@ export default function CreateAiTeamFlow() {
   );
 
   useEffect(() => {
-    // @ts-ignore
-    setEdges(agent ? testEdges : []);
-    // @ts-ignore
-    setNodes(agent ? testNodes : []);
+    setEdges(agent?.edges ?? []);
+    setNodes(agent?.nodes ?? []);
   }, [agent]);
 
   const hydratedRef = useRef(false);

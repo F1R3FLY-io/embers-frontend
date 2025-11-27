@@ -16,7 +16,7 @@ import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
 
-import { toApiGraph } from "./graph";
+import { fromApiGraph, toApiGraph } from "./graph";
 
 interface AgentsResponse {
   agents: Agent[];
@@ -186,8 +186,30 @@ export function useAgentsTeam(id?: string, version?: string) {
 
   return useQuery({
     enabled: !!id && !!version,
-    queryFn: async ({ signal }) =>
-      api.agentsTeams.getVersion(id!, version!, { signal }),
+    queryFn: async ({ signal }) => {
+      const { graph, ...rest } = await api.agentsTeams.getVersion(
+        id!,
+        version!,
+        {
+          signal,
+        },
+      );
+
+      let nodes: Node[] | undefined;
+      let edges: Edge[] | undefined;
+
+      if (graph !== undefined) {
+        const [ns, es] = fromApiGraph(graph);
+        nodes = ns;
+        edges = es;
+      }
+
+      return {
+        ...rest,
+        edges,
+        nodes,
+      };
+    },
     queryKey: ["agents-teams", String(api.wallets.address), id, version],
   });
 }
