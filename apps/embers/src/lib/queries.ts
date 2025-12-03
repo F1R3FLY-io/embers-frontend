@@ -16,7 +16,7 @@ import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
 
-import { fromApiGraph, toApiGraph } from "./graph";
+import { layoutAndNormalizeFromApi, toApiGraph } from "./graph";
 
 interface AgentsResponse {
   agents: Agent[];
@@ -199,9 +199,8 @@ export function useAgentsTeam(id?: string, version?: string) {
       let edges: Edge[] | undefined;
 
       if (graph !== undefined) {
-        const [ns, es] = fromApiGraph(graph);
-        nodes = ns;
-        edges = es;
+        [nodes, edges] = layoutAndNormalizeFromApi(graph);
+        console.log(nodes, edges);
       }
 
       return {

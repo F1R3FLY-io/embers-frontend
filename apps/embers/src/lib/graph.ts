@@ -1,6 +1,10 @@
 import type { Graph, Name, Vertex } from "@f1r3fly-io/embers-client-sdk";
 
-import type { Edge, Node } from "./components/GraphEditor";
+import dagre from "dagre";
+
+import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
+
+import styles from "@/lib/components/GraphEditor/GraphEditor.module.scss";
 
 const NIL: Graph = {
   type: "Nil",
@@ -10,6 +14,14 @@ type ContainerGroup = {
   container: Node;
   nodes: Node[];
 };
+
+type DagreNodeLabel = {
+  height: number;
+  width: number;
+};
+
+const DAGRE_NODE_WIDTH = 320;
+const DAGRE_NODE_HEIGHT = 140;
 
 // this should be stack safe
 export function toApiGraph(nodes: Node[], edges: Edge[]): Graph {
@@ -117,11 +129,11 @@ function buildNodeContext(node: Node) {
     case "compress": {
       return JSON.stringify({ type: "compress" });
     }
-    case "input": {
-      return JSON.stringify({ type: "input" });
+    case "input-node": {
+      return JSON.stringify({ type: "input-node" });
     }
-    case "output": {
-      return JSON.stringify({ type: "output" });
+    case "output-node": {
+      return JSON.stringify({ type: "output-node" });
     }
     case "text-model": {
       return JSON.stringify({ type: "text-model" });
@@ -275,8 +287,7 @@ function buildNodes(flatGraph: FlatGraph): Node[] {
         position: {
           x: 0,
           y: 0,
-        },
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        }, // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         type: context.type,
       } as Node;
     })
@@ -291,4 +302,160 @@ export function makeNodeId() {
 export function makeSubgraphId() {
   // GVar in graphl
   return `A${crypto.randomUUID().replace(/-/g, "")}`;
+}
+
+function layoutWithDagre(
+  nodes: Node[],
+  edges: Edge[],
+  direction: "LR" | "TB" = "LR",
+): {
+  edges: Edge[];
+  nodes: Node[];
+} {
+  const g = new dagre.graphlib.Graph<DagreNodeLabel>();
+
+  g.setDefaultEdgeLabel(() => ({}));
+  g.setGraph({
+    nodesep: 60,
+    rankdir: direction,
+    ranksep: 50
+  });
+
+  nodes.forEach((node) => {
+    if (node.type === "deploy-container") {
+      return;
+    }
+
+    g.setNode(node.id, {
+      height: DAGRE_NODE_HEIGHT,
+      width: DAGRE_NODE_WIDTH,
+    });
+  });
+
+  edges.forEach((edge) => {
+    g.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(g);
+
+  const layoutedNodes: Node[] = nodes.map((node) => {
+    if (node.type === "deploy-container") {
+      return node;
+    }
+
+    const dagreNode = g.node(node.id);
+
+    const { height, width, x, y } = dagreNode;
+
+    return {
+      ...node,
+      position: {
+        x: x - width / 2,
+        y: y - height / 2,
+      },
+    };
+  });
+
+  return { edges, nodes: layoutedNodes };
+}
+
+type NodeWithParent = Node & {
+  extent?: "parent" | "root";
+  parentId?: string;
+};
+
+function normalizeGraphNodes(nodes: Node[]): Node[] {
+  return nodes.map((node) => {
+    if (node.type === "deploy-container") {
+      return {
+        ...node,
+        className: styles["no-node-style"],
+        data: { containerId: "default" },
+      };
+    }
+
+    const n = node as NodeWithParent;
+
+    if (n.parentId) {
+      return {
+        ...n,
+        extent: "parent",
+      };
+    }
+
+    return node;
+  });
+}
+
+export function resizeContainers(nodes: Node[]): Node[] {
+  const clone = nodes.map((n) => ({ ...n })) as NodeWithParent[];
+
+  const byId = new Map<string, NodeWithParent>();
+  clone.forEach((n) => byId.set(n.id, n));
+
+  const childrenByParent = new Map<string, NodeWithParent[]>();
+
+  clone.forEach((node) => {
+    if (!node.parentId) {
+      return;
+    }
+    if (!childrenByParent.has(node.parentId)) {
+      childrenByParent.set(node.parentId, []);
+    }
+    childrenByParent.get(node.parentId)!.push(node);
+  });
+
+  for (const [parentId, children] of childrenByParent.entries()) {
+    const parent = byId.get(parentId);
+    if (!parent || parent.type !== "deploy-container") {
+      continue;
+    }
+    if (!children.length) {
+      continue;
+    }
+
+    const xs = children.map((c) => c.position.x);
+    const ys = children.map((c) => c.position.y);
+
+    const minX = Math.min(...xs);
+    const minY = Math.min(...ys);
+    const maxX = Math.max(...xs);
+    const maxY = Math.max(...ys);
+
+    const padding = 24;
+
+    const parentX = minX - padding;
+    const parentY = minY - padding;
+
+    parent.position = { x: parentX, y: parentY };
+    parent.style = {
+      ...(parent.style ?? {}),
+      height: maxY - minY + DAGRE_NODE_HEIGHT,
+      width: maxX - minX + DAGRE_NODE_WIDTH,
+    };
+
+    children.forEach((child) => {
+      child.position = {
+        x: child.position.x - parentX,
+        y: child.position.y - parentY,
+      };
+    });
+  }
+
+  return clone;
+}
+
+export function layoutAndNormalizeFromApi(ast: Graph): [Node[], Edge[]] {
+  const [rawNodes, rawEdges] = fromApiGraph(ast);
+
+  const { edges: dagreEdges, nodes: dagreNodes } = layoutWithDagre(
+    rawNodes,
+    rawEdges,
+    "LR",
+  );
+
+  const normalized = normalizeGraphNodes(dagreNodes);
+  const resized = resizeContainers(normalized);
+
+  return [resized, dagreEdges];
 }

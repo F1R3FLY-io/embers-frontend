@@ -26,44 +26,46 @@ export default function CreateAiTeamFlow() {
     useGraphEditorStepper();
   const location = useLocation();
   const navigate = useNavigate();
-
+  const runAgentsTeam = useRunAgentsTeamMutation();
   const { data: agent } = useAgentsTeam(data.agentId, data.version);
 
-  const agentName = agent?.name ?? data.agentName;
-  const lastDeploy = data.lastDeploy;
-
-  useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
 
-  const runAgentsTeam = useRunAgentsTeamMutation();
+  const hydratedRef = useRef(false);
 
   const logError = useCallback(
     (err: Error) => appendLog(err.message, "error"),
     [appendLog],
   );
 
-  useEffect(() => {
-    setEdges(agent?.edges ?? []);
-    setNodes(agent?.nodes ?? []);
-  }, [agent]);
+  const lastDeploy = data.lastDeploy;
+  const agentName = agent?.name ?? data.agentName;
 
-  const hydratedRef = useRef(false);
+  useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
   useEffect(() => {
     if (hydratedRef.current) {
       return;
     }
-    hydratedRef.current = true;
 
     const flow = data.flow;
+    const hasFlowData = Boolean(flow?.nodes.length || flow?.edges.length);
+    const hasAgentData = Boolean(agent?.nodes || agent?.edges);
 
-    if (flow?.nodes.length) {
-      setNodes(flow.nodes);
+    if (hasFlowData) {
+      hydratedRef.current = true;
+      setNodes(flow!.nodes);
+      setEdges(flow!.edges);
+      return;
     }
-    if (flow?.edges.length) {
-      setEdges(flow.edges);
+
+    if (hasAgentData) {
+      hydratedRef.current = true;
+      setNodes(agent!.nodes ?? []);
+      setEdges(agent!.edges ?? []);
     }
-  }, [data.flow]);
+  }, [data.flow, agent, setNodes, setEdges]);
+
 
   const handleFlowChange = useCallback(
     (flow: ReactFlowJsonObject<Node, Edge>) => {

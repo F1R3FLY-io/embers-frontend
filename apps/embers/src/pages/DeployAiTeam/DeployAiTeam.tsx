@@ -163,40 +163,70 @@ export default function DeployAiTeam() {
           setIsDeploying(true);
           handleSaveDraft();
           const registryKey = PrivateKey.new();
-          void deployTeamsMutation
-            .mutateAsync({
+
+          deployTeamsMutation.mutate(
+            {
               agentsTeamId: val.agentId,
               registryKey,
               registryVersion: 1n,
               rhoLimit: 1_000_000n,
-              version: val.version,
-          //   })
-          // void deployGraph
+              version: val.version
+            },
+            {
+              onError: onFailedDeploy,
+              onSuccess: () => {
+                onSuccessfulDeploy(registryKey);
+                open(
+                  <SuccessModal
+                    agentName={data.agentName}
+                    createAnother={() => {
+                      reset();
+                      navigateToStep(0);
+                    }}
+                    data={modalData}
+                    viewAgent={() => navigateToStep(1)}
+                    viewAllAgents={() => void navigate("/dashboard")}
+                  />,
+                  { ariaLabel: "Success deploy", closeOnBlur: false, closeOnEsc: false, maxWidth: 550 },
+                );
+              }
+            },
+          );
+          setIsDeploying(false)
+          // void deployTeamsMutation
           //   .mutateAsync({
-          //     edges: data.edges,
-          //     nodes: data.nodes,
+          //     agentsTeamId: val.agentId,
           //     registryKey,
           //     registryVersion: 1n,
           //     rhoLimit: 1_000_000n,
-            }).then(() => {
-              appendLog("Deploy finished");
-              onSuccessfulDeploy(registryKey);
-              open(
-                <SuccessModal
-                  agentName={data.agentName}
-                  createAnother={() => {
-                    reset();
-                    navigateToStep(0);
-                  }}
-                  data={modalData}
-                  viewAgent={() => navigateToStep(1)}
-                  viewAllAgents={() => void navigate("/dashboard")}
-                />,
-                { ariaLabel: "Success deploy", closeOnBlur: false, closeOnEsc: false, maxWidth: 550 },
-              );
-            })
-            .catch(onFailedDeploy)
-            .finally(() => setIsDeploying(false));
+          //     version: val.version,
+          // //   })
+          // // void deployGraph
+          // //   .mutateAsync({
+          // //     edges: data.edges,
+          // //     nodes: data.nodes,
+          // //     registryKey,
+          // //     registryVersion: 1n,
+          // //     rhoLimit: 1_000_000n,
+          //   }).then(() => {
+          //     appendLog("Deploy finished");
+          //     onSuccessfulDeploy(registryKey);
+          //     open(
+          //       <SuccessModal
+          //         agentName={data.agentName}
+          //         createAnother={() => {
+          //           reset();
+          //           navigateToStep(0);
+          //         }}
+          //         data={modalData}
+          //         viewAgent={() => navigateToStep(1)}
+          //         viewAllAgents={() => void navigate("/dashboard")}
+          //       />,
+          //       { ariaLabel: "Success deploy", closeOnBlur: false, closeOnEsc: false, maxWidth: 550 },
+          //     );
+          //   })
+          //   .catch(onFailedDeploy)
+          //   .finally(() => setIsDeploying(false));
         }
       })
       .catch(onFailedDeploy);

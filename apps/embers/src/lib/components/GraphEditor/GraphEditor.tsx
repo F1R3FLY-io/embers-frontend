@@ -365,38 +365,53 @@ export function GraphEditor({
             "application/reactflow",
           ) as NodeKind;
 
-          if (type in NODE_REGISTRY) {
-            const position = rf.screenToFlowPosition({
-              x: event.clientX,
-              y: event.clientY,
-            });
+          if (!(type in NODE_REGISTRY)) {
+            return;
+          }
 
-            if (NODE_REGISTRY[type].modalInputs.length === 0) {
-              onNodesChange(
-                createNodeChange(
-                  type,
-                  position,
-                  NODE_REGISTRY[type].defaultData,
-                ),
-              );
-            } else {
-              open(
-                <EditModal
-                  initial={NODE_REGISTRY[type].defaultData}
-                  inputs={NODE_REGISTRY[type].modalInputs}
-                  onSave={(updatedData) => {
-                    onNodesChange(
-                      createNodeChange(type, position, updatedData),
-                    );
-                  }}
-                />,
-                {
-                  ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
-                  closeOnBlur: true,
-                  maxWidth: 520,
-                },
-              );
+          let offsetX = 0;
+          let offsetY = 0;
+
+          const rawOffset = event.dataTransfer.getData(
+            "application/reactflow-offset",
+          );
+          if (rawOffset) {
+            try {
+              const parsed = JSON.parse(rawOffset) as { x?: number; y?: number };
+              offsetX = parsed.x ?? 0;
+              offsetY = parsed.y ?? 0;
+            } catch {
+              offsetX = 0;
+              offsetY = 0;
             }
+          }
+
+          const position = rf.screenToFlowPosition({
+            x: event.clientX - offsetX,
+            y: event.clientY - offsetY,
+          });
+
+          if (NODE_REGISTRY[type].modalInputs.length === 0) {
+            onNodesChange(
+              createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
+            );
+          } else {
+            open(
+              <EditModal
+                initial={NODE_REGISTRY[type].defaultData}
+                inputs={NODE_REGISTRY[type].modalInputs}
+                onSave={(updatedData) => {
+                  onNodesChange(
+                    createNodeChange(type, position, updatedData),
+                  );
+                }}
+              />,
+              {
+                ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                closeOnBlur: true,
+                maxWidth: 520,
+              },
+            );
           }
         }}
         onEdgesChange={onEdgesChange}

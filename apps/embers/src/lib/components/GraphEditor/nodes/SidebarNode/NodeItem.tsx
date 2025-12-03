@@ -16,9 +16,20 @@ interface NodeItemProps {
 
 export const NodeItem: React.FC<NodeItemProps> = ({ iconSrc, name, type }) => {
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const offset = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+
     event.dataTransfer.setData("application/reactflow", type ?? "");
+    event.dataTransfer.setData(
+      "application/reactflow-offset",
+      JSON.stringify(offset),
+    );
     event.dataTransfer.effectAllowed = "move";
   };
+
   return (
     <div
       draggable

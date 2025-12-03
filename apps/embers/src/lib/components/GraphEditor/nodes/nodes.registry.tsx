@@ -34,7 +34,7 @@ export const NODE_REGISTRY = {
     modalInputs: [],
     title: "Compress",
   }),
-  input: defineNode({
+  "input-node": defineNode({
     className: "source",
     defaultData: {},
     displayName: "Input",
@@ -43,7 +43,7 @@ export const NODE_REGISTRY = {
     modalInputs: [],
     title: "Input",
   }),
-  output: defineNode({
+  "output-node": defineNode({
     className: "sink",
     defaultData: {},
     displayName: "Output",
