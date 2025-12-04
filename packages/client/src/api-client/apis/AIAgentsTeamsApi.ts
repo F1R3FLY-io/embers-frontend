@@ -20,6 +20,7 @@ import type {
   DeployAgentsTeamReq,
   DeployAgentsTeamResp,
   DeploySignedAgentsTeamtReq,
+  DeploySignedRunAgentsTeamFireskyReq,
   PublishAgentsTeamToFireskyReq,
   PublishAgentsTeamToFireskyResp,
   RunAgentsTeamReq,
@@ -38,6 +39,7 @@ import {
   DeployAgentsTeamReqToJSON,
   DeployAgentsTeamRespFromJSON,
   DeploySignedAgentsTeamtReqToJSON,
+  DeploySignedRunAgentsTeamFireskyReqToJSON,
   PublishAgentsTeamToFireskyReqToJSON,
   PublishAgentsTeamToFireskyRespFromJSON,
   RunAgentsTeamReqToJSON,
@@ -108,6 +110,14 @@ export interface ApiAiAgentsTeamsIdSavePreparePostRequest {
 export interface ApiAiAgentsTeamsIdSaveSendPostRequest {
   id: string;
   signedContract: SignedContract;
+}
+
+export interface ApiAiAgentsTeamsRunOnFireskyPreparePostRequest {
+  runAgentsTeamReq: RunAgentsTeamReq;
+}
+
+export interface ApiAiAgentsTeamsRunOnFireskySendPostRequest {
+  deploySignedRunAgentsTeamFireskyReq: DeploySignedRunAgentsTeamFireskyReq;
 }
 
 export interface ApiAiAgentsTeamsRunPreparePostRequest {
@@ -890,6 +900,105 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       initOverrides,
     );
     return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<RunAgentsTeamResp>> {
+    if (requestParameters.runAgentsTeamReq == null) {
+      throw new runtime.RequiredError(
+        "runAgentsTeamReq",
+        'Required parameter "runAgentsTeamReq" was null or undefined when calling apiAiAgentsTeamsRunOnFireskyPreparePost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run-on-firesky/prepare`;
+
+    const response = await this.request(
+      {
+        body: RunAgentsTeamReqToJSON(requestParameters.runAgentsTeamReq),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      RunAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunOnFireskyPreparePost(
+    requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RunAgentsTeamResp> {
+    const response = await this.apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunOnFireskySendPostRaw(
+    requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.deploySignedRunAgentsTeamFireskyReq == null) {
+      throw new runtime.RequiredError(
+        "deploySignedRunAgentsTeamFireskyReq",
+        'Required parameter "deploySignedRunAgentsTeamFireskyReq" was null or undefined when calling apiAiAgentsTeamsRunOnFireskySendPost().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run-on-firesky/send`;
+
+    const response = await this.request(
+      {
+        body: DeploySignedRunAgentsTeamFireskyReqToJSON(
+          requestParameters.deploySignedRunAgentsTeamFireskyReq,
+        ),
+        headers: headerParameters,
+        method: "POST",
+        path: urlPath,
+        query: queryParameters,
+      },
+      initOverrides,
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunOnFireskySendPost(
+    requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.apiAiAgentsTeamsRunOnFireskySendPostRaw(
+      requestParameters,
+      initOverrides,
+    );
   }
 
   /**

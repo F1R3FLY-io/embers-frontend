@@ -326,4 +326,37 @@ export class AgentsTeamsApiSdk {
 
     return { prepareModel, sendModel, waitForFinalization };
   }
+
+  public async runOnFiresky(
+    agentTeamUri: Uri,
+    prompt: string,
+    phloLimit: Amount,
+    config?: ContractCallConfig,
+  ) {
+    const prepareModel =
+      await this.client.apiAiAgentsTeamsRunOnFireskyPreparePost(
+        {
+          runAgentsTeamReq: {
+            agentsTeam: agentTeamUri,
+            phloLimit: phloLimit.value,
+            prompt,
+          },
+        },
+        { signal: config?.signal },
+      );
+
+    const signedContract = signContract(prepareModel.contract, this.privateKey);
+
+    await this.client.apiAiAgentsTeamsRunOnFireskySendPost(
+      {
+        deploySignedRunAgentsTeamFireskyReq: {
+          agentsTeam: agentTeamUri,
+          contract: signedContract,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    return prepareModel;
+  }
 }
