@@ -29,6 +29,7 @@ export * from "./DeployCode";
 export * from "./DeployGraph";
 export * from "./DeploySignedAgentReq";
 export * from "./DeploySignedAgentsTeamtReq";
+export * from "./DeploySignedRunAgentsTeamFireskyReq";
 export * from "./DeploySignedTestReq";
 export * from "./DeploySignedTestResp";
 export * from "./DeploySignedTestRespEnvDeployFailed";

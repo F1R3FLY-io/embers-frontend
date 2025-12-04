@@ -971,6 +971,53 @@
         }
       }
     },
+    "/api/ai-agents-teams/run-on-firesky/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/RunAgentsTeamReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunAgentsTeamResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai-agents-teams/run-on-firesky/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/DeploySignedRunAgentsTeamFireskyReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/ai-agents-teams/{id}/save/prepare": {
       "post": {
         "tags": ["AIAgentsTeams"],
@@ -1819,6 +1866,20 @@
           },
           "system": {
             "$ref": "#/components/schemas/SignedContract"
+          }
+        }
+      },
+      "DeploySignedRunAgentsTeamFireskyReq": {
+        "type": "object",
+        "title": "DeploySignedRunAgentsTeamFireskyReq",
+        "required": ["contract", "agents_team"],
+        "properties": {
+          "contract": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "agents_team": {
+            "type": "string",
+            "format": "blockchain-uri"
           }
         }
       },

@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/AIAgentsApi.ts
 apis/AIAgentsTeamsApi.ts
 apis/ServiceApi.ts
@@ -37,6 +36,7 @@ docs/DeployCode.md
 docs/DeployGraph.md
 docs/DeploySignedAgentReq.md
 docs/DeploySignedAgentsTeamtReq.md
+docs/DeploySignedRunAgentsTeamFireskyReq.md
 docs/DeploySignedTestReq.md
 docs/DeploySignedTestResp.md
 docs/DeploySignedTestRespEnvDeployFailed.md
@@ -99,6 +99,7 @@ models/DeployCode.ts
 models/DeployGraph.ts
 models/DeploySignedAgentReq.ts
 models/DeploySignedAgentsTeamtReq.ts
+models/DeploySignedRunAgentsTeamFireskyReq.ts
 models/DeploySignedTestReq.ts
 models/DeploySignedTestResp.ts
 models/DeploySignedTestRespEnvDeployFailed.ts
