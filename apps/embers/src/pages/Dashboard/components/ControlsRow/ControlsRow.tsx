@@ -23,6 +23,7 @@ export function ControlsRow({
     <div className={styles["controls-row"]}>
       <SortControl sortBy={sortBy} onSortChange={onSortChange} />
       <SearchControl
+        className={styles["search-control"]}
         placeholder={placeholder}
         searchQuery={searchQuery}
         onSearchChange={onSearchChange}

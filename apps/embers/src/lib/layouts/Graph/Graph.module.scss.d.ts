@@ -8,5 +8,6 @@ declare const classNames: {
   readonly "search-bar": "search-bar";
   readonly input: "input";
   readonly footer: "footer";
+  readonly "sidebar-controls": "sidebar-controls";
 };
 export default classNames;

@@ -41,12 +41,12 @@ import styles from "./GraphEditor.module.scss";
 import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
-type Viewport = { x: number; y: number; zoom: number };
 type GraphEditorProps = {
   edges: Edge[];
-  initialViewport?: Viewport | undefined;
+  initialViewport?: ReactFlowJsonObject<Node, Edge>["viewport"] | undefined;
   nodes: Node[];
   onFlowChange?: (flow: ReactFlowJsonObject<Node, Edge>) => void;
+  onGraphChange?: () => void;
   setEdges: Dispatch<SetStateAction<Edge[]>>;
   setNodes: Dispatch<SetStateAction<Node[]>>;
 };
@@ -56,6 +56,7 @@ export function GraphEditor({
   initialViewport,
   nodes,
   onFlowChange,
+  onGraphChange,
   setEdges,
   setNodes,
 }: GraphEditorProps) {
@@ -81,6 +82,12 @@ export function GraphEditor({
     onFlowChange(rf.toObject());
   }, [onFlowChange, rf]);
 
+  const notifyGraphChange = useCallback(() => {
+    if (onGraphChange) {
+      onGraphChange();
+    }
+  }, [onGraphChange]);
+
   const onNodesChange = useCallback(
     (changes: NodeChange<Node>[]) => {
       setNodes((nodesSnapshot) => {
@@ -91,6 +98,7 @@ export function GraphEditor({
     },
     [setNodes, emitFlow],
   );
+
   const onEdgesChange = useCallback(
     (changes: EdgeChange<Edge>[]) => {
       setEdges((edgesSnapshot) => {
@@ -101,14 +109,17 @@ export function GraphEditor({
     },
     [setEdges, emitFlow],
   );
+
   const onConnect = useCallback(
-    (connection: Connection) =>
+    (connection: Connection) => {
       setEdges((edgesSnapshot) => {
         const next = addEdge(connection, edgesSnapshot);
         queueMicrotask(emitFlow);
+        queueMicrotask(notifyGraphChange);
         return next;
-      }),
-    [setEdges, emitFlow],
+      });
+    },
+    [setEdges, emitFlow, notifyGraphChange],
   );
 
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
@@ -133,6 +144,14 @@ export function GraphEditor({
     [openContextMenu],
   );
 
+  const openNodeContextMenu = useCallback(
+    (event: ReactMouseEvent, node: Node) => {
+      setSelectedNodes([node]);
+      openContextMenu(event);
+    },
+    [openContextMenu],
+  );
+
   const closeContextMenu = useCallback(() => {
     setSelectedNodes([]);
     setContextMenuOpen(false);
@@ -144,16 +163,19 @@ export function GraphEditor({
       hidden: selectedNodes.length !== 0,
       onClick: () => {
         const position = rf.screenToFlowPosition(contextMenuPosition);
+
         if (NODE_REGISTRY[type].modalInputs.length === 0) {
           onNodesChange(
             createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
           );
+          notifyGraphChange();
         } else {
           open(
             <EditModal
               initial={NODE_REGISTRY[type].defaultData}
               inputs={NODE_REGISTRY[type].modalInputs}
               onSave={(updatedData) => {
+                notifyGraphChange();
                 onNodesChange(createNodeChange(type, position, updatedData));
               }}
             />,
@@ -167,7 +189,14 @@ export function GraphEditor({
       },
       type: "text",
     }));
-  }, [contextMenuPosition, onNodesChange, open, rf, selectedNodes.length]);
+  }, [
+    contextMenuPosition,
+    notifyGraphChange,
+    onNodesChange,
+    open,
+    rf,
+    selectedNodes.length,
+  ]);
 
   const deployItem: MenuItem = useMemo(
     () => ({
@@ -196,14 +225,13 @@ export function GraphEditor({
         };
 
         onNodesChange([
-          // parent should come before children
           { index: 0, item: subflowNode, type: "add" },
           ...selectedNodes.map((n) => ({
             id: n.id,
             item: {
               ...n,
               extent: "parent" as const,
-              parentId, // position should be relative to parent
+              parentId,
               position: {
                 x: n.position.x - subflowNode.position.x,
                 y: n.position.y - subflowNode.position.y,
@@ -218,9 +246,123 @@ export function GraphEditor({
     [onNodesChange, selectedNodes],
   );
 
+  const deleteDeployItem: MenuItem = useMemo(() => {
+    const deployContainers = selectedNodes.filter(
+      (n) => n.type === "deploy-container",
+    );
+
+    return {
+      content: "Remove deploy container",
+      hidden: deployContainers.length !== 1,
+      onClick: () => {
+        const container = deployContainers[0];
+
+        const children = nodes.filter((n) => n.parentId === container.id);
+
+        const changes: NodeChange<Node>[] = [
+          ...children.map((child) => {
+            const { extent: _extent, parentId: _parentId, ...rest } = child;
+
+            return {
+              id: child.id,
+              item: {
+                ...rest,
+                position: {
+                  x: container.position.x + child.position.x,
+                  y: container.position.y + child.position.y,
+                },
+              },
+              type: "replace" as const,
+            };
+          }),
+          { id: container.id, type: "remove" as const },
+        ];
+        notifyGraphChange();
+        onNodesChange(changes);
+      },
+      type: "text",
+    };
+  }, [nodes, notifyGraphChange, onNodesChange, selectedNodes]);
+
+  const deleteNodesItem: MenuItem = useMemo(
+    () => ({
+      content:
+        selectedNodes.length > 1 ? "Delete selected nodes" : "Delete node",
+      hidden: selectedNodes.length === 0,
+      onClick: () => {
+        const selectedIds = new Set(selectedNodes.map((n) => n.id));
+        const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+        const containersToRemove = new Set<string>();
+
+        for (const node of selectedNodes) {
+          if (node.type === "deploy-container") {
+            containersToRemove.add(node.id);
+          }
+
+          let current: Node | undefined = node;
+          while (current.parentId) {
+            const parent = nodeMap.get(current.parentId);
+            if (!parent) {
+              break;
+            }
+            if (parent.type === "deploy-container") {
+              containersToRemove.add(parent.id);
+            }
+            current = parent;
+          }
+        }
+
+        const changes: NodeChange<Node>[] = [];
+
+        containersToRemove.forEach((containerId) => {
+          const container = nodeMap.get(containerId);
+          if (!container) {
+            return;
+          }
+
+          const children = nodes.filter((n) => n.parentId === container.id);
+
+          for (const child of children) {
+            if (selectedIds.has(child.id)) {
+              continue;
+            }
+
+            const { extent: _extent, parentId: _parentId, ...rest } = child;
+
+            changes.push({
+              id: child.id,
+              item: {
+                ...rest,
+                position: {
+                  x: container.position.x + child.position.x,
+                  y: container.position.y + child.position.y,
+                },
+              },
+              type: "replace" as const,
+            });
+          }
+
+          changes.push({ id: container.id, type: "remove" as const });
+        });
+
+        selectedIds.forEach((id) => {
+          if (containersToRemove.has(id)) {
+            return;
+          }
+          changes.push({ id, type: "remove" as const });
+        });
+        notifyGraphChange();
+        onNodesChange(changes);
+      },
+      type: "text",
+    }),
+    [nodes, notifyGraphChange, onNodesChange, selectedNodes],
+  );
+
   const menuItems = useMemo<MenuItem[]>(
-    () => [...addItems, deployItem],
-    [addItems, deployItem],
+    () => [...addItems, deployItem, deleteDeployItem, deleteNodesItem],
+    [addItems, deployItem, deleteDeployItem, deleteNodesItem],
   );
 
   return (
@@ -236,47 +378,66 @@ export function GraphEditor({
         onDragOver={(event) => event.preventDefault()}
         onDrop={(event) => {
           event.preventDefault();
+          notifyGraphChange();
           const type = event.dataTransfer.getData(
             "application/reactflow",
           ) as NodeKind;
 
-          if (type in NODE_REGISTRY) {
-            const position = rf.screenToFlowPosition({
-              x: event.clientX,
-              y: event.clientY,
-            });
+          if (!(type in NODE_REGISTRY)) {
+            return;
+          }
 
-            if (NODE_REGISTRY[type].modalInputs.length === 0) {
-              onNodesChange(
-                createNodeChange(
-                  type,
-                  position,
-                  NODE_REGISTRY[type].defaultData,
-                ),
-              );
-            } else {
-              open(
-                <EditModal
-                  initial={NODE_REGISTRY[type].defaultData}
-                  inputs={NODE_REGISTRY[type].modalInputs}
-                  onSave={(updatedData) => {
-                    onNodesChange(
-                      createNodeChange(type, position, updatedData),
-                    );
-                  }}
-                />,
-                {
-                  ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
-                  closeOnBlur: true,
-                  maxWidth: 520,
-                },
-              );
+          let offsetX = 0;
+          let offsetY = 0;
+
+          const rawOffset = event.dataTransfer.getData(
+            "application/reactflow-offset",
+          );
+          if (rawOffset) {
+            try {
+              const parsed = JSON.parse(rawOffset) as {
+                x?: number;
+                y?: number;
+              };
+              offsetX = parsed.x ?? 0;
+              offsetY = parsed.y ?? 0;
+            } catch {
+              offsetX = 0;
+              offsetY = 0;
             }
+          }
+
+          const position = rf.screenToFlowPosition({
+            x: event.clientX - offsetX,
+            y: event.clientY - offsetY,
+          });
+
+          if (NODE_REGISTRY[type].modalInputs.length === 0) {
+            onNodesChange(
+              createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
+            );
+          } else {
+            open(
+              <EditModal
+                initial={NODE_REGISTRY[type].defaultData}
+                inputs={NODE_REGISTRY[type].modalInputs}
+                onSave={(updatedData) => {
+                  onNodesChange(createNodeChange(type, position, updatedData));
+                }}
+              />,
+              {
+                ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                closeOnBlur: true,
+                maxWidth: 520,
+              },
+            );
           }
         }}
         onEdgesChange={onEdgesChange}
         onInit={handleInit}
         onMoveEnd={() => emitFlow()}
+        onNodeContextMenu={openNodeContextMenu}
+        onNodeDragStop={() => notifyGraphChange()}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}

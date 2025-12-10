@@ -1,5 +1,5 @@
 import { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -10,9 +10,14 @@ import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
+import { useLoader } from "@/lib/providers/loader/useLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
-import { useDeployGraphMutation } from "@/lib/queries";
+import {
+  useCreateAgentsTeamMutation,
+  useDeployAgentsTeamMutation,
+  useSaveAgentsTeamMutation,
+} from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import Stepper from "../../lib/components/Stepper";
@@ -22,8 +27,8 @@ export default function DeployAiTeam() {
   const { t } = useTranslation();
   const { open } = useModal();
   const navigate = useNavigate();
-  const deployGraph = useDeployGraphMutation();
 
+  const { hideLoader, showLoader } = useLoader();
   const { appendDeploy, appendLog } = useDock();
 
   const {
@@ -35,6 +40,14 @@ export default function DeployAiTeam() {
     step,
     updateData,
   } = useGraphEditorStepper();
+
+  const deployTeamsMutation = useDeployAgentsTeamMutation();
+
+  const id = useMemo(() => data.agentId ?? "", [data.agentId]);
+  const saveMutation = useSaveAgentsTeamMutation(id);
+  const createMutation = useCreateAgentsTeamMutation();
+
+  const isLoading = createMutation.isPending || saveMutation.isPending;
 
   const [inputPrompt, setInputPrompt] = useState<string>(
     data.inputPrompt ?? "",
@@ -62,7 +75,7 @@ export default function DeployAiTeam() {
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
-      updateData("lastDeploy", key);
+      updateData("lastDeployKey", key);
       appendDeploy(true);
     },
     [appendDeploy, updateData],
@@ -87,50 +100,102 @@ export default function DeployAiTeam() {
     [appendDeploy, logError, navigateToStep, open],
   );
 
+  const saveOrCreate = async () => {
+    const payload = {
+      description: data.description ?? "",
+      edges: data.edges,
+      name: data.agentName,
+      nodes: data.nodes,
+      ...(data.iconUrl ? { logo: data.iconUrl } : {}),
+    };
+    if (id) {
+      const res = await saveMutation.mutateAsync(payload);
+      await res.waitForFinalization;
+      return { agentId: id, version: res.prepareModel.version };
+    }
+    const res = await createMutation.mutateAsync(payload);
+    await res.waitForFinalization;
+    return { agentId: res.prepareModel.id, version: res.prepareModel.version };
+  };
+
+  const handleSave = async () => {
+    if (isLoading) {
+      return;
+    }
+    try {
+      showLoader();
+      const { agentId, version } = await saveOrCreate();
+      updateData("version", version);
+      updateData("agentId", agentId);
+      appendLog(`Agent ${agentId} with ${version} has been saved!`, "info");
+      return { agentId, version };
+    } catch (e) {
+      appendLog(
+        `Save failed: ${e instanceof Error ? e.message : String(e)}`,
+        "error",
+      );
+      throw e;
+    } finally {
+      hideLoader();
+    }
+  };
+
   const handleDeploy = () => {
     if (!canDeploy) {
       return;
     }
+    handleSave()
+      .then((val) => {
+        if (val?.agentId && val.version) {
+          const modalData = [
+            { label: "deploy.labels.agentId", value: data.agentId },
+            { label: "deploy.version", value: data.version },
+            { label: "deploy.labels.status", value: "ok" },
+            { label: "deploy.labels.note", value: data.description },
+          ];
 
-    /* eslint-disable perfectionist/sort-objects */
-    const modalData = {
-      "deploy.labels.agentId": data.agentId,
-      "deploy.version": data.version,
-      "deploy.labels.status": "ok",
-      "deploy.labels.note": data.description,
-    };
-    /* eslint-enable perfectionist/sort-objects */
+          setIsDeploying(true);
+          handleSaveDraft();
+          const registryKey = PrivateKey.new();
 
-    setIsDeploying(true);
-    handleSaveDraft();
-    const registryKey = PrivateKey.new();
-    void deployGraph
-      .mutateAsync({
-        edges: data.edges,
-        nodes: data.nodes,
-        registryKey,
-        registryVersion: 1n,
-        rhoLimit: 1_000_000n,
+          deployTeamsMutation.mutate(
+            {
+              agentsTeamId: val.agentId,
+              registryKey,
+              registryVersion: 1n,
+              rhoLimit: 1_000_000n,
+              version: val.version,
+            },
+            {
+              onError: onFailedDeploy,
+              onSuccess: () => {
+                onSuccessfulDeploy(registryKey);
+                updateData("hasGraphChanges", false);
+                open(
+                  <SuccessModal
+                    agentName={data.agentName}
+                    createAnother={() => {
+                      reset();
+                      navigateToStep(0);
+                    }}
+                    data={modalData}
+                    viewAgent={() => navigateToStep(1)}
+                    viewAllAgents={() => void navigate("/dashboard")}
+                  />,
+                  {
+                    ariaLabel: "Success deploy",
+                    closeOnBlur: false,
+                    closeOnEsc: false,
+                    maxWidth: 550,
+                  },
+                );
+              },
+            },
+          );
+          setIsDeploying(false);
+        }
       })
-      .then(() => {
-        appendLog("Deploy finished");
-        onSuccessfulDeploy(registryKey);
-        open(
-          <SuccessModal
-            agentName={data.agentName}
-            createAnother={() => {
-              reset();
-              navigateToStep(0);
-            }}
-            data={modalData}
-            viewAgent={() => navigateToStep(1)}
-            viewAllAgents={() => void navigate("/dashboard")}
-          />,
-          { ariaLabel: "Success deploy", maxWidth: 550 },
-        );
-      })
-      .catch(onFailedDeploy)
-      .finally(() => setIsDeploying(false));
+      .catch(onFailedDeploy);
   };
 
   return (

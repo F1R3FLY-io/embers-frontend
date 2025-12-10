@@ -164,7 +164,7 @@ export default function CreateAiTeam() {
             </Text>
             <Input
               inputType="textarea"
-              placeholder="Placeholder"
+              placeholder={t("basic.description")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

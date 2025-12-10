@@ -16,7 +16,7 @@ import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
 
-import { toApiGraph } from "./graph";
+import { layoutAndNormalizeFromApi, toApiGraph } from "./graph";
 
 interface AgentsResponse {
   agents: Agent[];
@@ -171,21 +171,43 @@ export function useAgentsTeams() {
   });
 }
 
-export function useAgentsTeamVersions(id: string) {
+export function useAgentsTeamVersions(id?: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async ({ signal }) => api.agentsTeams.getVersions(id, { signal }),
+    enabled: !!id,
+    queryFn: async ({ signal }) => api.agentsTeams.getVersions(id!, { signal }),
     queryKey: ["agents-teams", String(api.wallets.address), id],
   });
 }
 
-export function useAgentsTeam(id: string, version: string) {
+export function useAgentsTeam(id?: string, version?: string) {
   const api = useApi();
 
   return useQuery({
-    queryFn: async ({ signal }) =>
-      api.agentsTeams.getVersion(id, version, { signal }),
+    enabled: !!id && !!version,
+    queryFn: async ({ signal }) => {
+      const { graph, ...rest } = await api.agentsTeams.getVersion(
+        id!,
+        version!,
+        {
+          signal,
+        },
+      );
+
+      let nodes: Node[] | undefined;
+      let edges: Edge[] | undefined;
+
+      if (graph !== undefined) {
+        [nodes, edges] = layoutAndNormalizeFromApi(graph);
+      }
+
+      return {
+        ...rest,
+        edges,
+        nodes,
+      };
+    },
     queryKey: ["agents-teams", String(api.wallets.address), id, version],
   });
 }
