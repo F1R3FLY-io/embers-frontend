@@ -69,7 +69,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeployTestResp"
+                  "$ref": "#/components/schemas/PrepareResponse_DeployTestResp"
                 }
               }
             }
@@ -84,7 +84,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/DeploySignedTestReq"
+                "$ref": "#/components/schemas/SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp"
               }
             }
           },
@@ -153,7 +153,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransferResp"
+                  "$ref": "#/components/schemas/PrepareResponse_TransferResp"
                 }
               }
             }
@@ -168,7 +168,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_TransferReq_TransferResp"
               }
             }
           },
@@ -207,7 +207,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/BoostResp"
+                  "$ref": "#/components/schemas/PrepareResponse_BoostResp"
                 }
               }
             }
@@ -222,7 +222,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_BoostReq_BoostResp"
               }
             }
           },
@@ -2041,6 +2041,45 @@
         "type": "string",
         "enum": ["debug", "info", "error"]
       },
+      "PrepareResponse_BoostResp": {
+        "type": "object",
+        "title": "PrepareResponse_BoostResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/BoostResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_DeployTestResp": {
+        "type": "object",
+        "title": "PrepareResponse_DeployTestResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/DeployTestResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_TransferResp": {
+        "type": "object",
+        "title": "PrepareResponse_TransferResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/TransferResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "PublishAgentsTeamToFireskyReq": {
         "type": "object",
         "title": "PublishAgentsTeamToFireskyReq",
@@ -2176,6 +2215,63 @@
           "contract": {
             "type": "string",
             "format": "bytes"
+          }
+        }
+      },
+      "SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp": {
+        "type": "object",
+        "title": "SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/DeployTestReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/DeployTestResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/DeploySignedTestReq"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_BoostReq_BoostResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_BoostReq_BoostResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/BoostReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/BoostResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_TransferReq_TransferResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_TransferReq_TransferResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/TransferReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/TransferResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
           }
         }
       },

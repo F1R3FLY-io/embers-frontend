@@ -13,21 +13,23 @@
 import type {
   Address,
   BoostReq,
-  BoostResp,
+  PrepareResponseBoostResp,
+  PrepareResponseTransferResp,
+  SendRequestBodySignedContractBoostReqBoostResp,
+  SendRequestBodySignedContractTransferReqTransferResp,
   SendResp,
-  SignedContract,
   TransferReq,
-  TransferResp,
   WalletStateAndHistory,
 } from "../models/index";
 
 import {
   BoostReqToJSON,
-  BoostRespFromJSON,
+  PrepareResponseBoostRespFromJSON,
+  PrepareResponseTransferRespFromJSON,
+  SendRequestBodySignedContractBoostReqBoostRespToJSON,
+  SendRequestBodySignedContractTransferReqTransferRespToJSON,
   SendRespFromJSON,
-  SignedContractToJSON,
   TransferReqToJSON,
-  TransferRespFromJSON,
   WalletStateAndHistoryFromJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
@@ -45,7 +47,7 @@ export interface ApiWalletsBoostPreparePostRequest {
 }
 
 export interface ApiWalletsBoostSendPostRequest {
-  signedContract: SignedContract;
+  sendRequestBodySignedContractBoostReqBoostResp: SendRequestBodySignedContractBoostReqBoostResp;
 }
 
 export interface ApiWalletsTransferPreparePostRequest {
@@ -53,7 +55,7 @@ export interface ApiWalletsTransferPreparePostRequest {
 }
 
 export interface ApiWalletsTransferSendPostRequest {
-  signedContract: SignedContract;
+  sendRequestBodySignedContractTransferReqTransferResp: SendRequestBodySignedContractTransferReqTransferResp;
 }
 
 /**
@@ -161,7 +163,7 @@ export class WalletsApi extends runtime.BaseAPI {
   async apiWalletsBoostPreparePostRaw(
     requestParameters: ApiWalletsBoostPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<BoostResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseBoostResp>> {
     if (requestParameters.boostReq == null) {
       throw new runtime.RequiredError(
         "boostReq",
@@ -189,7 +191,7 @@ export class WalletsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      BoostRespFromJSON(jsonValue),
+      PrepareResponseBoostRespFromJSON(jsonValue),
     );
   }
 
@@ -198,7 +200,7 @@ export class WalletsApi extends runtime.BaseAPI {
   async apiWalletsBoostPreparePost(
     requestParameters: ApiWalletsBoostPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<BoostResp> {
+  ): Promise<PrepareResponseBoostResp> {
     const response = await this.apiWalletsBoostPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -212,10 +214,12 @@ export class WalletsApi extends runtime.BaseAPI {
     requestParameters: ApiWalletsBoostSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractBoostReqBoostResp == null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiWalletsBoostSendPost().',
+        "sendRequestBodySignedContractBoostReqBoostResp",
+        'Required parameter "sendRequestBodySignedContractBoostReqBoostResp" was null or undefined when calling apiWalletsBoostSendPost().',
       );
     }
 
@@ -229,7 +233,9 @@ export class WalletsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractBoostReqBoostRespToJSON(
+          requestParameters.sendRequestBodySignedContractBoostReqBoostResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
@@ -261,7 +267,7 @@ export class WalletsApi extends runtime.BaseAPI {
   async apiWalletsTransferPreparePostRaw(
     requestParameters: ApiWalletsTransferPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<TransferResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseTransferResp>> {
     if (requestParameters.transferReq == null) {
       throw new runtime.RequiredError(
         "transferReq",
@@ -289,7 +295,7 @@ export class WalletsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TransferRespFromJSON(jsonValue),
+      PrepareResponseTransferRespFromJSON(jsonValue),
     );
   }
 
@@ -298,7 +304,7 @@ export class WalletsApi extends runtime.BaseAPI {
   async apiWalletsTransferPreparePost(
     requestParameters: ApiWalletsTransferPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<TransferResp> {
+  ): Promise<PrepareResponseTransferResp> {
     const response = await this.apiWalletsTransferPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -312,10 +318,13 @@ export class WalletsApi extends runtime.BaseAPI {
     requestParameters: ApiWalletsTransferSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractTransferReqTransferResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiWalletsTransferSendPost().',
+        "sendRequestBodySignedContractTransferReqTransferResp",
+        'Required parameter "sendRequestBodySignedContractTransferReqTransferResp" was null or undefined when calling apiWalletsTransferSendPost().',
       );
     }
 
@@ -329,7 +338,9 @@ export class WalletsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractTransferReqTransferRespToJSON(
+          requestParameters.sendRequestBodySignedContractTransferReqTransferResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,

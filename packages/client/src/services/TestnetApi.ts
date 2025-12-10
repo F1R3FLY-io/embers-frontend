@@ -35,25 +35,36 @@ export class TestnetApiSdk {
     env?: string,
     config?: QueryCallConfig,
   ) {
-    const response = await this.client.apiTestnetDeployPreparePost(
+    const prepareRequest = {
+      env,
+      test,
+    };
+
+    const prepareResponse = await this.client.apiTestnetDeployPreparePost(
       {
-        deployTestReq: {
-          env,
-          test,
-        },
+        deployTestReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const signedTestContract = signContract(response.testContract, testKey);
+    const signedTestContract = signContract(
+      prepareResponse.response.testContract,
+      testKey,
+    );
     const signedEnvContract =
-      response.envContract && signContract(response.envContract, testKey);
+      prepareResponse.response.envContract &&
+      signContract(prepareResponse.response.envContract, testKey);
 
     return this.client.apiTestnetDeploySendPost(
       {
-        deploySignedTestReq: {
-          env: signedEnvContract,
-          test: signedTestContract,
+        sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: {
+            env: signedEnvContract,
+            test: signedTestContract,
+          },
+          token: prepareResponse.token,
         },
       },
       { signal: config?.signal },

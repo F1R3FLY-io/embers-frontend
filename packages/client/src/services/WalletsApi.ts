@@ -53,32 +53,42 @@ export class WalletsApiSdk {
     description?: string,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiWalletsTransferPreparePost(
+    const prepareRequest = {
+      amount: amount.value,
+      description,
+      from: this.address,
+      to,
+    };
+
+    const prepareResponse = await this.client.apiWalletsTransferPreparePost(
       {
-        transferReq: {
-          amount: amount.value,
-          description,
-          from: this.address,
-          to,
-        },
+        transferReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiWalletsTransferSendPost(
+    const sendResponse = await this.client.apiWalletsTransferSendPost(
       {
-        signedContract,
+        sendRequestBodySignedContractTransferReqTransferResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async boost(
@@ -89,34 +99,44 @@ export class WalletsApiSdk {
     postId?: string,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiWalletsBoostPreparePost(
+    const prepareRequest = {
+      amount: amount.value,
+      description,
+      from: this.address,
+      postAuthorDid,
+      postId,
+      to,
+    };
+
+    const prepareResponse = await this.client.apiWalletsBoostPreparePost(
       {
-        boostReq: {
-          amount: amount.value,
-          description,
-          from: this.address,
-          postAuthorDid,
-          postId,
-          to,
-        },
+        boostReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiWalletsBoostSendPost(
+    const sendResponse = await this.client.apiWalletsBoostSendPost(
       {
-        signedContract,
+        sendRequestBodySignedContractBoostReqBoostResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   /**
