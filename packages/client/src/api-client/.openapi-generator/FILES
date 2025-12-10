@@ -48,6 +48,9 @@ docs/EnvDeployFailed.md
 docs/InternalError.md
 docs/Log.md
 docs/LogLevel.md
+docs/PrepareResponseBoostResp.md
+docs/PrepareResponseDeployTestResp.md
+docs/PrepareResponseTransferResp.md
 docs/PublishAgentsTeamToFireskyReq.md
 docs/PublishAgentsTeamToFireskyResp.md
 docs/RegistryDeploy.md
@@ -57,6 +60,9 @@ docs/RunAgentsTeamReq.md
 docs/RunAgentsTeamResp.md
 docs/SaveAgentResp.md
 docs/SaveAgentsTeamResp.md
+docs/SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp.md
+docs/SendRequestBodySignedContractBoostReqBoostResp.md
+docs/SendRequestBodySignedContractTransferReqTransferResp.md
 docs/SendResp.md
 docs/ServiceApi.md
 docs/SignedContract.md
@@ -111,6 +117,9 @@ models/EnvDeployFailed.ts
 models/InternalError.ts
 models/Log.ts
 models/LogLevel.ts
+models/PrepareResponseBoostResp.ts
+models/PrepareResponseDeployTestResp.ts
+models/PrepareResponseTransferResp.ts
 models/PublishAgentsTeamToFireskyReq.ts
 models/PublishAgentsTeamToFireskyResp.ts
 models/RegistryDeploy.ts
@@ -120,6 +129,9 @@ models/RunAgentsTeamReq.ts
 models/RunAgentsTeamResp.ts
 models/SaveAgentResp.ts
 models/SaveAgentsTeamResp.ts
+models/SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp.ts
+models/SendRequestBodySignedContractBoostReqBoostResp.ts
+models/SendRequestBodySignedContractTransferReqTransferResp.ts
 models/SendResp.ts
 models/SignedContract.ts
 models/SignedTestDeployLogs.ts

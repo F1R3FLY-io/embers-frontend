@@ -12,18 +12,18 @@
 
 import type {
   CreateTestwalletResp,
-  DeploySignedTestReq,
   DeploySignedTestResp,
   DeployTestReq,
-  DeployTestResp,
+  PrepareResponseDeployTestResp,
+  SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp,
 } from "../models/index";
 
 import {
   CreateTestwalletRespFromJSON,
-  DeploySignedTestReqToJSON,
   DeploySignedTestRespFromJSON,
   DeployTestReqToJSON,
-  DeployTestRespFromJSON,
+  PrepareResponseDeployTestRespFromJSON,
+  SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestRespToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
 
@@ -32,7 +32,7 @@ export interface ApiTestnetDeployPreparePostRequest {
 }
 
 export interface ApiTestnetDeploySendPostRequest {
-  deploySignedTestReq: DeploySignedTestReq;
+  sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp: SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp;
 }
 
 /**
@@ -44,7 +44,7 @@ export class TestnetApi extends runtime.BaseAPI {
   async apiTestnetDeployPreparePostRaw(
     requestParameters: ApiTestnetDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployTestResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployTestResp>> {
     if (requestParameters.deployTestReq == null) {
       throw new runtime.RequiredError(
         "deployTestReq",
@@ -72,7 +72,7 @@ export class TestnetApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployTestRespFromJSON(jsonValue),
+      PrepareResponseDeployTestRespFromJSON(jsonValue),
     );
   }
 
@@ -81,7 +81,7 @@ export class TestnetApi extends runtime.BaseAPI {
   async apiTestnetDeployPreparePost(
     requestParameters: ApiTestnetDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployTestResp> {
+  ): Promise<PrepareResponseDeployTestResp> {
     const response = await this.apiTestnetDeployPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -95,10 +95,13 @@ export class TestnetApi extends runtime.BaseAPI {
     requestParameters: ApiTestnetDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<DeploySignedTestResp>> {
-    if (requestParameters.deploySignedTestReq == null) {
+    if (
+      requestParameters.sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "deploySignedTestReq",
-        'Required parameter "deploySignedTestReq" was null or undefined when calling apiTestnetDeploySendPost().',
+        "sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp",
+        'Required parameter "sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp" was null or undefined when calling apiTestnetDeploySendPost().',
       );
     }
 
@@ -112,7 +115,9 @@ export class TestnetApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: DeploySignedTestReqToJSON(requestParameters.deploySignedTestReq),
+        body: SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestRespToJSON(
+          requestParameters.sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
