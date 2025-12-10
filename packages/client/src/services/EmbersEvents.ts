@@ -35,7 +35,7 @@ export class EmbersEvents {
 
   private handleMessage(event: MessageEvent<string>) {
     const walletEvent = WalletEvent.parse(JSON.parse(event.data));
-    if(walletEvent.node_type === "Observer") {
+    if (walletEvent.node_type === "Observer") {
       this.deploySubscriptions.get(walletEvent.deploy_id)?.();
       this.deploySubscriptions.delete(walletEvent.deploy_id);
       this.subscribers.forEach((sub) => sub(walletEvent));
