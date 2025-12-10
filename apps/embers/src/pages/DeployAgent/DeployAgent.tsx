@@ -67,11 +67,11 @@ export default function DeployAgent() {
     }
 
     const modalData = [
-      {label: "deploy.labels.agentId", value: data.agentId},
-      {label: "deploy.version", value: data.version},
-      {label: "deploy.labels.status", value: "ok"},
-      {label: "deploy.rhoLimit", value: String(data.rhoLimit)},
-      {label: "deploy.labels.note", value: data.description}
+      { label: "deploy.labels.agentId", value: data.agentId },
+      { label: "deploy.version", value: data.version },
+      { label: "deploy.labels.status", value: "ok" },
+      { label: "deploy.rhoLimit", value: String(data.rhoLimit) },
+      { label: "deploy.labels.note", value: data.description },
     ];
 
     deployMutation.mutate(

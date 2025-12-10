@@ -16,8 +16,7 @@ import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor
 import {
   useCreateAgentsTeamMutation,
   useDeployAgentsTeamMutation,
-  useDeployGraphMutation,
-  useSaveAgentsTeamMutation
+  useSaveAgentsTeamMutation,
 } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
@@ -43,7 +42,6 @@ export default function DeployAiTeam() {
   } = useGraphEditorStepper();
 
   const deployTeamsMutation = useDeployAgentsTeamMutation();
-  // const deployGraph = useDeployGraphMutation();
 
   const id = useMemo(() => data.agentId ?? "", [data.agentId]);
   const saveMutation = useSaveAgentsTeamMutation(id);
@@ -77,7 +75,7 @@ export default function DeployAiTeam() {
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
-      updateData("lastDeploy", key);
+      updateData("lastDeployKey", key);
       appendDeploy(true);
     },
     [appendDeploy, updateData],
@@ -104,7 +102,7 @@ export default function DeployAiTeam() {
 
   const saveOrCreate = async () => {
     const payload = {
-      description: data.description ?? '',
+      description: data.description ?? "",
       edges: data.edges,
       name: data.agentName,
       nodes: data.nodes,
@@ -129,10 +127,7 @@ export default function DeployAiTeam() {
       const { agentId, version } = await saveOrCreate();
       updateData("version", version);
       updateData("agentId", agentId);
-      appendLog(
-        `Agent ${agentId} with ${version} has been saved!`,
-        "info",
-      );
+      appendLog(`Agent ${agentId} with ${version} has been saved!`, "info");
       return { agentId, version };
     } catch (e) {
       appendLog(
@@ -151,13 +146,12 @@ export default function DeployAiTeam() {
     }
     handleSave()
       .then((val) => {
-        if(val?.agentId && val.version) {
-
+        if (val?.agentId && val.version) {
           const modalData = [
-            {label: "deploy.labels.agentId", value: data.agentId},
-            {label: "deploy.version", value: data.version},
-            {label: "deploy.labels.status", value: "ok"},
-            {label: "deploy.labels.note", value: data.description}
+            { label: "deploy.labels.agentId", value: data.agentId },
+            { label: "deploy.version", value: data.version },
+            { label: "deploy.labels.status", value: "ok" },
+            { label: "deploy.labels.note", value: data.description },
           ];
 
           setIsDeploying(true);
@@ -170,12 +164,13 @@ export default function DeployAiTeam() {
               registryKey,
               registryVersion: 1n,
               rhoLimit: 1_000_000n,
-              version: val.version
+              version: val.version,
             },
             {
               onError: onFailedDeploy,
               onSuccess: () => {
                 onSuccessfulDeploy(registryKey);
+                updateData("hasGraphChanges", false);
                 open(
                   <SuccessModal
                     agentName={data.agentName}
@@ -187,46 +182,17 @@ export default function DeployAiTeam() {
                     viewAgent={() => navigateToStep(1)}
                     viewAllAgents={() => void navigate("/dashboard")}
                   />,
-                  { ariaLabel: "Success deploy", closeOnBlur: false, closeOnEsc: false, maxWidth: 550 },
+                  {
+                    ariaLabel: "Success deploy",
+                    closeOnBlur: false,
+                    closeOnEsc: false,
+                    maxWidth: 550,
+                  },
                 );
-              }
+              },
             },
           );
-          setIsDeploying(false)
-          // void deployTeamsMutation
-          //   .mutateAsync({
-          //     agentsTeamId: val.agentId,
-          //     registryKey,
-          //     registryVersion: 1n,
-          //     rhoLimit: 1_000_000n,
-          //     version: val.version,
-          // //   })
-          // // void deployGraph
-          // //   .mutateAsync({
-          // //     edges: data.edges,
-          // //     nodes: data.nodes,
-          // //     registryKey,
-          // //     registryVersion: 1n,
-          // //     rhoLimit: 1_000_000n,
-          //   }).then(() => {
-          //     appendLog("Deploy finished");
-          //     onSuccessfulDeploy(registryKey);
-          //     open(
-          //       <SuccessModal
-          //         agentName={data.agentName}
-          //         createAnother={() => {
-          //           reset();
-          //           navigateToStep(0);
-          //         }}
-          //         data={modalData}
-          //         viewAgent={() => navigateToStep(1)}
-          //         viewAllAgents={() => void navigate("/dashboard")}
-          //       />,
-          //       { ariaLabel: "Success deploy", closeOnBlur: false, closeOnEsc: false, maxWidth: 550 },
-          //     );
-          //   })
-          //   .catch(onFailedDeploy)
-          //   .finally(() => setIsDeploying(false));
+          setIsDeploying(false);
         }
       })
       .catch(onFailedDeploy);

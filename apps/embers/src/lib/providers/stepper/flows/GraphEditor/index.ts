@@ -1,4 +1,4 @@
-import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
+import type { PrivateKey, Uri } from "@f1r3fly-io/embers-client-sdk";
 import type { ReactFlowJsonObject } from "@xyflow/react";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor";
@@ -14,13 +14,15 @@ export type GraphEditorStepperData = {
   execType?: string;
   flow?: ReactFlowJsonObject<Node, Edge>;
   flowType?: string;
+  hasGraphChanges: boolean;
   iconUrl?: string;
   inputPrompt?: string;
   inputs: CreateAiTeamInputs;
   language?: string;
-  lastDeploy?: PrivateKey;
+  lastDeployKey?: PrivateKey;
   nodes: Node[];
   outputs: CreateAiTeamOutputs;
+  uri?: Uri;
   version?: string;
 };
 
@@ -43,6 +45,7 @@ export const {
   initialData: {
     agentName: "",
     edges: [],
+    hasGraphChanges: false,
     inputs: {
       external: true,
       media: false,

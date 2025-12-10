@@ -59,8 +59,10 @@ export function SuccessModal({
       </div>
 
       <div className={styles.details}>
-        {data.map((row : { label: string; value: string|undefined }, index) =>
-          row.value ? <Row key={index} label={t(row.label)} value={row.value} /> : null,
+        {data.map((row: { label: string; value: string | undefined }, index) =>
+          row.value ? (
+            <Row key={index} label={t(row.label)} value={row.value} />
+          ) : null,
         )}
       </div>
 

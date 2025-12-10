@@ -50,30 +50,31 @@ export const Sidebar: React.FC = () => {
     () =>
       versions
         ? versions.agentsTeams.map((v) => ({
-          label: v.version,
-          value: v.version,
-        }))
+            label: v.version,
+            value: v.version,
+          }))
         : [],
     [versions],
   );
 
-  const filteredNodes = Object.entries(NODE_REGISTRY).filter(
-    ([, def]) =>
-      def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+  const filteredNodes = Object.entries(NODE_REGISTRY).filter(([, def]) =>
+    def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 
   return (
     <div className={styles.sidebar}>
       <div className={styles.body}>
         <div className={styles["sidebar-controls"]}>
-          {versions && (<Select
-            options={versionOptions}
-            value={selectedVersion}
-            onChange={(ver) => {
-              setSelectedVersion(ver);
-              updateData('version', ver);
-            }}
-          />)}
+          {versions && (
+            <Select
+              options={versionOptions}
+              value={selectedVersion}
+              onChange={(ver) => {
+                setSelectedVersion(ver);
+                updateData("version", ver);
+              }}
+            />
+          )}
 
           <SearchControl
             placeholder="Type to search"

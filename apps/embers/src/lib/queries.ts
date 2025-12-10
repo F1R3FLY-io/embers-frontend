@@ -200,7 +200,6 @@ export function useAgentsTeam(id?: string, version?: string) {
 
       if (graph !== undefined) {
         [nodes, edges] = layoutAndNormalizeFromApi(graph);
-        console.log(nodes, edges);
       }
 
       return {

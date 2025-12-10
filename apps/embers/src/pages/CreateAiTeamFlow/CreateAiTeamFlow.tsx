@@ -8,39 +8,37 @@ import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
 import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
-import { PromptModal } from "@/lib/components/Modal/PromptModal";
-import { Spinner } from "@/lib/components/Spinner";
 import { GraphLayout } from "@/lib/layouts/Graph";
-import { useDock } from "@/lib/providers/dock/useDock";
 import { useLayout } from "@/lib/providers/layout/useLayout";
-import { useModal } from "@/lib/providers/modal/useModal";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
-import { useAgentsTeam, useRunAgentsTeamMutation } from "@/lib/queries";
+import { useAgentsTeam } from "@/lib/queries";
 
 export default function CreateAiTeamFlow() {
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
-  const { open } = useModal();
-  const { appendLog } = useDock();
-  const { data, navigateToNextStep, setStep, updateData, updateMany } =
-    useGraphEditorStepper();
+  const { data, setStep, updateData, updateMany } = useGraphEditorStepper();
   const location = useLocation();
   const navigate = useNavigate();
-  const runAgentsTeam = useRunAgentsTeamMutation();
   const { data: agent } = useAgentsTeam(data.agentId, data.version);
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
 
   const hydratedRef = useRef(false);
+  const lastVersionRef = useRef(data.version);
 
-  const logError = useCallback(
-    (err: Error) => appendLog(err.message, "error"),
-    [appendLog],
+  const agentName = agent?.name ?? data.agentName;
+
+  const handleFlowChange = useCallback(
+    (flow: ReactFlowJsonObject<Node, Edge>) => {
+      updateData("flow", flow);
+    },
+    [updateData],
   );
 
-  const lastDeploy = data.lastDeploy;
-  const agentName = agent?.name ?? data.agentName;
+  const handleGraphChange = useCallback(() => {
+    updateData("hasGraphChanges", true);
+  }, [updateData]);
 
   useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
   useEffect(() => {
@@ -52,27 +50,32 @@ export default function CreateAiTeamFlow() {
     const hasFlowData = Boolean(flow?.nodes.length || flow?.edges.length);
     const hasAgentData = Boolean(agent?.nodes || agent?.edges);
 
-    if (hasFlowData) {
-      hydratedRef.current = true;
-      setNodes(flow!.nodes);
-      setEdges(flow!.edges);
-      return;
-    }
-
     if (hasAgentData) {
       hydratedRef.current = true;
       setNodes(agent!.nodes ?? []);
       setEdges(agent!.edges ?? []);
+      updateData("hasGraphChanges", false);
+      return;
     }
-  }, [data.flow, agent, setNodes, setEdges]);
 
+    if (hasFlowData) {
+      hydratedRef.current = true;
+      setNodes(flow!.nodes);
+      setEdges(flow!.edges);
+      updateData("hasGraphChanges", false);
+    }
+  }, [data.flow, agent, setNodes, setEdges, updateData]);
 
-  const handleFlowChange = useCallback(
-    (flow: ReactFlowJsonObject<Node, Edge>) => {
-      updateData("flow", flow);
-    },
-    [updateData],
-  );
+  useEffect(() => {
+    if (lastVersionRef.current !== data.version) {
+      hydratedRef.current = false;
+      lastVersionRef.current = data.version;
+    }
+  }, [data.version]);
+
+  useEffect(() => {
+    updateData("uri", agent?.uri);
+  }, [agent, updateData]);
 
   useEffect(() => {
     updateData("nodes", nodes);
@@ -92,54 +95,7 @@ export default function CreateAiTeamFlow() {
   }, []);
 
   return (
-    <GraphLayout
-      headerProps={{
-        onDeploy: () => {
-          navigateToNextStep();
-        },
-        onRun: () => {
-          open(
-            <PromptModal
-              cancelLabel={t("basic.cancel")}
-              confirmLabel={t("basic.run")}
-              inputLabel={t("basic.inputPrompt")}
-              inputPlaceholder={t("deploy.enterInputPrompt")}
-              onConfirm={(prompt) => {
-                if (lastDeploy) {
-                  void runAgentsTeam
-                    .mutateAsync({
-                      prompt,
-                      rhoLimit: 500_000_000n,
-                      uri: lastDeploy.getPublicKey().getUri(),
-                    })
-                    .then((result) => {
-                      appendLog(
-                        JSON.stringify(
-                          result.sendModel,
-                          (_, value) =>
-                            typeof value === "string" && value.length > 2000
-                              ? `${value.slice(0, 2000)}...`
-                              : (value as unknown),
-                          4,
-                        ),
-                        "info",
-                      );
-                    })
-                    .catch(logError);
-                }
-              }}
-            />,
-            {
-              ariaLabel: "Prompt modal",
-              closeOnBlur: true,
-              closeOnEsc: true,
-              maxWidth: 550,
-              showCloseButton: false,
-            },
-          );
-        },
-      }}
-    >
+    <GraphLayout>
       <GraphEditor
         edges={edges}
         initialViewport={data.flow?.viewport}
@@ -147,8 +103,8 @@ export default function CreateAiTeamFlow() {
         setEdges={setEdges}
         setNodes={setNodes}
         onFlowChange={handleFlowChange}
+        onGraphChange={handleGraphChange}
       />
-      <Spinner isOpen={runAgentsTeam.isPending} />
     </GraphLayout>
   );
 }

@@ -8,7 +8,10 @@ interface AgentTeamsTabProps {
   sortBy: "date" | "name";
 }
 
-export default function AgentTeamsTab({ searchQuery, sortBy }: AgentTeamsTabProps) {
+export default function AgentTeamsTab({
+  searchQuery,
+  sortBy,
+}: AgentTeamsTabProps) {
   const { data, isSuccess } = useAgentsTeams();
 
   const filteredAgents = useMemo(() => {
@@ -17,11 +20,11 @@ export default function AgentTeamsTab({ searchQuery, sortBy }: AgentTeamsTabProp
 
     const filtered = q
       ? agents.filter((a) => {
-        const fields = [a.name, a.id, a.shard, a.version]
-          .filter(Boolean)
-          .map((v) => String(v).toLowerCase());
-        return fields.some((f) => f.includes(q));
-      })
+          const fields = [a.name, a.id, a.shard, a.version]
+            .filter(Boolean)
+            .map((v) => String(v).toLowerCase());
+          return fields.some((f) => f.includes(q));
+        })
       : agents;
 
     return [...filtered].sort((a, b) => {
@@ -33,5 +36,5 @@ export default function AgentTeamsTab({ searchQuery, sortBy }: AgentTeamsTabProp
       return b.createdAt.getTime() - a.createdAt.getTime();
     });
   }, [data?.agentsTeams, searchQuery, sortBy]);
-  return <AgentTeamsGrid agents={filteredAgents} isSuccess={isSuccess}  />;
+  return <AgentTeamsGrid agents={filteredAgents} isSuccess={isSuccess} />;
 }

@@ -39,6 +39,8 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
           agentIconUrl: agent.logo,
           agentId: agent.id,
           agentName: agent.name,
+          description: agent.description,
+          lastDeploy: agent.lastDeploy,
           version: agent.version,
         },
       });

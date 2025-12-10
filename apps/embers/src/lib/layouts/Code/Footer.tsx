@@ -12,7 +12,8 @@ import styles from "./Code.module.scss";
 type LogLevel = "info" | "error";
 
 export const Footer: React.FC = () => {
-  const { clearLogs, deploys, logs, markDeploysRead, markLogsRead, unread  } = useDock();
+  const { clearLogs, deploys, logs, markDeploysRead, markLogsRead, unread } =
+    useDock();
 
   const levelClass = (lvl: LogLevel) =>
     classNames({

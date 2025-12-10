@@ -16,7 +16,7 @@ export function SearchControl({
   className,
   onSearchChange,
   placeholder,
-  searchQuery
+  searchQuery,
 }: SearchControlProps) {
   return (
     <div className={classNames(styles["search-control"], className)}>

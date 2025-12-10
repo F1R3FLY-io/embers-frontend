@@ -14,9 +14,9 @@
   animation: tile-enter 0.5s ease-in-out forwards;
   animation-delay: var(--tile-delay, 0s);
   transition:
-          border-color 160ms ease,
-          background 160ms ease,
-          box-shadow 160ms ease;
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
 
   &:hover {
     background-color: var(--create-button-hover-bg);

@@ -318,7 +318,7 @@ function layoutWithDagre(
   g.setGraph({
     nodesep: 60,
     rankdir: direction,
-    ranksep: 50
+    ranksep: 50,
   });
 
   nodes.forEach((node) => {

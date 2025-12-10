@@ -41,13 +41,12 @@ import styles from "./GraphEditor.module.scss";
 import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
-type Viewport = { x: number; y: number; zoom: number };
-
 type GraphEditorProps = {
   edges: Edge[];
-  initialViewport?: Viewport | undefined;
+  initialViewport?: ReactFlowJsonObject<Node, Edge>["viewport"] | undefined;
   nodes: Node[];
   onFlowChange?: (flow: ReactFlowJsonObject<Node, Edge>) => void;
+  onGraphChange?: () => void;
   setEdges: Dispatch<SetStateAction<Edge[]>>;
   setNodes: Dispatch<SetStateAction<Node[]>>;
 };
@@ -57,6 +56,7 @@ export function GraphEditor({
   initialViewport,
   nodes,
   onFlowChange,
+  onGraphChange,
   setEdges,
   setNodes,
 }: GraphEditorProps) {
@@ -82,6 +82,12 @@ export function GraphEditor({
     onFlowChange(rf.toObject());
   }, [onFlowChange, rf]);
 
+  const notifyGraphChange = useCallback(() => {
+    if (onGraphChange) {
+      onGraphChange();
+    }
+  }, [onGraphChange]);
+
   const onNodesChange = useCallback(
     (changes: NodeChange<Node>[]) => {
       setNodes((nodesSnapshot) => {
@@ -105,13 +111,15 @@ export function GraphEditor({
   );
 
   const onConnect = useCallback(
-    (connection: Connection) =>
+    (connection: Connection) => {
       setEdges((edgesSnapshot) => {
         const next = addEdge(connection, edgesSnapshot);
         queueMicrotask(emitFlow);
+        queueMicrotask(notifyGraphChange);
         return next;
-      }),
-    [setEdges, emitFlow],
+      });
+    },
+    [setEdges, emitFlow, notifyGraphChange],
   );
 
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
@@ -160,12 +168,14 @@ export function GraphEditor({
           onNodesChange(
             createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
           );
+          notifyGraphChange();
         } else {
           open(
             <EditModal
               initial={NODE_REGISTRY[type].defaultData}
               inputs={NODE_REGISTRY[type].modalInputs}
               onSave={(updatedData) => {
+                notifyGraphChange();
                 onNodesChange(createNodeChange(type, position, updatedData));
               }}
             />,
@@ -179,7 +189,14 @@ export function GraphEditor({
       },
       type: "text",
     }));
-  }, [contextMenuPosition, onNodesChange, open, rf, selectedNodes.length]);
+  }, [
+    contextMenuPosition,
+    notifyGraphChange,
+    onNodesChange,
+    open,
+    rf,
+    selectedNodes.length,
+  ]);
 
   const deployItem: MenuItem = useMemo(
     () => ({
@@ -260,12 +277,12 @@ export function GraphEditor({
           }),
           { id: container.id, type: "remove" as const },
         ];
-
+        notifyGraphChange();
         onNodesChange(changes);
       },
       type: "text",
     };
-  }, [nodes, onNodesChange, selectedNodes]);
+  }, [nodes, notifyGraphChange, onNodesChange, selectedNodes]);
 
   const deleteNodesItem: MenuItem = useMemo(
     () => ({
@@ -335,12 +352,12 @@ export function GraphEditor({
           }
           changes.push({ id, type: "remove" as const });
         });
-
+        notifyGraphChange();
         onNodesChange(changes);
       },
       type: "text",
     }),
-    [nodes, onNodesChange, selectedNodes],
+    [nodes, notifyGraphChange, onNodesChange, selectedNodes],
   );
 
   const menuItems = useMemo<MenuItem[]>(
@@ -361,6 +378,7 @@ export function GraphEditor({
         onDragOver={(event) => event.preventDefault()}
         onDrop={(event) => {
           event.preventDefault();
+          notifyGraphChange();
           const type = event.dataTransfer.getData(
             "application/reactflow",
           ) as NodeKind;
@@ -377,7 +395,10 @@ export function GraphEditor({
           );
           if (rawOffset) {
             try {
-              const parsed = JSON.parse(rawOffset) as { x?: number; y?: number };
+              const parsed = JSON.parse(rawOffset) as {
+                x?: number;
+                y?: number;
+              };
               offsetX = parsed.x ?? 0;
               offsetY = parsed.y ?? 0;
             } catch {
@@ -401,9 +422,7 @@ export function GraphEditor({
                 initial={NODE_REGISTRY[type].defaultData}
                 inputs={NODE_REGISTRY[type].modalInputs}
                 onSave={(updatedData) => {
-                  onNodesChange(
-                    createNodeChange(type, position, updatedData),
-                  );
+                  onNodesChange(createNodeChange(type, position, updatedData));
                 }}
               />,
               {
@@ -418,6 +437,7 @@ export function GraphEditor({
         onInit={handleInit}
         onMoveEnd={() => emitFlow()}
         onNodeContextMenu={openNodeContextMenu}
+        onNodeDragStop={() => notifyGraphChange()}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}
