@@ -123,7 +123,6 @@ export default function DeployAiTeam() {
       return;
     }
     try {
-      showLoader();
       const { agentId, version } = await saveOrCreate();
       updateData("version", version);
       updateData("agentId", agentId);
@@ -135,8 +134,6 @@ export default function DeployAiTeam() {
         "error",
       );
       throw e;
-    } finally {
-      hideLoader();
     }
   };
 
@@ -144,8 +141,9 @@ export default function DeployAiTeam() {
     if (!canDeploy) {
       return;
     }
+    showLoader();
     handleSave()
-      .then((val) => {
+      .then(async (val) => {
         if (val?.agentId && val.version) {
           const modalData = [
             { label: "deploy.labels.agentId", value: data.agentId },
@@ -158,7 +156,7 @@ export default function DeployAiTeam() {
           handleSaveDraft();
           const registryKey = PrivateKey.new();
 
-          deployTeamsMutation.mutate(
+          await deployTeamsMutation.mutateAsync(
             {
               agentsTeamId: val.agentId,
               registryKey,
@@ -195,7 +193,8 @@ export default function DeployAiTeam() {
           setIsDeploying(false);
         }
       })
-      .catch(onFailedDeploy);
+      .catch(onFailedDeploy)
+      .finally(hideLoader);
   };
 
   return (
