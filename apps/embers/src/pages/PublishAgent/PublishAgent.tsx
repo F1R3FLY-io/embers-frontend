@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import type { CodeEditorStepperData } from "@/lib/providers/stepper/flows/CodeEditor";
+import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
 
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
@@ -40,9 +40,9 @@ export default function PublishAgent() {
     password.trim().length > 0;
 
   useEffect(() => {
-    const preload = location.state as CodeEditorStepperData;
+    const preload = location.state as GraphEditorStepperData;
     setAgentName(preload.agentName);
-    setIconUrl(preload.agentIconUrl ?? "");
+    setIconUrl(preload.iconUrl ?? "");
     setAgentId(preload.agentId ?? "");
     setVersion(preload.version ?? "");
     void navigate(location.pathname, { replace: true });

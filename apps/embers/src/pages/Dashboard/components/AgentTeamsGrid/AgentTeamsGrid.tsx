@@ -48,6 +48,20 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
     [navigate],
   );
 
+  const navigateToPublish = useCallback(
+    (agent: AgentsTeamHeader) => {
+      void navigate("/publish-agent", {
+        state: {
+          agentId: agent.id,
+          agentName: agent.name,
+          iconUrl: agent.logo ?? "",
+          version: agent.version,
+        },
+      });
+    },
+    [navigate],
+  );
+
   const handleDelete = async (id: string, name: string) =>
     confirm({ message: `Are you sure you want to delete ${name} agent?` })
       .then((ok) => ok && deleteAgent.mutate(id))
@@ -124,6 +138,9 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
                    />
                   <Button type="primary" onClick={() => navigateToAgent(agent)}>
                     {t("agents.details")}
+                  </Button>
+                  <Button type="subtle" onClick={() => navigateToPublish(agent)}>
+                    {t("agents.publish")}
                   </Button>
                 </div>
 
