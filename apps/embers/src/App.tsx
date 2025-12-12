@@ -25,6 +25,7 @@ const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
 const CreateAiTeamFlow = lazy(async () => import("@/pages/CreateAiTeamFlow"));
 const EditAgent = lazy(async () => import("@/pages/EditAgent"));
+const PublishAgent = lazy(async () => import("@/pages/PublishAgent"));
 
 const queryClient = new QueryClient();
 
@@ -84,6 +85,7 @@ export default function App() {
                               path="/create-ai-team/*"
                             />
                             <Route element={<Dashboard />} path="/dashboard" />
+                            <Route element={<PublishAgent />} path="/publish-agent" />
                           </Route>
                         </Routes>
                       </div>

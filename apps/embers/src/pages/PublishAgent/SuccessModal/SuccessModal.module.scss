@@ -1,0 +1,56 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.title {
+  margin-top: 4px;
+}
+
+.subtitle {
+  max-width: 420px;
+}
+
+.details {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: start;
+  white-space: pre-wrap;
+}
+
+.row-value {
+  word-break: normal;
+}
+
+.multiline {
+  white-space: pre-wrap;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+
+  :global(button) {
+    width: 100%;
+  }
+}
