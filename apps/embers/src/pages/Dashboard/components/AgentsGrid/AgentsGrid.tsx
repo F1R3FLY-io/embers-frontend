@@ -54,6 +54,20 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
     [navigate],
   );
 
+  const navigateToPublish = useCallback(
+    (agent: Agent) => {
+      void navigate("/publish-agent", {
+        state: {
+          agentIconUrl: agent.logo ?? "",
+          agentId: agent.id,
+          agentName: agent.name,
+          version: agent.version,
+        },
+      });
+    },
+    [navigate],
+  );
+
   const handleDelete = async (id: string, name: string) =>
     confirm({ message: `Are you sure you want to delete ${name} agent?` })
       .then((ok) => ok && deleteAgent.mutate(id))
@@ -127,11 +141,12 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
                     icon={<EditIcon />}
                     type="secondary"
                     onClick={() => navigateToAgent(agent)}
-                  >
-                    {t("agents.edit")}
-                  </Button>
+                   />
                   <Button type="primary" onClick={() => navigateToAgent(agent)}>
                     {t("agents.details")}
+                  </Button>
+                  <Button type="subtle" onClick={() => navigateToPublish(agent)}>
+                    {t("agents.publish")}
                   </Button>
                 </div>
 

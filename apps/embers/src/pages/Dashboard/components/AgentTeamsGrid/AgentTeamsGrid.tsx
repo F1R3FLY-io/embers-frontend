@@ -121,9 +121,7 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
                     icon={<EditIcon />}
                     type="secondary"
                     onClick={() => navigateToAgent(agent)}
-                  >
-                    {t("agents.edit")}
-                  </Button>
+                   />
                   <Button type="primary" onClick={() => navigateToAgent(agent)}>
                     {t("agents.details")}
                   </Button>
