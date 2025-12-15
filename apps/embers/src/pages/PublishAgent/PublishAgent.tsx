@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
-
-import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
+import { useLocation } from "react-router-dom";
 
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
@@ -21,31 +19,25 @@ export default function PublishAgent() {
   const { t } = useTranslation();
   const { close, open } = useModal();
   const location = useLocation();
-  const navigate = useNavigate();
-  const [agentName, setAgentName] = useState("");
+
+  const preload = location.state as {
+    agentId: string;
+    agentName: string;
+    iconUrl: string;
+    version: string;
+  };
   const [pdsAddress, setPdsAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [iconUrl, setIconUrl] = useState("");
-  const [version, setVersion] = useState("");
   const [handle, setHandle] = useState("");
-  const [agentId, setAgentId] = useState("");
 
-  const mutation = usePublishAgentsTeamToFireskyMutation(agentId);
+  const mutation = usePublishAgentsTeamToFireskyMutation(preload.agentId);
 
   const canPublish =
-    pdsAddress.trim().length > 0 &&
     email.trim().length > 0 &&
-    password.trim().length > 0;
-
-  useEffect(() => {
-    const preload = location.state as GraphEditorStepperData;
-    setAgentName(preload.agentName);
-    setIconUrl(preload.iconUrl ?? "");
-    setAgentId(preload.agentId ?? "");
-    setVersion(preload.version ?? "");
-    void navigate(location.pathname, { replace: true });
-  }, [location.pathname, location.state, navigate]);
+    handle.trim().length > 0 &&
+    password.trim().length > 0 &&
+    pdsAddress.trim().length > 0;
 
   const handlePublish = () => {
     if (!canPublish) {
@@ -53,8 +45,8 @@ export default function PublishAgent() {
     }
 
     const modalData = [
-      { label: "deploy.labels.agentId", value: agentId },
-      { label: "deploy.version", value: version },
+      { label: "deploy.labels.agentId", value: preload.agentId },
+      { label: "deploy.version", value: preload.version },
       { label: "deploy.labels.note", value: "idk what to put here" },
     ];
 
@@ -77,9 +69,9 @@ export default function PublishAgent() {
         onSuccess: () => {
           open(
             <SuccessModal
-              agentName={agentName}
+              agentName={preload.agentName}
               data={modalData}
-              iconUrl={iconUrl}
+              iconUrl={preload.iconUrl}
             />,
             {
               ariaLabel: "Success deploy",
@@ -113,7 +105,7 @@ export default function PublishAgent() {
 
         <div className={styles["profile-header"]}>
           <div className={styles["profile-icon"]}>
-            <IconPreview url={iconUrl} />
+            <IconPreview url={preload.iconUrl} />
           </div>
         </div>
 
@@ -125,8 +117,7 @@ export default function PublishAgent() {
             <Input
               inputType="input"
               placeholder="Agent name"
-              value={agentName}
-              onChange={(e) => setAgentName(e.target.value)}
+              value={preload.agentName}
             />
           </div>
           <div className={styles["form-field"]}>
