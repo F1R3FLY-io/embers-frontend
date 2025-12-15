@@ -1880,6 +1880,9 @@
           "agents_team": {
             "type": "string",
             "format": "blockchain-uri"
+          },
+          "reply_to": {
+            "$ref": "#/components/schemas/FireskyReply"
           }
         }
       },
@@ -2014,6 +2017,19 @@
         "type": "object",
         "title": "Exchange"
       },
+      "FireskyReply": {
+        "type": "object",
+        "title": "FireskyReply",
+        "required": ["parent", "root"],
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/PostRef"
+          },
+          "root": {
+            "$ref": "#/components/schemas/PostRef"
+          }
+        }
+      },
       "InternalError": {
         "type": "object",
         "title": "InternalError",
@@ -2040,6 +2056,19 @@
       "LogLevel": {
         "type": "string",
         "enum": ["debug", "info", "error"]
+      },
+      "PostRef": {
+        "type": "object",
+        "title": "PostRef",
+        "required": ["cid", "uri"],
+        "properties": {
+          "cid": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
       },
       "PrepareResponse_BoostResp": {
         "type": "object",

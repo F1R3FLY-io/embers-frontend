@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 
+import type { FireskyReply } from "./FireskyReply";
 import type { SignedContract } from "./SignedContract";
 import type { Uri } from "./Uri";
 
+import { FireskyReplyFromJSON, FireskyReplyToJSON } from "./FireskyReply";
 import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
 import { UriFromJSON, UriToJSON } from "./Uri";
 
@@ -34,6 +36,12 @@ export interface DeploySignedRunAgentsTeamFireskyReq {
    * @memberof DeploySignedRunAgentsTeamFireskyReq
    */
   contract: SignedContract;
+  /**
+   *
+   * @type {FireskyReply}
+   * @memberof DeploySignedRunAgentsTeamFireskyReq
+   */
+  replyTo?: FireskyReply;
 }
 
 /**
@@ -67,6 +75,8 @@ export function DeploySignedRunAgentsTeamFireskyReqFromJSONTyped(
   return {
     agentsTeam: UriFromJSON(json.agents_team),
     contract: SignedContractFromJSON(json.contract),
+    replyTo:
+      json.reply_to == null ? undefined : FireskyReplyFromJSON(json.reply_to),
   };
 }
 
@@ -87,5 +97,6 @@ export function DeploySignedRunAgentsTeamFireskyReqToJSONTyped(
   return {
     agents_team: UriToJSON(value.agentsTeam),
     contract: SignedContractToJSON(value.contract),
+    reply_to: FireskyReplyToJSON(value.replyTo),
   };
 }

@@ -45,9 +45,11 @@ docs/DeploySignedTestRespTestDeployFailed.md
 docs/DeployTestReq.md
 docs/DeployTestResp.md
 docs/EnvDeployFailed.md
+docs/FireskyReply.md
 docs/InternalError.md
 docs/Log.md
 docs/LogLevel.md
+docs/PostRef.md
 docs/PrepareResponseBoostResp.md
 docs/PrepareResponseDeployTestResp.md
 docs/PrepareResponseTransferResp.md
@@ -114,9 +116,11 @@ models/DeploySignedTestRespTestDeployFailed.ts
 models/DeployTestReq.ts
 models/DeployTestResp.ts
 models/EnvDeployFailed.ts
+models/FireskyReply.ts
 models/InternalError.ts
 models/Log.ts
 models/LogLevel.ts
+models/PostRef.ts
 models/PrepareResponseBoostResp.ts
 models/PrepareResponseDeployTestResp.ts
 models/PrepareResponseTransferResp.ts

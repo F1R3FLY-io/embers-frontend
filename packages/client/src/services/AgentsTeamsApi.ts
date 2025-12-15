@@ -4,6 +4,7 @@ import { base16 } from "@scure/base";
 
 import type {
   CreateAgentsTeamReq,
+  FireskyReply,
   HTTPHeaders,
   PublishAgentsTeamToFireskyReq,
 } from "@/api-client";
@@ -330,6 +331,7 @@ export class AgentsTeamsApiSdk {
     agentTeamUri: Uri,
     prompt: string,
     phloLimit: Amount,
+    replyTo?: FireskyReply,
     config?: ContractCallConfig,
   ) {
     const prepareModel =
@@ -351,6 +353,7 @@ export class AgentsTeamsApiSdk {
         deploySignedRunAgentsTeamFireskyReq: {
           agentsTeam: agentTeamUri,
           contract: signedContract,
+          replyTo,
         },
       },
       { signal: config?.signal },
