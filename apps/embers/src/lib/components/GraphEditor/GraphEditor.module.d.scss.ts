@@ -1,8 +1,8 @@
 declare const classNames: {
-  readonly container: "container";
   readonly background: "background";
-  readonly pattern: "pattern";
+  readonly container: "container";
   readonly edge: "edge";
   readonly "no-node-style": "no-node-style";
+  readonly pattern: "pattern";
 };
 export default classNames;

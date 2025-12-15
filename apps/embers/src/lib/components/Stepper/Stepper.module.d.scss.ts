@@ -1,14 +1,14 @@
 declare const classNames: {
-  readonly stepper: "stepper";
-  readonly "step-container": "step-container";
-  readonly "step-content": "step-content";
+  readonly checkmark: "checkmark";
   readonly circle: "circle";
   readonly completed: "completed";
   readonly current: "current";
-  readonly pending: "pending";
-  readonly checkmark: "checkmark";
   readonly dot: "dot";
-  readonly line: "line";
   readonly label: "label";
+  readonly line: "line";
+  readonly pending: "pending";
+  readonly "step-container": "step-container";
+  readonly "step-content": "step-content";
+  readonly stepper: "stepper";
 };
 export default classNames;

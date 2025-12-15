@@ -1,7 +1,7 @@
 declare const classNames: {
-  readonly overlay: "overlay";
-  readonly dialog: "dialog";
-  readonly content: "content";
   readonly close: "close";
+  readonly content: "content";
+  readonly dialog: "dialog";
+  readonly overlay: "overlay";
 };
 export default classNames;

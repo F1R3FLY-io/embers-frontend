@@ -1,13 +1,13 @@
 declare const classNames: {
-  readonly "info-log": "info-log";
-  readonly "error-log": "error-log";
-  readonly sidebar: "sidebar";
   readonly body: "body";
-  readonly "sidebar-footer": "sidebar-footer";
+  readonly "error-log": "error-log";
+  readonly footer: "footer";
+  readonly "info-log": "info-log";
+  readonly input: "input";
   readonly "plus-icon": "plus-icon";
   readonly "search-bar": "search-bar";
-  readonly input: "input";
-  readonly footer: "footer";
+  readonly sidebar: "sidebar";
   readonly "sidebar-controls": "sidebar-controls";
+  readonly "sidebar-footer": "sidebar-footer";
 };
 export default classNames;

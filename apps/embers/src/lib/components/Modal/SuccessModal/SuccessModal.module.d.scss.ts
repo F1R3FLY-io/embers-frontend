@@ -1,12 +1,12 @@
 declare const classNames: {
-  readonly wrap: "wrap";
-  readonly header: "header";
-  readonly title: "title";
-  readonly subtitle: "subtitle";
+  readonly actions: "actions";
   readonly details: "details";
+  readonly header: "header";
+  readonly multiline: "multiline";
   readonly row: "row";
   readonly "row-value": "row-value";
-  readonly multiline: "multiline";
-  readonly actions: "actions";
+  readonly subtitle: "subtitle";
+  readonly title: "title";
+  readonly wrap: "wrap";
 };
 export default classNames;

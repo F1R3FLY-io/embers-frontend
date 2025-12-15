@@ -1,18 +1,18 @@
 declare const classNames: {
-  readonly container: "container";
-  readonly label: "label";
-  readonly select: "select";
-  readonly open: "open";
-  readonly error: "error";
-  readonly disabled: "disabled";
-  readonly borderless: "borderless";
-  readonly value: "value";
-  readonly placeholder: "placeholder";
   readonly arrow: "arrow";
+  readonly borderless: "borderless";
+  readonly container: "container";
+  readonly disabled: "disabled";
   readonly dropdown: "dropdown";
+  readonly error: "error";
+  readonly label: "label";
+  readonly open: "open";
   readonly option: "option";
+  readonly placeholder: "placeholder";
+  readonly select: "select";
   readonly selected: "selected";
   readonly tag: "tag";
   readonly up: "up";
+  readonly value: "value";
 };
 export default classNames;

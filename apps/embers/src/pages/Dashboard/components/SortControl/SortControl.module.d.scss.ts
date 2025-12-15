@@ -1,8 +1,8 @@
 declare const classNames: {
-  readonly "sort-control": "sort-control";
-  readonly "sort-icon": "sort-icon";
-  readonly "sort-dropdown": "sort-dropdown";
-  readonly dropdown: "dropdown";
   readonly chevron: "chevron";
+  readonly dropdown: "dropdown";
+  readonly "sort-control": "sort-control";
+  readonly "sort-dropdown": "sort-dropdown";
+  readonly "sort-icon": "sort-icon";
 };
 export default classNames;

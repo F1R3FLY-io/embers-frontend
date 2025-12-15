@@ -1,11 +1,11 @@
 declare const classNames: {
   readonly button: "button";
-  readonly icon: "icon";
-  readonly textless: "textless";
-  readonly primary: "primary";
   readonly disabled: "disabled";
+  readonly icon: "icon";
+  readonly primary: "primary";
+  readonly rounded: "rounded";
   readonly secondary: "secondary";
   readonly subtle: "subtle";
-  readonly rounded: "rounded";
+  readonly textless: "textless";
 };
 export default classNames;

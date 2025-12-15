@@ -1,6 +1,6 @@
 declare const classNames: {
-  readonly "icon-preview": "icon-preview";
   readonly "icon-image": "icon-image";
   readonly "icon-placeholder": "icon-placeholder";
+  readonly "icon-preview": "icon-preview";
 };
 export default classNames;

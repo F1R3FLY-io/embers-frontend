@@ -2,7 +2,7 @@ import type React from "react";
 
 import { useEffect, useMemo, useReducer } from "react";
 
-import { DockContext } from "./useDock";
+import { ActionType, DockContext } from "./useDock";
 
 export type LogLevel = "info" | "error";
 export type LogEntry = {
@@ -23,17 +23,6 @@ type State = {
   opened: OpenedState;
   unread: UnreadState;
 };
-
-export const ActionType = {
-  ADD_DEPLOY: "ADD_DEPLOY",
-  ADD_LOG: "ADD_LOG",
-  CLEAR_DEPLOYS: "CLEAR_DEPLOYS",
-  CLEAR_LOGS: "CLEAR_LOGS",
-  MARK_DEPLOYS_READ: "MARK_DEPLOYS_READ",
-  MARK_LOGS_READ: "MARK_LOGS_READ",
-  SET_MAX: "SET_MAX",
-  SET_OPENED: "SET_OPENED",
-} as const;
 
 type Action =
   | { entry: LogEntry; type: typeof ActionType.ADD_LOG }

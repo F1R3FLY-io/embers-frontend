@@ -1,6 +1,6 @@
 declare const classNames: {
-  readonly switch: "switch";
-  readonly slider: "slider";
   readonly icon: "icon";
+  readonly slider: "slider";
+  readonly switch: "switch";
 };
 export default classNames;
