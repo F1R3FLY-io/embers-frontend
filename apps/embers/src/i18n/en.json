@@ -73,7 +73,8 @@
     "tellUsAboutYourAgent": "Tell us about your AI-Agent",
     "generalSettings": "General settings",
     "selectEnvironment": "Select environment",
-    "createAnother": "Create another agent"
+    "createAnother": "Create another agent",
+    "publish": "Publish"
   },
   "graphEditor": {
     "addCustomComponent": "Add Custom Component"
@@ -132,6 +133,26 @@
       "subtitle": "Something went wrong while deploying your agent. Please review the error message below and try again.",
       "tryAgain": "Try again",
       "reviewSettings": "Review agent settings"
+    }
+  },
+  "publish": {
+    "titleSmall": "Publish",
+    "header": "Create F1R3SKY Agent Profile",
+    "subtitle": "Enter the required information to publish your Agent",
+    "agentName": "Agent name",
+    "username": "Username",
+    "pdsAddress": "PDS Address",
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "cancel": "Cancel",
+    "button": "Create & Publish",
+    "unpublish": "Unpublish Agent",
+    "view": "View on F1R3SKY",
+    "backToDashboard": "Back to Dashboard",
+    "success": {
+      "title": "{{agentName}} Successfully Published",
+      "subtitle": "It can now receive tasks and collaborate with other agents in the selected shard."
     }
   }
 }

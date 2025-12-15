@@ -7,7 +7,7 @@ import { Text } from "@/lib/components/Text";
 import styles from "./Button.module.scss";
 
 type ButtonProps = {
-  children: string;
+  children?: string;
   className?: string;
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -48,10 +48,18 @@ export function Button({
         }
       }}
     >
-      {icon ? <div className={styles.icon}>{icon}</div> : null}
-      <Text bold type="normal">
-        {children}
-      </Text>
+      {icon ? (
+        <div
+          className={classNames(styles.icon, { [styles.textless]: !children })}
+        >
+          {icon}
+        </div>
+      ) : null}
+      {children && (
+        <Text bold type="normal">
+          {children}
+        </Text>
+      )}
     </button>
   );
 }

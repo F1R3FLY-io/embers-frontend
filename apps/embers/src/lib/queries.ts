@@ -1,5 +1,4 @@
 import type {
-  Address,
   CreateAgentReq,
   CreateAgentsTeamReq,
   PrivateKey,
@@ -342,14 +341,11 @@ export function useRunAgentsTeamMutation() {
   });
 }
 
-export function usePublishAgentsTeamToFireskyMutation(
-  address: Address,
-  id: string,
-) {
+export function usePublishAgentsTeamToFireskyMutation(id: string) {
   const api = useApi();
 
   return useMutation({
     mutationFn: async (params: PublishAgentsTeamToFireskyReq) =>
-      api.agentsTeams.publishToFiresky(address, id, params),
+      api.agentsTeams.publishToFiresky(id, params),
   });
 }
