@@ -346,6 +346,6 @@ export function usePublishAgentsTeamToFireskyMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: PublishAgentsTeamToFireskyReq) =>
-      api.agentsTeams.publishToFiresky(api.wallets.address, id, params),
+      api.agentsTeams.publishToFiresky(id, params),
   });
 }

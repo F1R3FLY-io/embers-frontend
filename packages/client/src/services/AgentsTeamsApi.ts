@@ -293,7 +293,6 @@ export class AgentsTeamsApiSdk {
   }
 
   public async publishToFiresky(
-    address: Address,
     id: string,
     publishAgentsTeamToFireskyReq: PublishAgentsTeamToFireskyReq,
     config?: ContractCallConfig,
@@ -301,7 +300,7 @@ export class AgentsTeamsApiSdk {
     const prepareModel =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
         {
-          address,
+          address: this.address,
           id,
           publishAgentsTeamToFireskyReq,
         },
@@ -317,7 +316,7 @@ export class AgentsTeamsApiSdk {
     const sendModel =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
         {
-          address,
+          address: this.address,
           id,
           signedContract,
         },
