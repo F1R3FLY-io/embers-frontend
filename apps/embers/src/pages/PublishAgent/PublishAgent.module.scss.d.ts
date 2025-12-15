@@ -1,17 +1,17 @@
 declare const classNames: {
   readonly root: "root";
-  readonly imagePanel: "imagePanel";
-  readonly imageFrame: "imageFrame";
+  readonly "image-panel": "image-panel";
+  readonly "image-frame": "image-frame";
   readonly image: "image";
-  readonly rightPanel: "rightPanel";
+  readonly "right-panel": "right-panel";
   readonly header: "header";
-  readonly profileHeader: "profileHeader";
-  readonly profileIcon: "profileIcon";
-  readonly profileText: "profileText";
-  readonly formFields: "formFields";
-  readonly formField: "formField";
-  readonly buttonRow: "buttonRow";
-  readonly primaryButton: "primaryButton";
+  readonly "profile-header": "profile-header";
+  readonly "profile-icon": "profile-icon";
+  readonly "profile-text": "profile-text";
+  readonly "form-fields": "form-fields";
+  readonly "form-field": "form-field";
+  readonly "button-row": "button-row";
+  readonly "primary-button": "primary-button";
   readonly footer: "footer";
 };
 export default classNames;

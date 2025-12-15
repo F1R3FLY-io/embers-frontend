@@ -341,9 +341,7 @@ export function useRunAgentsTeamMutation() {
   });
 }
 
-export function usePublishAgentsTeamToFireskyMutation(
-  id: string,
-) {
+export function usePublishAgentsTeamToFireskyMutation(id: string) {
   const api = useApi();
 
   return useMutation({

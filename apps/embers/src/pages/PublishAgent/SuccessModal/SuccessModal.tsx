@@ -16,11 +16,7 @@ export type DeploySuccessData = {
   iconUrl?: string;
 };
 
-export function SuccessModal({
-  agentName,
-  data,
-  iconUrl
-}: DeploySuccessData) {
+export function SuccessModal({ agentName, data, iconUrl }: DeploySuccessData) {
   const { close } = useModal();
   const navigate = useNavigate();
   const { t } = useTranslation();

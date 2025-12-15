@@ -34,7 +34,6 @@ export default function PublishAgent() {
   const mutation = usePublishAgentsTeamToFireskyMutation(agentId);
 
   const canPublish =
-    agentName.trim().length > 0 &&
     pdsAddress.trim().length > 0 &&
     email.trim().length > 0 &&
     password.trim().length > 0;
@@ -46,8 +45,7 @@ export default function PublishAgent() {
     setAgentId(preload.agentId ?? "");
     setVersion(preload.version ?? "");
     void navigate(location.pathname, { replace: true });
-  }, []);
-
+  }, [location.pathname, location.state, navigate]);
 
   const handlePublish = () => {
     if (!canPublish) {
@@ -57,9 +55,8 @@ export default function PublishAgent() {
     const modalData = [
       { label: "deploy.labels.agentId", value: agentId },
       { label: "deploy.version", value: version },
-      { label: "deploy.labels.note", value: 'idk what to put here' },
+      { label: "deploy.labels.note", value: "idk what to put here" },
     ];
-
 
     mutation.mutate(
       { email, handle, password, pdsUrl: pdsAddress },
@@ -94,16 +91,15 @@ export default function PublishAgent() {
     );
   };
 
-
   return (
     <div className={styles.root}>
-      <div className={styles.imagePanel}>
-        <div className={styles.imageFrame}>
+      <div className={styles["image-panel"]}>
+        <div className={styles["image-frame"]}>
           <img alt="" className={styles.image} src={publishImage} />
         </div>
       </div>
 
-      <div className={styles.rightPanel}>
+      <div className={styles["right-panel"]}>
         <Text color="secondary" type="small">
           {t("publish.titleSmall")}
         </Text>
@@ -112,19 +108,17 @@ export default function PublishAgent() {
           <Text bold color="primary" type="H1">
             {t("publish.header")}
           </Text>
-          <Text color="secondary">
-            {t("publish.subtitle")}
-          </Text>
+          <Text color="secondary">{t("publish.subtitle")}</Text>
         </div>
 
-        <div className={styles.profileHeader}>
-          <div className={styles.profileIcon}>
+        <div className={styles["profile-header"]}>
+          <div className={styles["profile-icon"]}>
             <IconPreview url={iconUrl} />
           </div>
         </div>
 
-        <div className={styles.formFields}>
-          <div className={styles.formField}>
+        <div className={styles["form-fields"]}>
+          <div className={styles["form-field"]}>
             <Text color="secondary" type="small">
               {t("publish.agentName")}
             </Text>
@@ -135,18 +129,18 @@ export default function PublishAgent() {
               onChange={(e) => setAgentName(e.target.value)}
             />
           </div>
-          <div className={styles.formField}>
+          <div className={styles["form-field"]}>
             <Text color="secondary" type="small">
               {t("publish.username")}
             </Text>
             <Input
               inputType="input"
               placeholder="Username"
-              value={agentName}
+              value={handle}
               onChange={(e) => setHandle(e.target.value)}
             />
           </div>
-          <div className={styles.formField}>
+          <div className={styles["form-field"]}>
             <Text color="secondary" type="small">
               {t("publish.pdsAddress")}
             </Text>
@@ -158,7 +152,7 @@ export default function PublishAgent() {
             />
           </div>
 
-          <div className={styles.formField}>
+          <div className={styles["form-field"]}>
             <Text color="secondary" type="small">
               Email
             </Text>
@@ -170,7 +164,7 @@ export default function PublishAgent() {
             />
           </div>
 
-          <div className={styles.formField}>
+          <div className={styles["form-field"]}>
             <Text color="secondary" type="small">
               Password
             </Text>
@@ -184,13 +178,13 @@ export default function PublishAgent() {
           </div>
         </div>
 
-        <div className={styles.buttonRow}>
+        <div className={styles["button-row"]}>
           <Button type="secondary" onClick={() => window.history.back()}>
             {t("publish.cancel")}
           </Button>
 
           <button
-            className={styles.primaryButton}
+            className={styles["primary-button"]}
             disabled={!canPublish}
             onClick={handlePublish}
           >

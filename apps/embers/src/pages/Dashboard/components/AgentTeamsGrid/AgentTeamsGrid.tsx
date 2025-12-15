@@ -135,11 +135,14 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
                     icon={<EditIcon />}
                     type="secondary"
                     onClick={() => navigateToAgent(agent)}
-                   />
+                  />
                   <Button type="primary" onClick={() => navigateToAgent(agent)}>
                     {t("agents.details")}
                   </Button>
-                  <Button type="subtle" onClick={() => navigateToPublish(agent)}>
+                  <Button
+                    type="subtle"
+                    onClick={() => navigateToPublish(agent)}
+                  >
                     {t("agents.publish")}
                   </Button>
                 </div>

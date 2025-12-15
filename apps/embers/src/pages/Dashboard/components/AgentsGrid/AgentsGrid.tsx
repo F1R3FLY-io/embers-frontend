@@ -127,7 +127,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
                     icon={<EditIcon />}
                     type="secondary"
                     onClick={() => navigateToAgent(agent)}
-                   />
+                  />
                   <Button type="primary" onClick={() => navigateToAgent(agent)}>
                     {t("agents.details")}
                   </Button>

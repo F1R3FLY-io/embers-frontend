@@ -3,7 +3,7 @@
   min-height: 100vh;
 }
 
-.imagePanel {
+.image-panel {
   width: 30%;
   display: flex;
   align-items: center;
@@ -11,7 +11,7 @@
   padding: 20px;
 }
 
-.imageFrame {
+.image-frame {
   width: 100%;
   height: 100%;
   border-radius: 10px;
@@ -27,9 +27,9 @@
   opacity: 0.2;
 }
 
-.rightPanel {
+.right-panel {
   flex: 1;
-  padding: 28px 28px 0 28px;
+  padding: 28px 28px 0;
   max-width: 680px;
   display: flex;
   flex-direction: column;
@@ -42,43 +42,43 @@
   row-gap: 8px;
 }
 
-.profileHeader {
+.profile-header {
   display: flex;
   align-items: center;
   column-gap: 16px;
   margin-top: 32px;
 }
 
-.profileIcon {
+.profile-icon {
   overflow: hidden;
   background-color: var(--background-neutral-surface-primary);
 }
 
-.profileText {
+.profile-text {
   flex: 1;
 }
 
-.formFields {
+.form-fields {
   display: flex;
   flex-direction: column;
   row-gap: 20px;
   margin-top: 24px;
 }
 
-.formField {
+.form-field {
   display: flex;
   flex-direction: column;
   row-gap: 8px;
 }
 
-.buttonRow {
+.button-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 32px;
 }
 
-.primaryButton {
+.primary-button {
   min-width: 200px;
   height: 44px;
   padding: 0 24px;
@@ -91,22 +91,9 @@
   font-weight: 600;
   cursor: pointer;
   transition:
-          background-color 0.2s ease,
-          opacity 0.2s ease,
-          transform 0.1s ease;
-}
-
-.primaryButton:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.primaryButton:not(:disabled):hover {
-  background-color: var(--button-hover);
-}
-
-.primaryButton:not(:disabled):active {
-  transform: translateY(1px);
+    background-color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.1s ease;
 }
 
 .footer {

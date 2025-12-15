@@ -48,12 +48,18 @@ export function Button({
         }
       }}
     >
-      {icon ? <div className={classNames(styles.icon, {[styles.textless]: !children})}>{icon}</div> : null}
-      {children &&
+      {icon ? (
+        <div
+          className={classNames(styles.icon, { [styles.textless]: !children })}
+        >
+          {icon}
+        </div>
+      ) : null}
+      {children && (
         <Text bold type="normal">
           {children}
         </Text>
-      }
+      )}
     </button>
   );
 }

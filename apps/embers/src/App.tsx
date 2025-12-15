@@ -85,7 +85,10 @@ export default function App() {
                               path="/create-ai-team/*"
                             />
                             <Route element={<Dashboard />} path="/dashboard" />
-                            <Route element={<PublishAgent />} path="/publish-agent" />
+                            <Route
+                              element={<PublishAgent />}
+                              path="/publish-agent"
+                            />
                           </Route>
                         </Routes>
                       </div>
