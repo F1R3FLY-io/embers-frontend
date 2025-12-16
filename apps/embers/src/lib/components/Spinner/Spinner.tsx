@@ -13,6 +13,7 @@ export function Spinner({ isOpen }: SpinnerProps) {
       isOpen={isOpen}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
+      overlayClassName={styles.overlay}
     >
       <div className={styles.spinner} />
     </Modal>

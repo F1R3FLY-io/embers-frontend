@@ -14,6 +14,7 @@ import publishImage from "@/lib/resources/publish.png";
 import { SuccessModal } from "@/pages/PublishAgent/SuccessModal";
 
 import styles from "./PublishAgent.module.scss";
+import {useLoader} from "@/lib/providers/loader/useLoader.ts";
 
 export default function PublishAgent() {
   const { t } = useTranslation();
@@ -30,6 +31,7 @@ export default function PublishAgent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [handle, setHandle] = useState("");
+  const { hideLoader, showLoader } = useLoader();
 
   const mutation = usePublishAgentsTeamToFireskyMutation(preload.agentId);
 
@@ -50,10 +52,12 @@ export default function PublishAgent() {
       { label: "deploy.labels.note", value: "idk what to put here" },
     ];
 
+    showLoader();
     mutation.mutate(
       { email, handle, password, pdsUrl: pdsAddress },
       {
         onError: (e) => {
+          hideLoader();
           open(
             <WarningModal
               error={e.message}
@@ -67,6 +71,7 @@ export default function PublishAgent() {
           );
         },
         onSuccess: () => {
+          hideLoader();
           open(
             <SuccessModal
               agentName={preload.agentName}
