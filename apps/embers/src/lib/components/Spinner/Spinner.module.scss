@@ -1,9 +1,18 @@
-.content {
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgb(255 255 255 / 70%);
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  z-index: 9999999;
+}
+
+.content {
+  background: transparent;
+  border: 0;
+  outline: none;
+  inset: auto;
 }
 
 .spinner {
