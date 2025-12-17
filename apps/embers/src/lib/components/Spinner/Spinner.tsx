@@ -11,9 +11,9 @@ export function Spinner({ isOpen }: SpinnerProps) {
     <Modal
       className={styles.content}
       isOpen={isOpen}
+      overlayClassName={styles.overlay}
       shouldCloseOnEsc={false}
       shouldCloseOnOverlayClick={false}
-      overlayClassName={styles.overlay}
     >
       <div className={styles.spinner} />
     </Modal>
