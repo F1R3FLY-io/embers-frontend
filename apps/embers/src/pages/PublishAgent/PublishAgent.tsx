@@ -8,7 +8,7 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Text } from "@/lib/components/Text";
-import { useLoader } from "@/lib/providers/loader/useLoader";
+import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { usePublishAgentsTeamToFireskyMutation } from "@/lib/queries";
 import { SuccessModal } from "@/pages/PublishAgent/SuccessModal";
@@ -31,9 +31,9 @@ export default function PublishAgent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [handle, setHandle] = useState("");
-  const { hideLoader, showLoader } = useLoader();
-
-  const mutation = usePublishAgentsTeamToFireskyMutation(preload.agentId);
+  const publish = useMutationResultWithLoader(
+    usePublishAgentsTeamToFireskyMutation(preload.agentId),
+  );
 
   const canPublish =
     email.trim().length > 0 &&
@@ -55,12 +55,10 @@ export default function PublishAgent() {
       { label: "deploy.labels.note", value: "idk what to put here" },
     ];
 
-    showLoader();
-    mutation.mutate(
+    publish.mutate(
       { email, handle, password, pdsUrl: pdsAddress },
       {
         onError: (e) => {
-          hideLoader();
           open(
             <WarningModal
               error={e.message}
@@ -74,7 +72,6 @@ export default function PublishAgent() {
           );
         },
         onSuccess: () => {
-          hideLoader();
           open(
             <SuccessModal
               agentName={preload.agentName}

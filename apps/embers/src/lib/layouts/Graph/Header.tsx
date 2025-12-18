@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/lib/components/Button";
 import { PromptModal } from "@/lib/components/Modal/PromptModal";
 import { useDock } from "@/lib/providers/dock/useDock";
-import { useLoader } from "@/lib/providers/loader/useLoader";
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
+import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 import {
@@ -19,13 +20,12 @@ export const Header: React.FC = () => {
   const { t } = useTranslation();
   const { data, navigateToNextStep, updateData } = useGraphEditorStepper();
   const dock = useDock();
-  const { hideLoader, showLoader } = useLoader();
   const { open } = useModal();
 
   const id = useMemo(() => data.agentId ?? "", [data.agentId]);
   const saveMutation = useSaveAgentsTeamMutation(id);
   const createMutation = useCreateAgentsTeamMutation();
-  const runAgentsTeam = useRunAgentsTeamMutation();
+  const runAgentsTeam = useMutationResultWithLoader(useRunAgentsTeamMutation());
 
   const isDeployed = data.lastDeployKey || data.uri;
   const isLoading =
@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
   );
   const canRun = Boolean(isDeployed && !data.hasGraphChanges);
 
-  const saveOrCreate = async () => {
+  const saveOrCreate = useCallbackWithLoader(async () => {
     const payload = {
       description: data.description ?? "",
       edges: data.edges,
@@ -58,14 +58,13 @@ export const Header: React.FC = () => {
       agentId: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
-  };
+  });
 
   const handleSave = async () => {
     if (isLoading) {
       return;
     }
     try {
-      showLoader();
       const { agentId, version } = await saveOrCreate();
       updateData("version", version);
       updateData("agentId", agentId);
@@ -79,8 +78,6 @@ export const Header: React.FC = () => {
         "error",
       );
       throw e;
-    } finally {
-      hideLoader();
     }
   };
 
@@ -89,7 +86,6 @@ export const Header: React.FC = () => {
       return;
     }
     try {
-      showLoader();
       const { agentId, version } = await saveOrCreate();
       updateData("agentId", agentId);
       updateData("version", version);
@@ -99,8 +95,6 @@ export const Header: React.FC = () => {
         `Pre-deploy save failed with error: ${e instanceof Error ? e.message : String(e)}`,
         "error",
       );
-    } finally {
-      hideLoader();
     }
   };
 
@@ -113,7 +107,6 @@ export const Header: React.FC = () => {
         inputPlaceholder={t("deploy.enterInputPrompt")}
         onConfirm={(prompt) => {
           if (data.uri) {
-            showLoader();
             void runAgentsTeam
               .mutateAsync({
                 prompt,
@@ -133,8 +126,7 @@ export const Header: React.FC = () => {
                   "info",
                 );
               })
-              .catch(logError)
-              .finally(hideLoader);
+              .catch(logError);
           }
         }}
       />,

@@ -10,6 +10,7 @@ import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
+import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useDeployAgentMutation } from "@/lib/queries";
@@ -50,7 +51,7 @@ export default function DeployAgent() {
 
   const [rhoLimitInput, setRhoLimitInput] = useState("1000000");
 
-  const deployMutation = useDeployAgentMutation();
+  const deployMutation = useMutationResultWithLoader(useDeployAgentMutation());
   const isDeploying = deployMutation.isPending;
 
   const rhoLimit = parseBigIntOrNull(rhoLimitInput);
