@@ -15,17 +15,20 @@ import type {
   AgentsTeam,
   AgentsTeams,
   CreateAgentsTeamReq,
-  CreateAgentsTeamResp,
   DeleteAgentsTeamResp,
   DeployAgentsTeamReq,
-  DeployAgentsTeamResp,
-  DeploySignedAgentsTeamtReq,
-  DeploySignedRunAgentsTeamFireskyReq,
+  PrepareResponseCreateAgentsTeamResp,
+  PrepareResponseDeployAgentsTeamResp,
+  PrepareResponseRunAgentsTeamResp,
+  PrepareResponseSaveAgentsTeamResp,
   PublishAgentsTeamToFireskyReq,
   PublishAgentsTeamToFireskyResp,
   RunAgentsTeamReq,
-  RunAgentsTeamResp,
-  SaveAgentsTeamResp,
+  SendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp,
+  SendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp,
+  SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
+  SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
+  SendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp,
   SendResp,
   SignedContract,
 } from "../models/index";
@@ -34,17 +37,20 @@ import {
   AgentsTeamFromJSON,
   AgentsTeamsFromJSON,
   CreateAgentsTeamReqToJSON,
-  CreateAgentsTeamRespFromJSON,
   DeleteAgentsTeamRespFromJSON,
   DeployAgentsTeamReqToJSON,
-  DeployAgentsTeamRespFromJSON,
-  DeploySignedAgentsTeamtReqToJSON,
-  DeploySignedRunAgentsTeamFireskyReqToJSON,
+  PrepareResponseCreateAgentsTeamRespFromJSON,
+  PrepareResponseDeployAgentsTeamRespFromJSON,
+  PrepareResponseRunAgentsTeamRespFromJSON,
+  PrepareResponseSaveAgentsTeamRespFromJSON,
   PublishAgentsTeamToFireskyReqToJSON,
   PublishAgentsTeamToFireskyRespFromJSON,
   RunAgentsTeamReqToJSON,
-  RunAgentsTeamRespFromJSON,
-  SaveAgentsTeamRespFromJSON,
+  SendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON,
+  SendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamRespToJSON,
+  SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON,
+  SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON,
+  SendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamRespToJSON,
   SendRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
@@ -82,7 +88,7 @@ export interface ApiAiAgentsTeamsCreatePreparePostRequest {
 }
 
 export interface ApiAiAgentsTeamsCreateSendPostRequest {
-  signedContract: SignedContract;
+  sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp;
 }
 
 export interface ApiAiAgentsTeamsDeployPreparePostRequest {
@@ -90,7 +96,7 @@ export interface ApiAiAgentsTeamsDeployPreparePostRequest {
 }
 
 export interface ApiAiAgentsTeamsDeploySendPostRequest {
-  deploySignedAgentsTeamtReq: DeploySignedAgentsTeamtReq;
+  sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp: SendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp;
 }
 
 export interface ApiAiAgentsTeamsIdDeletePreparePostRequest {
@@ -109,7 +115,7 @@ export interface ApiAiAgentsTeamsIdSavePreparePostRequest {
 
 export interface ApiAiAgentsTeamsIdSaveSendPostRequest {
   id: string;
-  signedContract: SignedContract;
+  sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp;
 }
 
 export interface ApiAiAgentsTeamsRunOnFireskyPreparePostRequest {
@@ -117,7 +123,7 @@ export interface ApiAiAgentsTeamsRunOnFireskyPreparePostRequest {
 }
 
 export interface ApiAiAgentsTeamsRunOnFireskySendPostRequest {
-  deploySignedRunAgentsTeamFireskyReq: DeploySignedRunAgentsTeamFireskyReq;
+  sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp: SendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp;
 }
 
 export interface ApiAiAgentsTeamsRunPreparePostRequest {
@@ -125,7 +131,7 @@ export interface ApiAiAgentsTeamsRunPreparePostRequest {
 }
 
 export interface ApiAiAgentsTeamsRunSendPostRequest {
-  signedContract: SignedContract;
+  sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp: SendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp;
 }
 
 /**
@@ -471,7 +477,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsCreatePreparePostRaw(
     requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateAgentsTeamResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentsTeamResp>> {
     if (requestParameters.createAgentsTeamReq == null) {
       throw new runtime.RequiredError(
         "createAgentsTeamReq",
@@ -499,7 +505,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CreateAgentsTeamRespFromJSON(jsonValue),
+      PrepareResponseCreateAgentsTeamRespFromJSON(jsonValue),
     );
   }
 
@@ -508,7 +514,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsCreatePreparePost(
     requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<CreateAgentsTeamResp> {
+  ): Promise<PrepareResponseCreateAgentsTeamResp> {
     const response = await this.apiAiAgentsTeamsCreatePreparePostRaw(
       requestParameters,
       initOverrides,
@@ -522,10 +528,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsCreateSendPost().',
+        "sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp",
+        'Required parameter "sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsCreateSendPost().',
       );
     }
 
@@ -539,7 +548,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON(
+          requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
@@ -571,7 +582,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsDeployPreparePostRaw(
     requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployAgentsTeamResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentsTeamResp>> {
     if (requestParameters.deployAgentsTeamReq == null) {
       throw new runtime.RequiredError(
         "deployAgentsTeamReq",
@@ -599,7 +610,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployAgentsTeamRespFromJSON(jsonValue),
+      PrepareResponseDeployAgentsTeamRespFromJSON(jsonValue),
     );
   }
 
@@ -608,7 +619,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsDeployPreparePost(
     requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployAgentsTeamResp> {
+  ): Promise<PrepareResponseDeployAgentsTeamResp> {
     const response = await this.apiAiAgentsTeamsDeployPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -622,10 +633,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.deploySignedAgentsTeamtReq == null) {
+    if (
+      requestParameters.sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "deploySignedAgentsTeamtReq",
-        'Required parameter "deploySignedAgentsTeamtReq" was null or undefined when calling apiAiAgentsTeamsDeploySendPost().',
+        "sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp",
+        'Required parameter "sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsDeploySendPost().',
       );
     }
 
@@ -639,8 +653,8 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: DeploySignedAgentsTeamtReqToJSON(
-          requestParameters.deploySignedAgentsTeamtReq,
+        body: SendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON(
+          requestParameters.sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp,
         ),
         headers: headerParameters,
         method: "POST",
@@ -785,7 +799,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdSavePreparePostRaw(
     requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SaveAgentsTeamResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentsTeamResp>> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -824,7 +838,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SaveAgentsTeamRespFromJSON(jsonValue),
+      PrepareResponseSaveAgentsTeamRespFromJSON(jsonValue),
     );
   }
 
@@ -833,7 +847,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdSavePreparePost(
     requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<SaveAgentsTeamResp> {
+  ): Promise<PrepareResponseSaveAgentsTeamResp> {
     const response = await this.apiAiAgentsTeamsIdSavePreparePostRaw(
       requestParameters,
       initOverrides,
@@ -854,10 +868,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       );
     }
 
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsIdSaveSendPost().',
+        "sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp",
+        'Required parameter "sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsIdSaveSendPost().',
       );
     }
 
@@ -875,7 +892,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON(
+          requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
@@ -907,7 +926,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
     requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<RunAgentsTeamResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseRunAgentsTeamResp>> {
     if (requestParameters.runAgentsTeamReq == null) {
       throw new runtime.RequiredError(
         "runAgentsTeamReq",
@@ -935,7 +954,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RunAgentsTeamRespFromJSON(jsonValue),
+      PrepareResponseRunAgentsTeamRespFromJSON(jsonValue),
     );
   }
 
@@ -944,7 +963,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsRunOnFireskyPreparePost(
     requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<RunAgentsTeamResp> {
+  ): Promise<PrepareResponseRunAgentsTeamResp> {
     const response = await this.apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -958,10 +977,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<void>> {
-    if (requestParameters.deploySignedRunAgentsTeamFireskyReq == null) {
+    if (
+      requestParameters.sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "deploySignedRunAgentsTeamFireskyReq",
-        'Required parameter "deploySignedRunAgentsTeamFireskyReq" was null or undefined when calling apiAiAgentsTeamsRunOnFireskySendPost().',
+        "sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp",
+        'Required parameter "sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsRunOnFireskySendPost().',
       );
     }
 
@@ -975,8 +997,8 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: DeploySignedRunAgentsTeamFireskyReqToJSON(
-          requestParameters.deploySignedRunAgentsTeamFireskyReq,
+        body: SendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamRespToJSON(
+          requestParameters.sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp,
         ),
         headers: headerParameters,
         method: "POST",
@@ -1006,7 +1028,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsRunPreparePostRaw(
     requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<RunAgentsTeamResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseRunAgentsTeamResp>> {
     if (requestParameters.runAgentsTeamReq == null) {
       throw new runtime.RequiredError(
         "runAgentsTeamReq",
@@ -1034,7 +1056,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RunAgentsTeamRespFromJSON(jsonValue),
+      PrepareResponseRunAgentsTeamRespFromJSON(jsonValue),
     );
   }
 
@@ -1043,7 +1065,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsRunPreparePost(
     requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<RunAgentsTeamResp> {
+  ): Promise<PrepareResponseRunAgentsTeamResp> {
     const response = await this.apiAiAgentsTeamsRunPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -1057,10 +1079,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<any>> {
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsRunSendPost().',
+        "sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp",
+        'Required parameter "sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsRunSendPost().',
       );
     }
 
@@ -1074,7 +1099,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamRespToJSON(
+          requestParameters.sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
