@@ -3,7 +3,7 @@ import type { ReactFlowJsonObject } from "@xyflow/react";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor";
 
-import { createStepper } from "../../StepperProvider";
+import { createStepper } from "@/lib/providers/stepper/StepperProvider";
 
 export type GraphEditorStepperData = {
   agentId?: string;

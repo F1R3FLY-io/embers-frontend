@@ -10,10 +10,10 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Select } from "@/lib/components/Select";
 import { SelectRow } from "@/lib/components/SelectRow";
+import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 
-import Stepper from "../../lib/components/Stepper";
 import styles from "./CreateAiTeam.module.scss";
 
 export default function CreateAiTeam() {

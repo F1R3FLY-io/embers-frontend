@@ -88,19 +88,11 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
 
   return (
     <>
-      <Button
-        disabled={isLoading}
-        type="subtle"
-        onClick={() => void handleSave()}
-      >
+      <Button disabled={isLoading} type="subtle" onClick={handleSave}>
         {isLoading ? "Saving..." : id ? "Save changes" : "Save as draft"}
       </Button>
 
-      <Button
-        disabled={isLoading}
-        type="primary"
-        onClick={() => void handleDeploy()}
-      >
+      <Button disabled={isLoading} type="primary" onClick={handleDeploy}>
         {isLoading ? "Processing..." : "Deploy"}
       </Button>
     </>

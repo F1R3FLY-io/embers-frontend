@@ -11,7 +11,7 @@ type ButtonProps = {
   className?: string;
   disabled?: boolean;
   icon?: React.ReactNode;
-  onClick: () => void;
+  onClick: () => void | Promise<void>;
   rounded?: boolean;
   type: "primary" | "secondary" | "subtle";
 };
@@ -44,7 +44,7 @@ export function Button({
       type="button"
       onClick={() => {
         if (!disabled) {
-          onClick();
+          void onClick();
         }
       }}
     >

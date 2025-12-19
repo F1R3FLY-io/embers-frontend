@@ -11,8 +11,8 @@ import { Text } from "@/lib/components/Text";
 import { useLoader } from "@/lib/providers/loader/useLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { usePublishAgentsTeamToFireskyMutation } from "@/lib/queries";
-import publishImage from "@/lib/resources/publish.png";
 import { SuccessModal } from "@/pages/PublishAgent/SuccessModal";
+import publishImage from "@/public/publish.png";
 
 import styles from "./PublishAgent.module.scss";
 
