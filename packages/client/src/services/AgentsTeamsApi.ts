@@ -51,27 +51,35 @@ export class AgentsTeamsApiSdk {
     createAgentsTeamReq: CreateAgentsTeamReq,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsTeamsCreatePreparePost(
+    const prepareResponse = await this.client.apiAiAgentsTeamsCreatePreparePost(
       {
         createAgentsTeamReq,
       },
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsCreateSendPost(
+    const sendResponse = await this.client.apiAiAgentsTeamsCreateSendPost(
       {
-        signedContract,
+        sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: {
+          prepareRequest: createAgentsTeamReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async get(config?: QueryCallConfig) {
@@ -116,45 +124,56 @@ export class AgentsTeamsApiSdk {
     config?: ContractCallConfig,
   ) {
     const timestamp = new Date();
+    const prepareRequest = {
+      deploy: {
+        signature: insertSignedSignature(
+          registryKey,
+          timestamp,
+          this.privateKey.getPublicKey(),
+          registryVersion,
+        ),
+        timestamp,
+        uriPubKey: registryKey.getPublicKey(),
+        version: registryVersion,
+      },
+      graph,
+      phloLimit: phloLimit.value,
+      type: "Graph" as const,
+    };
 
-    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost(
+    const prepareResponse = await this.client.apiAiAgentsTeamsDeployPreparePost(
       {
-        deployAgentsTeamReq: {
-          deploy: {
-            signature: insertSignedSignature(
-              registryKey,
-              timestamp,
-              this.privateKey.getPublicKey(),
-              registryVersion,
-            ),
-            timestamp,
-            uriPubKey: registryKey.getPublicKey(),
-            version: registryVersion,
-          },
-          graph,
-          phloLimit: phloLimit.value,
-          type: "Graph",
-        },
+        deployAgentsTeamReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const contract = signContract(prepareModel.contract, this.privateKey);
+    const contract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const system =
-      prepareModel.system && signContract(prepareModel.system, this.privateKey);
+      prepareResponse.response.system &&
+      signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost(
+    const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
-        deploySignedAgentsTeamtReq: { contract, system },
+        sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp:
+          {
+            prepareRequest,
+            prepareResponse: prepareResponse.response,
+            request: { contract, system },
+            token: prepareResponse.token,
+          },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async deploy(
@@ -166,47 +185,58 @@ export class AgentsTeamsApiSdk {
     config?: ContractCallConfig,
   ) {
     const timestamp = new Date();
+    const prepareRequest = {
+      address: this.address,
+      deploy: {
+        signature: insertSignedSignature(
+          registryKey,
+          timestamp,
+          this.privateKey.getPublicKey(),
+          registryVersion,
+        ),
+        timestamp,
+        uriPubKey: registryKey.getPublicKey(),
+        version: registryVersion,
+      },
+      id,
+      phloLimit: phloLimit.value,
+      type: "AgentsTeam" as const,
+      version,
+    };
 
-    const prepareModel = await this.client.apiAiAgentsTeamsDeployPreparePost(
+    const prepareResponse = await this.client.apiAiAgentsTeamsDeployPreparePost(
       {
-        deployAgentsTeamReq: {
-          address: this.address,
-          deploy: {
-            signature: insertSignedSignature(
-              registryKey,
-              timestamp,
-              this.privateKey.getPublicKey(),
-              registryVersion,
-            ),
-            timestamp,
-            uriPubKey: registryKey.getPublicKey(),
-            version: registryVersion,
-          },
-          id,
-          phloLimit: phloLimit.value,
-          type: "AgentsTeam",
-          version,
-        },
+        deployAgentsTeamReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const contract = signContract(prepareModel.contract, this.privateKey);
+    const contract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const system =
-      prepareModel.system && signContract(prepareModel.system, this.privateKey);
+      prepareResponse.response.system &&
+      signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsDeploySendPost(
+    const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
-        deploySignedAgentsTeamtReq: { contract, system },
+        sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp:
+          {
+            prepareRequest,
+            prepareResponse: prepareResponse.response,
+            request: { contract, system },
+            token: prepareResponse.token,
+          },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async run(
@@ -215,27 +245,37 @@ export class AgentsTeamsApiSdk {
     phloLimit: Amount,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsTeamsRunPreparePost(
+    const prepareRequest = {
+      agentsTeam: agentTeamUri,
+      phloLimit: phloLimit.value,
+      prompt,
+    };
+
+    const prepareResponse = await this.client.apiAiAgentsTeamsRunPreparePost(
       {
-        runAgentsTeamReq: {
-          agentsTeam: agentTeamUri,
-          phloLimit: phloLimit.value,
-          prompt,
+        runAgentsTeamReq: prepareRequest,
+      },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+
+    const sendResponse: unknown = await this.client.apiAiAgentsTeamsRunSendPost(
+      {
+        sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
         },
       },
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
-
-    const sendModel: unknown = await this.client.apiAiAgentsTeamsRunSendPost(
-      {
-        signedContract,
-      },
-      { signal: config?.signal },
-    );
-
-    return { prepareModel, sendModel };
+    return { prepareResponse, sendResponse };
   }
 
   public async save(
@@ -243,7 +283,7 @@ export class AgentsTeamsApiSdk {
     createAgentsTeamReq: CreateAgentsTeamReq,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsTeamsIdSavePreparePost(
+    const prepareResponse = await this.client.apiAiAgentsTeamsIdSavePreparePost(
       {
         createAgentsTeamReq,
         id,
@@ -251,38 +291,50 @@ export class AgentsTeamsApiSdk {
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsIdSaveSendPost(
+    const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
       {
         id,
-        signedContract,
+        sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
+          prepareRequest: createAgentsTeamReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareModel = await this.client.apiAiAgentsTeamsIdDeletePreparePost(
-      {
-        id,
-      },
-      { signal: config?.signal },
-    );
+    const prepareResponse =
+      await this.client.apiAiAgentsTeamsIdDeletePreparePost(
+        {
+          id,
+        },
+        { signal: config?.signal },
+      );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
+    const sendResponse = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
       {
         id,
         signedContract,
@@ -290,7 +342,7 @@ export class AgentsTeamsApiSdk {
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async publishToFiresky(
@@ -298,7 +350,7 @@ export class AgentsTeamsApiSdk {
     publishAgentsTeamToFireskyReq: PublishAgentsTeamToFireskyReq,
     config?: ContractCallConfig,
   ) {
-    const prepareModel =
+    const prepareResponse =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
         {
           address: this.address,
@@ -308,13 +360,16 @@ export class AgentsTeamsApiSdk {
         { signal: config?.signal },
       );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel =
+    const sendResponse =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
         {
           address: this.address,
@@ -324,7 +379,7 @@ export class AgentsTeamsApiSdk {
         { signal: config?.signal },
       );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async runOnFiresky(
@@ -334,31 +389,41 @@ export class AgentsTeamsApiSdk {
     replyTo?: FireskyReply,
     config?: ContractCallConfig,
   ) {
-    const prepareModel =
+    const prepareRequest = {
+      agentsTeam: agentTeamUri,
+      phloLimit: phloLimit.value,
+      prompt,
+    };
+
+    const prepareResponse =
       await this.client.apiAiAgentsTeamsRunOnFireskyPreparePost(
         {
-          runAgentsTeamReq: {
-            agentsTeam: agentTeamUri,
-            phloLimit: phloLimit.value,
-            prompt,
-          },
+          runAgentsTeamReq: prepareRequest,
         },
         { signal: config?.signal },
       );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
 
     await this.client.apiAiAgentsTeamsRunOnFireskySendPost(
       {
-        deploySignedRunAgentsTeamFireskyReq: {
-          agentsTeam: agentTeamUri,
-          contract: signedContract,
-          replyTo,
-        },
+        sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp:
+          {
+            prepareRequest,
+            prepareResponse: prepareResponse.response,
+            request: {
+              contract: signedContract,
+              replyTo,
+            },
+            token: prepareResponse.token,
+          },
       },
       { signal: config?.signal },
     );
 
-    return prepareModel;
+    return prepareResponse;
   }
 }

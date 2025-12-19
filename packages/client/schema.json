@@ -830,7 +830,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_CreateAgentsTeamResp"
                 }
               }
             }
@@ -845,7 +845,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp"
               }
             }
           },
@@ -884,7 +884,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeployAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_DeployAgentsTeamResp"
                 }
               }
             }
@@ -899,7 +899,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/DeploySignedAgentsTeamtReq"
+                "$ref": "#/components/schemas/SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp"
               }
             }
           },
@@ -938,7 +938,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/RunAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_RunAgentsTeamResp"
                 }
               }
             }
@@ -953,7 +953,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_RunAgentsTeamReq_RunAgentsTeamResp"
               }
             }
           },
@@ -990,7 +990,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/RunAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_RunAgentsTeamResp"
                 }
               }
             }
@@ -1005,7 +1005,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/DeploySignedRunAgentsTeamFireskyReq"
+                "$ref": "#/components/schemas/SendRequestBody_DeploySignedRunAgentsTeamFireskyReq_RunAgentsTeamReq_RunAgentsTeamResp"
               }
             }
           },
@@ -1049,7 +1049,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/SaveAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_SaveAgentsTeamResp"
                 }
               }
             }
@@ -1076,7 +1076,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateAgentsTeamReq_SaveAgentsTeamResp"
               }
             }
           },
@@ -1872,14 +1872,10 @@
       "DeploySignedRunAgentsTeamFireskyReq": {
         "type": "object",
         "title": "DeploySignedRunAgentsTeamFireskyReq",
-        "required": ["contract", "agents_team"],
+        "required": ["contract"],
         "properties": {
           "contract": {
             "$ref": "#/components/schemas/SignedContract"
-          },
-          "agents_team": {
-            "type": "string",
-            "format": "blockchain-uri"
           },
           "reply_to": {
             "$ref": "#/components/schemas/FireskyReply"
@@ -2083,6 +2079,32 @@
           }
         }
       },
+      "PrepareResponse_CreateAgentsTeamResp": {
+        "type": "object",
+        "title": "PrepareResponse_CreateAgentsTeamResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/CreateAgentsTeamResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_DeployAgentsTeamResp": {
+        "type": "object",
+        "title": "PrepareResponse_DeployAgentsTeamResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/DeployAgentsTeamResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "PrepareResponse_DeployTestResp": {
         "type": "object",
         "title": "PrepareResponse_DeployTestResp",
@@ -2090,6 +2112,32 @@
         "properties": {
           "response": {
             "$ref": "#/components/schemas/DeployTestResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_RunAgentsTeamResp": {
+        "type": "object",
+        "title": "PrepareResponse_RunAgentsTeamResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/RunAgentsTeamResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_SaveAgentsTeamResp": {
+        "type": "object",
+        "title": "PrepareResponse_SaveAgentsTeamResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/SaveAgentsTeamResp"
           },
           "token": {
             "type": "string"
@@ -2247,6 +2295,44 @@
           }
         }
       },
+      "SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp": {
+        "type": "object",
+        "title": "SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/DeployAgentsTeamReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/DeployAgentsTeamResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/DeploySignedAgentsTeamtReq"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_DeploySignedRunAgentsTeamFireskyReq_RunAgentsTeamReq_RunAgentsTeamResp": {
+        "type": "object",
+        "title": "SendRequestBody_DeploySignedRunAgentsTeamFireskyReq_RunAgentsTeamReq_RunAgentsTeamResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/RunAgentsTeamReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/RunAgentsTeamResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/DeploySignedRunAgentsTeamFireskyReq"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp": {
         "type": "object",
         "title": "SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp",
@@ -2276,6 +2362,63 @@
           },
           "prepare_response": {
             "$ref": "#/components/schemas/BoostResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/CreateAgentsTeamReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/CreateAgentsTeamResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_CreateAgentsTeamReq_SaveAgentsTeamResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateAgentsTeamReq_SaveAgentsTeamResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/CreateAgentsTeamReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/SaveAgentsTeamResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_RunAgentsTeamReq_RunAgentsTeamResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_RunAgentsTeamReq_RunAgentsTeamResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/RunAgentsTeamReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/RunAgentsTeamResp"
           },
           "request": {
             "$ref": "#/components/schemas/SignedContract"

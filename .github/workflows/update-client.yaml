@@ -12,6 +12,9 @@ jobs:
   update-client:
     runs-on: ubuntu-latest
 
+    env:
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     defaults:
       run:
         working-directory: packages/client
