@@ -11,12 +11,12 @@ import { Text } from "@/lib/components/Text";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { usePublishAgentsTeamToFireskyMutation } from "@/lib/queries";
-import { SuccessModal } from "@/pages/PublishAgent/SuccessModal";
+import { SuccessModal } from "@/pages/PublishAgentsTeam/SuccessModal";
 import publishImage from "@/public/publish.png";
 
-import styles from "./PublishAgent.module.scss";
+import styles from "./PublishAgentsTeam.module.scss";
 
-export default function PublishAgent() {
+export default function PublishAgentsTeam() {
   const { t } = useTranslation();
   const { close, open } = useModal();
   const location = useLocation();

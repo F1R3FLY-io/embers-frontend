@@ -18,9 +18,9 @@ import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor
 import { useDeployAgentsTeamMutation } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
-import styles from "./DeployAiTeam.module.scss";
+import styles from "./DeployAgentsTeam.module.scss";
 
-export default function DeployAiTeam() {
+export default function DeployAgentsTeam() {
   const { t } = useTranslation();
   const { open } = useModal();
   const navigate = useNavigate();

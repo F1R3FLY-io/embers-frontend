@@ -14,20 +14,18 @@ import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 
-import styles from "./CreateAiTeam.module.scss";
+import styles from "./CreateAgentsTeam.module.scss";
 
-export default function CreateAiTeam() {
+export default function CreateAgentsTeam() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { data, navigateToNextStep, setStep, step, updateData } =
     useGraphEditorStepper();
 
-  const [agentName, setAgentName] = useState<string>(data.agentName);
-  const [description, setDescription] = useState<string | undefined>(
-    data.description,
-  );
-  const [iconUrl, setIconUrl] = useState<string | undefined>(data.iconUrl);
+  const [agentName, setAgentName] = useState(data.agentName);
+  const [description, setDescription] = useState(data.description);
+  const [iconUrl, setIconUrl] = useState(data.iconUrl);
 
   const execTypeOptions: Option[] = useMemo(
     () => [
@@ -37,19 +35,19 @@ export default function CreateAiTeam() {
     ],
     [],
   );
-  const [execType, setExecType] = useState<string>(
+  const [execType, setExecType] = useState(
     data.execType ?? execTypeOptions[0].value,
   );
 
-  const [inputTextual, setInputTextual] = useState<boolean>(true);
-  const [inputExternal, setInputExternal] = useState<boolean>(true);
-  const [inputMedia, setInputMedia] = useState<boolean>(false);
+  const [inputTextual, setInputTextual] = useState(true);
+  const [inputExternal, setInputExternal] = useState(true);
+  const [inputMedia, setInputMedia] = useState(false);
 
-  const [outStructured, setOutStructured] = useState<boolean>(true);
-  const [outExpl, setOutExpl] = useState<boolean>(true);
-  const [outVisual, setOutVisual] = useState<boolean>(false);
+  const [outStructured, setOutStructured] = useState(true);
+  const [outExpl, setOutExpl] = useState(true);
+  const [outVisual, setOutVisual] = useState(false);
 
-  const [language, setLanguage] = useState<string>(data.language ?? "en");
+  const [language, setLanguage] = useState(data.language ?? "en");
 
   const flowTypeOptions: Option[] = useMemo(
     () => [
@@ -59,7 +57,7 @@ export default function CreateAiTeam() {
     [],
   );
 
-  const [flowType, setFlowType] = useState<string>(
+  const [flowType, setFlowType] = useState(
     data.flowType ?? flowTypeOptions[0].value,
   );
 

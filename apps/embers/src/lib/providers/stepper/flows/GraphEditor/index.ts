@@ -17,22 +17,22 @@ export type GraphEditorStepperData = {
   hasGraphChanges: boolean;
   iconUrl?: string;
   inputPrompt?: string;
-  inputs: CreateAiTeamInputs;
+  inputs: CreateAgentsTeamInputs;
   language?: string;
   lastDeployKey?: PrivateKey;
   nodes: Node[];
-  outputs: CreateAiTeamOutputs;
+  outputs: CreateAgentsTeamOutputs;
   uri?: Uri;
   version?: string;
 };
 
-type CreateAiTeamInputs = {
+type CreateAgentsTeamInputs = {
   external: boolean;
   media: boolean;
   textual: boolean;
 };
 
-type CreateAiTeamOutputs = {
+type CreateAgentsTeamOutputs = {
   explanation: boolean;
   structured: boolean;
   visualization: boolean;
@@ -59,8 +59,8 @@ export const {
     },
   },
   routes: [
-    "/create-ai-team/create",
-    "/create-ai-team",
-    "/create-ai-team/deploy",
+    "/create-agents-team/create",
+    "/create-agents-team",
+    "/create-agents-team/deploy",
   ],
 });

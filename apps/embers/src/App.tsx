@@ -18,14 +18,16 @@ import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
 const CreateAgent = lazy(async () => import("@/pages/CreateAgent"));
-const CreateAiTeam = lazy(async () => import("@/pages/CreateAiTeam"));
+const CreateAgentsTeam = lazy(async () => import("@/pages/CreateAgentsTeam"));
 const DeployAgent = lazy(async () => import("@/pages/DeployAgent"));
-const DeployAiTeam = lazy(async () => import("@/pages/DeployAiTeam"));
+const DeployAgentsTeam = lazy(async () => import("@/pages/DeployAgentsTeam"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
-const CreateAiTeamFlow = lazy(async () => import("@/pages/CreateAiTeamFlow"));
+const CreateAgentsTeamFlow = lazy(
+  async () => import("@/pages/CreateAgentsTeamFlow"),
+);
 const EditAgent = lazy(async () => import("@/pages/EditAgent"));
-const PublishAgent = lazy(async () => import("@/pages/PublishAgent"));
+const PublishAgentsTeam = lazy(async () => import("@/pages/PublishAgentsTeam"));
 
 const queryClient = new QueryClient();
 
@@ -45,6 +47,7 @@ export default function App() {
                           <Route element={<Home />} path="/" />
                           <Route element={<Login />} path="/login" />
                           <Route element={<ProtectedRoute />}>
+                            <Route element={<Dashboard />} path="/dashboard" />
                             <Route
                               element={
                                 <CodeEditorStepperProvider>
@@ -61,33 +64,32 @@ export default function App() {
                                   </Routes>
                                 </CodeEditorStepperProvider>
                               }
-                              path="/create-ai-agent/*"
+                              path="/create-agent/*"
                             />
                             <Route
                               element={
                                 <GraphEditorStepperProvider>
                                   <Routes>
                                     <Route
-                                      element={<CreateAiTeam />}
+                                      element={<CreateAgentsTeam />}
                                       path="create"
                                     />
                                     <Route
-                                      element={<CreateAiTeamFlow />}
+                                      element={<CreateAgentsTeamFlow />}
                                       path=""
                                     />
                                     <Route
-                                      element={<DeployAiTeam />}
+                                      element={<DeployAgentsTeam />}
                                       path="deploy"
                                     />
                                   </Routes>
                                 </GraphEditorStepperProvider>
                               }
-                              path="/create-ai-team/*"
+                              path="/create-agents-team/*"
                             />
-                            <Route element={<Dashboard />} path="/dashboard" />
                             <Route
-                              element={<PublishAgent />}
-                              path="/publish-agent"
+                              element={<PublishAgentsTeam />}
+                              path="/publish-agents-team"
                             />
                           </Route>
                         </Routes>

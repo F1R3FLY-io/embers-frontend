@@ -13,7 +13,7 @@ import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 import { useAgentsTeam } from "@/lib/queries";
 
-export default function CreateAiTeamFlow() {
+export default function CreateAgentsTeamFlow() {
   const { setHeaderTitle } = useLayout();
   const { t } = useTranslation();
   const { data, setStep, updateData, updateMany } = useGraphEditorStepper();

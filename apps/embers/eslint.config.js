@@ -4,5 +4,5 @@ import baseConfig from "../../eslint.config.js";
 
 export default defineConfig(
   baseConfig,
-  globalIgnores(["**/*.module.scss.d.ts"]),
+  globalIgnores(["**/*.module.d.scss.ts"]),
 );

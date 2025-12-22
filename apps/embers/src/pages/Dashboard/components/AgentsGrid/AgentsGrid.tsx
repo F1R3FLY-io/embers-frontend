@@ -27,15 +27,15 @@ export interface Agent {
 }
 
 interface AgentsGridProps {
-  agents: Array<Agent>;
+  agents: Agent[];
   isSuccess: boolean;
 }
 
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const createAiAgent = useCallback(() => {
-    void navigate("/create-ai-agent/create");
+  const createAgent = useCallback(() => {
+    void navigate("/create-agent/create");
   }, [navigate]);
 
   const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
@@ -43,7 +43,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
 
   const navigateToAgent = useCallback(
     (agent: Agent) => {
-      void navigate("/create-ai-agent", {
+      void navigate("/create-agent", {
         state: {
           agentIconUrl: agent.logo ?? "",
           agentId: agent.id,
@@ -67,7 +67,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
       <div
         className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
-        onClick={createAiAgent}
+        onClick={createAgent}
       >
         <AgentIcon className={styles["create-robot-icon"]} />
         <Text color="secondary" type="large">

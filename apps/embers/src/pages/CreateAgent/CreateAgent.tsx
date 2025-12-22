@@ -22,9 +22,7 @@ export default function CreateAgent() {
   const { data, navigateToNextStep, setStep, step, updateData } =
     useCodeEditorStepper();
   const [name, setName] = useState(data.agentName);
-  const [environment, setEnvironment] = useState<string>(
-    data.environment ?? "",
-  );
+  const [environment, setEnvironment] = useState(data.environment ?? "");
 
   const [iconUrl, setIconUrl] = useState(data.agentIconUrl ?? "");
   const [iconLoadError, setIconLoadError] = useState(false);

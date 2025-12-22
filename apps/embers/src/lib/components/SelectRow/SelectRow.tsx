@@ -29,8 +29,7 @@ export function SelectRow({
   title,
 }: SelectRowProps) {
   const isControlled = typeof selected === "boolean";
-  const [localSelected, setLocalSelected] =
-    useState<boolean>(!!defaultSelected);
+  const [localSelected, setLocalSelected] = useState(!!defaultSelected);
   const isSelected = isControlled ? selected : localSelected;
 
   const handleClick = () => {
