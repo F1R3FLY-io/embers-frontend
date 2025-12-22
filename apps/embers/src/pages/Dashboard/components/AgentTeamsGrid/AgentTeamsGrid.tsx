@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
+import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useDeleteAgentMutation } from "@/lib/queries";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
@@ -29,7 +30,7 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
     void navigate("/create-ai-team/create");
   }, [navigate]);
 
-  const deleteAgent = useDeleteAgentMutation();
+  const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
   const confirm = useConfirm();
 
   const navigateToAgent = useCallback(

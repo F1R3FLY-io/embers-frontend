@@ -11,7 +11,8 @@ import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
-import { useLoader } from "@/lib/providers/loader/useLoader";
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
+import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 import { useDeployAgentsTeamMutation } from "@/lib/queries";
@@ -24,7 +25,6 @@ export default function DeployAiTeam() {
   const { open } = useModal();
   const navigate = useNavigate();
 
-  const { hideLoader, showLoader } = useLoader();
   const { appendDeploy, appendLog } = useDock();
 
   const {
@@ -37,7 +37,9 @@ export default function DeployAiTeam() {
     updateData,
   } = useGraphEditorStepper();
 
-  const deployTeamsMutation = useDeployAgentsTeamMutation();
+  const deployTeamsMutation = useMutationResultWithLoader(
+    useDeployAgentsTeamMutation(),
+  );
 
   const [inputPrompt, setInputPrompt] = useState(data.inputPrompt ?? "");
 
@@ -88,11 +90,10 @@ export default function DeployAiTeam() {
     [appendDeploy, logError, navigateToStep, open],
   );
 
-  const handleDeploy = async () => {
+  const handleDeploy = useCallbackWithLoader(async () => {
     if (!canDeploy) {
       return;
     }
-    showLoader();
 
     try {
       if (data.agentId && data.version) {
@@ -145,10 +146,8 @@ export default function DeployAiTeam() {
       }
     } catch (e) {
       onFailedDeploy(e as Error);
-    } finally {
-      hideLoader();
     }
-  };
+  });
 
   return (
     <div className={styles["deploy-container"]}>

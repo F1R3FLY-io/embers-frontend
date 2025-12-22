@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import { Button } from "@/lib/components/Button";
 import { useDock } from "@/lib/providers/dock/useDock";
-import { useLoader } from "@/lib/providers/loader/useLoader";
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useCreateAgentMutation, useSaveAgentMutation } from "@/lib/queries";
 
@@ -15,7 +15,6 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const { data, navigateToNextStep, updateData } = useCodeEditorStepper();
   const dock = useDock();
-  const { hideLoader, showLoader } = useLoader();
 
   const { agentIconUrl, agentId, agentName } = data;
   const id = useMemo(() => agentId ?? "", [agentId]);
@@ -24,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
-  const saveOrCreate = async () => {
+  const saveOrCreate = useCallbackWithLoader(async () => {
     const code = getCode()?.toString() ?? "";
     updateData("code", code);
     const payload = {
@@ -40,14 +39,13 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
     const res = await createMutation.mutateAsync(payload);
     await res.waitForFinalization;
     return { agentId: res.prepareModel.id, version: res.prepareModel.version };
-  };
+  });
 
   const handleSave = async () => {
     if (isLoading) {
       return;
     }
     try {
-      showLoader();
       const { agentId, version } = await saveOrCreate();
       updateData("version", version);
       updateData("agentId", agentId);
@@ -61,8 +59,6 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
         "error",
       );
       throw e;
-    } finally {
-      hideLoader();
     }
   };
 
@@ -71,7 +67,6 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       return;
     }
     try {
-      showLoader();
       const { agentId, version } = await saveOrCreate();
       updateData("agentId", agentId);
       updateData("version", version);
@@ -81,8 +76,6 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
         `Pre-deploy save failed with error: ${e instanceof Error ? e.message : String(e)}`,
         "error",
       );
-    } finally {
-      hideLoader();
     }
   };
 
