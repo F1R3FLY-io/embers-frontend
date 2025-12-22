@@ -1,4 +1,4 @@
-import { createStepper } from "../../StepperProvider";
+import { createStepper } from "@/lib/providers/stepper/StepperProvider";
 
 export type CodeEditorStepperData = {
   agentIconUrl?: string;

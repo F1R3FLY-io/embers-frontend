@@ -1,5 +1,6 @@
-import { SearchControl } from "../SearchControl";
-import { SortControl } from "../SortControl";
+import { SearchControl } from "@/pages/Dashboard/components/SearchControl";
+import { SortControl } from "@/pages/Dashboard/components/SortControl";
+
 import styles from "./ControlsRow.module.scss";
 
 interface ControlsRowProps {

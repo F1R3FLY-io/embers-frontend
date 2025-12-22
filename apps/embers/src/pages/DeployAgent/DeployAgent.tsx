@@ -7,6 +7,7 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
+import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useModal } from "@/lib/providers/modal/useModal";
@@ -14,7 +15,6 @@ import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useDeployAgentMutation } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
-import Stepper from "../../lib/components/Stepper";
 import styles from "./DeployAgent.module.scss";
 
 function parseBigIntOrNull(v: string): bigint | null {

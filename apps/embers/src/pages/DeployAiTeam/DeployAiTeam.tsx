@@ -1,5 +1,5 @@
 import { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -8,19 +8,15 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
+import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useLoader } from "@/lib/providers/loader/useLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
-import {
-  useCreateAgentsTeamMutation,
-  useDeployAgentsTeamMutation,
-  useSaveAgentsTeamMutation,
-} from "@/lib/queries";
+import { useDeployAgentsTeamMutation } from "@/lib/queries";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
-import Stepper from "../../lib/components/Stepper";
 import styles from "./DeployAiTeam.module.scss";
 
 export default function DeployAiTeam() {
@@ -43,15 +39,7 @@ export default function DeployAiTeam() {
 
   const deployTeamsMutation = useDeployAgentsTeamMutation();
 
-  const id = useMemo(() => data.agentId ?? "", [data.agentId]);
-  const saveMutation = useSaveAgentsTeamMutation(id);
-  const createMutation = useCreateAgentsTeamMutation();
-
-  const isLoading = createMutation.isPending || saveMutation.isPending;
-
-  const [inputPrompt, setInputPrompt] = useState<string>(
-    data.inputPrompt ?? "",
-  );
+  const [inputPrompt, setInputPrompt] = useState(data.inputPrompt ?? "");
 
   useEffect(() => {
     setStep(2);
@@ -100,104 +88,66 @@ export default function DeployAiTeam() {
     [appendDeploy, logError, navigateToStep, open],
   );
 
-  const saveOrCreate = async () => {
-    const payload = {
-      description: data.description ?? "",
-      edges: data.edges,
-      name: data.agentName,
-      nodes: data.nodes,
-      ...(data.iconUrl ? { logo: data.iconUrl } : {}),
-    };
-    if (id) {
-      const res = await saveMutation.mutateAsync(payload);
-      await res.waitForFinalization;
-      return { agentId: id, version: res.prepareResponse.response.version };
-    }
-    const res = await createMutation.mutateAsync(payload);
-    await res.waitForFinalization;
-    return {
-      agentId: res.prepareResponse.response.id,
-      version: res.prepareResponse.response.version,
-    };
-  };
-
-  const handleSave = async () => {
-    if (isLoading) {
-      return;
-    }
-    try {
-      const { agentId, version } = await saveOrCreate();
-      updateData("version", version);
-      updateData("agentId", agentId);
-      appendLog(`Agent ${agentId} with ${version} has been saved!`, "info");
-      return { agentId, version };
-    } catch (e) {
-      appendLog(
-        `Save failed: ${e instanceof Error ? e.message : String(e)}`,
-        "error",
-      );
-      throw e;
-    }
-  };
-
-  const handleDeploy = () => {
+  const handleDeploy = async () => {
     if (!canDeploy) {
       return;
     }
     showLoader();
-    handleSave()
-      .then(async (val) => {
-        if (val?.agentId && val.version) {
-          const modalData = [
-            { label: "deploy.labels.agentId", value: data.agentId },
-            { label: "deploy.version", value: data.version },
-            { label: "deploy.labels.status", value: "ok" },
-            { label: "deploy.labels.note", value: data.description },
-          ];
 
-          setIsDeploying(true);
-          handleSaveDraft();
-          const registryKey = PrivateKey.new();
+    try {
+      if (data.agentId && data.version) {
+        const modalData = [
+          { label: "deploy.labels.agentId", value: data.agentId },
+          { label: "deploy.version", value: data.version },
+          { label: "deploy.labels.status", value: "ok" },
+          { label: "deploy.labels.note", value: data.description },
+        ];
 
-          await deployTeamsMutation.mutateAsync(
-            {
-              agentsTeamId: val.agentId,
-              registryKey,
-              registryVersion: 1n,
-              rhoLimit: 1_000_000n,
-              version: val.version,
+        setIsDeploying(true);
+        handleSaveDraft();
+        const registryKey = PrivateKey.new();
+
+        await deployTeamsMutation.mutateAsync(
+          {
+            agentsTeamId: data.agentId,
+            registryKey,
+            registryVersion: 1n,
+            rhoLimit: 1_000_000n,
+            version: data.version,
+          },
+          {
+            onError: onFailedDeploy,
+            onSuccess: () => {
+              onSuccessfulDeploy(registryKey);
+              updateData("hasGraphChanges", false);
+              open(
+                <SuccessModal
+                  agentName={data.agentName}
+                  createAnother={() => {
+                    reset();
+                    navigateToStep(0);
+                  }}
+                  data={modalData}
+                  viewAgent={() => navigateToStep(1)}
+                  viewAllAgents={() => void navigate("/dashboard")}
+                />,
+                {
+                  ariaLabel: "Success deploy",
+                  closeOnBlur: false,
+                  closeOnEsc: false,
+                  maxWidth: 550,
+                },
+              );
             },
-            {
-              onError: onFailedDeploy,
-              onSuccess: () => {
-                onSuccessfulDeploy(registryKey);
-                updateData("hasGraphChanges", false);
-                open(
-                  <SuccessModal
-                    agentName={data.agentName}
-                    createAnother={() => {
-                      reset();
-                      navigateToStep(0);
-                    }}
-                    data={modalData}
-                    viewAgent={() => navigateToStep(1)}
-                    viewAllAgents={() => void navigate("/dashboard")}
-                  />,
-                  {
-                    ariaLabel: "Success deploy",
-                    closeOnBlur: false,
-                    closeOnEsc: false,
-                    maxWidth: 550,
-                  },
-                );
-              },
-            },
-          );
-          setIsDeploying(false);
-        }
-      })
-      .catch(onFailedDeploy)
-      .finally(hideLoader);
+          },
+        );
+        setIsDeploying(false);
+      }
+    } catch (e) {
+      onFailedDeploy(e as Error);
+    } finally {
+      hideLoader();
+    }
   };
 
   return (

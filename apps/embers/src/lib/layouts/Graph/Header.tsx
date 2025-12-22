@@ -73,7 +73,6 @@ export const Header: React.FC = () => {
         `Agent ${agentId} with ${version} has been saved!`,
         "info",
       );
-      return { agentId, version };
     } catch (e) {
       dock.appendLog(
         `Save failed: ${e instanceof Error ? e.message : String(e)}`,
@@ -150,17 +149,13 @@ export const Header: React.FC = () => {
   };
   return (
     <>
-      <Button
-        disabled={isLoading}
-        type="subtle"
-        onClick={() => void handleSave()}
-      >
+      <Button disabled={isLoading} type="subtle" onClick={handleSave}>
         {t("deploy.saveAsDraft")}
       </Button>
       <Button
         disabled={isLoading}
         type="primary"
-        onClick={() => (canRun ? onRun() : void handleDeploy())}
+        onClick={async () => (canRun ? onRun() : handleDeploy())}
       >
         {canRun ? t("basic.run") : t("deploy.deploy")}
       </Button>
