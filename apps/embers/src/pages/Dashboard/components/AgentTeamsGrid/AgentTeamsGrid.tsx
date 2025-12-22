@@ -19,23 +19,25 @@ import TrashIcon from "@/public/icons/trash-icon.svg?react";
 import styles from "./AgentTeamsGrid.module.scss";
 
 interface AgentTeamsGridProps {
-  agents: Array<AgentsTeamHeader>;
+  agents: AgentsTeamHeader[];
   isSuccess: boolean;
 }
 
 export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const createAiAgent = useCallback(() => {
-    void navigate("/create-ai-team/create");
+  const createAgentsTeam = useCallback(() => {
+    void navigate("/create-agents-team/create");
   }, [navigate]);
 
-  const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
+  const deleteAgentsTeam = useMutationResultWithLoader(
+    useDeleteAgentMutation(),
+  );
   const confirm = useConfirm();
 
-  const navigateToAgent = useCallback(
+  const navigateToAgentsTeam = useCallback(
     (agent: AgentsTeamHeader) => {
-      void navigate("/create-ai-team", {
+      void navigate("/create-agents-team", {
         state: {
           agentIconUrl: agent.logo,
           agentId: agent.id,
@@ -51,7 +53,7 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
 
   const navigateToPublish = useCallback(
     (agent: AgentsTeamHeader) => {
-      void navigate("/publish-agent", {
+      void navigate("/publish-agents-team", {
         state: {
           agentId: agent.id,
           agentName: agent.name,
@@ -65,7 +67,7 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
 
   const handleDelete = async (id: string, name: string) =>
     confirm({ message: `Are you sure you want to delete ${name} agent?` })
-      .then((ok) => ok && deleteAgent.mutate(id))
+      .then((ok) => ok && deleteAgentsTeam.mutate(id))
       .catch(() => {});
 
   const formatUpdated = (value?: Date) => (value ? value.toLocaleString() : "");
@@ -75,11 +77,11 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
       <div
         className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
-        onClick={createAiAgent}
+        onClick={createAgentsTeam}
       >
         <AgentIcon className={styles["create-robot-icon"]} />
         <Text color="secondary" type="large">
-          {t("agents.createNewAgent")}
+          {t("agents.createNewAgentTeam")}
         </Text>
       </div>
 
@@ -98,7 +100,7 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
                   "--tile-delay": `${0.2 + index * 0.1}s`,
                 } as React.CSSProperties
               }
-              onClick={() => navigateToAgent(agent)}
+              onClick={() => navigateToAgentsTeam(agent)}
             >
               <div className={styles["agent-main"]}>
                 <IconPreview
@@ -135,9 +137,12 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
                   <Button
                     icon={<EditIcon />}
                     type="secondary"
-                    onClick={() => navigateToAgent(agent)}
+                    onClick={() => navigateToAgentsTeam(agent)}
                   />
-                  <Button type="primary" onClick={() => navigateToAgent(agent)}>
+                  <Button
+                    type="primary"
+                    onClick={() => navigateToAgentsTeam(agent)}
+                  >
                     {t("agents.details")}
                   </Button>
                   <Button

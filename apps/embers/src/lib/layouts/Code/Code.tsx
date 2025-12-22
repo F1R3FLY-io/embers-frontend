@@ -25,9 +25,7 @@ export const CodeLayout: React.FC<CodeLayoutProps> = ({
   const navigate = useNavigate();
   const { updateData } = useCodeEditorStepper();
 
-  const [selectedId, setSelectedId] = useState<string | undefined>(
-    currentVersion,
-  );
+  const [selectedId, setSelectedId] = useState(currentVersion);
 
   const headerClick = useCallback(() => {
     confirm({ message: "Do you want to leave this page?" })

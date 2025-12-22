@@ -11,7 +11,7 @@ interface NodeDefinition<Data extends Record<string, string | number>> {
   className: keyof typeof styles;
   defaultData: Data;
   displayName: string;
-  handlers: Array<{ position: Position; type: "source" | "target" }>;
+  handlers: { position: Position; type: "source" | "target" }[];
   iconSrc: string;
   modalInputs: ModalInput<Data>[];
   title: string;

@@ -32,7 +32,7 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
   function StepperProvider({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate();
     const [step, setStep] = useState(0);
-    const [data, setData] = useState<TData>(opts.initialData);
+    const [data, setData] = useState(opts.initialData);
 
     const routesRef = useRef(opts.routes);
     const initialDataRef = useRef(opts.initialData);
