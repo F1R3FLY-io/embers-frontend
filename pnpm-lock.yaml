@@ -199,8 +199,8 @@ importers:
         specifier: ^2.10.2
         version: 2.10.2
       '@f1r3fly-io/graphl-parser':
-        specifier: ^0.0.28
-        version: 0.0.28
+        specifier: ^0.0.34
+        version: 0.0.34
       '@noble/curves':
         specifier: ^2.0.1
         version: 2.0.1
@@ -701,8 +701,8 @@ packages:
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@f1r3fly-io/graphl-parser@0.0.28':
-    resolution: {integrity: sha512-vcPjHsedq1nb5fxl3+YQUSrz7XFJmMMOP2BxWtNcXSsBd7qTQiTv/heZKQLtiE4JG7YjGRQE1CtNwY8afVJSSA==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/graphl-parser/0.0.28/edf81adb0694b9a2882079df89db83beee403ed7}
+  '@f1r3fly-io/graphl-parser@0.0.34':
+    resolution: {integrity: sha512-2xeVpgMIL2JsXf3eB5KMNvB/NVoeKxlXHyD1kCBNDlLgL4oa0WDdI/K19T6rWtBx06QkQdPflQdR3RSBcftZDA==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/graphl-parser/0.0.34/7601570483c2f9a6260547b7fa2bdf13b60b16dd}
 
   '@f1r3fly-io/lightning-bug@0.7.7':
     resolution: {integrity: sha512-wFLhQ+O5WkPpdfEPofaBTRNohc0sHOOF4R3CLQaTT/mduraRwHbm5IqVXeBLXe052NGY5hSjrbi0LlcMyb+FWQ==, tarball: https://npm.pkg.github.com/download/@f1r3fly-io/lightning-bug/0.7.7/a0dbc41a7fd19c25c709963021804bc3baad63ed}
@@ -5138,7 +5138,7 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@f1r3fly-io/graphl-parser@0.0.28': {}
+  '@f1r3fly-io/graphl-parser@0.0.34': {}
 
   '@f1r3fly-io/lightning-bug@0.7.7(@popperjs/core@2.11.8)':
     dependencies:
