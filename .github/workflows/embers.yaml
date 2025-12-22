@@ -75,10 +75,10 @@ jobs:
       - name: Build project
         run: pnpm run build
 
-      - name: Verify .module.scss.d.ts
+      - name: Verify .module.d.scss.ts
         run: |
           git diff --quiet --exit-code || {
-            echo '::error::Found uncommitted .module.scss.d.ts files.'
+            echo '::error::Found uncommitted .module.d.scss.ts files.'
             git --no-pager diff
             exit 1
           }
