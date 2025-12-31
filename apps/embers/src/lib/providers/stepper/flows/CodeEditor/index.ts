@@ -19,9 +19,5 @@ export const {
     agentName: "",
     rhoLimit: 100000,
   },
-  routes: [
-    "/create-ai-agent/create",
-    "/create-ai-agent",
-    "/create-ai-agent/deploy",
-  ],
+  routes: ["/create-agent/create", "/create-agent", "/create-agent/deploy"],
 });

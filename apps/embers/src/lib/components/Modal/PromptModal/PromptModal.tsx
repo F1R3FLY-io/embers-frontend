@@ -24,7 +24,7 @@ export const PromptModal = ({
 }) => {
   const { close } = useModal();
 
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState("");
 
   const handleCancel = () => {
     if (onCancel) {
