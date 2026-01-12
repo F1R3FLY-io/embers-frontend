@@ -128,6 +128,7 @@ export function GraphEditor({
     y: 0,
   });
   const [selectedNodes, setSelectedNodes] = useState<Node[]>([]);
+  const [selectedEdges, setSelectedEdges] = useState<Edge[]>([]);
 
   const openContextMenu = useCallback((event: ReactMouseEvent | MouseEvent) => {
     event.stopPropagation();
@@ -154,8 +155,18 @@ export function GraphEditor({
 
   const closeContextMenu = useCallback(() => {
     setSelectedNodes([]);
+    setSelectedEdges([]);
     setContextMenuOpen(false);
   }, []);
+
+  const openEdgeContextMenu = useCallback(
+    (event: ReactMouseEvent, edge: Edge) => {
+      setSelectedNodes([]);
+      setSelectedEdges([edge]);
+      openContextMenu(event);
+    },
+    [openContextMenu],
+  );
 
   const addItems = useMemo<MenuItem[]>(() => {
     return (Object.keys(NODE_REGISTRY) as NodeKind[]).map((type) => ({
@@ -198,10 +209,13 @@ export function GraphEditor({
     selectedNodes.length,
   ]);
 
-  const deployItem: MenuItem = useMemo(
-    () => ({
+  const deployItem: MenuItem = useMemo(() => {
+    const hasInvalidSelection = selectedNodes.some(
+      (n) => n.type === "deploy-container" || !!n.parentId,
+    );
+    return {
       content: "Add to deploy container",
-      hidden: selectedNodes.length === 0,
+      hidden: selectedNodes.length === 0 || hasInvalidSelection,
       onClick: () => {
         const minX = Math.min(...selectedNodes.map((n) => n.position.x));
         const maxX = Math.max(
@@ -242,9 +256,8 @@ export function GraphEditor({
         ]);
       },
       type: "text",
-    }),
-    [onNodesChange, selectedNodes],
-  );
+    };
+  }, [onNodesChange, selectedNodes]);
 
   const deleteDeployItem: MenuItem = useMemo(() => {
     const deployContainers = selectedNodes.filter(
@@ -284,92 +297,89 @@ export function GraphEditor({
     };
   }, [nodes, notifyGraphChange, onNodesChange, selectedNodes]);
 
-  const deleteNodesItem: MenuItem = useMemo(
-    () => ({
+  const deleteNodesItem: MenuItem = useMemo(() => {
+    const hasDeployContainerSelected = selectedNodes.some(
+      (n) => n.type === "deploy-container",
+    );
+
+    return {
       content:
         selectedNodes.length > 1 ? "Delete selected nodes" : "Delete node",
-      hidden: selectedNodes.length === 0,
+      hidden: selectedNodes.length === 0 || hasDeployContainerSelected,
       onClick: () => {
         const selectedIds = new Set(selectedNodes.map((n) => n.id));
-        const nodeMap = new Map(nodes.map((n) => [n.id, n]));
-
-        const containersToRemove = new Set<string>();
-
-        for (const node of selectedNodes) {
-          if (node.type === "deploy-container") {
-            containersToRemove.add(node.id);
-          }
-
-          let current: Node | undefined = node;
-          while (current.parentId) {
-            const parent = nodeMap.get(current.parentId);
-            if (!parent) {
-              break;
-            }
-            if (parent.type === "deploy-container") {
-              containersToRemove.add(parent.id);
-            }
-            current = parent;
-          }
-        }
 
         const changes: NodeChange<Node>[] = [];
 
-        containersToRemove.forEach((containerId) => {
-          const container = nodeMap.get(containerId);
-          if (!container) {
-            return;
-          }
-
-          const children = nodes.filter((n) => n.parentId === container.id);
-
-          for (const child of children) {
-            if (selectedIds.has(child.id)) {
-              continue;
-            }
-
-            const { extent: _extent, parentId: _parentId, ...rest } = child;
-
-            changes.push({
-              id: child.id,
-              item: {
-                ...rest,
-                position: {
-                  x: container.position.x + child.position.x,
-                  y: container.position.y + child.position.y,
-                },
-              },
-              type: "replace" as const,
-            });
-          }
-
-          changes.push({ id: container.id, type: "remove" as const });
-        });
-
         selectedIds.forEach((id) => {
-          if (containersToRemove.has(id)) {
-            return;
-          }
           changes.push({ id, type: "remove" as const });
         });
+
+        const remainingNodes = nodes.filter((n) => !selectedIds.has(n.id));
+
+        const containers = nodes.filter((n) => n.type === "deploy-container");
+
+        for (const container of containers) {
+          const hasChildrenLeft = remainingNodes.some(
+            (n) => n.parentId === container.id,
+          );
+
+          if (!hasChildrenLeft) {
+            changes.push({
+              id: container.id,
+              type: "remove" as const,
+            });
+          }
+        }
+
         notifyGraphChange();
         onNodesChange(changes);
       },
       type: "text",
+    };
+  }, [nodes, notifyGraphChange, onNodesChange, selectedNodes]);
+
+  const deleteEdgesItem: MenuItem = useMemo(
+    () => ({
+      content:
+        selectedEdges.length > 1
+          ? "Delete selected connectors"
+          : "Delete connector",
+      hidden: selectedEdges.length === 0,
+      onClick: () => {
+        const changes: EdgeChange<Edge>[] = selectedEdges.map((e) => ({
+          id: e.id,
+          type: "remove" as const,
+        }));
+
+        notifyGraphChange();
+        onEdgesChange(changes);
+      },
+      type: "text",
     }),
-    [nodes, notifyGraphChange, onNodesChange, selectedNodes],
+    [notifyGraphChange, onEdgesChange, selectedEdges],
   );
 
   const menuItems = useMemo<MenuItem[]>(
-    () => [...addItems, deployItem, deleteDeployItem, deleteNodesItem],
-    [addItems, deployItem, deleteDeployItem, deleteNodesItem],
+    () => [
+      ...addItems,
+      deployItem,
+      deleteDeployItem,
+      deleteNodesItem,
+      deleteEdgesItem,
+    ],
+    [addItems, deployItem, deleteDeployItem, deleteNodesItem, deleteEdgesItem],
   );
 
   return (
     <div className={styles.container}>
       <ReactFlow
         fitView
-        defaultEdgeOptions={{ animated: true, className: styles.edge }}
+        defaultEdgeOptions={{
+          animated: true,
+          className: styles.edge,
+          selectable: true,
+        }}
         deleteKeyCode={["Delete", "Backspace"]}
         edges={edges}
         nodes={nodes}
@@ -433,6 +443,7 @@ export function GraphEditor({
             );
           }
         }}
+        onEdgeContextMenu={openEdgeContextMenu}
         onEdgesChange={onEdgesChange}
         onInit={handleInit}
         onMoveEnd={() => emitFlow()}
