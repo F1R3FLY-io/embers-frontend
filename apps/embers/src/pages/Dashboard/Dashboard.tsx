@@ -58,7 +58,14 @@ export default function Dashboard() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortBy>("date");
-  const [selectedTab, setSelectedTab] = useState<TabId>("agents");
+  const [selectedTab, setSelectedTab] = useState<TabId>(() => {
+    return localStorage.getItem("dashboard_tab") as TabId;
+  });
+
+  const handleTabChange = useCallback((tabId: TabId) => {
+    setSelectedTab(tabId);
+    localStorage.setItem("dashboard_tab", tabId);
+  }, []);
 
   const activeTab = useMemo(
     () => tabs.find((tab) => tab.id === selectedTab) ?? tabs[0],
@@ -94,7 +101,7 @@ export default function Dashboard() {
                 isSelected={selectedTab === tab.id}
                 onClick={() => {
                   if (selectedTab !== tab.id) {
-                    setSelectedTab(tab.id);
+                    handleTabChange(tab.id);
                   }
                 }}
               >
