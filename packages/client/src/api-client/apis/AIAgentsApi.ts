@@ -15,12 +15,14 @@ import type {
   Agent,
   Agents,
   CreateAgentReq,
-  CreateAgentResp,
   DeleteAgentResp,
   DeployAgentReq,
-  DeployAgentResp,
-  DeploySignedAgentReq,
-  SaveAgentResp,
+  PrepareResponseCreateAgentResp,
+  PrepareResponseDeployAgentResp,
+  PrepareResponseSaveAgentResp,
+  SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp,
+  SendRequestBodySignedContractCreateAgentReqCreateAgentResp,
+  SendRequestBodySignedContractCreateAgentReqSaveAgentResp,
   SendResp,
   SignedContract,
 } from "../models/index";
@@ -29,12 +31,14 @@ import {
   AgentFromJSON,
   AgentsFromJSON,
   CreateAgentReqToJSON,
-  CreateAgentRespFromJSON,
   DeleteAgentRespFromJSON,
   DeployAgentReqToJSON,
-  DeployAgentRespFromJSON,
-  DeploySignedAgentReqToJSON,
-  SaveAgentRespFromJSON,
+  PrepareResponseCreateAgentRespFromJSON,
+  PrepareResponseDeployAgentRespFromJSON,
+  PrepareResponseSaveAgentRespFromJSON,
+  SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentRespToJSON,
+  SendRequestBodySignedContractCreateAgentReqCreateAgentRespToJSON,
+  SendRequestBodySignedContractCreateAgentReqSaveAgentRespToJSON,
   SendRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
@@ -60,7 +64,7 @@ export interface ApiAiAgentsCreatePreparePostRequest {
 }
 
 export interface ApiAiAgentsCreateSendPostRequest {
-  signedContract: SignedContract;
+  sendRequestBodySignedContractCreateAgentReqCreateAgentResp: SendRequestBodySignedContractCreateAgentReqCreateAgentResp;
 }
 
 export interface ApiAiAgentsDeployPreparePostRequest {
@@ -68,7 +72,7 @@ export interface ApiAiAgentsDeployPreparePostRequest {
 }
 
 export interface ApiAiAgentsDeploySendPostRequest {
-  deploySignedAgentReq: DeploySignedAgentReq;
+  sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp;
 }
 
 export interface ApiAiAgentsIdDeletePreparePostRequest {
@@ -87,7 +91,7 @@ export interface ApiAiAgentsIdSavePreparePostRequest {
 
 export interface ApiAiAgentsIdSaveSendPostRequest {
   id: string;
-  signedContract: SignedContract;
+  sendRequestBodySignedContractCreateAgentReqSaveAgentResp: SendRequestBodySignedContractCreateAgentReqSaveAgentResp;
 }
 
 /**
@@ -285,7 +289,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsCreatePreparePostRaw(
     requestParameters: ApiAiAgentsCreatePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateAgentResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentResp>> {
     if (requestParameters.createAgentReq == null) {
       throw new runtime.RequiredError(
         "createAgentReq",
@@ -313,7 +317,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CreateAgentRespFromJSON(jsonValue),
+      PrepareResponseCreateAgentRespFromJSON(jsonValue),
     );
   }
 
@@ -322,7 +326,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsCreatePreparePost(
     requestParameters: ApiAiAgentsCreatePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<CreateAgentResp> {
+  ): Promise<PrepareResponseCreateAgentResp> {
     const response = await this.apiAiAgentsCreatePreparePostRaw(
       requestParameters,
       initOverrides,
@@ -336,10 +340,13 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsCreateSendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractCreateAgentReqCreateAgentResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsCreateSendPost().',
+        "sendRequestBodySignedContractCreateAgentReqCreateAgentResp",
+        'Required parameter "sendRequestBodySignedContractCreateAgentReqCreateAgentResp" was null or undefined when calling apiAiAgentsCreateSendPost().',
       );
     }
 
@@ -353,7 +360,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractCreateAgentReqCreateAgentRespToJSON(
+          requestParameters.sendRequestBodySignedContractCreateAgentReqCreateAgentResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,
@@ -385,7 +394,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsDeployPreparePostRaw(
     requestParameters: ApiAiAgentsDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeployAgentResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentResp>> {
     if (requestParameters.deployAgentReq == null) {
       throw new runtime.RequiredError(
         "deployAgentReq",
@@ -413,7 +422,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeployAgentRespFromJSON(jsonValue),
+      PrepareResponseDeployAgentRespFromJSON(jsonValue),
     );
   }
 
@@ -422,7 +431,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsDeployPreparePost(
     requestParameters: ApiAiAgentsDeployPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeployAgentResp> {
+  ): Promise<PrepareResponseDeployAgentResp> {
     const response = await this.apiAiAgentsDeployPreparePostRaw(
       requestParameters,
       initOverrides,
@@ -436,10 +445,13 @@ export class AIAgentsApi extends runtime.BaseAPI {
     requestParameters: ApiAiAgentsDeploySendPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
-    if (requestParameters.deploySignedAgentReq == null) {
+    if (
+      requestParameters.sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "deploySignedAgentReq",
-        'Required parameter "deploySignedAgentReq" was null or undefined when calling apiAiAgentsDeploySendPost().',
+        "sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp",
+        'Required parameter "sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp" was null or undefined when calling apiAiAgentsDeploySendPost().',
       );
     }
 
@@ -453,8 +465,8 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: DeploySignedAgentReqToJSON(
-          requestParameters.deploySignedAgentReq,
+        body: SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentRespToJSON(
+          requestParameters.sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp,
         ),
         headers: headerParameters,
         method: "POST",
@@ -599,7 +611,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsIdSavePreparePostRaw(
     requestParameters: ApiAiAgentsIdSavePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SaveAgentResp>> {
+  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentResp>> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -638,7 +650,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SaveAgentRespFromJSON(jsonValue),
+      PrepareResponseSaveAgentRespFromJSON(jsonValue),
     );
   }
 
@@ -647,7 +659,7 @@ export class AIAgentsApi extends runtime.BaseAPI {
   async apiAiAgentsIdSavePreparePost(
     requestParameters: ApiAiAgentsIdSavePreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<SaveAgentResp> {
+  ): Promise<PrepareResponseSaveAgentResp> {
     const response = await this.apiAiAgentsIdSavePreparePostRaw(
       requestParameters,
       initOverrides,
@@ -668,10 +680,13 @@ export class AIAgentsApi extends runtime.BaseAPI {
       );
     }
 
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractCreateAgentReqSaveAgentResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsIdSaveSendPost().',
+        "sendRequestBodySignedContractCreateAgentReqSaveAgentResp",
+        'Required parameter "sendRequestBodySignedContractCreateAgentReqSaveAgentResp" was null or undefined when calling apiAiAgentsIdSaveSendPost().',
       );
     }
 
@@ -689,7 +704,9 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractCreateAgentReqSaveAgentRespToJSON(
+          requestParameters.sendRequestBodySignedContractCreateAgentReqSaveAgentResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,

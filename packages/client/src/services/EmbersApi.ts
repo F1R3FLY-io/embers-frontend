@@ -4,6 +4,7 @@ import type { PrivateKey } from "@/entities/PrivateKey";
 import { AgentsApiSdk } from "./AgentsApi";
 import { AgentsTeamsApiSdk } from "./AgentsTeamsApi";
 import { EmbersEvents } from "./EmbersEvents";
+import { OslfApiSdk } from "./OslfApi";
 import { TestnetApiSdk } from "./TestnetApi";
 import { WalletsApiSdk } from "./WalletsApi";
 
@@ -17,6 +18,7 @@ export class EmbersApiSdk {
   public readonly events: EmbersEvents;
   public readonly agents: AgentsApiSdk;
   public readonly agentsTeams: AgentsTeamsApiSdk;
+  public readonly oslf: OslfApiSdk;
   public readonly wallets: WalletsApiSdk;
   public readonly testnet: TestnetApiSdk;
 
@@ -28,6 +30,7 @@ export class EmbersApiSdk {
 
     this.agents = new AgentsApiSdk(config, this.events);
     this.agentsTeams = new AgentsTeamsApiSdk(config, this.events);
+    this.oslf = new OslfApiSdk(config, this.events);
     this.wallets = new WalletsApiSdk(config, this.events);
     this.testnet = new TestnetApiSdk(config);
   }

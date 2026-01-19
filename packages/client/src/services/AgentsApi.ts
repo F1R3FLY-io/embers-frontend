@@ -52,27 +52,35 @@ export class AgentsApiSdk {
     createAgentReq: CreateAgentReq,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsCreatePreparePost(
+    const prepareResponse = await this.client.apiAiAgentsCreatePreparePost(
       {
         createAgentReq,
       },
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsCreateSendPost(
+    const sendResponse = await this.client.apiAiAgentsCreateSendPost(
       {
-        signedContract,
+        sendRequestBodySignedContractCreateAgentReqCreateAgentResp: {
+          prepareRequest: createAgentReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async deployCode(
@@ -80,33 +88,44 @@ export class AgentsApiSdk {
     phloLimit: Amount,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsDeployPreparePost(
+    const prepareRequest = {
+      code,
+      phloLimit: phloLimit.value,
+      type: "Code" as const,
+    };
+
+    const prepareResponse = await this.client.apiAiAgentsDeployPreparePost(
       {
-        deployAgentReq: {
-          code,
-          phloLimit: phloLimit.value,
-          type: "Code",
-        },
+        deployAgentReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const contract = signContract(prepareModel.contract, this.privateKey);
+    const contract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const system =
-      prepareModel.system && signContract(prepareModel.system, this.privateKey);
+      prepareResponse.response.system &&
+      signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsDeploySendPost(
+    const sendResponse = await this.client.apiAiAgentsDeploySendPost(
       {
-        deploySignedAgentReq: { contract, system },
+        sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: { contract, system },
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   /**
@@ -120,35 +139,46 @@ export class AgentsApiSdk {
     phloLimit: Amount,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsDeployPreparePost(
+    const prepareRequest = {
+      address: this.address,
+      id,
+      phloLimit: phloLimit.value,
+      type: "Agent" as const,
+      version,
+    };
+
+    const prepareResponse = await this.client.apiAiAgentsDeployPreparePost(
       {
-        deployAgentReq: {
-          address: this.address,
-          id,
-          phloLimit: phloLimit.value,
-          type: "Agent",
-          version,
-        },
+        deployAgentReq: prepareRequest,
       },
       { signal: config?.signal },
     );
 
-    const contract = signContract(prepareModel.contract, this.privateKey);
+    const contract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const system =
-      prepareModel.system && signContract(prepareModel.system, this.privateKey);
+      prepareResponse.response.system &&
+      signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsDeploySendPost(
+    const sendResponse = await this.client.apiAiAgentsDeploySendPost(
       {
-        deploySignedAgentReq: { contract, system },
+        sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: { contract, system },
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   /**
@@ -208,7 +238,7 @@ export class AgentsApiSdk {
     agentReq: CreateAgentReq,
     config?: ContractCallConfig,
   ) {
-    const prepareModel = await this.client.apiAiAgentsIdSavePreparePost(
+    const prepareResponse = await this.client.apiAiAgentsIdSavePreparePost(
       {
         createAgentReq: agentReq,
         id,
@@ -216,38 +246,49 @@ export class AgentsApiSdk {
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsIdSaveSendPost(
+    const sendResponse = await this.client.apiAiAgentsIdSaveSendPost(
       {
         id,
-        signedContract,
+        sendRequestBodySignedContractCreateAgentReqSaveAgentResp: {
+          prepareRequest: agentReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareModel = await this.client.apiAiAgentsIdDeletePreparePost(
+    const prepareResponse = await this.client.apiAiAgentsIdDeletePreparePost(
       {
         id,
       },
       { signal: config?.signal },
     );
 
-    const signedContract = signContract(prepareModel.contract, this.privateKey);
+    const signedContract = signContract(
+      prepareResponse.contract,
+      this.privateKey,
+    );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendModel = await this.client.apiAiAgentsIdDeleteSendPost(
+    const sendResponse = await this.client.apiAiAgentsIdDeleteSendPost(
       {
         id,
         signedContract,
@@ -255,6 +296,6 @@ export class AgentsApiSdk {
       { signal: config?.signal },
     );
 
-    return { prepareModel, sendModel, waitForFinalization };
+    return { prepareResponse, sendResponse, waitForFinalization };
   }
 }

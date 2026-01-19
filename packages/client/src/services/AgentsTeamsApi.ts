@@ -361,7 +361,7 @@ export class AgentsTeamsApiSdk {
       );
 
     const signedContract = signContract(
-      prepareResponse.contract,
+      prepareResponse.response.contract,
       this.privateKey,
     );
     const waitForFinalization = this.events.subscribeForDeploy(
@@ -374,7 +374,13 @@ export class AgentsTeamsApiSdk {
         {
           address: this.address,
           id,
-          signedContract,
+          sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp:
+            {
+              prepareRequest: publishAgentsTeamToFireskyReq,
+              prepareResponse: prepareResponse.response,
+              request: signedContract,
+              token: prepareResponse.token,
+            },
         },
         { signal: config?.signal },
       );
