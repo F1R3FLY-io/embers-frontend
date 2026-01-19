@@ -1,6 +1,10 @@
 import type {
+  Agents,
+  AgentsTeams,
   CreateAgentReq,
   CreateAgentsTeamReq,
+  CreateOslfReq,
+  Oslfs,
   PrivateKey,
   PublishAgentsTeamToFireskyReq,
   Uri,
@@ -9,20 +13,15 @@ import type {
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import type { Agent } from "@/pages/Dashboard/components/AgentsGrid/AgentsGrid";
-
 import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
 
 import { layoutAndNormalizeFromApi, toApiGraph } from "./graph";
 
-interface AgentsResponse {
-  agents: Agent[];
-}
-interface AgentContext {
+interface DeleteContext<T> {
   listKey: readonly [string, string];
-  previous: AgentsResponse | undefined;
+  previous: T | undefined;
 }
 
 export function useAgents() {
@@ -93,7 +92,7 @@ export function useDeleteAgentMutation() {
   return useMutation({
     mutationFn: async (id: string) => api.agents.delete(id),
 
-    onError: (_err, _id, ctx: AgentContext | undefined, { client }) =>
+    onError: (_err, _id, ctx: DeleteContext<Agents> | undefined, { client }) =>
       ctx && client.setQueryData(ctx.listKey, ctx.previous),
 
     onMutate: async (id, { client }) => {
@@ -101,10 +100,10 @@ export function useDeleteAgentMutation() {
 
       await client.cancelQueries({ queryKey: listKey });
 
-      const previous = client.getQueryData<AgentsResponse>(listKey);
+      const previous = client.getQueryData<Agents>(listKey);
 
       if (previous?.agents) {
-        client.setQueryData<AgentsResponse>(listKey, {
+        client.setQueryData<Agents>(listKey, {
           ...previous,
           agents: previous.agents.filter((a) => a.id !== id),
         });
@@ -267,17 +266,29 @@ export function useDeleteAgentsTeamMutation() {
 
   return useMutation({
     mutationFn: async (id: string) => api.agentsTeams.delete(id),
-    onSuccess: async (_data, id, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents-teams", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: false,
-          queryKey: ["agents-teams", String(api.wallets.address), id],
-        }),
-      ]),
+    onError: (
+      _err,
+      _id,
+      ctx: DeleteContext<AgentsTeams> | undefined,
+      { client },
+    ) => ctx && client.setQueryData(ctx.listKey, ctx.previous),
+
+    onMutate: async (id, { client }) => {
+      const listKey = ["agents-teams", String(api.wallets.address)] as const;
+
+      await client.cancelQueries({ queryKey: listKey });
+
+      const previous = client.getQueryData<AgentsTeams>(listKey);
+
+      if (previous?.agentsTeams) {
+        client.setQueryData<AgentsTeams>(listKey, {
+          ...previous,
+          agentsTeams: previous.agentsTeams.filter((a) => a.id !== id),
+        });
+      }
+
+      return { listKey, previous };
+    },
   });
 }
 
@@ -347,5 +358,95 @@ export function usePublishAgentsTeamToFireskyMutation(id: string) {
   return useMutation({
     mutationFn: async (params: PublishAgentsTeamToFireskyReq) =>
       api.agentsTeams.publishToFiresky(id, params),
+  });
+}
+
+export function useOslfs() {
+  const api = useApi();
+
+  return useQuery({
+    queryFn: async ({ signal }) => api.oslf.get({ signal }),
+    queryKey: ["oslf", String(api.wallets.address)],
+  });
+}
+
+export function useOslfVersions(id?: string) {
+  const api = useApi();
+
+  return useQuery({
+    enabled: !!id,
+    queryFn: async ({ signal }) => api.oslf.getVersions(id!, { signal }),
+    queryKey: ["oslf", String(api.wallets.address), id],
+  });
+}
+
+export function useOslf(id?: string, version?: string) {
+  const api = useApi();
+
+  return useQuery({
+    enabled: !!id && !!version,
+    queryFn: async ({ signal }) =>
+      api.oslf.getVersion(id!, version!, { signal }),
+    queryKey: ["oslf", String(api.wallets.address), id, version],
+  });
+}
+
+export function useCreateOslfMutation() {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (params: CreateOslfReq) => api.oslf.create(params),
+    onSuccess: async (_data, _params, _result, { client }) =>
+      client.invalidateQueries({
+        exact: true,
+        queryKey: ["oslf", String(api.wallets.address)],
+      }),
+  });
+}
+
+export function useSaveOslfMutation(id: string) {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (params: CreateOslfReq) => api.oslf.save(id, params),
+    onSuccess: async (_data, _params, _result, { client }) =>
+      Promise.all([
+        client.invalidateQueries({
+          exact: true,
+          queryKey: ["oslf", String(api.wallets.address)],
+        }),
+        client.invalidateQueries({
+          exact: true,
+          queryKey: ["oslf", String(api.wallets.address), id],
+        }),
+      ]),
+  });
+}
+
+export function useDeleteOslfMutation() {
+  const api = useApi();
+
+  return useMutation({
+    mutationFn: async (id: string) => api.oslf.delete(id),
+
+    onError: (_err, _id, ctx: DeleteContext<Oslfs> | undefined, { client }) =>
+      ctx && client.setQueryData(ctx.listKey, ctx.previous),
+
+    onMutate: async (id, { client }) => {
+      const listKey = ["oslf", String(api.wallets.address)] as const;
+
+      await client.cancelQueries({ queryKey: listKey });
+
+      const previous = client.getQueryData<Oslfs>(listKey);
+
+      if (previous?.oslfs) {
+        client.setQueryData<Oslfs>(listKey, {
+          ...previous,
+          oslfs: previous.oslfs.filter((a) => a.id !== id),
+        });
+      }
+
+      return { listKey, previous };
+    },
   });
 }
