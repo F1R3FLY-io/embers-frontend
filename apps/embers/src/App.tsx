@@ -18,6 +18,8 @@ import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
 const CreateAgent = lazy(async () => import("@/pages/CreateAgent"));
+const CreateOSLF = lazy(async () => import("@/pages/OSLF/create"));
+const GraphOSLF = lazy(async () => import("@/pages/OSLF/graph"));
 const CreateAgentsTeam = lazy(async () => import("@/pages/CreateAgentsTeam"));
 const DeployAgent = lazy(async () => import("@/pages/DeployAgent"));
 const DeployAgentsTeam = lazy(async () => import("@/pages/DeployAgentsTeam"));
@@ -86,6 +88,23 @@ export default function App() {
                                 </GraphEditorStepperProvider>
                               }
                               path="/create-agents-team/*"
+                            />
+                            <Route
+                              element={
+                                <GraphEditorStepperProvider>
+                                  <Routes>
+                                    <Route
+                                      element={<CreateOSLF />}
+                                      path="create"
+                                    />
+                                    <Route
+                                      element={<GraphOSLF />}
+                                      path=""
+                                    />
+                                  </Routes>
+                                </GraphEditorStepperProvider>
+                              }
+                              path="/oslf/*"
                             />
                             <Route
                               element={<PublishAgentsTeam />}

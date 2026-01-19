@@ -35,7 +35,7 @@ export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createAgent = useCallback(() => {
-    void navigate("/create-agent/create");
+    void navigate("/oslf");
   }, [navigate]);
 
   const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
