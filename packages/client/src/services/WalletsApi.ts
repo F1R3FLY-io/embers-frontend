@@ -30,6 +30,7 @@ export class WalletsApiSdk {
     private events: EmbersEvents,
   ) {
     this.privateKey = config.privateKey;
+    this.address = this.privateKey.getPublicKey().getAddress();
 
     const configuration = new Configuration({
       basePath: config.basePath,
@@ -37,7 +38,6 @@ export class WalletsApiSdk {
     });
 
     this.client = new WalletsApi(configuration);
-    this.address = this.privateKey.getPublicKey().getAddress();
   }
 
   /**

@@ -19,15 +19,16 @@ import type {
   DeployAgentsTeamReq,
   PrepareResponseCreateAgentsTeamResp,
   PrepareResponseDeployAgentsTeamResp,
+  PrepareResponsePublishAgentsTeamToFireskyResp,
   PrepareResponseRunAgentsTeamResp,
   PrepareResponseSaveAgentsTeamResp,
   PublishAgentsTeamToFireskyReq,
-  PublishAgentsTeamToFireskyResp,
   RunAgentsTeamReq,
   SendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp,
   SendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp,
   SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
   SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
+  SendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp,
   SendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp,
   SendResp,
   SignedContract,
@@ -41,15 +42,16 @@ import {
   DeployAgentsTeamReqToJSON,
   PrepareResponseCreateAgentsTeamRespFromJSON,
   PrepareResponseDeployAgentsTeamRespFromJSON,
+  PrepareResponsePublishAgentsTeamToFireskyRespFromJSON,
   PrepareResponseRunAgentsTeamRespFromJSON,
   PrepareResponseSaveAgentsTeamRespFromJSON,
   PublishAgentsTeamToFireskyReqToJSON,
-  PublishAgentsTeamToFireskyRespFromJSON,
   RunAgentsTeamReqToJSON,
   SendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON,
   SendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamRespToJSON,
   SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON,
   SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON,
+  SendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyRespToJSON,
   SendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamRespToJSON,
   SendRespFromJSON,
   SignedContractToJSON,
@@ -69,7 +71,7 @@ export interface ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest {
 export interface ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest {
   address: Address;
   id: string;
-  signedContract: SignedContract;
+  sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp: SendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp;
 }
 
 export interface ApiAiAgentsTeamsAddressIdVersionsGetRequest {
@@ -194,7 +196,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRaw(
     requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PublishAgentsTeamToFireskyResp>> {
+  ): Promise<
+    runtime.ApiResponse<PrepareResponsePublishAgentsTeamToFireskyResp>
+  > {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -246,7 +250,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PublishAgentsTeamToFireskyRespFromJSON(jsonValue),
+      PrepareResponsePublishAgentsTeamToFireskyRespFromJSON(jsonValue),
     );
   }
 
@@ -255,7 +259,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
     requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PublishAgentsTeamToFireskyResp> {
+  ): Promise<PrepareResponsePublishAgentsTeamToFireskyResp> {
     const response =
       await this.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRaw(
         requestParameters,
@@ -284,10 +288,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       );
     }
 
-    if (requestParameters.signedContract == null) {
+    if (
+      requestParameters.sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskySendPost().',
+        "sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp",
+        'Required parameter "sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskySendPost().',
       );
     }
 
@@ -309,7 +316,9 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        body: SignedContractToJSON(requestParameters.signedContract),
+        body: SendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyRespToJSON(
+          requestParameters.sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp,
+        ),
         headers: headerParameters,
         method: "POST",
         path: urlPath,

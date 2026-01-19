@@ -13,6 +13,9 @@
       "name": "AIAgentsTeams"
     },
     {
+      "name": "Oslf"
+    },
+    {
       "name": "Service"
     },
     {
@@ -430,7 +433,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateAgentResp"
+                  "$ref": "#/components/schemas/PrepareResponse_CreateAgentResp"
                 }
               }
             }
@@ -445,7 +448,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateAgentReq_CreateAgentResp"
               }
             }
           },
@@ -484,7 +487,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeployAgentResp"
+                  "$ref": "#/components/schemas/PrepareResponse_DeployAgentResp"
                 }
               }
             }
@@ -499,7 +502,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/DeploySignedAgentReq"
+                "$ref": "#/components/schemas/SendRequestBody_DeploySignedAgentReq_DeployAgentReq_DeployAgentResp"
               }
             }
           },
@@ -550,7 +553,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/SaveAgentResp"
+                  "$ref": "#/components/schemas/PrepareResponse_SaveAgentResp"
                 }
               }
             }
@@ -577,7 +580,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SignedContract"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateAgentReq_SaveAgentResp"
               }
             }
           },
@@ -1206,7 +1209,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublishAgentsTeamToFireskyResp"
+                  "$ref": "#/components/schemas/PrepareResponse_PublishAgentsTeamToFireskyResp"
                 }
               }
             }
@@ -1229,6 +1232,352 @@
             "deprecated": false,
             "explode": true
           },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_PublishAgentsTeamToFireskyReq_PublishAgentsTeamToFireskyResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{address}": {
+      "get": {
+        "tags": ["Oslf"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Oslfs"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{address}/{id}/versions": {
+      "get": {
+        "tags": ["Oslf"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Oslfs"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{address}/{id}/versions/{version}": {
+      "get": {
+        "tags": ["Oslf"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "version",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Oslf"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/create/prepare": {
+      "post": {
+        "tags": ["Oslf"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOslfReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_CreateOslfResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/create/send": {
+      "post": {
+        "tags": ["Oslf"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{id}/save/prepare": {
+      "post": {
+        "tags": ["Oslf"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOslfReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_SaveOslfResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{id}/save/send": {
+      "post": {
+        "tags": ["Oslf"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{id}/delete/prepare": {
+      "post": {
+        "tags": ["Oslf"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteOslfResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslf/{id}/delete/send": {
+      "post": {
+        "tags": ["Oslf"],
+        "parameters": [
           {
             "name": "id",
             "schema": {
@@ -1596,6 +1945,39 @@
           }
         }
       },
+      "CreateOslfReq": {
+        "type": "object",
+        "title": "CreateOslfReq",
+        "required": ["name", "query"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateOslfResp": {
+        "type": "object",
+        "title": "CreateOslfResp",
+        "required": ["id", "version", "contract"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
       "CreateTestwalletResp": {
         "type": "object",
         "title": "CreateTestwalletResp",
@@ -1620,6 +2002,17 @@
       "DeleteAgentsTeamResp": {
         "type": "object",
         "title": "DeleteAgentsTeamResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
+      "DeleteOslfResp": {
+        "type": "object",
+        "title": "DeleteOslfResp",
         "required": ["contract"],
         "properties": {
           "contract": {
@@ -2053,6 +2446,45 @@
         "type": "string",
         "enum": ["debug", "info", "error"]
       },
+      "Oslf": {
+        "type": "object",
+        "title": "Oslf",
+        "required": ["id", "version", "created_at", "name", "query"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          }
+        }
+      },
+      "Oslfs": {
+        "type": "object",
+        "title": "Oslfs",
+        "required": ["oslfs"],
+        "properties": {
+          "oslfs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Oslf"
+            }
+          }
+        }
+      },
       "PostRef": {
         "type": "object",
         "title": "PostRef",
@@ -2079,6 +2511,19 @@
           }
         }
       },
+      "PrepareResponse_CreateAgentResp": {
+        "type": "object",
+        "title": "PrepareResponse_CreateAgentResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/CreateAgentResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "PrepareResponse_CreateAgentsTeamResp": {
         "type": "object",
         "title": "PrepareResponse_CreateAgentsTeamResp",
@@ -2086,6 +2531,32 @@
         "properties": {
           "response": {
             "$ref": "#/components/schemas/CreateAgentsTeamResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_CreateOslfResp": {
+        "type": "object",
+        "title": "PrepareResponse_CreateOslfResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/CreateOslfResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_DeployAgentResp": {
+        "type": "object",
+        "title": "PrepareResponse_DeployAgentResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/DeployAgentResp"
           },
           "token": {
             "type": "string"
@@ -2118,6 +2589,19 @@
           }
         }
       },
+      "PrepareResponse_PublishAgentsTeamToFireskyResp": {
+        "type": "object",
+        "title": "PrepareResponse_PublishAgentsTeamToFireskyResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/PublishAgentsTeamToFireskyResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "PrepareResponse_RunAgentsTeamResp": {
         "type": "object",
         "title": "PrepareResponse_RunAgentsTeamResp",
@@ -2131,6 +2615,19 @@
           }
         }
       },
+      "PrepareResponse_SaveAgentResp": {
+        "type": "object",
+        "title": "PrepareResponse_SaveAgentResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/SaveAgentResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "PrepareResponse_SaveAgentsTeamResp": {
         "type": "object",
         "title": "PrepareResponse_SaveAgentsTeamResp",
@@ -2138,6 +2635,19 @@
         "properties": {
           "response": {
             "$ref": "#/components/schemas/SaveAgentsTeamResp"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "PrepareResponse_SaveOslfResp": {
+        "type": "object",
+        "title": "PrepareResponse_SaveOslfResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/SaveOslfResp"
           },
           "token": {
             "type": "string"
@@ -2295,6 +2805,39 @@
           }
         }
       },
+      "SaveOslfResp": {
+        "type": "object",
+        "title": "SaveOslfResp",
+        "required": ["version", "contract"],
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          }
+        }
+      },
+      "SendRequestBody_DeploySignedAgentReq_DeployAgentReq_DeployAgentResp": {
+        "type": "object",
+        "title": "SendRequestBody_DeploySignedAgentReq_DeployAgentReq_DeployAgentResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/DeployAgentReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/DeployAgentResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/DeploySignedAgentReq"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp": {
         "type": "object",
         "title": "SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp",
@@ -2371,6 +2914,44 @@
           }
         }
       },
+      "SendRequestBody_SignedContract_CreateAgentReq_CreateAgentResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateAgentReq_CreateAgentResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/CreateAgentReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/CreateAgentResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_CreateAgentReq_SaveAgentResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateAgentReq_SaveAgentResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/CreateAgentReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/SaveAgentResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp",
@@ -2400,6 +2981,63 @@
           },
           "prepare_response": {
             "$ref": "#/components/schemas/SaveAgentsTeamResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/CreateOslfReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/CreateOslfResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/CreateOslfReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/SaveOslfResp"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SignedContract"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_PublishAgentsTeamToFireskyReq_PublishAgentsTeamToFireskyResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_PublishAgentsTeamToFireskyReq_PublishAgentsTeamToFireskyResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "$ref": "#/components/schemas/PublishAgentsTeamToFireskyReq"
+          },
+          "prepare_response": {
+            "$ref": "#/components/schemas/PublishAgentsTeamToFireskyResp"
           },
           "request": {
             "$ref": "#/components/schemas/SignedContract"
