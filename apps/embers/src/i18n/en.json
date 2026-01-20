@@ -154,5 +154,9 @@
       "title": "{{agentName}} Successfully Published",
       "subtitle": "It can now receive tasks and collaborate with other agents in the selected shard."
     }
+  },
+  "oslf": {
+    "graphQueries": "Graphical Queries",
+    "createNew": "Create new Query"
   }
 }

@@ -11,6 +11,7 @@ import AgentTeamsTab from "@/pages/Dashboard/tabs/AgentTeamsTab";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
+import GraphicalQueries from "@/public/icons/graphical-query.svg?react";
 import LogoutIcon from "@/public/icons/logout-icon.svg?react";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
@@ -27,7 +28,7 @@ interface TabCommonProps {
   sortBy: SortBy;
 }
 
-type TabId = "agents" | "agent-teams";
+export type TabId = "agents" | "agent-teams" | "graphical-query";
 
 interface TabConfig {
   Content: React.ComponentType<TabCommonProps>;
@@ -39,15 +40,21 @@ interface TabConfig {
 const tabs: TabConfig[] = [
   {
     Content: AgentsTab,
-    icon: <AgentIcon data-agent />,
+    icon: <AgentIcon />,
     id: "agents",
     labelKey: "agents.agents",
   },
   {
     Content: AgentTeamsTab,
-    icon: <AgentTeamIcon data-agent-teams />,
+    icon: <AgentTeamIcon />,
     id: "agent-teams",
     labelKey: "agents.agentTeams",
+  },
+  {
+    Content: AgentTeamsTab,
+    icon: <GraphicalQueries />,
+    id: "graphical-query",
+    labelKey: "oslf.graphQueries",
   },
 ];
 

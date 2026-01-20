@@ -14,7 +14,7 @@ import DraftIcon from "@/public/icons/draft-icon.svg?react";
 import EditIcon from "@/public/icons/editbig-icon.svg?react";
 import TrashIcon from "@/public/icons/trash-icon.svg?react";
 
-import styles from "./AgentsGrid.module.scss";
+import styles from "./GraphicalQuery.module.scss";
 
 export interface Agent {
   createdAt?: Date;
@@ -31,7 +31,7 @@ interface AgentsGridProps {
   isSuccess: boolean;
 }
 
-export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
+export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createAgent = useCallback(() => {
