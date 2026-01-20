@@ -13,7 +13,7 @@
       "name": "AIAgentsTeams"
     },
     {
-      "name": "Oslf"
+      "name": "Oslfs"
     },
     {
       "name": "Service"
@@ -1267,9 +1267,9 @@
         }
       }
     },
-    "/api/oslf/{address}": {
+    "/api/oslfs/{address}": {
       "get": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "address",
@@ -1297,9 +1297,9 @@
         }
       }
     },
-    "/api/oslf/{address}/{id}/versions": {
+    "/api/oslfs/{address}/{id}/versions": {
       "get": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "address",
@@ -1350,9 +1350,9 @@
         }
       }
     },
-    "/api/oslf/{address}/{id}/versions/{version}": {
+    "/api/oslfs/{address}/{id}/versions/{version}": {
       "get": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "address",
@@ -1413,14 +1413,14 @@
         }
       }
     },
-    "/api/oslf/create/prepare": {
+    "/api/oslfs/create/prepare": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/CreateOslfReq"
+                "$ref": "#/components/schemas/CreateReq"
               }
             }
           },
@@ -1432,7 +1432,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrepareResponse_CreateOslfResp"
+                  "$ref": "#/components/schemas/PrepareResponse_CreateResp"
                 }
               }
             }
@@ -1440,92 +1440,14 @@
         }
       }
     },
-    "/api/oslf/create/send": {
+    "/api/oslfs/create/send": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendResp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/oslf/{id}/save/prepare": {
-      "post": {
-        "tags": ["Oslf"],
-        "parameters": [
-          {
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateOslfReq"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/PrepareResponse_SaveOslfResp"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/oslf/{id}/save/send": {
-      "post": {
-        "tags": ["Oslf"],
-        "parameters": [
-          {
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "required": true,
-            "deprecated": false,
-            "explode": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json; charset=utf-8": {
-              "schema": {
-                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateReq_CreateResp"
               }
             }
           },
@@ -1545,9 +1467,87 @@
         }
       }
     },
-    "/api/oslf/{id}/delete/prepare": {
+    "/api/oslfs/{id}/save/prepare": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_SaveResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslfs/{id}/save/send": {
+      "post": {
+        "tags": ["Oslfs"],
+        "parameters": [
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateReq_SaveResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/oslfs/{id}/delete/prepare": {
+      "post": {
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "id",
@@ -1566,7 +1566,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeleteOslfResp"
+                  "$ref": "#/components/schemas/DeleteResp"
                 }
               }
             }
@@ -1574,9 +1574,9 @@
         }
       }
     },
-    "/api/oslf/{id}/delete/send": {
+    "/api/oslfs/{id}/delete/send": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "id",
@@ -1945,10 +1945,10 @@
           }
         }
       },
-      "CreateOslfReq": {
+      "CreateReq": {
         "type": "object",
-        "title": "CreateOslfReq",
-        "required": ["name", "query"],
+        "title": "CreateReq",
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string"
@@ -1961,9 +1961,9 @@
           }
         }
       },
-      "CreateOslfResp": {
+      "CreateResp": {
         "type": "object",
-        "title": "CreateOslfResp",
+        "title": "CreateResp",
         "required": ["id", "version", "contract"],
         "properties": {
           "id": {
@@ -2010,9 +2010,9 @@
           }
         }
       },
-      "DeleteOslfResp": {
+      "DeleteResp": {
         "type": "object",
-        "title": "DeleteOslfResp",
+        "title": "DeleteResp",
         "required": ["contract"],
         "properties": {
           "contract": {
@@ -2449,7 +2449,7 @@
       "Oslf": {
         "type": "object",
         "title": "Oslf",
-        "required": ["id", "version", "created_at", "name", "query"],
+        "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -2537,13 +2537,13 @@
           }
         }
       },
-      "PrepareResponse_CreateOslfResp": {
+      "PrepareResponse_CreateResp": {
         "type": "object",
-        "title": "PrepareResponse_CreateOslfResp",
+        "title": "PrepareResponse_CreateResp",
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/CreateOslfResp"
+            "$ref": "#/components/schemas/CreateResp"
           },
           "token": {
             "type": "string"
@@ -2641,13 +2641,13 @@
           }
         }
       },
-      "PrepareResponse_SaveOslfResp": {
+      "PrepareResponse_SaveResp": {
         "type": "object",
-        "title": "PrepareResponse_SaveOslfResp",
+        "title": "PrepareResponse_SaveResp",
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/SaveOslfResp"
+            "$ref": "#/components/schemas/SaveResp"
           },
           "token": {
             "type": "string"
@@ -2805,9 +2805,9 @@
           }
         }
       },
-      "SaveOslfResp": {
+      "SaveResp": {
         "type": "object",
-        "title": "SaveOslfResp",
+        "title": "SaveResp",
         "required": ["version", "contract"],
         "properties": {
           "version": {
@@ -2990,16 +2990,16 @@
           }
         }
       },
-      "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp": {
+      "SendRequestBody_SignedContract_CreateReq_CreateResp": {
         "type": "object",
-        "title": "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp",
+        "title": "SendRequestBody_SignedContract_CreateReq_CreateResp",
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateOslfReq"
+            "$ref": "#/components/schemas/CreateReq"
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/CreateOslfResp"
+            "$ref": "#/components/schemas/CreateResp"
           },
           "request": {
             "$ref": "#/components/schemas/SignedContract"
@@ -3009,16 +3009,16 @@
           }
         }
       },
-      "SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp": {
+      "SendRequestBody_SignedContract_CreateReq_SaveResp": {
         "type": "object",
-        "title": "SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp",
+        "title": "SendRequestBody_SignedContract_CreateReq_SaveResp",
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateOslfReq"
+            "$ref": "#/components/schemas/CreateReq"
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/SaveOslfResp"
+            "$ref": "#/components/schemas/SaveResp"
           },
           "request": {
             "$ref": "#/components/schemas/SignedContract"
