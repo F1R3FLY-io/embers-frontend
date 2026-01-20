@@ -33,7 +33,7 @@ export interface CreateOslfReq {
    * @type {string}
    * @memberof CreateOslfReq
    */
-  query: string;
+  query?: string;
 }
 
 /**
@@ -41,9 +41,6 @@ export interface CreateOslfReq {
  */
 export function instanceOfCreateOslfReq(value: object): value is CreateOslfReq {
   if (!("name" in value) || value.name === undefined) {
-    return false;
-  }
-  if (!("query" in value) || value.query === undefined) {
     return false;
   }
   return true;
@@ -63,7 +60,7 @@ export function CreateOslfReqFromJSONTyped(
   return {
     description: json.description == null ? undefined : json.description,
     name: json.name,
-    query: json.query,
+    query: json.query == null ? undefined : json.query,
   };
 }
 
