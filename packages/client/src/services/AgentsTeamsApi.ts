@@ -6,7 +6,7 @@ import type {
   CreateAgentsTeamReq,
   FireskyReply,
   HTTPHeaders,
-  PublishAgentsTeamToFireskyReq,
+  PublishToFireskyReq,
 } from "@/api-client";
 import type {
   ContractCallConfig,
@@ -162,7 +162,7 @@ export class AgentsTeamsApiSdk {
 
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
-        sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp:
+        sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
           {
             prepareRequest,
             prepareResponse: prepareResponse.response,
@@ -225,7 +225,7 @@ export class AgentsTeamsApiSdk {
 
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
-        sendRequestBodyDeploySignedAgentsTeamtReqDeployAgentsTeamReqDeployAgentsTeamResp:
+        sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
           {
             prepareRequest,
             prepareResponse: prepareResponse.response,
@@ -253,7 +253,7 @@ export class AgentsTeamsApiSdk {
 
     const prepareResponse = await this.client.apiAiAgentsTeamsRunPreparePost(
       {
-        runAgentsTeamReq: prepareRequest,
+        runReq: prepareRequest,
       },
       { signal: config?.signal },
     );
@@ -265,7 +265,7 @@ export class AgentsTeamsApiSdk {
 
     const sendResponse: unknown = await this.client.apiAiAgentsTeamsRunSendPost(
       {
-        sendRequestBodySignedContractRunAgentsTeamReqRunAgentsTeamResp: {
+        sendRequestBodySignedContractRunReqRunResp: {
           prepareRequest,
           prepareResponse: prepareResponse.response,
           request: signedContract,
@@ -347,7 +347,7 @@ export class AgentsTeamsApiSdk {
 
   public async publishToFiresky(
     id: string,
-    publishAgentsTeamToFireskyReq: PublishAgentsTeamToFireskyReq,
+    publishToFireskyReq: PublishToFireskyReq,
     config?: ContractCallConfig,
   ) {
     const prepareResponse =
@@ -355,7 +355,7 @@ export class AgentsTeamsApiSdk {
         {
           address: this.address,
           id,
-          publishAgentsTeamToFireskyReq,
+          publishToFireskyReq,
         },
         { signal: config?.signal },
       );
@@ -374,9 +374,9 @@ export class AgentsTeamsApiSdk {
         {
           address: this.address,
           id,
-          sendRequestBodySignedContractPublishAgentsTeamToFireskyReqPublishAgentsTeamToFireskyResp:
+          sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp:
             {
-              prepareRequest: publishAgentsTeamToFireskyReq,
+              prepareRequest: publishToFireskyReq,
               prepareResponse: prepareResponse.response,
               request: signedContract,
               token: prepareResponse.token,
@@ -404,7 +404,7 @@ export class AgentsTeamsApiSdk {
     const prepareResponse =
       await this.client.apiAiAgentsTeamsRunOnFireskyPreparePost(
         {
-          runAgentsTeamReq: prepareRequest,
+          runReq: prepareRequest,
         },
         { signal: config?.signal },
       );
@@ -416,16 +416,15 @@ export class AgentsTeamsApiSdk {
 
     await this.client.apiAiAgentsTeamsRunOnFireskySendPost(
       {
-        sendRequestBodyDeploySignedRunAgentsTeamFireskyReqRunAgentsTeamReqRunAgentsTeamResp:
-          {
-            prepareRequest,
-            prepareResponse: prepareResponse.response,
-            request: {
-              contract: signedContract,
-              replyTo,
-            },
-            token: prepareResponse.token,
+        sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: {
+            contract: signedContract,
+            replyTo,
           },
+          token: prepareResponse.token,
+        },
       },
       { signal: config?.signal },
     );

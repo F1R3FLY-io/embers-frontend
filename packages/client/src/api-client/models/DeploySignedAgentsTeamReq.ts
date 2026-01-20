@@ -17,45 +17,45 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
 /**
  *
  * @export
- * @interface DeploySignedAgentsTeamtReq
+ * @interface DeploySignedAgentsTeamReq
  */
-export interface DeploySignedAgentsTeamtReq {
+export interface DeploySignedAgentsTeamReq {
   /**
    *
    * @type {SignedContract}
-   * @memberof DeploySignedAgentsTeamtReq
+   * @memberof DeploySignedAgentsTeamReq
    */
   contract: SignedContract;
   /**
    *
    * @type {SignedContract}
-   * @memberof DeploySignedAgentsTeamtReq
+   * @memberof DeploySignedAgentsTeamReq
    */
   system?: SignedContract;
 }
 
 /**
- * Check if a given object implements the DeploySignedAgentsTeamtReq interface.
+ * Check if a given object implements the DeploySignedAgentsTeamReq interface.
  */
-export function instanceOfDeploySignedAgentsTeamtReq(
+export function instanceOfDeploySignedAgentsTeamReq(
   value: object,
-): value is DeploySignedAgentsTeamtReq {
+): value is DeploySignedAgentsTeamReq {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
   return true;
 }
 
-export function DeploySignedAgentsTeamtReqFromJSON(
+export function DeploySignedAgentsTeamReqFromJSON(
   json: any,
-): DeploySignedAgentsTeamtReq {
-  return DeploySignedAgentsTeamtReqFromJSONTyped(json, false);
+): DeploySignedAgentsTeamReq {
+  return DeploySignedAgentsTeamReqFromJSONTyped(json, false);
 }
 
-export function DeploySignedAgentsTeamtReqFromJSONTyped(
+export function DeploySignedAgentsTeamReqFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): DeploySignedAgentsTeamtReq {
+): DeploySignedAgentsTeamReq {
   if (json == null) {
     return json;
   }
@@ -66,14 +66,14 @@ export function DeploySignedAgentsTeamtReqFromJSONTyped(
   };
 }
 
-export function DeploySignedAgentsTeamtReqToJSON(
+export function DeploySignedAgentsTeamReqToJSON(
   json: any,
-): DeploySignedAgentsTeamtReq {
-  return DeploySignedAgentsTeamtReqToJSONTyped(json, false);
+): DeploySignedAgentsTeamReq {
+  return DeploySignedAgentsTeamReqToJSONTyped(json, false);
 }
 
-export function DeploySignedAgentsTeamtReqToJSONTyped(
-  value?: DeploySignedAgentsTeamtReq | null,
+export function DeploySignedAgentsTeamReqToJSONTyped(
+  value?: DeploySignedAgentsTeamReq | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {

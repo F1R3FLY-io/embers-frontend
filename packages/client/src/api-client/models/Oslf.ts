@@ -52,7 +52,7 @@ export interface Oslf {
    * @type {string}
    * @memberof Oslf
    */
-  query: string;
+  query?: string;
   /**
    *
    * @type {string}
@@ -77,9 +77,6 @@ export function instanceOfOslf(value: object): value is Oslf {
   if (!("name" in value) || value.name === undefined) {
     return false;
   }
-  if (!("query" in value) || value.query === undefined) {
-    return false;
-  }
   return true;
 }
 
@@ -99,7 +96,7 @@ export function OslfFromJSONTyped(
     description: json.description == null ? undefined : json.description,
     id: json.id,
     name: json.name,
-    query: json.query,
+    query: json.query == null ? undefined : json.query,
     version: json.version,
   };
 }

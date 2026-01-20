@@ -13,47 +13,47 @@
 /**
  *
  * @export
- * @interface PublishAgentsTeamToFireskyReq
+ * @interface PublishToFireskyReq
  */
-export interface PublishAgentsTeamToFireskyReq {
+export interface PublishToFireskyReq {
   /**
    *
    * @type {string}
-   * @memberof PublishAgentsTeamToFireskyReq
+   * @memberof PublishToFireskyReq
    */
   email: string;
   /**
    *
    * @type {string}
-   * @memberof PublishAgentsTeamToFireskyReq
+   * @memberof PublishToFireskyReq
    */
   handle: string;
   /**
    *
    * @type {string}
-   * @memberof PublishAgentsTeamToFireskyReq
+   * @memberof PublishToFireskyReq
    */
   inviteCode?: string;
   /**
    *
    * @type {string}
-   * @memberof PublishAgentsTeamToFireskyReq
+   * @memberof PublishToFireskyReq
    */
   password: string;
   /**
    *
    * @type {string}
-   * @memberof PublishAgentsTeamToFireskyReq
+   * @memberof PublishToFireskyReq
    */
   pdsUrl: string;
 }
 
 /**
- * Check if a given object implements the PublishAgentsTeamToFireskyReq interface.
+ * Check if a given object implements the PublishToFireskyReq interface.
  */
-export function instanceOfPublishAgentsTeamToFireskyReq(
+export function instanceOfPublishToFireskyReq(
   value: object,
-): value is PublishAgentsTeamToFireskyReq {
+): value is PublishToFireskyReq {
   if (!("pdsUrl" in value) || value.pdsUrl === undefined) {
     return false;
   }
@@ -69,16 +69,14 @@ export function instanceOfPublishAgentsTeamToFireskyReq(
   return true;
 }
 
-export function PublishAgentsTeamToFireskyReqFromJSON(
-  json: any,
-): PublishAgentsTeamToFireskyReq {
-  return PublishAgentsTeamToFireskyReqFromJSONTyped(json, false);
+export function PublishToFireskyReqFromJSON(json: any): PublishToFireskyReq {
+  return PublishToFireskyReqFromJSONTyped(json, false);
 }
 
-export function PublishAgentsTeamToFireskyReqFromJSONTyped(
+export function PublishToFireskyReqFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): PublishAgentsTeamToFireskyReq {
+): PublishToFireskyReq {
   if (json == null) {
     return json;
   }
@@ -91,14 +89,12 @@ export function PublishAgentsTeamToFireskyReqFromJSONTyped(
   };
 }
 
-export function PublishAgentsTeamToFireskyReqToJSON(
-  json: any,
-): PublishAgentsTeamToFireskyReq {
-  return PublishAgentsTeamToFireskyReqToJSONTyped(json, false);
+export function PublishToFireskyReqToJSON(json: any): PublishToFireskyReq {
+  return PublishToFireskyReqToJSONTyped(json, false);
 }
 
-export function PublishAgentsTeamToFireskyReqToJSONTyped(
-  value?: PublishAgentsTeamToFireskyReq | null,
+export function PublishToFireskyReqToJSONTyped(
+  value?: PublishToFireskyReq | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {

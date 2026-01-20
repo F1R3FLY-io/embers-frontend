@@ -13,7 +13,7 @@
       "name": "AIAgentsTeams"
     },
     {
-      "name": "Oslf"
+      "name": "Oslfs"
     },
     {
       "name": "Service"
@@ -902,7 +902,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp"
+                "$ref": "#/components/schemas/SendRequestBody_DeploySignedAgentsTeamReq_DeployAgentsTeamReq_DeployAgentsTeamResp"
               }
             }
           },
@@ -929,7 +929,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/RunAgentsTeamReq"
+                "$ref": "#/components/schemas/RunReq"
               }
             }
           },
@@ -941,7 +941,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrepareResponse_RunAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_RunResp"
                 }
               }
             }
@@ -956,7 +956,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SendRequestBody_SignedContract_RunAgentsTeamReq_RunAgentsTeamResp"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_RunReq_RunResp"
               }
             }
           },
@@ -981,7 +981,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/RunAgentsTeamReq"
+                "$ref": "#/components/schemas/RunReq"
               }
             }
           },
@@ -993,7 +993,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrepareResponse_RunAgentsTeamResp"
+                  "$ref": "#/components/schemas/PrepareResponse_RunResp"
                 }
               }
             }
@@ -1008,7 +1008,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SendRequestBody_DeploySignedRunAgentsTeamFireskyReq_RunAgentsTeamReq_RunAgentsTeamResp"
+                "$ref": "#/components/schemas/SendRequestBody_DeploySignedRunOnFireskyReq_RunReq_RunResp"
               }
             }
           },
@@ -1197,7 +1197,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/PublishAgentsTeamToFireskyReq"
+                "$ref": "#/components/schemas/PublishToFireskyReq"
               }
             }
           },
@@ -1209,7 +1209,7 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrepareResponse_PublishAgentsTeamToFireskyResp"
+                  "$ref": "#/components/schemas/PrepareResponse_PublishToFireskyResp"
                 }
               }
             }
@@ -1247,7 +1247,7 @@
           "content": {
             "application/json; charset=utf-8": {
               "schema": {
-                "$ref": "#/components/schemas/SendRequestBody_SignedContract_PublishAgentsTeamToFireskyReq_PublishAgentsTeamToFireskyResp"
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_PublishToFireskyReq_PublishToFireskyResp"
               }
             }
           },
@@ -1267,9 +1267,9 @@
         }
       }
     },
-    "/api/oslf/{address}": {
+    "/api/oslfs/{address}": {
       "get": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "address",
@@ -1297,9 +1297,9 @@
         }
       }
     },
-    "/api/oslf/{address}/{id}/versions": {
+    "/api/oslfs/{address}/{id}/versions": {
       "get": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "address",
@@ -1350,9 +1350,9 @@
         }
       }
     },
-    "/api/oslf/{address}/{id}/versions/{version}": {
+    "/api/oslfs/{address}/{id}/versions/{version}": {
       "get": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "address",
@@ -1413,9 +1413,9 @@
         }
       }
     },
-    "/api/oslf/create/prepare": {
+    "/api/oslfs/create/prepare": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -1440,9 +1440,9 @@
         }
       }
     },
-    "/api/oslf/create/send": {
+    "/api/oslfs/create/send": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -1467,9 +1467,9 @@
         }
       }
     },
-    "/api/oslf/{id}/save/prepare": {
+    "/api/oslfs/{id}/save/prepare": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "id",
@@ -1506,9 +1506,9 @@
         }
       }
     },
-    "/api/oslf/{id}/save/send": {
+    "/api/oslfs/{id}/save/send": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "id",
@@ -1545,9 +1545,9 @@
         }
       }
     },
-    "/api/oslf/{id}/delete/prepare": {
+    "/api/oslfs/{id}/delete/prepare": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "id",
@@ -1574,9 +1574,9 @@
         }
       }
     },
-    "/api/oslf/{id}/delete/send": {
+    "/api/oslfs/{id}/delete/send": {
       "post": {
-        "tags": ["Oslf"],
+        "tags": ["Oslfs"],
         "parameters": [
           {
             "name": "id",
@@ -1948,7 +1948,7 @@
       "CreateOslfReq": {
         "type": "object",
         "title": "CreateOslfReq",
-        "required": ["name", "query"],
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string"
@@ -2249,9 +2249,9 @@
           }
         }
       },
-      "DeploySignedAgentsTeamtReq": {
+      "DeploySignedAgentsTeamReq": {
         "type": "object",
-        "title": "DeploySignedAgentsTeamtReq",
+        "title": "DeploySignedAgentsTeamReq",
         "required": ["contract"],
         "properties": {
           "contract": {
@@ -2262,9 +2262,9 @@
           }
         }
       },
-      "DeploySignedRunAgentsTeamFireskyReq": {
+      "DeploySignedRunOnFireskyReq": {
         "type": "object",
-        "title": "DeploySignedRunAgentsTeamFireskyReq",
+        "title": "DeploySignedRunOnFireskyReq",
         "required": ["contract"],
         "properties": {
           "contract": {
@@ -2449,7 +2449,7 @@
       "Oslf": {
         "type": "object",
         "title": "Oslf",
-        "required": ["id", "version", "created_at", "name", "query"],
+        "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
             "type": "string"
@@ -2589,26 +2589,26 @@
           }
         }
       },
-      "PrepareResponse_PublishAgentsTeamToFireskyResp": {
+      "PrepareResponse_PublishToFireskyResp": {
         "type": "object",
-        "title": "PrepareResponse_PublishAgentsTeamToFireskyResp",
+        "title": "PrepareResponse_PublishToFireskyResp",
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/PublishAgentsTeamToFireskyResp"
+            "$ref": "#/components/schemas/PublishToFireskyResp"
           },
           "token": {
             "type": "string"
           }
         }
       },
-      "PrepareResponse_RunAgentsTeamResp": {
+      "PrepareResponse_RunResp": {
         "type": "object",
-        "title": "PrepareResponse_RunAgentsTeamResp",
+        "title": "PrepareResponse_RunResp",
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/RunAgentsTeamResp"
+            "$ref": "#/components/schemas/RunResp"
           },
           "token": {
             "type": "string"
@@ -2667,9 +2667,9 @@
           }
         }
       },
-      "PublishAgentsTeamToFireskyReq": {
+      "PublishToFireskyReq": {
         "type": "object",
-        "title": "PublishAgentsTeamToFireskyReq",
+        "title": "PublishToFireskyReq",
         "required": ["pds_url", "email", "handle", "password"],
         "properties": {
           "pds_url": {
@@ -2689,9 +2689,9 @@
           }
         }
       },
-      "PublishAgentsTeamToFireskyResp": {
+      "PublishToFireskyResp": {
         "type": "object",
-        "title": "PublishAgentsTeamToFireskyResp",
+        "title": "PublishToFireskyResp",
         "required": ["contract"],
         "properties": {
           "contract": {
@@ -2748,9 +2748,9 @@
         "type": "string",
         "enum": ["done", "ongoing", "cancelled"]
       },
-      "RunAgentsTeamReq": {
+      "RunReq": {
         "type": "object",
-        "title": "RunAgentsTeamReq",
+        "title": "RunReq",
         "required": ["prompt", "phlo_limit", "agents_team"],
         "properties": {
           "prompt": {
@@ -2766,9 +2766,9 @@
           }
         }
       },
-      "RunAgentsTeamResp": {
+      "RunResp": {
         "type": "object",
-        "title": "RunAgentsTeamResp",
+        "title": "RunResp",
         "required": ["contract"],
         "properties": {
           "contract": {
@@ -2838,9 +2838,9 @@
           }
         }
       },
-      "SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp": {
+      "SendRequestBody_DeploySignedAgentsTeamReq_DeployAgentsTeamReq_DeployAgentsTeamResp": {
         "type": "object",
-        "title": "SendRequestBody_DeploySignedAgentsTeamtReq_DeployAgentsTeamReq_DeployAgentsTeamResp",
+        "title": "SendRequestBody_DeploySignedAgentsTeamReq_DeployAgentsTeamReq_DeployAgentsTeamResp",
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
@@ -2850,26 +2850,26 @@
             "$ref": "#/components/schemas/DeployAgentsTeamResp"
           },
           "request": {
-            "$ref": "#/components/schemas/DeploySignedAgentsTeamtReq"
+            "$ref": "#/components/schemas/DeploySignedAgentsTeamReq"
           },
           "token": {
             "type": "string"
           }
         }
       },
-      "SendRequestBody_DeploySignedRunAgentsTeamFireskyReq_RunAgentsTeamReq_RunAgentsTeamResp": {
+      "SendRequestBody_DeploySignedRunOnFireskyReq_RunReq_RunResp": {
         "type": "object",
-        "title": "SendRequestBody_DeploySignedRunAgentsTeamFireskyReq_RunAgentsTeamReq_RunAgentsTeamResp",
+        "title": "SendRequestBody_DeploySignedRunOnFireskyReq_RunReq_RunResp",
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/RunAgentsTeamReq"
+            "$ref": "#/components/schemas/RunReq"
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/RunAgentsTeamResp"
+            "$ref": "#/components/schemas/RunResp"
           },
           "request": {
-            "$ref": "#/components/schemas/DeploySignedRunAgentsTeamFireskyReq"
+            "$ref": "#/components/schemas/DeploySignedRunOnFireskyReq"
           },
           "token": {
             "type": "string"
@@ -3028,16 +3028,16 @@
           }
         }
       },
-      "SendRequestBody_SignedContract_PublishAgentsTeamToFireskyReq_PublishAgentsTeamToFireskyResp": {
+      "SendRequestBody_SignedContract_PublishToFireskyReq_PublishToFireskyResp": {
         "type": "object",
-        "title": "SendRequestBody_SignedContract_PublishAgentsTeamToFireskyReq_PublishAgentsTeamToFireskyResp",
+        "title": "SendRequestBody_SignedContract_PublishToFireskyReq_PublishToFireskyResp",
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/PublishAgentsTeamToFireskyReq"
+            "$ref": "#/components/schemas/PublishToFireskyReq"
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/PublishAgentsTeamToFireskyResp"
+            "$ref": "#/components/schemas/PublishToFireskyResp"
           },
           "request": {
             "$ref": "#/components/schemas/SignedContract"
@@ -3047,16 +3047,16 @@
           }
         }
       },
-      "SendRequestBody_SignedContract_RunAgentsTeamReq_RunAgentsTeamResp": {
+      "SendRequestBody_SignedContract_RunReq_RunResp": {
         "type": "object",
-        "title": "SendRequestBody_SignedContract_RunAgentsTeamReq_RunAgentsTeamResp",
+        "title": "SendRequestBody_SignedContract_RunReq_RunResp",
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/RunAgentsTeamReq"
+            "$ref": "#/components/schemas/RunReq"
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/RunAgentsTeamResp"
+            "$ref": "#/components/schemas/RunResp"
           },
           "request": {
             "$ref": "#/components/schemas/SignedContract"

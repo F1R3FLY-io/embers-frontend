@@ -19,35 +19,33 @@ import { UriFromJSON, UriToJSON } from "./Uri";
 /**
  *
  * @export
- * @interface RunAgentsTeamReq
+ * @interface RunReq
  */
-export interface RunAgentsTeamReq {
+export interface RunReq {
   /**
    *
    * @type {Uri}
-   * @memberof RunAgentsTeamReq
+   * @memberof RunReq
    */
   agentsTeam: Uri;
   /**
    *
    * @type {Int64}
-   * @memberof RunAgentsTeamReq
+   * @memberof RunReq
    */
   phloLimit: Int64;
   /**
    *
    * @type {string}
-   * @memberof RunAgentsTeamReq
+   * @memberof RunReq
    */
   prompt: string;
 }
 
 /**
- * Check if a given object implements the RunAgentsTeamReq interface.
+ * Check if a given object implements the RunReq interface.
  */
-export function instanceOfRunAgentsTeamReq(
-  value: object,
-): value is RunAgentsTeamReq {
+export function instanceOfRunReq(value: object): value is RunReq {
   if (!("prompt" in value) || value.prompt === undefined) {
     return false;
   }
@@ -60,14 +58,14 @@ export function instanceOfRunAgentsTeamReq(
   return true;
 }
 
-export function RunAgentsTeamReqFromJSON(json: any): RunAgentsTeamReq {
-  return RunAgentsTeamReqFromJSONTyped(json, false);
+export function RunReqFromJSON(json: any): RunReq {
+  return RunReqFromJSONTyped(json, false);
 }
 
-export function RunAgentsTeamReqFromJSONTyped(
+export function RunReqFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): RunAgentsTeamReq {
+): RunReq {
   if (json == null) {
     return json;
   }
@@ -78,12 +76,12 @@ export function RunAgentsTeamReqFromJSONTyped(
   };
 }
 
-export function RunAgentsTeamReqToJSON(json: any): RunAgentsTeamReq {
-  return RunAgentsTeamReqToJSONTyped(json, false);
+export function RunReqToJSON(json: any): RunReq {
+  return RunReqToJSONTyped(json, false);
 }
 
-export function RunAgentsTeamReqToJSONTyped(
-  value?: RunAgentsTeamReq | null,
+export function RunReqToJSONTyped(
+  value?: RunReq | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {

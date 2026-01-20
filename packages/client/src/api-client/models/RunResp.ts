@@ -17,37 +17,35 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
 /**
  *
  * @export
- * @interface RunAgentsTeamResp
+ * @interface RunResp
  */
-export interface RunAgentsTeamResp {
+export interface RunResp {
   /**
    *
    * @type {Base64}
-   * @memberof RunAgentsTeamResp
+   * @memberof RunResp
    */
   contract: Base64;
 }
 
 /**
- * Check if a given object implements the RunAgentsTeamResp interface.
+ * Check if a given object implements the RunResp interface.
  */
-export function instanceOfRunAgentsTeamResp(
-  value: object,
-): value is RunAgentsTeamResp {
+export function instanceOfRunResp(value: object): value is RunResp {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
   return true;
 }
 
-export function RunAgentsTeamRespFromJSON(json: any): RunAgentsTeamResp {
-  return RunAgentsTeamRespFromJSONTyped(json, false);
+export function RunRespFromJSON(json: any): RunResp {
+  return RunRespFromJSONTyped(json, false);
 }
 
-export function RunAgentsTeamRespFromJSONTyped(
+export function RunRespFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): RunAgentsTeamResp {
+): RunResp {
   if (json == null) {
     return json;
   }
@@ -56,12 +54,12 @@ export function RunAgentsTeamRespFromJSONTyped(
   };
 }
 
-export function RunAgentsTeamRespToJSON(json: any): RunAgentsTeamResp {
-  return RunAgentsTeamRespToJSONTyped(json, false);
+export function RunRespToJSON(json: any): RunResp {
+  return RunRespToJSONTyped(json, false);
 }
 
-export function RunAgentsTeamRespToJSONTyped(
-  value?: RunAgentsTeamResp | null,
+export function RunRespToJSONTyped(
+  value?: RunResp | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
