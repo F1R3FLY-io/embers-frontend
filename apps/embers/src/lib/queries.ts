@@ -6,7 +6,7 @@ import type {
   CreateOslfReq,
   Oslfs,
   PrivateKey,
-  PublishAgentsTeamToFireskyReq,
+  PublishToFireskyReq,
   Uri,
 } from "@f1r3fly-io/embers-client-sdk";
 
@@ -356,7 +356,7 @@ export function usePublishAgentsTeamToFireskyMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: PublishAgentsTeamToFireskyReq) =>
+    mutationFn: async (params: PublishToFireskyReq) =>
       api.agentsTeams.publishToFiresky(id, params),
   });
 }
@@ -365,7 +365,7 @@ export function useOslfs() {
   const api = useApi();
 
   return useQuery({
-    queryFn: async ({ signal }) => api.oslf.get({ signal }),
+    queryFn: async ({ signal }) => api.oslfs.get({ signal }),
     queryKey: ["oslf", String(api.wallets.address)],
   });
 }
@@ -375,7 +375,7 @@ export function useOslfVersions(id?: string) {
 
   return useQuery({
     enabled: !!id,
-    queryFn: async ({ signal }) => api.oslf.getVersions(id!, { signal }),
+    queryFn: async ({ signal }) => api.oslfs.getVersions(id!, { signal }),
     queryKey: ["oslf", String(api.wallets.address), id],
   });
 }
@@ -386,7 +386,7 @@ export function useOslf(id?: string, version?: string) {
   return useQuery({
     enabled: !!id && !!version,
     queryFn: async ({ signal }) =>
-      api.oslf.getVersion(id!, version!, { signal }),
+      api.oslfs.getVersion(id!, version!, { signal }),
     queryKey: ["oslf", String(api.wallets.address), id, version],
   });
 }
@@ -395,7 +395,7 @@ export function useCreateOslfMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateOslfReq) => api.oslf.create(params),
+    mutationFn: async (params: CreateOslfReq) => api.oslfs.create(params),
     onSuccess: async (_data, _params, _result, { client }) =>
       client.invalidateQueries({
         exact: true,
@@ -408,7 +408,7 @@ export function useSaveOslfMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateOslfReq) => api.oslf.save(id, params),
+    mutationFn: async (params: CreateOslfReq) => api.oslfs.save(id, params),
     onSuccess: async (_data, _params, _result, { client }) =>
       Promise.all([
         client.invalidateQueries({
@@ -427,7 +427,7 @@ export function useDeleteOslfMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (id: string) => api.oslf.delete(id),
+    mutationFn: async (id: string) => api.oslfs.delete(id),
 
     onError: (_err, _id, ctx: DeleteContext<Oslfs> | undefined, { client }) =>
       ctx && client.setQueryData(ctx.listKey, ctx.previous),
