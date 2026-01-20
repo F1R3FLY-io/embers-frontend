@@ -1,1 +1,1 @@
-export { default } from "./GraphOSLF.tsx";
+export { default } from "./GraphOSLF";

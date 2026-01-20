@@ -1,32 +1,40 @@
-import type { OSLFInstance } from "@f1r3fly-io/oslf-editor";
+import type * as Blockly from "blockly/core";
 
-import { Events, init } from "@f1r3fly-io/oslf-editor";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { OSLFEditor } from "@f1r3fly-io/oslf-editor";
+import { useCallback, useState } from "react";
+
+const DEFAULT_TOOLBOX = {
+	contents: [
+		{
+			contents: [],
+			kind: "category",
+			name: "Controls",
+		},
+		{
+			contents: [],
+			kind: "category",
+			name: "Empty",
+		},
+	],
+	kind: "categoryToolbox",
+} as const;
 
 export default function GraphOSLF() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const editorRef = useRef<OSLFInstance | null>(null);
 
-  useEffect(() => {
-    if (!containerRef.current || editorRef.current) {
-      return;
-    }
-
-    editorRef.current = init(containerRef.current);
-
-    const handleChange = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      console.log("Workspace changed:", customEvent.detail?.state);
-    };
-
-    window.addEventListener(Events.ON_CHANGE, handleChange);
-
-    return () => {
-      window.removeEventListener(Events.ON_CHANGE, handleChange);
-      editorRef.current = null;
-    };
+  const handleWorkspaceInit = useCallback((ws: Blockly.WorkspaceSvg) => {
+    console.log("OSLF Editor initialized:", ws);
   }, []);
 
+  const handleWorkspaceChange = useCallback((ws: Blockly.WorkspaceSvg) => {
+    console.log("OSLF Editor changed:", ws);
+  }, []);
 
-  return <div ref={containerRef} id="blockly" />;
+  return (
+    <OSLFEditor
+      style={{ height: "100%", width: "100%" }}
+      toolbox={DEFAULT_TOOLBOX}
+      onChange={handleWorkspaceChange}
+      onInit={handleWorkspaceInit}
+    />
+  );
 }

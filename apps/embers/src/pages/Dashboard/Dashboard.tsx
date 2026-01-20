@@ -8,6 +8,7 @@ import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 import AgentsTab from "@/pages/Dashboard/tabs/AgentsTab";
 import AgentTeamsTab from "@/pages/Dashboard/tabs/AgentTeamsTab";
+import GraphicalQueryTab from "@/pages/Dashboard/tabs/GraphicalQueryTab";
 import AgentTeamIcon from "@/public/icons/agentsteam-icon.svg?react";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DocumentationIcon from "@/public/icons/doc-icon.svg?react";
@@ -51,7 +52,7 @@ const tabs: TabConfig[] = [
     labelKey: "agents.agentTeams",
   },
   {
-    Content: AgentTeamsTab,
+    Content: GraphicalQueryTab,
     icon: <GraphicalQueries />,
     id: "graphical-query",
     labelKey: "oslf.graphQueries",

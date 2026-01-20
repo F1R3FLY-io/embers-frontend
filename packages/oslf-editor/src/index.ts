@@ -3,6 +3,7 @@ import type { BlockDefinition } from "blockly/core/blocks";
 import * as Blockly from "blockly/core";
 
 import "./components/input-search";
+import { initEditor } from "./core/initEditor";
 import {
 	generateCode,
 	Order,
@@ -10,7 +11,21 @@ import {
 	rhoLangGenerator,
 	RhoLangGenerator,
 } from "./generator";
-import { initEditor } from "./initEditor";
+
+// Re-export React components
+export { OSLFEditor } from "./components/OSLFEditor";
+export type { OSLFEditorProps } from "./components/OSLFEditor";
+export { OSLFSearchInput } from "./components/OSLFSearchInput";
+export type { OSLFSearchInputProps } from "./components/OSLFSearchInput";
+
+// Re-export core utilities
+export { initEditor } from "./core/initEditor";
+
+// Re-export gradient utilities
+export { applyBlockGradients, removeBlockGradients } from "./gradients";
+
+// Re-export Blockly for convenience
+export { Blockly };
 
 export enum Events {
 	INIT = "blockly:init",
@@ -420,8 +435,13 @@ export {
 	RhoLangGenerator,
 };
 
-// Re-export gradient utilities
-export { applyBlockGradients, removeBlockGradients } from "./gradients";
+// Re-export utilities
+export {
+	CATEGORY_MAP,
+	CATEGORY_ORDER,
+	filterBlocksByTooltip,
+	generateToolboxFromBlocks, 
+} from "./utils";
 
 // Re-export Blockly serialization utilities for workspace state management
 export const workspaceSerialization = {
