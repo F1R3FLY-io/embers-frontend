@@ -46,6 +46,7 @@ export * from "./InternalError";
 export * from "./Log";
 export * from "./LogLevel";
 export * from "./Oslf";
+export * from "./OslfHeader";
 export * from "./Oslfs";
 export * from "./PostRef";
 export * from "./PrepareResponseBoostResp";

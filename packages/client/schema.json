@@ -1758,6 +1758,10 @@
             "type": "string",
             "format": "timestamp-millis"
           },
+          "uri": {
+            "type": "string",
+            "format": "blockchain-uri"
+          },
           "name": {
             "type": "string"
           },
@@ -2472,6 +2476,29 @@
           }
         }
       },
+      "OslfHeader": {
+        "type": "object",
+        "title": "OslfHeader",
+        "required": ["id", "version", "created_at", "name"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "timestamp-millis"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
       "Oslfs": {
         "type": "object",
         "title": "Oslfs",
@@ -2480,7 +2507,7 @@
           "oslfs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Oslf"
+              "$ref": "#/components/schemas/OslfHeader"
             }
           }
         }
