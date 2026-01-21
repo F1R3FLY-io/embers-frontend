@@ -275,8 +275,16 @@ function loadBlocks(
     workspaceSvg.updateToolbox(updatedToolbox);
   }
 }
+const INIT_MARK = "__oslf_inited__";
 
 export function init(container: Element): OSLFInstance {
+  const el = container as any;
+
+  if (el[INIT_MARK]?.workspace) {
+    return el[INIT_MARK];
+  }
+  container.innerHTML = "";
+
   // Inject fonts (style @import)
   const style = document.createElement("style");
   style.innerText =
@@ -410,9 +418,9 @@ export function init(container: Element): OSLFInstance {
     updateToolboxWithFilter(workspace, "");
   });
 
-  return {
-    workspace,
-  };
+  const instance = { workspace };
+  el[INIT_MARK] = instance;
+  return instance;
 }
 
 // Re-export generator utilities
@@ -424,7 +432,7 @@ export {
   RhoLangGenerator,
 };
 
-export { oslfBlocks, oslfCategories } from "./core/blocks";
+export { oslfBlocks } from "./core/blocks";
 
 // Re-export Blockly serialization utilities for workspace state management
 export const workspaceSerialization = {
@@ -432,7 +440,6 @@ export const workspaceSerialization = {
   save: Blockly.serialization.workspaces.save,
 };
 
-export type { OSLFBlockCategory } from "./core/blocks";
 export { createBlockAtClientPoint } from "./core/createBlockAtClientPoint";
 export { registerOslfBlocks } from "./core/register";
 // Re-export gradient utilities
