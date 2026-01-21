@@ -1,4 +1,3 @@
-export * from "./Address";
 export * from "./Agent";
 export * from "./AgentHeader";
 export * from "./Agents";
@@ -46,6 +45,7 @@ export * from "./InternalError";
 export * from "./Log";
 export * from "./LogLevel";
 export * from "./Oslf";
+export * from "./OslfHeader";
 export * from "./Oslfs";
 export * from "./PostRef";
 export * from "./PrepareResponseBoostResp";

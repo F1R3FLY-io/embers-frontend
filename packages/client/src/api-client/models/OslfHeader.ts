@@ -11,82 +11,54 @@
  */
 
 import type { TimestampMillis } from "./TimestampMillis";
-import type { Uri } from "./Uri";
 
 import {
   TimestampMillisFromJSON,
   TimestampMillisToJSON,
 } from "./TimestampMillis";
-import { UriFromJSON, UriToJSON } from "./Uri";
 
 /**
  *
  * @export
- * @interface AgentsTeamHeader
+ * @interface OslfHeader
  */
-export interface AgentsTeamHeader {
+export interface OslfHeader {
   /**
    *
    * @type {TimestampMillis}
-   * @memberof AgentsTeamHeader
+   * @memberof OslfHeader
    */
   createdAt: TimestampMillis;
   /**
    *
    * @type {string}
-   * @memberof AgentsTeamHeader
+   * @memberof OslfHeader
    */
   description?: string;
   /**
    *
    * @type {string}
-   * @memberof AgentsTeamHeader
+   * @memberof OslfHeader
    */
   id: string;
   /**
    *
-   * @type {TimestampMillis}
-   * @memberof AgentsTeamHeader
-   */
-  lastDeploy?: TimestampMillis;
-  /**
-   *
    * @type {string}
-   * @memberof AgentsTeamHeader
-   */
-  logo?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof AgentsTeamHeader
+   * @memberof OslfHeader
    */
   name: string;
   /**
    *
    * @type {string}
-   * @memberof AgentsTeamHeader
-   */
-  shard?: string;
-  /**
-   *
-   * @type {Uri}
-   * @memberof AgentsTeamHeader
-   */
-  uri?: Uri;
-  /**
-   *
-   * @type {string}
-   * @memberof AgentsTeamHeader
+   * @memberof OslfHeader
    */
   version: string;
 }
 
 /**
- * Check if a given object implements the AgentsTeamHeader interface.
+ * Check if a given object implements the OslfHeader interface.
  */
-export function instanceOfAgentsTeamHeader(
-  value: object,
-): value is AgentsTeamHeader {
+export function instanceOfOslfHeader(value: object): value is OslfHeader {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
@@ -102,14 +74,14 @@ export function instanceOfAgentsTeamHeader(
   return true;
 }
 
-export function AgentsTeamHeaderFromJSON(json: any): AgentsTeamHeader {
-  return AgentsTeamHeaderFromJSONTyped(json, false);
+export function OslfHeaderFromJSON(json: any): OslfHeader {
+  return OslfHeaderFromJSONTyped(json, false);
 }
 
-export function AgentsTeamHeaderFromJSONTyped(
+export function OslfHeaderFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): AgentsTeamHeader {
+): OslfHeader {
   if (json == null) {
     return json;
   }
@@ -117,24 +89,17 @@ export function AgentsTeamHeaderFromJSONTyped(
     createdAt: TimestampMillisFromJSON(json.created_at),
     description: json.description == null ? undefined : json.description,
     id: json.id,
-    lastDeploy:
-      json.last_deploy == null
-        ? undefined
-        : TimestampMillisFromJSON(json.last_deploy),
-    logo: json.logo == null ? undefined : json.logo,
     name: json.name,
-    shard: json.shard == null ? undefined : json.shard,
-    uri: json.uri == null ? undefined : UriFromJSON(json.uri),
     version: json.version,
   };
 }
 
-export function AgentsTeamHeaderToJSON(json: any): AgentsTeamHeader {
-  return AgentsTeamHeaderToJSONTyped(json, false);
+export function OslfHeaderToJSON(json: any): OslfHeader {
+  return OslfHeaderToJSONTyped(json, false);
 }
 
-export function AgentsTeamHeaderToJSONTyped(
-  value?: AgentsTeamHeader | null,
+export function OslfHeaderToJSONTyped(
+  value?: OslfHeader | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
@@ -145,11 +110,7 @@ export function AgentsTeamHeaderToJSONTyped(
     created_at: TimestampMillisToJSON(value.createdAt),
     description: value.description,
     id: value.id,
-    last_deploy: TimestampMillisToJSON(value.lastDeploy),
-    logo: value.logo,
     name: value.name,
-    shard: value.shard,
-    uri: UriToJSON(value.uri),
     version: value.version,
   };
 }

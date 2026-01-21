@@ -54,6 +54,7 @@ docs/InternalError.md
 docs/Log.md
 docs/LogLevel.md
 docs/Oslf.md
+docs/OslfHeader.md
 docs/Oslfs.md
 docs/OslfsApi.md
 docs/PostRef.md
@@ -153,6 +154,7 @@ models/InternalError.ts
 models/Log.ts
 models/LogLevel.ts
 models/Oslf.ts
+models/OslfHeader.ts
 models/Oslfs.ts
 models/PostRef.ts
 models/PrepareResponseBoostResp.ts
