@@ -1,40 +1,81 @@
+import type { OSLFInstance } from "@f1r3fly-io/oslf-editor";
 import type * as Blockly from "blockly/core";
+import type React from "react";
 
-import { OSLFEditor } from "@f1r3fly-io/oslf-editor";
-import { useCallback, useState } from "react";
+import {
+  createBlockAtClientPoint,
+  Events,
+  init,
+  oslfBlocks,
+  registerOslfBlocks,
+} from "@f1r3fly-io/oslf-editor";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const DEFAULT_TOOLBOX = {
-	contents: [
-		{
-			contents: [],
-			kind: "category",
-			name: "Controls",
-		},
-		{
-			contents: [],
-			kind: "category",
-			name: "Empty",
-		},
-	],
-	kind: "categoryToolbox",
-} as const;
+import { OSLFLayout } from "@/lib/layouts/OSLF";
 
 export default function GraphOSLF() {
+  const editorContainerRef = useRef<HTMLDivElement | null>(null);
+  const instanceRef = useRef<ReturnType<typeof init> | null>(null);
 
-  const handleWorkspaceInit = useCallback((ws: Blockly.WorkspaceSvg) => {
-    console.log("OSLF Editor initialized:", ws);
+  const [workspace, setWorkspace] = useState<Blockly.WorkspaceSvg | null>(null);
+
+  useEffect(() => {
+    const el = editorContainerRef.current;
+    if (!el) {
+      return;
+    }
+
+    // Prevent double-init (React StrictMode/dev can mount effects twice)
+    if (instanceRef.current) {
+      return;
+    }
+
+    const instance = init(el);
+    instanceRef.current = instance;
+
+    setWorkspace(instance.workspace);
+
+    // ✅ Register blocks & load them (payload must be an array of blocks)
+    registerOslfBlocks(oslfBlocks);
+    el.dispatchEvent(new CustomEvent(Events.INIT, { detail: oslfBlocks }));
+
+    return () => {
+      // If you have a dispose method on instance, call it here.
+      // instanceRef.current?.dispose?.();
+      instanceRef.current = null;
+      setWorkspace(null);
+    };
   }, []);
 
-  const handleWorkspaceChange = useCallback((ws: Blockly.WorkspaceSvg) => {
-    console.log("OSLF Editor changed:", ws);
-  }, []);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      if (!workspace) {
+        return;
+      }
+
+      const type = e.dataTransfer.getData("application/x-oslf-block");
+      if (!type) {
+        return;
+      }
+
+      createBlockAtClientPoint(workspace, type, e.clientX, e.clientY);
+    },
+    [workspace],
+  );
 
   return (
-    <OSLFEditor
-      style={{ height: "100%", width: "100%" }}
-      toolbox={DEFAULT_TOOLBOX}
-      onChange={handleWorkspaceChange}
-      onInit={handleWorkspaceInit}
-    />
+    <OSLFLayout>
+      <div
+        style={{ height: "100%", width: "100%" }}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDrop}
+      >
+        <div
+          ref={editorContainerRef}
+          style={{ height: "100%", width: "100%" }}
+        />
+      </div>
+    </OSLFLayout>
   );
 }

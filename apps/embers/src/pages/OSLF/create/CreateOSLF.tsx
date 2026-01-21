@@ -1,17 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import type { Option } from "@/lib/components/Select";
-
 import { Button } from "@/lib/components/Button";
-import { IconPreview } from "@/lib/components/IconPreview";
 import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
-import { Select } from "@/lib/components/Select";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
-import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
+import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
 
 import styles from "./CreateOSLF.module.scss";
 
@@ -20,40 +16,17 @@ export default function CreateOSLF() {
   const navigate = useNavigate();
 
   const { data, navigateToNextStep, setStep, step, updateData } =
-    useCodeEditorStepper();
-  const [name, setName] = useState(data.agentName);
-  const [environment, setEnvironment] = useState(data.environment ?? "");
+    useOSLFEditorStepper();
+  const [name, setName] = useState(data.name);
+  const [description, setDescription] = useState(data.description);
 
-  const [iconUrl, setIconUrl] = useState(data.agentIconUrl ?? "");
-  const [iconLoadError, setIconLoadError] = useState(false);
-
-  const envOptions: Option[] = useMemo(
-    () => [
-      { label: "Development", value: "dev" },
-      { label: "Staging", value: "staging" },
-      { label: "Production", value: "prod" },
-    ],
-    [],
-  );
-
-  const shardByEnv: Record<string, string> = {
-    dev: "shard://dev.test.net",
-    prod: "shard://prod.test.net",
-    staging: "shard://staging.test.net",
-  };
-
-  const selectedShard = environment ? (shardByEnv[environment] ?? "") : "";
-
-  const estimatedCost = 50000;
-
-  const canContinue = name.trim().length > 0 && environment.length > 0;
+  const canContinue = name.trim().length > 0;
 
   const handleCancel = () => void navigate("/dashboard");
 
   const submitForm = () => {
-    updateData("agentName", name);
-    updateData("environment", environment);
-    updateData("agentIconUrl", iconUrl.trim());
+    updateData("name", name);
+    updateData("description", description);
     navigateToNextStep();
   };
 
@@ -99,30 +72,6 @@ export default function CreateOSLF() {
             {t("agents.generalSettings")}
           </Text>
 
-          <div className={styles["icon-section"]}>
-            <IconPreview url={iconUrl} />
-
-            <div className={styles["icon-input-container"]}>
-              <Text color="secondary" type="small">
-                {t("deploy.iconUrl")}
-              </Text>
-              <Input
-                inputType="input"
-                placeholder="https://example.com/icon.png"
-                value={iconUrl}
-                onChange={(e) => {
-                  setIconLoadError(false);
-                  setIconUrl(e.target.value);
-                }}
-              />
-              {iconUrl && iconLoadError ? (
-                <Text color="secondary" type="small">
-                  {t("deploy.iconLoadFailed")}
-                </Text>
-              ) : null}
-            </div>
-          </div>
-
           <div className={styles["form-section"]}>
             <Text color="secondary" type="small">
               {t("deploy.agentName")}
@@ -136,36 +85,15 @@ export default function CreateOSLF() {
           </div>
 
           <div className={styles["form-section"]}>
-            <Select
-              label={t("deploy.blockchainShard")}
-              options={envOptions}
-              placeholder={t("agents.selectEnvironment")}
-              value={environment}
-              onChange={setEnvironment}
+            <Text color="secondary" type="small">
+              {t("basic.description")}
+            </Text>
+            <Input
+              inputType="textarea"
+              placeholder={t("basic.description")}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
-            {selectedShard && (
-              <div className={styles["description-container"]}>
-                <Text color="secondary" type="small">
-                  {selectedShard}
-                </Text>
-              </div>
-            )}
-          </div>
-
-          <div className={styles["form-section"]}>
-            <div className={styles["estimation-bar"]}>
-              <Text color="secondary" type="small">
-                {t("deploy.estimatedCost")}
-              </Text>
-              <div className={styles["estimation-value"]}>
-                <Text color="primary" type="small">
-                  {estimatedCost.toLocaleString()}
-                </Text>
-                <Text color="primary" type="small">
-                  &nbsp;FIR3CAPS
-                </Text>
-              </div>
-            </div>
           </div>
 
           <div className={styles["button-container"]}>

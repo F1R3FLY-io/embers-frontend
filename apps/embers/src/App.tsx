@@ -10,6 +10,7 @@ import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
 import { CodeEditorStepperProvider } from "@/lib/providers/stepper/flows/CodeEditor";
 import { GraphEditorStepperProvider } from "@/lib/providers/stepper/flows/GraphEditor";
+import { OSLFEditorStepperProvider } from "@/lib/providers/stepper/flows/OSLFEditor";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
@@ -91,18 +92,19 @@ export default function App() {
                             />
                             <Route
                               element={
-                                <GraphEditorStepperProvider>
+                                <OSLFEditorStepperProvider>
                                   <Routes>
                                     <Route
                                       element={<CreateOSLF />}
                                       path="create"
                                     />
+                                    <Route element={<GraphOSLF />} path="" />
                                     <Route
                                       element={<GraphOSLF />}
-                                      path=""
+                                      path="deploy"
                                     />
                                   </Routes>
-                                </GraphEditorStepperProvider>
+                                </OSLFEditorStepperProvider>
                               }
                               path="/oslf/*"
                             />
