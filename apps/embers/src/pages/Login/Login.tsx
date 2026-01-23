@@ -1,5 +1,6 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
+import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -13,11 +14,11 @@ import logo from "@/public/icons/firefly-io.png";
 
 import styles from "./Login.module.scss";
 
-type PageState = "init" | "signin";
-type WalletControlState = {
+type FromModel = {
   key: PrivateKey | undefined;
-  touched: boolean;
 };
+
+type PageState = "init" | "signin";
 
 export default function Login() {
   const [pageState, setPageState] = useState<PageState>("init");
@@ -28,23 +29,23 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { setKey } = useWalletState();
-  const [walletInputState, setWalletInputState] = useState<WalletControlState>({
-    key: undefined,
-    touched: false,
-  });
 
-  const updateWallet = useCallback((key?: PrivateKey) => {
-    setWalletInputState((state) => ({ ...state, key }));
-  }, []);
-
-  const signin = useCallback(() => {
-    if (walletInputState.key) {
-      setKey(walletInputState.key);
+  const form = useFormik<FromModel>({
+    initialValues: {
+      key: undefined,
+    },
+    onSubmit: (value) => {
+      setKey(value.key);
       void navigate("/dashboard");
-    } else {
-      setWalletInputState((state) => ({ ...state, touched: true }));
-    }
-  }, [walletInputState.key, setKey, navigate]);
+    },
+    validate: (values) => {
+      const errors: Partial<Record<keyof FromModel, string>> = {};
+      if (!values.key) {
+        errors.key = "Private key is required";
+      }
+      return errors;
+    },
+  });
 
   let content;
 
@@ -76,7 +77,7 @@ export default function Login() {
       break;
     case "signin":
       content = (
-        <>
+        <form className={styles.form} onSubmit={form.handleSubmit}>
           <div className={styles["picker-container"]}>
             <div className={styles.title}>
               <Text bold color="primary" type="H2">
@@ -91,14 +92,17 @@ export default function Login() {
               </Text>
             </div>
             <WalletInput
-              error={
-                walletInputState.touched && walletInputState.key === undefined
-              }
-              onChange={updateWallet}
+              error={form.touched.key && Boolean(form.errors.key)}
+              value={form.values.key}
+              onChange={(value) => void form.setFieldValue("key", value)}
             />
           </div>
           <div className={styles.buttons}>
-            <Button type="primary" onClick={signin}>
+            <Button
+              submit
+              disabled={!form.isValid || form.isSubmitting}
+              type="primary"
+            >
               {t("login.signIn")}
             </Button>
             <div className={styles.note}>
@@ -110,7 +114,7 @@ export default function Login() {
               </Text>
             </div>
           </div>
-        </>
+        </form>
       );
       break;
   }

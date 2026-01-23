@@ -12,11 +12,12 @@ import UploadIcon from "@/public/icons/download-icon.svg?react";
 import styles from "./WalletInput.module.scss";
 
 type WalletInputProps = {
-  error?: boolean;
+  error?: boolean | undefined;
   onChange: (key?: PrivateKey) => void;
+  value?: PrivateKey | undefined;
 };
 
-export function WalletInput({ error, onChange }: WalletInputProps) {
+export function WalletInput({ error, onChange, value }: WalletInputProps) {
   const [errorState, setErrorState] = useState(false);
   useEffect(() => {
     if (error) {
@@ -24,7 +25,7 @@ export function WalletInput({ error, onChange }: WalletInputProps) {
     }
   }, [error]);
 
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(value?.toHex());
 
   const setWalletFromInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
