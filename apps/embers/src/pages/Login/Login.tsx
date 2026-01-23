@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
@@ -13,6 +14,10 @@ import { useWalletState } from "@/lib/providers/wallet/useApi";
 import logo from "@/public/icons/firefly-io.png";
 
 import styles from "./Login.module.scss";
+
+const formModel = Yup.object().shape({
+  key: Yup.mixed().required(),
+});
 
 type FromModel = {
   key: PrivateKey | undefined;
@@ -38,13 +43,7 @@ export default function Login() {
       setKey(value.key);
       void navigate("/dashboard");
     },
-    validate: (values) => {
-      const errors: Partial<Record<keyof FromModel, string>> = {};
-      if (!values.key) {
-        errors.key = "Private key is required";
-      }
-      return errors;
-    },
+    validationSchema: formModel,
   });
 
   let content;
