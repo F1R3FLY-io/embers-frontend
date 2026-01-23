@@ -20,51 +20,45 @@ import {
 /**
  *
  * @export
- * @interface Oslf
+ * @interface OslfHeader
  */
-export interface Oslf {
+export interface OslfHeader {
   /**
    *
    * @type {TimestampMillis}
-   * @memberof Oslf
+   * @memberof OslfHeader
    */
   createdAt: TimestampMillis;
   /**
    *
    * @type {string}
-   * @memberof Oslf
+   * @memberof OslfHeader
    */
   description?: string;
   /**
    *
    * @type {string}
-   * @memberof Oslf
+   * @memberof OslfHeader
    */
   id: string;
   /**
    *
    * @type {string}
-   * @memberof Oslf
+   * @memberof OslfHeader
    */
   name: string;
   /**
    *
    * @type {string}
-   * @memberof Oslf
-   */
-  query?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Oslf
+   * @memberof OslfHeader
    */
   version: string;
 }
 
 /**
- * Check if a given object implements the Oslf interface.
+ * Check if a given object implements the OslfHeader interface.
  */
-export function instanceOfOslf(value: object): value is Oslf {
+export function instanceOfOslfHeader(value: object): value is OslfHeader {
   if (!("id" in value) || value.id === undefined) {
     return false;
   }
@@ -80,14 +74,14 @@ export function instanceOfOslf(value: object): value is Oslf {
   return true;
 }
 
-export function OslfFromJSON(json: any): Oslf {
-  return OslfFromJSONTyped(json, false);
+export function OslfHeaderFromJSON(json: any): OslfHeader {
+  return OslfHeaderFromJSONTyped(json, false);
 }
 
-export function OslfFromJSONTyped(
+export function OslfHeaderFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): Oslf {
+): OslfHeader {
   if (json == null) {
     return json;
   }
@@ -96,17 +90,16 @@ export function OslfFromJSONTyped(
     description: json.description == null ? undefined : json.description,
     id: json.id,
     name: json.name,
-    query: json.query == null ? undefined : json.query,
     version: json.version,
   };
 }
 
-export function OslfToJSON(json: any): Oslf {
-  return OslfToJSONTyped(json, false);
+export function OslfHeaderToJSON(json: any): OslfHeader {
+  return OslfHeaderToJSONTyped(json, false);
 }
 
-export function OslfToJSONTyped(
-  value?: Oslf | null,
+export function OslfHeaderToJSONTyped(
+  value?: OslfHeader | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {
@@ -118,7 +111,6 @@ export function OslfToJSONTyped(
     description: value.description,
     id: value.id,
     name: value.name,
-    query: value.query,
     version: value.version,
   };
 }

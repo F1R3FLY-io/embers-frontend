@@ -6,26 +6,26 @@ import type {
   QueryCallConfig,
 } from "@/entities/HttpCallConfigs";
 
-import { Configuration, OslfApi } from "@/api-client";
+import { Configuration, OslfsApi } from "@/api-client";
 import { signContract } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
-export type OslfConfig = {
+export type OslfsConfig = {
   basePath: string;
   headers?: HTTPHeaders;
   privateKey: PrivateKey;
 };
 
-export class OslfApiSdk {
-  private client: OslfApi;
+export class OslfsApiSdk {
+  private client: OslfsApi;
   private privateKey: PrivateKey;
   public readonly address: Address;
 
   public constructor(
-    config: OslfConfig,
+    config: OslfsConfig,
     private events: EmbersEvents,
   ) {
     this.privateKey = config.privateKey;
@@ -36,14 +36,14 @@ export class OslfApiSdk {
       headers: config.headers,
     });
 
-    this.client = new OslfApi(configuration);
+    this.client = new OslfsApi(configuration);
   }
 
   public async create(
     createOslfReq: CreateOslfReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiOslfCreatePreparePost(
+    const prepareResponse = await this.client.apiOslfsCreatePreparePost(
       {
         createOslfReq,
       },
@@ -59,7 +59,7 @@ export class OslfApiSdk {
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendResponse = await this.client.apiOslfCreateSendPost(
+    const sendResponse = await this.client.apiOslfsCreateSendPost(
       {
         sendRequestBodySignedContractCreateOslfReqCreateOslfResp: {
           prepareRequest: createOslfReq,
@@ -75,7 +75,7 @@ export class OslfApiSdk {
   }
 
   public async get(config?: QueryCallConfig) {
-    return this.client.apiOslfAddressGet(
+    return this.client.apiOslfsAddressGet(
       {
         address: this.address,
       },
@@ -88,7 +88,7 @@ export class OslfApiSdk {
     version: string,
     config?: QueryCallConfig,
   ) {
-    return this.client.apiOslfAddressIdVersionsVersionGet(
+    return this.client.apiOslfsAddressIdVersionsVersionGet(
       {
         address: this.address,
         id,
@@ -99,7 +99,7 @@ export class OslfApiSdk {
   }
 
   public async getVersions(id: string, config?: QueryCallConfig) {
-    return this.client.apiOslfAddressIdVersionsGet(
+    return this.client.apiOslfsAddressIdVersionsGet(
       {
         address: this.address,
         id,
@@ -113,7 +113,7 @@ export class OslfApiSdk {
     oslfReq: CreateOslfReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiOslfIdSavePreparePost(
+    const prepareResponse = await this.client.apiOslfsIdSavePreparePost(
       {
         createOslfReq: oslfReq,
         id,
@@ -130,7 +130,7 @@ export class OslfApiSdk {
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendResponse = await this.client.apiOslfIdSaveSendPost(
+    const sendResponse = await this.client.apiOslfsIdSaveSendPost(
       {
         id,
         sendRequestBodySignedContractCreateOslfReqSaveOslfResp: {
@@ -147,7 +147,7 @@ export class OslfApiSdk {
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareResponse = await this.client.apiOslfIdDeletePreparePost(
+    const prepareResponse = await this.client.apiOslfsIdDeletePreparePost(
       {
         id,
       },
@@ -163,7 +163,7 @@ export class OslfApiSdk {
       config?.maxWaitForFinalisation ?? 15_000,
     );
 
-    const sendResponse = await this.client.apiOslfIdDeleteSendPost(
+    const sendResponse = await this.client.apiOslfsIdDeleteSendPost(
       {
         id,
         signedContract,

@@ -17,39 +17,37 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
 /**
  *
  * @export
- * @interface PublishAgentsTeamToFireskyResp
+ * @interface PublishToFireskyResp
  */
-export interface PublishAgentsTeamToFireskyResp {
+export interface PublishToFireskyResp {
   /**
    *
    * @type {Base64}
-   * @memberof PublishAgentsTeamToFireskyResp
+   * @memberof PublishToFireskyResp
    */
   contract: Base64;
 }
 
 /**
- * Check if a given object implements the PublishAgentsTeamToFireskyResp interface.
+ * Check if a given object implements the PublishToFireskyResp interface.
  */
-export function instanceOfPublishAgentsTeamToFireskyResp(
+export function instanceOfPublishToFireskyResp(
   value: object,
-): value is PublishAgentsTeamToFireskyResp {
+): value is PublishToFireskyResp {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
   return true;
 }
 
-export function PublishAgentsTeamToFireskyRespFromJSON(
-  json: any,
-): PublishAgentsTeamToFireskyResp {
-  return PublishAgentsTeamToFireskyRespFromJSONTyped(json, false);
+export function PublishToFireskyRespFromJSON(json: any): PublishToFireskyResp {
+  return PublishToFireskyRespFromJSONTyped(json, false);
 }
 
-export function PublishAgentsTeamToFireskyRespFromJSONTyped(
+export function PublishToFireskyRespFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): PublishAgentsTeamToFireskyResp {
+): PublishToFireskyResp {
   if (json == null) {
     return json;
   }
@@ -58,14 +56,12 @@ export function PublishAgentsTeamToFireskyRespFromJSONTyped(
   };
 }
 
-export function PublishAgentsTeamToFireskyRespToJSON(
-  json: any,
-): PublishAgentsTeamToFireskyResp {
-  return PublishAgentsTeamToFireskyRespToJSONTyped(json, false);
+export function PublishToFireskyRespToJSON(json: any): PublishToFireskyResp {
+  return PublishToFireskyRespToJSONTyped(json, false);
 }
 
-export function PublishAgentsTeamToFireskyRespToJSONTyped(
-  value?: PublishAgentsTeamToFireskyResp | null,
+export function PublishToFireskyRespToJSONTyped(
+  value?: PublishToFireskyResp | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {

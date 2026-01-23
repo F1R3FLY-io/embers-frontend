@@ -19,45 +19,45 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
 /**
  *
  * @export
- * @interface DeploySignedRunAgentsTeamFireskyReq
+ * @interface DeploySignedRunOnFireskyReq
  */
-export interface DeploySignedRunAgentsTeamFireskyReq {
+export interface DeploySignedRunOnFireskyReq {
   /**
    *
    * @type {SignedContract}
-   * @memberof DeploySignedRunAgentsTeamFireskyReq
+   * @memberof DeploySignedRunOnFireskyReq
    */
   contract: SignedContract;
   /**
    *
    * @type {FireskyReply}
-   * @memberof DeploySignedRunAgentsTeamFireskyReq
+   * @memberof DeploySignedRunOnFireskyReq
    */
   replyTo?: FireskyReply;
 }
 
 /**
- * Check if a given object implements the DeploySignedRunAgentsTeamFireskyReq interface.
+ * Check if a given object implements the DeploySignedRunOnFireskyReq interface.
  */
-export function instanceOfDeploySignedRunAgentsTeamFireskyReq(
+export function instanceOfDeploySignedRunOnFireskyReq(
   value: object,
-): value is DeploySignedRunAgentsTeamFireskyReq {
+): value is DeploySignedRunOnFireskyReq {
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
   return true;
 }
 
-export function DeploySignedRunAgentsTeamFireskyReqFromJSON(
+export function DeploySignedRunOnFireskyReqFromJSON(
   json: any,
-): DeploySignedRunAgentsTeamFireskyReq {
-  return DeploySignedRunAgentsTeamFireskyReqFromJSONTyped(json, false);
+): DeploySignedRunOnFireskyReq {
+  return DeploySignedRunOnFireskyReqFromJSONTyped(json, false);
 }
 
-export function DeploySignedRunAgentsTeamFireskyReqFromJSONTyped(
+export function DeploySignedRunOnFireskyReqFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean,
-): DeploySignedRunAgentsTeamFireskyReq {
+): DeploySignedRunOnFireskyReq {
   if (json == null) {
     return json;
   }
@@ -68,14 +68,14 @@ export function DeploySignedRunAgentsTeamFireskyReqFromJSONTyped(
   };
 }
 
-export function DeploySignedRunAgentsTeamFireskyReqToJSON(
+export function DeploySignedRunOnFireskyReqToJSON(
   json: any,
-): DeploySignedRunAgentsTeamFireskyReq {
-  return DeploySignedRunAgentsTeamFireskyReqToJSONTyped(json, false);
+): DeploySignedRunOnFireskyReq {
+  return DeploySignedRunOnFireskyReqToJSONTyped(json, false);
 }
 
-export function DeploySignedRunAgentsTeamFireskyReqToJSONTyped(
-  value?: DeploySignedRunAgentsTeamFireskyReq | null,
+export function DeploySignedRunOnFireskyReqToJSONTyped(
+  value?: DeploySignedRunOnFireskyReq | null,
   ignoreDiscriminator: boolean = false,
 ): any {
   if (value == null) {

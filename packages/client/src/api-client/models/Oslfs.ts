@@ -10,9 +10,9 @@
  * Do not edit the class manually.
  */
 
-import type { Oslf } from "./Oslf";
+import type { OslfHeader } from "./OslfHeader";
 
-import { OslfFromJSON, OslfToJSON } from "./Oslf";
+import { OslfHeaderFromJSON, OslfHeaderToJSON } from "./OslfHeader";
 
 /**
  *
@@ -22,10 +22,10 @@ import { OslfFromJSON, OslfToJSON } from "./Oslf";
 export interface Oslfs {
   /**
    *
-   * @type {Array<Oslf>}
+   * @type {Array<OslfHeader>}
    * @memberof Oslfs
    */
-  oslfs: Array<Oslf>;
+  oslfs: Array<OslfHeader>;
 }
 
 /**
@@ -50,7 +50,7 @@ export function OslfsFromJSONTyped(
     return json;
   }
   return {
-    oslfs: (json.oslfs as Array<any>).map(OslfFromJSON),
+    oslfs: (json.oslfs as Array<any>).map(OslfHeaderFromJSON),
   };
 }
 
@@ -67,6 +67,6 @@ export function OslfsToJSONTyped(
   }
 
   return {
-    oslfs: (value.oslfs as Array<any>).map(OslfToJSON),
+    oslfs: (value.oslfs as Array<any>).map(OslfHeaderToJSON),
   };
 }
