@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.11.0",
-    "@f1r3fly-io/graphl-parser": "^0.0.38",
+    "@f1r3fly-io/graphl-parser": "^0.0.39",
     "@noble/curves": "^2.0.1",
     "@scure/base": "^2.0.0",
     "blakejs": "^1.2.1",
