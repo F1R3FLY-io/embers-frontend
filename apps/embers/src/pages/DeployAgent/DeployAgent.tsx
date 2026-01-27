@@ -230,19 +230,17 @@ export default function DeployAgent() {
                 </Button>
 
                 <div className={styles["button-group"]}>
-                  <button className={styles["draft-button"]}>
-                    <DraftIcon />
-                    {t("basic.saveDraft")}
-                  </button>
-
-                  <button
-                    aria-busy={isSubmitting}
-                    className={styles["deploy-button"]}
+                  <Button
                     disabled={isSubmitting}
-                    type="submit"
+                    icon={<DraftIcon />}
+                    type="secondary"
                   >
+                    {t("basic.saveDraft")}
+                  </Button>
+
+                  <Button submit disabled={isSubmitting} type="primary">
                     {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}

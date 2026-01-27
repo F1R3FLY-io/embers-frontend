@@ -192,15 +192,9 @@ export default function CreateAgent() {
                 >
                   {t("basic.cancel")}
                 </Button>
-                <div className={styles["button-group"]}>
-                  <button
-                    className={styles["continue-button"]}
-                    disabled={isSubmitting}
-                    type="submit"
-                  >
-                    {t("basic.continue")}
-                  </button>
-                </div>
+                <Button submit disabled={isSubmitting} type="primary">
+                  {t("basic.continue")}
+                </Button>
               </div>
             )}
           </form.Subscribe>

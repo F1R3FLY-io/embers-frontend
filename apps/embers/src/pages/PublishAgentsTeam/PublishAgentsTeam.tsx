@@ -221,13 +221,9 @@ export default function PublishAgentsTeam() {
                 {t("publish.cancel")}
               </Button>
 
-              <button
-                className={styles["primary-button"]}
-                disabled={isSubmitting}
-                type="submit"
-              >
+              <Button submit disabled={isSubmitting} type="primary">
                 {t("publish.button")}
-              </button>
+              </Button>
             </div>
           )}
         </form.Subscribe>
