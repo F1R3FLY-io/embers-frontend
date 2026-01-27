@@ -28,7 +28,7 @@ export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { t } = useTranslation();
   const { setHeaderTitle } = useLayout();
-  const { data, setStep, updateMany } = useCodeEditorStepper();
+  const { data, updateMany } = useCodeEditorStepper();
   const { agentId, version } = data;
   const { data: agent } = useAgent(agentId, version);
   const { data: agentVersions } = useAgentVersions(agentId);
@@ -87,7 +87,6 @@ export default function CodeEditor() {
   }, [agent, data.code, fileName]);
 
   useEffect(() => {
-    setStep(1);
     const preload = location.state as CodeEditorStepperData;
     updateMany(preload);
     void navigate(location.pathname, { replace: true });

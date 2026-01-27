@@ -1,7 +1,9 @@
 import { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import { useCallback, useEffect, useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
@@ -20,6 +22,10 @@ import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import styles from "./DeployAgentsTeam.module.scss";
 
+const formModel = z.object({
+  inputPrompt: z.union([z.string(), z.undefined()]),
+});
+
 export default function DeployAgentsTeam() {
   const { t } = useTranslation();
   const { open } = useModal();
@@ -27,36 +33,12 @@ export default function DeployAgentsTeam() {
 
   const { appendDeploy, appendLog } = useDock();
 
-  const {
-    data,
-    navigateToPrevStep,
-    navigateToStep,
-    reset,
-    setStep,
-    step,
-    updateData,
-  } = useGraphEditorStepper();
+  const { data, navigateToPrevStep, navigateToStep, reset, step, updateData } =
+    useGraphEditorStepper();
 
   const deployTeamsMutation = useMutationResultWithLoader(
     useDeployAgentsTeamMutation(),
   );
-
-  const [inputPrompt, setInputPrompt] = useState(data.inputPrompt ?? "");
-
-  useEffect(() => {
-    setStep(2);
-  }, [setStep]);
-
-  const [isDeploying, setIsDeploying] = useState(false);
-  const canDeploy = !isDeploying;
-
-  const backClick = useCallback(() => {
-    navigateToPrevStep();
-  }, [navigateToPrevStep]);
-
-  const handleSaveDraft = () => {
-    updateData("inputPrompt", inputPrompt);
-  };
 
   const logError = useCallback(
     (err: Error) => appendLog(err.message, "error"),
@@ -90,13 +72,12 @@ export default function DeployAgentsTeam() {
     [appendDeploy, logError, navigateToStep, open],
   );
 
-  const handleDeploy = useCallbackWithLoader(async () => {
-    if (!canDeploy) {
-      return;
-    }
-
-    try {
-      if (data.agentId && data.version) {
+  const form = useForm({
+    defaultValues: {
+      inputPrompt: data.inputPrompt,
+    },
+    onSubmit: useCallbackWithLoader(async () => {
+      try {
         const modalData = [
           { label: "deploy.labels.agentId", value: data.agentId },
           { label: "deploy.version", value: data.version },
@@ -104,17 +85,15 @@ export default function DeployAgentsTeam() {
           { label: "deploy.labels.note", value: data.description },
         ];
 
-        setIsDeploying(true);
-        handleSaveDraft();
         const registryKey = PrivateKey.new();
 
         await deployTeamsMutation.mutateAsync(
           {
-            agentsTeamId: data.agentId,
+            agentsTeamId: data.agentId!,
             registryKey,
             registryVersion: 1n,
             rhoLimit: 1_000_000n,
-            version: data.version,
+            version: data.version!,
           },
           {
             onError: onFailedDeploy,
@@ -142,12 +121,16 @@ export default function DeployAgentsTeam() {
             },
           },
         );
-        setIsDeploying(false);
+      } catch (e) {
+        onFailedDeploy(e as Error);
       }
-    } catch (e) {
-      onFailedDeploy(e as Error);
-    }
+    }),
+    validators: {
+      onChange: formModel,
+    },
   });
+
+  const handleSaveDraft = () => {};
 
   return (
     <div className={styles["deploy-container"]}>
@@ -170,7 +153,13 @@ export default function DeployAgentsTeam() {
         />
       </div>
 
-      <div className={styles["content-container"]}>
+      <form
+        className={styles["content-container"]}
+        onSubmit={(e) => {
+          e.preventDefault();
+          void form.handleSubmit();
+        }}
+      >
         <div>
           <Text bold color="primary" type="H2">
             {data.agentName}
@@ -193,7 +182,6 @@ export default function DeployAgentsTeam() {
             </Text>
             <Input
               disabled
-              inputType="input"
               placeholder={data.agentName}
               value={data.agentName}
             />
@@ -205,60 +193,71 @@ export default function DeployAgentsTeam() {
             </Text>
             <Input
               disabled
-              inputType="textarea"
+              textarea
               placeholder={data.description || t("basic.description")}
               value={data.description}
             />
           </div>
 
-          <div className={styles["form-section"]}>
-            <Text bold color="primary" type="H5">
-              {t("deploy.welcomeInterface")}
-            </Text>
-
-            <div className={styles["form-fields"]}>
-              <div>
-                <Text color="secondary" type="small">
-                  {t("deploy.inputPrompt")}
+          <form.Field name="inputPrompt">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <Text bold color="primary" type="H5">
+                  {t("deploy.welcomeInterface")}
                 </Text>
-                <Input
-                  inputType="textarea"
-                  placeholder={t("deploy.enterInputPrompt")}
-                  value={inputPrompt}
-                  onChange={(e) => setInputPrompt(e.target.value)}
-                />
+
+                <div className={styles["form-fields"]}>
+                  <div>
+                    <Text color="secondary" type="small">
+                      {t("deploy.inputPrompt")}
+                    </Text>
+                    <Input
+                      textarea
+                      error={
+                        field.state.meta.isTouched && !field.state.meta.isValid
+                      }
+                      placeholder={t("deploy.enterInputPrompt")}
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            )}
+          </form.Field>
 
-          <div className={styles["button-container"]}>
-            <Button type="secondary" onClick={backClick}>
-              {t("deploy.back")}
-            </Button>
+          <form.Subscribe selector={(state) => [state.isSubmitting]}>
+            {([isSubmitting]) => (
+              <div className={styles["button-container"]}>
+                <Button
+                  disabled={isSubmitting}
+                  type="secondary"
+                  onClick={navigateToPrevStep}
+                >
+                  {t("deploy.back")}
+                </Button>
 
-            <div className={styles["button-group"]}>
-              <Button
-                icon={<DraftIcon />}
-                type="secondary"
-                onClick={handleSaveDraft}
-              >
-                {t("basic.saveDraft")}
-              </Button>
+                <div className={styles["button-group"]}>
+                  <Button
+                    disabled={isSubmitting}
+                    icon={<DraftIcon />}
+                    type="secondary"
+                    onClick={handleSaveDraft}
+                  >
+                    {t("basic.saveDraft")}
+                  </Button>
 
-              <Button
-                aria-busy={isDeploying}
-                disabled={!canDeploy}
-                type="primary"
-                onClick={handleDeploy}
-              >
-                {isDeploying ? t("deploy.deploying") : t("deploy.deploy")}
-              </Button>
-            </div>
-          </div>
+                  <Button submit disabled={isSubmitting} type="primary">
+                    {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </form.Subscribe>
 
           <LanguageFooter />
         </div>
-      </div>
+      </form>
     </div>
   );
 }

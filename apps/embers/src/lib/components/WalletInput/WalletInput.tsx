@@ -2,7 +2,7 @@ import type { ChangeEvent } from "react";
 
 import { deserializeKey, PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import { base16 } from "@scure/base";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { FilePicker } from "@/lib/components/FilePicker";
 import { Input } from "@/lib/components/Input";
@@ -12,20 +12,12 @@ import UploadIcon from "@/public/icons/download-icon.svg?react";
 import styles from "./WalletInput.module.scss";
 
 type WalletInputProps = {
-  error?: boolean | undefined;
   onChange: (key?: PrivateKey) => void;
-  value?: PrivateKey | undefined;
 };
 
-export function WalletInput({ error, onChange, value }: WalletInputProps) {
+export function WalletInput({ onChange }: WalletInputProps) {
+  const [content, setContent] = useState("");
   const [errorState, setErrorState] = useState(false);
-  useEffect(() => {
-    if (error) {
-      setErrorState(error);
-    }
-  }, [error]);
-
-  const [content, setContent] = useState(value?.toHex());
 
   const setWalletFromInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +64,6 @@ export function WalletInput({ error, onChange, value }: WalletInputProps) {
       </Text>
       <Input
         error={errorState}
-        inputType="input"
         rightIcon={
           <FilePicker
             accept={{ "application/json": [".json"] }}

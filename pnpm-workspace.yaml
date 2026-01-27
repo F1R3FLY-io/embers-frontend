@@ -3,10 +3,8 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
-  - '@f1r3fly-io/lightning-bug'
-  - '@parcel/watcher'
-  - '@swc/core'
-  - counterfact
+  - "@f1r3fly-io/lightning-bug"
+  - "@parcel/watcher"
+  - "@swc/core"
   - esbuild
-  - secp256k1
   - unrs-resolver

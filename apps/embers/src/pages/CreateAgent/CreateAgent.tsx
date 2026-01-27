@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
 
 import type { Option } from "@/lib/components/Select";
 
@@ -15,26 +16,40 @@ import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 
 import styles from "./CreateAgent.module.scss";
 
+const formModel = z.object({
+  environment: z.union([z.string(), z.undefined()]),
+  iconUrl: z.union([z.string(), z.undefined()]),
+  name: z.string().nonempty(),
+});
+
 export default function CreateAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, setStep, step, updateData } =
-    useCodeEditorStepper();
-  const [name, setName] = useState(data.agentName);
-  const [environment, setEnvironment] = useState(data.environment ?? "");
+  const { data, navigateToNextStep, step, updateData } = useCodeEditorStepper();
 
-  const [iconUrl, setIconUrl] = useState(data.agentIconUrl ?? "");
-  const [iconLoadError, setIconLoadError] = useState(false);
+  const form = useForm({
+    defaultValues: {
+      environment: data.environment,
+      iconUrl: data.agentIconUrl,
+      name: data.agentName,
+    },
+    onSubmit: ({ value }) => {
+      updateData("agentName", value.name);
+      updateData("environment", value.environment);
+      updateData("agentIconUrl", value.iconUrl);
+      navigateToNextStep();
+    },
+    validators: {
+      onChange: formModel,
+    },
+  });
 
-  const envOptions: Option[] = useMemo(
-    () => [
-      { label: "Development", value: "dev" },
-      { label: "Staging", value: "staging" },
-      { label: "Production", value: "prod" },
-    ],
-    [],
-  );
+  const envOptions: Option<string>[] = [
+    { label: "Development", value: "dev" },
+    { label: "Staging", value: "staging" },
+    { label: "Production", value: "prod" },
+  ];
 
   const shardByEnv: Record<string, string> = {
     dev: "shard://dev.test.net",
@@ -42,24 +57,9 @@ export default function CreateAgent() {
     staging: "shard://staging.test.net",
   };
 
-  const selectedShard = environment ? (shardByEnv[environment] ?? "") : "";
-
   const estimatedCost = 50000;
 
-  const canContinue = name.trim().length > 0 && environment.length > 0;
-
   const handleCancel = () => void navigate("/dashboard");
-
-  const submitForm = () => {
-    updateData("agentName", name);
-    updateData("environment", environment);
-    updateData("agentIconUrl", iconUrl.trim());
-    navigateToNextStep();
-  };
-
-  useEffect(() => {
-    setStep(0);
-  }, [setStep]);
 
   return (
     <div className={styles["create-container"]}>
@@ -76,11 +76,11 @@ export default function CreateAgent() {
               label: t("deploy.generalInfo"),
             },
             {
-              canClick: canContinue,
+              canClick: false,
               label: t("deploy.creation"),
             },
             {
-              canClick: canContinue,
+              canClick: false,
               label: t("deploy.deployment"),
             },
           ]}
@@ -94,63 +94,79 @@ export default function CreateAgent() {
           </Text>
         </div>
 
-        <div className={styles["details-container"]}>
+        <form
+          className={styles["details-container"]}
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
           <Text bold color="primary" type="H5">
             {t("agents.generalSettings")}
           </Text>
 
-          <div className={styles["icon-section"]}>
-            <IconPreview url={iconUrl} />
-
-            <div className={styles["icon-input-container"]}>
-              <Text color="secondary" type="small">
-                {t("deploy.iconUrl")}
-              </Text>
-              <Input
-                inputType="input"
-                placeholder="https://example.com/icon.png"
-                value={iconUrl}
-                onChange={(e) => {
-                  setIconLoadError(false);
-                  setIconUrl(e.target.value);
-                }}
-              />
-              {iconUrl && iconLoadError ? (
-                <Text color="secondary" type="small">
-                  {t("deploy.iconLoadFailed")}
-                </Text>
-              ) : null}
-            </div>
-          </div>
-
-          <div className={styles["form-section"]}>
-            <Text color="secondary" type="small">
-              {t("deploy.agentName")}
-            </Text>
-            <Input
-              inputType="input"
-              placeholder={t("deploy.agentName")}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-
-          <div className={styles["form-section"]}>
-            <Select
-              label={t("deploy.blockchainShard")}
-              options={envOptions}
-              placeholder={t("agents.selectEnvironment")}
-              value={environment}
-              onChange={setEnvironment}
-            />
-            {selectedShard && (
-              <div className={styles["description-container"]}>
-                <Text color="secondary" type="small">
-                  {selectedShard}
-                </Text>
+          <form.Field name="iconUrl">
+            {(field) => (
+              <div className={styles["icon-section"]}>
+                <IconPreview url={field.state.value} />
+                <div className={styles["icon-input-container"]}>
+                  <Text color="secondary" type="small">
+                    {t("deploy.iconUrl")}
+                  </Text>
+                  <Input
+                    error={
+                      field.state.meta.isTouched && !field.state.meta.isValid
+                    }
+                    placeholder="https://example.com/icon.png"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                </div>
               </div>
             )}
-          </div>
+          </form.Field>
+
+          <form.Field name="name">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <Text color="secondary" type="small">
+                  {t("deploy.agentName")}
+                </Text>
+                <Input
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  placeholder={t("deploy.agentName")}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="environment">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <Select
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  label={t("deploy.blockchainShard")}
+                  options={envOptions}
+                  placeholder={t("agents.selectEnvironment")}
+                  value={field.state.value}
+                  onChange={field.handleChange}
+                />
+                {field.state.value && (
+                  <div className={styles["description-container"]}>
+                    <Text color="secondary" type="small">
+                      {shardByEnv[field.state.value]}
+                    </Text>
+                  </div>
+                )}
+              </div>
+            )}
+          </form.Field>
 
           <div className={styles["form-section"]}>
             <div className={styles["estimation-bar"]}>
@@ -168,23 +184,31 @@ export default function CreateAgent() {
             </div>
           </div>
 
-          <div className={styles["button-container"]}>
-            <Button type="secondary" onClick={handleCancel}>
-              {t("basic.cancel")}
-            </Button>
-            <div className={styles["button-group"]}>
-              <button
-                className={styles["continue-button"]}
-                disabled={!canContinue}
-                onClick={submitForm}
-              >
-                {t("basic.continue")}
-              </button>
-            </div>
-          </div>
+          <form.Subscribe selector={(state) => [state.isSubmitting]}>
+            {([isSubmitting]) => (
+              <div className={styles["button-container"]}>
+                <Button
+                  disabled={isSubmitting}
+                  type="secondary"
+                  onClick={handleCancel}
+                >
+                  {t("basic.cancel")}
+                </Button>
+                <div className={styles["button-group"]}>
+                  <button
+                    className={styles["continue-button"]}
+                    disabled={isSubmitting}
+                    type="submit"
+                  >
+                    {t("basic.continue")}
+                  </button>
+                </div>
+              </div>
+            )}
+          </form.Subscribe>
 
           <LanguageFooter />
-        </div>
+        </form>
       </div>
     </div>
   );

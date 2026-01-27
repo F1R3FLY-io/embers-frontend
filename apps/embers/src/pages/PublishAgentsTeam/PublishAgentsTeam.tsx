@@ -119,18 +119,13 @@ export default function PublishAgentsTeam() {
             <Text color="secondary" type="small">
               {t("publish.agentName")}
             </Text>
-            <Input
-              inputType="input"
-              placeholder="Agent name"
-              value={preload.agentName}
-            />
+            <Input placeholder="Agent name" value={preload.agentName} />
           </div>
           <div className={styles["form-field"]}>
             <Text color="secondary" type="small">
               {t("publish.username")}
             </Text>
             <Input
-              inputType="input"
               placeholder="Username"
               value={handle}
               onChange={(e) => setHandle(e.target.value)}
@@ -141,7 +136,6 @@ export default function PublishAgentsTeam() {
               {t("publish.pdsAddress")}
             </Text>
             <Input
-              inputType="input"
               placeholder="https://"
               value={pdsAddress}
               onChange={(e) => setPdsAddress(e.target.value)}
@@ -153,7 +147,6 @@ export default function PublishAgentsTeam() {
               Email
             </Text>
             <Input
-              inputType="input"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -165,7 +158,6 @@ export default function PublishAgentsTeam() {
               Password
             </Text>
             <Input
-              inputType="input"
               placeholder="Enter password"
               type="password"
               value={password}

@@ -1,5 +1,3 @@
-import type React from "react";
-
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 
@@ -7,37 +5,37 @@ import { Text } from "@/lib/components/Text";
 
 import styles from "./Select.module.scss";
 
-export interface Option {
+export interface Option<T extends string> {
   label: string;
-  value: string;
+  value: T;
 }
 
-interface BaseProps {
+interface BaseProps<T extends string> {
   className?: string;
   disabled?: boolean;
-  error?: boolean;
+  error?: boolean | undefined;
   helperText?: string;
   label?: string;
-  options: Option[];
+  options: Option<T>[];
   placeholder?: string;
   placement?: "auto" | "top" | "bottom";
 }
 
-interface SingleSelectProps extends BaseProps {
+interface SingleSelectProps<T extends string> extends BaseProps<T> {
   multiple?: false;
-  onChange: (value: string) => void;
-  value: string;
+  onChange: (value: T) => void;
+  value?: T | undefined;
 }
 
-interface MultiSelectProps extends BaseProps {
+interface MultiSelectProps<T extends string> extends BaseProps<T> {
   multiple: true;
-  onChange: (value: string[]) => void;
-  value: string[];
+  onChange: (value: T[]) => void;
+  value?: T[] | undefined;
 }
 
-type SelectProps = SingleSelectProps | MultiSelectProps;
+type SelectProps<T extends string> = SingleSelectProps<T> | MultiSelectProps<T>;
 
-export const Select: React.FC<SelectProps> = ({
+export function Select<T extends string>({
   className,
   disabled,
   error,
@@ -49,12 +47,12 @@ export const Select: React.FC<SelectProps> = ({
   placeholder = "Select value",
   placement = "auto",
   value,
-}) => {
+}: SelectProps<T>) {
   const [open, setOpen] = useState(false);
   const [dropUp, setDropUp] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
 
-  const handleSelect = (val: string) => {
+  const handleSelect = (val: T) => {
     if (multiple) {
       const current = Array.isArray(value) ? value : [];
       if (current.includes(val)) {
@@ -68,7 +66,7 @@ export const Select: React.FC<SelectProps> = ({
     }
   };
 
-  const isSelected = (val: string) =>
+  const isSelected = (val: T) =>
     multiple ? Array.isArray(value) && value.includes(val) : value === val;
 
   useEffect(() => {
@@ -184,4 +182,4 @@ export const Select: React.FC<SelectProps> = ({
       )}
     </div>
   );
-};
+}

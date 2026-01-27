@@ -7,7 +7,7 @@ export type CodeEditorStepperData = {
   code?: string;
   description?: string;
   environment?: string;
-  rhoLimit: number;
+  rhoLimit: bigint;
   version?: string;
 };
 
@@ -17,7 +17,7 @@ export const {
 } = createStepper<CodeEditorStepperData>({
   initialData: {
     agentName: "",
-    rhoLimit: 100000,
+    rhoLimit: 100000n,
   },
   routes: ["/create-agent/create", "/create-agent", "/create-agent/deploy"],
 });

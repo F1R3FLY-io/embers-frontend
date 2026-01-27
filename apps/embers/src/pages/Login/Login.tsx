@@ -1,10 +1,10 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
-import { useFormik } from "formik";
+import { useForm } from "@tanstack/react-form";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
+import z from "zod";
 
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
@@ -15,13 +15,9 @@ import logo from "@/public/icons/firefly-io.png";
 
 import styles from "./Login.module.scss";
 
-const formModel = Yup.object().shape({
-  key: Yup.mixed().required(),
+const formModel = z.object({
+  key: z.custom<PrivateKey | undefined>((v) => !!v),
 });
-
-type FromModel = {
-  key: PrivateKey | undefined;
-};
 
 type PageState = "init" | "signin";
 
@@ -35,15 +31,17 @@ export default function Login() {
   const navigate = useNavigate();
   const { setKey } = useWalletState();
 
-  const form = useFormik<FromModel>({
-    initialValues: {
+  const form = useForm({
+    defaultValues: {
       key: undefined,
-    },
-    onSubmit: (value) => {
+    } as z.infer<typeof formModel>,
+    onSubmit: async ({ value }) => {
       setKey(value.key);
-      void navigate("/dashboard");
+      return navigate("/dashboard");
     },
-    validationSchema: formModel,
+    validators: {
+      onChange: formModel,
+    },
   });
 
   let content;
@@ -76,7 +74,13 @@ export default function Login() {
       break;
     case "signin":
       content = (
-        <form className={styles.form} onSubmit={form.handleSubmit}>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
           <div className={styles["picker-container"]}>
             <div className={styles.title}>
               <Text bold color="primary" type="H2">
@@ -90,29 +94,27 @@ export default function Login() {
                 {t("login.useSecureCredentials")}
               </Text>
             </div>
-            <WalletInput
-              error={form.touched.key && Boolean(form.errors.key)}
-              value={form.values.key}
-              onChange={(value) => void form.setFieldValue("key", value)}
-            />
+            <form.Field name="key">
+              {(field) => <WalletInput onChange={field.handleChange} />}
+            </form.Field>
           </div>
-          <div className={styles.buttons}>
-            <Button
-              submit
-              disabled={!form.isValid || form.isSubmitting}
-              type="primary"
-            >
-              {t("login.signIn")}
-            </Button>
-            <div className={styles.note}>
-              <Text color="secondary" type="normal">
-                {t("login.dontHaveWallet")}{" "}
-                <TextLink onClick={redirectToFiresky}>
-                  {t("login.createOne")}
-                </TextLink>
-              </Text>
-            </div>
-          </div>
+          <form.Subscribe selector={(state) => [state.isSubmitting]}>
+            {([isSubmitting]) => (
+              <div className={styles.buttons}>
+                <Button submit disabled={isSubmitting} type="primary">
+                  {t("login.signIn")}
+                </Button>
+                <div className={styles.note}>
+                  <Text color="secondary" type="normal">
+                    {t("login.dontHaveWallet")}{" "}
+                    <TextLink onClick={redirectToFiresky}>
+                      {t("login.createOne")}
+                    </TextLink>
+                  </Text>
+                </div>
+              </div>
+            )}
+          </form.Subscribe>
         </form>
       );
       break;
