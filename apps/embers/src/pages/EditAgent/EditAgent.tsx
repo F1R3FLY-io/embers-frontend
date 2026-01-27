@@ -29,13 +29,13 @@ export default function CodeEditor() {
   const { t } = useTranslation();
   const { setHeaderTitle } = useLayout();
   const { data, updateMany } = useCodeEditorStepper();
-  const { agentId, version } = data;
-  const { data: agent } = useAgent(agentId, version);
-  const { data: agentVersions } = useAgentVersions(agentId);
+  const { id, version } = data;
+  const { data: agent } = useAgent(id, version);
+  const { data: agentVersions } = useAgentVersions(id);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const agentName = agent?.name ?? data.agentName;
+  const agentName = agent?.name ?? data.name;
   const currentVersion = useMemo(
     () => agent?.version ?? version,
     [agent?.version, version],

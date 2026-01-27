@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/lib/components/Button";
@@ -22,7 +22,7 @@ export const Header: React.FC = () => {
   const dock = useDock();
   const { open } = useModal();
 
-  const id = useMemo(() => data.agentId ?? "", [data.agentId]);
+  const id = data.id!;
   const saveMutation = useSaveAgentsTeamMutation(id);
   const createMutation = useCreateAgentsTeamMutation();
   const runAgentsTeam = useMutationResultWithLoader(useRunAgentsTeamMutation());
@@ -43,19 +43,19 @@ export const Header: React.FC = () => {
     const payload = {
       description: data.description ?? "",
       edges: data.edges,
-      name: data.agentName,
+      name: data.name,
       nodes: data.nodes,
       ...(data.iconUrl ? { logo: data.iconUrl } : {}),
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
       await res.waitForFinalization;
-      return { agentId: id, version: res.prepareResponse.response.version };
+      return { id, version: res.prepareResponse.response.version };
     }
     const res = await createMutation.mutateAsync(payload);
     await res.waitForFinalization;
     return {
-      agentId: res.prepareResponse.response.id,
+      id: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
   });
@@ -65,13 +65,10 @@ export const Header: React.FC = () => {
       return;
     }
     try {
-      const { agentId, version } = await saveOrCreate();
+      const { id, version } = await saveOrCreate();
       updateData("version", version);
-      updateData("agentId", agentId);
-      dock.appendLog(
-        `Agent ${agentId} with ${version} has been saved!`,
-        "info",
-      );
+      updateData("id", id);
+      dock.appendLog(`Agent ${id} with ${version} has been saved!`, "info");
     } catch (e) {
       dock.appendLog(
         `Save failed: ${e instanceof Error ? e.message : String(e)}`,
@@ -86,8 +83,8 @@ export const Header: React.FC = () => {
       return;
     }
     try {
-      const { agentId, version } = await saveOrCreate();
-      updateData("agentId", agentId);
+      const { id, version } = await saveOrCreate();
+      updateData("id", id);
       updateData("version", version);
       navigateToNextStep();
     } catch (e) {

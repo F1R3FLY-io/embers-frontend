@@ -1,12 +1,13 @@
 import { createStepper } from "@/lib/providers/stepper/StepperProvider";
 
 export type CodeEditorStepperData = {
-  agentIconUrl?: string;
-  agentId?: string;
-  agentName: string;
   code?: string;
-  description?: string;
-  environment?: string;
+  description?: string | undefined;
+  environment?: string | undefined;
+  iconUrl?: string | undefined;
+  id?: string;
+  name: string;
+  notes?: string;
   rhoLimit: bigint;
   version?: string;
 };
@@ -16,7 +17,7 @@ export const {
   useStepper: useCodeEditorStepper,
 } = createStepper<CodeEditorStepperData>({
   initialData: {
-    agentName: "",
+    name: "",
     rhoLimit: 100000n,
   },
   routes: ["/create-agent/create", "/create-agent", "/create-agent/deploy"],

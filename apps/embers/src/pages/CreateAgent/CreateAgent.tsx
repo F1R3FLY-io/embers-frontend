@@ -26,18 +26,16 @@ export default function CreateAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, step, updateData } = useCodeEditorStepper();
+  const { data, navigateToNextStep, step, updateMany } = useCodeEditorStepper();
 
   const form = useForm({
     defaultValues: {
       environment: data.environment,
-      iconUrl: data.agentIconUrl,
-      name: data.agentName,
+      iconUrl: data.iconUrl,
+      name: data.name,
     },
     onSubmit: ({ value }) => {
-      updateData("agentName", value.name);
-      updateData("environment", value.environment);
-      updateData("agentIconUrl", value.iconUrl);
+      updateMany(value);
       navigateToNextStep();
     },
     validators: {

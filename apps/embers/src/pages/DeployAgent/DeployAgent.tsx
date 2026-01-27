@@ -11,6 +11,7 @@ import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
@@ -20,7 +21,8 @@ import DraftIcon from "@/public/icons/draft-icon.svg?react";
 import styles from "./DeployAgent.module.scss";
 
 const formModel = z.object({
-  rhoLimit: z.string().transform(BigInt),
+  notes: z.union([z.string(), z.undefined()]),
+  rhoLimit: z.string().refine((v) => BigInt(v)),
 });
 
 export default function DeployAgent() {
@@ -34,15 +36,13 @@ export default function DeployAgent() {
   const dock = useDock();
   const { open } = useModal();
 
-  const form = useForm({
-    defaultValues: {
-      rhoLimit: data.rhoLimit.toString(),
-    },
-    onSubmit: async ({ value }) => {
+  const onSubmit = useCallbackWithLoader(
+    async ({ value }: { value: z.infer<typeof formModel> }) => {
+      updateData("notes", value.notes);
       updateData("rhoLimit", BigInt(value.rhoLimit));
 
       const modalData = [
-        { label: "deploy.labels.agentId", value: data.agentId },
+        { label: "deploy.labels.agentId", value: data.id },
         { label: "deploy.version", value: data.version },
         { label: "deploy.labels.status", value: "ok" },
         { label: "deploy.rhoLimit", value: String(data.rhoLimit) },
@@ -51,7 +51,7 @@ export default function DeployAgent() {
 
       return deployMutation.mutateAsync(
         {
-          agentId: data.agentId!,
+          agentId: data.id!,
           rhoLimit: BigInt(value.rhoLimit),
           version: data.version!,
         },
@@ -74,7 +74,7 @@ export default function DeployAgent() {
             dock.appendDeploy(true);
             open(
               <SuccessModal
-                agentName={data.agentName}
+                agentName={data.name}
                 createAnother={() => {
                   reset();
                   navigateToStep(0);
@@ -92,6 +92,14 @@ export default function DeployAgent() {
         },
       );
     },
+  );
+
+  const form = useForm({
+    defaultValues: {
+      notes: data.notes,
+      rhoLimit: data.rhoLimit.toString(),
+    },
+    onSubmit,
     validators: {
       onChange: formModel,
     },
@@ -126,7 +134,7 @@ export default function DeployAgent() {
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" type="H2">
-            {data.agentName}
+            {data.name}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" type="large">
@@ -150,11 +158,7 @@ export default function DeployAgent() {
             <Text color="secondary" type="small">
               {t("deploy.agentName")}
             </Text>
-            <Input
-              disabled
-              placeholder={data.agentName}
-              value={data.agentName}
-            />
+            <Input disabled placeholder={data.name} value={data.name} />
           </div>
 
           <div className={styles["form-section"]}>
@@ -172,18 +176,24 @@ export default function DeployAgent() {
                   value={data.version}
                 />
               </div>
-              <div>
-                <Text color="secondary" type="small">
-                  {t("deploy.notes")}
-                </Text>
-                <Input
-                  textarea
-                  placeholder={t("deploy.enterDeploymentNotes")}
-                  onChange={(e) => {
-                    updateData("description", e.target.value);
-                  }}
-                />
-              </div>
+              <form.Field name="notes">
+                {(field) => (
+                  <div>
+                    <Text color="secondary" type="small">
+                      {t("deploy.notes")}
+                    </Text>
+                    <Input
+                      textarea
+                      error={
+                        field.state.meta.isTouched && !field.state.meta.isValid
+                      }
+                      placeholder={t("deploy.enterDeploymentNotes")}
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </div>
+                )}
+              </form.Field>
             </div>
           </div>
 

@@ -49,7 +49,7 @@ export default function CreateAgentsTeam() {
       flowType: data.flowType ?? flowTypeOptions[0].value,
       iconUrl: data.iconUrl,
       language: data.language ?? "en",
-      name: data.agentName,
+      name: data.name,
     },
     onSubmit: ({ value }) => {
       updateData("description", value.description);
@@ -57,7 +57,7 @@ export default function CreateAgentsTeam() {
       updateData("flowType", value.flowType);
       updateData("iconUrl", value.iconUrl);
       updateData("language", value.language);
-      updateData("agentName", value.name);
+      updateData("name", value.name);
       navigateToNextStep();
     },
     validators: {

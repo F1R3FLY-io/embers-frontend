@@ -79,7 +79,7 @@ export default function DeployAgentsTeam() {
     onSubmit: useCallbackWithLoader(async () => {
       try {
         const modalData = [
-          { label: "deploy.labels.agentId", value: data.agentId },
+          { label: "deploy.labels.agentId", value: data.id },
           { label: "deploy.version", value: data.version },
           { label: "deploy.labels.status", value: "ok" },
           { label: "deploy.labels.note", value: data.description },
@@ -89,7 +89,7 @@ export default function DeployAgentsTeam() {
 
         await deployTeamsMutation.mutateAsync(
           {
-            agentsTeamId: data.agentId!,
+            agentsTeamId: data.id!,
             registryKey,
             registryVersion: 1n,
             rhoLimit: 1_000_000n,
@@ -102,7 +102,7 @@ export default function DeployAgentsTeam() {
               updateData("hasGraphChanges", false);
               open(
                 <SuccessModal
-                  agentName={data.agentName}
+                  agentName={data.name}
                   createAnother={() => {
                     reset();
                     navigateToStep(0);
@@ -162,7 +162,7 @@ export default function DeployAgentsTeam() {
       >
         <div>
           <Text bold color="primary" type="H2">
-            {data.agentName}
+            {data.name}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" type="large">
@@ -180,11 +180,7 @@ export default function DeployAgentsTeam() {
             <Text color="secondary" type="small">
               {t("aiTeam.teamName")}
             </Text>
-            <Input
-              disabled
-              placeholder={data.agentName}
-              value={data.agentName}
-            />
+            <Input disabled placeholder={data.name} value={data.name} />
           </div>
 
           <div className={styles["form-section"]}>

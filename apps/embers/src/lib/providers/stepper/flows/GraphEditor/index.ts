@@ -6,36 +6,21 @@ import type { Edge, Node } from "@/lib/components/GraphEditor";
 import { createStepper } from "@/lib/providers/stepper/StepperProvider";
 
 export type GraphEditorStepperData = {
-  agentId?: string;
-  agentName: string;
   description?: string;
   edges: Edge[];
-  encryptResult?: boolean;
   execType?: string;
   flow?: ReactFlowJsonObject<Node, Edge>;
   flowType?: string;
   hasGraphChanges: boolean;
   iconUrl?: string;
+  id?: string;
   inputPrompt?: string;
-  inputs: CreateAgentsTeamInputs;
   language?: string;
   lastDeployKey?: PrivateKey;
+  name: string;
   nodes: Node[];
-  outputs: CreateAgentsTeamOutputs;
   uri?: Uri;
   version?: string;
-};
-
-type CreateAgentsTeamInputs = {
-  external: boolean;
-  media: boolean;
-  textual: boolean;
-};
-
-type CreateAgentsTeamOutputs = {
-  explanation: boolean;
-  structured: boolean;
-  visualization: boolean;
 };
 
 export const {
@@ -43,20 +28,10 @@ export const {
   useStepper: useGraphEditorStepper,
 } = createStepper<GraphEditorStepperData>({
   initialData: {
-    agentName: "",
     edges: [],
     hasGraphChanges: false,
-    inputs: {
-      external: true,
-      media: false,
-      textual: true,
-    },
+    name: "",
     nodes: [],
-    outputs: {
-      explanation: true,
-      structured: true,
-      visualization: false,
-    },
   },
   routes: [
     "/create-agents-team/create",

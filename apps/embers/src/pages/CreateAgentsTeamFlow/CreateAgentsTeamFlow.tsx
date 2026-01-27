@@ -19,7 +19,7 @@ export default function CreateAgentsTeamFlow() {
   const { data, updateData, updateMany } = useGraphEditorStepper();
   const location = useLocation();
   const navigate = useNavigate();
-  const { data: agent } = useAgentsTeam(data.agentId, data.version);
+  const { data: agent } = useAgentsTeam(data.id, data.version);
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
@@ -27,7 +27,7 @@ export default function CreateAgentsTeamFlow() {
   const hydratedRef = useRef(false);
   const lastVersionRef = useRef(data.version);
 
-  const agentName = agent?.name ?? data.agentName;
+  const agentName = agent?.name ?? data.name;
 
   const handleFlowChange = useCallback(
     (flow: ReactFlowJsonObject<Node, Edge>) => {
