@@ -1,7 +1,5 @@
 import type React from "react";
 
-import { useMemo } from "react";
-
 import { Button } from "@/lib/components/Button";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
@@ -16,10 +14,9 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const { data, navigateToNextStep, updateData } = useCodeEditorStepper();
   const dock = useDock();
 
-  const { agentIconUrl, agentId, agentName } = data;
-  const id = useMemo(() => agentId ?? "", [agentId]);
+  const { iconUrl, id, name } = data;
   const createMutation = useCreateAgentMutation();
-  const saveMutation = useSaveAgentMutation(id);
+  const saveMutation = useSaveAgentMutation(id!);
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
@@ -28,18 +25,18 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
     updateData("code", code);
     const payload = {
       code,
-      name: agentName,
-      ...(agentIconUrl ? { logo: agentIconUrl } : {}),
+      name,
+      ...(iconUrl ? { logo: iconUrl } : {}),
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
       await res.waitForFinalization;
-      return { agentId: id, version: res.prepareResponse.response.version };
+      return { id, version: res.prepareResponse.response.version };
     }
     const res = await createMutation.mutateAsync(payload);
     await res.waitForFinalization;
     return {
-      agentId: res.prepareResponse.response.id,
+      id: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
   });
@@ -49,13 +46,10 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       return;
     }
     try {
-      const { agentId, version } = await saveOrCreate();
+      const { id, version } = await saveOrCreate();
       updateData("version", version);
-      updateData("agentId", agentId);
-      dock.appendLog(
-        `Agent ${agentId} with ${version} has been saved!`,
-        "info",
-      );
+      updateData("id", id);
+      dock.appendLog(`Agent ${id} with ${version} has been saved!`, "info");
     } catch (e) {
       dock.appendLog(
         `Save failed: ${e instanceof Error ? e.message : String(e)}`,
@@ -70,8 +64,8 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       return;
     }
     try {
-      const { agentId, version } = await saveOrCreate();
-      updateData("agentId", agentId);
+      const { id, version } = await saveOrCreate();
+      updateData("id", id);
       updateData("version", version);
       navigateToNextStep();
     } catch (e) {

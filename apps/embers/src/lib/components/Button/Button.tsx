@@ -11,8 +11,9 @@ type ButtonProps = {
   className?: string;
   disabled?: boolean;
   icon?: React.ReactNode;
-  onClick: () => void | Promise<void>;
+  onClick?: () => void | Promise<void>;
   rounded?: boolean;
+  submit?: boolean;
   type: "primary" | "secondary" | "subtle";
 };
 
@@ -23,6 +24,7 @@ export function Button({
   icon,
   onClick,
   rounded,
+  submit,
   type,
 }: ButtonProps) {
   const btnClass = classNames(
@@ -41,9 +43,10 @@ export function Button({
     <button
       aria-disabled={disabled || undefined}
       className={btnClass}
-      type="button"
+      disabled={disabled}
+      type={submit ? "submit" : "button"}
       onClick={() => {
-        if (!disabled) {
+        if (!disabled && onClick) {
           void onClick();
         }
       }}

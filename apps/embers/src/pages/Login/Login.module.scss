@@ -15,6 +15,13 @@
   background-color: var(--background-neutral-overlay);
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
 .logo {
   max-width: 76px;
   max-height: 76px;

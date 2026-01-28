@@ -45,8 +45,9 @@ export function createStepper<TData>(opts: CreateStepperOptions<TData>) {
       (targetStep: number) => {
         const routes = routesRef.current;
         if (targetStep >= 0 && targetStep < routes.length) {
-          setStep(targetStep);
-          void navigate(routes[targetStep]);
+          void Promise.resolve(navigate(routes[targetStep])).then(() =>
+            setStep(targetStep),
+          );
         }
       },
       [navigate],

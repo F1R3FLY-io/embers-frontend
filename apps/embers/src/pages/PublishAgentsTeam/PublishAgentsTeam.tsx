@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
+import z from "zod";
 
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
@@ -8,6 +9,7 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Text } from "@/lib/components/Text";
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { usePublishAgentsTeamToFireskyMutation } from "@/lib/queries";
@@ -15,6 +17,13 @@ import { SuccessModal } from "@/pages/PublishAgentsTeam/SuccessModal";
 import publishImage from "@/public/publish.png";
 
 import styles from "./PublishAgentsTeam.module.scss";
+
+const formModel = z.object({
+  email: z.email(),
+  handle: z.string().nonempty(),
+  password: z.string().nonempty(),
+  pdsUrl: z.url(),
+});
 
 export default function PublishAgentsTeam() {
   const { t } = useTranslation();
@@ -27,42 +36,28 @@ export default function PublishAgentsTeam() {
     iconUrl: string;
     version: string;
   };
-  const [pdsAddress, setPdsAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [handle, setHandle] = useState("");
+
   const publish = useMutationResultWithLoader(
     usePublishAgentsTeamToFireskyMutation(preload.agentId),
   );
 
-  const canPublish =
-    email.trim().length > 0 &&
-    handle.trim().length > 0 &&
-    password.trim().length > 0 &&
-    pdsAddress.trim().length > 0;
+  const onSubmit = useCallbackWithLoader(
+    async ({ value }: { value: z.infer<typeof formModel> }) => {
+      const modalData = [
+        { label: "deploy.labels.agentId", value: preload.agentId },
+        {
+          label: "deploy.version",
+          value: preload.version,
+        },
+        { label: "deploy.labels.note", value: "idk what to put here" },
+      ];
 
-  const handlePublish = () => {
-    if (!canPublish) {
-      return;
-    }
-
-    const modalData = [
-      { label: "deploy.labels.agentId", value: preload.agentId },
-      {
-        label: "deploy.version",
-        value: preload.version,
-      },
-      { label: "deploy.labels.note", value: "idk what to put here" },
-    ];
-
-    publish.mutate(
-      { email, handle, password, pdsUrl: pdsAddress },
-      {
+      return publish.mutateAsync(value, {
         onError: (e) => {
           open(
             <WarningModal
               error={e.message}
-              reviewSettings={() => close()}
+              reviewSettings={close}
               tryAgain={() => {}}
             />,
             {
@@ -84,9 +79,22 @@ export default function PublishAgentsTeam() {
             },
           );
         },
-      },
-    );
-  };
+      });
+    },
+  );
+
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      handle: "",
+      password: "",
+      pdsUrl: "",
+    },
+    onSubmit,
+    validators: {
+      onChange: formModel,
+    },
+  });
 
   return (
     <div className={styles.root}>
@@ -96,7 +104,13 @@ export default function PublishAgentsTeam() {
         </div>
       </div>
 
-      <div className={styles["right-panel"]}>
+      <form
+        className={styles["right-panel"]}
+        onSubmit={(e) => {
+          e.preventDefault();
+          void form.handleSubmit();
+        }}
+      >
         <Text color="secondary" type="small">
           {t("publish.titleSmall")}
         </Text>
@@ -119,79 +133,105 @@ export default function PublishAgentsTeam() {
             <Text color="secondary" type="small">
               {t("publish.agentName")}
             </Text>
-            <Input
-              inputType="input"
-              placeholder="Agent name"
-              value={preload.agentName}
-            />
-          </div>
-          <div className={styles["form-field"]}>
-            <Text color="secondary" type="small">
-              {t("publish.username")}
-            </Text>
-            <Input
-              inputType="input"
-              placeholder="Username"
-              value={handle}
-              onChange={(e) => setHandle(e.target.value)}
-            />
-          </div>
-          <div className={styles["form-field"]}>
-            <Text color="secondary" type="small">
-              {t("publish.pdsAddress")}
-            </Text>
-            <Input
-              inputType="input"
-              placeholder="https://"
-              value={pdsAddress}
-              onChange={(e) => setPdsAddress(e.target.value)}
-            />
+            <Input placeholder="Agent name" value={preload.agentName} />
           </div>
 
-          <div className={styles["form-field"]}>
-            <Text color="secondary" type="small">
-              Email
-            </Text>
-            <Input
-              inputType="input"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          <form.Field name="handle">
+            {(field) => (
+              <div className={styles["form-field"]}>
+                <Text color="secondary" type="small">
+                  {t("publish.username")}
+                </Text>
+                <Input
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  placeholder="Username"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
 
-          <div className={styles["form-field"]}>
-            <Text color="secondary" type="small">
-              Password
-            </Text>
-            <Input
-              inputType="input"
-              placeholder="Enter password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <form.Field name="pdsUrl">
+            {(field) => (
+              <div className={styles["form-field"]}>
+                <Text color="secondary" type="small">
+                  {t("publish.pdsAddress")}
+                </Text>
+                <Input
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  placeholder="https://"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="email">
+            {(field) => (
+              <div className={styles["form-field"]}>
+                <Text color="secondary" type="small">
+                  Email
+                </Text>
+                <Input
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  placeholder="you@example.com"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
+
+          <form.Field name="password">
+            {(field) => (
+              <div className={styles["form-field"]}>
+                <Text color="secondary" type="small">
+                  Password
+                </Text>
+                <Input
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  placeholder="Enter password"
+                  type="password"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
         </div>
 
-        <div className={styles["button-row"]}>
-          <Button type="secondary" onClick={() => window.history.back()}>
-            {t("publish.cancel")}
-          </Button>
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
+            <div className={styles["button-row"]}>
+              <Button
+                disabled={isSubmitting}
+                type="secondary"
+                onClick={() => window.history.back()}
+              >
+                {t("publish.cancel")}
+              </Button>
 
-          <button
-            className={styles["primary-button"]}
-            disabled={!canPublish}
-            onClick={handlePublish}
-          >
-            {t("publish.button")}
-          </button>
-        </div>
+              <Button submit disabled={isSubmitting} type="primary">
+                {t("publish.button")}
+              </Button>
+            </div>
+          )}
+        </form.Subscribe>
 
         <div className={styles.footer}>
           <LanguageFooter />
         </div>
-      </div>
+      </form>
     </div>
   );
 }

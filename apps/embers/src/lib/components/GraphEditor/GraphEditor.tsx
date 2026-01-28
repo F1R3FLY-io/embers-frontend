@@ -232,9 +232,9 @@ export function GraphEditor({
         onEdgeContextMenu={openEdgeContextMenu}
         onEdgesChange={onEdgesChange}
         onInit={handleInit}
-        onMoveEnd={() => emitFlow()}
+        onMoveEnd={emitFlow}
         onNodeContextMenu={openNodeContextMenu}
-        onNodeDragStop={() => notifyGraphChange()}
+        onNodeDragStop={notifyGraphChange}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openEmptySpaceContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}

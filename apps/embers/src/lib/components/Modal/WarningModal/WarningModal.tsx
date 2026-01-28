@@ -31,8 +31,6 @@ export function WarningModal({
     reviewSettings();
   };
 
-  const cancel = () => close();
-
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -60,7 +58,7 @@ export function WarningModal({
           {t("deploy.failure.reviewSettings")}
         </Button>
 
-        <Button type="subtle" onClick={cancel}>
+        <Button type="subtle" onClick={close}>
           {t("basic.cancel")}
         </Button>
       </div>

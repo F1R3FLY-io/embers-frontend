@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
@@ -10,6 +11,7 @@ import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useDock } from "@/lib/providers/dock/useDock";
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
@@ -18,106 +20,90 @@ import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import styles from "./DeployAgent.module.scss";
 
-function parseBigIntOrNull(v: string): bigint | null {
-  try {
-    if (!v.trim()) {
-      return null;
-    }
-    return BigInt(v.trim());
-  } catch {
-    return null;
-  }
-}
+const formModel = z.object({
+  notes: z.union([z.string(), z.undefined()]),
+  rhoLimit: z.string().refine((v) => BigInt(v)),
+});
 
 export default function DeployAgent() {
   const { t } = useTranslation();
-  const {
-    data,
-    navigateToPrevStep,
-    navigateToStep,
-    reset,
-    setStep,
-    step,
-    updateData,
-  } = useCodeEditorStepper();
   const navigate = useNavigate();
-  const { agentId, version } = data;
+
+  const { data, navigateToPrevStep, navigateToStep, reset, step, updateData } =
+    useCodeEditorStepper();
+
+  const deployMutation = useMutationResultWithLoader(useDeployAgentMutation());
   const dock = useDock();
   const { open } = useModal();
 
-  useEffect(() => {
-    setStep(2);
-  }, [setStep]);
+  const onSubmit = useCallbackWithLoader(
+    async ({ value }: { value: z.infer<typeof formModel> }) => {
+      updateData("notes", value.notes);
+      updateData("rhoLimit", BigInt(value.rhoLimit));
 
-  const [rhoLimitInput, setRhoLimitInput] = useState("1000000");
+      const modalData = [
+        { label: "deploy.labels.agentId", value: data.id },
+        { label: "deploy.version", value: data.version },
+        { label: "deploy.labels.status", value: "ok" },
+        { label: "deploy.rhoLimit", value: String(data.rhoLimit) },
+        { label: "deploy.labels.note", value: data.description },
+      ];
 
-  const deployMutation = useMutationResultWithLoader(useDeployAgentMutation());
-  const isDeploying = deployMutation.isPending;
-
-  const rhoLimit = parseBigIntOrNull(rhoLimitInput);
-  const rhoLimitError = rhoLimitInput.trim() !== "" && rhoLimit === null;
-
-  const canDeploy =
-    !!agentId && !!rhoLimit && !rhoLimitError && !isDeploying && !!version;
-
-  const agentName = data.agentName;
-
-  const handleDeploy = () => {
-    if (!canDeploy) {
-      return;
-    }
-
-    const modalData = [
-      { label: "deploy.labels.agentId", value: data.agentId },
-      { label: "deploy.version", value: data.version },
-      { label: "deploy.labels.status", value: "ok" },
-      { label: "deploy.rhoLimit", value: String(data.rhoLimit) },
-      { label: "deploy.labels.note", value: data.description },
-    ];
-
-    deployMutation.mutate(
-      { agentId, rhoLimit, version },
-      {
-        onError: (e) => {
-          dock.appendDeploy(false);
-          open(
-            <WarningModal
-              error={e.message}
-              reviewSettings={() => navigateToStep(0)}
-              tryAgain={() => {}}
-            />,
-            {
-              ariaLabel: "Warning",
-              maxWidth: 550,
-            },
-          );
+      return deployMutation.mutateAsync(
+        {
+          agentId: data.id!,
+          rhoLimit: BigInt(value.rhoLimit),
+          version: data.version!,
         },
-        onSuccess: () => {
-          dock.appendDeploy(true);
-          open(
-            <SuccessModal
-              agentName={data.agentName}
-              createAnother={() => {
-                reset();
-                navigateToStep(0);
-              }}
-              data={modalData}
-              viewAgent={() => navigateToStep(1)}
-              viewAllAgents={() => void navigate("/dashboard")}
-            />,
-            {
-              ariaLabel: "Success deploy",
-              maxWidth: 550,
-            },
-          );
+        {
+          onError: (e) => {
+            dock.appendDeploy(false);
+            open(
+              <WarningModal
+                error={e.message}
+                reviewSettings={() => navigateToStep(0)}
+                tryAgain={() => {}}
+              />,
+              {
+                ariaLabel: "Warning",
+                maxWidth: 550,
+              },
+            );
+          },
+          onSuccess: () => {
+            dock.appendDeploy(true);
+            open(
+              <SuccessModal
+                agentName={data.name}
+                createAnother={() => {
+                  reset();
+                  navigateToStep(0);
+                }}
+                data={modalData}
+                viewAgent={() => navigateToStep(1)}
+                viewAllAgents={() => void navigate("/dashboard")}
+              />,
+              {
+                ariaLabel: "Success deploy",
+                maxWidth: 550,
+              },
+            );
+          },
         },
-      },
-    );
-  };
+      );
+    },
+  );
 
-  const backClick = useCallback(() => {
-    navigateToPrevStep();
-  }, [navigateToPrevStep]);
+  const form = useForm({
+    defaultValues: {
+      notes: data.notes,
+      rhoLimit: data.rhoLimit.toString(),
+    },
+    onSubmit,
+    validators: {
+      onChange: formModel,
+    },
+  });
 
   return (
     <div className={styles["deploy-container"]}>
@@ -148,7 +134,7 @@ export default function DeployAgent() {
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" type="H2">
-            {agentName}
+            {data.name}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" type="large">
@@ -157,7 +143,13 @@ export default function DeployAgent() {
           </div>
         </div>
 
-        <div className={styles["details-container"]}>
+        <form
+          className={styles["details-container"]}
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
           <Text bold color="primary" type="H5">
             {t("deploy.agentDetails")}
           </Text>
@@ -166,12 +158,7 @@ export default function DeployAgent() {
             <Text color="secondary" type="small">
               {t("deploy.agentName")}
             </Text>
-            <Input
-              disabled
-              inputType="input"
-              placeholder={agentName}
-              value={agentName}
-            />
+            <Input disabled placeholder={data.name} value={data.name} />
           </div>
 
           <div className={styles["form-section"]}>
@@ -185,70 +172,82 @@ export default function DeployAgent() {
                 </Text>
                 <Input
                   disabled
-                  inputType="input"
-                  placeholder={version}
-                  value={version}
+                  placeholder={data.version}
+                  value={data.version}
                 />
               </div>
-              <div>
-                <Text color="secondary" type="small">
-                  {t("deploy.notes")}
-                </Text>
-                <Input
-                  inputType="textarea"
-                  placeholder={t("deploy.enterDeploymentNotes")}
-                  onChange={(e) => {
-                    updateData("description", e.target.value);
-                  }}
-                />
-              </div>
+              <form.Field name="notes">
+                {(field) => (
+                  <div>
+                    <Text color="secondary" type="small">
+                      {t("deploy.notes")}
+                    </Text>
+                    <Input
+                      textarea
+                      error={
+                        field.state.meta.isTouched && !field.state.meta.isValid
+                      }
+                      placeholder={t("deploy.enterDeploymentNotes")}
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </div>
+                )}
+              </form.Field>
             </div>
           </div>
 
-          <div className={styles["form-section"]}>
-            <div className={styles["form-fields"]}>
-              <div>
-                <Text color="secondary" type="small">
-                  {t("deploy.rhoLimit")}
-                </Text>
-                <Input
-                  inputType="input"
-                  placeholder={rhoLimitInput}
-                  type="number"
-                  value={rhoLimitInput}
-                  onChange={(e) => {
-                    updateData("rhoLimit", Number(e.target.value));
-                    setRhoLimitInput(e.target.value);
-                  }}
-                />
+          <form.Field name="rhoLimit">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <div className={styles["form-fields"]}>
+                  <Text color="secondary" type="small">
+                    {t("deploy.rhoLimit")}
+                  </Text>
+                  <Input
+                    error={
+                      field.state.meta.isTouched && !field.state.meta.isValid
+                    }
+                    placeholder={field.state.value}
+                    type="number"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
+            )}
+          </form.Field>
 
-          <div className={styles["button-container"]}>
-            <Button type="secondary" onClick={() => backClick()}>
-              {t("deploy.back")}
-            </Button>
+          <form.Subscribe selector={(state) => [state.isSubmitting]}>
+            {([isSubmitting]) => (
+              <div className={styles["button-container"]}>
+                <Button
+                  disabled={isSubmitting}
+                  type="secondary"
+                  onClick={navigateToPrevStep}
+                >
+                  {t("deploy.back")}
+                </Button>
 
-            <div className={styles["button-group"]}>
-              <button className={styles["draft-button"]}>
-                <DraftIcon />
-                {t("basic.saveDraft")}
-              </button>
+                <div className={styles["button-group"]}>
+                  <Button
+                    disabled={isSubmitting}
+                    icon={<DraftIcon />}
+                    type="secondary"
+                  >
+                    {t("basic.saveDraft")}
+                  </Button>
 
-              <button
-                aria-busy={isDeploying}
-                className={styles["deploy-button"]}
-                disabled={!canDeploy}
-                onClick={handleDeploy}
-              >
-                {isDeploying ? t("deploy.deploying") : t("deploy.deploy")}
-              </button>
-            </div>
-          </div>
+                  <Button submit disabled={isSubmitting} type="primary">
+                    {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </form.Subscribe>
 
           <LanguageFooter />
-        </div>
+        </form>
       </div>
     </div>
   );
