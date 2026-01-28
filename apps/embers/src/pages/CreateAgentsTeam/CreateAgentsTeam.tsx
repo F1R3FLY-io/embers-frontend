@@ -39,7 +39,7 @@ export default function CreateAgentsTeam() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, step, updateData } =
+  const { data, navigateToNextStep, step, updateMany } =
     useGraphEditorStepper();
 
   const form = useForm({
@@ -52,12 +52,7 @@ export default function CreateAgentsTeam() {
       name: data.name,
     },
     onSubmit: ({ value }) => {
-      updateData("description", value.description);
-      updateData("execType", value.execType);
-      updateData("flowType", value.flowType);
-      updateData("iconUrl", value.iconUrl);
-      updateData("language", value.language);
-      updateData("name", value.name);
+      updateMany(value);
       navigateToNextStep();
     },
     validators: {

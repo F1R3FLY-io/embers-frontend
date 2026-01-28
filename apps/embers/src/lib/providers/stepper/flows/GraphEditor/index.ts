@@ -6,13 +6,13 @@ import type { Edge, Node } from "@/lib/components/GraphEditor";
 import { createStepper } from "@/lib/providers/stepper/StepperProvider";
 
 export type GraphEditorStepperData = {
-  description?: string;
+  description?: string | undefined;
   edges: Edge[];
   execType?: string;
   flow?: ReactFlowJsonObject<Node, Edge>;
   flowType?: string;
   hasGraphChanges: boolean;
-  iconUrl?: string;
+  iconUrl?: string | undefined;
   id?: string;
   inputPrompt?: string;
   language?: string;
