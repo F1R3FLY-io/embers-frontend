@@ -13,7 +13,7 @@
   border-radius: 8px;
 
   /* Default styling for agent icon (RobotIcon) */
-  svg[data-agent] {
+  svg {
     width: 24px;
     height: 24px;
     fill: var(--text-color-secondary);
@@ -21,29 +21,29 @@
   }
 
   /* Specific styling for agent teams icon */
-  svg[data-agent-teams] {
+  svg {
     width: 24px;
     height: 24px;
   }
 
   /* First robot (front) - secondary text color */
-  svg[data-agent-teams] path:nth-child(1),
-  svg[data-agent-teams] path:nth-child(2) {
+  svg path:nth-child(1),
+  svg path:nth-child(2) {
     fill: var(--text-color-secondary) !important;
     stroke: var(--text-color-secondary) !important;
     stroke-width: 0;
   }
 
   /* Shadow/overlap areas - background color */
-  svg[data-agent-teams] path:nth-child(3),
-  svg[data-agent-teams] path:nth-child(4) {
+  svg path:nth-child(3),
+  svg path:nth-child(4) {
     fill: var(--background-color) !important;
     stroke: var(--background-color) !important;
     stroke-width: 0;
   }
 
   /* Second robot (back) - secondary text color */
-  svg[data-agent-teams] path:nth-child(5) {
+  svg path:nth-child(5) {
     fill: var(--text-color-secondary) !important;
     stroke: var(--text-color-secondary) !important;
     stroke-width: 0;
@@ -53,7 +53,7 @@
     background-color: var(--background-neutral-hover);
 
     /* Default styling for agent icon (RobotIcon) */
-    svg[data-agent] {
+    svg {
       fill: var(--text-color-primary);
       stroke: var(--text-color-primary);
       stroke-width: 1;
@@ -62,23 +62,23 @@
     /* Specific styling for agent teams icon */
 
     /* First robot (front) - primary text color */
-    svg[data-agent-teams] path:nth-child(1),
-    svg[data-agent-teams] path:nth-child(2) {
+    svg path:nth-child(1),
+    svg path:nth-child(2) {
       fill: var(--text-color-primary) !important;
       stroke: var(--text-color-primary) !important;
       stroke-width: 0;
     }
 
     /* Shadow/overlap areas - background color */
-    svg[data-agent-teams] path:nth-child(3),
-    svg[data-agent-teams] path:nth-child(4) {
+    svg path:nth-child(3),
+    svg path:nth-child(4) {
       fill: var(--background-color) !important;
       stroke: var(--background-color) !important;
       stroke-width: 0;
     }
 
     /* Second robot (back) - primary text color */
-    svg[data-agent-teams] path:nth-child(5) {
+    svg path:nth-child(5) {
       fill: var(--text-color-primary) !important;
       stroke: var(--text-color-primary) !important;
       stroke-width: 0;
@@ -93,7 +93,7 @@
     background-color: var(--secondary-button-color);
 
     /* Default styling for agent icon (RobotIcon) */
-    svg[data-agent] {
+    svg {
       fill: #fff;
       stroke: #fff;
       stroke-width: 1.5;
@@ -102,23 +102,23 @@
     /* Specific styling for agent teams icon */
 
     /* First robot (front) - white */
-    svg[data-agent-teams] path:nth-child(1),
-    svg[data-agent-teams] path:nth-child(2) {
+    svg path:nth-child(1),
+    svg path:nth-child(2) {
       fill: #fff !important;
       stroke: #fff !important;
       stroke-width: 0;
     }
 
     /* Shadow/overlap areas - button background color */
-    svg[data-agent-teams] path:nth-child(3),
-    svg[data-agent-teams] path:nth-child(4) {
+    svg path:nth-child(3),
+    svg path:nth-child(4) {
       fill: var(--secondary-button-color) !important;
       stroke: var(--secondary-button-color) !important;
       stroke-width: 0;
     }
 
     /* Second robot (back) - white except for eyes and border */
-    svg[data-agent-teams] path:nth-child(5) {
+    svg path:nth-child(5) {
       fill: #fff !important;
       stroke: #fff !important;
       stroke-width: 0;
@@ -135,8 +135,8 @@
       );
 
       /* Shadow/overlap areas - hover button background color */
-      svg[data-agent-teams] path:nth-child(3),
-      svg[data-agent-teams] path:nth-child(4) {
+      svg path:nth-child(3),
+      svg path:nth-child(4) {
         fill: var(
           --secondary-button-color-hover,
           var(--secondary-button-color)

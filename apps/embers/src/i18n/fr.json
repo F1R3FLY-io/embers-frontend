@@ -15,7 +15,34 @@
     "createOne": "Créez-en un"
   },
   "aiTeam": {
-    "newAiTeam": "Nouvelle équipe AI"
+    "newAiTeam": "Nouvelle équipe AI",
+    "create": "",
+    "tellUsAboutYourTeam": "",
+    "teamName": "",
+    "executionContext": "",
+    "executionContextHint": "",
+    "executionType": "",
+    "inputType": "",
+    "inputTypeHint": "",
+    "textualInput": "",
+    "textualInputHint": "",
+    "externalData": "",
+    "externalDataHint": "",
+    "mediaInput": "",
+    "mediaInputHint": "",
+    "outputType": "",
+    "outputTypeHint": "",
+    "structuredData": "",
+    "structuredDataHint": "",
+    "humanReadable": "",
+    "humanReadableHint": "",
+    "visualization": "",
+    "visualizationHint": "",
+    "computeSettings": "",
+    "computeSettingsHint": "",
+    "flowType": "",
+    "encryptResult": "",
+    "encryptResultHint": ""
   },
   "agents": {
     "agents": "Agents",
@@ -32,7 +59,9 @@
     "tellUsAboutYourAgent": "",
     "generalSettings": "",
     "selectEnvironment": "",
-    "createAnother": ""
+    "createAnother": "",
+    "delete": "",
+    "publish": ""
   },
   "dashboard": {
     "documentation": "Documentation",
@@ -46,7 +75,10 @@
     "inputPrompt": "",
     "saveDraft": "",
     "cancel": "",
-    "continue": ""
+    "continue": "",
+    "run": "",
+    "description": "",
+    "language": ""
   },
   "deploy": {
     "deployAgent": "",
@@ -100,5 +132,36 @@
   },
   "sort": {
     "sortBy": ""
+  },
+  "publish": {
+    "titleSmall": "",
+    "header": "",
+    "subtitle": "",
+    "agentName": "",
+    "username": "",
+    "pdsAddress": "",
+    "email": "",
+    "password": "",
+    "passwordPlaceholder": "",
+    "cancel": "",
+    "button": "",
+    "unpublish": "",
+    "view": "",
+    "backToDashboard": "",
+    "success": {
+      "title": "",
+      "subtitle": ""
+    }
+  },
+  "oslf": {
+    "graphQueries": "",
+    "createNew": "",
+    "validate": "",
+    "search": "",
+    "creation": "",
+    "generalSettings": "",
+    "queryName": "",
+    "createGraphQuery": "",
+    "purpose": ""
   }
 }
