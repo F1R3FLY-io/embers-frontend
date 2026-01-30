@@ -20,7 +20,7 @@ export const Header: React.FC = () => {
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
-  const canRun = !data.hasChanges;
+  const canRun = data.hasChanges;
 
   const saveOrCreate = useCallbackWithLoader(async () => {
     const payload = {

@@ -1,23 +1,43 @@
 import type { OSLFInstance } from "@f1r3fly-io/oslf-editor";
 
 import { Events, init, oslfBlocks } from "@f1r3fly-io/oslf-editor";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import type { OSLFEditorStepperData } from "@/lib/providers/stepper/flows/OSLFEditor";
 
 import { OSLFLayout } from "@/lib/layouts/OSLF";
+import { useLayout } from "@/lib/providers/layout/useLayout";
+import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
+import { useOslf } from "@/lib/queries";
 
 import styles from "./GraphOSLF.module.scss";
 
-type Props = {
-  onChange?: (payload: { code: string; state: object }) => void;
-};
-
 type ViewMode = "graph" | "outline" | "tree";
 
-export function OSLFEditorView({ onChange }: Props) {
+export function OSLFEditorView() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const instanceRef = useRef<OSLFInstance | null>(null);
-
+  const { data, updateData, updateMany } = useOSLFEditorStepper();
+  const { setHeaderTitle } = useLayout();
   const [view, setView] = useState<ViewMode>("graph");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { data: query } = useOslf(data.id, data.version);
+
+  useEffect(
+    () => setHeaderTitle(query?.name ?? data.name),
+    [data.name, query?.name, setHeaderTitle],
+  );
+
+  useEffect(() => {
+    const preload = location.state as OSLFEditorStepperData;
+    updateMany(preload);
+    void navigate(location.pathname, { replace: true });
+    // disabling because I need to run it only ONCE
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -34,8 +54,9 @@ export function OSLFEditorView({ onChange }: Props) {
     el.dispatchEvent(new CustomEvent(Events.INIT, { detail: oslfBlocks }));
 
     const handleChange = (event: Event) => {
-      const { code, state } = (event as CustomEvent).detail ?? {};
-      onChange?.({ code: code || "", state: state || {} });
+      const { code } = (event as CustomEvent<{ code: string; state: string }>)
+        .detail;
+      updateData("query", code);
     };
 
     window.addEventListener(Events.ON_CHANGE, handleChange);
@@ -44,7 +65,7 @@ export function OSLFEditorView({ onChange }: Props) {
       window.removeEventListener(Events.ON_CHANGE, handleChange);
       instanceRef.current = null;
     };
-  }, [onChange]);
+  }, [updateData]);
 
   const topRight = useMemo(() => {
     const btnClass = (mode: ViewMode) =>
@@ -110,18 +131,10 @@ export function OSLFEditorView({ onChange }: Props) {
 }
 
 export default function GraphOSLF() {
-  const handleChange = useCallback(
-    ({ code, state }: { code: string; state: object }) => {
-      console.log("OSLF code:", code);
-      console.log("OSLF state:", state);
-    },
-    [],
-  );
-
   return (
     <OSLFLayout>
       <div className={styles["oslf-root"]}>
-        <OSLFEditorView onChange={handleChange} />
+        <OSLFEditorView />
       </div>
     </OSLFLayout>
   );

@@ -26,8 +26,8 @@
   display: inline-flex;
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(20, 24, 31, 0.85);
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(20 24 31 / 85%);
   backdrop-filter: blur(6px);
   pointer-events: auto;
 }
@@ -36,7 +36,7 @@
   appearance: none;
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgb(255 255 255 / 75%);
   padding: 8px 12px;
   font-size: 13px;
   cursor: pointer;
@@ -48,7 +48,7 @@
   appearance: none;
   border: none;
   background: var(--button-primary);
-  color: #ffffff;
+  color: #fff;
   padding: 8px 12px;
   font-size: 13px;
   cursor: pointer;
@@ -60,7 +60,7 @@
   position: absolute;
   inset: 0;
   z-index: 60;
-  background: rgba(10, 12, 16, 0.86);
+  background: rgb(10 12 16 / 86%);
   backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
@@ -72,20 +72,20 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
 }
 
 .oslf-overlay-title {
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgb(255 255 255 / 90%);
 }
 
 .oslf-overlay-close {
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(255 255 255 / 6%);
+  color: rgb(255 255 255 / 90%);
   width: 32px;
   height: 32px;
   border-radius: 4px;
@@ -97,6 +97,6 @@
 .oslf-overlay-body {
   flex: 1;
   padding: 16px;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgb(255 255 255 / 75%);
   font-size: 13px;
 }

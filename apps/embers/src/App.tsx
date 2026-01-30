@@ -20,6 +20,7 @@ import "./index.scss";
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
 const CreateAgent = lazy(async () => import("@/pages/CreateAgent"));
 const CreateOSLF = lazy(async () => import("@/pages/OSLF/create"));
+const DeployOSLF = lazy(async () => import("@/pages/OSLF/deploy"));
 const GraphOSLF = lazy(async () => import("@/pages/OSLF/graph"));
 const CreateAgentsTeam = lazy(async () => import("@/pages/CreateAgentsTeam"));
 const DeployAgent = lazy(async () => import("@/pages/DeployAgent"));
@@ -100,7 +101,7 @@ export default function App() {
                                     />
                                     <Route element={<GraphOSLF />} path="" />
                                     <Route
-                                      element={<GraphOSLF />}
+                                      element={<DeployOSLF />}
                                       path="deploy"
                                     />
                                   </Routes>

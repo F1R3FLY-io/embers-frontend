@@ -21,6 +21,7 @@ pre {
     flex: 1;
     overflow-y: auto;
   }
+
   .block-item {
     display: flex;
     align-items: center;
@@ -30,7 +31,7 @@ pre {
     user-select: none;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgb(255 255 255 / 4%);
     }
   }
 
@@ -44,7 +45,7 @@ pre {
     width: 18px;
     height: 18px;
     border-radius: 4px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgb(255 255 255 / 8%);
   }
 
   .block-label {
@@ -62,7 +63,6 @@ pre {
     cursor: pointer;
     background-color: var(--background-neutral-hover);
     border-top: 1px solid var(--border-color);
-
 
     &:hover {
       background-color: var(--background-neutral);

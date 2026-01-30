@@ -158,6 +158,12 @@
   "oslf": {
     "graphQueries": "Graphical Queries",
     "createNew": "Create new Query",
-    "validate": "Validate"
+    "validate": "Validate",
+    "search": "Search",
+    "creation": "Creation",
+    "generalSettings": "General settings",
+    "queryName": "Query Name",
+    "createGraphQuery": "Create Graphical Query",
+    "purpose": "Purpose"
   }
 }

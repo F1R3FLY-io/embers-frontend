@@ -1,8 +1,6 @@
 import type React from "react";
 
-import classNames from "classnames";
 import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import type { AccordionProps } from "@/lib/components/Accordion/Accordion";
 
@@ -75,8 +73,6 @@ export const Sidebar: React.FC<OSLFSidebarProps> = ({
   searchPlaceholder = "Type to search",
   title = "Categories",
 }) => {
-  console.log(categories);
-  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCategories = useMemo(() => {

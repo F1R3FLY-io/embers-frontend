@@ -35,11 +35,12 @@ export function GraphicalQueryGrid({ isSuccess, queries }: AgentsGridProps) {
 
   const navigateToAgent = useCallback(
     (oslf: OslfHeader) => {
-      void navigate("/oslf/create", {
+      void navigate("/oslf", {
         state: {
           description: oslf.description,
           id: oslf.id,
           name: oslf.name,
+          version: oslf.version,
         },
       });
     },
@@ -95,6 +96,7 @@ export function GraphicalQueryGrid({ isSuccess, queries }: AgentsGridProps) {
                     {t("agents.updated")} {formatUpdated(query.createdAt)}
                   </Text>
 
+                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   {isDraft && (
                     <div className={styles["draft-container"]}>
                       <DraftIcon className={styles["draft-icon"]} />

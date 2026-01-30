@@ -1,4 +1,4 @@
-import type {TabId} from "@/pages/Dashboard/Dashboard";
+import type { TabId } from "@/pages/Dashboard/Dashboard";
 
 import { SearchControl } from "@/pages/Dashboard/components/SearchControl";
 import { SortControl } from "@/pages/Dashboard/components/SortControl";

@@ -37,7 +37,7 @@ export default function CreateOSLF() {
   return (
     <div className={styles["create-container"]}>
       <Text bold color="primary" type="H1">
-        {t("aiAgent.create")}
+        {t("oslf.createGraphQuery")}
       </Text>
 
       <div className={styles["stepper-container"]}>
@@ -46,39 +46,36 @@ export default function CreateOSLF() {
           steps={[
             {
               canClick: false,
-              label: t("deploy.generalInfo"),
+              label: t("oslf.generalSettings"),
             },
             {
               canClick: canContinue,
-              label: t("deploy.creation"),
+              label: t("oslf.creation"),
             },
             {
               canClick: canContinue,
-              label: t("deploy.deployment"),
+              label: t("oslf.validate"),
+            },
+            {
+              canClick: canContinue,
+              label: t("oslf.search"),
             },
           ]}
         />
       </div>
 
       <div className={styles["content-container"]}>
-        <div className={styles["title-container"]}>
-          <Text bold color="primary" type="H2">
-            {t("agents.tellUsAboutYourAgent")}
-          </Text>
-        </div>
-
         <div className={styles["details-container"]}>
           <Text bold color="primary" type="H5">
-            {t("agents.generalSettings")}
+            {t("oslf.generalSettings")}
           </Text>
 
           <div className={styles["form-section"]}>
             <Text color="secondary" type="small">
-              {t("deploy.agentName")}
+              {t("oslf.queryName")}
             </Text>
             <Input
-              inputType="input"
-              placeholder={t("deploy.agentName")}
+              placeholder={t("oslf.queryName")}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -86,11 +83,11 @@ export default function CreateOSLF() {
 
           <div className={styles["form-section"]}>
             <Text color="secondary" type="small">
-              {t("basic.description")}
+              {t("oslf.purpose")}
             </Text>
             <Input
-              inputType="textarea"
-              placeholder={t("basic.description")}
+              textarea
+              placeholder={t("oslf.purpose")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

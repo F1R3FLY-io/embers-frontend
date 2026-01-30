@@ -1,0 +1,50 @@
+.deploy-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  max-width: 600px;
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-left: 148px;
+}
+
+.stepper-container {
+  margin: 8px 0;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.description-container {
+  margin: 4px 0 12px;
+}
+
+.details-container {
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
