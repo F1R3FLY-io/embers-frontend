@@ -21,7 +21,6 @@ export function SearchControl({
   return (
     <div className={classNames(styles["search-control"], className)}>
       <Input
-        inputType="input"
         leftIcon={<SearchIcon className={styles["search-icon"]} />}
         placeholder={placeholder}
         value={searchQuery}

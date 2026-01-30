@@ -50,7 +50,7 @@ export function SuccessModal({ agentName, data, iconUrl }: DeploySuccessData) {
       </div>
 
       <div className={styles.details}>
-        {data.map((row: { label: string; value: string | undefined }, index) =>
+        {data.map((row, index) =>
           row.value ? (
             <Row key={index} label={t(row.label)} value={row.value} />
           ) : null,

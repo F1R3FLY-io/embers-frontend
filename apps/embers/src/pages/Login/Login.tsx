@@ -1,8 +1,10 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
+import { useForm } from "@tanstack/react-form";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
 
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
@@ -13,11 +15,11 @@ import logo from "@/public/icons/firefly-io.png";
 
 import styles from "./Login.module.scss";
 
+const formModel = z.object({
+  key: z.custom<PrivateKey | undefined>((v) => !!v),
+});
+
 type PageState = "init" | "signin";
-type WalletControlState = {
-  key: PrivateKey | undefined;
-  touched: boolean;
-};
 
 export default function Login() {
   const [pageState, setPageState] = useState<PageState>("init");
@@ -28,23 +30,19 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { setKey } = useWalletState();
-  const [walletInputState, setWalletInputState] = useState<WalletControlState>({
-    key: undefined,
-    touched: false,
+
+  const form = useForm({
+    defaultValues: {
+      key: undefined,
+    } as z.infer<typeof formModel>,
+    onSubmit: async ({ value }) => {
+      setKey(value.key);
+      return navigate("/dashboard");
+    },
+    validators: {
+      onChange: formModel,
+    },
   });
-
-  const updateWallet = useCallback((key?: PrivateKey) => {
-    setWalletInputState((state) => ({ ...state, key }));
-  }, []);
-
-  const signin = useCallback(() => {
-    if (walletInputState.key) {
-      setKey(walletInputState.key);
-      void navigate("/dashboard");
-    } else {
-      setWalletInputState((state) => ({ ...state, touched: true }));
-    }
-  }, [walletInputState.key, setKey, navigate]);
 
   let content;
 
@@ -76,7 +74,13 @@ export default function Login() {
       break;
     case "signin":
       content = (
-        <>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
           <div className={styles["picker-container"]}>
             <div className={styles.title}>
               <Text bold color="primary" type="H2">
@@ -90,27 +94,28 @@ export default function Login() {
                 {t("login.useSecureCredentials")}
               </Text>
             </div>
-            <WalletInput
-              error={
-                walletInputState.touched && walletInputState.key === undefined
-              }
-              onChange={updateWallet}
-            />
+            <form.Field name="key">
+              {(field) => <WalletInput onChange={field.handleChange} />}
+            </form.Field>
           </div>
-          <div className={styles.buttons}>
-            <Button type="primary" onClick={signin}>
-              {t("login.signIn")}
-            </Button>
-            <div className={styles.note}>
-              <Text color="secondary" type="normal">
-                {t("login.dontHaveWallet")}{" "}
-                <TextLink onClick={redirectToFiresky}>
-                  {t("login.createOne")}
-                </TextLink>
-              </Text>
-            </div>
-          </div>
-        </>
+          <form.Subscribe selector={(state) => [state.isSubmitting]}>
+            {([isSubmitting]) => (
+              <div className={styles.buttons}>
+                <Button submit disabled={isSubmitting} type="primary">
+                  {t("login.signIn")}
+                </Button>
+                <div className={styles.note}>
+                  <Text color="secondary" type="normal">
+                    {t("login.dontHaveWallet")}{" "}
+                    <TextLink onClick={redirectToFiresky}>
+                      {t("login.createOne")}
+                    </TextLink>
+                  </Text>
+                </div>
+              </div>
+            )}
+          </form.Subscribe>
+        </form>
       );
       break;
   }

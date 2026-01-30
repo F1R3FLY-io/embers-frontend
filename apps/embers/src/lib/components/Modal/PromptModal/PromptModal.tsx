@@ -47,7 +47,6 @@ export const PromptModal = ({
           {inputLabel}
         </Text>
         <Input
-          inputType="input"
           placeholder={inputPlaceholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}

@@ -35,7 +35,7 @@ const NodeAccordion = (props: AccordionProps) => {
 export const Sidebar: React.FC = () => {
   const { t } = useTranslation();
   const { data, updateData } = useGraphEditorStepper();
-  const { data: versions } = useAgentsTeamVersions(data.agentId);
+  const { data: versions } = useAgentsTeamVersions(data.id);
 
   const [selectedVersion, setSelectedVersion] = useState("");
   const [searchQuery, setSearchQuery] = useState("");

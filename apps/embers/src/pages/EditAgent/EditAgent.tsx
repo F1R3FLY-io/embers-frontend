@@ -28,14 +28,14 @@ export default function CodeEditor() {
   const editorRef = useRef<EditorRef>(null);
   const { t } = useTranslation();
   const { setHeaderTitle } = useLayout();
-  const { data, setStep, updateMany } = useCodeEditorStepper();
-  const { agentId, version } = data;
-  const { data: agent } = useAgent(agentId, version);
-  const { data: agentVersions } = useAgentVersions(agentId);
+  const { data, updateMany } = useCodeEditorStepper();
+  const { id, version } = data;
+  const { data: agent } = useAgent(id, version);
+  const { data: agentVersions } = useAgentVersions(id);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const agentName = agent?.name ?? data.agentName;
+  const agentName = agent?.name ?? data.name;
   const currentVersion = useMemo(
     () => agent?.version ?? version,
     [agent?.version, version],
@@ -87,7 +87,6 @@ export default function CodeEditor() {
   }, [agent, data.code, fileName]);
 
   useEffect(() => {
-    setStep(1);
     const preload = location.state as CodeEditorStepperData;
     updateMany(preload);
     void navigate(location.pathname, { replace: true });

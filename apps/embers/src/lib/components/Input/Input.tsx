@@ -12,26 +12,11 @@ import styles from "./Input.module.scss";
 
 type InputSize = "small" | "medium" | "large";
 type InputVariant = "default" | "filled" | "outline";
-// Placeholder type is driven by styles; no prop
-// Colors are handled via styles; no color props
-type BackgroundType = "default" | "neutral" | "surface" | "transparent";
-type BorderType =
-  | "none"
-  | "default"
-  | "primary"
-  | "selected"
-  | "danger"
-  | "subtle";
-
-// Error text size is style-driven; no prop to control
 
 type CommonProps = {
-  backgroundType?: BackgroundType;
-  borderType?: BorderType;
   className?: string;
-  error?: boolean;
+  error?: boolean | undefined;
   errorMessage?: string;
-  inputType: "input" | "textarea";
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   size?: InputSize;
@@ -40,12 +25,12 @@ type CommonProps = {
 
 type InputAsInput = CommonProps &
   Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
-    inputType: "input";
+    textarea?: false;
   };
 
 type InputAsTextarea = CommonProps &
   TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    inputType: "textarea";
+    textarea: true;
   };
 
 type InputProps = InputAsInput | InputAsTextarea;
@@ -56,15 +41,13 @@ export const Input = forwardRef<
 >(
   (
     {
-      backgroundType: _backgroundType = "default",
-      borderType: _borderType = "default",
       className,
       error,
       errorMessage,
-      inputType = "input",
       leftIcon,
       rightIcon,
       size = "medium",
+      textarea,
       variant = "default",
       ...nativeProps
     }: InputProps,
@@ -95,21 +78,16 @@ export const Input = forwardRef<
       className,
     );
 
-    const inputClass = classNames(
-      inputType === "textarea" ? styles.textarea : styles.input,
-      {},
-    );
-
     return (
       <>
         <div className={containerClass} data-size={size} data-variant={variant}>
           {leftIcon && <div className={styles["left-icon"]}>{leftIcon}</div>}
-          {inputType === "textarea" ? (
+          {textarea ? (
             <textarea
               ref={ref as Ref<HTMLTextAreaElement>}
               aria-describedby={ariaDescribedBy}
               aria-invalid={ariaInvalid}
-              className={inputClass}
+              className={styles.textarea}
               {...(nativeProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
             />
           ) : (
@@ -117,7 +95,7 @@ export const Input = forwardRef<
               ref={ref as Ref<HTMLInputElement>}
               aria-describedby={ariaDescribedBy}
               aria-invalid={ariaInvalid}
-              className={inputClass}
+              className={styles.input}
               {...(nativeProps as InputHTMLAttributes<HTMLInputElement>)}
             />
           )}
