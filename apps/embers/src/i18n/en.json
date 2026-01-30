@@ -157,6 +157,7 @@
   },
   "oslf": {
     "graphQueries": "Graphical Queries",
-    "createNew": "Create new Query"
+    "createNew": "Create new Query",
+    "validate": "Validate"
   }
 }

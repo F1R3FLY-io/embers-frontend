@@ -275,6 +275,115 @@ function loadBlocks(
     workspaceSvg.updateToolbox(updatedToolbox);
   }
 }
+
+const OSLF_STYLE_ID = "oslf-editor-styles";
+
+function ensureOslfStyles() {
+  if (document.getElementById(OSLF_STYLE_ID)) {
+    return;
+  }
+
+  const style = document.createElement("style");
+  style.id = OSLF_STYLE_ID;
+
+  style.innerText = `
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+.blocklyToolbox {
+  display: flex;
+  flex-direction: column;
+  height: 100% !important;
+  background: var(--background-color);
+  padding-top: 0;
+  min-width: 180px;
+  width: 280px;
+  overflow: hidden;
+  border-right: 1px solid var(--background-neutral-surface-secondary, #444);
+}
+
+.blocklyToolboxCategoryGroup {
+  flex: 1;
+  padding: 8px 8px 12px;
+  overflow: auto;
+  overflow-x: hidden;
+  height: auto;
+  flex-wrap: nowrap !important;
+}
+
+.blocklyToolbox > input-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 15px 24px;
+  background: var(--background-color);
+  border-bottom: 1px solid var(--background-neutral-surface-secondary, #444);
+  box-sizing: border-box;
+}
+
+.blocklyToolbox > input-search input {
+  width: 100%;
+}
+
+.blocklyToolboxCategory {
+  padding: 0;
+  margin: 0;
+  height: 45px;
+}
+
+.blocklyToolboxCategoryIcon {
+  display: none !important;
+}
+
+.blocklyToolboxCategoryContainer {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.blocklyToolboxCategoryContainer:after {
+  display: none;
+}
+
+.blocklyToolboxCategoryLabel {
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  outline: none;
+  box-sizing: border-box;
+  color: #9CA3AF !important;
+  padding: 12px 16px 12px 24px !important;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.blocklyToolboxCategoryContainer:hover .blocklyToolboxCategoryLabel {
+  color: #ffffff !important;
+}
+
+.blocklyToolboxCategory.blocklyToolboxSelected {
+  background-color: transparent !important;
+  border-left: #9A52FF 2px solid;
+}
+
+.blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel {
+  color: #ffffff !important;
+}
+
+
+.blocklyFlyout {
+  border-right: none !important;
+}
+
+svg.blocklySvg {
+  height: 100% !important;
+}
+`;
+
+  document.head.appendChild(style);
+}
+
 const INIT_MARK = "__oslf_inited__";
 
 export function init(container: Element): OSLFInstance {
@@ -284,98 +393,7 @@ export function init(container: Element): OSLFInstance {
     return el[INIT_MARK];
   }
   container.innerHTML = "";
-
-  // Inject fonts (style @import)
-  const style = document.createElement("style");
-  style.innerText =
-    "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');";
-  style.innerText += `
-	  .blocklyToolbox,
-	  svg.blocklySvg {
-			height: 100% !important;
-		}
-	  .blocklyToolbox{
-			padding-top: 0;
-			min-width: 180px;
-			overflow-y: hidden;
-		}
-		.blocklyToolboxCategory{
-			padding: 0;
-			margin-bottom: 0;
-			height: 45px
-		}
-	  .blocklyToolboxCategory.blocklyToolboxSelected{
-			background-color: transparent !important;
-			border-left: #9A52FF 2px solid;
-		}
-	  .blocklyToolboxCategory.blocklyToolboxSelected .blocklyToolboxCategoryLabel{
-			color: #ffffff !important;
-		}
-		.blocklyToolbox, .blocklyFlyout{
-			border-right: #2E3F52 2px solid;
-		}
-		.blocklyTreeRowContentContainer::before{
-			display: none;
-		}
-		.blocklyToolboxCategoryGroup {
-			overflow-y: auto;
-			height: 100%;
-			flex-wrap: nowrap !important;
-		}
-		.blocklyToolboxCategoryIcon{
-			display: none !important;
-		}
-		.blocklyToolboxCategoryContainer{
-			padding: 0 !important;
-			margin: 0 !important;
-		}
-		.blocklyToolboxCategoryContainer:after{
-			display: none;
-		}
-		.blocklyToolboxCategoryContainer:hover .blocklyToolboxCategoryLabel{
-			color: #ffffff !important;
-		}
-		.blocklyToolboxCategoryLabel {
-		  display: block;
-			font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-			font-size: 14px;
-			font-weight: 400;
-			line-height: 150%;
-			letter-spacing: 0px;
-			outline: none;
-			box-sizing: border-box;
-			color: #9CA3AF !important;
-			padding: 12px 16px 12px 24px !important;
-			cursor: pointer;
-			transition: color 0.15s ease;
-		}
-		.blocklyTreeRow{
-			padding: 0 !important;
-			margin: 0 !important;
-			height: auto !important;
-			line-height: normal !important;
-		}
-		.blocklyTreeRowContentContainer{
-			padding: 0 !important;
-			position: relative;
-		}
-		.blocklyTreeRowContentContainer::before{
-			content: "";
-			position: absolute;
-			left: 8px;
-			top: 50%;
-			transform: translateY(-50%);
-			width: 2px;
-			height: 20px;
-			background-color: transparent;
-			border-radius: 1px;
-			transition: background-color 0.15s ease;
-		}
-		.blocklyToolboxCategory.blocklyToolboxSelected .blocklyTreeRowContentContainer::before{
-			background-color: #8B5CF6;
-		}
-  `;
-  document.head.appendChild(style);
+  ensureOslfStyles();
 
   // inject search input
   const searchInput = document.createElement("input-search");

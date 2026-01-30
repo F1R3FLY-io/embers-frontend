@@ -1,157 +1,102 @@
-.create-container {
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
-  max-width: 560px;
-  min-height: 100vh;
-  padding-top: 100px;
-  padding-left: 148px;
-  overflow: hidden;
-}
-
-.stepper-container {
-  margin-top: 32px;
-}
-
-.content-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 24px;
-}
-
-.title-container {
-  margin-top: 16px;
-}
-
-.description-container {
-  margin-top: 16px;
-}
-
-.details-container {
-  margin-top: 16px;
-}
-
-.form-section {
-  margin-top: 24px;
-}
-
-.form-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 24px;
-}
-
-/* === Icon section === */
-.icon-section {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-
-.icon-preview {
-  width: 72px;
-  height: 72px;
-  border-radius: 12px;
-  background-color: var(--background-neutral-hover);
-  border: 1px solid var(--background-neutral-surface-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.icon-image {
-  width: 100%;
+.oslf-root {
   height: 100%;
-  object-fit: cover;
+  width: 100%;
 }
 
-.icon-placeholder {
-  fill: var(--icon-placeholder);
-  stroke: var(--icon-placeholder);
+.oslf-editor-shell {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
-.icon-input-container {
-  flex: 1;
-  min-width: 0;
+.oslf-editor-mount {
+  height: 100%;
+  width: 100%;
 }
 
-/* === Estimation strip === */
-.estimation-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  margin-top: 8px;
-  background-color: var(--background-blue-hover);
-  border-radius: 8px;
+.oslf-top-right {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 50;
+  pointer-events: none;
 }
 
-.estimation-value {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-}
-
-/* === Footer buttons === */
-.button-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 24px;
-  margin-top: 24px;
-}
-
-.button-group {
-  display: flex;
-  gap: 12px;
-}
-
-.continue-button {
-  padding: 12px 24px;
-  font-family: Manrope, sans-serif;
-  font-size: 14px;
-  color: white;
-  cursor: pointer;
-  background-color: var(--icon-accent);
-  border: none;
+.oslf-segment {
+  display: inline-flex;
   border-radius: 4px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: var(--secondary-button-color);
-  }
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 24, 31, 0.85);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
 }
 
-/* === Page footer === */
-.footer-container {
+.oslf-segment-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.oslf-segment-btn-active {
+  appearance: none;
+  border: none;
+  background: var(--button-primary);
+  color: #ffffff;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.oslf-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background: rgba(10, 12, 16, 0.86);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
+
+.oslf-overlay-header {
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 16px;
-  margin-top: 16px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.support-container {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.support-link {
-  font-family: Manrope, sans-serif;
+.oslf-overlay-title {
   font-size: 14px;
-  color: var(--text-link-color);
-  text-decoration: none;
-  cursor: pointer;
-  transition: text-decoration 0.2s ease;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
 
-  &:hover {
-    text-decoration: underline;
-  }
+.oslf-overlay-close {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.oslf-overlay-body {
+  flex: 1;
+  padding: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
 }

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
-import { useAgentsTeams } from "@/lib/queries";
-import {GraphicalQueryGrid} from "@/pages/Dashboard/components/GraphicalQueryGrid";
+import { useOslfs } from "@/lib/queries";
+import { GraphicalQueryGrid } from "@/pages/Dashboard/components/GraphicalQueryGrid";
 
 interface AgentTeamsTabProps {
   searchQuery: string;
@@ -12,17 +12,17 @@ export default function GraphicalQueryTab({
   searchQuery,
   sortBy,
 }: AgentTeamsTabProps) {
-  const { data, isSuccess } = useAgentsTeams();
+  const { data, isSuccess } = useOslfs();
 
-  const filteredAgents = useMemo(() => {
-    const agents = data?.agentsTeams ?? [];
+  const filteredOSLF = useMemo(() => {
+    const agents = data?.oslfs ?? [];
     const q = searchQuery.trim().toLowerCase();
 
     const filtered = q
       ? agents.filter((a) => {
-          const fields = [a.name, a.id, a.shard, a.version]
+          const fields = [a.name, a.id, a.version]
             .filter(Boolean)
-            .map((v) => String(v).toLowerCase());
+            .map((v) => v.toLowerCase());
           return fields.some((f) => f.includes(q));
         })
       : agents;
@@ -35,6 +35,6 @@ export default function GraphicalQueryTab({
       }
       return b.createdAt.getTime() - a.createdAt.getTime();
     });
-  }, [data?.agentsTeams, searchQuery, sortBy]);
-  return <GraphicalQueryGrid agents={filteredAgents} isSuccess={isSuccess} />;
+  }, [data?.oslfs, searchQuery, sortBy]);
+  return <GraphicalQueryGrid isSuccess={isSuccess} queries={filteredOSLF} />;
 }

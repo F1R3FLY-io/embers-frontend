@@ -1,3 +1,5 @@
+import type { OslfHeader } from "@f1r3fly-io/embers-client-sdk";
+
 import classNames from "classnames";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,7 +10,7 @@ import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
-import { useDeleteAgentMutation } from "@/lib/queries";
+import { useDeleteOslfMutation } from "@/lib/queries";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 import EditIcon from "@/public/icons/editbig-icon.svg?react";
@@ -16,39 +18,28 @@ import TrashIcon from "@/public/icons/trash-icon.svg?react";
 
 import styles from "./GraphicalQuery.module.scss";
 
-export interface Agent {
-  createdAt?: Date;
-  id: string;
-  lastDeploy?: Date | undefined;
-  logo?: string | null;
-  name: string;
-  shard?: string;
-  version: string;
-}
-
 interface AgentsGridProps {
-  agents: Agent[];
   isSuccess: boolean;
+  queries: OslfHeader[];
 }
 
-export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
+export function GraphicalQueryGrid({ isSuccess, queries }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const createAgent = useCallback(() => {
-    void navigate("/oslf");
+  const createOSLF = useCallback(() => {
+    void navigate("/oslf/create");
   }, [navigate]);
 
-  const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
+  const deleteOSLF = useMutationResultWithLoader(useDeleteOslfMutation());
   const confirm = useConfirm();
 
   const navigateToAgent = useCallback(
-    (agent: Agent) => {
-      void navigate("/create-agent", {
+    (oslf: OslfHeader) => {
+      void navigate("/oslf/create", {
         state: {
-          agentIconUrl: agent.logo ?? "",
-          agentId: agent.id,
-          agentName: agent.name,
-          version: agent.version,
+          description: oslf.description,
+          id: oslf.id,
+          name: oslf.name,
         },
       });
     },
@@ -56,8 +47,8 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
   );
 
   const handleDelete = async (id: string, name: string) =>
-    confirm({ message: `Are you sure you want to delete ${name} agent?` })
-      .then((ok) => ok && deleteAgent.mutate(id))
+    confirm({ message: `Are you sure you want to delete ${name}?` })
+      .then((ok) => ok && deleteOSLF.mutate(id))
       .catch(() => {});
 
   const formatUpdated = (value?: Date) => (value ? value.toLocaleString() : "");
@@ -67,7 +58,7 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
       <div
         className={classNames(styles["grid-box"], styles["create-box"])}
         style={{ "--tile-delay": "0.1s" } as React.CSSProperties}
-        onClick={createAgent}
+        onClick={createOSLF}
       >
         <AgentIcon className={styles["create-robot-icon"]} />
         <Text color="secondary" type="large">
@@ -76,12 +67,12 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
       </div>
 
       {isSuccess &&
-        agents.map((agent, index) => {
-          const isDraft = !agent.lastDeploy;
+        queries.map((query, index) => {
+          const isDraft = false; //we should add isDeployed here as well
 
           return (
             <div
-              key={agent.id}
+              key={query.id}
               className={classNames(styles["grid-box"], styles["agent-box"], {
                 [styles["agent-draft"]]: isDraft,
               })}
@@ -90,18 +81,18 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
                   "--tile-delay": `${0.2 + index * 0.1}s`,
                 } as React.CSSProperties
               }
-              onClick={() => navigateToAgent(agent)}
+              onClick={() => navigateToAgent(query)}
             >
               <div className={styles["agent-main"]}>
                 <IconPreview
                   className={styles["agent-icon"]}
                   size={40}
-                  url={agent.logo}
+                  url={undefined} //for now
                 />
 
                 <div className={styles["agent-meta"]}>
                   <Text color="secondary" type="small">
-                    {t("agents.updated")} {formatUpdated(agent.createdAt)}
+                    {t("agents.updated")} {formatUpdated(query.createdAt)}
                   </Text>
 
                   {isDraft && (
@@ -116,7 +107,7 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
               </div>
 
               <Text color="primary" type="H4">
-                {agent.name}
+                {query.name}
               </Text>
 
               <div
@@ -127,9 +118,9 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
                   <Button
                     icon={<EditIcon />}
                     type="secondary"
-                    onClick={() => navigateToAgent(agent)}
+                    onClick={() => navigateToAgent(query)}
                   />
-                  <Button type="primary" onClick={() => navigateToAgent(agent)}>
+                  <Button type="primary" onClick={() => navigateToAgent(query)}>
                     {t("agents.details")}
                   </Button>
                 </div>
@@ -138,7 +129,7 @@ export function GraphicalQueryGrid({ agents, isSuccess }: AgentsGridProps) {
                   className={styles["delete-icon"]}
                   role="button"
                   title={t("agents.delete")}
-                  onClick={() => void handleDelete(agent.id, agent.name)}
+                  onClick={() => void handleDelete(query.id, query.name)}
                 />
               </div>
             </div>

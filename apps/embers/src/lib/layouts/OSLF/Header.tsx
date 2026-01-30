@@ -1,61 +1,42 @@
 import type React from "react";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/lib/components/Button";
-import { PromptModal } from "@/lib/components/Modal/PromptModal";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
-import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
-import { useModal } from "@/lib/providers/modal/useModal";
-import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
-import {
-  useCreateAgentsTeamMutation,
-  useRunAgentsTeamMutation,
-  useSaveAgentsTeamMutation,
-} from "@/lib/queries";
+import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
+import { useCreateOslfMutation, useSaveOslfMutation } from "@/lib/queries";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
-  const { data, navigateToNextStep, updateData } = useGraphEditorStepper();
+  const { data, navigateToNextStep, updateData } = useOSLFEditorStepper();
   const dock = useDock();
-  const { open } = useModal();
 
-  const id = useMemo(() => data.agentId ?? "", [data.agentId]);
-  const saveMutation = useSaveAgentsTeamMutation(id);
-  const createMutation = useCreateAgentsTeamMutation();
-  const runAgentsTeam = useMutationResultWithLoader(useRunAgentsTeamMutation());
+  const id = useMemo(() => data.id ?? "", [data.id]);
+  const saveMutation = useSaveOslfMutation(id);
+  const createMutation = useCreateOslfMutation();
 
-  const isDeployed = data.lastDeployKey || data.uri;
-  const isLoading =
-    createMutation.isPending ||
-    saveMutation.isPending ||
-    runAgentsTeam.isPending;
+  const isLoading = createMutation.isPending || saveMutation.isPending;
 
-  const logError = useCallback(
-    (err: Error) => dock.appendLog(err.message, "error"),
-    [dock],
-  );
-  const canRun = Boolean(isDeployed && !data.hasGraphChanges);
+  const canRun = !data.hasChanges;
 
   const saveOrCreate = useCallbackWithLoader(async () => {
     const payload = {
       description: data.description ?? "",
-      edges: data.edges,
-      name: data.agentName,
-      nodes: data.nodes,
-      ...(data.iconUrl ? { logo: data.iconUrl } : {}),
+      name: data.name,
+      query: data.query,
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
       await res.waitForFinalization;
-      return { agentId: id, version: res.prepareResponse.response.version };
+      return { id, version: res.prepareResponse.response.version };
     }
     const res = await createMutation.mutateAsync(payload);
     await res.waitForFinalization;
     return {
-      agentId: res.prepareResponse.response.id,
+      id: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
   });
@@ -65,13 +46,10 @@ export const Header: React.FC = () => {
       return;
     }
     try {
-      const { agentId, version } = await saveOrCreate();
+      const { id, version } = await saveOrCreate();
       updateData("version", version);
-      updateData("agentId", agentId);
-      dock.appendLog(
-        `Agent ${agentId} with ${version} has been saved!`,
-        "info",
-      );
+      updateData("id", id);
+      dock.appendLog(`${id} with ${version} has been saved!`, "info");
     } catch (e) {
       dock.appendLog(
         `Save failed: ${e instanceof Error ? e.message : String(e)}`,
@@ -86,8 +64,8 @@ export const Header: React.FC = () => {
       return;
     }
     try {
-      const { agentId, version } = await saveOrCreate();
-      updateData("agentId", agentId);
+      const { id, version } = await saveOrCreate();
+      updateData("id", id);
       updateData("version", version);
       navigateToNextStep();
     } catch (e) {
@@ -99,45 +77,7 @@ export const Header: React.FC = () => {
   };
 
   const onRun = () => {
-    open(
-      <PromptModal
-        cancelLabel={t("basic.cancel")}
-        confirmLabel={t("basic.run")}
-        inputLabel={t("basic.inputPrompt")}
-        inputPlaceholder={t("deploy.enterInputPrompt")}
-        onConfirm={(prompt) => {
-          if (data.uri) {
-            void runAgentsTeam
-              .mutateAsync({
-                prompt,
-                rhoLimit: 500_000_000n,
-                uri: data.uri,
-              })
-              .then((result) => {
-                dock.appendLog(
-                  JSON.stringify(
-                    result.sendResponse,
-                    (_, value) =>
-                      typeof value === "string" && value.length > 2000
-                        ? `${value.slice(0, 2000)}...`
-                        : (value as unknown),
-                    4,
-                  ),
-                  "info",
-                );
-              })
-              .catch(logError);
-          }
-        }}
-      />,
-      {
-        ariaLabel: "Prompt modal",
-        closeOnBlur: true,
-        closeOnEsc: true,
-        maxWidth: 550,
-        showCloseButton: false,
-      },
-    );
+    //not implemented
   };
   return (
     <>
@@ -149,7 +89,7 @@ export const Header: React.FC = () => {
         type="primary"
         onClick={async () => (canRun ? onRun() : handleDeploy())}
       >
-        {canRun ? t("basic.run") : t("deploy.deploy")}
+        {canRun ? t("oslf.validate") : t("deploy.deploy")}
       </Button>
     </>
   );
