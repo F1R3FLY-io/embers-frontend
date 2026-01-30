@@ -12,6 +12,7 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",
@@ -25,7 +26,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true,
-    "exactOptionalPropertyTypes": true,
     "skipLibCheck": true
   },
   "include": ["vite.config.ts"]

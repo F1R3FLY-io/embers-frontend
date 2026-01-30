@@ -41,11 +41,11 @@ export const Header: React.FC = () => {
 
   const saveOrCreate = useCallbackWithLoader(async () => {
     const payload = {
-      description: data.description ?? "",
+      description: data.description,
       edges: data.edges,
+      logo: data.iconUrl,
       name: data.name,
       nodes: data.nodes,
-      ...(data.iconUrl ? { logo: data.iconUrl } : {}),
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);

@@ -10,7 +10,7 @@ import styles from "./Code.module.scss";
 
 interface SidebarProps {
   onSelect?: (id: string) => void;
-  selectedId: string | undefined;
+  selectedId?: string;
   versions: string[];
 }
 

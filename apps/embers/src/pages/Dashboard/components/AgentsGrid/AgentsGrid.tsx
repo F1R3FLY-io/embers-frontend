@@ -3,6 +3,8 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import type { CurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
+
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
@@ -19,7 +21,7 @@ import styles from "./AgentsGrid.module.scss";
 export interface Agent {
   createdAt?: Date;
   id: string;
-  lastDeploy?: Date | undefined;
+  lastDeploy?: Date;
   logo?: string | null;
   name: string;
   shard?: string;
@@ -34,24 +36,21 @@ interface AgentsGridProps {
 export function AgentsGrid({ agents, isSuccess }: AgentsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const createAgent = useCallback(() => {
-    void navigate("/create-agent/create");
-  }, [navigate]);
+  const createAgent = useCallback(
+    () => void navigate("/agent/create"),
+    [navigate],
+  );
 
   const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
   const confirm = useConfirm();
 
   const navigateToAgent = useCallback(
-    (agent: Agent) => {
-      void navigate("/create-agent", {
+    (agent: Agent) =>
+      void navigate("/agent/edit", {
         state: {
-          agentIconUrl: agent.logo ?? "",
-          agentId: agent.id,
-          agentName: agent.name,
-          version: agent.version,
-        },
-      });
-    },
+          id: agent.id,
+        } satisfies CurrentAgent,
+      }),
     [navigate],
   );
 

@@ -21,7 +21,7 @@ import { layoutAndNormalizeFromApi, toApiGraph } from "./graph";
 
 interface DeleteContext<T> {
   listKey: readonly [string, string];
-  previous: T | undefined;
+  previous?: T;
 }
 
 export function useAgents() {

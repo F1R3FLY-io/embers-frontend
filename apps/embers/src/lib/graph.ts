@@ -429,7 +429,7 @@ export function resizeContainers(nodes: Node[]): Node[] {
 
     parent.position = { x: parentX, y: parentY };
     parent.style = {
-      ...(parent.style ?? {}),
+      ...parent.style,
       height: maxY - minY + DAGRE_NODE_HEIGHT,
       width: maxX - minX + DAGRE_NODE_WIDTH,
     };

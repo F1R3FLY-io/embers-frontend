@@ -15,7 +15,7 @@ type InputVariant = "default" | "filled" | "outline";
 
 type CommonProps = {
   className?: string;
-  error?: boolean | undefined;
+  error?: boolean;
   errorMessage?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;

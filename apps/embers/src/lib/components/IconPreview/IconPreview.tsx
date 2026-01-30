@@ -8,7 +8,7 @@ import styles from "./IconPreview.module.scss";
 export interface IconPreviewProps {
   className?: string;
   size?: number;
-  url?: string | null | undefined;
+  url?: string | null;
 }
 
 export function IconPreview({ className, size = 72, url }: IconPreviewProps) {

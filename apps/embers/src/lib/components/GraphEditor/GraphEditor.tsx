@@ -46,7 +46,7 @@ import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
 type GraphEditorProps = {
   edges: Edge[];
-  initialViewport?: ReactFlowJsonObject<Node, Edge>["viewport"] | undefined;
+  initialViewport?: ReactFlowJsonObject<Node, Edge>["viewport"];
   nodes: Node[];
   onFlowChange?: (flow: ReactFlowJsonObject<Node, Edge>) => void;
   onGraphChange?: () => void;

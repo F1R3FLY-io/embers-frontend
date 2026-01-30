@@ -26,9 +26,10 @@ interface AgentTeamsGridProps {
 export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const createAgentsTeam = useCallback(() => {
-    void navigate("/create-agents-team/create");
-  }, [navigate]);
+  const createAgentsTeam = useCallback(
+    () => void navigate("/agents-team/create"),
+    [navigate],
+  );
 
   const deleteAgentsTeam = useMutationResultWithLoader(
     useDeleteAgentMutation(),
@@ -36,8 +37,8 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   const confirm = useConfirm();
 
   const navigateToAgentsTeam = useCallback(
-    (agent: AgentsTeamHeader) => {
-      void navigate("/create-agents-team", {
+    (agent: AgentsTeamHeader) =>
+      void navigate("/agents-team", {
         state: {
           agentIconUrl: agent.logo,
           agentId: agent.id,
@@ -46,13 +47,12 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
           lastDeploy: agent.lastDeploy,
           version: agent.version,
         },
-      });
-    },
+      }),
     [navigate],
   );
 
   const navigateToPublish = useCallback(
-    (agent: AgentsTeamHeader) => {
+    (agent: AgentsTeamHeader) =>
       void navigate("/publish-agents-team", {
         state: {
           agentId: agent.id,
@@ -60,8 +60,7 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
           iconUrl: agent.logo ?? "",
           version: agent.version,
         },
-      });
-    },
+      }),
     [navigate],
   );
 

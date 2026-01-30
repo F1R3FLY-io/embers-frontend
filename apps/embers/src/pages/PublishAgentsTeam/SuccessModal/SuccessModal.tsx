@@ -12,7 +12,7 @@ import styles from "./SuccessModal.module.scss";
 
 export type DeploySuccessData = {
   agentName: string;
-  data: { label: string; value: string | undefined }[];
+  data: { label: string; value?: string }[];
   iconUrl?: string;
 };
 

@@ -1,59 +1,81 @@
 import { useForm } from "@tanstack/react-form";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
+
+import type { Option } from "@/lib/components/Select";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
+import { Select } from "@/lib/components/Select";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
+import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
-import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 import { useDeployAgentMutation } from "@/lib/queries";
-import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import styles from "./DeployAgent.module.scss";
 
+const envOptions: Option<string>[] = [
+  { label: "Development", value: "dev" },
+  { label: "Staging", value: "staging" },
+  { label: "Production", value: "prod" },
+];
+
+const shardByEnv: Record<string, string> = {
+  dev: "shard://dev.test.net",
+  prod: "shard://prod.test.net",
+  staging: "shard://staging.test.net",
+};
+
+const estimatedCost = 50000;
+
 const formModel = z.object({
-  notes: z.union([z.string(), z.undefined()]),
+  environment: z.string().optional(),
   rhoLimit: z.string().refine((v) => BigInt(v)),
 });
 
 export default function DeployAgent() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const { data, navigateToPrevStep, navigateToStep, reset, step, updateData } =
-    useCodeEditorStepper();
-
-  const deployMutation = useMutationResultWithLoader(useDeployAgentMutation());
   const dock = useDock();
   const { open } = useModal();
 
+  const { agent, reset, update } = useCurrentAgent();
+
+  const deployMutation = useMutationResultWithLoader(useDeployAgentMutation());
+  const redirectToEdit = useCallback(
+    () => void navigate("/agent/edit"),
+    [navigate],
+  );
+
   const onSubmit = useCallbackWithLoader(
     async ({ value }: { value: z.infer<typeof formModel> }) => {
-      updateData("notes", value.notes);
-      updateData("rhoLimit", BigInt(value.rhoLimit));
+      update({
+        environment: value.environment,
+        rhoLimit: BigInt(value.rhoLimit),
+      });
 
       const modalData = [
-        { label: "deploy.labels.agentId", value: data.id },
-        { label: "deploy.version", value: data.version },
+        { label: "deploy.labels.agentId", value: agent.id },
+        { label: "deploy.version", value: agent.version },
         { label: "deploy.labels.status", value: "ok" },
-        { label: "deploy.rhoLimit", value: String(data.rhoLimit) },
-        { label: "deploy.labels.note", value: data.description },
+        { label: "deploy.rhoLimit", value: value.rhoLimit },
+        { label: "deploy.labels.note", value: agent.description },
       ];
 
       return deployMutation.mutateAsync(
         {
-          agentId: data.id!,
+          agentId: agent.id!,
           rhoLimit: BigInt(value.rhoLimit),
-          version: data.version!,
+          version: agent.version!,
         },
         {
           onError: (e) => {
@@ -61,7 +83,7 @@ export default function DeployAgent() {
             open(
               <WarningModal
                 error={e.message}
-                reviewSettings={() => navigateToStep(0)}
+                reviewSettings={redirectToEdit}
                 tryAgain={() => {}}
               />,
               {
@@ -74,13 +96,13 @@ export default function DeployAgent() {
             dock.appendDeploy(true);
             open(
               <SuccessModal
-                agentName={data.name}
+                agentName={agent.name!}
                 createAnother={() => {
                   reset();
-                  navigateToStep(0);
+                  void navigate("/agent/create");
                 }}
                 data={modalData}
-                viewAgent={() => navigateToStep(1)}
+                viewAgent={redirectToEdit}
                 viewAllAgents={() => void navigate("/dashboard")}
               />,
               {
@@ -96,8 +118,8 @@ export default function DeployAgent() {
 
   const form = useForm({
     defaultValues: {
-      notes: data.notes,
-      rhoLimit: data.rhoLimit.toString(),
+      ...agent,
+      rhoLimit: agent.rhoLimit?.toString() ?? "50000",
     },
     onSubmit,
     validators: {
@@ -113,18 +135,15 @@ export default function DeployAgent() {
 
       <div className={styles["stepper-container"]}>
         <Stepper
-          currentStep={step}
+          currentStep={2}
           steps={[
             {
-              canClick: true,
               label: t("deploy.generalInfo"),
             },
             {
-              canClick: true,
               label: t("deploy.creation"),
             },
             {
-              canClick: false,
               label: t("deploy.deployment"),
             },
           ]}
@@ -134,7 +153,7 @@ export default function DeployAgent() {
       <div className={styles["content-container"]}>
         <div>
           <Text bold color="primary" type="H2">
-            {data.name}
+            {agent.name}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" type="large">
@@ -158,12 +177,24 @@ export default function DeployAgent() {
             <Text color="secondary" type="small">
               {t("deploy.agentName")}
             </Text>
-            <Input disabled placeholder={data.name} value={data.name} />
+            <Input disabled placeholder={agent.name} value={agent.name} />
+          </div>
+
+          <div className={styles["form-section"]}>
+            <Text color="secondary" type="small">
+              {t("deploy.agentDescription")}
+            </Text>
+            <Input
+              disabled
+              textarea
+              placeholder={agent.description}
+              value={agent.description}
+            />
           </div>
 
           <div className={styles["form-section"]}>
             <Text bold color="primary" type="H5">
-              {t("deploy.versionAndNotes")}
+              {t("deploy.version")}
             </Text>
             <div className={styles["form-fields"]}>
               <div>
@@ -172,28 +203,10 @@ export default function DeployAgent() {
                 </Text>
                 <Input
                   disabled
-                  placeholder={data.version}
-                  value={data.version}
+                  placeholder={agent.version}
+                  value={agent.version}
                 />
               </div>
-              <form.Field name="notes">
-                {(field) => (
-                  <div>
-                    <Text color="secondary" type="small">
-                      {t("deploy.notes")}
-                    </Text>
-                    <Input
-                      textarea
-                      error={
-                        field.state.meta.isTouched && !field.state.meta.isValid
-                      }
-                      placeholder={t("deploy.enterDeploymentNotes")}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                  </div>
-                )}
-              </form.Field>
             </div>
           </div>
 
@@ -201,19 +214,61 @@ export default function DeployAgent() {
             {(field) => (
               <div className={styles["form-section"]}>
                 <div className={styles["form-fields"]}>
-                  <Text color="secondary" type="small">
-                    {t("deploy.rhoLimit")}
-                  </Text>
-                  <Input
-                    error={
-                      field.state.meta.isTouched && !field.state.meta.isValid
-                    }
-                    placeholder={field.state.value}
-                    type="number"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
+                  <div>
+                    <Text color="secondary" type="small">
+                      {t("deploy.rhoLimit")}
+                    </Text>
+                    <Input
+                      error={
+                        field.state.meta.isTouched && !field.state.meta.isValid
+                      }
+                      placeholder={field.state.value}
+                      type="number"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </div>
                 </div>
+              </div>
+            )}
+          </form.Field>
+
+          <div className={styles["form-section"]}>
+            <div className={styles["estimation-bar"]}>
+              <Text color="secondary" type="small">
+                {t("deploy.estimatedCost")}
+              </Text>
+              <div className={styles["estimation-value"]}>
+                <Text color="primary" type="small">
+                  {estimatedCost.toLocaleString()}
+                </Text>
+                <Text color="primary" type="small">
+                  &nbsp;FIR3CAPS
+                </Text>
+              </div>
+            </div>
+          </div>
+
+          <form.Field name="environment">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <Select
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
+                  label={t("deploy.blockchainShard")}
+                  options={envOptions}
+                  placeholder={t("agents.selectEnvironment")}
+                  value={field.state.value}
+                  onChange={field.handleChange}
+                />
+                {field.state.value && (
+                  <div className={styles["description-container"]}>
+                    <Text color="secondary" type="small">
+                      {shardByEnv[field.state.value]}
+                    </Text>
+                  </div>
+                )}
               </div>
             )}
           </form.Field>
@@ -224,24 +279,13 @@ export default function DeployAgent() {
                 <Button
                   disabled={isSubmitting}
                   type="secondary"
-                  onClick={navigateToPrevStep}
+                  onClick={redirectToEdit}
                 >
                   {t("deploy.back")}
                 </Button>
-
-                <div className={styles["button-group"]}>
-                  <Button
-                    disabled={isSubmitting}
-                    icon={<DraftIcon />}
-                    type="secondary"
-                  >
-                    {t("basic.saveDraft")}
-                  </Button>
-
-                  <Button submit disabled={isSubmitting} type="primary">
-                    {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
-                  </Button>
-                </div>
+                <Button submit disabled={isSubmitting} type="primary">
+                  {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
+                </Button>
               </div>
             )}
           </form.Subscribe>

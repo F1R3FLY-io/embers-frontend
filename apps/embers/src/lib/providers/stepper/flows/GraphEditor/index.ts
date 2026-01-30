@@ -6,13 +6,13 @@ import type { Edge, Node } from "@/lib/components/GraphEditor";
 import { createStepper } from "@/lib/providers/stepper/StepperProvider";
 
 export type GraphEditorStepperData = {
-  description?: string | undefined;
+  description?: string;
   edges: Edge[];
   execType?: string;
   flow?: ReactFlowJsonObject<Node, Edge>;
   flowType?: string;
   hasGraphChanges: boolean;
-  iconUrl?: string | undefined;
+  iconUrl?: string;
   id?: string;
   inputPrompt?: string;
   language?: string;
@@ -33,9 +33,5 @@ export const {
     name: "",
     nodes: [],
   },
-  routes: [
-    "/create-agents-team/create",
-    "/create-agents-team",
-    "/create-agents-team/deploy",
-  ],
+  routes: ["/agents-team/create", "/agents-team", "/agents-team/deploy"],
 });

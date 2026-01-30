@@ -12,7 +12,7 @@ import styles from "./SuccessModal.module.scss";
 export type DeploySuccessData = {
   agentName: string;
   createAnother: () => void;
-  data: { label: string; value: string | undefined }[];
+  data: { label: string; value?: string }[];
   iconUrl?: string;
   viewAgent: () => void;
   viewAllAgents: () => void;
@@ -59,7 +59,7 @@ export function SuccessModal({
       </div>
 
       <div className={styles.details}>
-        {data.map((row: { label: string; value: string | undefined }, index) =>
+        {data.map((row, index) =>
           row.value ? (
             <Row key={index} label={t(row.label)} value={row.value} />
           ) : null,

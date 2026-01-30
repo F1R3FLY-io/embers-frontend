@@ -5,10 +5,19 @@ import { Footer, Header } from "@/lib/layouts/Graph";
 import { Sidebar } from "@/lib/layouts/Graph/Sidebar";
 interface GraphLayoutProps {
   children: React.ReactNode;
+  title?: string;
 }
 
-export const GraphLayout: React.FC<GraphLayoutProps> = ({ children }) => (
-  <Layout footer={<Footer />} headerActions={<Header />} sidebar={<Sidebar />}>
+export const GraphLayout: React.FC<GraphLayoutProps> = ({
+  children,
+  title,
+}) => (
+  <Layout
+    footer={<Footer />}
+    headerActions={<Header />}
+    sidebar={<Sidebar />}
+    title={title}
+  >
     {children}
   </Layout>
 );
