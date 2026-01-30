@@ -9,7 +9,7 @@ import styles from "./Stepper.module.scss";
 type StepperProps = {
   currentStep: number;
   onStepClick?: (index: number) => void;
-  steps: { canClick: boolean; label: string }[];
+  steps: { canClick?: boolean; label: string }[];
 };
 
 export function Stepper({ currentStep, onStepClick, steps }: StepperProps) {

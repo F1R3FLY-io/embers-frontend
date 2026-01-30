@@ -26,7 +26,7 @@ export function ModalProvider({ children }: PropsWithChildren) {
   const [opts, setOpts] = useState<ModalOptions>(defaultOptions);
 
   const open = useCallback((node: ReactNode, options?: ModalOptions) => {
-    setOpts({ ...defaultOptions, ...(options ?? {}) });
+    setOpts({ ...defaultOptions, ...options });
     setContent(node);
   }, []);
 

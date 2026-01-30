@@ -4,11 +4,11 @@ import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
+import { CurrentAgentProvider } from "@/lib/providers/currentAgent/CurrentAgentProvider";
 import { DockProvider } from "@/lib/providers/dock/DockProvider";
 import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider";
 import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
-import { CodeEditorStepperProvider } from "@/lib/providers/stepper/flows/CodeEditor";
 import { GraphEditorStepperProvider } from "@/lib/providers/stepper/flows/GraphEditor";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
@@ -50,21 +50,24 @@ export default function App() {
                             <Route element={<Dashboard />} path="/dashboard" />
                             <Route
                               element={
-                                <CodeEditorStepperProvider>
+                                <CurrentAgentProvider>
                                   <Routes>
                                     <Route
                                       element={<CreateAgent />}
                                       path="create"
                                     />
-                                    <Route element={<EditAgent />} path="" />
+                                    <Route
+                                      element={<EditAgent />}
+                                      path="edit"
+                                    />
                                     <Route
                                       element={<DeployAgent />}
                                       path="deploy"
                                     />
                                   </Routes>
-                                </CodeEditorStepperProvider>
+                                </CurrentAgentProvider>
                               }
-                              path="/create-agent/*"
+                              path="/agent/*"
                             />
                             <Route
                               element={
@@ -85,7 +88,7 @@ export default function App() {
                                   </Routes>
                                 </GraphEditorStepperProvider>
                               }
-                              path="/create-agents-team/*"
+                              path="/agents-team/*"
                             />
                             <Route
                               element={<PublishAgentsTeam />}
