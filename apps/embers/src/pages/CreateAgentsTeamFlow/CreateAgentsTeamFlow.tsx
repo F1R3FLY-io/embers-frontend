@@ -1,7 +1,6 @@
 import type { ReactFlowJsonObject } from "@xyflow/react";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
@@ -9,13 +8,10 @@ import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/Graph
 
 import { GraphEditor } from "@/lib/components/GraphEditor";
 import { GraphLayout } from "@/lib/layouts/Graph";
-import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 import { useAgentsTeam } from "@/lib/queries";
 
 export default function CreateAgentsTeamFlow() {
-  const { setHeaderTitle } = useLayout();
-  const { t } = useTranslation();
   const { data, updateData, updateMany } = useGraphEditorStepper();
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,7 +36,6 @@ export default function CreateAgentsTeamFlow() {
     updateData("hasGraphChanges", true);
   }, [updateData]);
 
-  useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
   useEffect(() => {
     if (hydratedRef.current) {
       return;
@@ -94,7 +89,7 @@ export default function CreateAgentsTeamFlow() {
   }, []);
 
   return (
-    <GraphLayout>
+    <GraphLayout title={agentName}>
       <GraphEditor
         edges={edges}
         initialViewport={data.flow?.viewport}
