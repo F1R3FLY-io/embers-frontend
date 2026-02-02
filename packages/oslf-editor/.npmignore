@@ -1,0 +1,11 @@
+# Development documentation (not needed in node_modules)
+block-compatibility-matrix.md
+
+# TypeScript source is already in package.json "files"
+# (keeping this here for documentation purposes)
+
+# Development tools
+.vscode/
+.idea/
+*.swp
+*.swo

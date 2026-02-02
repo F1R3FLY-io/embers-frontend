@@ -10,6 +10,7 @@ import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
 import { CodeEditorStepperProvider } from "@/lib/providers/stepper/flows/CodeEditor";
 import { GraphEditorStepperProvider } from "@/lib/providers/stepper/flows/GraphEditor";
+import { OSLFEditorStepperProvider } from "@/lib/providers/stepper/flows/OSLFEditor";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
 
@@ -18,6 +19,9 @@ import "./index.scss";
 
 const Dashboard = lazy(async () => import("@/pages/Dashboard"));
 const CreateAgent = lazy(async () => import("@/pages/CreateAgent"));
+const CreateOSLF = lazy(async () => import("@/pages/OSLF/create"));
+const DeployOSLF = lazy(async () => import("@/pages/OSLF/deploy"));
+const GraphOSLF = lazy(async () => import("@/pages/OSLF/graph"));
 const CreateAgentsTeam = lazy(async () => import("@/pages/CreateAgentsTeam"));
 const DeployAgent = lazy(async () => import("@/pages/DeployAgent"));
 const DeployAgentsTeam = lazy(async () => import("@/pages/DeployAgentsTeam"));
@@ -86,6 +90,24 @@ export default function App() {
                                 </GraphEditorStepperProvider>
                               }
                               path="/create-agents-team/*"
+                            />
+                            <Route
+                              element={
+                                <OSLFEditorStepperProvider>
+                                  <Routes>
+                                    <Route
+                                      element={<CreateOSLF />}
+                                      path="create"
+                                    />
+                                    <Route element={<GraphOSLF />} path="" />
+                                    <Route
+                                      element={<DeployOSLF />}
+                                      path="deploy"
+                                    />
+                                  </Routes>
+                                </OSLFEditorStepperProvider>
+                              }
+                              path="/oslf/*"
                             />
                             <Route
                               element={<PublishAgentsTeam />}

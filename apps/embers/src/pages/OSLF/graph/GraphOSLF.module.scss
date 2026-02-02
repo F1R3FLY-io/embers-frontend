@@ -1,0 +1,102 @@
+.oslf-root {
+  height: 100%;
+  width: 100%;
+}
+
+.oslf-editor-shell {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.oslf-editor-mount {
+  height: 100%;
+  width: 100%;
+}
+
+.oslf-top-right {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.oslf-segment {
+  display: inline-flex;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(20 24 31 / 85%);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.oslf-segment-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: rgb(255 255 255 / 75%);
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.oslf-segment-btn-active {
+  appearance: none;
+  border: none;
+  background: var(--button-primary);
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.oslf-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background: rgb(10 12 16 / 86%);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
+
+.oslf-overlay-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+
+.oslf-overlay-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(255 255 255 / 90%);
+}
+
+.oslf-overlay-close {
+  appearance: none;
+  border: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(255 255 255 / 6%);
+  color: rgb(255 255 255 / 90%);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.oslf-overlay-body {
+  flex: 1;
+  padding: 16px;
+  color: rgb(255 255 255 / 75%);
+  font-size: 13px;
+}
