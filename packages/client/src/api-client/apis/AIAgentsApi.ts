@@ -99,11 +99,11 @@ export interface ApiAiAgentsIdSaveSendPostRequest {
  */
 export class AIAgentsApi extends runtime.BaseAPI {
   /**
+   * Creates request options for apiAiAgentsAddressGet without sending the request
    */
-  async apiAiAgentsAddressGetRaw(
+  async apiAiAgentsAddressGetRequestOpts(
     requestParameters: ApiAiAgentsAddressGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Agents>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -121,15 +121,23 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.address)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressGetRaw(
+    requestParameters: ApiAiAgentsAddressGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Agents>> {
+    const requestOptions =
+      await this.apiAiAgentsAddressGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       AgentsFromJSON(jsonValue),
@@ -150,11 +158,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsAddressIdVersionsGet without sending the request
    */
-  async apiAiAgentsAddressIdVersionsGetRaw(
+  async apiAiAgentsAddressIdVersionsGetRequestOpts(
     requestParameters: ApiAiAgentsAddressIdVersionsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Agents>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -183,15 +191,23 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsGetRaw(
+    requestParameters: ApiAiAgentsAddressIdVersionsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Agents>> {
+    const requestOptions =
+      await this.apiAiAgentsAddressIdVersionsGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       AgentsFromJSON(jsonValue),
@@ -212,11 +228,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsAddressIdVersionsVersionGet without sending the request
    */
-  async apiAiAgentsAddressIdVersionsVersionGetRaw(
+  async apiAiAgentsAddressIdVersionsVersionGetRequestOpts(
     requestParameters: ApiAiAgentsAddressIdVersionsVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Agent>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -256,15 +272,25 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.version)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsAddressIdVersionsVersionGetRaw(
+    requestParameters: ApiAiAgentsAddressIdVersionsVersionGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Agent>> {
+    const requestOptions =
+      await this.apiAiAgentsAddressIdVersionsVersionGetRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       AgentFromJSON(jsonValue),
@@ -285,11 +311,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsCreatePreparePost without sending the request
    */
-  async apiAiAgentsCreatePreparePostRaw(
+  async apiAiAgentsCreatePreparePostRequestOpts(
     requestParameters: ApiAiAgentsCreatePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.createAgentReq == null) {
       throw new runtime.RequiredError(
         "createAgentReq",
@@ -305,16 +331,24 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents/create/prepare`;
 
-    const response = await this.request(
-      {
-        body: CreateAgentReqToJSON(requestParameters.createAgentReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: CreateAgentReqToJSON(requestParameters.createAgentReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsCreatePreparePostRaw(
+    requestParameters: ApiAiAgentsCreatePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentResp>> {
+    const requestOptions =
+      await this.apiAiAgentsCreatePreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseCreateAgentRespFromJSON(jsonValue),
@@ -335,11 +369,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsCreateSendPost without sending the request
    */
-  async apiAiAgentsCreateSendPostRaw(
+  async apiAiAgentsCreateSendPostRequestOpts(
     requestParameters: ApiAiAgentsCreateSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractCreateAgentReqCreateAgentResp ==
       null
@@ -358,18 +392,26 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents/create/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractCreateAgentReqCreateAgentRespToJSON(
-          requestParameters.sendRequestBodySignedContractCreateAgentReqCreateAgentResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractCreateAgentReqCreateAgentRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateAgentReqCreateAgentResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsCreateSendPostRaw(
+    requestParameters: ApiAiAgentsCreateSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsCreateSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -390,11 +432,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsDeployPreparePost without sending the request
    */
-  async apiAiAgentsDeployPreparePostRaw(
+  async apiAiAgentsDeployPreparePostRequestOpts(
     requestParameters: ApiAiAgentsDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.deployAgentReq == null) {
       throw new runtime.RequiredError(
         "deployAgentReq",
@@ -410,16 +452,24 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents/deploy/prepare`;
 
-    const response = await this.request(
-      {
-        body: DeployAgentReqToJSON(requestParameters.deployAgentReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: DeployAgentReqToJSON(requestParameters.deployAgentReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsDeployPreparePostRaw(
+    requestParameters: ApiAiAgentsDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentResp>> {
+    const requestOptions =
+      await this.apiAiAgentsDeployPreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseDeployAgentRespFromJSON(jsonValue),
@@ -440,11 +490,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsDeploySendPost without sending the request
    */
-  async apiAiAgentsDeploySendPostRaw(
+  async apiAiAgentsDeploySendPostRequestOpts(
     requestParameters: ApiAiAgentsDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp ==
       null
@@ -463,18 +513,26 @@ export class AIAgentsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents/deploy/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentRespToJSON(
-          requestParameters.sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentRespToJSON(
+        requestParameters.sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsDeploySendPostRaw(
+    requestParameters: ApiAiAgentsDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsDeploySendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -495,11 +553,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsIdDeletePreparePost without sending the request
    */
-  async apiAiAgentsIdDeletePreparePostRaw(
+  async apiAiAgentsIdDeletePreparePostRequestOpts(
     requestParameters: ApiAiAgentsIdDeletePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeleteAgentResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -517,15 +575,23 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsIdDeletePreparePostRaw(
+    requestParameters: ApiAiAgentsIdDeletePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeleteAgentResp>> {
+    const requestOptions =
+      await this.apiAiAgentsIdDeletePreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       DeleteAgentRespFromJSON(jsonValue),
@@ -546,11 +612,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsIdDeleteSendPost without sending the request
    */
-  async apiAiAgentsIdDeleteSendPostRaw(
+  async apiAiAgentsIdDeleteSendPostRequestOpts(
     requestParameters: ApiAiAgentsIdDeleteSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -577,16 +643,24 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SignedContractToJSON(requestParameters.signedContract),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SignedContractToJSON(requestParameters.signedContract),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsIdDeleteSendPostRaw(
+    requestParameters: ApiAiAgentsIdDeleteSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsIdDeleteSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -607,11 +681,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsIdSavePreparePost without sending the request
    */
-  async apiAiAgentsIdSavePreparePostRaw(
+  async apiAiAgentsIdSavePreparePostRequestOpts(
     requestParameters: ApiAiAgentsIdSavePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -638,16 +712,24 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: CreateAgentReqToJSON(requestParameters.createAgentReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: CreateAgentReqToJSON(requestParameters.createAgentReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsIdSavePreparePostRaw(
+    requestParameters: ApiAiAgentsIdSavePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentResp>> {
+    const requestOptions =
+      await this.apiAiAgentsIdSavePreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseSaveAgentRespFromJSON(jsonValue),
@@ -668,11 +750,11 @@ export class AIAgentsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsIdSaveSendPost without sending the request
    */
-  async apiAiAgentsIdSaveSendPostRaw(
+  async apiAiAgentsIdSaveSendPostRequestOpts(
     requestParameters: ApiAiAgentsIdSaveSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -702,18 +784,26 @@ export class AIAgentsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractCreateAgentReqSaveAgentRespToJSON(
-          requestParameters.sendRequestBodySignedContractCreateAgentReqSaveAgentResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractCreateAgentReqSaveAgentRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateAgentReqSaveAgentResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsIdSaveSendPostRaw(
+    requestParameters: ApiAiAgentsIdSaveSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsIdSaveSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),

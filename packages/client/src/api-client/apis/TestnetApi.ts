@@ -40,11 +40,11 @@ export interface ApiTestnetDeploySendPostRequest {
  */
 export class TestnetApi extends runtime.BaseAPI {
   /**
+   * Creates request options for apiTestnetDeployPreparePost without sending the request
    */
-  async apiTestnetDeployPreparePostRaw(
+  async apiTestnetDeployPreparePostRequestOpts(
     requestParameters: ApiTestnetDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseDeployTestResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.deployTestReq == null) {
       throw new runtime.RequiredError(
         "deployTestReq",
@@ -60,16 +60,24 @@ export class TestnetApi extends runtime.BaseAPI {
 
     const urlPath = `/api/testnet/deploy/prepare`;
 
-    const response = await this.request(
-      {
-        body: DeployTestReqToJSON(requestParameters.deployTestReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: DeployTestReqToJSON(requestParameters.deployTestReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiTestnetDeployPreparePostRaw(
+    requestParameters: ApiTestnetDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployTestResp>> {
+    const requestOptions =
+      await this.apiTestnetDeployPreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseDeployTestRespFromJSON(jsonValue),
@@ -90,11 +98,11 @@ export class TestnetApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiTestnetDeploySendPost without sending the request
    */
-  async apiTestnetDeploySendPostRaw(
+  async apiTestnetDeploySendPostRequestOpts(
     requestParameters: ApiTestnetDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeploySignedTestResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp ==
       null
@@ -113,18 +121,26 @@ export class TestnetApi extends runtime.BaseAPI {
 
     const urlPath = `/api/testnet/deploy/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestRespToJSON(
-          requestParameters.sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodyDeploySignedTestReqDeployTestReqDeployTestRespToJSON(
+        requestParameters.sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiTestnetDeploySendPostRaw(
+    requestParameters: ApiTestnetDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeploySignedTestResp>> {
+    const requestOptions =
+      await this.apiTestnetDeploySendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       DeploySignedTestRespFromJSON(jsonValue),
@@ -145,25 +161,30 @@ export class TestnetApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiTestnetWalletPost without sending the request
    */
-  async apiTestnetWalletPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<CreateTestwalletResp>> {
+  async apiTestnetWalletPostRequestOpts(): Promise<runtime.RequestOpts> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
 
     const urlPath = `/api/testnet/wallet`;
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiTestnetWalletPostRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<CreateTestwalletResp>> {
+    const requestOptions = await this.apiTestnetWalletPostRequestOpts();
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       CreateTestwalletRespFromJSON(jsonValue),

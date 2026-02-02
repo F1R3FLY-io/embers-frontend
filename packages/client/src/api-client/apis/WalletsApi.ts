@@ -63,11 +63,11 @@ export interface ApiWalletsTransferSendPostRequest {
  */
 export class WalletsApi extends runtime.BaseAPI {
   /**
+   * Creates request options for apiWalletsAddressDeploysGet without sending the request
    */
-  async apiWalletsAddressDeploysGetRaw(
+  async apiWalletsAddressDeploysGetRequestOpts(
     requestParameters: ApiWalletsAddressDeploysGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -85,15 +85,23 @@ export class WalletsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.address)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiWalletsAddressDeploysGetRaw(
+    requestParameters: ApiWalletsAddressDeploysGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    const requestOptions =
+      await this.apiWalletsAddressDeploysGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.VoidApiResponse(response);
   }
@@ -108,11 +116,11 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiWalletsAddressStateGet without sending the request
    */
-  async apiWalletsAddressStateGetRaw(
+  async apiWalletsAddressStateGetRequestOpts(
     requestParameters: ApiWalletsAddressStateGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<WalletStateAndHistory>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -130,15 +138,23 @@ export class WalletsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.address)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiWalletsAddressStateGetRaw(
+    requestParameters: ApiWalletsAddressStateGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<WalletStateAndHistory>> {
+    const requestOptions =
+      await this.apiWalletsAddressStateGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       WalletStateAndHistoryFromJSON(jsonValue),
@@ -159,11 +175,11 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiWalletsBoostPreparePost without sending the request
    */
-  async apiWalletsBoostPreparePostRaw(
+  async apiWalletsBoostPreparePostRequestOpts(
     requestParameters: ApiWalletsBoostPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseBoostResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.boostReq == null) {
       throw new runtime.RequiredError(
         "boostReq",
@@ -179,16 +195,24 @@ export class WalletsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/wallets/boost/prepare`;
 
-    const response = await this.request(
-      {
-        body: BoostReqToJSON(requestParameters.boostReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: BoostReqToJSON(requestParameters.boostReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiWalletsBoostPreparePostRaw(
+    requestParameters: ApiWalletsBoostPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseBoostResp>> {
+    const requestOptions =
+      await this.apiWalletsBoostPreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseBoostRespFromJSON(jsonValue),
@@ -209,11 +233,11 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiWalletsBoostSendPost without sending the request
    */
-  async apiWalletsBoostSendPostRaw(
+  async apiWalletsBoostSendPostRequestOpts(
     requestParameters: ApiWalletsBoostSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractBoostReqBoostResp == null
     ) {
@@ -231,18 +255,26 @@ export class WalletsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/wallets/boost/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractBoostReqBoostRespToJSON(
-          requestParameters.sendRequestBodySignedContractBoostReqBoostResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractBoostReqBoostRespToJSON(
+        requestParameters.sendRequestBodySignedContractBoostReqBoostResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiWalletsBoostSendPostRaw(
+    requestParameters: ApiWalletsBoostSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiWalletsBoostSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -263,11 +295,11 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiWalletsTransferPreparePost without sending the request
    */
-  async apiWalletsTransferPreparePostRaw(
+  async apiWalletsTransferPreparePostRequestOpts(
     requestParameters: ApiWalletsTransferPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseTransferResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.transferReq == null) {
       throw new runtime.RequiredError(
         "transferReq",
@@ -283,16 +315,24 @@ export class WalletsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/wallets/transfer/prepare`;
 
-    const response = await this.request(
-      {
-        body: TransferReqToJSON(requestParameters.transferReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: TransferReqToJSON(requestParameters.transferReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiWalletsTransferPreparePostRaw(
+    requestParameters: ApiWalletsTransferPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseTransferResp>> {
+    const requestOptions =
+      await this.apiWalletsTransferPreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseTransferRespFromJSON(jsonValue),
@@ -313,11 +353,11 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiWalletsTransferSendPost without sending the request
    */
-  async apiWalletsTransferSendPostRaw(
+  async apiWalletsTransferSendPostRequestOpts(
     requestParameters: ApiWalletsTransferSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractTransferReqTransferResp ==
       null
@@ -336,18 +376,26 @@ export class WalletsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/wallets/transfer/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractTransferReqTransferRespToJSON(
-          requestParameters.sendRequestBodySignedContractTransferReqTransferResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractTransferReqTransferRespToJSON(
+        requestParameters.sendRequestBodySignedContractTransferReqTransferResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiWalletsTransferSendPostRaw(
+    requestParameters: ApiWalletsTransferSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiWalletsTransferSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),

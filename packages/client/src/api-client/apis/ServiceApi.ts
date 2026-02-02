@@ -17,25 +17,30 @@ import * as runtime from "../runtime";
  */
 export class ServiceApi extends runtime.BaseAPI {
   /**
+   * Creates request options for apiServiceReadyGet without sending the request
    */
-  async apiServiceReadyGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  async apiServiceReadyGetRequestOpts(): Promise<runtime.RequestOpts> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
 
     const urlPath = `/api/service/ready`;
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiServiceReadyGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    const requestOptions = await this.apiServiceReadyGetRequestOpts();
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.VoidApiResponse(response);
   }

@@ -85,11 +85,11 @@ export interface ApiOslfsIdSaveSendPostRequest {
  */
 export class OslfsApi extends runtime.BaseAPI {
   /**
+   * Creates request options for apiOslfsAddressGet without sending the request
    */
-  async apiOslfsAddressGetRaw(
+  async apiOslfsAddressGetRequestOpts(
     requestParameters: ApiOslfsAddressGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Oslfs>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -107,15 +107,23 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.address)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsAddressGetRaw(
+    requestParameters: ApiOslfsAddressGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Oslfs>> {
+    const requestOptions =
+      await this.apiOslfsAddressGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       OslfsFromJSON(jsonValue),
@@ -136,11 +144,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsAddressIdVersionsGet without sending the request
    */
-  async apiOslfsAddressIdVersionsGetRaw(
+  async apiOslfsAddressIdVersionsGetRequestOpts(
     requestParameters: ApiOslfsAddressIdVersionsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Oslfs>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -169,15 +177,23 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsAddressIdVersionsGetRaw(
+    requestParameters: ApiOslfsAddressIdVersionsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Oslfs>> {
+    const requestOptions =
+      await this.apiOslfsAddressIdVersionsGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       OslfsFromJSON(jsonValue),
@@ -198,11 +214,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsAddressIdVersionsVersionGet without sending the request
    */
-  async apiOslfsAddressIdVersionsVersionGetRaw(
+  async apiOslfsAddressIdVersionsVersionGetRequestOpts(
     requestParameters: ApiOslfsAddressIdVersionsVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Oslf>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -242,15 +258,25 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.version)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsAddressIdVersionsVersionGetRaw(
+    requestParameters: ApiOslfsAddressIdVersionsVersionGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Oslf>> {
+    const requestOptions =
+      await this.apiOslfsAddressIdVersionsVersionGetRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       OslfFromJSON(jsonValue),
@@ -271,11 +297,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsCreatePreparePost without sending the request
    */
-  async apiOslfsCreatePreparePostRaw(
+  async apiOslfsCreatePreparePostRequestOpts(
     requestParameters: ApiOslfsCreatePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseCreateOslfResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.createOslfReq == null) {
       throw new runtime.RequiredError(
         "createOslfReq",
@@ -291,16 +317,24 @@ export class OslfsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/oslfs/create/prepare`;
 
-    const response = await this.request(
-      {
-        body: CreateOslfReqToJSON(requestParameters.createOslfReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: CreateOslfReqToJSON(requestParameters.createOslfReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsCreatePreparePostRaw(
+    requestParameters: ApiOslfsCreatePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateOslfResp>> {
+    const requestOptions =
+      await this.apiOslfsCreatePreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseCreateOslfRespFromJSON(jsonValue),
@@ -321,11 +355,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsCreateSendPost without sending the request
    */
-  async apiOslfsCreateSendPostRaw(
+  async apiOslfsCreateSendPostRequestOpts(
     requestParameters: ApiOslfsCreateSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractCreateOslfReqCreateOslfResp ==
       null
@@ -344,18 +378,26 @@ export class OslfsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/oslfs/create/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractCreateOslfReqCreateOslfRespToJSON(
-          requestParameters.sendRequestBodySignedContractCreateOslfReqCreateOslfResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractCreateOslfReqCreateOslfRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateOslfReqCreateOslfResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsCreateSendPostRaw(
+    requestParameters: ApiOslfsCreateSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiOslfsCreateSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -376,11 +418,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsIdDeletePreparePost without sending the request
    */
-  async apiOslfsIdDeletePreparePostRaw(
+  async apiOslfsIdDeletePreparePostRequestOpts(
     requestParameters: ApiOslfsIdDeletePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeleteOslfResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -398,15 +440,23 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsIdDeletePreparePostRaw(
+    requestParameters: ApiOslfsIdDeletePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeleteOslfResp>> {
+    const requestOptions =
+      await this.apiOslfsIdDeletePreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       DeleteOslfRespFromJSON(jsonValue),
@@ -427,11 +477,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsIdDeleteSendPost without sending the request
    */
-  async apiOslfsIdDeleteSendPostRaw(
+  async apiOslfsIdDeleteSendPostRequestOpts(
     requestParameters: ApiOslfsIdDeleteSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -458,16 +508,24 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SignedContractToJSON(requestParameters.signedContract),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SignedContractToJSON(requestParameters.signedContract),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsIdDeleteSendPostRaw(
+    requestParameters: ApiOslfsIdDeleteSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiOslfsIdDeleteSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -488,11 +546,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsIdSavePreparePost without sending the request
    */
-  async apiOslfsIdSavePreparePostRaw(
+  async apiOslfsIdSavePreparePostRequestOpts(
     requestParameters: ApiOslfsIdSavePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseSaveOslfResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -519,16 +577,24 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: CreateOslfReqToJSON(requestParameters.createOslfReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: CreateOslfReqToJSON(requestParameters.createOslfReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsIdSavePreparePostRaw(
+    requestParameters: ApiOslfsIdSavePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseSaveOslfResp>> {
+    const requestOptions =
+      await this.apiOslfsIdSavePreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseSaveOslfRespFromJSON(jsonValue),
@@ -549,11 +615,11 @@ export class OslfsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiOslfsIdSaveSendPost without sending the request
    */
-  async apiOslfsIdSaveSendPostRaw(
+  async apiOslfsIdSaveSendPostRequestOpts(
     requestParameters: ApiOslfsIdSaveSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -583,18 +649,26 @@ export class OslfsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractCreateOslfReqSaveOslfRespToJSON(
-          requestParameters.sendRequestBodySignedContractCreateOslfReqSaveOslfResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractCreateOslfReqSaveOslfRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateOslfReqSaveOslfResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiOslfsIdSaveSendPostRaw(
+    requestParameters: ApiOslfsIdSaveSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiOslfsIdSaveSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
