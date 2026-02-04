@@ -73,9 +73,9 @@ export default function CreateAgentsTeam() {
         <Stepper
           currentStep={step}
           steps={[
-            { canClick: false, label: t("deploy.generalInfo") },
-            { canClick: false, label: t("deploy.creation") },
-            { canClick: false, label: t("deploy.deployment") },
+            t("deploy.generalInfo"),
+            t("deploy.creation"),
+            t("deploy.deployment"),
           ]}
         />
       </div>

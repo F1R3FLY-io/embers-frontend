@@ -23,7 +23,7 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  color: var(--icon-accent);
+  color: var(--button-primary);
 
   svg {
     width: 24px;
@@ -31,19 +31,15 @@
   }
 
   &.completed {
-    color: var(--icon-accent);
+    color: var(--button-primary);
   }
 
   &.current {
-    color: var(--icon-accent);
-
-    svg circle {
-      fill: transparent;
-    }
+    color: var(--button-primary);
   }
 
   &.pending {
-    color: var(--icon-accent);
+    color: var(--button-primary);
 
     svg circle {
       fill: transparent;
@@ -74,15 +70,9 @@
 }
 
 .line {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  color: var(--icon-accent);
-
-  svg {
-    width: 60px;
-    height: 2px;
-  }
+  background-color: var(--button-primary);
+  height: 1px;
+  min-width: 53px;
 }
 
 .label {

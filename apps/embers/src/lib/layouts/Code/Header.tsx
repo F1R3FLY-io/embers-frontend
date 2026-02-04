@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
-  const saveOrCreate = useCallbackWithLoader(async () => {
+  const saveOrCreate = useCallback(async () => {
     const code = getCode() ?? "";
     update({ code });
     const payload = {
@@ -43,37 +43,49 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
       id: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
-  });
+  }, [
+    agent.iconUrl,
+    agent.id,
+    agent.name,
+    createMutation,
+    getCode,
+    saveMutation,
+    update,
+  ]);
 
-  const handleSave = useCallback(async () => {
-    try {
-      const idVersion = await saveOrCreate();
-      update(idVersion);
-      dock.appendLog(
-        `Agent ${idVersion.id} with ${idVersion.version} has been saved!`,
-        "info",
-      );
-    } catch (e) {
-      dock.appendLog(
-        `Save failed: ${e instanceof Error ? e.message : String(e)}`,
-        "error",
-      );
-      throw e;
-    }
-  }, [dock, saveOrCreate, update]);
+  const handleSave = useCallbackWithLoader(
+    useCallback(async () => {
+      try {
+        const idVersion = await saveOrCreate();
+        update(idVersion);
+        dock.appendLog(
+          `Agent ${idVersion.id} with ${idVersion.version} has been saved!`,
+          "info",
+        );
+      } catch (e) {
+        dock.appendLog(
+          `Save failed: ${e instanceof Error ? e.message : String(e)}`,
+          "error",
+        );
+        throw e;
+      }
+    }, [dock, saveOrCreate, update]),
+  );
 
-  const handleDeploy = useCallback(async () => {
-    try {
-      const idVersion = await saveOrCreate();
-      update(idVersion);
-      await navigate("/agent/deploy");
-    } catch (e) {
-      dock.appendLog(
-        `Pre-deploy save failed with error: ${e instanceof Error ? e.message : String(e)}`,
-        "error",
-      );
-    }
-  }, [dock, navigate, saveOrCreate, update]);
+  const handleDeploy = useCallbackWithLoader(
+    useCallback(async () => {
+      try {
+        const idVersion = await saveOrCreate();
+        update(idVersion);
+        await navigate("/agent/deploy");
+      } catch (e) {
+        dock.appendLog(
+          `Pre-deploy save failed with error: ${e instanceof Error ? e.message : String(e)}`,
+          "error",
+        );
+      }
+    }, [dock, navigate, saveOrCreate, update]),
+  );
 
   return (
     <>
