@@ -24,9 +24,9 @@ export function FilePicker({ accept, children, onChange }: FilePickerProps) {
   );
 
   const { getInputProps, getRootProps } = useDropzone({
+    accept,
     maxFiles: 1,
     onDrop,
-    ...(accept === undefined ? {} : { accept }),
   });
 
   return (

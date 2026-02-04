@@ -141,11 +141,11 @@ export interface ApiAiAgentsTeamsRunSendPostRequest {
  */
 export class AIAgentsTeamsApi extends runtime.BaseAPI {
   /**
+   * Creates request options for apiAiAgentsTeamsAddressGet without sending the request
    */
-  async apiAiAgentsTeamsAddressGetRaw(
+  async apiAiAgentsTeamsAddressGetRequestOpts(
     requestParameters: ApiAiAgentsTeamsAddressGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AgentsTeams>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -163,15 +163,23 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.address)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsAddressGetRaw(
+    requestParameters: ApiAiAgentsTeamsAddressGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<AgentsTeams>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsAddressGetRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       AgentsTeamsFromJSON(jsonValue),
@@ -192,11 +200,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost without sending the request
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRaw(
+  async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponsePublishToFireskyResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -234,16 +242,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: PublishToFireskyReqToJSON(requestParameters.publishToFireskyReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: PublishToFireskyReqToJSON(requestParameters.publishToFireskyReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponsePublishToFireskyResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponsePublishToFireskyRespFromJSON(jsonValue),
@@ -265,11 +283,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsAddressIdPublishToFireskySendPost without sending the request
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskySendPostRaw(
+  async apiAiAgentsTeamsAddressIdPublishToFireskySendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -310,18 +328,28 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyRespToJSON(
-          requestParameters.sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyRespToJSON(
+        requestParameters.sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsAddressIdPublishToFireskySendPostRaw(
+    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsAddressIdPublishToFireskySendPostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -343,11 +371,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsAddressIdVersionsGet without sending the request
    */
-  async apiAiAgentsTeamsAddressIdVersionsGetRaw(
+  async apiAiAgentsTeamsAddressIdVersionsGetRequestOpts(
     requestParameters: ApiAiAgentsTeamsAddressIdVersionsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AgentsTeams>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -376,15 +404,25 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsAddressIdVersionsGetRaw(
+    requestParameters: ApiAiAgentsTeamsAddressIdVersionsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<AgentsTeams>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsAddressIdVersionsGetRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       AgentsTeamsFromJSON(jsonValue),
@@ -405,11 +443,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsAddressIdVersionsVersionGet without sending the request
    */
-  async apiAiAgentsTeamsAddressIdVersionsVersionGetRaw(
+  async apiAiAgentsTeamsAddressIdVersionsVersionGetRequestOpts(
     requestParameters: ApiAiAgentsTeamsAddressIdVersionsVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AgentsTeam>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
@@ -449,15 +487,25 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.version)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "GET",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsAddressIdVersionsVersionGetRaw(
+    requestParameters: ApiAiAgentsTeamsAddressIdVersionsVersionGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<AgentsTeam>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsAddressIdVersionsVersionGetRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       AgentsTeamFromJSON(jsonValue),
@@ -478,11 +526,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsCreatePreparePost without sending the request
    */
-  async apiAiAgentsTeamsCreatePreparePostRaw(
+  async apiAiAgentsTeamsCreatePreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentsTeamResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.createAgentsTeamReq == null) {
       throw new runtime.RequiredError(
         "createAgentsTeamReq",
@@ -498,16 +546,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/create/prepare`;
 
-    const response = await this.request(
-      {
-        body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsCreatePreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentsTeamResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsCreatePreparePostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseCreateAgentsTeamRespFromJSON(jsonValue),
@@ -528,11 +586,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsCreateSendPost without sending the request
    */
-  async apiAiAgentsTeamsCreateSendPostRaw(
+  async apiAiAgentsTeamsCreateSendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp ==
       null
@@ -551,18 +609,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/create/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON(
-          requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsCreateSendPostRaw(
+    requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsCreateSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -583,11 +649,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsDeployPreparePost without sending the request
    */
-  async apiAiAgentsTeamsDeployPreparePostRaw(
+  async apiAiAgentsTeamsDeployPreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentsTeamResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.deployAgentsTeamReq == null) {
       throw new runtime.RequiredError(
         "deployAgentsTeamReq",
@@ -603,16 +669,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/deploy/prepare`;
 
-    const response = await this.request(
-      {
-        body: DeployAgentsTeamReqToJSON(requestParameters.deployAgentsTeamReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: DeployAgentsTeamReqToJSON(requestParameters.deployAgentsTeamReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsDeployPreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentsTeamResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsDeployPreparePostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseDeployAgentsTeamRespFromJSON(jsonValue),
@@ -633,11 +709,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsDeploySendPost without sending the request
    */
-  async apiAiAgentsTeamsDeploySendPostRaw(
+  async apiAiAgentsTeamsDeploySendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp ==
       null
@@ -656,18 +732,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/deploy/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON(
-          requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON(
+        requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsDeploySendPostRaw(
+    requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsDeploySendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -688,11 +772,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsIdDeletePreparePost without sending the request
    */
-  async apiAiAgentsTeamsIdDeletePreparePostRaw(
+  async apiAiAgentsTeamsIdDeletePreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeleteAgentsTeamResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -710,15 +794,25 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdDeletePreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeleteAgentsTeamResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsIdDeletePreparePostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       DeleteAgentsTeamRespFromJSON(jsonValue),
@@ -739,11 +833,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsIdDeleteSendPost without sending the request
    */
-  async apiAiAgentsTeamsIdDeleteSendPostRaw(
+  async apiAiAgentsTeamsIdDeleteSendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -770,16 +864,24 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SignedContractToJSON(requestParameters.signedContract),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SignedContractToJSON(requestParameters.signedContract),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdDeleteSendPostRaw(
+    requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsIdDeleteSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -800,11 +902,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsIdSavePreparePost without sending the request
    */
-  async apiAiAgentsTeamsIdSavePreparePostRaw(
+  async apiAiAgentsTeamsIdSavePreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentsTeamResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -831,16 +933,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdSavePreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentsTeamResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsIdSavePreparePostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseSaveAgentsTeamRespFromJSON(jsonValue),
@@ -861,11 +973,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsIdSaveSendPost without sending the request
    */
-  async apiAiAgentsTeamsIdSaveSendPostRaw(
+  async apiAiAgentsTeamsIdSaveSendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -895,18 +1007,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
       encodeURIComponent(String(requestParameters.id)),
     );
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON(
-          requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsIdSaveSendPostRaw(
+    requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsIdSaveSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       SendRespFromJSON(jsonValue),
@@ -927,11 +1047,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsRunOnFireskyPreparePost without sending the request
    */
-  async apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
+  async apiAiAgentsTeamsRunOnFireskyPreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.runReq == null) {
       throw new runtime.RequiredError(
         "runReq",
@@ -947,16 +1067,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/run-on-firesky/prepare`;
 
-    const response = await this.request(
-      {
-        body: RunReqToJSON(requestParameters.runReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: RunReqToJSON(requestParameters.runReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsRunOnFireskyPreparePostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseRunRespFromJSON(jsonValue),
@@ -977,11 +1107,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsRunOnFireskySendPost without sending the request
    */
-  async apiAiAgentsTeamsRunOnFireskySendPostRaw(
+  async apiAiAgentsTeamsRunOnFireskySendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp ==
       null
@@ -1000,18 +1130,28 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/run-on-firesky/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunRespToJSON(
-          requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunRespToJSON(
+        requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunOnFireskySendPostRaw(
+    requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsRunOnFireskySendPostRequestOpts(
+        requestParameters,
+      );
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.VoidApiResponse(response);
   }
@@ -1029,11 +1169,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsRunPreparePost without sending the request
    */
-  async apiAiAgentsTeamsRunPreparePostRaw(
+  async apiAiAgentsTeamsRunPreparePostRequestOpts(
     requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.runReq == null) {
       throw new runtime.RequiredError(
         "runReq",
@@ -1049,16 +1189,24 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/run/prepare`;
 
-    const response = await this.request(
-      {
-        body: RunReqToJSON(requestParameters.runReq),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: RunReqToJSON(requestParameters.runReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunPreparePostRaw(
+    requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsRunPreparePostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
       PrepareResponseRunRespFromJSON(jsonValue),
@@ -1079,11 +1227,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for apiAiAgentsTeamsRunSendPost without sending the request
    */
-  async apiAiAgentsTeamsRunSendPostRaw(
+  async apiAiAgentsTeamsRunSendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<any>> {
+  ): Promise<runtime.RequestOpts> {
     if (requestParameters.sendRequestBodySignedContractRunReqRunResp == null) {
       throw new runtime.RequiredError(
         "sendRequestBodySignedContractRunReqRunResp",
@@ -1099,18 +1247,26 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const urlPath = `/api/ai-agents-teams/run/send`;
 
-    const response = await this.request(
-      {
-        body: SendRequestBodySignedContractRunReqRunRespToJSON(
-          requestParameters.sendRequestBodySignedContractRunReqRunResp,
-        ),
-        headers: headerParameters,
-        method: "POST",
-        path: urlPath,
-        query: queryParameters,
-      },
-      initOverrides,
-    );
+    return {
+      body: SendRequestBodySignedContractRunReqRunRespToJSON(
+        requestParameters.sendRequestBodySignedContractRunReqRunResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async apiAiAgentsTeamsRunSendPostRaw(
+    requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<any>> {
+    const requestOptions =
+      await this.apiAiAgentsTeamsRunSendPostRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
       return new runtime.JSONApiResponse<any>(response);

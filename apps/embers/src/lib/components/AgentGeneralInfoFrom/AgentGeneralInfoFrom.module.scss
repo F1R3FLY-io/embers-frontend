@@ -1,0 +1,41 @@
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.title-container {
+  margin-top: 16px;
+}
+
+.details-container {
+  margin-top: 16px;
+}
+
+.form-section {
+  margin-top: 24px;
+}
+
+/* === Icon section === */
+.icon-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.icon-input-container {
+  flex: 1;
+  min-width: 0;
+}
+
+/* === Footer buttons === */
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  margin-top: 24px;
+}

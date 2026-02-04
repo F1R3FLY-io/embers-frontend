@@ -9,46 +9,38 @@ import {
 import { treeSitterWasmUrl } from "@f1r3fly-io/lightning-bug/tree-sitter";
 import { wasm } from "@f1r3fly-io/tree-sitter-rholang-js-with-comments";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
-
-import type { CodeEditorStepperData } from "@/lib/providers/stepper/flows/CodeEditor";
 
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
-import { useLayout } from "@/lib/providers/layout/useLayout";
-import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
+import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
 import { useAgent, useAgentVersions } from "@/lib/queries";
 
 import styles from "./EditAgent.module.scss";
 
 const logLevel = "trace";
+const fileName = "agent.rho";
 
-export default function CodeEditor() {
+export default function EditAgent() {
   const editorRef = useRef<EditorRef>(null);
-  const { t } = useTranslation();
-  const { setHeaderTitle } = useLayout();
-  const { data, updateMany } = useCodeEditorStepper();
-  const { id, version } = data;
-  const { data: agent } = useAgent(id, version);
-  const { data: agentVersions } = useAgentVersions(id);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { agent } = useCurrentAgent();
 
-  const agentName = agent?.name ?? data.name;
-  const currentVersion = useMemo(
-    () => agent?.version ?? version,
-    [agent?.version, version],
+  const { data: agentVersions } = useAgentVersions(agent.id);
+  const { data: apiAgent } = useAgent(
+    agent.id,
+    agentVersions?.agents.at(-1)?.version,
   );
-  const fileName = `${agentName}.rho`;
-  useEffect(() => setHeaderTitle(agentName), [agentName, setHeaderTitle, t]);
+
+  const name =
+    agent.name ?? apiAgent?.name ?? agentVersions?.agents.at(-1)?.name;
+  const version =
+    agent.version ?? apiAgent?.version ?? agentVersions?.agents.at(-1)?.version;
+  const code = agent.code ?? apiAgent?.code;
 
   useEffect(() => {
     if (editorRef.current) {
       const editor = editorRef.current;
       editor.setLogLevel(logLevel);
-      const events = editor.getEvents();
-      const subscription = events.subscribe((event) => {
+      const subscription = editor.getEvents().subscribe((event) => {
         // This handler initializes the document when the Editor first becomes
         // ready and each time it is reloaded by the HMR.
         if (event.type === "ready") {
@@ -57,7 +49,7 @@ export default function CodeEditor() {
       });
       return () => subscription.unsubscribe();
     }
-  }, [fileName]);
+  }, []);
 
   // Handle Vite HMR updates: HMR unloads the Editor component which triggers
   // its clean-up logic. The clean-up logic consists of shutting down
@@ -80,32 +72,21 @@ export default function CodeEditor() {
   }, []);
 
   useEffect(() => {
-    editorRef.current?.openDocument(
-      fileName,
-      (agent ? agent.code : data.code) ?? "",
-    );
-  }, [agent, data.code, fileName]);
+    editorRef.current?.openDocument(fileName, code);
+  }, [code]);
 
-  useEffect(() => {
-    const preload = location.state as CodeEditorStepperData;
-    updateMany(preload);
-    void navigate(location.pathname, { replace: true });
-    // disabling because I need to run it only ONCE
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const getCode = useCallback(() => editorRef.current?.getText(fileName), []);
 
-  const versions = useMemo(() => {
-    return agentVersions?.agents.map((version) => version.version);
-  }, [agentVersions]);
-
-  const getCode = useCallback(() => {
-    return editorRef.current?.getText(fileName);
-  }, [fileName]);
+  const versions = useMemo(
+    () => agentVersions?.agents.map((version) => version.version),
+    [agentVersions],
+  );
 
   return (
     <CodeLayout
-      currentVersion={currentVersion}
+      currentVersion={version}
       getCode={getCode}
+      title={name}
       versions={versions}
     >
       {/* to make a custom error layout later on */}

@@ -1,31 +1,31 @@
 import type React from "react";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Layout } from "@/lib/layouts";
 import { Footer, Header, Sidebar } from "@/lib/layouts/Code";
+import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
-import { useCodeEditorStepper } from "@/lib/providers/stepper/flows/CodeEditor";
 
 interface CodeLayoutProps {
   children: React.ReactNode;
-  currentVersion: string | undefined;
+  currentVersion?: string;
   getCode: () => string | undefined | null;
-  versions: string[] | undefined;
+  title?: string;
+  versions?: string[];
 }
 
 export const CodeLayout: React.FC<CodeLayoutProps> = ({
   children,
   currentVersion,
   getCode,
+  title,
   versions,
 }) => {
   const confirm = useConfirm();
   const navigate = useNavigate();
-  const { updateData } = useCodeEditorStepper();
-
-  const [selectedId, setSelectedId] = useState(currentVersion);
+  const { update } = useCurrentAgent();
 
   const headerClick = useCallback(() => {
     confirm({ message: "Do you want to leave this page?" })
@@ -40,15 +40,13 @@ export const CodeLayout: React.FC<CodeLayoutProps> = ({
       headerClickAction={headerClick}
       sidebar={
         <Sidebar
-          selectedId={selectedId}
+          selectedId={currentVersion}
           versions={versions ?? []}
-          onSelect={(id) => {
-            setSelectedId(id);
-            updateData("version", id);
-          }}
+          onSelect={(version) => update({ version })}
         />
       }
       sidebarWidth={320}
+      title={title}
     >
       {children}
     </Layout>

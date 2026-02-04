@@ -13,7 +13,7 @@ export interface Option<T extends string> {
 interface BaseProps<T extends string> {
   className?: string;
   disabled?: boolean;
-  error?: boolean | undefined;
+  error?: boolean;
   helperText?: string;
   label?: string;
   options: Option<T>[];
@@ -24,13 +24,13 @@ interface BaseProps<T extends string> {
 interface SingleSelectProps<T extends string> extends BaseProps<T> {
   multiple?: false;
   onChange: (value: T) => void;
-  value?: T | undefined;
+  value?: T;
 }
 
 interface MultiSelectProps<T extends string> extends BaseProps<T> {
   multiple: true;
   onChange: (value: T[]) => void;
-  value?: T[] | undefined;
+  value?: T[];
 }
 
 type SelectProps<T extends string> = SingleSelectProps<T> | MultiSelectProps<T>;

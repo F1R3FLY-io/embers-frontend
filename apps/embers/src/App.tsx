@@ -4,11 +4,10 @@ import { lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
+import { CurrentAgentProvider } from "@/lib/providers/currentAgent/CurrentAgentProvider";
 import { DockProvider } from "@/lib/providers/dock/DockProvider";
-import { LayoutProvider } from "@/lib/providers/layout/LayoutProvider";
 import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
-import { CodeEditorStepperProvider } from "@/lib/providers/stepper/flows/CodeEditor";
 import { GraphEditorStepperProvider } from "@/lib/providers/stepper/flows/GraphEditor";
 import { OSLFEditorStepperProvider } from "@/lib/providers/stepper/flows/OSLFEditor";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
@@ -42,57 +41,56 @@ export default function App() {
         <ThemeProvider>
           <LoaderProvider>
             <DockProvider>
-              <LayoutProvider>
-                <ReactFlowProvider>
-                  <BrowserRouter>
-                    <ModalProvider>
-                      <div className={styles.background}>
-                        <Routes>
-                          <Route element={<Home />} path="/" />
-                          <Route element={<Login />} path="/login" />
-                          <Route element={<ProtectedRoute />}>
-                            <Route element={<Dashboard />} path="/dashboard" />
-                            <Route
-                              element={
-                                <CodeEditorStepperProvider>
-                                  <Routes>
-                                    <Route
-                                      element={<CreateAgent />}
-                                      path="create"
-                                    />
-                                    <Route element={<EditAgent />} path="" />
-                                    <Route
-                                      element={<DeployAgent />}
-                                      path="deploy"
-                                    />
-                                  </Routes>
-                                </CodeEditorStepperProvider>
-                              }
-                              path="/create-agent/*"
-                            />
-                            <Route
-                              element={
-                                <GraphEditorStepperProvider>
-                                  <Routes>
-                                    <Route
-                                      element={<CreateAgentsTeam />}
-                                      path="create"
-                                    />
-                                    <Route
-                                      element={<CreateAgentsTeamFlow />}
-                                      path=""
-                                    />
-                                    <Route
-                                      element={<DeployAgentsTeam />}
-                                      path="deploy"
-                                    />
-                                  </Routes>
-                                </GraphEditorStepperProvider>
-                              }
-                              path="/create-agents-team/*"
-                            />
-                            <Route
-                              element={
+              <ReactFlowProvider>
+                <BrowserRouter>
+                  <ModalProvider>
+                    <div className={styles.background}>
+                      <Routes>
+                        <Route element={<Home />} path="/" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<ProtectedRoute />}>
+                          <Route element={<Dashboard />} path="/dashboard" />
+                          <Route
+                            element={
+                              <CurrentAgentProvider>
+                                <Routes>
+                                  <Route
+                                    element={<CreateAgent />}
+                                    path="create"
+                                  />
+                                  <Route element={<EditAgent />} path="edit" />
+                                  <Route
+                                    element={<DeployAgent />}
+                                    path="deploy"
+                                  />
+                                </Routes>
+                              </CurrentAgentProvider>
+                            }
+                            path="/agent/*"
+                          />
+                          <Route
+                            element={
+                              <GraphEditorStepperProvider>
+                                <Routes>
+                                  <Route
+                                    element={<CreateAgentsTeam />}
+                                    path="create"
+                                  />
+                                  <Route
+                                    element={<CreateAgentsTeamFlow />}
+                                    path=""
+                                  />
+                                  <Route
+                                    element={<DeployAgentsTeam />}
+                                    path="deploy"
+                                  />
+                                </Routes>
+                              </GraphEditorStepperProvider>
+                            }
+                            path="/agents-team/*"
+                          />
+                          <Route
+                            element={
                                 <OSLFEditorStepperProvider>
                                   <Routes>
                                     <Route
@@ -119,7 +117,7 @@ export default function App() {
                     </ModalProvider>
                   </BrowserRouter>
                 </ReactFlowProvider>
-              </LayoutProvider>
+
             </DockProvider>
           </LoaderProvider>
         </ThemeProvider>

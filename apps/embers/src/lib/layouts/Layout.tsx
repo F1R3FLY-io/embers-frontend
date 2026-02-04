@@ -1,12 +1,11 @@
 import type React from "react";
 
 import classNames from "classnames";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Footer } from "@/lib/components/Footer";
 import { Header } from "@/lib/components/Header";
-import { useLayout } from "@/lib/providers/layout/useLayout";
 
 import styles from "./Layout.module.scss";
 
@@ -18,6 +17,7 @@ interface LayoutProps {
   headerClickAction?: () => void;
   sidebar?: React.ReactNode;
   sidebarWidth?: number | string;
+  title?: string;
 }
 
 export const Layout: React.FC<LayoutProps> = ({
@@ -28,11 +28,12 @@ export const Layout: React.FC<LayoutProps> = ({
   headerClickAction,
   sidebar,
   sidebarWidth = 280,
+  title,
 }) => {
   const styleVar = `${sidebarWidth}px`;
 
   const navigate = useNavigate();
-  const { isSidebarCollapsed, setIsSidebarCollapsed } = useLayout();
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const headerClick = useCallback(() => {
     if (headerClickAction) {
@@ -42,9 +43,10 @@ export const Layout: React.FC<LayoutProps> = ({
     }
   }, [headerClickAction, navigate]);
 
-  const toggleSidebar = useCallback(() => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  }, [isSidebarCollapsed, setIsSidebarCollapsed]);
+  const toggleSidebar = useCallback(
+    () => setIsSidebarCollapsed((prev) => !prev),
+    [],
+  );
 
   return (
     <div
@@ -53,7 +55,7 @@ export const Layout: React.FC<LayoutProps> = ({
       })}
       style={{ ["--sidebar-width" as string]: styleVar }}
     >
-      <Header actions={headerActions} headerClick={headerClick} />
+      <Header actions={headerActions} headerClick={headerClick} title={title} />
 
       <div className={styles.body}>
         {sidebar && (
