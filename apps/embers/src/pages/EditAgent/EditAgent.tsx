@@ -13,43 +13,37 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
 import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
-import { useAgent, useAgentVersions } from "@/lib/queries";
+import { useAgentVersions } from "@/lib/queries";
+import { useCallOnce } from "@/lib/useCallOnce";
 
 import styles from "./EditAgent.module.scss";
 
-const logLevel = "trace";
-const fileName = "agent.rho";
-
 export default function EditAgent() {
   const editorRef = useRef<EditorRef>(null);
-  const { agent } = useCurrentAgent();
 
+  const { agent, update } = useCurrentAgent();
   const { data: agentVersions } = useAgentVersions(agent.id);
-  const { data: apiAgent } = useAgent(
-    agent.id,
-    agentVersions?.agents.at(-1)?.version,
-  );
 
-  const name =
-    agent.name ?? apiAgent?.name ?? agentVersions?.agents.at(-1)?.name;
-  const version =
-    agent.version ?? apiAgent?.version ?? agentVersions?.agents.at(-1)?.version;
-  const code = agent.code ?? apiAgent?.code;
+  useCallOnce({
+    action: () => update({ version: agentVersions?.agents.at(-1)?.version }),
+    data: agentVersions,
+    pred: () => !!agentVersions,
+  });
 
   useEffect(() => {
     if (editorRef.current) {
       const editor = editorRef.current;
-      editor.setLogLevel(logLevel);
+      editor.setLogLevel("trace");
       const subscription = editor.getEvents().subscribe((event) => {
         // This handler initializes the document when the Editor first becomes
         // ready and each time it is reloaded by the HMR.
         if (event.type === "ready") {
-          editor.openDocument(fileName);
+          editor.openDocument(`${agent.id}.rho`);
         }
       });
       return () => subscription.unsubscribe();
     }
-  }, []);
+  }, [agent.id]);
 
   // Handle Vite HMR updates: HMR unloads the Editor component which triggers
   // its clean-up logic. The clean-up logic consists of shutting down
@@ -72,10 +66,13 @@ export default function EditAgent() {
   }, []);
 
   useEffect(() => {
-    editorRef.current?.openDocument(fileName, code);
-  }, [code]);
+    editorRef.current?.openDocument(`${agent.id}.rho`, agent.code);
+  }, [agent.id, agent.code]);
 
-  const getCode = useCallback(() => editorRef.current?.getText(fileName), []);
+  const getCode = useCallback(
+    () => editorRef.current?.getText(`${agent.id}.rho`),
+    [agent.id],
+  );
 
   const versions = useMemo(
     () => agentVersions?.agents.map((version) => version.version),
@@ -84,9 +81,9 @@ export default function EditAgent() {
 
   return (
     <CodeLayout
-      currentVersion={version}
+      currentVersion={agent.version}
       getCode={getCode}
-      title={name}
+      title={agent.name}
       versions={versions}
     >
       {/* to make a custom error layout later on */}

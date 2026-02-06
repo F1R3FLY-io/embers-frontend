@@ -59,8 +59,8 @@ export function useCreateAgentMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) => api.agents.create(params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      client.invalidateQueries({
+    onSuccess: (_data, _params, _result, { client }) =>
+      void client.invalidateQueries({
         exact: true,
         queryKey: ["agents", String(api.wallets.address)],
       }),
@@ -72,17 +72,16 @@ export function useSaveAgentMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateAgentReq) => api.agents.save(id, params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents", String(api.wallets.address), id],
-        }),
-      ]),
+    onSuccess: (_data, _params, _result, { client }) => {
+      void client.invalidateQueries({
+        exact: true,
+        queryKey: ["agents", String(api.wallets.address)],
+      });
+      void client.invalidateQueries({
+        exact: true,
+        queryKey: ["agents", String(api.wallets.address), id],
+      });
+    },
   });
 }
 
@@ -227,8 +226,8 @@ export function useCreateAgentsTeamMutation() {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.create({ ...rest, graph });
     },
-    onSuccess: async (_data, _params, _result, { client }) =>
-      client.invalidateQueries({
+    onSuccess: (_data, _params, _result, { client }) =>
+      void client.invalidateQueries({
         exact: true,
         queryKey: ["agents-teams", String(api.wallets.address)],
       }),
@@ -247,17 +246,16 @@ export function useSaveAgentsTeamMutation(id: string) {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.save(id, { ...rest, graph });
     },
-    onSuccess: async (_data, _params, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents-teams", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents-teams", String(api.wallets.address), id],
-        }),
-      ]),
+    onSuccess: (_data, _params, _result, { client }) => {
+      void client.invalidateQueries({
+        exact: true,
+        queryKey: ["agents-teams", String(api.wallets.address)],
+      });
+      void client.invalidateQueries({
+        exact: true,
+        queryKey: ["agents-teams", String(api.wallets.address), id],
+      });
+    },
   });
 }
 
@@ -396,8 +394,8 @@ export function useCreateOslfMutation() {
 
   return useMutation({
     mutationFn: async (params: CreateOslfReq) => api.oslfs.create(params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      client.invalidateQueries({
+    onSuccess: (_data, _params, _result, { client }) =>
+      void client.invalidateQueries({
         exact: true,
         queryKey: ["oslf", String(api.wallets.address)],
       }),
@@ -409,17 +407,16 @@ export function useSaveOslfMutation(id: string) {
 
   return useMutation({
     mutationFn: async (params: CreateOslfReq) => api.oslfs.save(id, params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["oslf", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["oslf", String(api.wallets.address), id],
-        }),
-      ]),
+    onSuccess: (_data, _params, _result, { client }) => {
+      void client.invalidateQueries({
+        exact: true,
+        queryKey: ["oslf", String(api.wallets.address)],
+      });
+      void client.invalidateQueries({
+        exact: true,
+        queryKey: ["oslf", String(api.wallets.address), id],
+      });
+    },
   });
 }
 
