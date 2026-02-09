@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
@@ -11,24 +13,37 @@ import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
 
 import styles from "./CreateOSLF.module.scss";
 
+const formModel = z.object({
+  description: z.union([z.string(), z.undefined()]),
+  name: z.string().nonempty(),
+});
+
 export default function CreateOSLF() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { data, navigateToNextStep, setStep, step, updateData } =
     useOSLFEditorStepper();
-  const [name, setName] = useState(data.name);
-  const [description, setDescription] = useState(data.description);
 
-  const canContinue = name.trim().length > 0;
+  const form = useForm({
+    defaultValues: {
+      description: data.description,
+      name: data.name,
+    },
+    onSubmit: ({ value }) => {
+      updateData("name", value.name);
+      updateData("description", value.description);
+      navigateToNextStep();
+    },
+    validators: {
+      onChange: formModel,
+    },
+  });
+
+  const canContinue =
+    form.state.values.name.trim().length > 0 && form.state.isValid;
 
   const handleCancel = () => void navigate("/dashboard");
-
-  const submitForm = () => {
-    updateData("name", name);
-    updateData("description", description);
-    navigateToNextStep();
-  };
 
   useEffect(() => {
     setStep(0);
@@ -44,72 +59,83 @@ export default function CreateOSLF() {
         <Stepper
           currentStep={step}
           steps={[
-            {
-              canClick: false,
-              label: t("oslf.generalSettings"),
-            },
-            {
-              canClick: canContinue,
-              label: t("oslf.creation"),
-            },
-            {
-              canClick: canContinue,
-              label: t("oslf.validate"),
-            },
-            {
-              canClick: canContinue,
-              label: t("oslf.search"),
-            },
+            { canClick: false, label: t("oslf.generalSettings") },
+            { canClick: canContinue, label: t("oslf.creation") },
+            { canClick: canContinue, label: t("oslf.validate") },
+            { canClick: canContinue, label: t("oslf.search") },
           ]}
         />
       </div>
 
       <div className={styles["content-container"]}>
-        <div className={styles["details-container"]}>
+        <form
+          className={styles["details-container"]}
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
           <Text bold color="primary" type="H5">
             {t("oslf.generalSettings")}
           </Text>
 
-          <div className={styles["form-section"]}>
-            <Text color="secondary" type="small">
-              {t("oslf.queryName")}
-            </Text>
-            <Input
-              placeholder={t("oslf.queryName")}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+          <form.Field name="name">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <Text color="secondary" type="small">
+                  {t("oslf.queryName")}
+                </Text>
+                <Input
+                  error={field.state.meta.isTouched && !field.state.meta.isValid}
+                  placeholder={t("oslf.queryName")}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
 
-          <div className={styles["form-section"]}>
-            <Text color="secondary" type="small">
-              {t("oslf.purpose")}
-            </Text>
-            <Input
-              textarea
-              placeholder={t("oslf.purpose")}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <form.Field name="description">
+            {(field) => (
+              <div className={styles["form-section"]}>
+                <Text color="secondary" type="small">
+                  {t("oslf.purpose")}
+                </Text>
+                <Input
+                  textarea
+                  placeholder={t("oslf.purpose")}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+              </div>
+            )}
+          </form.Field>
 
-          <div className={styles["button-container"]}>
-            <Button type="secondary" onClick={handleCancel}>
-              {t("basic.cancel")}
-            </Button>
-            <div className={styles["button-group"]}>
-              <button
-                className={styles["continue-button"]}
-                disabled={!canContinue}
-                onClick={submitForm}
-              >
-                {t("basic.continue")}
-              </button>
-            </div>
-          </div>
+          <form.Subscribe selector={(state) => [state.isSubmitting]}>
+            {([isSubmitting]) => (
+              <div className={styles["button-container"]}>
+                <Button
+                  disabled={isSubmitting}
+                  type="secondary"
+                  onClick={handleCancel}
+                >
+                  {t("basic.cancel")}
+                </Button>
+                <div className={styles["button-group"]}>
+                  <button
+                    className={styles["continue-button"]}
+                    disabled={!canContinue || isSubmitting}
+                    type="submit"
+                  >
+                    {t("basic.continue")}
+                  </button>
+                </div>
+              </div>
+            )}
+          </form.Subscribe>
 
           <LanguageFooter />
-        </div>
+        </form>
       </div>
     </div>
   );

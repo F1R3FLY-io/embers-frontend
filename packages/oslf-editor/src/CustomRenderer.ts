@@ -9,9 +9,9 @@ export const RENDERER_NAME = "oslf_renderer";
  * Extends the base Blockly renderer with curved connectors from block.svg design.
  */
 class CustomRenderer extends Blockly.blockRendering.Renderer {
-	protected override makeConstants_(): Blockly.blockRendering.ConstantProvider {
-		return new CustomConstantProvider();
-	}
+  protected override makeConstants_(): Blockly.blockRendering.ConstantProvider {
+    return new CustomConstantProvider();
+  }
 }
 
 Blockly.blockRendering.register(RENDERER_NAME, CustomRenderer);

@@ -30,9 +30,7 @@ export function initEditor(
   if (!crossTabInitialized) {
     crossTabInitialized = true;
     const plugin = new CrossTabCopyPaste();
-    plugin.init({ contextMenu: true, shortcut: true }, () => {
-      console.error("Some error occurred while copying or pasting");
-    });
+    plugin.init({ contextMenu: true, shortcut: true }, () => {});
 
     Blockly.ContextMenuRegistry.registry.unregister("blockDuplicate");
     applyBlockGradients(workspace);
