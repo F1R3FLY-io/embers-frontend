@@ -23,7 +23,7 @@
     "sync-i18n": "node --loader ts-node/esm sync-i18n.mts"
   },
   "dependencies": {
-    "@codemirror/commands": "^6.10.1",
+    "@codemirror/commands": "^6.10.2",
     "@codemirror/state": "^6.5.4",
     "@f1r3fly-io/embers-client-sdk": "workspace:*",
     "@f1r3fly-io/lightning-bug": "0.7.7",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@svgr/plugin-svgo": "^8.1.0",
     "@types/dagre": "^0.7.53",
-    "@types/node": "^25.2.1",
+    "@types/node": "^25.2.2",
     "@types/react-modal": "^3.16.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
