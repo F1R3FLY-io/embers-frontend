@@ -16,7 +16,11 @@ export const CurrentAgentProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const location = useLocation();
   const preload = location.state as CurrentAgent | undefined;
-  useEffect(() => setAgent(preload ?? {}), [preload]);
+  useEffect(() => {
+    if (preload) {
+      setAgent(preload);
+    }
+  }, [preload]);
 
   const { data } = useAgent(agent.id, agent.version);
 
