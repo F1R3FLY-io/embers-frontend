@@ -78,7 +78,7 @@ export default function App() {
                                   />
                                   <Route
                                     element={<CreateAgentsTeamFlow />}
-                                    path=""
+                                    path="edit"
                                   />
                                   <Route
                                     element={<DeployAgentsTeam />}

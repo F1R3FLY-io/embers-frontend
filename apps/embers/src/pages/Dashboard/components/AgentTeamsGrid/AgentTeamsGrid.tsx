@@ -5,12 +5,14 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
+
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
-import { useDeleteAgentMutation } from "@/lib/queries";
+import { useDeleteAgentsTeamMutation } from "@/lib/queries";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 import DraftIcon from "@/public/icons/draft-icon.svg?react";
 import EditIcon from "@/public/icons/editbig-icon.svg?react";
@@ -32,21 +34,23 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
   );
 
   const deleteAgentsTeam = useMutationResultWithLoader(
-    useDeleteAgentMutation(),
+    useDeleteAgentsTeamMutation(),
   );
   const confirm = useConfirm();
 
   const navigateToAgentsTeam = useCallback(
     (agent: AgentsTeamHeader) =>
-      void navigate("/agents-team", {
+      void navigate("/agents-team/edit", {
         state: {
-          agentIconUrl: agent.logo,
-          agentId: agent.id,
-          agentName: agent.name,
           description: agent.description,
-          lastDeploy: agent.lastDeploy,
+          edges: [],
+          hasGraphChanges: false,
+          iconUrl: agent.logo,
+          id: agent.id,
+          name: agent.name,
+          nodes: [],
           version: agent.version,
-        },
+        } satisfies GraphEditorStepperData,
       }),
     [navigate],
   );

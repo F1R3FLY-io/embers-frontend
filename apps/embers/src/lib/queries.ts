@@ -58,11 +58,16 @@ export function useCreateAgentMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentReq) => api.agents.create(params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      client.invalidateQueries({
-        exact: true,
-        queryKey: ["agents", String(api.wallets.address)],
+    mutationFn: async (params: CreateAgentReq, { client }) =>
+      api.agents.create(params).then((r) => {
+        void r.waitForFinalization.finally(
+          () =>
+            void client.invalidateQueries({
+              exact: true,
+              queryKey: ["agents", String(api.wallets.address)],
+            }),
+        );
+        return r;
       }),
   });
 }
@@ -71,18 +76,20 @@ export function useSaveAgentMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateAgentReq) => api.agents.save(id, params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents", String(api.wallets.address), id],
-        }),
-      ]),
+    mutationFn: async (params: CreateAgentReq, { client }) =>
+      api.agents.save(id, params).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["agents", String(api.wallets.address)],
+          });
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["agents", String(api.wallets.address), id],
+          });
+        });
+        return r;
+      }),
   });
 }
 
@@ -219,19 +226,23 @@ export function useCreateAgentsTeamMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async ({
-      edges,
-      nodes,
-      ...rest
-    }: WithGraph<CreateAgentsTeamReq>) => {
+    mutationFn: async (
+      { edges, nodes, ...rest }: WithGraph<CreateAgentsTeamReq>,
+      { client },
+    ) => {
       const graph = toApiGraph(nodes, edges);
-      return api.agentsTeams.create({ ...rest, graph });
+      return api.agentsTeams.create({ ...rest, graph }).then((r) => {
+        void r.waitForFinalization.finally(
+          () =>
+            void client.invalidateQueries({
+              exact: true,
+              queryKey: ["agents-teams", String(api.wallets.address)],
+            }),
+        );
+
+        return r;
+      });
     },
-    onSuccess: async (_data, _params, _result, { client }) =>
-      client.invalidateQueries({
-        exact: true,
-        queryKey: ["agents-teams", String(api.wallets.address)],
-      }),
   });
 }
 
@@ -239,25 +250,25 @@ export function useSaveAgentsTeamMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async ({
-      edges,
-      nodes,
-      ...rest
-    }: WithGraph<CreateAgentsTeamReq>) => {
+    mutationFn: async (
+      { edges, nodes, ...rest }: WithGraph<CreateAgentsTeamReq>,
+      { client },
+    ) => {
       const graph = toApiGraph(nodes, edges);
-      return api.agentsTeams.save(id, { ...rest, graph });
+      return api.agentsTeams.save(id, { ...rest, graph }).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["agents-teams", String(api.wallets.address)],
+          });
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["agents-teams", String(api.wallets.address), id],
+          });
+        });
+        return r;
+      });
     },
-    onSuccess: async (_data, _params, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents-teams", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["agents-teams", String(api.wallets.address), id],
-        }),
-      ]),
   });
 }
 
@@ -395,11 +406,15 @@ export function useCreateOslfMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateOslfReq) => api.oslfs.create(params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      client.invalidateQueries({
-        exact: true,
-        queryKey: ["oslf", String(api.wallets.address)],
+    mutationFn: async (params: CreateOslfReq, { client }) =>
+      api.oslfs.create(params).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["oslf", String(api.wallets.address)],
+          });
+        });
+        return r;
       }),
   });
 }
@@ -408,18 +423,20 @@ export function useSaveOslfMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: CreateOslfReq) => api.oslfs.save(id, params),
-    onSuccess: async (_data, _params, _result, { client }) =>
-      Promise.all([
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["oslf", String(api.wallets.address)],
-        }),
-        client.invalidateQueries({
-          exact: true,
-          queryKey: ["oslf", String(api.wallets.address), id],
-        }),
-      ]),
+    mutationFn: async (params: CreateOslfReq, { client }) =>
+      api.oslfs.save(id, params).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["oslf", String(api.wallets.address)],
+          });
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: ["oslf", String(api.wallets.address), id],
+          });
+        });
+        return r;
+      }),
   });
 }
 

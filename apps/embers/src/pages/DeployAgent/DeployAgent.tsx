@@ -137,15 +137,9 @@ export default function DeployAgent() {
         <Stepper
           currentStep={2}
           steps={[
-            {
-              label: t("deploy.generalInfo"),
-            },
-            {
-              label: t("deploy.creation"),
-            },
-            {
-              label: t("deploy.deployment"),
-            },
+            t("deploy.generalInfo"),
+            t("deploy.creation"),
+            t("deploy.deployment"),
           ]}
         />
       </div>

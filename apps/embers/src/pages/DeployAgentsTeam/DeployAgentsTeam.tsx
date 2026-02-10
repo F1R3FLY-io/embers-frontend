@@ -142,14 +142,10 @@ export default function DeployAgentsTeam() {
         <Stepper
           currentStep={step}
           steps={[
-            { canClick: true, label: t("deploy.generalInfo") },
-            {
-              canClick: true,
-              label: t("deploy.creation"),
-            },
-            { canClick: false, label: t("deploy.deployment") },
+            t("deploy.generalInfo"),
+            t("deploy.creation"),
+            t("deploy.deployment"),
           ]}
-          onStepClick={(index) => navigateToStep(index)}
         />
       </div>
 

@@ -33,5 +33,5 @@ export const {
     name: "",
     nodes: [],
   },
-  routes: ["/agents-team/create", "/agents-team", "/agents-team/deploy"],
+  routes: ["/agents-team/create", "/agents-team/edit", "/agents-team/deploy"],
 });

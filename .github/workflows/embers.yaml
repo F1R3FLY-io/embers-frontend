@@ -96,7 +96,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: f1r3flyindustries/embers-frontend
+          images: f1r3flyio/embers-frontend
           tags: |
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
