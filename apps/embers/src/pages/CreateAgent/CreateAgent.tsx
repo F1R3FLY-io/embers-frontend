@@ -42,7 +42,14 @@ export default function CreateAgent() {
         />
       </div>
 
-      <AgentGeneralInfoFrom onCancel={onCancel} onSubmit={onSubmit} />
+      <div className={styles["content-container"]}>
+        <div className={styles["title-container"]}>
+          <Text bold color="primary" type="H2">
+            {t("agents.tellUsAboutYourAgent")}
+          </Text>
+        </div>
+        <AgentGeneralInfoFrom onCancel={onCancel} onSubmit={onSubmit} />
+      </div>
     </div>
   );
 }

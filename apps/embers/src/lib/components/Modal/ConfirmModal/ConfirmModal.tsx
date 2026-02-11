@@ -4,19 +4,21 @@ import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./ConfirmModal.module.scss";
 
+type ConfirmModalProps = {
+  cancelLabel: string;
+  confirmLabel: string;
+  message?: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
 export const ConfirmModal = ({
   cancelLabel,
   confirmLabel,
   message,
   onCancel,
   onConfirm,
-}: {
-  cancelLabel: string;
-  confirmLabel: string;
-  message?: string;
-  onCancel: () => void;
-  onConfirm: () => void;
-}) => {
+}: ConfirmModalProps) => {
   const { close } = useModal();
 
   const handleCancel = () => {

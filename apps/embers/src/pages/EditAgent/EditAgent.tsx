@@ -75,7 +75,7 @@ export default function EditAgent() {
   );
 
   const versions = useMemo(
-    () => agentVersions?.agents.map((version) => version.version),
+    () => agentVersions?.agents.map((version) => version.version) ?? [],
     [agentVersions],
   );
 
@@ -83,7 +83,7 @@ export default function EditAgent() {
     <CodeLayout
       currentVersion={agent.version}
       getCode={getCode}
-      title={agent.name}
+      title={agent.name ?? ""}
       versions={versions}
     >
       {/* to make a custom error layout later on */}
