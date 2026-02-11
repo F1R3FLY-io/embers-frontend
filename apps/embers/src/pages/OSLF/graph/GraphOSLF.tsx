@@ -7,29 +7,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 import type { OSLFEditorStepperData } from "@/lib/providers/stepper/flows/OSLFEditor";
 
 import { OSLFLayout } from "@/lib/layouts/OSLF";
-import { useLayout } from "@/lib/providers/layout/useLayout";
 import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
-import { useOslf } from "@/lib/queries";
 
 import styles from "./GraphOSLF.module.scss";
 
 type ViewMode = "graph" | "outline" | "tree";
 
-export function OSLFEditorView() {
+export default function GraphOSLF() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const instanceRef = useRef<OSLFInstance | null>(null);
   const { data, updateData, updateMany } = useOSLFEditorStepper();
-  const { setHeaderTitle } = useLayout();
   const [view, setView] = useState<ViewMode>("graph");
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { data: query } = useOslf(data.id, data.version);
-
-  useEffect(
-    () => setHeaderTitle(query?.name ?? data.name),
-    [data.name, query?.name, setHeaderTitle],
-  );
+  // const { data: query } = useOslf(data.id, data.version);
 
   useEffect(() => {
     const preload = location.state as OSLFEditorStepperData;
@@ -103,38 +95,32 @@ export function OSLFEditorView() {
   }, [view]);
 
   return (
-    <div className={styles["oslf-editor-shell"]}>
-      <div ref={containerRef} className={styles["oslf-editor-mount"]} />
-      {topRight}
-
-      {view !== "graph" && (
-        <div className={styles["oslf-overlay"]}>
-          <div className={styles["oslf-overlay-header"]}>
-            <div className={styles["oslf-overlay-title"]}>
-              {view === "outline" ? "Outline View" : "Tree View"}
-            </div>
-            <button
-              className={styles["oslf-overlay-close"]}
-              type="button"
-              onClick={() => setView("graph")}
-            >
-              ×
-            </button>
-          </div>
-          <div className={styles["oslf-overlay-body"]}>
-            Render your outline here
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default function GraphOSLF() {
-  return (
-    <OSLFLayout>
+    <OSLFLayout title={data.name}>
       <div className={styles["oslf-root"]}>
-        <OSLFEditorView />
+        <div className={styles["oslf-editor-shell"]}>
+          <div ref={containerRef} className={styles["oslf-editor-mount"]} />
+          {topRight}
+
+          {view !== "graph" && (
+            <div className={styles["oslf-overlay"]}>
+              <div className={styles["oslf-overlay-header"]}>
+                <div className={styles["oslf-overlay-title"]}>
+                  {view === "outline" ? "Outline View" : "Tree View"}
+                </div>
+                <button
+                  className={styles["oslf-overlay-close"]}
+                  type="button"
+                  onClick={() => setView("graph")}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles["oslf-overlay-body"]}>
+                Render your outline here
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </OSLFLayout>
   );

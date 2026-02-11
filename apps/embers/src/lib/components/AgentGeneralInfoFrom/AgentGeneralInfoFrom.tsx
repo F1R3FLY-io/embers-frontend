@@ -112,7 +112,9 @@ export function AgentGeneralInfoFrom({
           )}
         </form.Field>
 
-        <form.Subscribe selector={(state) => [state.isSubmitting, state.isValid]}>
+        <form.Subscribe
+          selector={(state) => [state.isSubmitting, state.isValid]}
+        >
           {([isSubmitting, isValid]) => (
             <div className={styles["button-container"]}>
               <Button

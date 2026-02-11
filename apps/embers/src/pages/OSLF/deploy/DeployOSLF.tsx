@@ -35,7 +35,10 @@ export default function DeployOSLF() {
     }
     const modalData = [
       { label: "deploy.labels.agentId", value: data.id },
-      { label: "deploy.version", value: data.version },
+      {
+        label: "deploy.version",
+        value: data.version,
+      },
       { label: "deploy.labels.status", value: "ok" },
       { label: "deploy.labels.note", value: data.description },
     ];
@@ -71,11 +74,10 @@ export default function DeployOSLF() {
         <Stepper
           currentStep={step}
           steps={[
-            { canClick: true, label: t("deploy.generalInfo") },
-            { canClick: true, label: t("deploy.creation") },
-            { canClick: false, label: t("deploy.deployment") },
+            t("deploy.generalInfo"),
+            t("deploy.creation"),
+            t("deploy.deployment"),
           ]}
-          onStepClick={(index) => navigateToStep(index)}
         />
       </div>
 

@@ -5,10 +5,11 @@ import { Footer, Header } from "@/lib/layouts/OSLF";
 
 interface OSLFLayoutProps {
   children: React.ReactNode;
+  title: string;
 }
 
-export const OSLFLayout: React.FC<OSLFLayoutProps> = ({ children }) => (
-  <Layout footer={<Footer />} headerActions={<Header />}>
+export const OSLFLayout: React.FC<OSLFLayoutProps> = ({ children, title }) => (
+  <Layout footer={<Footer />} headerActions={<Header />} title={title}>
     {children}
   </Layout>
 );

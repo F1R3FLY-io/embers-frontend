@@ -91,33 +91,32 @@ export default function App() {
                           />
                           <Route
                             element={
-                                <OSLFEditorStepperProvider>
-                                  <Routes>
-                                    <Route
-                                      element={<CreateOSLF />}
-                                      path="create"
-                                    />
-                                    <Route element={<GraphOSLF />} path="" />
-                                    <Route
-                                      element={<DeployOSLF />}
-                                      path="deploy"
-                                    />
-                                  </Routes>
-                                </OSLFEditorStepperProvider>
-                              }
-                              path="/oslf/*"
-                            />
-                            <Route
-                              element={<PublishAgentsTeam />}
-                              path="/publish-agents-team"
-                            />
-                          </Route>
-                        </Routes>
-                      </div>
-                    </ModalProvider>
-                  </BrowserRouter>
-                </ReactFlowProvider>
-
+                              <OSLFEditorStepperProvider>
+                                <Routes>
+                                  <Route
+                                    element={<CreateOSLF />}
+                                    path="create"
+                                  />
+                                  <Route element={<GraphOSLF />} path="" />
+                                  <Route
+                                    element={<DeployOSLF />}
+                                    path="deploy"
+                                  />
+                                </Routes>
+                              </OSLFEditorStepperProvider>
+                            }
+                            path="/oslf/*"
+                          />
+                          <Route
+                            element={<PublishAgentsTeam />}
+                            path="/publish-agents-team"
+                          />
+                        </Route>
+                      </Routes>
+                    </div>
+                  </ModalProvider>
+                </BrowserRouter>
+              </ReactFlowProvider>
             </DockProvider>
           </LoaderProvider>
         </ThemeProvider>
