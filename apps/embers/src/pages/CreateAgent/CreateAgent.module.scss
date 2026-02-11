@@ -12,3 +12,14 @@
 .stepper-container {
   margin-top: 32px;
 }
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.title-container {
+  margin-top: 16px;
+}
