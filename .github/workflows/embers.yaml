@@ -17,6 +17,7 @@ on:
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
+      - "packages/oslf-editor/**"
       - "packages/client/**"
       - "*"
       - "!**/*.md"
@@ -24,6 +25,7 @@ on:
     paths:
       - ".github/workflows/embers.yaml"
       - "apps/embers/**"
+      - "packages/oslf-editor/**"
       - "packages/client/**"
       - "*"
       - "!**/*.md"
@@ -59,6 +61,9 @@ jobs:
 
       - name: Build client
         run: pnpm --filter @f1r3fly-io/embers-client-sdk build
+
+      - name: Build oslf-editor
+        run: pnpm --filter @f1r3fly-io/oslf-editor build
 
       - name: Type check
         run: pnpm run typecheck

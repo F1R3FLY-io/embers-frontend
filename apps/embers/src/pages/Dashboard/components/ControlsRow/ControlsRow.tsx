@@ -1,3 +1,5 @@
+import type { TabId } from "@/pages/Dashboard/Dashboard";
+
 import { SearchControl } from "@/pages/Dashboard/components/SearchControl";
 import { SortControl } from "@/pages/Dashboard/components/SortControl";
 
@@ -7,7 +9,7 @@ interface ControlsRowProps {
   onSearchChange: (query: string) => void;
   onSortChange: (sortBy: "date" | "name") => void;
   searchQuery: string;
-  selectedTab: "agents" | "agent-teams";
+  selectedTab: TabId;
   sortBy: "date" | "name";
 }
 
