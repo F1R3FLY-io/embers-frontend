@@ -9,6 +9,12 @@
 
 .app-title {
   margin: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cursor {
   cursor: pointer;
 }
 
@@ -30,4 +36,11 @@
   justify-content: space-between;
   height: 100%;
   padding: 20px 24px;
+}
+
+.settings-icon {
+  max-width: 24px;
+  max-height: 24px;
+  cursor: pointer;
+  fill: var(--text-color-primary);
 }

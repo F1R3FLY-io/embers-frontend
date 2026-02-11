@@ -40,99 +40,83 @@ export function AgentGeneralInfoFrom({
   });
 
   return (
-    <div className={styles["content-container"]}>
-      <div className={styles["title-container"]}>
-        <Text bold color="primary" type="H2">
-          {t("agents.tellUsAboutYourAgent")}
-        </Text>
-      </div>
+    <form
+      className={styles["details-container"]}
+      onSubmit={(e) => {
+        e.preventDefault();
+        void form.handleSubmit();
+      }}
+    >
+      <Text bold color="primary" type="H5">
+        {t("agents.generalSettings")}
+      </Text>
 
-      <form
-        className={styles["details-container"]}
-        onSubmit={(e) => {
-          e.preventDefault();
-          void form.handleSubmit();
-        }}
-      >
-        <Text bold color="primary" type="H5">
-          {t("agents.generalSettings")}
-        </Text>
-
-        <form.Field name="iconUrl">
-          {(field) => (
-            <div className={styles["icon-section"]}>
-              <IconPreview url={field.state.value} />
-              <div className={styles["icon-input-container"]}>
-                <Text color="secondary" type="small">
-                  {t("deploy.iconUrl")}
-                </Text>
-                <Input
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
-                  placeholder="https://example.com/icon.png"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
-            </div>
-          )}
-        </form.Field>
-
-        <form.Field name="name">
-          {(field) => (
-            <div className={styles["form-section"]}>
+      <form.Field name="iconUrl">
+        {(field) => (
+          <div className={styles["icon-section"]}>
+            <IconPreview url={field.state.value} />
+            <div className={styles["icon-input-container"]}>
               <Text color="secondary" type="small">
-                {t("deploy.agentName")}
+                {t("deploy.iconUrl")}
               </Text>
               <Input
                 error={field.state.meta.isTouched && !field.state.meta.isValid}
-                placeholder={t("deploy.agentName")}
+                placeholder="https://example.com/icon.png"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             </div>
-          )}
-        </form.Field>
+          </div>
+        )}
+      </form.Field>
 
-        <form.Field name="description">
-          {(field) => (
-            <div className={styles["form-section"]}>
-              <Text color="secondary" type="small">
-                {t("deploy.agentDescription")}
-              </Text>
-              <Input
-                textarea
-                error={field.state.meta.isTouched && !field.state.meta.isValid}
-                placeholder={t("deploy.agentDescription")}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-            </div>
-          )}
-        </form.Field>
+      <form.Field name="name">
+        {(field) => (
+          <div className={styles["form-section"]}>
+            <Text color="secondary" type="small">
+              {t("deploy.agentName")}
+            </Text>
+            <Input
+              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              placeholder={t("deploy.agentName")}
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+            />
+          </div>
+        )}
+      </form.Field>
 
-        <form.Subscribe
-          selector={(state) => [state.isSubmitting]}
-        >
-          {([isSubmitting]) => (
-            <div className={styles["button-container"]}>
-              <Button
-                disabled={isSubmitting}
-                type="secondary"
-                onClick={onCancel}
-              >
-                {t("basic.cancel")}
-              </Button>
-              <Button submit disabled={isSubmitting} type="primary">
-                {t("basic.continue")}
-              </Button>
-            </div>
-          )}
-        </form.Subscribe>
+      <form.Field name="description">
+        {(field) => (
+          <div className={styles["form-section"]}>
+            <Text color="secondary" type="small">
+              {t("deploy.agentDescription")}
+            </Text>
+            <Input
+              textarea
+              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              placeholder={t("deploy.agentDescription")}
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+            />
+          </div>
+        )}
+      </form.Field>
 
-        <LanguageFooter />
-      </form>
-    </div>
+      <form.Subscribe selector={(state) => [state.isSubmitting]}>
+        {([isSubmitting]) => (
+          <div className={styles["button-container"]}>
+            <Button disabled={isSubmitting} type="secondary" onClick={onCancel}>
+              {t("basic.cancel")}
+            </Button>
+            <Button submit disabled={isSubmitting} type="primary">
+              {t("basic.continue")}
+            </Button>
+          </div>
+        )}
+      </form.Subscribe>
+
+      <LanguageFooter />
+    </form>
   );
 }

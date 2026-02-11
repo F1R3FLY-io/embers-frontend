@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 
@@ -14,6 +14,7 @@ export interface IconPreviewProps {
 export function IconPreview({ className, size = 72, url }: IconPreviewProps) {
   const [loadError, setLoadError] = useState(false);
   const hasValidImage = url && !loadError;
+  useEffect(() => setLoadError(false), [url]);
 
   return (
     <div
