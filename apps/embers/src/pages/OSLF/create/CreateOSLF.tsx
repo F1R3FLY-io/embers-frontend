@@ -14,8 +14,8 @@ import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
 import styles from "./CreateOSLF.module.scss";
 
 const formModel = z.object({
-  description: z.union([z.string(), z.undefined()]),
-  name: z.string().nonempty(),
+  description: z.string(),
+  name: z.string().trim().min(1),
 });
 
 export default function CreateOSLF() {
@@ -40,9 +40,6 @@ export default function CreateOSLF() {
     },
   });
 
-  const canContinue =
-    form.state.values.name.trim().length > 0 && form.state.isValid;
-
   const handleCancel = () => void navigate("/dashboard");
 
   useEffect(() => {
@@ -59,10 +56,10 @@ export default function CreateOSLF() {
         <Stepper
           currentStep={step}
           steps={[
-            { canClick: false, label: t("oslf.generalSettings") },
-            { canClick: canContinue, label: t("oslf.creation") },
-            { canClick: canContinue, label: t("oslf.validate") },
-            { canClick: canContinue, label: t("oslf.search") },
+            t("oslf.generalSettings"),
+            t("oslf.creation"),
+            t("oslf.validate"),
+            t("oslf.search"),
           ]}
         />
       </div>
@@ -86,7 +83,9 @@ export default function CreateOSLF() {
                   {t("oslf.queryName")}
                 </Text>
                 <Input
-                  error={field.state.meta.isTouched && !field.state.meta.isValid}
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
                   placeholder={t("oslf.queryName")}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -122,13 +121,13 @@ export default function CreateOSLF() {
                   {t("basic.cancel")}
                 </Button>
                 <div className={styles["button-group"]}>
-                  <button
+                  <Button
                     className={styles["continue-button"]}
-                    disabled={!canContinue || isSubmitting}
-                    type="submit"
+                    disabled={!isSubmitting}
+                    type="primary"
                   >
                     {t("basic.continue")}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
