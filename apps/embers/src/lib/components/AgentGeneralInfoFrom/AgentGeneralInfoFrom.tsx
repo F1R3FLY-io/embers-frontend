@@ -113,9 +113,9 @@ export function AgentGeneralInfoFrom({
         </form.Field>
 
         <form.Subscribe
-          selector={(state) => [state.isSubmitting, state.isValid]}
+          selector={(state) => [state.isSubmitting]}
         >
-          {([isSubmitting, isValid]) => (
+          {([isSubmitting]) => (
             <div className={styles["button-container"]}>
               <Button
                 disabled={isSubmitting}
@@ -124,7 +124,7 @@ export function AgentGeneralInfoFrom({
               >
                 {t("basic.cancel")}
               </Button>
-              <Button submit disabled={!isValid || isSubmitting} type="primary">
+              <Button submit disabled={isSubmitting} type="primary">
                 {t("basic.continue")}
               </Button>
             </div>
