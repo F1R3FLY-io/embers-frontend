@@ -9,7 +9,13 @@ interface OSLFLayoutProps {
 }
 
 export const OSLFLayout: React.FC<OSLFLayoutProps> = ({ children, title }) => (
-  <Layout footer={<Footer />} headerActions={<Header />} title={title}>
+  <Layout
+    footer={<Footer />}
+    headerActions={<Header />}
+    title={title}
+    onBackClick={() => {}}
+    onSettingsClick={() => {}}
+  >
     {children}
   </Layout>
 );
