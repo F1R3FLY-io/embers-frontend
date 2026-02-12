@@ -1,7 +1,6 @@
 packages:
   - apps/*
-  - packages/client
-  - packages/oslf-editor
+  - packages/*
 
 onlyBuiltDependencies:
   - "@f1r3fly-io/lightning-bug"
