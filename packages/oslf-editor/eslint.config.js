@@ -1,40 +1,21 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
 import unusedImports from "eslint-plugin-unused-imports";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 import baseConfig from "../../eslint.config.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export default defineConfig(
   baseConfig,
-  globalIgnores(["coverage", "docs", "src/generated", "**/eslint.config.*"]),
+  globalIgnores(["coverage", "docs", "src/generated"]),
   {
-    files: ["src/**/*.{js,jsx,ts,tsx}", "vite.config.ts"],
-
+    files: ["src/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
       noInlineConfig: true,
       reportUnusedDisableDirectives: "off",
       reportUnusedInlineConfigs: "off",
     },
-    languageOptions: {
-      parserOptions: {
-        project: [
-          path.join(__dirname, "./tsconfig.lib.json"),
-          path.join(__dirname, "./tsconfig.node.json"),
-        ],
-        tsconfigRootDir: __dirname,
-        projectService: false,
-      },
-    },
-
     plugins: {
       "unused-imports": unusedImports,
     },
-
     rules: {
       "@typescript-eslint/explicit-member-accessibility": "off",
       "@typescript-eslint/no-dynamic-delete": "off",
