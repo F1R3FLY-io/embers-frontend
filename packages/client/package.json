@@ -11,7 +11,6 @@
     "require": "./dist/embers-client-sdk.cjs.js"
   },
   "description": "A set of functions for working with wallets and contracts on the blockchain",
-  "author": "Denys Bushualik <denys.b@devbrother.com>",
   "license": "UNLICENSED",
   "type": "module",
   "keywords": [
