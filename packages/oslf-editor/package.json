@@ -1,7 +1,7 @@
 {
   "name": "@f1r3fly-io/oslf-editor",
   "version": "0.6.0",
-  "description": "Operational Semantics in Logical Form editor with React components",
+  "description": "Operational Semantics in Logical Form editor",
   "keywords": [
     "OSLF",
     "editor",
@@ -15,16 +15,12 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./styles": "./dist/styles/blockly-overrides.css"
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js",
+    "default": "./dist/index.js"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "dev": "vite build --watch",

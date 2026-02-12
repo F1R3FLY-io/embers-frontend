@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/embers ./apps/embers
 COPY packages/client ./packages/client
+COPY packages/oslf-editor ./packages/oslf-editor
 RUN --mount=type=secret,id=npmrc,target=/app/.npmrc pnpm install --frozen-lockfile
 
 WORKDIR /app/apps/embers
