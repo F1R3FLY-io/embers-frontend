@@ -12,13 +12,12 @@ import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
+import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
-import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
 import { useDeployAgentsTeamMutation } from "@/lib/queries";
-import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import styles from "./DeployAgentsTeam.module.scss";
 
@@ -32,9 +31,7 @@ export default function DeployAgentsTeam() {
   const navigate = useNavigate();
 
   const { appendDeploy, appendLog } = useDock();
-
-  const { data, navigateToPrevStep, navigateToStep, reset, step, updateData } =
-    useGraphEditorStepper();
+  const { agentsTeam, reset, update } = useCurrentAgentsTeam();
 
   const deployTeamsMutation = useMutationResultWithLoader(
     useDeployAgentsTeamMutation(),
@@ -47,10 +44,15 @@ export default function DeployAgentsTeam() {
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
-      updateData("lastDeployKey", key);
+      update({ lastDeployKey: key });
       appendDeploy(true);
     },
-    [appendDeploy, updateData],
+    [appendDeploy, update],
+  );
+
+  const toEdit = useCallback(
+    () => void navigate("/agents-team/edit"),
+    [navigate],
   );
 
   const onFailedDeploy = useCallback(
@@ -60,7 +62,7 @@ export default function DeployAgentsTeam() {
       open(
         <WarningModal
           error={err.message}
-          reviewSettings={() => navigateToStep(1)}
+          reviewSettings={toEdit}
           tryAgain={() => {}}
         />,
         {
@@ -69,46 +71,46 @@ export default function DeployAgentsTeam() {
         },
       );
     },
-    [appendDeploy, logError, navigateToStep, open],
+    [appendDeploy, toEdit, logError, open],
   );
 
   const form = useForm({
     defaultValues: {
-      inputPrompt: data.inputPrompt,
+      inputPrompt: agentsTeam.inputPrompt,
     },
     onSubmit: useCallbackWithLoader(async () => {
       try {
         const modalData = [
-          { label: "deploy.labels.agentId", value: data.id },
-          { label: "deploy.version", value: data.version },
+          { label: "deploy.labels.agentId", value: agentsTeam.id },
+          { label: "deploy.version", value: agentsTeam.version },
           { label: "deploy.labels.status", value: "ok" },
-          { label: "deploy.labels.note", value: data.description },
+          { label: "deploy.labels.note", value: agentsTeam.description },
         ];
 
         const registryKey = PrivateKey.new();
 
         await deployTeamsMutation.mutateAsync(
           {
-            agentsTeamId: data.id!,
+            agentsTeamId: agentsTeam.id!,
             registryKey,
             registryVersion: 1n,
             rhoLimit: 1_000_000n,
-            version: data.version!,
+            version: agentsTeam.version!,
           },
           {
             onError: onFailedDeploy,
             onSuccess: () => {
               onSuccessfulDeploy(registryKey);
-              updateData("hasGraphChanges", false);
+              update({ hasGraphChanges: false });
               open(
                 <SuccessModal
-                  agentName={data.name}
+                  agentName={agentsTeam.name!}
                   createAnother={() => {
                     reset();
-                    navigateToStep(0);
+                    void navigate("/agents-team/create");
                   }}
                   data={modalData}
-                  viewAgent={() => navigateToStep(1)}
+                  viewAgent={toEdit}
                   viewAllAgents={() => void navigate("/dashboard")}
                 />,
                 {
@@ -130,8 +132,6 @@ export default function DeployAgentsTeam() {
     },
   });
 
-  const handleSaveDraft = () => {};
-
   return (
     <div className={styles["deploy-container"]}>
       <Text bold color="primary" type="H1">
@@ -140,7 +140,7 @@ export default function DeployAgentsTeam() {
 
       <div className={styles["stepper-container"]}>
         <Stepper
-          currentStep={step}
+          currentStep={2}
           steps={[
             t("deploy.generalInfo"),
             t("deploy.creation"),
@@ -158,7 +158,7 @@ export default function DeployAgentsTeam() {
       >
         <div>
           <Text bold color="primary" type="H2">
-            {data.name}
+            {agentsTeam.name}
           </Text>
           <div className={styles["description-container"]}>
             <Text color="secondary" type="large">
@@ -176,7 +176,11 @@ export default function DeployAgentsTeam() {
             <Text color="secondary" type="small">
               {t("aiTeam.teamName")}
             </Text>
-            <Input disabled placeholder={data.name} value={data.name} />
+            <Input
+              disabled
+              placeholder={agentsTeam.name}
+              value={agentsTeam.name}
+            />
           </div>
 
           <div className={styles["form-section"]}>
@@ -186,8 +190,8 @@ export default function DeployAgentsTeam() {
             <Input
               disabled
               textarea
-              placeholder={data.description || t("basic.description")}
-              value={data.description}
+              placeholder={agentsTeam.description || t("basic.description")}
+              value={agentsTeam.description}
             />
           </div>
 
@@ -224,25 +228,13 @@ export default function DeployAgentsTeam() {
                 <Button
                   disabled={isSubmitting}
                   type="secondary"
-                  onClick={navigateToPrevStep}
+                  onClick={toEdit}
                 >
                   {t("deploy.back")}
                 </Button>
-
-                <div className={styles["button-group"]}>
-                  <Button
-                    disabled={isSubmitting}
-                    icon={<DraftIcon />}
-                    type="secondary"
-                    onClick={handleSaveDraft}
-                  >
-                    {t("basic.saveDraft")}
-                  </Button>
-
-                  <Button submit disabled={isSubmitting} type="primary">
-                    {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
-                  </Button>
-                </div>
+                <Button submit disabled={isSubmitting} type="primary">
+                  {isSubmitting ? t("deploy.deploying") : t("deploy.deploy")}
+                </Button>
               </div>
             )}
           </form.Subscribe>

@@ -1,0 +1,121 @@
+name: OSLF
+run-name: OSLF ${{ github.event_name == 'push' && 'main' || format('MR {0}', github.event.pull_request.title) }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/oslf.yaml"
+      - "packages/oslf-editor/**"
+      - "*"
+      - "!**/*.md"
+  pull_request:
+    paths:
+      - ".github/workflows/oslf.yaml"
+      - "packages/oslf-editor/**"
+      - "*"
+      - "!**/*.md"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    defaults:
+      run:
+        working-directory: packages/oslf-editor
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm run typecheck
+
+      - name: Code format check
+        run: pnpm run ci:check:code
+
+      - name: Lint
+        run: pnpm run ci:lint
+
+      - name: Test
+        run: pnpm run test
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: build-artifact
+          path: packages/oslf-editor/dist
+
+  publish:
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/main'
+    needs: build
+
+    permissions:
+      contents: write
+      packages: write
+
+    env:
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    defaults:
+      run:
+        working-directory: packages/oslf-editor
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Download artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: build-artifact
+          path: packages/oslf-editor/dist
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Bump version
+        run: pnpm version patch --no-git-tag-version --no-commit-hooks --no-workspaces-update
+
+      - name: Publish
+        run: pnpm publish --no-git-checks --access public
+
+      - name: Update package.json
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: Apply package.json changes

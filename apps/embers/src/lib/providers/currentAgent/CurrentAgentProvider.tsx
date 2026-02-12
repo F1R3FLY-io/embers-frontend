@@ -28,7 +28,9 @@ export const CurrentAgentProvider: React.FC<{ children: React.ReactNode }> = ({
     if (data) {
       setAgent(data);
     }
-  }, [data]);
+    // agents are append only so this should be fine
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.id, data?.version]);
 
   const update = useCallback(
     (patch: Partial<CurrentAgent>) =>

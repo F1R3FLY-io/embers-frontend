@@ -12,7 +12,7 @@ import { NODE_REGISTRY } from "@/lib/components/GraphEditor/nodes/nodes.registry
 import { NodeItem } from "@/lib/components/GraphEditor/nodes/SidebarNode";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
-import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
+import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useAgentsTeamVersions } from "@/lib/queries";
 import { SearchControl } from "@/pages/Dashboard/components/SearchControl";
 
@@ -34,26 +34,24 @@ const NodeAccordion = (props: AccordionProps) => {
 
 export const Sidebar: React.FC = () => {
   const { t } = useTranslation();
-  const { data, updateData } = useGraphEditorStepper();
-  const { data: versions } = useAgentsTeamVersions(data.id);
+  const { agentsTeam, update } = useCurrentAgentsTeam();
+  const { data: versions } = useAgentsTeamVersions(agentsTeam.id);
 
   const [selectedVersion, setSelectedVersion] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (data.version) {
-      setSelectedVersion(data.version);
+    if (agentsTeam.version) {
+      setSelectedVersion(agentsTeam.version);
     }
-  }, [data.version]);
+  }, [agentsTeam.version]);
 
   const versionOptions = useMemo(
     () =>
-      versions
-        ? versions.agentsTeams.map((v) => ({
-            label: v.version,
-            value: v.version,
-          }))
-        : [],
+      versions?.agentsTeams.map((v) => ({
+        label: v.version,
+        value: v.version,
+      })) ?? [],
     [versions],
   );
 
@@ -69,10 +67,7 @@ export const Sidebar: React.FC = () => {
             <Select
               options={versionOptions}
               value={selectedVersion}
-              onChange={(ver) => {
-                setSelectedVersion(ver);
-                updateData("version", ver);
-              }}
+              onChange={(version) => update({ version })}
             />
           )}
 
