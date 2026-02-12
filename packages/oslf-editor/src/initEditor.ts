@@ -1,6 +1,6 @@
 import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
 import * as Blockly from "blockly/core";
-import * as En from "blockly/msg/en";
+import En from "blockly/msg/en";
 
 import { RENDERER_NAME } from "./CustomRenderer";
 import { applyBlockGradients } from "./gradients";

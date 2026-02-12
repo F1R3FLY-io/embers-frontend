@@ -1,5 +1,3 @@
-import type { BlockDefinition } from "blockly/core/blocks";
-
 import * as Blockly from "blockly/core";
 
 /**
@@ -26,7 +24,7 @@ export type OrderType = (typeof Order)[keyof typeof Order];
  */
 export class RhoLangGenerator extends Blockly.CodeGenerator {
   /** Mapping of block types to their original definitions for code generation */
-  private blockDefinitions: Map<string, BlockDefinition> = new Map();
+  private blockDefinitions: Map<string, any> = new Map();
 
   constructor(name = "RhoLang") {
     super(name);
@@ -43,7 +41,7 @@ export class RhoLangGenerator extends Blockly.CodeGenerator {
    * Registers block definitions for code generation.
    * This extracts the message0 template and args0 to generate code.
    */
-  registerBlockDefinitions(blocks: BlockDefinition[]): void {
+  registerBlockDefinitions(blocks: any[]): void {
     for (const block of blocks) {
       if (block.type && block.message0 !== undefined) {
         this.blockDefinitions.set(block.type, block);
@@ -56,7 +54,7 @@ export class RhoLangGenerator extends Blockly.CodeGenerator {
    * Creates a code generator function for a block based on its definition.
    * Uses message0 as the code template.
    */
-  private registerBlockGenerator(definition: BlockDefinition): void {
+  private registerBlockGenerator(definition: any): void {
     this.forBlock[definition.type] = (
       block: Blockly.Block,
       _generator: typeof this,
@@ -71,7 +69,7 @@ export class RhoLangGenerator extends Blockly.CodeGenerator {
    */
   private generateCodeFromMessage(
     block: Blockly.Block,
-    definition: BlockDefinition,
+    definition: any,
   ): string | [string, OrderType] {
     const message = definition.message0 || "";
     const args = definition.args0 || [];
@@ -228,6 +226,6 @@ export function generateCode(workspace: Blockly.Workspace): string {
  *
  * @param blocks - Array of block definitions to register
  */
-export function registerBlocks(blocks: BlockDefinition[]): void {
+export function registerBlocks(blocks: any[]): void {
   rhoLangGenerator.registerBlockDefinitions(blocks);
 }
