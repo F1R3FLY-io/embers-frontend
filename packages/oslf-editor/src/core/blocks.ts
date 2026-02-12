@@ -1,6 +1,4 @@
-import type { BlockDefinition } from "blockly/core/blocks";
-
-export const oslfBlocks: BlockDefinition[] = [
+export const oslfBlocks = [
   {
     colour: "208bfe",
     inputsInline: true,

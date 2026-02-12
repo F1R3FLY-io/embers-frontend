@@ -1,5 +1,3 @@
-import type { BlockDefinition } from "blockly/core/blocks";
-
 import * as Blockly from "blockly/core";
 
 import "./components/input-search";
@@ -18,7 +16,7 @@ export enum Events {
 }
 
 // Module-level state for block filtering
-let originalBlocks: BlockDefinition[] = [];
+let originalBlocks: any[] = [];
 let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 const DEFAULT_TOOLBOX = {
@@ -78,10 +76,7 @@ function setupWorkspaceChangeListener(workspace: Blockly.Workspace) {
   });
 }
 
-function filterBlocksByTooltip(
-  blocks: BlockDefinition[],
-  searchTerm: string,
-): BlockDefinition[] {
+function filterBlocksByTooltip(blocks: any[], searchTerm: string): any[] {
   if (!searchTerm || searchTerm.trim() === "") {
     return blocks;
   }
@@ -129,10 +124,7 @@ const CATEGORY_ORDER = [
   "composition_blocks",
 ];
 
-function generateToolboxFromBlocks(
-  blocks: BlockDefinition[],
-  isSearchActive = false,
-) {
+function generateToolboxFromBlocks(blocks: any[], isSearchActive = false) {
   if (isSearchActive) {
     // When searching, show all results in a single expanded category
     const customBlocksToolbox = blocks.map((block) => ({
@@ -154,7 +146,7 @@ function generateToolboxFromBlocks(
   }
 
   // Group blocks by their style (category)
-  const blocksByCategory: Record<string, BlockDefinition[]> = {};
+  const blocksByCategory: Record<string, any[]> = {};
 
   for (const block of blocks) {
     const style = block.style || "process_blocks";
@@ -253,10 +245,7 @@ function updateToolboxWithFilter(
   }
 }
 
-function loadBlocks(
-  workspace: Blockly.Workspace,
-  event: CustomEvent<BlockDefinition[]>,
-) {
+function loadBlocks(workspace: Blockly.Workspace, event: CustomEvent<any[]>) {
   const blocks = event.detail;
   if (blocks) {
     // Store original blocks for filtering

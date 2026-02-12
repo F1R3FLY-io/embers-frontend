@@ -3,18 +3,5 @@ declare const classNames: {
   readonly "stepper-container": "stepper-container";
   readonly "content-container": "content-container";
   readonly "title-container": "title-container";
-  readonly "details-container": "details-container";
-  readonly "section-title": "section-title";
-  readonly "icon-section": "icon-section";
-  readonly "icon-input-container": "icon-input-container";
-  readonly "form-section": "form-section";
-  readonly group: "group";
-  readonly hint: "hint";
-  readonly "button-container": "button-container";
-  readonly "button-group": "button-group";
-  readonly "footer-container": "footer-container";
-  readonly "support-container": "support-container";
-  readonly "support-link": "support-link";
-  readonly "toggle-row": "toggle-row";
 };
 export default classNames;

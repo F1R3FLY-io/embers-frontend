@@ -27,7 +27,7 @@ export default function CreateAgent() {
 
   return (
     <div className={styles["create-container"]}>
-      <Text bold color="primary" type="H2">
+      <Text bold color="primary" type="H1">
         {t("aiAgent.create")}
       </Text>
 

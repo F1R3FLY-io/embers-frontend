@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import type { GraphEditorStepperData } from "@/lib/providers/stepper/flows/GraphEditor";
+import type { CurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
@@ -50,20 +50,20 @@ export function AgentTeamsGrid({ agents, isSuccess }: AgentTeamsGridProps) {
           name: agent.name,
           nodes: [],
           version: agent.version,
-        } satisfies GraphEditorStepperData,
+        } satisfies CurrentAgentsTeam,
       }),
     [navigate],
   );
 
   const navigateToPublish = useCallback(
     (agent: AgentsTeamHeader) =>
-      void navigate("/publish-agents-team", {
+      void navigate("/agents-team/publish", {
         state: {
-          agentId: agent.id,
-          agentName: agent.name,
           iconUrl: agent.logo ?? "",
+          id: agent.id,
+          name: agent.name,
           version: agent.version,
-        },
+        } satisfies CurrentAgentsTeam,
       }),
     [navigate],
   );

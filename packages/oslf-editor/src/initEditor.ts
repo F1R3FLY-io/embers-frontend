@@ -12,7 +12,7 @@ export function initEditor(
   container: string | Element,
   initToolbox: Blockly.utils.toolbox.ToolboxDefinition,
 ): Blockly.WorkspaceSvg {
-  Blockly.setLocale(En);
+  Blockly.setLocale(En as any);
 
   const toolbox = initToolbox;
 

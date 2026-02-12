@@ -3,14 +3,8 @@ import type {
   EdgeChange,
   NodeChange,
   ReactFlowInstance,
-  ReactFlowJsonObject,
 } from "@xyflow/react";
-import type {
-  Dispatch,
-  MouseEvent as ReactMouseEvent,
-  ReactNode,
-  SetStateAction,
-} from "react";
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 
 import {
   addEdge,
@@ -46,19 +40,15 @@ import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
 type GraphEditorProps = {
   edges: Edge[];
-  initialViewport?: ReactFlowJsonObject<Node, Edge>["viewport"];
   nodes: Node[];
-  onFlowChange?: (flow: ReactFlowJsonObject<Node, Edge>) => void;
-  onGraphChange?: () => void;
-  setEdges: Dispatch<SetStateAction<Edge[]>>;
-  setNodes: Dispatch<SetStateAction<Node[]>>;
+  onGraphChange: () => void;
+  setEdges: (change: (state: Edge[]) => Edge[]) => void;
+  setNodes: (change: (state: Node[]) => Node[]) => void;
 };
 
 export function GraphEditor({
   edges,
-  initialViewport,
   nodes,
-  onFlowChange,
   onGraphChange,
   setEdges,
   setNodes,
@@ -66,63 +56,50 @@ export function GraphEditor({
   const { open } = useModal();
   const rf = useReactFlow<Node, Edge>();
 
-  const handleInit = useCallback(() => {
-    if (initialViewport) {
-      void rf.setViewport(initialViewport);
-    }
-
-    queueMicrotask(() => {
-      if (onFlowChange) {
-        onFlowChange(rf.toObject());
-      }
-    });
-  }, [initialViewport, onFlowChange, rf]);
-
-  const emitFlow = useCallback(() => {
-    if (!onFlowChange) {
-      return;
-    }
-    onFlowChange(rf.toObject());
-  }, [onFlowChange, rf]);
-
-  const notifyGraphChange = useCallback(() => {
-    if (onGraphChange) {
-      onGraphChange();
-    }
-  }, [onGraphChange]);
-
   const onNodesChange = useCallback(
     (changes: NodeChange<Node>[]) => {
       setNodes((nodesSnapshot) => {
-        const next = applyNodeChanges(changes, nodesSnapshot);
-        queueMicrotask(emitFlow);
-        return next;
+        const structuralChange = changes.some(
+          (change) =>
+            change.type === "remove" ||
+            change.type === "add" ||
+            change.type === "replace",
+        );
+        if (structuralChange) {
+          queueMicrotask(onGraphChange);
+        }
+        return applyNodeChanges(changes, nodesSnapshot);
       });
     },
-    [setNodes, emitFlow],
+    [onGraphChange, setNodes],
   );
 
   const onEdgesChange = useCallback(
     (changes: EdgeChange<Edge>[]) => {
       setEdges((edgesSnapshot) => {
-        const next = applyEdgeChanges(changes, edgesSnapshot);
-        queueMicrotask(emitFlow);
-        return next;
+        const structuralChange = changes.some(
+          (change) =>
+            change.type === "remove" ||
+            change.type === "add" ||
+            change.type === "replace",
+        );
+        if (structuralChange) {
+          queueMicrotask(onGraphChange);
+        }
+        return applyEdgeChanges(changes, edgesSnapshot);
       });
     },
-    [setEdges, emitFlow],
+    [onGraphChange, setEdges],
   );
 
   const onConnect = useCallback(
     (connection: Connection) => {
       setEdges((edgesSnapshot) => {
-        const next = addEdge(connection, edgesSnapshot);
-        queueMicrotask(emitFlow);
-        queueMicrotask(notifyGraphChange);
-        return next;
+        queueMicrotask(onGraphChange);
+        return addEdge(connection, edgesSnapshot);
       });
     },
-    [setEdges, emitFlow, notifyGraphChange],
+    [setEdges, onGraphChange],
   );
 
   const {
@@ -139,22 +116,13 @@ export function GraphEditor({
       contextMenuInput !== undefined
         ? buildMenuItems(contextMenuInput, {
             nodes,
-            notifyGraphChange,
             onEdgesChange,
             onNodesChange,
             open,
             rf,
           })
         : [],
-    [
-      contextMenuInput,
-      nodes,
-      notifyGraphChange,
-      onEdgesChange,
-      onNodesChange,
-      open,
-      rf,
-    ],
+    [contextMenuInput, nodes, onEdgesChange, onNodesChange, open, rf],
   );
 
   return (
@@ -174,7 +142,6 @@ export function GraphEditor({
         onDragOver={(event) => event.preventDefault()}
         onDrop={(event) => {
           event.preventDefault();
-          notifyGraphChange();
           const type = event.dataTransfer.getData(
             "application/reactflow",
           ) as NodeKind;
@@ -231,10 +198,7 @@ export function GraphEditor({
         }}
         onEdgeContextMenu={openEdgeContextMenu}
         onEdgesChange={onEdgesChange}
-        onInit={handleInit}
-        onMoveEnd={emitFlow}
         onNodeContextMenu={openNodeContextMenu}
-        onNodeDragStop={notifyGraphChange}
         onNodesChange={onNodesChange}
         onPaneContextMenu={openEmptySpaceContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}
@@ -362,14 +326,12 @@ function buildMenuItems(
   input: ContextMenuInput,
   {
     nodes,
-    notifyGraphChange,
     onEdgesChange,
     onNodesChange,
     open,
     rf,
   }: {
     nodes: Node[];
-    notifyGraphChange: () => void;
     onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
     onNodesChange: (changes: NodeChange<Node>[]) => void;
     open: (content: ReactNode, options?: ModalOptions) => void;
@@ -459,7 +421,6 @@ function buildMenuItems(
               }),
               { id: container.id, type: "remove" as const },
             ];
-            notifyGraphChange();
             onNodesChange(changes);
           },
           type: "text",
@@ -474,7 +435,6 @@ function buildMenuItems(
               type: "remove" as const,
             }));
 
-            notifyGraphChange();
             onNodesChange(changes);
           },
           type: "text",
@@ -495,7 +455,6 @@ function buildMenuItems(
               type: "remove" as const,
             }));
 
-            notifyGraphChange();
             onEdgesChange(changes);
           },
           type: "text",
@@ -516,16 +475,14 @@ function buildMenuItems(
             onNodesChange(
               createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
             );
-            notifyGraphChange();
           } else {
             open(
               <EditModal
                 initial={NODE_REGISTRY[type].defaultData}
                 inputs={NODE_REGISTRY[type].modalInputs}
-                onSave={(updatedData) => {
-                  notifyGraphChange();
-                  onNodesChange(createNodeChange(type, position, updatedData));
-                }}
+                onSave={(updatedData) =>
+                  onNodesChange(createNodeChange(type, position, updatedData))
+                }
               />,
               {
                 ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,

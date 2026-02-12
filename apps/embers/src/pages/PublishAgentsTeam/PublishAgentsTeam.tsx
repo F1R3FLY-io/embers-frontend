@@ -1,6 +1,5 @@
 import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 import z from "zod";
 
 import { Button } from "@/lib/components/Button";
@@ -9,6 +8,7 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Text } from "@/lib/components/Text";
+import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
 import { useModal } from "@/lib/providers/modal/useModal";
@@ -28,26 +28,20 @@ const formModel = z.object({
 export default function PublishAgentsTeam() {
   const { t } = useTranslation();
   const { close, open } = useModal();
-  const location = useLocation();
 
-  const preload = location.state as {
-    agentId: string;
-    agentName: string;
-    iconUrl: string;
-    version: string;
-  };
+  const { agentsTeam } = useCurrentAgentsTeam();
 
   const publish = useMutationResultWithLoader(
-    usePublishAgentsTeamToFireskyMutation(preload.agentId),
+    usePublishAgentsTeamToFireskyMutation(agentsTeam.id!),
   );
 
   const onSubmit = useCallbackWithLoader(
     async ({ value }: { value: z.infer<typeof formModel> }) => {
       const modalData = [
-        { label: "deploy.labels.agentId", value: preload.agentId },
+        { label: "deploy.labels.agentId", value: agentsTeam.id },
         {
           label: "deploy.version",
-          value: preload.version,
+          value: agentsTeam.version,
         },
         { label: "deploy.labels.note", value: "idk what to put here" },
       ];
@@ -69,9 +63,9 @@ export default function PublishAgentsTeam() {
         onSuccess: () => {
           open(
             <SuccessModal
-              agentName={preload.agentName}
+              agentName={agentsTeam.name!}
               data={modalData}
-              iconUrl={preload.iconUrl}
+              iconUrl={agentsTeam.iconUrl}
             />,
             {
               ariaLabel: "Success deploy",
@@ -124,7 +118,7 @@ export default function PublishAgentsTeam() {
 
         <div className={styles["profile-header"]}>
           <div className={styles["profile-icon"]}>
-            <IconPreview url={preload.iconUrl} />
+            <IconPreview url={agentsTeam.iconUrl} />
           </div>
         </div>
 
@@ -133,7 +127,7 @@ export default function PublishAgentsTeam() {
             <Text color="secondary" type="small">
               {t("publish.agentName")}
             </Text>
-            <Input placeholder="Agent name" value={preload.agentName} />
+            <Input placeholder="Agent name" value={agentsTeam.name} />
           </div>
 
           <form.Field name="handle">

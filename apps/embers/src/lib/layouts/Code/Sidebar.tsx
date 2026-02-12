@@ -35,19 +35,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         className={styles.list}
         role="listbox"
       >
-        {versions.map((v) => {
-          return (
-            <span
-              key={`version-${v}`}
-              className={classNames(styles.item, {
-                [styles.active]: v === selectedVersion,
-              })}
-              onClick={() => handleSelect(v)}
-            >
-              <Text>{v}</Text>
-            </span>
-          );
-        })}
+        {versions.map((v) => (
+          <span
+            key={`version-${v}`}
+            className={classNames(styles.item, {
+              [styles.active]: v === selectedVersion,
+            })}
+            onClick={() => handleSelect(v)}
+          >
+            <Text>{v}</Text>
+          </span>
+        ))}
       </div>
     </MainSide>
   );

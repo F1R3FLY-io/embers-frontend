@@ -1,67 +1,30 @@
-import { useForm } from "@tanstack/react-form";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import z from "zod";
 
-import type { Option } from "@/lib/components/Select";
+import type { FromModel } from "@/lib/components/AgentsTeamGeneralInfoFrom";
 
-import { Button } from "@/lib/components/Button";
-import { IconPreview } from "@/lib/components/IconPreview";
-import { Input } from "@/lib/components/Input";
-import LanguageFooter from "@/lib/components/LanguageFooter";
-import { Select } from "@/lib/components/Select";
+import { AgentsTeamGeneralInfoFrom } from "@/lib/components/AgentsTeamGeneralInfoFrom";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
-import { useGraphEditorStepper } from "@/lib/providers/stepper/flows/GraphEditor";
+import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 
 import styles from "./CreateAgentsTeam.module.scss";
-
-const flowTypeOptions: Option<string>[] = [
-  { label: "Parallel where possible", value: "parallel" },
-];
-
-const execTypeOptions: Option<string>[] = [
-  { label: "Function", value: "function" },
-  { label: "Agent", value: "agent" },
-  { label: "Pipeline", value: "pipeline" },
-];
-
-const formModel = z.object({
-  description: z.union([z.string(), z.undefined()]),
-  execType: z.string(),
-  flowType: z.string(),
-  iconUrl: z.union([z.string(), z.undefined()]),
-  language: z.string(),
-  name: z.string().nonempty(),
-});
 
 export default function CreateAgentsTeam() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, step, updateMany } =
-    useGraphEditorStepper();
+  const { agentsTeam, update } = useCurrentAgentsTeam();
 
-  const form = useForm({
-    defaultValues: {
-      description: data.description,
-      execType: data.execType ?? execTypeOptions[0].value,
-      flowType: data.flowType ?? flowTypeOptions[0].value,
-      iconUrl: data.iconUrl,
-      language: data.language ?? "en",
-      name: data.name,
+  const onSubmit = useCallback(
+    (state: FromModel) => {
+      update(state);
+      void navigate("/agents-team/edit");
     },
-    onSubmit: ({ value }) => {
-      updateMany(value);
-      navigateToNextStep();
-    },
-    validators: {
-      onChange: formModel,
-    },
-  });
-
-  const handleSaveDraft = () => {};
-  const handleCancel = () => void navigate("/dashboard");
+    [update, navigate],
+  );
+  const onCancel = useCallback(() => void navigate("/dashboard"), [navigate]);
 
   return (
     <div className={styles["create-container"]}>
@@ -71,7 +34,7 @@ export default function CreateAgentsTeam() {
 
       <div className={styles["stepper-container"]}>
         <Stepper
-          currentStep={step}
+          currentStep={0}
           steps={[
             t("deploy.generalInfo"),
             t("deploy.creation"),
@@ -87,177 +50,18 @@ export default function CreateAgentsTeam() {
           </Text>
         </div>
 
-        <form
-          className={styles["details-container"]}
-          onSubmit={(e) => {
-            e.preventDefault();
-            void form.handleSubmit();
+        <AgentsTeamGeneralInfoFrom
+          initialData={{
+            description: agentsTeam.description,
+            execType: agentsTeam.execType ?? "function",
+            flowType: agentsTeam.flowType ?? "parallel",
+            iconUrl: agentsTeam.iconUrl,
+            language: agentsTeam.language ?? "en",
+            name: agentsTeam.name ?? "",
           }}
-        >
-          <Text
-            bold
-            className={styles["section-title"]}
-            color="primary"
-            type="H5"
-          >
-            {t("agents.generalSettings")}
-          </Text>
-
-          <form.Field name="iconUrl">
-            {(field) => (
-              <div className={styles["icon-section"]}>
-                <IconPreview url={field.state.value} />
-                <div className={styles["icon-input-container"]}>
-                  <Text color="secondary" type="small">
-                    {t("deploy.iconUrl")}
-                  </Text>
-                  <Input
-                    error={
-                      field.state.meta.isTouched && !field.state.meta.isValid
-                    }
-                    placeholder="https://example.com/icon.png"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                </div>
-              </div>
-            )}
-          </form.Field>
-
-          <form.Field name="name">
-            {(field) => (
-              <div className={styles["form-section"]}>
-                <Text color="secondary" type="small">
-                  {t("aiTeam.teamName")}
-                </Text>
-                <Input
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
-                  placeholder={t("aiTeam.teamName")}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
-            )}
-          </form.Field>
-
-          <form.Field name="description">
-            {(field) => (
-              <div className={styles["form-section"]}>
-                <Text color="secondary" type="small">
-                  {t("basic.description")}
-                </Text>
-                <Input
-                  textarea
-                  placeholder={t("basic.description")}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
-            )}
-          </form.Field>
-
-          <form.Field name="execType">
-            {(field) => (
-              <div className={styles.group}>
-                <Text
-                  bold
-                  className={styles["section-title"]}
-                  color="primary"
-                  type="H5"
-                >
-                  {t("aiTeam.executionContext")}
-                </Text>
-                <Text className={styles.hint} color="secondary" type="small">
-                  {t("aiTeam.executionContextHint")}
-                </Text>
-
-                <Select
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
-                  label={t("aiTeam.executionType")}
-                  options={execTypeOptions}
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-              </div>
-            )}
-          </form.Field>
-
-          <form.Field name="language">
-            {(field) => (
-              <div className={styles["form-section"]}>
-                <Select
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
-                  label={t("basic.language")}
-                  options={[{ label: "English", value: "en" }]}
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-              </div>
-            )}
-          </form.Field>
-
-          <form.Field name="flowType">
-            {(field) => (
-              <div className={styles.group}>
-                <Text
-                  bold
-                  className={styles["section-title"]}
-                  color="primary"
-                  type="H5"
-                >
-                  {t("aiTeam.computeSettings")}
-                </Text>
-                <Text className={styles.hint} color="secondary" type="small">
-                  {t("aiTeam.computeSettingsHint")}
-                </Text>
-
-                <Select
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
-                  label={t("aiTeam.flowType")}
-                  options={flowTypeOptions}
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                />
-              </div>
-            )}
-          </form.Field>
-
-          <form.Subscribe selector={(state) => [state.isSubmitting]}>
-            {([isSubmitting]) => (
-              <div className={styles["button-container"]}>
-                <Button
-                  disabled={isSubmitting}
-                  type="secondary"
-                  onClick={handleCancel}
-                >
-                  {t("basic.cancel")}
-                </Button>
-                <div className={styles["button-group"]}>
-                  <Button
-                    disabled={isSubmitting}
-                    type="secondary"
-                    onClick={handleSaveDraft}
-                  >
-                    {t("basic.saveDraft")}
-                  </Button>
-                  <Button submit disabled={isSubmitting} type="primary">
-                    {t("basic.continue")}
-                  </Button>
-                </div>
-              </div>
-            )}
-          </form.Subscribe>
-
-          <LanguageFooter />
-        </form>
+          onCancel={onCancel}
+          onSubmit={onSubmit}
+        />
       </div>
     </div>
   );

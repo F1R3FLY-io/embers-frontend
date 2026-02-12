@@ -5,10 +5,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
 import { CurrentAgentProvider } from "@/lib/providers/currentAgent/CurrentAgentProvider";
+import { CurrentAgentsTeamProvider } from "@/lib/providers/currentAgentsTeam/CurrentAgentsTeamProvider";
 import { DockProvider } from "@/lib/providers/dock/DockProvider";
 import { LoaderProvider } from "@/lib/providers/loader/LoaderProvider";
 import { ModalProvider } from "@/lib/providers/modal/ModalProvider";
-import { GraphEditorStepperProvider } from "@/lib/providers/stepper/flows/GraphEditor";
 import { OSLFEditorStepperProvider } from "@/lib/providers/stepper/flows/OSLFEditor";
 import { ThemeProvider } from "@/lib/providers/theme/ThemeProvider";
 import { WalletProvider } from "@/lib/providers/wallet/WalletProvider";
@@ -26,9 +26,7 @@ const DeployAgent = lazy(async () => import("@/pages/DeployAgent"));
 const DeployAgentsTeam = lazy(async () => import("@/pages/DeployAgentsTeam"));
 const Home = lazy(async () => import("@/pages/Home"));
 const Login = lazy(async () => import("@/pages/Login"));
-const CreateAgentsTeamFlow = lazy(
-  async () => import("@/pages/CreateAgentsTeamFlow"),
-);
+const EditAgentsTeam = lazy(async () => import("@/pages/EditAgentsTeam"));
 const EditAgent = lazy(async () => import("@/pages/EditAgent"));
 const PublishAgentsTeam = lazy(async () => import("@/pages/PublishAgentsTeam"));
 
@@ -70,22 +68,26 @@ export default function App() {
                           />
                           <Route
                             element={
-                              <GraphEditorStepperProvider>
+                              <CurrentAgentsTeamProvider>
                                 <Routes>
                                   <Route
                                     element={<CreateAgentsTeam />}
                                     path="create"
                                   />
                                   <Route
-                                    element={<CreateAgentsTeamFlow />}
+                                    element={<EditAgentsTeam />}
                                     path="edit"
                                   />
                                   <Route
                                     element={<DeployAgentsTeam />}
                                     path="deploy"
                                   />
+                                  <Route
+                                    element={<PublishAgentsTeam />}
+                                    path="publish"
+                                  />
                                 </Routes>
-                              </GraphEditorStepperProvider>
+                              </CurrentAgentsTeamProvider>
                             }
                             path="/agents-team/*"
                           />
@@ -106,10 +108,6 @@ export default function App() {
                               </OSLFEditorStepperProvider>
                             }
                             path="/oslf/*"
-                          />
-                          <Route
-                            element={<PublishAgentsTeam />}
-                            path="/publish-agents-team"
                           />
                         </Route>
                       </Routes>
