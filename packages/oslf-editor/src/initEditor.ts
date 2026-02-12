@@ -1,6 +1,6 @@
 import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
 import * as Blockly from "blockly/core";
-import En from "blockly/msg/en";
+import * as En from "blockly/msg/en";
 
 import { RENDERER_NAME } from "./CustomRenderer";
 import { applyBlockGradients } from "./gradients";
@@ -12,7 +12,7 @@ export function initEditor(
   container: string | Element,
   initToolbox: Blockly.utils.toolbox.ToolboxDefinition,
 ): Blockly.WorkspaceSvg {
-  Blockly.setLocale(En);
+  Blockly.setLocale(En as any);
 
   const toolbox = initToolbox;
 

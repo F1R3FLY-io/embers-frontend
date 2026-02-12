@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "pnpm --filter @f1r3fly-io/embers-client-sdk build && tsc -b && vite build",
+    "build": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/oslf-editor build && tsc -b && vite build",
     "lint": "eslint --fix .",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
