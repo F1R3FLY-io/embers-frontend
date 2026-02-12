@@ -2,7 +2,6 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./.tmp/tsconfig.tests.tsbuildinfo",
     "incremental": true,
-    "composite": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
