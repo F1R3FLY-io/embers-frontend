@@ -150,7 +150,7 @@ function generateToolboxFromBlocks(blocks: any[], isSearchActive = false) {
 
   for (const block of blocks) {
     const style = block.style || "process_blocks";
-    if (!blocksByCategory[style]) {
+    if (!(style in blocksByCategory)) {
       blocksByCategory[style] = [];
     }
     blocksByCategory[style].push(block);
@@ -247,22 +247,20 @@ function updateToolboxWithFilter(
 
 function loadBlocks(workspace: Blockly.Workspace, event: CustomEvent<any[]>) {
   const blocks = event.detail;
-  if (blocks) {
-    // Store original blocks for filtering
-    originalBlocks = blocks;
+  // Store original blocks for filtering
+  originalBlocks = blocks;
 
-    Blockly.defineBlocksWithJsonArray(blocks);
+  Blockly.defineBlocksWithJsonArray(blocks);
 
-    // Register blocks with the code generator
-    registerBlocks(blocks);
+  // Register blocks with the code generator
+  registerBlocks(blocks);
 
-    // Use shared toolbox generation function
-    const updatedToolbox = generateToolboxFromBlocks(blocks);
+  // Use shared toolbox generation function
+  const updatedToolbox = generateToolboxFromBlocks(blocks);
 
-    // Update the workspace toolbox
-    const workspaceSvg = workspace as Blockly.WorkspaceSvg;
-    workspaceSvg.updateToolbox(updatedToolbox);
-  }
+  // Update the workspace toolbox
+  const workspaceSvg = workspace as Blockly.WorkspaceSvg;
+  workspaceSvg.updateToolbox(updatedToolbox);
 }
 
 const OSLF_STYLE_ID = "oslf-editor-styles";
@@ -396,10 +394,8 @@ export function init(container: Element): OSLFInstance {
 
   setupWorkspaceChangeListener(workspace);
 
-  const toolbox = document.getElementsByClassName("blocklyToolbox")[0];
-  if (toolbox) {
-    toolbox.prepend(searchInput);
-  }
+  const toolbox = document.getElementsByClassName("blocklyToolbox").item(0);
+  toolbox?.prepend(searchInput);
 
   // Setup search input event listeners
   searchInput.addEventListener("search", (event: Event) => {

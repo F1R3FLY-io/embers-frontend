@@ -48,6 +48,7 @@ export default defineConfig(
             "componentWillUnmount",
             "render",
           ],
+          ignoreOverrideMethods: true,
         },
       ],
       curly: ["error", "all"],

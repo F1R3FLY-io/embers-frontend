@@ -243,13 +243,8 @@ function setupObserver(container: Element): void {
  * @param workspace - The Blockly workspace to apply gradients to
  */
 export function applyBlockGradients(workspace: Blockly.WorkspaceSvg): void {
-  const svg = workspace.getParentSvg();
-  if (!svg) {
-    return;
-  }
-
   // Find the container element (parent of all Blockly SVGs)
-  const container = svg.parentElement;
+  const container = workspace.getParentSvg().parentElement;
   if (!container) {
     return;
   }
