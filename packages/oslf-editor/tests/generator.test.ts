@@ -1,6 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { Order, RhoLangGenerator } from "./generator";
+import { Order, RhoLangGenerator } from "@/generator";
 
 // Mock Blockly Block
 function createMockBlock(
@@ -13,7 +11,7 @@ function createMockBlock(
   } = {},
 ): any {
   const block: any = {
-    getFieldValue: vi.fn((name: string) => options.fields?.[name] ?? null),
+    getFieldValue: jest.fn((name: string) => options.fields?.[name] ?? null),
     nextConnection: options.nextBlock
       ? {
           targetBlock: () => options.nextBlock,
@@ -21,13 +19,13 @@ function createMockBlock(
       : null,
     type,
     workspace: {
-      getVariableById: vi.fn(),
+      getVariableById: jest.fn(),
     },
   };
 
   // Add input connections for value inputs
   if (options.inputValues) {
-    block.getInput = vi.fn((name: string) => {
+    block.getInput = jest.fn((name: string) => {
       if (options.inputValues?.[name]) {
         return {
           connection: {
@@ -210,7 +208,7 @@ describe("RhoLangGenerator", () => {
       const block = createMockBlock("test_block", { nextBlock });
 
       // Spy on blockToCode and mock its return value
-      const blockToCodeSpy = vi
+      const blockToCodeSpy = jest
         .spyOn(generator, "blockToCode")
         .mockReturnValue("next\n");
 
@@ -234,7 +232,7 @@ describe("RhoLangGenerator", () => {
       const block = createMockBlock("test_block", { nextBlock });
 
       // Mock blockToCode
-      const blockToCodeSpy = vi
+      const blockToCodeSpy = jest
         .spyOn(generator, "blockToCode")
         .mockReturnValue("next\n");
 
@@ -252,7 +250,7 @@ describe("RhoLangGenerator", () => {
       const nextBlock = createMockBlock("next_block");
       const block = createMockBlock("test_block", { nextBlock });
 
-      const blockToCodeSpy = vi
+      const blockToCodeSpy = jest
         .spyOn(generator, "blockToCode")
         .mockReturnValue("second\n");
 

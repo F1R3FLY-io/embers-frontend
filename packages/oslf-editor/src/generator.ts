@@ -200,7 +200,7 @@ export class RhoLangGenerator extends Blockly.CodeGenerator {
       // Join with the parallel composition operator "|"
       // Trim trailing newline from current code, add | separator
       const trimmedCode = code.trim();
-      return `${trimmedCode}\n| ${Array.isArray(nextCode) ? nextCode[0] : (nextCode ?? "")}`;
+      return `${trimmedCode}\n| ${Array.isArray(nextCode) ? nextCode[0] : nextCode}`;
     }
 
     return code;

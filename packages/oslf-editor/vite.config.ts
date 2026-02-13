@@ -16,4 +16,9 @@ export default defineConfig({
       tsconfigPath: "tsconfig.lib.json",
     }),
   ],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+    },
+  },
 });
