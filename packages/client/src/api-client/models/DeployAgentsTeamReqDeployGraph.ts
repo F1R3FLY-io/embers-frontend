@@ -44,7 +44,7 @@ export interface DeployAgentsTeamReqDeployGraph {
   phloLimit: Int64;
   /**
    *
-   * @type {string}
+   * @type {DeployAgentsTeamReqDeployGraphTypeEnum}
    * @memberof DeployAgentsTeamReqDeployGraph
    */
   type: DeployAgentsTeamReqDeployGraphTypeEnum;

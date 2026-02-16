@@ -28,7 +28,7 @@ export interface DeploySignedTestRespSignedTestDeployLogs {
   logs: Array<Log>;
   /**
    *
-   * @type {string}
+   * @type {DeploySignedTestRespSignedTestDeployLogsTypeEnum}
    * @memberof DeploySignedTestRespSignedTestDeployLogs
    */
   type: DeploySignedTestRespSignedTestDeployLogsTypeEnum;

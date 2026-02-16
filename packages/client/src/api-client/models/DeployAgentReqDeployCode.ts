@@ -34,7 +34,7 @@ export interface DeployAgentReqDeployCode {
   phloLimit: Int64;
   /**
    *
-   * @type {string}
+   * @type {DeployAgentReqDeployCodeTypeEnum}
    * @memberof DeployAgentReqDeployCode
    */
   type: DeployAgentReqDeployCodeTypeEnum;

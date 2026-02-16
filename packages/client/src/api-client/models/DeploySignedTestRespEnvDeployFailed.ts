@@ -24,7 +24,7 @@ export interface DeploySignedTestRespEnvDeployFailed {
   error: string;
   /**
    *
-   * @type {string}
+   * @type {DeploySignedTestRespEnvDeployFailedTypeEnum}
    * @memberof DeploySignedTestRespEnvDeployFailed
    */
   type: DeploySignedTestRespEnvDeployFailedTypeEnum;

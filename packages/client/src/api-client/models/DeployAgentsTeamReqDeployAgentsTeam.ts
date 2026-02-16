@@ -50,7 +50,7 @@ export interface DeployAgentsTeamReqDeployAgentsTeam {
   phloLimit: Int64;
   /**
    *
-   * @type {string}
+   * @type {DeployAgentsTeamReqDeployAgentsTeamTypeEnum}
    * @memberof DeployAgentsTeamReqDeployAgentsTeam
    */
   type: DeployAgentsTeamReqDeployAgentsTeamTypeEnum;
