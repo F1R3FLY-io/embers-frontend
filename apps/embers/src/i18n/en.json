@@ -163,6 +163,50 @@
     "generalSettings": "General settings",
     "queryName": "Query Name",
     "createGraphQuery": "Create Graphical Query",
-    "purpose": "Purpose"
+    "purpose": "Purpose",
+    "searchBrowsePrograms": {
+      "title": "Search & Browse Programs",
+      "scopeAndAlgorithm": "Scope & Algorithm",
+      "scope": "Scope",
+      "repository": "Repository",
+      "repositoryPlaceholder": "Repository name or URL",
+      "matchMode": "Match Mode",
+      "runtimes": "Runtime(s)",
+      "noRuntimes": "No runtimes selected",
+      "coverageTarget": "Coverage Target",
+      "searching": "Searching...",
+      "startSearch": "Start Search",
+      "searchResults": "Search Results",
+      "matchesFound": "{{count}} matches found",
+      "score": "Score",
+      "coverage": "Coverage",
+      "showDetails": "Show Details",
+      "viewOnGithub": "View on GitHub",
+      "editSearch": "Edit Search",
+      "export": "Export",
+      "saveQuery": "Save Query",
+      "scopeOptions": {
+        "publicGithub": "Public GitHub",
+        "privateGithub": "Private GitHub"
+      },
+      "matchModeOptions": {
+        "exact": "Exact",
+        "compatible": "Compatible",
+        "lenient": "Lenient"
+      },
+      "coverageTargetOptions": {
+        "wholeProgram": "Whole Program",
+        "validateOnly": "Validate Schema only",
+        "transformOnly": "Transform Data only"
+      },
+      "sortOptions": {
+        "score": "Score"
+      },
+      "matchLabels": {
+        "exact": "Exact match",
+        "compatible": "Compatible match",
+        "lenient": "Lenient match"
+      }
+    }
   }
 }
