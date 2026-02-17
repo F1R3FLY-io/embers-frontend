@@ -136,7 +136,12 @@ export const SearchBrowseProgramsFiltersView: React.FC<Props> = ({
           />
 
           <div className={styles["input-field"]}>
-            <Text bold color="secondary" type="small">
+            <Text
+              bold
+              className={styles["input-label"]}
+              color="secondary"
+              type="small"
+            >
               {t("oslf.searchBrowsePrograms.repository")}
             </Text>
             <Input

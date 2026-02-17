@@ -17,6 +17,7 @@
 
 .content {
   padding: 16px;
+  height: 100%;
   overflow: auto;
   min-height: 0;
   -ms-overflow-style: none;
@@ -32,13 +33,15 @@
 .fields {
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 
 .input-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+}
+
+.input-label {
+  margin-bottom: -4px;
 }
 
 .tag-field {
@@ -71,6 +74,12 @@
   background: var(--background-neutral-hover);
 }
 
+.disabled-wrap {
+  gap: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
 .disabled-wrap[data-disabled="true"] {
   pointer-events: none;
   opacity: 0.65;
@@ -80,9 +89,7 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
   padding-bottom: 10px;
-  margin-bottom: 12px;
 }
 
 .results-controls {
@@ -206,13 +213,12 @@
 
 .dropdown {
   min-width: 110px;
-  padding: 6px 32px 6px 12px;
   font-size: 14px;
   color: var(--text-color-secondary);
   appearance: none;
   cursor: pointer;
   outline: none;
-  background-color: var(--background-color);
+  background-color: var(--background-neutral-overlay);
   border: none;
   border-radius: 6px;
 }
@@ -236,4 +242,8 @@
     fill: var(--text-color-primary);
     stroke: var(--text-color-primary);
   }
+}
+
+.sort-select {
+  min-width: 120px;
 }

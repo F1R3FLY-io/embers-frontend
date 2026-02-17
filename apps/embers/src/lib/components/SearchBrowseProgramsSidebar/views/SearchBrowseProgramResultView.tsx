@@ -4,8 +4,8 @@ import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/lib/components/Button";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
-import ChevronIcon from "@/public/icons/chevrondown-icon.svg?react";
 import SortIcon from "@/public/icons/sort-icon.svg?react";
 
 import type { SearchResultItem, SortBy } from "../types";
@@ -85,18 +85,14 @@ export const SearchBrowseProgramsResultsView: React.FC<Props> = ({
           </Text>
 
           <div className={styles["sort-dropdown"]}>
-            <select
-              className={styles.dropdown}
+            <Select
+              className={styles["sort-select"]}
+              options={sortOptions}
+              placement="bottom"
               value={sortBy}
-              onChange={(e) => onSortByChange?.(e.target.value as SortBy)}
-            >
-              {sortOptions.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            <ChevronIcon className={styles.chevron} />
+              variant="compact"
+              onChange={(v) => onSortByChange?.(v)}
+            />
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ declare const classNames: {
   readonly section: "section";
   readonly fields: "fields";
   readonly "input-field": "input-field";
+  readonly "input-label": "input-label";
   readonly "tag-field": "tag-field";
   readonly "tag-row": "tag-row";
   readonly actions: "actions";
@@ -32,5 +33,6 @@ declare const classNames: {
   readonly "sort-dropdown": "sort-dropdown";
   readonly dropdown: "dropdown";
   readonly chevron: "chevron";
+  readonly "sort-select": "sort-select";
 };
 export default classNames;

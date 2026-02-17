@@ -1,6 +1,7 @@
 import type React from "react";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import type {
   SearchBrowseProgramsFilters,
@@ -12,6 +13,7 @@ import type {
 import { SearchBrowseProgramsSidebar } from "@/lib/components/SearchBrowseProgramsSidebar";
 import { Layout } from "@/lib/layouts";
 import { Footer, Header } from "@/lib/layouts/OSLF";
+import { useConfirm } from "@/lib/providers/modal/useConfirm";
 
 interface OSLFLayoutProps {
   children: React.ReactNode;
@@ -20,7 +22,8 @@ interface OSLFLayoutProps {
 
 export const OSLFLayout: React.FC<OSLFLayoutProps> = ({ children, title }) => {
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
-
+  const confirm = useConfirm();
+  const navigate = useNavigate();
   const [searchState, setSearchState] = useState<SearchState>("idle");
   const [sortBy, setSortBy] = useState<SortBy>("score");
   const [results, setResults] = useState<SearchResultItem[]>([]);
@@ -61,6 +64,12 @@ export const OSLFLayout: React.FC<OSLFLayoutProps> = ({ children, title }) => {
     setResults(mockedResults);
     setSearchState("results");
   };
+
+  const onBackClick = useCallback(() => {
+    confirm({ message: "Do you want to leave this page?" })
+      .then((ok) => ok && void navigate("/dashboard"))
+      .catch(() => {});
+  }, [confirm, navigate]);
 
   const handleEditSearch = () => {
     setSearchState("idle");
@@ -105,7 +114,7 @@ export const OSLFLayout: React.FC<OSLFLayoutProps> = ({ children, title }) => {
         />
       }
       title={title}
-      onBackClick={() => {}}
+      onBackClick={onBackClick}
       onRightSidebarOpenChange={(open) => {
         setIsRightSidebarOpen(open);
         if (!open) {
