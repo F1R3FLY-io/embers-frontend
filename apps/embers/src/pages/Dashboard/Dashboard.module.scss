@@ -79,29 +79,6 @@
       }
     }
   }
-
-  .settings-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    border-radius: 6px;
-
-    svg {
-      fill: var(--text-color-secondary);
-    }
-
-    &:hover {
-      background-color: var(--background-neutral-hover);
-
-      svg {
-        fill: var(--text-color-primary);
-      }
-    }
-  }
 }
 
 /* Dashboard Sidebar */
@@ -179,4 +156,20 @@
     grid-template-columns: repeat(4, minmax(200px, 1fr));
     gap: 16px;
   }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    margin-top: 16px;
+  }
+
+  .search-control {
+    margin-left: 24px;
+  }
+}
+
+.system-button {
+  justify-content: unset;
 }

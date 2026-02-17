@@ -10,11 +10,11 @@ import type { NodeKind } from "@/lib/components/GraphEditor/nodes/nodes.registry
 import { Accordion } from "@/lib/components/Accordion";
 import { NODE_REGISTRY } from "@/lib/components/GraphEditor/nodes/nodes.registry";
 import { NodeItem } from "@/lib/components/GraphEditor/nodes/SidebarNode";
+import { SearchControl } from "@/lib/components/SearchControl";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useAgentsTeamVersions } from "@/lib/queries";
-import { SearchControl } from "@/pages/Dashboard/components/SearchControl";
 
 import styles from "./Graph.module.scss";
 

@@ -7,7 +7,6 @@ declare const classNames: {
   readonly "language-dropdown": "language-dropdown";
   readonly dropdown: "dropdown";
   readonly chevron: "chevron";
-  readonly "settings-icon": "settings-icon";
   readonly dashboard: "dashboard";
   readonly "dashboard-top": "dashboard-top";
   readonly "dashboard-column": "dashboard-column";
@@ -19,5 +18,8 @@ declare const classNames: {
   readonly entering: "entering";
   readonly entered: "entered";
   readonly "grid-container": "grid-container";
+  readonly "controls-row": "controls-row";
+  readonly "search-control": "search-control";
+  readonly "system-button": "system-button";
 };
 export default classNames;

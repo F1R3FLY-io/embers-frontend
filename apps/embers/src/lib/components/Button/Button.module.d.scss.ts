@@ -6,6 +6,7 @@ declare const classNames: {
   readonly disabled: "disabled";
   readonly secondary: "secondary";
   readonly subtle: "subtle";
+  readonly gray: "gray";
   readonly rounded: "rounded";
 };
 export default classNames;
