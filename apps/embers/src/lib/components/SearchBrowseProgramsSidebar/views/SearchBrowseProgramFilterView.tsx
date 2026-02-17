@@ -128,7 +128,7 @@ export const SearchBrowseProgramsFiltersView: React.FC<Props> = ({
 
       <div className={styles.fields}>
         <div className={styles["disabled-wrap"]} data-disabled={isSearching}>
-          <Select<SearchScope>
+          <Select
             label={t("oslf.searchBrowsePrograms.scope")}
             options={scopeOptions}
             value={filters.scope}
@@ -148,7 +148,7 @@ export const SearchBrowseProgramsFiltersView: React.FC<Props> = ({
             />
           </div>
 
-          <Select<MatchMode>
+          <Select
             label={t("oslf.searchBrowsePrograms.matchMode")}
             options={matchModeOptions}
             value={filters.matchMode}
@@ -194,7 +194,7 @@ export const SearchBrowseProgramsFiltersView: React.FC<Props> = ({
             </div>
           </div>
 
-          <Select<CoverageTarget>
+          <Select
             label={t("oslf.searchBrowsePrograms.coverageTarget")}
             options={coverageTargetOptions}
             value={filters.coverageTarget}
