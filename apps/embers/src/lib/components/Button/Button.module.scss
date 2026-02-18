@@ -47,6 +47,17 @@
   fill: var(--button-hover);
 }
 
+.gray {
+  color: var(--text-color-secondary);
+  fill: var(--text-color-secondary);
+
+  &:hover {
+    background-color: var(--background-neutral-hover);
+    fill: var(--text-color-primary);
+    color: var(--text-color-primary);
+  }
+}
+
 .rounded {
   border-radius: 20px;
   color: var(--text-color-primary);

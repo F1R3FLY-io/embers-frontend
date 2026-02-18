@@ -14,7 +14,7 @@ type ButtonProps = {
   onClick?: () => void | Promise<void>;
   rounded?: boolean;
   submit?: boolean;
-  type: "primary" | "secondary" | "subtle";
+  type: "primary" | "secondary" | "subtle" | "gray";
 };
 
 export function Button({
@@ -31,6 +31,7 @@ export function Button({
     styles.button,
     {
       [styles.disabled]: disabled,
+      [styles.gray]: type === "gray",
       [styles.primary]: type === "primary",
       [styles.rounded]: rounded,
       [styles.secondary]: type === "secondary",

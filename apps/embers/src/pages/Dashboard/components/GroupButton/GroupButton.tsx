@@ -2,27 +2,26 @@ import type { ReactNode } from "react";
 
 import classNames from "classnames";
 
-import styles from "./AgentsButton.module.scss";
+import styles from "./GroupButton.module.scss";
 
-interface AgentsButtonProps {
+interface GroupButtonProps {
   children: ReactNode;
   icon: ReactNode;
   isSelected?: boolean;
   onClick?: () => void;
 }
 
-export function AgentsButton({
+export function GroupButton({
   children,
   icon,
   isSelected,
   onClick,
-}: AgentsButtonProps) {
+}: GroupButtonProps) {
   return (
     <button
-      className={classNames(
-        styles["agents-button"],
-        isSelected && styles.selected,
-      )}
+      className={classNames(styles["agents-button"], {
+        [styles.selected]: isSelected,
+      })}
       onClick={onClick}
     >
       {icon}
