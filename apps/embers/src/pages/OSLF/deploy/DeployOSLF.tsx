@@ -10,7 +10,6 @@ import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
-import DraftIcon from "@/public/icons/draft-icon.svg?react";
 
 import styles from "./DeployOSLF.module.scss";
 
@@ -27,20 +26,18 @@ export default function DeployOSLF() {
     [data.id, data.version],
   );
 
-  const handleSaveDraft = () => {};
-
   const handleDeploy = useCallback(() => {
     if (!canDeploy) {
       return;
     }
     const modalData = [
-      { label: "deploy.labels.agentId", value: data.id },
+      { label: "deploy.labels.agentId" as const, value: data.id },
       {
-        label: "deploy.version",
+        label: "deploy.version" as const,
         value: data.version,
       },
-      { label: "deploy.labels.status", value: "ok" },
-      { label: "deploy.labels.note", value: data.description },
+      { label: "deploy.labels.status" as const, value: "ok" },
+      { label: "deploy.labels.note" as const, value: data.description },
     ];
 
     updateData("hasChanges", false);
@@ -150,20 +147,9 @@ export default function DeployOSLF() {
             <Button type="secondary" onClick={navigateToPrevStep}>
               {t("deploy.back")}
             </Button>
-
-            <div className={styles["button-group"]}>
-              <Button
-                icon={<DraftIcon />}
-                type="secondary"
-                onClick={handleSaveDraft}
-              >
-                {t("basic.saveDraft")}
-              </Button>
-
-              <Button submit disabled={!canDeploy} type="primary">
-                {t("deploy.deploy")}
-              </Button>
-            </div>
+            <Button submit disabled={!canDeploy} type="primary">
+              {t("deploy.deploy")}
+            </Button>
           </div>
 
           <LanguageFooter />

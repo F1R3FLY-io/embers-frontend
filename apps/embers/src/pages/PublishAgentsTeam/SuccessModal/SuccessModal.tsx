@@ -3,6 +3,8 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import type { TranslationKey } from "@/i18n";
+
 import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Text } from "@/lib/components/Text";
@@ -12,7 +14,7 @@ import styles from "./SuccessModal.module.scss";
 
 export type DeploySuccessData = {
   agentName: string;
-  data: { label: string; value?: string }[];
+  data: { label: TranslationKey; value?: string }[];
   iconUrl?: string;
 };
 

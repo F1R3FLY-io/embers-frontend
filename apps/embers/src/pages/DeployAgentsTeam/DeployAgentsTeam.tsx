@@ -81,10 +81,13 @@ export default function DeployAgentsTeam() {
     onSubmit: useCallbackWithLoader(async () => {
       try {
         const modalData = [
-          { label: "deploy.labels.agentId", value: agentsTeam.id },
-          { label: "deploy.version", value: agentsTeam.version },
-          { label: "deploy.labels.status", value: "ok" },
-          { label: "deploy.labels.note", value: agentsTeam.description },
+          { label: "deploy.labels.agentId" as const, value: agentsTeam.id },
+          { label: "deploy.version" as const, value: agentsTeam.version },
+          { label: "deploy.labels.status" as const, value: "ok" },
+          {
+            label: "deploy.labels.note" as const,
+            value: agentsTeam.description,
+          },
         ];
 
         const registryKey = PrivateKey.new();

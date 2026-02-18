@@ -64,11 +64,11 @@ export default function DeployAgent() {
       });
 
       const modalData = [
-        { label: "deploy.labels.agentId", value: agent.id },
-        { label: "deploy.version", value: agent.version },
-        { label: "deploy.labels.status", value: "ok" },
-        { label: "deploy.rhoLimit", value: value.rhoLimit },
-        { label: "deploy.labels.note", value: agent.description },
+        { label: "deploy.labels.agentId" as const, value: agent.id },
+        { label: "deploy.version" as const, value: agent.version },
+        { label: "deploy.labels.status" as const, value: "ok" },
+        { label: "deploy.rhoLimit" as const, value: value.rhoLimit },
+        { label: "deploy.labels.note" as const, value: agent.description },
       ];
 
       return deployMutation.mutateAsync(
