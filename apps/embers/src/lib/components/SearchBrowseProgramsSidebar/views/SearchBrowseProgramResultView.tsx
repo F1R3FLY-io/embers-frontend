@@ -3,6 +3,8 @@ import type React from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
+import type { TranslationKey } from "@/i18n";
+
 import { Button } from "@/lib/components/Button";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
@@ -27,7 +29,7 @@ type Props = {
 
 const getMatchLabel = (
   type: SearchResultItem["matchType"],
-  t: (key: string) => string,
+  t: (key: TranslationKey) => string,
 ) => {
   if (type === "exact") {
     return t("oslf.searchBrowsePrograms.matchLabels.exact");

@@ -2,6 +2,8 @@ import classNames from "classnames";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import type { TranslationKey } from "@/i18n";
+
 import { Button } from "@/lib/components/Button";
 import { SearchControl } from "@/lib/components/SearchControl";
 import { LanguageSelect } from "@/lib/components/Select/LanguageSelect";
@@ -35,7 +37,7 @@ interface TabConfig {
   Content: React.ComponentType<TabCommonProps>;
   icon: React.ReactNode;
   id: TabId;
-  labelKey: string;
+  labelKey: TranslationKey;
   placeholder: string;
 }
 

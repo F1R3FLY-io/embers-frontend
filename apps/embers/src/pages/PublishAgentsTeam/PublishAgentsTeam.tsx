@@ -38,12 +38,12 @@ export default function PublishAgentsTeam() {
   const onSubmit = useCallbackWithLoader(
     async ({ value }: { value: z.infer<typeof formModel> }) => {
       const modalData = [
-        { label: "deploy.labels.agentId", value: agentsTeam.id },
+        { label: "deploy.labels.agentId" as const, value: agentsTeam.id },
         {
-          label: "deploy.version",
+          label: "deploy.version" as const,
           value: agentsTeam.version,
         },
-        { label: "deploy.labels.note", value: "idk what to put here" },
+        { label: "deploy.labels.note" as const, value: "idk what to put here" },
       ];
 
       return publish.mutateAsync(value, {
