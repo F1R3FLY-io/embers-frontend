@@ -1,5 +1,4 @@
 import { useForm } from "@tanstack/react-form";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
@@ -22,8 +21,7 @@ export default function CreateOSLF() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { data, navigateToNextStep, setStep, step, updateData } =
-    useOSLFEditorStepper();
+  const { data, navigateToNextStep, updateData } = useOSLFEditorStepper();
 
   const form = useForm({
     defaultValues: {
@@ -42,10 +40,6 @@ export default function CreateOSLF() {
 
   const handleCancel = () => void navigate("/dashboard");
 
-  useEffect(() => {
-    setStep(0);
-  }, [setStep]);
-
   return (
     <div className={styles["create-container"]}>
       <Text bold color="primary" type="H1">
@@ -54,7 +48,7 @@ export default function CreateOSLF() {
 
       <div className={styles["stepper-container"]}>
         <Stepper
-          currentStep={step}
+          currentStep={0}
           steps={[
             t("oslf.generalSettings"),
             t("oslf.creation"),
@@ -102,6 +96,9 @@ export default function CreateOSLF() {
                 </Text>
                 <Input
                   textarea
+                  error={
+                    field.state.meta.isTouched && !field.state.meta.isValid
+                  }
                   placeholder={t("oslf.purpose")}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -120,15 +117,9 @@ export default function CreateOSLF() {
                 >
                   {t("basic.cancel")}
                 </Button>
-                <div className={styles["button-group"]}>
-                  <Button
-                    className={styles["continue-button"]}
-                    disabled={!isSubmitting}
-                    type="primary"
-                  >
-                    {t("basic.continue")}
-                  </Button>
-                </div>
+                <Button submit disabled={isSubmitting} type="primary">
+                  {t("basic.continue")}
+                </Button>
               </div>
             )}
           </form.Subscribe>

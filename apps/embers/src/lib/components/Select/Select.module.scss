@@ -107,3 +107,31 @@
   top: auto;
   bottom: calc(100% + 6px);
 }
+
+.compact {
+  gap: 0;
+}
+
+.select-compact {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--background-color);
+  border: none;
+
+  &:hover {
+    border: none;
+  }
+
+  &.open {
+    border: none;
+  }
+}
+
+.compact .value {
+  width: auto;
+}
+
+.compact .arrow {
+  margin-left: 8px;
+  font-size: 10px;
+}

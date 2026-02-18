@@ -19,6 +19,7 @@ interface BaseProps<T extends string> {
   options: Option<T>[];
   placeholder?: string;
   placement?: "auto" | "top" | "bottom";
+  variant?: "default" | "compact";
 }
 
 interface SingleSelectProps<T extends string> extends BaseProps<T> {
@@ -47,6 +48,7 @@ export function Select<T extends string>({
   placeholder = "Select value",
   placement = "auto",
   value,
+  variant = "default",
 }: SelectProps<T>) {
   const [open, setOpen] = useState(false);
   const [dropUp, setDropUp] = useState(false);
@@ -109,7 +111,11 @@ export function Select<T extends string>({
   }, [open, placement, options.length]);
 
   return (
-    <div className={classNames(styles.container, className)}>
+    <div
+      className={classNames(styles.container, className, {
+        [styles.compact]: variant === "compact",
+      })}
+    >
       {label && (
         <Text bold color="secondary" type="small">
           {label}
@@ -122,6 +128,7 @@ export function Select<T extends string>({
           [styles.disabled]: disabled,
           [styles.error]: error,
           [styles.open]: open,
+          [styles["select-compact"]]: variant === "compact",
         })}
         tabIndex={0}
         onBlur={() => setOpen(false)}

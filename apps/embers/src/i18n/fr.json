@@ -161,6 +161,50 @@
     "generalSettings": "",
     "queryName": "",
     "createGraphQuery": "",
-    "purpose": ""
+    "purpose": "",
+    "searchBrowsePrograms": {
+      "title": "",
+      "scopeAndAlgorithm": "",
+      "scope": "",
+      "repository": "",
+      "repositoryPlaceholder": "",
+      "matchMode": "",
+      "runtimes": "",
+      "noRuntimes": "",
+      "coverageTarget": "",
+      "searching": "",
+      "startSearch": "",
+      "searchResults": "",
+      "matchesFound": "",
+      "score": "",
+      "coverage": "",
+      "showDetails": "",
+      "viewOnGithub": "",
+      "editSearch": "",
+      "export": "",
+      "saveQuery": "",
+      "scopeOptions": {
+        "publicGithub": "",
+        "privateGithub": ""
+      },
+      "matchModeOptions": {
+        "exact": "",
+        "compatible": "",
+        "lenient": ""
+      },
+      "coverageTargetOptions": {
+        "wholeProgram": "",
+        "validateOnly": "",
+        "transformOnly": ""
+      },
+      "sortOptions": {
+        "score": ""
+      },
+      "matchLabels": {
+        "exact": "",
+        "compatible": "",
+        "lenient": ""
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ export type TagProps = {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  onClick?: () => void;
   onClose?: () => void;
   selected?: boolean;
   variant?: "solid" | "soft" | "outline";
@@ -19,6 +20,7 @@ export function Tag({
   children,
   className,
   disabled,
+  onClick,
   onClose,
   selected,
   variant = "soft",
@@ -34,12 +36,13 @@ export function Tag({
         },
         className,
       )}
+      onClick={disabled ? undefined : onClick}
     >
       <Text className={styles.label} type="normal">
         {children}
       </Text>
 
-      {onClose && (
+      {onClose && selected && (
         <button
           aria-label="Remove tag"
           className={styles["close-btn"]}

@@ -9,7 +9,10 @@ import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoa
 import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
 import { useCreateOslfMutation, useSaveOslfMutation } from "@/lib/queries";
 
-export const Header: React.FC = () => {
+export const Header: React.FC<{
+  isRightSidebarOpen: boolean;
+  onRightSidebarOpenChange: (open: boolean) => void;
+}> = ({ isRightSidebarOpen, onRightSidebarOpenChange }) => {
   const { t } = useTranslation();
   const { data, navigateToNextStep, updateData } = useOSLFEditorStepper();
   const dock = useDock();
@@ -20,7 +23,7 @@ export const Header: React.FC = () => {
 
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
-  const canRun = data.hasChanges;
+  const canRun = !data.hasChanges;
 
   const saveOrCreate = useCallbackWithLoader(async () => {
     const payload = {
@@ -77,8 +80,9 @@ export const Header: React.FC = () => {
   };
 
   const onRun = () => {
-    //not implemented
+    onRightSidebarOpenChange(!isRightSidebarOpen);
   };
+
   return (
     <>
       <Button disabled={isLoading} type="subtle" onClick={handleSave}>

@@ -14,5 +14,7 @@ declare const classNames: {
   readonly selected: "selected";
   readonly tag: "tag";
   readonly up: "up";
+  readonly compact: "compact";
+  readonly "select-compact": "select-compact";
 };
 export default classNames;
