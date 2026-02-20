@@ -10,11 +10,11 @@ export type CurrentAgentsTeam = {
   execType?: string;
   flowType?: string;
   hasGraphChanges?: boolean;
-  iconUrl?: string;
   id?: string;
   inputPrompt?: string;
   language?: string;
   lastDeployKey?: PrivateKey;
+  logo?: string;
   name?: string;
   nodes?: Node[];
   uri?: Uri;

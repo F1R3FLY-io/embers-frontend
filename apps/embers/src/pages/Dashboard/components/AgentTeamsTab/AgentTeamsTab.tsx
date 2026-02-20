@@ -31,6 +31,7 @@ export default function AgentTeamsTab({
       void navigate("/agents-team/edit", {
         state: {
           id,
+          version: "latest",
         } satisfies CurrentAgentsTeam,
       }),
     [navigate],
@@ -46,6 +47,17 @@ export default function AgentTeamsTab({
     })
       .then((ok) => ok && deleteAgentsTeam.mutate(id))
       .catch(() => {});
+
+  const onPublish = useCallback(
+    (id: string) =>
+      void navigate("/agents-team/publish", {
+        state: {
+          id,
+          version: "latest",
+        } satisfies CurrentAgentsTeam,
+      }),
+    [navigate],
+  );
 
   const { data } = useAgentsTeams();
 
@@ -91,6 +103,7 @@ export default function AgentTeamsTab({
       onCreate={onCreate}
       onDelete={onDelete}
       onNavigate={onNavigate}
+      onPublish={onPublish}
     />
   );
 }

@@ -28,8 +28,8 @@ const formModel = z.object({
   description: z.string().optional(),
   execType: z.string(),
   flowType: z.string(),
-  iconUrl: z.string().optional(),
   language: z.string(),
+  logo: z.string().optional(),
   name: z.string().nonempty(),
 });
 
@@ -68,7 +68,7 @@ export function AgentsTeamGeneralInfoFrom({
         {t("agents.generalSettings")}
       </Text>
 
-      <form.Field name="iconUrl">
+      <form.Field name="logo">
         {(field) => (
           <div className={styles["icon-section"]}>
             <IconPreview url={field.state.value} />

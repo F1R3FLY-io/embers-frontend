@@ -42,8 +42,8 @@ export const GraphLayout: React.FC<GraphLayoutProps> = ({
             description: agentsTeam.description,
             execType: agentsTeam.execType!,
             flowType: agentsTeam.flowType!,
-            iconUrl: agentsTeam.iconUrl,
             language: agentsTeam.language!,
+            logo: agentsTeam.logo,
             name: agentsTeam.name!,
           }}
           onCancel={onCancel}
@@ -57,8 +57,8 @@ export const GraphLayout: React.FC<GraphLayoutProps> = ({
     agentsTeam.description,
     agentsTeam.execType,
     agentsTeam.flowType,
-    agentsTeam.iconUrl,
     agentsTeam.language,
+    agentsTeam.logo,
     agentsTeam.name,
     formModal,
     update,

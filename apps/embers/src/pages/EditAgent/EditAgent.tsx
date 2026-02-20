@@ -14,21 +14,14 @@ import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CodeLayout } from "@/lib/layouts/Code";
 import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
 import { useAgentVersions } from "@/lib/queries";
-import { useCallOnce } from "@/lib/useCallOnce";
 
 import styles from "./EditAgent.module.scss";
 
 export default function EditAgent() {
   const editorRef = useRef<EditorRef>(null);
 
-  const { agent, update } = useCurrentAgent();
+  const { agent } = useCurrentAgent();
   const { data: agentVersions } = useAgentVersions(agent.id);
-
-  useCallOnce({
-    action: () => update({ version: agentVersions?.agents.at(-1)?.version }),
-    data: agentVersions,
-    pred: () => !!agentVersions,
-  });
 
   useEffect(() => {
     if (editorRef.current) {

@@ -24,6 +24,7 @@ interface GridProps {
   onCreate: () => void;
   onDelete: (id: string, name: string) => void;
   onNavigate: (id: string) => void;
+  onPublish?: (id: string) => void;
   title: string;
 }
 
@@ -33,6 +34,7 @@ export function Grid({
   onCreate,
   onDelete,
   onNavigate,
+  onPublish,
   title,
 }: GridProps) {
   const { t } = useTranslation();
@@ -92,7 +94,10 @@ export function Grid({
             {entry.name}
           </Text>
 
-          <div className={styles["agent-actions"]}>
+          <div
+            className={styles["agent-actions"]}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={styles["agent-action-buttons"]}>
               <Button
                 icon={<EditIcon />}
@@ -102,6 +107,12 @@ export function Grid({
               <Button type="primary" onClick={() => onNavigate(entry.id)}>
                 {t("agents.details")}
               </Button>
+
+              {onPublish && (
+                <Button type="subtle" onClick={() => onPublish(entry.id)}>
+                  {t("agents.publish")}
+                </Button>
+              )}
             </div>
 
             <TrashIcon
