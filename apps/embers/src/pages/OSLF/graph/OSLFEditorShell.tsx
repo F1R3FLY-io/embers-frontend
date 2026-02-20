@@ -3,6 +3,10 @@ import type { OSLFInstance } from "@f1r3fly-io/oslf-editor";
 import { Events, init, oslfBlocks } from "@f1r3fly-io/oslf-editor";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import type { OslfWorkspaceState } from "@/pages/OSLF/graph/OSLFStateCoerce";
+
+import { coerceOslfWorkspaceState } from "@/pages/OSLF/graph/OSLFStateCoerce";
+
 import styles from "./GraphOSLF.module.scss";
 import { OSLFOutlineView } from "./OSLFOutlineView";
 import { OSLFTreeView } from "./OSLFTreeView";
@@ -24,7 +28,7 @@ export function OSLFEditorShell({ onChange }: Props) {
 
   const [view, setView] = useState<ViewMode>("graph");
   const [lastCode, setLastCode] = useState<string>("");
-  const [lastState, setLastState] = useState<object | null>(null);
+  const [lastState, setLastState] = useState<OslfWorkspaceState | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -41,11 +45,10 @@ export function OSLFEditorShell({ onChange }: Props) {
     const handleChange = (event: Event) => {
       const { code, state } = (event as CustomEvent<OSLFChangeDetail>).detail;
       const safeCode = code || "";
-      const safeState = state || {};
 
       setLastCode(safeCode);
-      setLastState(safeState);
-      onChange?.({ code: safeCode, state: safeState });
+      setLastState(coerceOslfWorkspaceState(state));
+      onChange?.({ code: safeCode, state });
     };
 
     window.addEventListener(Events.ON_CHANGE, handleChange);

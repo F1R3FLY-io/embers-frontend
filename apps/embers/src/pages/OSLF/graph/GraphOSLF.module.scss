@@ -33,8 +33,8 @@
   display: inline-flex;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(20, 24, 31, 0.95);
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(20 24 31 / 95%);
   pointer-events: auto;
 }
 
@@ -42,7 +42,7 @@
   appearance: none;
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgb(255 255 255 / 75%);
   padding: 8px 12px;
   font-size: 13px;
   cursor: pointer;
@@ -53,8 +53,8 @@
 .oslf-segment-btn-active {
   appearance: none;
   border: none;
-  background: rgba(147, 51, 234, 0.95);
-  color: #ffffff;
+  background: rgb(147 51 234 / 95%);
+  color: #fff;
   padding: 8px 12px;
   font-size: 13px;
   cursor: pointer;
@@ -67,7 +67,7 @@
   inset: 0;
   z-index: 40;
   background: #0f1720;
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 1px solid rgb(255 255 255 / 6%);
   display: flex;
   flex-direction: column;
 }
@@ -78,13 +78,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
 }
 
 .oslf-view-frame-title {
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgb(255 255 255 / 90%);
 }
 
 .oslf-view-frame-body {
@@ -94,11 +94,12 @@
 }
 
 .oslf-tree {
-  font-family: ui-monospace, sfmono-regular, menlo, monaco, consolas, "Liberation Mono",
-  "Courier New", monospace;
+  font-family:
+    ui-monospace, sfmono-regular, menlo, monaco, consolas, "Liberation Mono",
+    "Courier New", monospace;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgb(255 255 255 / 88%);
   white-space: pre;
 }
 
