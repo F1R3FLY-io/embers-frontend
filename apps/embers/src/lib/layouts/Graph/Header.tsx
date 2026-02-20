@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
     const payload = {
       description: agentsTeam.description,
       edges: agentsTeam.edges!,
-      logo: agentsTeam.iconUrl,
+      logo: agentsTeam.logo,
       name: agentsTeam.name!,
       nodes: agentsTeam.nodes!,
     };
@@ -59,7 +59,7 @@ export const Header: React.FC = () => {
   }, [
     agentsTeam.description,
     agentsTeam.edges,
-    agentsTeam.iconUrl,
+    agentsTeam.logo,
     agentsTeam.name,
     agentsTeam.nodes,
     createMutation,

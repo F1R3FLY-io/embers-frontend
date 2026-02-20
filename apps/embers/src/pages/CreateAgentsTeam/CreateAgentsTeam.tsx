@@ -55,8 +55,8 @@ export default function CreateAgentsTeam() {
             description: agentsTeam.description,
             execType: agentsTeam.execType ?? "function",
             flowType: agentsTeam.flowType ?? "parallel",
-            iconUrl: agentsTeam.iconUrl,
             language: agentsTeam.language ?? "en",
+            logo: agentsTeam.logo,
             name: agentsTeam.name ?? "",
           }}
           onCancel={onCancel}

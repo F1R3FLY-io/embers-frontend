@@ -28,6 +28,7 @@ export default function AgentsTab({ searchQuery, sortBy }: AgentsTabProps) {
       void navigate("/agent/edit", {
         state: {
           id,
+          version: "latest",
         } satisfies CurrentAgent,
       }),
     [navigate],

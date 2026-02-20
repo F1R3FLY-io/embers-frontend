@@ -65,7 +65,7 @@ export default function PublishAgentsTeam() {
             <SuccessModal
               agentName={agentsTeam.name!}
               data={modalData}
-              iconUrl={agentsTeam.iconUrl}
+              iconUrl={agentsTeam.logo}
             />,
             {
               ariaLabel: "Success deploy",
@@ -118,7 +118,7 @@ export default function PublishAgentsTeam() {
 
         <div className={styles["profile-header"]}>
           <div className={styles["profile-icon"]}>
-            <IconPreview url={agentsTeam.iconUrl} />
+            <IconPreview url={agentsTeam.logo} />
           </div>
         </div>
 
