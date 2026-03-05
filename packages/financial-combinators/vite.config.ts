@@ -1,0 +1,25 @@
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
+import { resolve } from "path";
+
+export default defineConfig({
+  build: {
+    lib: {
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "FinancialCombinators",
+      formats: ["es", "cjs"],
+      fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
+    },
+    rollupOptions: {
+      // No external deps – this package is pure TypeScript with no runtime deps
+      external: [],
+    },
+    sourcemap: true,
+  },
+  plugins: [
+    dts({
+      tsConfigFilePath: "./tsconfig.lib.json",
+      insertTypesEntry: true,
+    }),
+  ],
+});
