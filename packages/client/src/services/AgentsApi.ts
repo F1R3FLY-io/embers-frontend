@@ -65,7 +65,7 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiAiAgentsCreateSendPost(
@@ -110,7 +110,7 @@ export class AgentsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiAiAgentsDeploySendPost(
@@ -163,7 +163,7 @@ export class AgentsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiAiAgentsDeploySendPost(
@@ -252,7 +252,7 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiAiAgentsIdSaveSendPost(
@@ -285,7 +285,7 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiAiAgentsIdDeleteSendPost(

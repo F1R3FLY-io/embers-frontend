@@ -73,7 +73,7 @@ export class WalletsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiWalletsTransferSendPost(
@@ -121,7 +121,7 @@ export class WalletsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     const sendResponse = await this.client.apiWalletsBoostSendPost(
