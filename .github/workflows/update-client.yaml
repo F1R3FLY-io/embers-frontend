@@ -31,7 +31,7 @@ jobs:
           rm -rf schema.zip output/
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
           version: latest
 
