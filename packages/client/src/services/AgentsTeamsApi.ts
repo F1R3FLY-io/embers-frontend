@@ -1,7 +1,5 @@
 import type { Graph } from "@f1r3fly-io/graphl-parser";
 
-import { base16 } from "@scure/base";
-
 import type {
   CreateAgentsTeamReq,
   FireskyReply,
@@ -62,10 +60,6 @@ export class AgentsTeamsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
 
     const sendResponse = await this.client.apiAiAgentsTeamsCreateSendPost(
       {
@@ -77,6 +71,11 @@ export class AgentsTeamsApiSdk {
         },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -155,11 +154,6 @@ export class AgentsTeamsApiSdk {
     const system =
       prepareResponse.response.system &&
       signContract(prepareResponse.response.system, this.privateKey);
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
         sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
@@ -171,6 +165,11 @@ export class AgentsTeamsApiSdk {
           },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -218,11 +217,6 @@ export class AgentsTeamsApiSdk {
     const system =
       prepareResponse.response.system &&
       signContract(prepareResponse.response.system, this.privateKey);
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
         sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
@@ -234,6 +228,11 @@ export class AgentsTeamsApiSdk {
           },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -296,11 +295,6 @@ export class AgentsTeamsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
       {
         address: this.address,
@@ -313,6 +307,11 @@ export class AgentsTeamsApiSdk {
         },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -331,17 +330,17 @@ export class AgentsTeamsApiSdk {
       prepareResponse.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
       {
         id,
         signedContract,
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -366,11 +365,6 @@ export class AgentsTeamsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
         {
@@ -386,6 +380,11 @@ export class AgentsTeamsApiSdk {
         },
         { signal: config?.signal },
       );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
+    );
 
     return { prepareResponse, sendResponse, waitForFinalization };
   }
