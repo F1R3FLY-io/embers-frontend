@@ -23,7 +23,8 @@ export type WalletEvent = z.infer<typeof WalletEvent>;
 
 export class EmbersEvents {
   private ws: WebSocket;
-  private deploySubscriptions: Map<string, () => void> = new Map();
+  private deploySubscriptions: Map<string, (errored: boolean) => void> =
+    new Map();
   private subscribers: Map<number, (e: WalletEvent) => void> = new Map();
 
   public constructor(config: EmbersEventsConfig) {
@@ -36,7 +37,9 @@ export class EmbersEvents {
   private handleMessage(event: MessageEvent<string>) {
     const walletEvent = WalletEvent.parse(JSON.parse(event.data));
     if (walletEvent.node_type === "Observer") {
-      this.deploySubscriptions.get(walletEvent.deploy_id)?.();
+      this.deploySubscriptions.get(walletEvent.deploy_id)?.(
+        walletEvent.errored,
+      );
       this.deploySubscriptions.delete(walletEvent.deploy_id);
       this.subscribers.forEach((sub) => sub(walletEvent));
     }
@@ -52,9 +55,15 @@ export class EmbersEvents {
         reject(new Error("timeout"));
       }, maxWait);
 
-      this.deploySubscriptions.set(deployId, () => {
+      this.deploySubscriptions.set(deployId, (errored: boolean) => {
         clearTimeout(timeout);
-        resolve(undefined);
+        if (errored) {
+          reject(
+            new Error(`deploy ${deployId} finalized with execution error`),
+          );
+        } else {
+          resolve(undefined);
+        }
       });
     });
   }

@@ -285,6 +285,7 @@ export class AgentsTeamsApiSdk {
   ) {
     const prepareResponse = await this.client.apiAiAgentsTeamsIdSavePreparePost(
       {
+        address: this.address,
         createAgentsTeamReq,
         id,
       },
@@ -302,6 +303,7 @@ export class AgentsTeamsApiSdk {
 
     const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
       {
+        address: this.address,
         id,
         sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
           prepareRequest: createAgentsTeamReq,
