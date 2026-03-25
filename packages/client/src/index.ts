@@ -8,6 +8,7 @@ export type * from "./entities/HttpCallConfigs";
 export * from "./entities/PrivateKey";
 export * from "./entities/PublicKey";
 export * from "./entities/Uri";
+export * from "./functions";
 export * from "./serialization";
 export * from "./services/AgentsApi";
 export * from "./services/AgentsTeamsApi";

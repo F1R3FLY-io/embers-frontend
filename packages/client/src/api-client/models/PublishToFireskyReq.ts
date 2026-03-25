@@ -104,7 +104,7 @@ export function PublishToFireskyReqToJSONTyped(
   return {
     email: value.email,
     handle: value.handle,
-    invite_code: value.inviteCode,
+    invite_code: value.inviteCode == null ? undefined : value.inviteCode,
     password: value.password,
     pds_url: value.pdsUrl,
   };
