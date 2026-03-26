@@ -3,6 +3,7 @@ import type { Address } from "@/entities/Address";
 export type EmbersEventsConfig = {
   address: Address;
   basePath: string;
+  pollIntervalMs?: number;
 };
 
 export type DeployStatus = {
@@ -23,10 +24,12 @@ export class DeployError extends Error {
 export class EmbersEvents {
   private basePath: string;
   private address: Address;
+  private pollIntervalMs: number;
 
   public constructor(config: EmbersEventsConfig) {
     this.basePath = config.basePath;
     this.address = config.address;
+    this.pollIntervalMs = config.pollIntervalMs ?? 2000;
   }
 
   /**
@@ -39,7 +42,7 @@ export class EmbersEvents {
     maxWait: number,
   ): Promise<number> {
     const deadline = Date.now() + maxWait;
-    const pollInterval = 2000;
+    const pollInterval = this.pollIntervalMs;
 
     while (Date.now() < deadline) {
       try {

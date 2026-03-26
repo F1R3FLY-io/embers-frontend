@@ -18,13 +18,29 @@ import { insertSignedSignature, signContract } from "@/functions";
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
-import type { EmbersEvents } from "./EmbersEvents";
+import { DeployError, type EmbersEvents } from "./EmbersEvents";
 
 export type AgentsTeamsConfig = {
   basePath: string;
   headers?: HTTPHeaders;
   privateKey: PrivateKey;
 };
+
+/**
+ * Run an async operation, retrying once if it throws DeployError.
+ * DeployError means the deploy finalized but execution errored (multi-parent
+ * block edge case). The retry re-prepares with a fresh valid_after_block_number.
+ */
+async function withDeployRetry<T>(op: () => Promise<T>): Promise<T> {
+  try {
+    return await op();
+  } catch (err) {
+    if (err instanceof DeployError) {
+      return await op();
+    }
+    throw err;
+  }
+}
 
 /** Build fetch init overrides that add valid_after block number header */
 function withValidAfter(
@@ -195,6 +211,7 @@ export class AgentsTeamsApiSdk {
     registryKey: PrivateKey,
     config?: ContractCallConfig,
   ) {
+    return withDeployRetry(async () => {
     const timestamp = new Date();
     const prepareRequest = {
       address: this.address,
@@ -247,6 +264,7 @@ export class AgentsTeamsApiSdk {
     );
 
     return { prepareResponse, sendResponse, blockNumber };
+    });
   }
 
   public async run(
@@ -293,36 +311,38 @@ export class AgentsTeamsApiSdk {
     createAgentsTeamReq: CreateAgentsTeamReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse =
-      await this.client.apiAiAgentsTeamsIdSavePreparePost(
-        { address: this.address, createAgentsTeamReq, id },
-        withValidAfter(config) ?? { signal: config?.signal },
+    return withDeployRetry(async () => {
+      const prepareResponse =
+        await this.client.apiAiAgentsTeamsIdSavePreparePost(
+          { address: this.address, createAgentsTeamReq, id },
+          withValidAfter(config) ?? { signal: config?.signal },
+        );
+
+      const signedContract = signContract(
+        prepareResponse.response.contract,
+        this.privateKey,
+      );
+      const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
+        {
+          address: this.address,
+          id,
+          sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
+            prepareRequest: createAgentsTeamReq,
+            prepareResponse: prepareResponse.response,
+            request: signedContract,
+            token: prepareResponse.token,
+          },
+        },
+        { signal: config?.signal },
       );
 
-    const signedContract = signContract(
-      prepareResponse.response.contract,
-      this.privateKey,
-    );
-    const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
-      {
-        address: this.address,
-        id,
-        sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
-          prepareRequest: createAgentsTeamReq,
-          prepareResponse: prepareResponse.response,
-          request: signedContract,
-          token: prepareResponse.token,
-        },
-      },
-      { signal: config?.signal },
-    );
+      const blockNumber = await this.events.subscribeForDeploy(
+        sendResponse.deployId,
+        config?.maxWaitForFinalisation ?? 120_000,
+      );
 
-    const blockNumber = await this.events.subscribeForDeploy(
-      sendResponse.deployId,
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
-    return { prepareResponse, sendResponse, blockNumber };
+      return { prepareResponse, sendResponse, blockNumber };
+    });
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
@@ -359,6 +379,7 @@ export class AgentsTeamsApiSdk {
     publishToFireskyReq: PublishToFireskyReq,
     config?: ContractCallConfig,
   ) {
+    return withDeployRetry(async () => {
     const prepareResponse =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
         { address: this.address, id, publishToFireskyReq },
@@ -391,6 +412,7 @@ export class AgentsTeamsApiSdk {
     );
 
     return { prepareResponse, sendResponse, blockNumber };
+    });
   }
 
   public async runOnFiresky(
