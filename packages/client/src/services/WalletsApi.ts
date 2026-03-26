@@ -1,5 +1,3 @@
-import { base16 } from "@scure/base";
-
 import type { HTTPHeaders } from "@/api-client";
 import type {
   ContractCallConfig,
@@ -71,11 +69,6 @@ export class WalletsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse = await this.client.apiWalletsTransferSendPost(
       {
         sendRequestBodySignedContractTransferReqTransferResp: {
@@ -86,6 +79,11 @@ export class WalletsApiSdk {
         },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -119,11 +117,6 @@ export class WalletsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse = await this.client.apiWalletsBoostSendPost(
       {
         sendRequestBodySignedContractBoostReqBoostResp: {
@@ -134,6 +127,11 @@ export class WalletsApiSdk {
         },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };

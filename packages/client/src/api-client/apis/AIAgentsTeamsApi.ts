@@ -111,11 +111,13 @@ export interface ApiAiAgentsTeamsIdDeleteSendPostRequest {
 }
 
 export interface ApiAiAgentsTeamsIdSavePreparePostRequest {
+  address: string;
   createAgentsTeamReq: CreateAgentsTeamReq;
   id: string;
 }
 
 export interface ApiAiAgentsTeamsIdSaveSendPostRequest {
+  address: string;
   id: string;
   sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp;
 }
@@ -927,7 +929,18 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
-    let urlPath = `/api/ai-agents-teams/{id}/save/prepare`;
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsIdSavePreparePost().',
+      );
+    }
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/save/prepare`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
     urlPath = urlPath.replace(
       `{id}`,
       encodeURIComponent(String(requestParameters.id)),
@@ -978,6 +991,13 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   async apiAiAgentsTeamsIdSaveSendPostRequestOpts(
     requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
   ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsIdSaveSendPost().',
+      );
+    }
+
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
@@ -1001,7 +1021,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
-    let urlPath = `/api/ai-agents-teams/{id}/save/send`;
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/save/send`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
     urlPath = urlPath.replace(
       `{id}`,
       encodeURIComponent(String(requestParameters.id)),

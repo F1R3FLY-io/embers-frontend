@@ -1,7 +1,5 @@
 import type { Graph } from "@f1r3fly-io/graphl-parser";
 
-import { base16 } from "@scure/base";
-
 import type {
   CreateAgentsTeamReq,
   FireskyReply,
@@ -20,13 +18,44 @@ import { insertSignedSignature, signContract } from "@/functions";
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
-import type { EmbersEvents } from "./EmbersEvents";
+import { DeployError, type EmbersEvents } from "./EmbersEvents";
 
 export type AgentsTeamsConfig = {
   basePath: string;
   headers?: HTTPHeaders;
   privateKey: PrivateKey;
 };
+
+/**
+ * Run an async operation, retrying once if it throws DeployError.
+ * DeployError means the deploy finalized but execution errored (multi-parent
+ * block edge case). The retry re-prepares with a fresh valid_after_block_number.
+ */
+async function withDeployRetry<T>(op: () => Promise<T>): Promise<T> {
+  try {
+    return await op();
+  } catch (err) {
+    if (err instanceof DeployError) {
+      return await op();
+    }
+    throw err;
+  }
+}
+
+/** Build fetch init overrides that add valid_after block number header */
+function withValidAfter(
+  config?: ContractCallConfig,
+): RequestInit | undefined {
+  if (config?.validAfterBlockNumber != null) {
+    return {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "X-Valid-After-Block": String(config.validAfterBlockNumber),
+      },
+    };
+  }
+  return undefined;
+}
 
 export class AgentsTeamsApiSdk {
   private client: AIAgentsTeamsApi;
@@ -52,21 +81,14 @@ export class AgentsTeamsApiSdk {
     config?: ContractCallConfig,
   ) {
     const prepareResponse = await this.client.apiAiAgentsTeamsCreatePreparePost(
-      {
-        createAgentsTeamReq,
-      },
-      { signal: config?.signal },
+      { createAgentsTeamReq },
+      withValidAfter(config) ?? { signal: config?.signal },
     );
 
     const signedContract = signContract(
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsCreateSendPost(
       {
         sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: {
@@ -79,7 +101,12 @@ export class AgentsTeamsApiSdk {
       { signal: config?.signal },
     );
 
-    return { prepareResponse, sendResponse, waitForFinalization };
+    const blockNumber = await this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
+    );
+
+    return { prepareResponse, sendResponse, blockNumber };
   }
 
   public async get(config?: QueryCallConfig) {
@@ -155,11 +182,6 @@ export class AgentsTeamsApiSdk {
     const system =
       prepareResponse.response.system &&
       signContract(prepareResponse.response.system, this.privateKey);
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
         sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
@@ -173,7 +195,12 @@ export class AgentsTeamsApiSdk {
       { signal: config?.signal },
     );
 
-    return { prepareResponse, sendResponse, waitForFinalization };
+    const blockNumber = await this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
+    );
+
+    return { prepareResponse, sendResponse, blockNumber };
   }
 
   public async deploy(
@@ -184,6 +211,7 @@ export class AgentsTeamsApiSdk {
     registryKey: PrivateKey,
     config?: ContractCallConfig,
   ) {
+    return withDeployRetry(async () => {
     const timestamp = new Date();
     const prepareRequest = {
       address: this.address,
@@ -204,12 +232,11 @@ export class AgentsTeamsApiSdk {
       version,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsTeamsDeployPreparePost(
-      {
-        deployAgentsTeamReq: prepareRequest,
-      },
-      { signal: config?.signal },
-    );
+    const prepareResponse =
+      await this.client.apiAiAgentsTeamsDeployPreparePost(
+        { deployAgentsTeamReq: prepareRequest },
+        withValidAfter(config) ?? { signal: config?.signal },
+      );
 
     const contract = signContract(
       prepareResponse.response.contract,
@@ -218,11 +245,6 @@ export class AgentsTeamsApiSdk {
     const system =
       prepareResponse.response.system &&
       signContract(prepareResponse.response.system, this.privateKey);
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
       {
         sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
@@ -236,7 +258,13 @@ export class AgentsTeamsApiSdk {
       { signal: config?.signal },
     );
 
-    return { prepareResponse, sendResponse, waitForFinalization };
+    const blockNumber = await this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
+    );
+
+    return { prepareResponse, sendResponse, blockNumber };
+    });
   }
 
   public async run(
@@ -283,37 +311,38 @@ export class AgentsTeamsApiSdk {
     createAgentsTeamReq: CreateAgentsTeamReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsTeamsIdSavePreparePost(
-      {
-        createAgentsTeamReq,
-        id,
-      },
-      { signal: config?.signal },
-    );
+    return withDeployRetry(async () => {
+      const prepareResponse =
+        await this.client.apiAiAgentsTeamsIdSavePreparePost(
+          { address: this.address, createAgentsTeamReq, id },
+          withValidAfter(config) ?? { signal: config?.signal },
+        );
 
-    const signedContract = signContract(
-      prepareResponse.response.contract,
-      this.privateKey,
-    );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
-    const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
-      {
-        id,
-        sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
-          prepareRequest: createAgentsTeamReq,
-          prepareResponse: prepareResponse.response,
-          request: signedContract,
-          token: prepareResponse.token,
+      const signedContract = signContract(
+        prepareResponse.response.contract,
+        this.privateKey,
+      );
+      const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
+        {
+          address: this.address,
+          id,
+          sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
+            prepareRequest: createAgentsTeamReq,
+            prepareResponse: prepareResponse.response,
+            request: signedContract,
+            token: prepareResponse.token,
+          },
         },
-      },
-      { signal: config?.signal },
-    );
+        { signal: config?.signal },
+      );
 
-    return { prepareResponse, sendResponse, waitForFinalization };
+      const blockNumber = await this.events.subscribeForDeploy(
+        sendResponse.deployId,
+        config?.maxWaitForFinalisation ?? 120_000,
+      );
+
+      return { prepareResponse, sendResponse, blockNumber };
+    });
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
@@ -329,11 +358,6 @@ export class AgentsTeamsApiSdk {
       prepareResponse.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
       {
         id,
@@ -342,7 +366,12 @@ export class AgentsTeamsApiSdk {
       { signal: config?.signal },
     );
 
-    return { prepareResponse, sendResponse, waitForFinalization };
+    const blockNumber = await this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
+    );
+
+    return { prepareResponse, sendResponse, blockNumber };
   }
 
   public async publishToFiresky(
@@ -350,25 +379,17 @@ export class AgentsTeamsApiSdk {
     publishToFireskyReq: PublishToFireskyReq,
     config?: ContractCallConfig,
   ) {
+    return withDeployRetry(async () => {
     const prepareResponse =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
-        {
-          address: this.address,
-          id,
-          publishToFireskyReq,
-        },
-        { signal: config?.signal },
+        { address: this.address, id, publishToFireskyReq },
+        withValidAfter(config) ?? { signal: config?.signal },
       );
 
     const signedContract = signContract(
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
-    );
-
     const sendResponse =
       await this.client.apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
         {
@@ -385,7 +406,13 @@ export class AgentsTeamsApiSdk {
         { signal: config?.signal },
       );
 
-    return { prepareResponse, sendResponse, waitForFinalization };
+    const blockNumber = await this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
+    );
+
+    return { prepareResponse, sendResponse, blockNumber };
+    });
   }
 
   public async runOnFiresky(

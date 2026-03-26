@@ -1,71 +1,71 @@
-import { z } from "zod/mini";
-
 import type { Address } from "@/entities/Address";
 
 export type EmbersEventsConfig = {
   address: Address;
   basePath: string;
+  pollIntervalMs?: number;
 };
 
-export const NodeType = z.enum(["Validator", "Observer"]);
-export type NodeType = z.infer<typeof NodeType>;
+export type DeployStatus = {
+  found: boolean;
+  block_hash: string | null;
+  block_number: number | null;
+  finalized: boolean;
+  errored: boolean | null;
+};
 
-export const WalletEvent = z.discriminatedUnion("type", [
-  z.object({
-    cost: z.coerce.bigint(),
-    deploy_id: z.string(),
-    errored: z.boolean(),
-    node_type: NodeType,
-    type: z.literal("Finalized"),
-  }),
-]);
-export type WalletEvent = z.infer<typeof WalletEvent>;
+export class DeployError extends Error {
+  constructor(public readonly deployId: string) {
+    super(`Deploy ${deployId} finalized with execution error`);
+    this.name = "DeployError";
+  }
+}
 
 export class EmbersEvents {
-  private ws: WebSocket;
-  private deploySubscriptions: Map<string, () => void> = new Map();
-  private subscribers: Map<number, (e: WalletEvent) => void> = new Map();
+  private basePath: string;
+  private address: Address;
+  private pollIntervalMs: number;
 
   public constructor(config: EmbersEventsConfig) {
-    this.ws = new WebSocket(
-      `${config.basePath}/api/wallets/${config.address.toString()}/deploys`,
-    );
-    this.ws.onmessage = this.handleMessage.bind(this);
+    this.basePath = config.basePath;
+    this.address = config.address;
+    this.pollIntervalMs = config.pollIntervalMs ?? 2000;
   }
 
-  private handleMessage(event: MessageEvent<string>) {
-    const walletEvent = WalletEvent.parse(JSON.parse(event.data));
-    if (walletEvent.node_type === "Observer") {
-      this.deploySubscriptions.get(walletEvent.deploy_id)?.();
-      this.deploySubscriptions.delete(walletEvent.deploy_id);
-      this.subscribers.forEach((sub) => sub(walletEvent));
-    }
-  }
-
+  /**
+   * Wait for a deploy to be finalized by polling the HTTP status endpoint.
+   * Returns the block number where the deploy was finalized.
+   * Throws DeployError if the deploy finalized with an execution error.
+   */
   public async subscribeForDeploy(
     deployId: string,
     maxWait: number,
-  ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        this.deploySubscriptions.delete(deployId);
-        reject(new Error("timeout"));
-      }, maxWait);
+  ): Promise<number> {
+    const deadline = Date.now() + maxWait;
+    const pollInterval = this.pollIntervalMs;
 
-      this.deploySubscriptions.set(deployId, () => {
-        clearTimeout(timeout);
-        resolve(undefined);
-      });
-    });
-  }
+    while (Date.now() < deadline) {
+      try {
+        const res = await fetch(
+          `${this.basePath}/api/service/deploys/${deployId}/status`,
+        );
+        if (res.ok) {
+          const status: DeployStatus = await res.json();
+          if (status.finalized) {
+            if (status.errored) {
+              throw new DeployError(deployId);
+            }
+            return status.block_number ?? 0;
+          }
+        }
+      } catch (err) {
+        if (err instanceof DeployError) {
+          throw err;
+        }
+      }
+      await new Promise((resolve) => setTimeout(resolve, pollInterval));
+    }
 
-  public subscribe(sub: (e: WalletEvent) => void): number {
-    const id = Math.random();
-    this.subscribers.set(id, sub);
-    return id;
-  }
-
-  public unsubscribe(id: number) {
-    this.subscribers.delete(id);
+    throw new Error(`Deploy ${deployId} not finalized after ${maxWait}ms`);
   }
 }
