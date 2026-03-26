@@ -13,6 +13,7 @@ export * from "./serialization";
 export * from "./services/AgentsApi";
 export * from "./services/AgentsTeamsApi";
 export * from "./services/EmbersApi";
+export { DeployError } from "./services/EmbersEvents";
 export * from "./services/OslfsApi";
 export * from "./services/TestnetApi";
 export * from "./services/WalletsApi";

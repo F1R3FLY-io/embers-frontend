@@ -1,5 +1,3 @@
-import { base16 } from "@scure/base";
-
 import type { CreateOslfReq, HTTPHeaders } from "@/api-client";
 import type {
   ContractCallConfig,
@@ -54,11 +52,6 @@ export class OslfsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiOslfsCreateSendPost(
       {
         sendRequestBodySignedContractCreateOslfReqCreateOslfResp: {
@@ -69,6 +62,11 @@ export class OslfsApiSdk {
         },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -125,11 +123,6 @@ export class OslfsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiOslfsIdSaveSendPost(
       {
         id,
@@ -141,6 +134,11 @@ export class OslfsApiSdk {
         },
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
@@ -158,17 +156,17 @@ export class OslfsApiSdk {
       prepareResponse.contract,
       this.privateKey,
     );
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 120_000,
-    );
-
     const sendResponse = await this.client.apiOslfsIdDeleteSendPost(
       {
         id,
         signedContract,
       },
       { signal: config?.signal },
+    );
+
+    const waitForFinalization = this.events.subscribeForDeploy(
+      sendResponse.deployId,
+      config?.maxWaitForFinalisation ?? 120_000,
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };

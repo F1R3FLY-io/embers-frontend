@@ -4,5 +4,6 @@ export type QueryCallConfig = {
 
 export type ContractCallConfig = {
   maxWaitForFinalisation?: number | null;
+  validAfterBlockNumber?: number | null;
   signal?: AbortSignal | null;
 };

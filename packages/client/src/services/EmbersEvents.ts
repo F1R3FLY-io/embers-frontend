@@ -8,8 +8,17 @@ export type EmbersEventsConfig = {
 export type DeployStatus = {
   found: boolean;
   block_hash: string | null;
+  block_number: number | null;
   finalized: boolean;
+  errored: boolean | null;
 };
+
+export class DeployError extends Error {
+  constructor(public readonly deployId: string) {
+    super(`Deploy ${deployId} finalized with execution error`);
+    this.name = "DeployError";
+  }
+}
 
 export class EmbersEvents {
   private basePath: string;
@@ -22,12 +31,13 @@ export class EmbersEvents {
 
   /**
    * Wait for a deploy to be finalized by polling the HTTP status endpoint.
-   * Rejects if the deploy is not finalized within maxWait ms.
+   * Returns the block number where the deploy was finalized.
+   * Throws DeployError if the deploy finalized with an execution error.
    */
   public async subscribeForDeploy(
     deployId: string,
     maxWait: number,
-  ): Promise<void> {
+  ): Promise<number> {
     const deadline = Date.now() + maxWait;
     const pollInterval = 2000;
 
@@ -39,11 +49,16 @@ export class EmbersEvents {
         if (res.ok) {
           const status: DeployStatus = await res.json();
           if (status.finalized) {
-            return;
+            if (status.errored) {
+              throw new DeployError(deployId);
+            }
+            return status.block_number ?? 0;
           }
         }
-      } catch {
-        // Network error — retry
+      } catch (err) {
+        if (err instanceof DeployError) {
+          throw err;
+        }
       }
       await new Promise((resolve) => setTimeout(resolve, pollInterval));
     }
