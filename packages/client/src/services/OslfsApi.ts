@@ -11,7 +11,10 @@ import { signContract } from "@/functions";
 
 import type { Address } from "../entities/Address";
 import type { PrivateKey } from "../entities/PrivateKey";
-import type { EmbersEvents } from "./EmbersEvents";
+import {
+  DEFAULT_MAX_WAIT_FOR_FINALISATION,
+  type EmbersEvents,
+} from "./EmbersEvents";
 
 export type OslfsConfig = {
   basePath: string;
@@ -56,7 +59,7 @@ export class OslfsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiOslfsCreateSendPost(
@@ -127,7 +130,7 @@ export class OslfsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiOslfsIdSaveSendPost(
@@ -160,7 +163,7 @@ export class OslfsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiOslfsIdDeleteSendPost(
