@@ -28,7 +28,9 @@ function makeEdge(source: string, target: string): Edge {
 // Type-narrowing helpers for Graph assertions
 // ---------------------------------------------------------------------------
 
-function expectTensor(g: Graph): Graph & { type: "Tensor"; graph_1: Graph; graph_2: Graph } {
+function expectTensor(
+  g: Graph,
+): Graph & { type: "Tensor"; graph_1: Graph; graph_2: Graph } {
   expect(g.type).toBe("Tensor");
   return g as Graph & { type: "Tensor"; graph_1: Graph; graph_2: Graph };
 }
@@ -37,9 +39,19 @@ function expectNil(g: Graph) {
   expect(g.type).toBe("Nil");
 }
 
-function expectContext(g: Graph): Graph & { type: "Context"; graph: Graph; name: { type: string; value: string }; string: string } {
+function expectContext(g: Graph): Graph & {
+  type: "Context";
+  graph: Graph;
+  name: { type: string; value: string };
+  string: string;
+} {
   expect(g.type).toBe("Context");
-  return g as Graph & { type: "Context"; graph: Graph; name: { type: string; value: string }; string: string };
+  return g as Graph & {
+    type: "Context";
+    graph: Graph;
+    name: { type: string; value: string };
+    string: string;
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -87,10 +99,7 @@ describe("toApiGraph", () => {
   });
 
   test("all nodes are orphans (no containers): graph_1 is Tensor of {Nil, orphanGraph}", () => {
-    const nodes = [
-      makeNode("n1", "input-node"),
-      makeNode("n2", "output-node"),
-    ];
+    const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
     const edges = [makeEdge("n1", "n2")];
 
     const result = toApiGraph(nodes, edges);
@@ -241,10 +250,7 @@ describe("fromApiGraph roundtrip", () => {
   });
 
   test("preserves structure for all-orphan graph", () => {
-    const nodes = [
-      makeNode("n1", "input-node"),
-      makeNode("n2", "output-node"),
-    ];
+    const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
     const edges = [makeEdge("n1", "n2")];
 
     const graph = toApiGraph(nodes, edges);

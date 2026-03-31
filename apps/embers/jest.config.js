@@ -14,7 +14,5 @@ export default {
       },
     ],
   },
-  transformIgnorePatterns: [
-    "../../node_modules/(?!(dagre|@f1r3fly-io)/)",
-  ],
+  transformIgnorePatterns: ["../../node_modules/(?!(dagre|@f1r3fly-io)/)"],
 };
