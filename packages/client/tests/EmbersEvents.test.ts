@@ -1,8 +1,10 @@
+import type { Address } from "@/entities/Address";
+import type { WalletEvent } from "@/services/EmbersEvents";
+
 import {
   DEFAULT_MAX_WAIT_FOR_FINALISATION,
   EmbersEvents,
 } from "@/services/EmbersEvents";
-import type { Address } from "@/entities/Address";
 
 // ---------------------------------------------------------------------------
 // WebSocket mock
@@ -17,7 +19,7 @@ class MockWebSocket {
   public onerror: ((ev: unknown) => void) | null = null;
   public onmessage: ((ev: { data: string }) => void) | null = null;
 
-  constructor(url: string) {
+  public constructor(url: string) {
     this.url = url;
     wsInstances.push(this);
   }
@@ -55,7 +57,7 @@ function validatorEvent(deployId: string) {
 
 /** Get the most-recently created MockWebSocket. */
 function latestWs(): MockWebSocket {
-  return wsInstances[wsInstances.length - 1]!;
+  return wsInstances[wsInstances.length - 1];
 }
 
 // ---------------------------------------------------------------------------
@@ -88,16 +90,16 @@ describe("EmbersEvents", () => {
 
   describe("constructor", () => {
     test("creates WebSocket with correct URL", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
 
       expect(wsInstances).toHaveLength(1);
-      expect(wsInstances[0]!.url).toBe(
+      expect(wsInstances[0].url).toBe(
         "wss://example.com/api/wallets/testAddr123/deploys",
       );
     });
 
     test("assigns onmessage, onopen, onclose, onerror handlers", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
       const ws = latestWs();
 
       expect(typeof ws.onmessage).toBe("function");
@@ -122,17 +124,20 @@ describe("EmbersEvents", () => {
       const events = new EmbersEvents(makeConfig());
       const ws = latestWs();
 
-      const callback = jest.fn();
+      const callback = jest.fn<(e: WalletEvent) => void>();
       events.subscribe(callback);
 
       ws.onmessage!({ data: observerEvent("deploy-1", "200") });
 
       expect(callback).toHaveBeenCalledTimes(1);
-      const received = callback.mock.calls[0]![0];
-      expect(received.type).toBe("Finalized");
-      expect(received.deploy_id).toBe("deploy-1");
-      expect(received.cost).toBe(200n);
-      expect(received.node_type).toBe("Observer");
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({
+          cost: 200n,
+          deploy_id: "deploy-1",
+          node_type: "Observer",
+          type: "Finalized",
+        }),
+      );
     });
 
     test("ignores Validator events -- does not resolve deploy subscriptions", async () => {
@@ -233,13 +238,15 @@ describe("EmbersEvents", () => {
       const events = new EmbersEvents(makeConfig());
       const ws = latestWs();
 
-      const callback = jest.fn();
+      const callback = jest.fn<(e: WalletEvent) => void>();
       events.subscribe(callback);
 
       ws.onmessage!({ data: observerEvent("d1", "999") });
 
       expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback.mock.calls[0]![0].cost).toBe(999n);
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({ cost: 999n }),
+      );
     });
 
     test("unsubscribe stops event delivery", () => {
@@ -273,7 +280,7 @@ describe("EmbersEvents", () => {
 
   describe("reconnection", () => {
     test("onclose triggers reconnect after delay", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
       expect(wsInstances).toHaveLength(1);
 
       latestWs().onclose!({});
@@ -286,7 +293,7 @@ describe("EmbersEvents", () => {
     });
 
     test("new WebSocket has same URL", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
       const originalUrl = latestWs().url;
 
       latestWs().onclose!({});
@@ -296,9 +303,11 @@ describe("EmbersEvents", () => {
     });
 
     test("exponential backoff: 1s, 2s, 4s, 8s, 16s, 30s (capped), 30s", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
 
-      const expectedDelays = [1_000, 2_000, 4_000, 8_000, 16_000, 30_000, 30_000];
+      const expectedDelays = [
+        1_000, 2_000, 4_000, 8_000, 16_000, 30_000, 30_000,
+      ];
 
       for (const delay of expectedDelays) {
         const countBefore = wsInstances.length;
@@ -315,7 +324,7 @@ describe("EmbersEvents", () => {
     });
 
     test("backoff resets to 1s after successful connection (onopen)", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
 
       // Escalate backoff: close -> reconnect at 1s, close -> reconnect at 2s
       latestWs().onclose!({});
@@ -339,7 +348,7 @@ describe("EmbersEvents", () => {
     });
 
     test("handlers are reattached on the new WebSocket", () => {
-      new EmbersEvents(makeConfig());
+      const _events = new EmbersEvents(makeConfig());
 
       latestWs().onclose!({});
       jest.advanceTimersByTime(1_000);
@@ -353,7 +362,7 @@ describe("EmbersEvents", () => {
 
     test("message handling works on reconnected WebSocket", () => {
       const events = new EmbersEvents(makeConfig());
-      const callback = jest.fn();
+      const callback = jest.fn<(e: WalletEvent) => void>();
       events.subscribe(callback);
 
       // Reconnect
@@ -364,7 +373,9 @@ describe("EmbersEvents", () => {
       latestWs().onmessage!({ data: observerEvent("deploy-1") });
 
       expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback.mock.calls[0]![0].deploy_id).toBe("deploy-1");
+      expect(callback).toHaveBeenCalledWith(
+        expect.objectContaining({ deploy_id: "deploy-1" }),
+      );
     });
   });
 });

@@ -12,10 +12,9 @@ import { signContract } from "@/functions";
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
-import {
-  DEFAULT_MAX_WAIT_FOR_FINALISATION,
-  type EmbersEvents,
-} from "./EmbersEvents";
+import type { EmbersEvents } from "./EmbersEvents";
+
+import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
 export type AiAgentConfig = {
   basePath: string;

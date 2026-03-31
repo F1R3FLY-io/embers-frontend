@@ -1,4 +1,5 @@
 import type { Graph } from "@f1r3fly-io/embers-client-sdk";
+
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
 
 import {
@@ -13,7 +14,8 @@ import {
 // ---------------------------------------------------------------------------
 
 function makeNode(id: string, type: Node["type"], parentId?: string): Node {
-  return { data: {}, id, parentId, position: { x: 0, y: 0 }, type } as Node;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+  return { data: {}, id, parentId, position: { x: 0, y: 0 }, type } as any;
 }
 
 function makeContainer(id: string): Node {
@@ -30,9 +32,9 @@ function makeEdge(source: string, target: string): Edge {
 
 function expectTensor(
   g: Graph,
-): Graph & { type: "Tensor"; graph_1: Graph; graph_2: Graph } {
+): Graph & { graph_1: Graph; graph_2: Graph; type: "Tensor" } {
   expect(g.type).toBe("Tensor");
-  return g as Graph & { type: "Tensor"; graph_1: Graph; graph_2: Graph };
+  return g as Graph & { graph_1: Graph; graph_2: Graph; type: "Tensor" };
 }
 
 function expectNil(g: Graph) {
@@ -40,17 +42,17 @@ function expectNil(g: Graph) {
 }
 
 function expectContext(g: Graph): Graph & {
-  type: "Context";
   graph: Graph;
   name: { type: string; value: string };
   string: string;
+  type: "Context";
 } {
   expect(g.type).toBe("Context");
   return g as Graph & {
-    type: "Context";
     graph: Graph;
     name: { type: string; value: string };
     string: string;
+    type: "Context";
   };
 }
 
@@ -59,6 +61,7 @@ function expectContext(g: Graph): Graph & {
 // ---------------------------------------------------------------------------
 
 describe("toApiGraph", () => {
+  // eslint-disable-next-line jest/expect-expect
   test("no orphan nodes: graph_1 is subgraphs directly (Context, not Tensor)", () => {
     const nodes = [
       makeContainer("C1"),
@@ -76,6 +79,7 @@ describe("toApiGraph", () => {
     expectContext(outer.graph_1);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test("with orphan nodes: graph_1 is Tensor of {subgraphs, orphanNodeGraph}", () => {
     const nodes = [
       makeContainer("C1"),
@@ -98,6 +102,7 @@ describe("toApiGraph", () => {
     expectContext(inner.graph_2);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test("all nodes are orphans (no containers): graph_1 is Tensor of {Nil, orphanGraph}", () => {
     const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
     const edges = [makeEdge("n1", "n2")];
@@ -114,6 +119,7 @@ describe("toApiGraph", () => {
     expectContext(inner.graph_2);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test("empty nodes and edges: both graph_1 and graph_2 are Nil", () => {
     const result = toApiGraph([], []);
 
@@ -125,6 +131,7 @@ describe("toApiGraph", () => {
     expectNil(outer.graph_2);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test("container with no children + orphan: orphan is detected, container is not treated as orphan", () => {
     const nodes = [
       makeContainer("C1"),
@@ -146,6 +153,7 @@ describe("toApiGraph", () => {
     expectContext(inner.graph_2);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test("only deploy-container (no children, no orphans): container excluded from orphans", () => {
     const nodes = [makeContainer("C1")];
     const edges: Edge[] = [];
@@ -158,6 +166,7 @@ describe("toApiGraph", () => {
     expectContext(outer.graph_1);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   test("multiple containers + some orphans: all containers in subgraphs, orphans separate", () => {
     const nodes = [
       makeContainer("C1"),
@@ -217,8 +226,8 @@ describe("fromApiGraph roundtrip", () => {
 
     // Check edge (source/target, ignore ID since fromApiGraph generates new UUIDs)
     expect(resultEdges).toHaveLength(1);
-    expect(resultEdges[0]!.source).toBe("n1");
-    expect(resultEdges[0]!.target).toBe("n2");
+    expect(resultEdges[0].source).toBe("n1");
+    expect(resultEdges[0].target).toBe("n2");
   });
 
   test("preserves structure for orphan nodes (no parentId)", () => {
@@ -245,8 +254,8 @@ describe("fromApiGraph roundtrip", () => {
 
     // Edge preserved
     expect(resultEdges).toHaveLength(1);
-    expect(resultEdges[0]!.source).toBe("n1");
-    expect(resultEdges[0]!.target).toBe("n2");
+    expect(resultEdges[0].source).toBe("n1");
+    expect(resultEdges[0].target).toBe("n2");
   });
 
   test("preserves structure for all-orphan graph", () => {
@@ -266,8 +275,8 @@ describe("fromApiGraph roundtrip", () => {
     }
 
     expect(resultEdges).toHaveLength(1);
-    expect(resultEdges[0]!.source).toBe("n1");
-    expect(resultEdges[0]!.target).toBe("n2");
+    expect(resultEdges[0].source).toBe("n1");
+    expect(resultEdges[0].target).toBe("n2");
   });
 });
 

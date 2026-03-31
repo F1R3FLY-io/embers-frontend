@@ -16,7 +16,11 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "esModuleInterop": true,
+    "noEmit": true,
     "noEmitOnError": true,
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
 
     /* Linting */
     "strict": true,
@@ -26,5 +30,5 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["tests"]
+  "include": ["tests", "src"]
 }
