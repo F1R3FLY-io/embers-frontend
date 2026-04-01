@@ -4,6 +4,7 @@
     "incremental": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
+    "types": ["vite-plugin-svgr/client", "jest"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "paths": {
@@ -30,5 +31,5 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["tests", "src"]
+  "include": ["tests", "src/vite-env.d.ts"]
 }
