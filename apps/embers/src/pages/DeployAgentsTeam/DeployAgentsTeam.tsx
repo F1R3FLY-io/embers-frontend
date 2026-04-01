@@ -44,7 +44,7 @@ export default function DeployAgentsTeam() {
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
-      update({ lastDeployKey: key });
+      update({ lastDeployKey: key, uri: key.getPublicKey().getUri() });
       appendDeploy(true);
     },
     [appendDeploy, update],
@@ -92,38 +92,34 @@ export default function DeployAgentsTeam() {
 
         const registryKey = PrivateKey.new();
 
-        await deployTeamsMutation.mutateAsync(
+        const result = await deployTeamsMutation.mutateAsync({
+          agentsTeamId: agentsTeam.id!,
+          registryKey,
+          registryVersion: 1n,
+          rhoLimit: 1_000_000n,
+          version: agentsTeam.version!,
+        });
+
+        await result.waitForFinalization;
+
+        onSuccessfulDeploy(registryKey);
+        update({ hasGraphChanges: false });
+        open(
+          <SuccessModal
+            agentName={agentsTeam.name!}
+            createAnother={() => {
+              reset();
+              void navigate("/agents-team/create");
+            }}
+            data={modalData}
+            viewAgent={toEdit}
+            viewAllAgents={() => void navigate("/dashboard")}
+          />,
           {
-            agentsTeamId: agentsTeam.id!,
-            registryKey,
-            registryVersion: 1n,
-            rhoLimit: 1_000_000n,
-            version: agentsTeam.version!,
-          },
-          {
-            onError: onFailedDeploy,
-            onSuccess: () => {
-              onSuccessfulDeploy(registryKey);
-              update({ hasGraphChanges: false });
-              open(
-                <SuccessModal
-                  agentName={agentsTeam.name!}
-                  createAnother={() => {
-                    reset();
-                    void navigate("/agents-team/create");
-                  }}
-                  data={modalData}
-                  viewAgent={toEdit}
-                  viewAllAgents={() => void navigate("/dashboard")}
-                />,
-                {
-                  ariaLabel: "Success deploy",
-                  closeOnBlur: false,
-                  closeOnEsc: false,
-                  maxWidth: 550,
-                },
-              );
-            },
+            ariaLabel: "Success deploy",
+            closeOnBlur: false,
+            closeOnEsc: false,
+            maxWidth: 550,
           },
         );
       } catch (e) {

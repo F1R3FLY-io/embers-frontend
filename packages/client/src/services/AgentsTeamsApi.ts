@@ -22,6 +22,8 @@ import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
+
 export type AgentsTeamsConfig = {
   basePath: string;
   headers?: HTTPHeaders;
@@ -64,7 +66,7 @@ export class AgentsTeamsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsTeamsCreateSendPost(
@@ -157,7 +159,7 @@ export class AgentsTeamsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
@@ -220,7 +222,7 @@ export class AgentsTeamsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
@@ -297,7 +299,7 @@ export class AgentsTeamsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
@@ -331,7 +333,7 @@ export class AgentsTeamsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
@@ -366,7 +368,7 @@ export class AgentsTeamsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse =

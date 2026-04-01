@@ -21,16 +21,42 @@ export const WalletEvent = z.discriminatedUnion("type", [
 ]);
 export type WalletEvent = z.infer<typeof WalletEvent>;
 
+/** Default time (ms) to wait for a deploy to be finalized in a block. */
+export const DEFAULT_MAX_WAIT_FOR_FINALISATION = 45_000;
+
 export class EmbersEvents {
-  private ws: WebSocket;
+  private ws!: WebSocket;
   private deploySubscriptions: Map<string, () => void> = new Map();
   private subscribers: Map<number, (e: WalletEvent) => void> = new Map();
+  private config: EmbersEventsConfig;
+  private reconnectDelay = 1000;
+  private maxReconnectDelay = 30000;
 
   public constructor(config: EmbersEventsConfig) {
+    this.config = config;
+    this.connect();
+  }
+
+  private connect() {
     this.ws = new WebSocket(
-      `${config.basePath}/api/wallets/${config.address.toString()}/deploys`,
+      `${this.config.basePath}/api/wallets/${this.config.address.toString()}/deploys`,
     );
     this.ws.onmessage = this.handleMessage.bind(this);
+    this.ws.onopen = () => {
+      this.reconnectDelay = 1000; // reset backoff on successful connect
+    };
+    this.ws.onclose = () => this.scheduleReconnect();
+    this.ws.onerror = () => {}; // onclose fires after onerror
+  }
+
+  private scheduleReconnect() {
+    setTimeout(() => {
+      this.connect();
+    }, this.reconnectDelay);
+    this.reconnectDelay = Math.min(
+      this.reconnectDelay * 2,
+      this.maxReconnectDelay,
+    );
   }
 
   private handleMessage(event: MessageEvent<string>) {

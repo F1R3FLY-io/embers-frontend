@@ -14,6 +14,8 @@ import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
+
 export type AiAgentConfig = {
   basePath: string;
   headers?: HTTPHeaders;
@@ -65,7 +67,7 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsCreateSendPost(
@@ -110,7 +112,7 @@ export class AgentsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsDeploySendPost(
@@ -163,7 +165,7 @@ export class AgentsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsDeploySendPost(
@@ -252,7 +254,7 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsIdSaveSendPost(
@@ -285,7 +287,7 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
     const sendResponse = await this.client.apiAiAgentsIdDeleteSendPost(

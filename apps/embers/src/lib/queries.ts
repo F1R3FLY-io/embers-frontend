@@ -51,6 +51,11 @@ export function useAgent(id?: string, version?: string) {
     queryFn: async ({ signal }) =>
       api.agents.getVersion(id!, version!, { signal }),
     queryKey: ["agents", String(api.wallets.address), id, version],
+    retry: 10,
+    retryDelay: (attempt) => {
+      const base = Math.min(1000 * 2 ** attempt, 10_000);
+      return base * (0.5 + Math.random());
+    },
   });
 }
 
@@ -214,6 +219,11 @@ export function useAgentsTeam(id?: string, version?: string) {
       };
     },
     queryKey: ["agents-teams", String(api.wallets.address), id, version],
+    retry: 10,
+    retryDelay: (attempt) => {
+      const base = Math.min(1000 * 2 ** attempt, 10_000);
+      return base * (0.5 + Math.random());
+    },
   });
 }
 

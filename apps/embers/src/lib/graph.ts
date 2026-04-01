@@ -26,8 +26,22 @@ const DAGRE_NODE_HEIGHT = 140;
 // this should be stack safe
 export function toApiGraph(nodes: Node[], edges: Edge[]): Graph {
   const groups = groupByDeployContainer(nodes);
+  const orphanNodes = nodes.filter(
+    (node) => node.type !== "deploy-container" && !node.parentId,
+  );
+
+  const subgraphs = buildSubgraphs(groups);
+  const graph_1 =
+    orphanNodes.length > 0
+      ? {
+          graph_1: subgraphs,
+          graph_2: buildGraphNodes(orphanNodes),
+          type: "Tensor" as const,
+        }
+      : subgraphs;
+
   return {
-    graph_1: buildSubgraphs(groups),
+    graph_1,
     graph_2: buildGraphEdges(edges),
     type: "Tensor",
   };

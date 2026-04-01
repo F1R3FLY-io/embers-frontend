@@ -20,7 +20,8 @@
     "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,jsx,cjs,ts,tsx,mts,html,svg,json,css,scss}'",
     "ci:check:css": "stylelint '**/*.{css,scss}'",
-    "sync-i18n": "node --loader ts-node/esm sync-i18n.mts"
+    "sync-i18n": "node --loader ts-node/esm sync-i18n.mts",
+    "test": "jest"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.2",
@@ -53,6 +54,7 @@
     "@types/dagre": "^0.7.53",
     "@types/node": "^25.2.3",
     "@types/react-modal": "^3.16.3",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vite-plugin-static-copy": "^3.2.0",
