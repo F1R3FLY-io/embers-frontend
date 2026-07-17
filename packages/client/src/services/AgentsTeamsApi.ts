@@ -7,15 +7,15 @@ import type {
   FireskyReply,
   HTTPHeaders,
   PublishToFireskyReq,
-} from "@/api-client";
+} from "../api-client";
 import type {
   ContractCallConfig,
   QueryCallConfig,
-} from "@/entities/HttpCallConfigs";
-import type { Uri } from "@/entities/Uri";
+} from "../entities/HttpCallConfigs";
+import type { Uri } from "../entities/Uri";
 
-import { AIAgentsTeamsApi, Configuration } from "@/api-client";
-import { insertSignedSignature, signContract } from "@/functions";
+import { AIAgentsTeamsApi, Configuration } from "../api-client";
+import { insertSignedSignature, signContract } from "../functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";

@@ -1,6 +1,6 @@
 import { z } from "zod/mini";
 
-import type { Address } from "@/entities/Address";
+import type { Address } from "../entities/Address";
 
 export type EmbersEventsConfig = {
   address: Address;

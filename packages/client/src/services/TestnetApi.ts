@@ -1,8 +1,8 @@
-import type { HTTPHeaders } from "@/api-client";
-import type { QueryCallConfig } from "@/entities/HttpCallConfigs";
+import type { HTTPHeaders } from "../api-client";
+import type { QueryCallConfig } from "../entities/HttpCallConfigs";
 
-import { Configuration, TestnetApi } from "@/api-client";
-import { signContract } from "@/functions";
+import { Configuration, TestnetApi } from "../api-client";
+import { signContract } from "../functions";
 
 import { PrivateKey } from "../entities/PrivateKey";
 

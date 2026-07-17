@@ -2,7 +2,7 @@ import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 import { keccak256 } from "js-sha3";
 
-import { verifyAddress } from "@/functions";
+import { verifyAddress } from "../functions";
 
 import type { PublicKey } from "./PublicKey";
 

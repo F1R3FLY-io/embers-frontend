@@ -16,6 +16,7 @@
   "type": "module",
   "exports": {
     "types": "./dist/index.d.ts",
+    "f1r3fly-source": "./src/index.ts",
     "import": "./dist/index.js",
     "default": "./dist/index.js"
   },

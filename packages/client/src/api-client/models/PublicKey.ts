@@ -1,5 +1,5 @@
-import { PublicKey } from "@/entities/PublicKey";
-export type { PublicKey } from "@/entities/PublicKey";
+import { PublicKey } from "../../entities/PublicKey";
+export type { PublicKey } from "../../entities/PublicKey";
 
 export function PublicKeyFromJSON(json: any): PublicKey {
   return PublicKeyFromJSONTyped(json, false);

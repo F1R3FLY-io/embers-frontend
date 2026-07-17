@@ -1,13 +1,13 @@
 import { base16 } from "@scure/base";
 
-import type { HTTPHeaders } from "@/api-client";
+import type { HTTPHeaders } from "../api-client";
 import type {
   ContractCallConfig,
   QueryCallConfig,
-} from "@/entities/HttpCallConfigs";
+} from "../entities/HttpCallConfigs";
 
-import { Configuration, WalletsApi } from "@/api-client";
-import { signContract } from "@/functions";
+import { Configuration, WalletsApi } from "../api-client";
+import { signContract } from "../functions";
 
 import type { Address } from "../entities/Address";
 import type { Amount } from "../entities/Amount";

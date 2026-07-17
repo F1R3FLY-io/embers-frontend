@@ -11,17 +11,18 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/oslf-editor build && tsc -b && vite build",
+    "build:deps": "pnpm --filter @f1r3fly-io/embers-client-sdk build && pnpm --filter @f1r3fly-io/oslf-editor build",
+    "build": "pnpm run build:deps && tsc -b && vite build",
     "lint": "eslint --fix .",
     "preview": "vite preview",
-    "typecheck": "tsc -b --noEmit",
+    "typecheck": "pnpm run build:deps && tsc -b --noEmit",
     "format:code": "prettier --write '**/*.{js,jsx,cjs,ts,tsx,mts,html,svg,json,css,scss}'",
     "format:css": "stylelint --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,jsx,cjs,ts,tsx,mts,html,svg,json,css,scss}'",
     "ci:check:css": "stylelint '**/*.{css,scss}'",
     "sync-i18n": "node --loader ts-node/esm sync-i18n.mts",
-    "test": "jest"
+    "test": "pnpm run build:deps && jest"
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.2",

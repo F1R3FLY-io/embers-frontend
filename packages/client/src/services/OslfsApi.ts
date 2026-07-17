@@ -1,13 +1,13 @@
 import { base16 } from "@scure/base";
 
-import type { CreateOslfReq, HTTPHeaders } from "@/api-client";
+import type { CreateOslfReq, HTTPHeaders } from "../api-client";
 import type {
   ContractCallConfig,
   QueryCallConfig,
-} from "@/entities/HttpCallConfigs";
+} from "../entities/HttpCallConfigs";
 
-import { Configuration, OslfsApi } from "@/api-client";
-import { signContract } from "@/functions";
+import { Configuration, OslfsApi } from "../api-client";
+import { signContract } from "../functions";
 
 import type { Address } from "../entities/Address";
 import type { PrivateKey } from "../entities/PrivateKey";
