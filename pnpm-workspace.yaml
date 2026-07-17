@@ -2,9 +2,16 @@ packages:
   - apps/*
   - packages/*
 
-onlyBuiltDependencies:
-  - "@f1r3fly-io/lightning-bug"
-  - "@parcel/watcher"
-  - "@swc/core"
-  - esbuild
-  - unrs-resolver
+# pnpm 11 gates dependency build scripts on `allowBuilds` (a package -> boolean
+# map). These three are the only installed dependencies with install-time hooks
+# (esbuild: postinstall, unrs-resolver: postinstall, @parcel/watcher: install);
+# without them approved, `pnpm install` hard-fails with ERR_PNPM_IGNORED_BUILDS
+# and `pnpm dev` cannot start.
+#
+# The older `onlyBuiltDependencies` list was removed: pnpm 11 recognizes the key
+# but never consults it for build approval, so it was dead config that merely
+# looked authoritative.
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  unrs-resolver: true
