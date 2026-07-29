@@ -299,3 +299,121 @@ describe("makeNodeId / makeSubgraphId", () => {
     expect(id).toHaveLength(33);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Tests: fan-out and fan-in
+//
+// A team that broadcasts one agent's output to several sinks and then joins
+// those back into one agent depends on the edge list surviving `toApiGraph` ->
+// `fromApiGraph` intact. The reverse path rebuilds edges through an adjacency
+// list (`Map<string, Set<string>>`), which is correct for this shape but would
+// silently collapse edges if that structure were ever simplified.
+// ---------------------------------------------------------------------------
+
+function makeAgentNode(id: string, name: string): Node {
+  // Narrow to the agent variant so its `data` accepts the identity fields;
+  // spreading the union would widen back to the container variant.
+  const node: Extract<Node, { type: "agent" }> = {
+    data: {
+      agentId: `${id}-id`,
+      agentName: name,
+      agentVersion: "v1",
+    },
+    id,
+    position: { x: 0, y: 0 },
+    type: "agent",
+  };
+  return node;
+}
+
+/** The red-team shape: 1->4 broadcast from the hypothesis, 5->1 join into the refiner. */
+function redTeam(): { edges: Edge[]; nodes: Node[] } {
+  const nodes = [
+    makeNode("aIn", "input-node"),
+    makeAgentNode("aHyp", "Hypothesize"),
+    makeAgentNode("aLog", "LogicCritic"),
+    makeAgentNode("aEvi", "EvidenceCritic"),
+    makeAgentNode("aFea", "FeasibilityCritic"),
+    makeAgentNode("aRef", "Refine"),
+    makeAgentNode("aCon", "Condense"),
+    makeNode("aOut", "output-node"),
+  ];
+
+  const edges = [
+    // the prompt reaches every reasoning node
+    makeEdge("aIn", "aHyp"),
+    makeEdge("aIn", "aLog"),
+    makeEdge("aIn", "aEvi"),
+    makeEdge("aIn", "aFea"),
+    makeEdge("aIn", "aRef"),
+    makeEdge("aIn", "aCon"),
+    // the hypothesis broadcasts to the three critics and the refiner
+    makeEdge("aHyp", "aLog"),
+    makeEdge("aHyp", "aEvi"),
+    makeEdge("aHyp", "aFea"),
+    makeEdge("aHyp", "aRef"),
+    // the critiques join into the refiner
+    makeEdge("aLog", "aRef"),
+    makeEdge("aEvi", "aRef"),
+    makeEdge("aFea", "aRef"),
+    // and out
+    makeEdge("aRef", "aCon"),
+    makeEdge("aCon", "aOut"),
+  ];
+
+  return { edges, nodes };
+}
+
+const asPairs = (edges: Edge[]) =>
+  new Set(edges.map((edge) => `${edge.source}->${edge.target}`));
+
+describe("fan-out and fan-in", () => {
+  it("round-trips every edge of a 1->4 broadcast and a 5->1 join", () => {
+    const { edges, nodes } = redTeam();
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, edges));
+
+    // Compare the pairs, not just the count: a count-only assertion would pass
+    // even if two edges were swapped for two duplicates of a third.
+    expect(asPairs(restored)).toEqual(asPairs(edges));
+    expect(restored).toHaveLength(edges.length);
+  });
+
+  it("keeps all four targets of the broadcast", () => {
+    const { edges, nodes } = redTeam();
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, edges));
+
+    const fromHypothesis = restored
+      .filter((edge) => edge.source === "aHyp")
+      .map((edge) => edge.target)
+      .sort();
+    expect(fromHypothesis).toEqual(["aEvi", "aFea", "aLog", "aRef"]);
+  });
+
+  it("keeps all five sources of the join", () => {
+    const { edges, nodes } = redTeam();
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, edges));
+
+    const intoRefiner = restored
+      .filter((edge) => edge.target === "aRef")
+      .map((edge) => edge.source)
+      .sort();
+    expect(intoRefiner).toEqual(["aEvi", "aFea", "aHyp", "aIn", "aLog"]);
+  });
+
+  it("round-trips each agent's identity, which names its key downstream", () => {
+    const { edges, nodes } = redTeam();
+
+    const [restoredNodes] = fromApiGraph(toApiGraph(nodes, edges));
+
+    const refiner = restoredNodes.find((node) => node.id === "aRef");
+    expect(refiner?.type).toBe("agent");
+    expect(refiner?.data).toMatchObject({
+      agentId: "aRef-id",
+      agentName: "Refine",
+      agentVersion: "v1",
+    });
+  });
+});
