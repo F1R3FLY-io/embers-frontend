@@ -23,17 +23,6 @@ export default function AgentsTab({ searchQuery, sortBy }: AgentsTabProps) {
     () => void navigate("/agent/create"),
     [navigate],
   );
-  const onNavigate = useCallback(
-    (id: string) =>
-      void navigate("/agent/edit", {
-        state: {
-          id,
-          version: "latest",
-        } satisfies CurrentAgent,
-      }),
-    [navigate],
-  );
-
   const deleteAgent = useMutationResultWithLoader(useDeleteAgentMutation());
   const confirm = useConfirm();
   const onDelete = (id: string, name: string) =>
@@ -42,6 +31,20 @@ export default function AgentsTab({ searchQuery, sortBy }: AgentsTabProps) {
       .catch(() => {});
 
   const { data } = useAgents();
+
+  // Carry the name across so the editor can title its document immediately;
+  // otherwise it opens unnamed and renames once the agent finishes loading.
+  const onNavigate = useCallback(
+    (id: string) =>
+      void navigate("/agent/edit", {
+        state: {
+          id,
+          name: data?.agents.find((agent) => agent.id === id)?.name,
+          version: "latest",
+        } satisfies CurrentAgent,
+      }),
+    [data?.agents, navigate],
+  );
 
   const filteredAgents = useMemo(() => {
     const agents = data?.agents ?? [];

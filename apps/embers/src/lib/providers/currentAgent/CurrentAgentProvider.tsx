@@ -24,13 +24,16 @@ export const CurrentAgentProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const { data } = useAgent(agent.id, agent.version);
 
+  // Depend on `data` itself, not just its id/version: navigating away and back
+  // to the same agent re-seeds state from the route (which carries no code), so
+  // keying on id/version alone would skip the restore and leave `code` unset.
+  // react-query hands back a stable reference until the data actually changes,
+  // so this does not loop.
   useEffect(() => {
     if (data) {
       setAgent(data);
     }
-    // agents are append only so this should be fine
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.id, data?.version]);
+  }, [data]);
 
   const update = useCallback(
     (patch: Partial<CurrentAgent>) =>

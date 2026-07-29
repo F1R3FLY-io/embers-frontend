@@ -14,7 +14,8 @@ import { SearchControl } from "@/lib/components/SearchControl";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
-import { useAgentsTeamVersions } from "@/lib/queries";
+import { useAgents, useAgentsTeamVersions } from "@/lib/queries";
+import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 
 import styles from "./Graph.module.scss";
 
@@ -55,8 +56,25 @@ export const Sidebar: React.FC = () => {
     [versions],
   );
 
-  const filteredNodes = Object.entries(NODE_REGISTRY).filter(([, def]) =>
-    def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+  const { data: agentsData } = useAgents();
+
+  // Every saved agent, deployed or not: the team splices an agent's code in, so
+  // its own deploy is irrelevant here, and filtering on it would hide the agent
+  // the user just wrote.
+  const filteredAgents = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return (agentsData?.agents ?? [])
+      .filter((agent) => agent.name.toLowerCase().includes(query))
+      .sort((left, right) =>
+        left.name.localeCompare(right.name, undefined, { sensitivity: "base" }),
+      );
+  }, [agentsData?.agents, searchQuery]);
+
+  const filteredNodes = Object.entries(NODE_REGISTRY).filter(
+    ([key, def]) =>
+      // The generic agent kind is offered per agent below, never bare.
+      key !== "agent" &&
+      def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 
   return (
@@ -77,6 +95,32 @@ export const Sidebar: React.FC = () => {
             onSearchChange={setSearchQuery}
           />
         </div>
+
+        <NodeAccordion defaultOpen title="Your Agents">
+          {filteredAgents.length === 0 ? (
+            <Text color="secondary" type="small">
+              {searchQuery.trim() === ""
+                ? "No agents yet"
+                : "No agents match your search"}
+            </Text>
+          ) : (
+            filteredAgents.map((agent) => (
+              <NodeItem
+                key={agent.id}
+                data={{
+                  agentId: agent.id,
+                  agentName: agent.name,
+                  // Pin the concrete version: a team graph is append-only on
+                  // chain and must keep compiling to the same thing.
+                  agentVersion: agent.version,
+                }}
+                iconSrc={agent.logo ?? defaultNodeIcon}
+                name={agent.name}
+                type="agent"
+              />
+            ))
+          )}
+        </NodeAccordion>
 
         <NodeAccordion defaultOpen title="All Nodes">
           {filteredNodes.map(([key, def]) => (

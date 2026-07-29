@@ -17,6 +17,7 @@ export type NodeTemplateProps = {
     type: HandleType;
   }[];
   icon: ReactNode;
+  labelKey?: string;
   title: string;
 };
 
@@ -25,19 +26,26 @@ export function NodeTemplate({
   displayName,
   handlers,
   icon,
+  labelKey,
   title,
 }: NodeTemplateProps) {
-  const component: FC<NodeProps> = ({ selected }) => {
+  const component: FC<NodeProps> = ({ data, selected }) => {
     const containerClassName = classNames(styles.container, className, {
       [styles.selected]: selected,
     });
+
+    // Node kinds that name themselves per instance (agents) opt in via
+    // `labelKey`; every built-in kind leaves it unset and keeps its title.
+    const labelValue = labelKey === undefined ? undefined : data[labelKey];
+    const label =
+      typeof labelValue === "string" && labelValue !== "" ? labelValue : title;
 
     return (
       <div className={containerClassName}>
         <div className={styles.content}>
           {icon}
           <Text bold color="primary" type="normal">
-            {title}
+            {label}
           </Text>
           <SettingsIcon className={styles["settings-icon"]} />
         </div>

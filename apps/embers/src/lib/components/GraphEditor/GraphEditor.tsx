@@ -170,19 +170,37 @@ export function GraphEditor({
             }
           }
 
+          let dragData: Record<string, string> = {};
+          const rawData = event.dataTransfer.getData(
+            "application/reactflow-data",
+          );
+          if (rawData) {
+            try {
+              dragData = JSON.parse(rawData) as Record<string, string>;
+            } catch {
+              dragData = {};
+            }
+          }
+
+          // An agent node without an identity would compile to an invalid
+          // graph, so refuse the drop rather than create a broken node.
+          if (type === "agent" && typeof dragData.agentId !== "string") {
+            return;
+          }
+
+          const data = { ...NODE_REGISTRY[type].defaultData, ...dragData };
+
           const position = rf.screenToFlowPosition({
             x: event.clientX - offsetX,
             y: event.clientY - offsetY,
           });
 
           if (NODE_REGISTRY[type].modalInputs.length === 0) {
-            onNodesChange(
-              createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
-            );
+            onNodesChange(createNodeChange(type, position, data));
           } else {
             open(
               <EditModal
-                initial={NODE_REGISTRY[type].defaultData}
+                initial={data}
                 inputs={NODE_REGISTRY[type].modalInputs}
                 onSave={(updatedData) => {
                   onNodesChange(createNodeChange(type, position, updatedData));
@@ -463,37 +481,49 @@ function buildMenuItems(
     }
 
     case "emptySpace": {
-      return (Object.keys(NODE_REGISTRY) as NodeKind[]).map((type) => ({
-        content: `Add ${NODE_REGISTRY[type].displayName}`,
-        onClick: () => {
-          const position = rf.screenToFlowPosition({
-            x: input.x,
-            y: input.y,
-          });
+      return (
+        (Object.keys(NODE_REGISTRY) as NodeKind[])
+          // Agents are added from the sidebar, where each carries its identity;
+          // a bare "Add Agent" here would create an unusable node.
+          .filter((type) => type !== "agent")
+          .map((type) => ({
+            content: `Add ${NODE_REGISTRY[type].displayName}`,
+            onClick: () => {
+              const position = rf.screenToFlowPosition({
+                x: input.x,
+                y: input.y,
+              });
 
-          if (NODE_REGISTRY[type].modalInputs.length === 0) {
-            onNodesChange(
-              createNodeChange(type, position, NODE_REGISTRY[type].defaultData),
-            );
-          } else {
-            open(
-              <EditModal
-                initial={NODE_REGISTRY[type].defaultData}
-                inputs={NODE_REGISTRY[type].modalInputs}
-                onSave={(updatedData) =>
-                  onNodesChange(createNodeChange(type, position, updatedData))
-                }
-              />,
-              {
-                ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
-                closeOnBlur: true,
-                maxWidth: 520,
-              },
-            );
-          }
-        },
-        type: "text",
-      }));
+              if (NODE_REGISTRY[type].modalInputs.length === 0) {
+                onNodesChange(
+                  createNodeChange(
+                    type,
+                    position,
+                    NODE_REGISTRY[type].defaultData,
+                  ),
+                );
+              } else {
+                open(
+                  <EditModal
+                    initial={NODE_REGISTRY[type].defaultData}
+                    inputs={NODE_REGISTRY[type].modalInputs}
+                    onSave={(updatedData) =>
+                      onNodesChange(
+                        createNodeChange(type, position, updatedData),
+                      )
+                    }
+                  />,
+                  {
+                    ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                    closeOnBlur: true,
+                    maxWidth: 520,
+                  },
+                );
+              }
+            },
+            type: "text",
+          }))
+      );
     }
   }
 }

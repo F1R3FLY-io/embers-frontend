@@ -9,12 +9,23 @@ import PlusIcon from "@/public/icons/plus-1-icon.svg?react";
 import styles from "./NodeItem.module.scss";
 
 interface NodeItemProps {
+  /**
+   * Extra data seeded onto the node when this item is dropped. Kinds that are
+   * the same component but a different thing per entry — agents — identify
+   * themselves here; built-in kinds pass nothing.
+   */
+  data?: Record<string, string>;
   iconSrc?: string;
   name: string;
   type?: string;
 }
 
-export const NodeItem: React.FC<NodeItemProps> = ({ iconSrc, name, type }) => {
+export const NodeItem: React.FC<NodeItemProps> = ({
+  data,
+  iconSrc,
+  name,
+  type,
+}) => {
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const offset = {
@@ -23,6 +34,10 @@ export const NodeItem: React.FC<NodeItemProps> = ({ iconSrc, name, type }) => {
     };
 
     event.dataTransfer.setData("application/reactflow", type ?? "");
+    event.dataTransfer.setData(
+      "application/reactflow-data",
+      JSON.stringify(data ?? {}),
+    );
     event.dataTransfer.setData(
       "application/reactflow-offset",
       JSON.stringify(offset),

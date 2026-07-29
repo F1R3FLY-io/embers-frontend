@@ -138,8 +138,36 @@ function buildGraphEdges(edges: Edge[]): Graph {
   );
 }
 
+/**
+ * Reads a required identifier off a node's data. Throwing here surfaces the
+ * problem through the save mutation's error path instead of writing a graph
+ * that cannot be compiled.
+ */
+function requireString(
+  data: Record<string, unknown>,
+  key: string,
+  nodeId: string,
+): string {
+  const value = data[key];
+  if (typeof value !== "string" || value === "") {
+    throw new Error(`agent node ${nodeId} is missing ${key}`);
+  }
+  return value;
+}
+
 function buildNodeContext(node: Node) {
   switch (node.type) {
+    case "agent": {
+      // The agent is referenced, not inlined, so editing it and redeploying the
+      // team picks up the new code. The name rides along so the canvas can label
+      // the node without a wallet-scoped lookup.
+      return JSON.stringify({
+        agentId: requireString(node.data, "agentId", node.id),
+        agentName: requireString(node.data, "agentName", node.id),
+        agentVersion: requireString(node.data, "agentVersion", node.id),
+        type: "agent",
+      });
+    }
     case "compress": {
       return JSON.stringify({ type: "compress" });
     }

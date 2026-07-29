@@ -13,6 +13,12 @@ interface NodeDefinition<Data extends Record<string, string | number>> {
   displayName: string;
   handlers: { position: Position; type: "source" | "target" }[];
   iconSrc: string;
+  /**
+   * Key in a node's own `data` holding a per-instance label. When present and a
+   * non-empty string it replaces `title` on the canvas. Built-in kinds omit it
+   * and so render exactly as before.
+   */
+  labelKey?: string;
   modalInputs: ModalInput<Data>[];
   title: string;
 }
@@ -22,6 +28,24 @@ const defineNode = <D extends Record<string, string | number>>(
 ) => definition;
 
 export const NODE_REGISTRY = {
+  /**
+   * A user-defined agent. One generic kind covers every agent the user writes:
+   * the specific agent is carried in the node's own data, which the sidebar
+   * supplies from the drag payload.
+   */
+  agent: defineNode({
+    className: "service",
+    defaultData: {},
+    displayName: "Agent",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    labelKey: "agentName",
+    modalInputs: [],
+    title: "Agent",
+  }),
   compress: defineNode({
     className: "data-package",
     defaultData: {},
