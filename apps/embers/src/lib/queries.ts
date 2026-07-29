@@ -9,6 +9,7 @@ import type {
   PublishToFireskyReq,
   Uri,
 } from "@f1r3fly-io/embers-client-sdk";
+import type { QueryClient } from "@tanstack/react-query";
 
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -22,6 +23,45 @@ import { layoutAndNormalizeFromApi, toApiGraph } from "./graph";
 interface DeleteContext<T> {
   listKey: readonly [string, string];
   previous?: T;
+}
+
+/**
+ * Refetch a list until a just-written record shows up in it.
+ *
+ * The read node trails the validator, so the first read after a write usually
+ * returns the list as it was. That is a successful response carrying stale data
+ * rather than an empty one, so neither react-query's retry nor the backend's
+ * retry-on-empty helpers notice, and it gets cached as if it were current —
+ * leaving the record missing until something else happens to trigger a fetch.
+ *
+ * `type: "all"` matters: the list is usually inactive here, because writes come
+ * from an editor page rather than the dashboard. Invalidating alone would only
+ * mark it stale and refetch on the next mount, straight back into the same lag.
+ */
+async function refetchUntilPresent(
+  client: QueryClient,
+  queryKey: readonly unknown[],
+  isPresent: () => boolean,
+  attemptsLeft = 12,
+  delayMs = 500,
+): Promise<void> {
+  await client.refetchQueries({ exact: true, queryKey, type: "all" });
+
+  if (isPresent() || attemptsLeft <= 1) {
+    return;
+  }
+
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, delayMs);
+  });
+
+  return refetchUntilPresent(
+    client,
+    queryKey,
+    isPresent,
+    attemptsLeft - 1,
+    Math.min(delayMs * 2, 4000),
+  );
 }
 
 export function useAgents() {
@@ -65,12 +105,18 @@ export function useCreateAgentMutation() {
   return useMutation({
     mutationFn: async (params: CreateAgentReq, { client }) =>
       api.agents.create(params).then((r) => {
+        const { id } = r.prepareResponse.response;
+        const listKey = ["agents", String(api.wallets.address)];
         void r.waitForFinalization.finally(
           () =>
-            void client.invalidateQueries({
-              exact: true,
-              queryKey: ["agents", String(api.wallets.address)],
-            }),
+            void refetchUntilPresent(
+              client,
+              listKey,
+              () =>
+                client
+                  .getQueryData<Agents>(listKey)
+                  ?.agents.some((agent) => agent.id === id) ?? false,
+            ),
         );
         return r;
       }),
@@ -83,11 +129,21 @@ export function useSaveAgentMutation(id: string) {
   return useMutation({
     mutationFn: async (params: CreateAgentReq, { client }) =>
       api.agents.save(id, params).then((r) => {
+        const { version } = r.prepareResponse.response;
         void r.waitForFinalization.finally(() => {
-          void client.invalidateQueries({
-            exact: true,
-            queryKey: ["agents", String(api.wallets.address)],
-          });
+          // Saving appends a version, so wait for that version specifically —
+          // the agent itself is already listed.
+          const listKey = ["agents", String(api.wallets.address)];
+          void refetchUntilPresent(
+            client,
+            listKey,
+            () =>
+              client
+                .getQueryData<Agents>(listKey)
+                ?.agents.some(
+                  (agent) => agent.id === id && agent.version === version,
+                ) ?? false,
+          );
           void client.invalidateQueries({
             exact: true,
             queryKey: ["agents", String(api.wallets.address), id],
@@ -242,12 +298,18 @@ export function useCreateAgentsTeamMutation() {
     ) => {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.create({ ...rest, graph }).then((r) => {
+        const { id } = r.prepareResponse.response;
+        const listKey = ["agents-teams", String(api.wallets.address)];
         void r.waitForFinalization.finally(
           () =>
-            void client.invalidateQueries({
-              exact: true,
-              queryKey: ["agents-teams", String(api.wallets.address)],
-            }),
+            void refetchUntilPresent(
+              client,
+              listKey,
+              () =>
+                client
+                  .getQueryData<AgentsTeams>(listKey)
+                  ?.agentsTeams.some((team) => team.id === id) ?? false,
+            ),
         );
 
         return r;
@@ -266,11 +328,19 @@ export function useSaveAgentsTeamMutation(id: string) {
     ) => {
       const graph = toApiGraph(nodes, edges);
       return api.agentsTeams.save(id, { ...rest, graph }).then((r) => {
+        const { version } = r.prepareResponse.response;
         void r.waitForFinalization.finally(() => {
-          void client.invalidateQueries({
-            exact: true,
-            queryKey: ["agents-teams", String(api.wallets.address)],
-          });
+          const listKey = ["agents-teams", String(api.wallets.address)];
+          void refetchUntilPresent(
+            client,
+            listKey,
+            () =>
+              client
+                .getQueryData<AgentsTeams>(listKey)
+                ?.agentsTeams.some(
+                  (team) => team.id === id && team.version === version,
+                ) ?? false,
+          );
           void client.invalidateQueries({
             exact: true,
             queryKey: ["agents-teams", String(api.wallets.address), id],
