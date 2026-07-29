@@ -37,7 +37,10 @@ export function agentSkeleton(name?: string): string {
 //   * Do NOT use a quoted name like \`contract @"myAgent"(...)\`. Quoted names are
 //     global, so two agents in one team would collide.
 //   * Declare every channel you use with \`new\` - free names are rejected by the
-//     node ("Top level free variables are not allowed").
+//     node ("Top level free variables are not allowed"). The one exception is
+//     \`main\` itself, which the runtime binds for you: writing
+//     \`new main in { contract main(...) ... }\` shadows that binding, so nothing
+//     answers the call and the team hangs with no output.
 //   * If you never send to \`return\`, the team hangs with no output.
 //
 // ---------------------------------------------------------------------------
