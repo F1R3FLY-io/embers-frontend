@@ -28,7 +28,9 @@
   "paths": {
     "/api/service/ready": {
       "get": {
-        "tags": ["Service"],
+        "tags": [
+          "Service"
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -38,7 +40,9 @@
     },
     "/api/testnet/wallet": {
       "post": {
-        "tags": ["Testnet"],
+        "tags": [
+          "Testnet"
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -55,7 +59,9 @@
     },
     "/api/testnet/deploy/prepare": {
       "post": {
-        "tags": ["Testnet"],
+        "tags": [
+          "Testnet"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -82,7 +88,9 @@
     },
     "/api/testnet/deploy/send": {
       "post": {
-        "tags": ["Testnet"],
+        "tags": [
+          "Testnet"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -109,7 +117,9 @@
     },
     "/api/wallets/{address}/state": {
       "get": {
-        "tags": ["Wallets"],
+        "tags": [
+          "Wallets"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -139,7 +149,9 @@
     },
     "/api/wallets/transfer/prepare": {
       "post": {
-        "tags": ["Wallets"],
+        "tags": [
+          "Wallets"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -166,7 +178,9 @@
     },
     "/api/wallets/transfer/send": {
       "post": {
-        "tags": ["Wallets"],
+        "tags": [
+          "Wallets"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -193,7 +207,9 @@
     },
     "/api/wallets/boost/prepare": {
       "post": {
-        "tags": ["Wallets"],
+        "tags": [
+          "Wallets"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -220,7 +236,9 @@
     },
     "/api/wallets/boost/send": {
       "post": {
-        "tags": ["Wallets"],
+        "tags": [
+          "Wallets"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -247,7 +265,9 @@
     },
     "/api/wallets/{address}/deploys": {
       "get": {
-        "tags": ["Wallets"],
+        "tags": [
+          "Wallets"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -270,7 +290,9 @@
     },
     "/api/ai-agents/{address}": {
       "get": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -300,7 +322,9 @@
     },
     "/api/ai-agents/{address}/{id}/versions": {
       "get": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -353,7 +377,9 @@
     },
     "/api/ai-agents/{address}/{id}/versions/{version}": {
       "get": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -416,7 +442,9 @@
     },
     "/api/ai-agents/create/prepare": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -443,7 +471,9 @@
     },
     "/api/ai-agents/create/send": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -470,7 +500,9 @@
     },
     "/api/ai-agents/deploy/prepare": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -497,7 +529,9 @@
     },
     "/api/ai-agents/deploy/send": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -524,7 +558,9 @@
     },
     "/api/ai-agents/{id}/save/prepare": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -563,7 +599,9 @@
     },
     "/api/ai-agents/{id}/save/send": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -602,7 +640,9 @@
     },
     "/api/ai-agents/{id}/delete/prepare": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -631,7 +671,9 @@
     },
     "/api/ai-agents/{id}/delete/send": {
       "post": {
-        "tags": ["AIAgents"],
+        "tags": [
+          "AIAgents"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -670,7 +712,9 @@
     },
     "/api/ai-agents-teams/{address}": {
       "get": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -700,7 +744,9 @@
     },
     "/api/ai-agents-teams/{address}/{id}/versions": {
       "get": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -753,7 +799,9 @@
     },
     "/api/ai-agents-teams/{address}/{id}/versions/{version}": {
       "get": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -816,7 +864,9 @@
     },
     "/api/ai-agents-teams/create/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -843,7 +893,9 @@
     },
     "/api/ai-agents-teams/create/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -870,7 +922,9 @@
     },
     "/api/ai-agents-teams/deploy/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -897,7 +951,9 @@
     },
     "/api/ai-agents-teams/deploy/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -924,7 +980,9 @@
     },
     "/api/ai-agents-teams/run/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -951,7 +1009,9 @@
     },
     "/api/ai-agents-teams/run/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -976,7 +1036,9 @@
     },
     "/api/ai-agents-teams/run-on-firesky/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -1003,7 +1065,9 @@
     },
     "/api/ai-agents-teams/run-on-firesky/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -1023,7 +1087,9 @@
     },
     "/api/ai-agents-teams/{id}/save/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1062,7 +1128,9 @@
     },
     "/api/ai-agents-teams/{id}/save/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1101,7 +1169,9 @@
     },
     "/api/ai-agents-teams/{id}/delete/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1130,7 +1200,9 @@
     },
     "/api/ai-agents-teams/{id}/delete/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1167,9 +1239,67 @@
         }
       }
     },
+    "/api/ai-agents-teams/{address}/{id}/published": {
+      "get": {
+        "tags": [
+          "AIAgentsTeams"
+        ],
+        "summary": "Reports a team's publication as the chain records it, reconciled against\nthe PDS. Nothing previously compared the two, so a destroyed account left the\ninterface presenting a team as published with no way to notice.",
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishedState"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ai-agents-teams/{address}/{id}/publish-to-firesky/prepare": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -1219,7 +1349,9 @@
     },
     "/api/ai-agents-teams/{address}/{id}/publish-to-firesky/send": {
       "post": {
-        "tags": ["AIAgentsTeams"],
+        "tags": [
+          "AIAgentsTeams"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -1269,7 +1401,9 @@
     },
     "/api/oslfs/{address}": {
       "get": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -1299,7 +1433,9 @@
     },
     "/api/oslfs/{address}/{id}/versions": {
       "get": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -1352,7 +1488,9 @@
     },
     "/api/oslfs/{address}/{id}/versions/{version}": {
       "get": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "address",
@@ -1415,7 +1553,9 @@
     },
     "/api/oslfs/create/prepare": {
       "post": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -1442,7 +1582,9 @@
     },
     "/api/oslfs/create/send": {
       "post": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "requestBody": {
           "content": {
             "application/json; charset=utf-8": {
@@ -1469,7 +1611,9 @@
     },
     "/api/oslfs/{id}/save/prepare": {
       "post": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1508,7 +1652,9 @@
     },
     "/api/oslfs/{id}/save/send": {
       "post": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1547,7 +1693,9 @@
     },
     "/api/oslfs/{id}/delete/prepare": {
       "post": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1576,7 +1724,9 @@
     },
     "/api/oslfs/{id}/delete/send": {
       "post": {
-        "tags": ["Oslfs"],
+        "tags": [
+          "Oslfs"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1619,7 +1769,12 @@
       "Agent": {
         "type": "object",
         "title": "Agent",
-        "required": ["id", "version", "created_at", "name"],
+        "required": [
+          "id",
+          "version",
+          "created_at",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1655,7 +1810,12 @@
       "AgentHeader": {
         "type": "object",
         "title": "AgentHeader",
-        "required": ["id", "version", "created_at", "name"],
+        "required": [
+          "id",
+          "version",
+          "created_at",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1688,7 +1848,9 @@
       "Agents": {
         "type": "object",
         "title": "Agents",
-        "required": ["agents"],
+        "required": [
+          "agents"
+        ],
         "properties": {
           "agents": {
             "type": "array",
@@ -1701,7 +1863,12 @@
       "AgentsTeam": {
         "type": "object",
         "title": "AgentsTeam",
-        "required": ["id", "version", "created_at", "name"],
+        "required": [
+          "id",
+          "version",
+          "created_at",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1742,7 +1909,12 @@
       "AgentsTeamHeader": {
         "type": "object",
         "title": "AgentsTeamHeader",
-        "required": ["id", "version", "created_at", "name"],
+        "required": [
+          "id",
+          "version",
+          "created_at",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1779,7 +1951,9 @@
       "AgentsTeams": {
         "type": "object",
         "title": "AgentsTeams",
-        "required": ["agents_teams"],
+        "required": [
+          "agents_teams"
+        ],
         "properties": {
           "agents_teams": {
             "type": "array",
@@ -1834,7 +2008,12 @@
       "BoostReq": {
         "type": "object",
         "title": "BoostReq",
-        "required": ["from", "to", "amount", "post_author_did"],
+        "required": [
+          "from",
+          "to",
+          "amount",
+          "post_author_did"
+        ],
         "properties": {
           "from": {
             "type": "string",
@@ -1862,7 +2041,9 @@
       "BoostResp": {
         "type": "object",
         "title": "BoostResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -1873,7 +2054,9 @@
       "CreateAgentReq": {
         "type": "object",
         "title": "CreateAgentReq",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -1895,7 +2078,11 @@
       "CreateAgentResp": {
         "type": "object",
         "title": "CreateAgentResp",
-        "required": ["id", "version", "contract"],
+        "required": [
+          "id",
+          "version",
+          "contract"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1912,7 +2099,9 @@
       "CreateAgentsTeamReq": {
         "type": "object",
         "title": "CreateAgentsTeamReq",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -1935,7 +2124,11 @@
       "CreateAgentsTeamResp": {
         "type": "object",
         "title": "CreateAgentsTeamResp",
-        "required": ["id", "version", "contract"],
+        "required": [
+          "id",
+          "version",
+          "contract"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1952,7 +2145,9 @@
       "CreateOslfReq": {
         "type": "object",
         "title": "CreateOslfReq",
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string"
@@ -1968,7 +2163,11 @@
       "CreateOslfResp": {
         "type": "object",
         "title": "CreateOslfResp",
-        "required": ["id", "version", "contract"],
+        "required": [
+          "id",
+          "version",
+          "contract"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -1985,7 +2184,9 @@
       "CreateTestwalletResp": {
         "type": "object",
         "title": "CreateTestwalletResp",
-        "required": ["key"],
+        "required": [
+          "key"
+        ],
         "properties": {
           "key": {
             "type": "string"
@@ -1995,7 +2196,9 @@
       "DeleteAgentResp": {
         "type": "object",
         "title": "DeleteAgentResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2006,7 +2209,9 @@
       "DeleteAgentsTeamResp": {
         "type": "object",
         "title": "DeleteAgentsTeamResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2017,7 +2222,9 @@
       "DeleteOslfResp": {
         "type": "object",
         "title": "DeleteOslfResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2028,7 +2235,12 @@
       "DeployAgent": {
         "type": "object",
         "title": "DeployAgent",
-        "required": ["id", "version", "address", "phlo_limit"],
+        "required": [
+          "id",
+          "version",
+          "address",
+          "phlo_limit"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -2068,11 +2280,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["Agent"],
+                "enum": [
+                  "Agent"
+                ],
                 "example": "Agent"
               }
             }
@@ -2086,11 +2302,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["Code"],
+                "enum": [
+                  "Code"
+                ],
                 "example": "Code"
               }
             }
@@ -2103,7 +2323,9 @@
       "DeployAgentResp": {
         "type": "object",
         "title": "DeployAgentResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2118,7 +2340,13 @@
       "DeployAgentsTeam": {
         "type": "object",
         "title": "DeployAgentsTeam",
-        "required": ["id", "version", "address", "phlo_limit", "deploy"],
+        "required": [
+          "id",
+          "version",
+          "address",
+          "phlo_limit",
+          "deploy"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -2161,11 +2389,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["AgentsTeam"],
+                "enum": [
+                  "AgentsTeam"
+                ],
                 "example": "AgentsTeam"
               }
             }
@@ -2179,11 +2411,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["Graph"],
+                "enum": [
+                  "Graph"
+                ],
                 "example": "Graph"
               }
             }
@@ -2196,7 +2432,9 @@
       "DeployAgentsTeamResp": {
         "type": "object",
         "title": "DeployAgentsTeamResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2211,7 +2449,10 @@
       "DeployCode": {
         "type": "object",
         "title": "DeployCode",
-        "required": ["code", "phlo_limit"],
+        "required": [
+          "code",
+          "phlo_limit"
+        ],
         "properties": {
           "code": {
             "type": "string"
@@ -2225,7 +2466,11 @@
       "DeployGraph": {
         "type": "object",
         "title": "DeployGraph",
-        "required": ["graph", "phlo_limit", "deploy"],
+        "required": [
+          "graph",
+          "phlo_limit",
+          "deploy"
+        ],
         "properties": {
           "graph": {
             "type": "string",
@@ -2243,7 +2488,9 @@
       "DeploySignedAgentReq": {
         "type": "object",
         "title": "DeploySignedAgentReq",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "$ref": "#/components/schemas/SignedContract"
@@ -2256,7 +2503,9 @@
       "DeploySignedAgentsTeamReq": {
         "type": "object",
         "title": "DeploySignedAgentsTeamReq",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "$ref": "#/components/schemas/SignedContract"
@@ -2269,7 +2518,9 @@
       "DeploySignedRunOnFireskyReq": {
         "type": "object",
         "title": "DeploySignedRunOnFireskyReq",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "$ref": "#/components/schemas/SignedContract"
@@ -2282,7 +2533,9 @@
       "DeploySignedTestReq": {
         "type": "object",
         "title": "DeploySignedTestReq",
-        "required": ["test"],
+        "required": [
+          "test"
+        ],
         "properties": {
           "env": {
             "$ref": "#/components/schemas/SignedContract"
@@ -2318,11 +2571,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["EnvDeployFailed"],
+                "enum": [
+                  "EnvDeployFailed"
+                ],
                 "example": "EnvDeployFailed"
               }
             }
@@ -2336,11 +2593,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["Ok"],
+                "enum": [
+                  "Ok"
+                ],
                 "example": "Ok"
               }
             }
@@ -2354,11 +2615,15 @@
         "allOf": [
           {
             "type": "object",
-            "required": ["type"],
+            "required": [
+              "type"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["TestDeployFailed"],
+                "enum": [
+                  "TestDeployFailed"
+                ],
                 "example": "TestDeployFailed"
               }
             }
@@ -2371,7 +2636,9 @@
       "DeployTestReq": {
         "type": "object",
         "title": "DeployTestReq",
-        "required": ["test"],
+        "required": [
+          "test"
+        ],
         "properties": {
           "env": {
             "type": "string"
@@ -2384,7 +2651,9 @@
       "DeployTestResp": {
         "type": "object",
         "title": "DeployTestResp",
-        "required": ["test_contract"],
+        "required": [
+          "test_contract"
+        ],
         "properties": {
           "env_contract": {
             "type": "string",
@@ -2399,7 +2668,9 @@
       "EnvDeployFailed": {
         "type": "object",
         "title": "EnvDeployFailed",
-        "required": ["error"],
+        "required": [
+          "error"
+        ],
         "properties": {
           "error": {
             "type": "string"
@@ -2413,7 +2684,10 @@
       "FireskyReply": {
         "type": "object",
         "title": "FireskyReply",
-        "required": ["parent", "root"],
+        "required": [
+          "parent",
+          "root"
+        ],
         "properties": {
           "parent": {
             "$ref": "#/components/schemas/PostRef"
@@ -2426,7 +2700,9 @@
       "InternalError": {
         "type": "object",
         "title": "InternalError",
-        "required": ["description"],
+        "required": [
+          "description"
+        ],
         "properties": {
           "description": {
             "type": "string"
@@ -2436,7 +2712,10 @@
       "Log": {
         "type": "object",
         "title": "Log",
-        "required": ["level", "message"],
+        "required": [
+          "level",
+          "message"
+        ],
         "properties": {
           "level": {
             "$ref": "#/components/schemas/LogLevel"
@@ -2448,12 +2727,21 @@
       },
       "LogLevel": {
         "type": "string",
-        "enum": ["debug", "info", "error"]
+        "enum": [
+          "debug",
+          "info",
+          "error"
+        ]
       },
       "Oslf": {
         "type": "object",
         "title": "Oslf",
-        "required": ["id", "version", "created_at", "name"],
+        "required": [
+          "id",
+          "version",
+          "created_at",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -2479,7 +2767,12 @@
       "OslfHeader": {
         "type": "object",
         "title": "OslfHeader",
-        "required": ["id", "version", "created_at", "name"],
+        "required": [
+          "id",
+          "version",
+          "created_at",
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -2502,7 +2795,9 @@
       "Oslfs": {
         "type": "object",
         "title": "Oslfs",
-        "required": ["oslfs"],
+        "required": [
+          "oslfs"
+        ],
         "properties": {
           "oslfs": {
             "type": "array",
@@ -2515,7 +2810,10 @@
       "PostRef": {
         "type": "object",
         "title": "PostRef",
-        "required": ["cid", "uri"],
+        "required": [
+          "cid",
+          "uri"
+        ],
         "properties": {
           "cid": {
             "type": "string"
@@ -2528,7 +2826,10 @@
       "PrepareResponse_BoostResp": {
         "type": "object",
         "title": "PrepareResponse_BoostResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/BoostResp"
@@ -2541,7 +2842,10 @@
       "PrepareResponse_CreateAgentResp": {
         "type": "object",
         "title": "PrepareResponse_CreateAgentResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/CreateAgentResp"
@@ -2554,7 +2858,10 @@
       "PrepareResponse_CreateAgentsTeamResp": {
         "type": "object",
         "title": "PrepareResponse_CreateAgentsTeamResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/CreateAgentsTeamResp"
@@ -2567,7 +2874,10 @@
       "PrepareResponse_CreateOslfResp": {
         "type": "object",
         "title": "PrepareResponse_CreateOslfResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/CreateOslfResp"
@@ -2580,7 +2890,10 @@
       "PrepareResponse_DeployAgentResp": {
         "type": "object",
         "title": "PrepareResponse_DeployAgentResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/DeployAgentResp"
@@ -2593,7 +2906,10 @@
       "PrepareResponse_DeployAgentsTeamResp": {
         "type": "object",
         "title": "PrepareResponse_DeployAgentsTeamResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/DeployAgentsTeamResp"
@@ -2606,7 +2922,10 @@
       "PrepareResponse_DeployTestResp": {
         "type": "object",
         "title": "PrepareResponse_DeployTestResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/DeployTestResp"
@@ -2619,7 +2938,10 @@
       "PrepareResponse_PublishToFireskyResp": {
         "type": "object",
         "title": "PrepareResponse_PublishToFireskyResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/PublishToFireskyResp"
@@ -2632,7 +2954,10 @@
       "PrepareResponse_RunResp": {
         "type": "object",
         "title": "PrepareResponse_RunResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/RunResp"
@@ -2645,7 +2970,10 @@
       "PrepareResponse_SaveAgentResp": {
         "type": "object",
         "title": "PrepareResponse_SaveAgentResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/SaveAgentResp"
@@ -2658,7 +2986,10 @@
       "PrepareResponse_SaveAgentsTeamResp": {
         "type": "object",
         "title": "PrepareResponse_SaveAgentsTeamResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/SaveAgentsTeamResp"
@@ -2671,7 +3002,10 @@
       "PrepareResponse_SaveOslfResp": {
         "type": "object",
         "title": "PrepareResponse_SaveOslfResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/SaveOslfResp"
@@ -2684,7 +3018,10 @@
       "PrepareResponse_TransferResp": {
         "type": "object",
         "title": "PrepareResponse_TransferResp",
-        "required": ["response", "token"],
+        "required": [
+          "response",
+          "token"
+        ],
         "properties": {
           "response": {
             "$ref": "#/components/schemas/TransferResp"
@@ -2697,7 +3034,12 @@
       "PublishToFireskyReq": {
         "type": "object",
         "title": "PublishToFireskyReq",
-        "required": ["pds_url", "email", "handle", "password"],
+        "required": [
+          "pds_url",
+          "email",
+          "handle",
+          "password"
+        ],
         "properties": {
           "pds_url": {
             "type": "string"
@@ -2719,7 +3061,9 @@
       "PublishToFireskyResp": {
         "type": "object",
         "title": "PublishToFireskyResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2727,10 +3071,46 @@
           }
         }
       },
+      "PublishedState": {
+        "type": "object",
+        "title": "PublishedState",
+        "description": "Whether a team is published to F1R3SKY, and whether the account it was\npublished under is still there.\n\n`account_exists` is deliberately three-valued. `Some(false)` is a real\ndivergence — the chain records a publication whose account has been destroyed,\nwhich is what a wiped development PDS leaves behind. `None` means the question\ncould not be answered, from an unreachable PDS or a publish recorded before\nhandles were captured, and must not be presented as though the account were\nmissing.",
+        "required": [
+          "uri",
+          "published_version",
+          "is_latest_deployment"
+        ],
+        "properties": {
+          "handle": {
+            "type": "string"
+          },
+          "did": {
+            "type": "string"
+          },
+          "account_exists": {
+            "type": "boolean"
+          },
+          "uri": {
+            "type": "string",
+            "format": "blockchain-uri"
+          },
+          "published_version": {
+            "type": "string"
+          },
+          "is_latest_deployment": {
+            "type": "boolean"
+          }
+        }
+      },
       "RegistryDeploy": {
         "type": "object",
         "title": "RegistryDeploy",
-        "required": ["timestamp", "version", "uri_pub_key", "signature"],
+        "required": [
+          "timestamp",
+          "version",
+          "uri_pub_key",
+          "signature"
+        ],
         "properties": {
           "timestamp": {
             "type": "string",
@@ -2753,7 +3133,12 @@
       "Request": {
         "type": "object",
         "title": "Request",
-        "required": ["id", "timestamp", "amount", "status"],
+        "required": [
+          "id",
+          "timestamp",
+          "amount",
+          "status"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -2773,12 +3158,20 @@
       },
       "RequestStatus": {
         "type": "string",
-        "enum": ["done", "ongoing", "cancelled"]
+        "enum": [
+          "done",
+          "ongoing",
+          "cancelled"
+        ]
       },
       "RunReq": {
         "type": "object",
         "title": "RunReq",
-        "required": ["prompt", "phlo_limit", "agents_team"],
+        "required": [
+          "prompt",
+          "phlo_limit",
+          "agents_team"
+        ],
         "properties": {
           "prompt": {
             "type": "string"
@@ -2796,7 +3189,9 @@
       "RunResp": {
         "type": "object",
         "title": "RunResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -2807,7 +3202,10 @@
       "SaveAgentResp": {
         "type": "object",
         "title": "SaveAgentResp",
-        "required": ["version", "contract"],
+        "required": [
+          "version",
+          "contract"
+        ],
         "properties": {
           "version": {
             "type": "string"
@@ -2821,7 +3219,10 @@
       "SaveAgentsTeamResp": {
         "type": "object",
         "title": "SaveAgentsTeamResp",
-        "required": ["version", "contract"],
+        "required": [
+          "version",
+          "contract"
+        ],
         "properties": {
           "version": {
             "type": "string"
@@ -2835,7 +3236,10 @@
       "SaveOslfResp": {
         "type": "object",
         "title": "SaveOslfResp",
-        "required": ["version", "contract"],
+        "required": [
+          "version",
+          "contract"
+        ],
         "properties": {
           "version": {
             "type": "string"
@@ -2849,7 +3253,12 @@
       "SendRequestBody_DeploySignedAgentReq_DeployAgentReq_DeployAgentResp": {
         "type": "object",
         "title": "SendRequestBody_DeploySignedAgentReq_DeployAgentReq_DeployAgentResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/DeployAgentReq"
@@ -2868,7 +3277,12 @@
       "SendRequestBody_DeploySignedAgentsTeamReq_DeployAgentsTeamReq_DeployAgentsTeamResp": {
         "type": "object",
         "title": "SendRequestBody_DeploySignedAgentsTeamReq_DeployAgentsTeamReq_DeployAgentsTeamResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/DeployAgentsTeamReq"
@@ -2887,7 +3301,12 @@
       "SendRequestBody_DeploySignedRunOnFireskyReq_RunReq_RunResp": {
         "type": "object",
         "title": "SendRequestBody_DeploySignedRunOnFireskyReq_RunReq_RunResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/RunReq"
@@ -2906,7 +3325,12 @@
       "SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp": {
         "type": "object",
         "title": "SendRequestBody_DeploySignedTestReq_DeployTestReq_DeployTestResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/DeployTestReq"
@@ -2925,7 +3349,12 @@
       "SendRequestBody_SignedContract_BoostReq_BoostResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_BoostReq_BoostResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/BoostReq"
@@ -2944,7 +3373,12 @@
       "SendRequestBody_SignedContract_CreateAgentReq_CreateAgentResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateAgentReq_CreateAgentResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/CreateAgentReq"
@@ -2963,7 +3397,12 @@
       "SendRequestBody_SignedContract_CreateAgentReq_SaveAgentResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateAgentReq_SaveAgentResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/CreateAgentReq"
@@ -2982,7 +3421,12 @@
       "SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateAgentsTeamReq_CreateAgentsTeamResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/CreateAgentsTeamReq"
@@ -3001,7 +3445,12 @@
       "SendRequestBody_SignedContract_CreateAgentsTeamReq_SaveAgentsTeamResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateAgentsTeamReq_SaveAgentsTeamResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/CreateAgentsTeamReq"
@@ -3020,7 +3469,12 @@
       "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/CreateOslfReq"
@@ -3039,7 +3493,12 @@
       "SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateOslfReq_SaveOslfResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/CreateOslfReq"
@@ -3058,7 +3517,12 @@
       "SendRequestBody_SignedContract_PublishToFireskyReq_PublishToFireskyResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_PublishToFireskyReq_PublishToFireskyResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/PublishToFireskyReq"
@@ -3077,7 +3541,12 @@
       "SendRequestBody_SignedContract_RunReq_RunResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_RunReq_RunResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/RunReq"
@@ -3096,7 +3565,12 @@
       "SendRequestBody_SignedContract_TransferReq_TransferResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_TransferReq_TransferResp",
-        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "required": [
+          "prepare_request",
+          "prepare_response",
+          "request",
+          "token"
+        ],
         "properties": {
           "prepare_request": {
             "$ref": "#/components/schemas/TransferReq"
@@ -3115,7 +3589,9 @@
       "SendResp": {
         "type": "object",
         "title": "SendResp",
-        "required": ["deploy_id"],
+        "required": [
+          "deploy_id"
+        ],
         "properties": {
           "deploy_id": {
             "type": "string"
@@ -3125,7 +3601,12 @@
       "SignedContract": {
         "type": "object",
         "title": "SignedContract",
-        "required": ["contract", "sig", "sig_algorithm", "deployer"],
+        "required": [
+          "contract",
+          "sig",
+          "sig_algorithm",
+          "deployer"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -3147,7 +3628,9 @@
       "SignedTestDeployLogs": {
         "type": "object",
         "title": "SignedTestDeployLogs",
-        "required": ["logs"],
+        "required": [
+          "logs"
+        ],
         "properties": {
           "logs": {
             "type": "array",
@@ -3160,7 +3643,9 @@
       "TestDeployFailed": {
         "type": "object",
         "title": "TestDeployFailed",
-        "required": ["error"],
+        "required": [
+          "error"
+        ],
         "properties": {
           "error": {
             "type": "string"
@@ -3170,7 +3655,13 @@
       "Transfer": {
         "type": "object",
         "title": "Transfer",
-        "required": ["id", "timestamp", "from", "to", "amount"],
+        "required": [
+          "id",
+          "timestamp",
+          "from",
+          "to",
+          "amount"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -3199,7 +3690,11 @@
       "TransferReq": {
         "type": "object",
         "title": "TransferReq",
-        "required": ["from", "to", "amount"],
+        "required": [
+          "from",
+          "to",
+          "amount"
+        ],
         "properties": {
           "from": {
             "type": "string",
@@ -3221,7 +3716,9 @@
       "TransferResp": {
         "type": "object",
         "title": "TransferResp",
-        "required": ["contract"],
+        "required": [
+          "contract"
+        ],
         "properties": {
           "contract": {
             "type": "string",
@@ -3232,7 +3729,13 @@
       "WalletStateAndHistory": {
         "type": "object",
         "title": "WalletStateAndHistory",
-        "required": ["balance", "requests", "exchanges", "boosts", "transfers"],
+        "required": [
+          "balance",
+          "requests",
+          "exchanges",
+          "boosts",
+          "transfers"
+        ],
         "properties": {
           "balance": {
             "type": "string",

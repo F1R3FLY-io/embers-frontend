@@ -13,6 +13,7 @@ import { Header } from "@/lib/layouts/Graph/Header";
 
 // Must be prefixed `mock` to be visible inside a hoisted jest.mock factory.
 let mockTeam: Record<string, unknown> = {};
+let mockPublished: Record<string, unknown> | null = null;
 
 jest.mock("@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam", () => ({
   useCurrentAgentsTeam: () => ({
@@ -50,7 +51,12 @@ jest.mock("@/lib/queries", () => ({
   useCreateAgentsTeamMutation: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
   useRunAgentsTeamMutation: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
   useSaveAgentsTeamMutation: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
+  useTeamPublishedState: () => ({ data: mockPublished }),
 }));
+
+beforeEach(() => {
+  mockPublished = null;
+});
 
 const render = (team: Record<string, unknown>) => {
   mockTeam = team;
@@ -106,5 +112,61 @@ describe("graph editor header", () => {
 
   it("reports the menu as closed until it is opened", () => {
     expect(render(DEPLOYED)).toContain('aria-expanded="false"');
+  });
+
+  // The publish label names what the action would actually do. Each of these states
+  // was previously indistinguishable to the client, so the menu always read
+  // "Publish" -- including when the account it referred to no longer existed.
+  describe("the publish action's label", () => {
+    it("says Publish when nothing is published yet", () => {
+      mockPublished = null;
+
+      expect(render(DEPLOYED)).toContain("deploy.publishToFiresky");
+    });
+
+    it("says Re-publish once a live publication exists", () => {
+      mockPublished = {
+        account_exists: true,
+        handle: "team.test",
+        is_latest_deployment: true,
+      };
+
+      expect(render(DEPLOYED)).toContain("deploy.republishToFiresky");
+    });
+
+    it("calls out an account that no longer exists", () => {
+      // What a wiped PDS leaves behind: the chain still records the publication.
+      mockPublished = {
+        account_exists: false,
+        handle: "team.test",
+        is_latest_deployment: true,
+      };
+
+      expect(render(DEPLOYED)).toContain("deploy.republishAccountMissing");
+    });
+
+    it("calls out a publication left on an older deployment", () => {
+      mockPublished = {
+        account_exists: true,
+        handle: "team.test",
+        is_latest_deployment: false,
+      };
+
+      expect(render(DEPLOYED)).toContain("deploy.publishStale");
+    });
+
+    it("does not claim an account is missing merely because it could not be checked", () => {
+      // null means unreachable PDS or a publish predating handles being recorded.
+      // Reporting that as "missing" would cry wolf every time the PDS blinked.
+      mockPublished = {
+        account_exists: null,
+        handle: null,
+        is_latest_deployment: true,
+      };
+
+      const markup = render(DEPLOYED);
+      expect(markup).toContain("deploy.republishToFiresky");
+      expect(markup).not.toContain("deploy.republishAccountMissing");
+    });
   });
 });

@@ -14,6 +14,8 @@ import type { QueryClient } from "@tanstack/react-query";
 import { Amount } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import type { PublishedState } from "@/lib/publishedState";
+
 import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
@@ -70,6 +72,46 @@ export function useAgents() {
   return useQuery({
     queryFn: async ({ signal }) => api.agents.get({ signal }),
     queryKey: ["agents", String(api.wallets.address)],
+  });
+}
+
+/**
+ * Whether a team is published to F1R3SKY, and whether the account it names still
+ * exists.
+ *
+ * Fetched directly rather than through the generated client. The client under
+ * `packages/client/src/api-client` has been hand-extended -- `Graph` is mapped
+ * through the WASM `astToGraphl`, which no generator emits -- so regenerating it to
+ * add one endpoint would discard those edits and break the editor. Adding a method
+ * to the generated files by hand is worse: they carry a "do not edit" header and the
+ * change would be lost the first time anyone does regenerate. One narrow fetch,
+ * against the same base URL the client uses, is the option that neither destroys
+ * work nor plants a trap.
+ *
+ * Returns `null` when nothing is published; a 404 is the API saying so, not a
+ * failure.
+ */
+export function useTeamPublishedState(id?: string) {
+  const api = useApi();
+  const address = String(api.wallets.address);
+
+  return useQuery({
+    enabled: !!id,
+    queryFn: async ({ signal }): Promise<PublishedState | null> => {
+      const response = await fetch(
+        `${window.API_URL}/api/ai-agents-teams/${address}/${id!}/published`,
+        { signal },
+      );
+
+      if (response.status === 404) {
+        return null;
+      }
+      if (!response.ok) {
+        throw new Error(`could not read publish state: ${response.status}`);
+      }
+      return response.json() as Promise<PublishedState>;
+    },
+    queryKey: ["agents-teams", address, id, "published"],
   });
 }
 

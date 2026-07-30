@@ -19,6 +19,7 @@ import {
   useCreateAgentsTeamMutation,
   useRunAgentsTeamMutation,
   useSaveAgentsTeamMutation,
+  useTeamPublishedState,
 } from "@/lib/queries";
 import ChevronDownIcon from "@/public/icons/chevrondown-icon.svg?react";
 
@@ -52,6 +53,11 @@ export const Header: React.FC = () => {
   // second deploy is only ever a *re*-deploy here, and the server rejects
   // publishing an undeployed team outright ("agents team not deployed").
   const hasMenu = Boolean(isDeployed);
+
+  // What the chain records about this team's publication, reconciled against the
+  // PDS. Until this existed the client could not tell published from unpublished,
+  // so the menu had to say "Publish" even when it was a re-publish.
+  const { data: published } = useTeamPublishedState(hasMenu ? id : undefined);
   const caretRef = useRef<HTMLDivElement>(null);
   const [menuPosition, setMenuPosition] = useState<
     { x: number; y: number } | undefined
@@ -127,6 +133,28 @@ export const Header: React.FC = () => {
     }
   });
 
+  // Names the publish action for what it would actually do. Two divergences are
+  // worth calling out in the label itself, because neither produces an error and
+  // both are otherwise invisible: an account that no longer exists, and a
+  // publication left pointing at a deployment that is no longer the newest.
+  //
+  // `account_exists === null` deliberately reads as a plain re-publish: it means the
+  // PDS could not be reached or the publish predates handles being recorded, and
+  // announcing a missing account on that basis would cry wolf every time the PDS
+  // blinked.
+  const publishLabel = (() => {
+    if (!published) {
+      return t("deploy.publishToFiresky");
+    }
+    if (published.account_exists === false) {
+      return t("deploy.republishAccountMissing");
+    }
+    if (!published.is_latest_deployment) {
+      return t("deploy.publishStale");
+    }
+    return t("deploy.republishToFiresky");
+  })();
+
   // Ordered as the workflow runs: deploy, then publish.
   const menuItems = useMemo<MenuItem[]>(
     () => [
@@ -136,7 +164,7 @@ export const Header: React.FC = () => {
         type: "text",
       },
       {
-        content: t("deploy.publishToFiresky"),
+        content: publishLabel,
         onClick: () =>
           void navigate("/agents-team/publish", {
             // "latest" mirrors what the dashboard passes, and matches the
@@ -147,7 +175,7 @@ export const Header: React.FC = () => {
         type: "text",
       },
     ],
-    [handleDeploy, id, navigate, t],
+    [handleDeploy, id, navigate, publishLabel, t],
   );
 
   const onRun = () => {
