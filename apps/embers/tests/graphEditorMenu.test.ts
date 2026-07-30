@@ -53,7 +53,10 @@ function harness(): {
   };
 }
 
-function deleteNodeItem(nodes: Node[], context: Parameters<typeof buildMenuItems>[1]) {
+function deleteNodeItem(
+  nodes: Node[],
+  context: Parameters<typeof buildMenuItems>[1],
+) {
   const input: ContextMenuInput = { nodes, type: "nodesSelected", x: 0, y: 0 };
   const items = buildMenuItems(input, context);
 

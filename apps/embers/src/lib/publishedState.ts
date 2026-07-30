@@ -1,10 +1,27 @@
 /**
- * How a team's publication to F1R3SKY stands, as reported by
- * `GET /ai-agents-teams/{address}/{id}/published`.
+ * The shapes of the two endpoints read directly rather than through the generated
+ * API client.
  *
- * Declared here rather than in the generated API client: that client is
- * hand-extended and regenerating it would discard those edits, so this endpoint is
- * read directly and its shape is described alongside the code that reads it.
+ * That client is hand-extended -- `Graph` is mapped through the WASM `astToGraphl`,
+ * which no generator emits -- so regenerating it to pick these up would discard those
+ * edits and break the editor. Their shapes are therefore described here, beside the
+ * code that reads them.
+ */
+
+/** A team whose latest version uses a given agent, from `…/referencing/{agentId}`. */
+export type ReferencingTeam = {
+  id: string;
+  name: string;
+  /** Whether any deployment of this team is published. */
+  published: boolean;
+  /** The handle it was published under; absent on publications predating capture. */
+  published_handle: string | null;
+  version: string;
+};
+
+/**
+ * How a team's publication to F1R3SKY stands, from
+ * `GET /ai-agents-teams/{address}/{id}/published`.
  */
 export type PublishedState = {
   /**
@@ -17,6 +34,12 @@ export type PublishedState = {
    * as though the account were missing.
    */
   account_exists: boolean | null;
+  /**
+   * Whether the publication is currently in force -- whether the account still
+   * carries the record that makes f1r3sky treat its handle as a team. Mentions fire
+   * only while it is present, and unpublishing removes it while keeping the account.
+   */
+  active: boolean | null;
   did: string | null;
   handle: string | null;
   /**

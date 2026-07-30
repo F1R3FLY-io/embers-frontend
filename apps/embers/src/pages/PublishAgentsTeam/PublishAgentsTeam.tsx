@@ -11,8 +11,12 @@ import { Text } from "@/lib/components/Text";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
+import { useAlert } from "@/lib/providers/modal/useConfirm";
 import { useModal } from "@/lib/providers/modal/useModal";
-import { usePublishAgentsTeamToFireskyMutation } from "@/lib/queries";
+import {
+  usePublishAgentsTeamToFireskyMutation,
+  useUnpublishAgentsTeamMutation,
+} from "@/lib/queries";
 import { SuccessModal } from "@/pages/PublishAgentsTeam/SuccessModal";
 import publishImage from "@/public/publish.png";
 
@@ -31,6 +35,8 @@ export default function PublishAgentsTeam() {
 
   const { agentsTeam } = useCurrentAgentsTeam();
 
+  const unpublish = useUnpublishAgentsTeamMutation();
+  const alert = useAlert();
   const publish = useMutationResultWithLoader(
     usePublishAgentsTeamToFireskyMutation(agentsTeam.id!),
   );
@@ -65,7 +71,26 @@ export default function PublishAgentsTeam() {
             <SuccessModal
               agentName={agentsTeam.name!}
               data={modalData}
+              handle={value.handle}
               iconUrl={agentsTeam.logo}
+              onUnpublish={() => {
+                // Removes the record that makes f1r3sky treat the handle as a
+                // team. Until now this button closed the modal and did nothing,
+                // so the team kept answering mentions the user believed it had
+                // stopped answering -- and the modal said it had succeeded.
+                //
+                // Only the success is announced here: the mutation reports its own
+                // failures, and saying so twice would be worse than not at all,
+                // because the second dialog reads as a second failure.
+                void unpublish.mutateAsync(agentsTeam.id!).then(
+                  async () =>
+                    alert({
+                      message: `${value.handle} will no longer respond to mentions. Its account is kept, so you can publish to it again.`,
+                      title: "Unpublished",
+                    }),
+                  () => undefined,
+                );
+              }}
             />,
             {
               ariaLabel: "Success deploy",

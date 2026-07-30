@@ -4,12 +4,20 @@ import { useNavigate } from "react-router-dom";
 
 import type { CurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 
+import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useMutationResultWithLoader } from "@/lib/providers/loader/useMutationResultWithLoader";
-import { useConfirm } from "@/lib/providers/modal/useConfirm";
-import { useAgentsTeams, useDeleteAgentsTeamMutation } from "@/lib/queries";
+import { useAlert, useConfirm } from "@/lib/providers/modal/useConfirm";
+import {
+  useAgentsTeams,
+  useDeleteAgentsTeamMutation,
+  useTeamPublicationReader,
+  useUnpublishAgentsTeamMutation,
+} from "@/lib/queries";
+import { needsUnpublishing, removeTeam } from "@/lib/teams/removeTeam";
 import AgentIcon from "@/public/icons/aiagent-light-line-icon.svg?react";
 
 import { Grid } from "../Grid";
+import { deleteTeamMessage } from "./deleteTeamMessage";
 
 interface AgentTeamsTabProps {
   searchQuery: string;
@@ -40,13 +48,43 @@ export default function AgentTeamsTab({
   const deleteAgentsTeam = useMutationResultWithLoader(
     useDeleteAgentsTeamMutation(),
   );
+  const unpublishTeam = useUnpublishAgentsTeamMutation();
+  const teamPublication = useTeamPublicationReader();
   const confirm = useConfirm();
-  const onDelete = (id: string, name: string) =>
-    void confirm({
-      message: `Are you sure you want to delete ${name} agents team?`,
-    })
-      .then((ok) => ok && deleteAgentsTeam.mutate(id))
-      .catch(() => {});
+  const alert = useAlert();
+
+  const runDelete = useCallbackWithLoader(async (id: string, name: string) => {
+    let publication;
+    try {
+      publication = await teamPublication(id);
+    } catch {
+      // Refusing rather than guessing. Deleting a team whose publication could not
+      // be read is how a handle is left answering mentions for a team that no
+      // longer exists -- with the credentials needed to stop it gone with the team.
+      await alert({
+        message:
+          "Could not determine whether this team is published, so it was not deleted. Try again once the node is responsive.",
+        title: "Delete failed",
+      });
+      return;
+    }
+
+    if (!(await confirm({ message: deleteTeamMessage(name, publication) }))) {
+      return;
+    }
+
+    // Stop the mentions, then remove the team. Every mutation reports its own
+    // failure, so this only has to halt.
+    await removeTeam(id, needsUnpublishing(publication), {
+      deleteTeam: deleteAgentsTeam.mutateAsync,
+      unpublishTeam: unpublishTeam.mutateAsync,
+    }).catch(() => undefined);
+  });
+
+  const onDelete = useCallback(
+    (id: string, name: string) => void runDelete(id, name),
+    [runDelete],
+  );
 
   const onPublish = useCallback(
     (id: string) =>

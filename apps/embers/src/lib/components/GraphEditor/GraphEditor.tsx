@@ -230,8 +230,6 @@ export function GraphEditor({
   );
 }
 
-
-
 function useContextMenu() {
   const [contextMenuInput, setContextMenuInput] = useState<ContextMenuInput>();
   const openSelectionContextMenu = useCallback(
@@ -302,4 +300,3 @@ function useContextMenu() {
     openSelectionContextMenu,
   };
 }
-

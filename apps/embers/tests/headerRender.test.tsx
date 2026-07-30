@@ -44,13 +44,21 @@ jest.mock("@/lib/providers/loader/useCallbackWithLoader", () => ({
 }));
 
 jest.mock("@/lib/providers/loader/useMutationResultWithLoader", () => ({
-  useMutationResultWithLoader: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
+  useMutationResultWithLoader: () => ({
+    mutateAsync: async () => Promise.resolve(undefined),
+  }),
 }));
 
 jest.mock("@/lib/queries", () => ({
-  useCreateAgentsTeamMutation: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
-  useRunAgentsTeamMutation: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
-  useSaveAgentsTeamMutation: () => ({ mutateAsync: async () => Promise.resolve(undefined) }),
+  useCreateAgentsTeamMutation: () => ({
+    mutateAsync: async () => Promise.resolve(undefined),
+  }),
+  useRunAgentsTeamMutation: () => ({
+    mutateAsync: async () => Promise.resolve(undefined),
+  }),
+  useSaveAgentsTeamMutation: () => ({
+    mutateAsync: async () => Promise.resolve(undefined),
+  }),
   useTeamPublishedState: () => ({ data: mockPublished }),
 }));
 

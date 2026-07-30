@@ -7,13 +7,14 @@ import { IconPreview } from "@/lib/components/IconPreview";
 import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Text } from "@/lib/components/Text";
+import { nameField } from "@/lib/forms/nameField";
 
 import styles from "./AgentGeneralInfoFrom.module.scss";
 
 const formModel = z.object({
   description: z.string().optional(),
   iconUrl: z.string().optional(),
-  name: z.string().nonempty(),
+  name: nameField(),
 });
 
 export type FromModel = z.infer<typeof formModel>;

@@ -93,6 +93,18 @@
   }
 }
 
+/* The card is a fixed 200px, and a name is user-supplied text of no fixed length.
+   Validation bounds new names; this contains the ones already stored, which it
+   cannot reach. Without it a long name overflows the card and pushes the grid
+   around it out of shape. */
+.agent-name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
 .agent-meta {
   height: 40px;
   display: flex;

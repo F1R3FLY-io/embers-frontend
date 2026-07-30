@@ -11,6 +11,7 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import { nameField } from "@/lib/forms/nameField";
 
 import styles from "./AgentsTeamGeneralInfoFrom.module.scss";
 
@@ -30,7 +31,7 @@ const formModel = z.object({
   flowType: z.string(),
   language: z.string(),
   logo: z.string().optional(),
-  name: z.string().nonempty(),
+  name: nameField(),
 });
 
 export type FromModel = z.infer<typeof formModel>;

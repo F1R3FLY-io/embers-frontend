@@ -47,7 +47,11 @@ export function EditModal<T extends Record<string, string | number>>({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (name: keyof T, type: "number" | "string", raw: string) =>
+  const handleChange = (
+    name: keyof T,
+    type: "number" | "string",
+    raw: string,
+  ) =>
     setValues((old) => ({
       ...old,
       // A half-typed number ("", "-") has no numeric value yet, so keep the
@@ -93,7 +97,11 @@ export function EditModal<T extends Record<string, string | number>>({
             type={type === "number" ? "number" : "text"}
             value={values[name]}
             onChange={(event) =>
-              handleChange(name, type === "number" ? "number" : "string", event.target.value)
+              handleChange(
+                name,
+                type === "number" ? "number" : "string",
+                event.target.value,
+              )
             }
           />
         </label>

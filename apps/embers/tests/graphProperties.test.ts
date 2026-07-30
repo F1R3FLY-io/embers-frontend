@@ -115,9 +115,11 @@ describe("graph round-trip properties", () => {
       const defined = new Set(restoredNodes.map((node) => node.id));
 
       for (const edge of restoredEdges) {
-        expect({ seed, ...edge, defined: defined.has(edge.source) }).toMatchObject(
-          { defined: true },
-        );
+        expect({
+          seed,
+          ...edge,
+          defined: defined.has(edge.source),
+        }).toMatchObject({ defined: true });
         expect(defined.has(edge.target)).toBe(true);
       }
     }

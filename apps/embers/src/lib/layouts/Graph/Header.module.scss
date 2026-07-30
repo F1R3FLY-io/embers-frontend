@@ -18,6 +18,7 @@
 .split .split-caret {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+
   /* The divider is what makes a split button read as two targets instead of one
    * over-wide button. The halves abut exactly, so it lands on the seam. */
   border-left: 1px solid rgb(255 255 255 / 28%);
