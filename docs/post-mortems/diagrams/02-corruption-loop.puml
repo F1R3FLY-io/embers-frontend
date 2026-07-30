@@ -23,7 +23,7 @@ participant "fromApiGraph\n<size:10>graph.ts</size>" as LOAD #FFF3E0
 participant "embers parse\n<size:10>Rust</size>" as PARSE #FFEBEE
 
 == Fault introduced ==
-U -> MENU : right-click → "Delete node"
+U -> MENU : right-click → "Delete node"\n<size:10>observed: the ""Cavify"" node, wired ""Condense → Cavify → Output""</size>
 MENU -> RF : onNodesChange([{id, type:"remove"}])
 note right of RF #FFEBEE
   **applyNodeChanges removes the node only.**

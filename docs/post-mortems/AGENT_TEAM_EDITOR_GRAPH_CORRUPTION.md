@@ -221,6 +221,13 @@ in **two** edges — `Condense → ghost` and `ghost → Output` — alongside a
 chain and reconnecting its neighbours: the rewire succeeded, and both stubs of the
 removed node survived.
 
+The identity of the ghost confirms it. The last intact version, `019fb091-8fcc`,
+defines that same id `aae6cd198179248b2af377980fe4f55db` with a context naming the
+agent **`Cavify`**, wired `Condense → Cavify → Output`. So the sequence was: insert
+`Cavify` into the chain, deploy, then delete it from the context menu and reconnect
+`Condense` straight to `Output`. The reconnection is visible in the saved graph; so
+are both edges to the node that no longer exists.
+
 #### Fix
 
 Three changes, in `f9f3759`:
