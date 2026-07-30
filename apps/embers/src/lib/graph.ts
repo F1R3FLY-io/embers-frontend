@@ -42,9 +42,29 @@ export function toApiGraph(nodes: Node[], edges: Edge[]): Graph {
 
   return {
     graph_1,
-    graph_2: buildGraphEdges(edges),
+    graph_2: buildGraphEdges(connectedEdges(nodes, edges)),
     type: "Tensor",
   };
+}
+
+/**
+ * Keeps only edges whose endpoints are both being written.
+ *
+ * An edge to a node that no longer exists compiles to a channel read with no
+ * writer, and the backend rejects the whole graph with "node <id> is missing
+ * context" -- permanently, because the editor cannot render such an edge and so
+ * gives no sign that it is there. Filtering, rather than throwing as
+ * `requireString` does for a missing agent id: a dangling edge carries no
+ * information, so dropping it repairs the graph instead of hiding a loss.
+ */
+function connectedEdges(nodes: Node[], edges: Edge[]): Edge[] {
+  // Container ids included: `collectGraphParts` records a subgraph's own var as a
+  // vertex, so an edge naming one is not dangling.
+  const present = new Set(nodes.map((node) => node.id));
+
+  return edges.filter(
+    (edge) => present.has(edge.source) && present.has(edge.target),
+  );
 }
 
 function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
@@ -301,6 +321,15 @@ function buildEdges(flatGraph: FlatGraph): Edge[] {
   return [...flatGraph.edges]
     .flatMap(([source, targets]) =>
       [...targets].map((target) => [source, target]),
+    )
+    // Drop edges naming a vertex the graph does not define. This is what repairs
+    // an already-corrupted team: without it the phantom edge is read back into
+    // the editor, which cannot draw it and so shows nothing wrong, then written
+    // out again on the next save -- so every later deploy keeps failing. Opening
+    // and saving now produces a clean graph.
+    .filter(
+      ([source, target]) =>
+        flatGraph.vertexes.has(source) && flatGraph.vertexes.has(target),
     )
     .map(([source, target]) => ({
       id: crypto.randomUUID(),

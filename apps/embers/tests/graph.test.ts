@@ -417,3 +417,214 @@ describe("fan-out and fan-in", () => {
     });
   });
 });
+
+// ---------------------------------------------------------------------------
+// Tests: dangling edges
+//
+// Deleting a node used to leave its edges behind, producing a graph whose edges
+// name a vertex that has no context. The backend rejects the whole graph, and
+// because the editor cannot draw such an edge it showed nothing wrong -- so the
+// phantom survived every reload and every save, and the team stayed undeployable.
+// ---------------------------------------------------------------------------
+
+/** An EdgeAnon in the shape `buildGraphEdges` emits, for endpoints that may not
+ * be defined anywhere -- which is the situation under test, so it cannot be
+ * produced via `toApiGraph`. */
+function danglingEdge(source: string, target: string): Graph {
+  return {
+    binding_1: {
+      graph: { type: "Nil" },
+      var: source,
+      vertex: { name: { type: "VVar", value: source } },
+    },
+    binding_2: {
+      graph: { type: "Nil" },
+      var: target,
+      vertex: { name: { type: "VVar", value: target } },
+    },
+    type: "EdgeAnon",
+  };
+}
+
+describe("dangling edges", () => {
+  it("does not write an edge whose target no longer exists", () => {
+    const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
+    const edges = [makeEdge("n1", "n2"), makeEdge("n1", "ghost")];
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, edges));
+
+    expect(asPairs(restored)).toEqual(asPairs([makeEdge("n1", "n2")]));
+  });
+
+  it("does not write an edge whose source no longer exists", () => {
+    const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
+    const edges = [makeEdge("ghost", "n2"), makeEdge("n1", "n2")];
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, edges));
+
+    expect(asPairs(restored)).toEqual(asPairs([makeEdge("n1", "n2")]));
+  });
+
+  it("keeps every legitimate edge when discarding a dangling one", () => {
+    const { edges, nodes } = redTeam();
+    const withGhost = [...edges, makeEdge("aRef", "ghost")];
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, withGhost));
+
+    // Every real edge survives; only the ghost goes.
+    expect(asPairs(restored)).toEqual(asPairs(edges));
+    expect(restored).toHaveLength(edges.length);
+  });
+
+  it("treats an edge naming a deploy container as legitimate", () => {
+    // `collectGraphParts` records a subgraph's own var as a vertex, so a
+    // container id is a real endpoint and must not be mistaken for a ghost.
+    const nodes = [
+      makeContainer("C1"),
+      makeNode("n1", "input-node", "C1"),
+      makeNode("n2", "output-node"),
+    ];
+    const edges = [makeEdge("n1", "C1"), makeEdge("C1", "n2")];
+
+    const [, restored] = fromApiGraph(toApiGraph(nodes, edges));
+
+    expect(asPairs(restored)).toEqual(asPairs(edges));
+  });
+
+  it("drops an edge read back from a graph that never defined its vertex", () => {
+    const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
+    const corrupt: Graph = {
+      graph_1: toApiGraph(nodes, [makeEdge("n1", "n2")]),
+      graph_2: danglingEdge("n1", "ghost"),
+      type: "Tensor",
+    };
+
+    const [restoredNodes, restoredEdges] = fromApiGraph(corrupt);
+
+    expect(asPairs(restoredEdges)).toEqual(asPairs([makeEdge("n1", "n2")]));
+    // The ghost must not become a node either -- it has no context, and
+    // `buildNodes` throws for a context-less vertex.
+    expect(restoredNodes.map((node) => node.id).sort()).toEqual(["n1", "n2"]);
+  });
+
+  it("heals a corrupted graph when it is opened and saved again", () => {
+    // The repair path for teams already saved with a phantom edge: load, then
+    // save, and what goes back is clean.
+    const nodes = [makeNode("n1", "input-node"), makeNode("n2", "output-node")];
+    const corrupt: Graph = {
+      graph_1: toApiGraph(nodes, [makeEdge("n1", "n2")]),
+      graph_2: danglingEdge("ghost", "n2"),
+      type: "Tensor",
+    };
+
+    const [loadedNodes, loadedEdges] = fromApiGraph(corrupt);
+    const [, resaved] = fromApiGraph(toApiGraph(loadedNodes, loadedEdges));
+
+    expect(asPairs(resaved)).toEqual(asPairs([makeEdge("n1", "n2")]));
+  });
+
+  // -------------------------------------------------------------------------
+  // The graph that actually broke, reproduced from chain
+  // -------------------------------------------------------------------------
+
+  // Ids and edges below are verbatim from RedTeam version 019fb096-f503, which
+  // could not be deployed. The shape shows what the user did: a node between
+  // Condense and Output was deleted and its neighbours rewired directly, which
+  // left both of the deleted node's edges behind pointing at nothing.
+  //
+  // The deploy-container that graph also had is omitted: container handling is
+  // covered separately above, and it plays no part in this defect.
+  const REAL = {
+    condense: "a3bf8f7979a504c9faf6eaf3aeef31b52",
+    evidence: "aab5ef72c8fa54bfabfaaa16ae5dfa7c5",
+    feasibility: "a64f522a9f3cc47bd870ec15f307a8b86",
+    // The node that was deleted. It has no context in the saved graph.
+    ghost: "aae6cd198179248b2af377980fe4f55db",
+    hypothesize: "a7f1b650bcfce4837924d54b73ef238f1",
+    input: "a958575cee66f4ac8a7e360411cd2677b",
+    logic: "a446fd6171a764579ab5c8961a99d6f2b",
+    output: "aa04a5a0714af42ac9763504b7faa21c7",
+    refine: "aaa4200b9ef07435e89595b2df0684e2f",
+  };
+
+  function realRedTeam() {
+    const nodes = [
+      makeNode(REAL.input, "input-node"),
+      makeAgentNode(REAL.hypothesize, "Hypothesize"),
+      makeAgentNode(REAL.logic, "LogicCritic"),
+      makeAgentNode(REAL.evidence, "EvidenceCritic"),
+      makeAgentNode(REAL.feasibility, "FeasibilityCritic"),
+      makeAgentNode(REAL.refine, "Refine"),
+      makeAgentNode(REAL.condense, "Condense"),
+      makeNode(REAL.output, "output-node"),
+    ];
+
+    const intended = [
+      makeEdge(REAL.input, REAL.hypothesize),
+      makeEdge(REAL.input, REAL.logic),
+      makeEdge(REAL.input, REAL.evidence),
+      makeEdge(REAL.input, REAL.feasibility),
+      makeEdge(REAL.input, REAL.refine),
+      makeEdge(REAL.input, REAL.condense),
+      makeEdge(REAL.hypothesize, REAL.logic),
+      makeEdge(REAL.hypothesize, REAL.evidence),
+      makeEdge(REAL.hypothesize, REAL.feasibility),
+      makeEdge(REAL.hypothesize, REAL.refine),
+      makeEdge(REAL.logic, REAL.refine),
+      makeEdge(REAL.evidence, REAL.refine),
+      makeEdge(REAL.feasibility, REAL.refine),
+      makeEdge(REAL.refine, REAL.condense),
+      // The rewire the user made around the node they removed.
+      makeEdge(REAL.condense, REAL.output),
+    ];
+
+    // Both stubs the deletion left behind.
+    const orphaned = [
+      makeEdge(REAL.condense, REAL.ghost),
+      makeEdge(REAL.ghost, REAL.output),
+    ];
+
+    return { intended, nodes, orphaned };
+  }
+
+  it("saves the real broken team without either orphaned stub", () => {
+    const { intended, nodes, orphaned } = realRedTeam();
+
+    const [, restored] = fromApiGraph(
+      toApiGraph(nodes, [...intended, ...orphaned]),
+    );
+
+    expect(asPairs(restored)).toEqual(asPairs(intended));
+    expect(restored).toHaveLength(intended.length);
+  });
+
+  it("heals the real broken team on load, losing no real node or edge", () => {
+    // `orphaned` is not used here: the stubs have to be composed into the AST as
+    // raw EdgeAnons, since `toApiGraph` now refuses to emit them.
+    const { intended, nodes } = realRedTeam();
+
+    // As stored on chain: a graph defining eight nodes, with two edges naming a
+    // ninth that has no context.
+    const corrupt: Graph = {
+      graph_1: {
+        graph_1: toApiGraph(nodes, intended),
+        graph_2: danglingEdge(REAL.condense, REAL.ghost),
+        type: "Tensor",
+      },
+      graph_2: danglingEdge(REAL.ghost, REAL.output),
+      type: "Tensor",
+    };
+
+    const [loadedNodes, loadedEdges] = fromApiGraph(corrupt);
+
+    expect(asPairs(loadedEdges)).toEqual(asPairs(intended));
+    expect(loadedNodes.map((node) => node.id).sort()).toEqual(
+      nodes.map((node) => node.id).sort(),
+    );
+
+    // Saving what was loaded produces a graph with nothing dangling, which is
+    // what makes the team deployable again.
+    const [, resaved] = fromApiGraph(toApiGraph(loadedNodes, loadedEdges));
+    expect(asPairs(resaved)).toEqual(asPairs(intended));
+  });
+});

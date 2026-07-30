@@ -448,12 +448,14 @@ function buildMenuItems(
             input.nodes.length > 1 ? "Delete selected nodes" : "Delete node",
           hidden: input.nodes.length === 0 || deployContainers.length !== 0,
           onClick: () => {
-            const changes: NodeChange<Node>[] = input.nodes.map((node) => ({
-              id: node.id,
-              type: "remove" as const,
-            }));
-
-            onNodesChange(changes);
+            // React Flow's own deletion, not hand-built `remove` changes:
+            // `applyNodeChanges` drops the node and leaves its edges behind,
+            // which saves a graph whose edges reference a vertex that no longer
+            // exists -- and the compiler rejects that at deploy time.
+            //
+            // This is also the exact path `deleteKeyCode` takes, so the menu and
+            // the keyboard cannot drift apart again.
+            void rf.deleteElements({ nodes: input.nodes });
           },
           type: "text",
         },
