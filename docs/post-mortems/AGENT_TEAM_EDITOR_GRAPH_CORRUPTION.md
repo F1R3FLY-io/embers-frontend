@@ -2,8 +2,8 @@
 
 **Date of incident:** 2026-07-29 / 2026-07-30 (UTC)
 **Surfaced by:** preparing the red-team agent-team demo on the local stack
-**Status:** all six defects fixed and covered by regression tests; three prevention
-items remain open and are tracked in [§9](#9-action-items)
+**Status:** all six defects fixed, all nine prevention measures implemented, and every
+one covered by tests that fail without it
 **Fixes:** `f9f3759`, `d5bc2d0`, `dc3076a`, `96ecf54`, `ae78b40`
 
 ---
@@ -21,7 +21,7 @@ part of the team, is what activated the second.
 | **D1** | Deleting a node from the context menu left its edges behind | **Critical** — data corruption | Deploy fails with `node <id> is missing context`, permanently | `f9f3759` |
 | **D2** | The sidebar's agent panel clipped every row past the sixth | **High** — data loss to the eye | The seventh agent (`Refine`) simply was not there | `d5bc2d0` |
 | **D3** | Deploy and publish had no entry point once a team was deployed | Medium — usability | The editor offers only `Run`; publishing appears impossible | `dc3076a` |
-| **D4** | A dev-env restart un-publishes a team without un-marking it | Medium — cross-system inconsistency | `@handle` does not autocomplete although the team reads as published | *open* — see P7 |
+| **D4** | A dev-env restart un-publishes a team without un-marking it | Medium — cross-system inconsistency | `@handle` does not autocomplete although the team reads as published | P7 |
 | **D5** | `AccordionProps.className` was declared but never applied | Low — latent | A caller's `className` is silently ignored | `d5bc2d0` |
 | **D6** | A newly created agent or team did not appear in its list | Medium — stale read | The record is missing until some later refetch | `ae78b40` |
 
@@ -488,13 +488,13 @@ Prioritised. Each item is concrete enough to act on, and names the defect it clo
 
 | # | Measure | Closes | Status |
 |---|---|---|---|
-| **P1** | Add a `no-restricted-syntax` ESLint rule rejecting hand-built `{ type: "remove" }` node changes, with a message pointing at `deleteElements` | D1 | open |
-| **P2** | Property-based round-trip tests over generated graphs, asserting `$\mathcal{W}(s(l(G)))$` for arbitrary `$G$` | D1 | open |
-| **P3** | Make the silent repair observable — warn in development when `buildEdges` or `toApiGraph` drops an edge | D1 | open |
-| **P4** | Add jsdom and `@testing-library/react` for interaction-level tests | D2, D3, D5 | open |
-| **P5** | Codify "no fixed height cap on content of unbounded length" in `../architecture/patterns/component-patterns.md` | D2 | open |
-| **P6** | Backend graph errors should name the node's label and the likely cause, not only a vertex id | D1 | open |
-| **P7** | Expose the published handle/DID on the team record and add a chain-vs-PDS reconciliation check | D3, D4 | open |
+| **P1** | ESLint rule rejecting hand-built `{ type: "remove" }` node changes, pointing at `deleteElements` | D1 | **done** |
+| **P2** | Property-based round-trip tests over generated graphs, asserting `$\mathcal{W}(s(l(G)))$` for arbitrary `$G$` | D1 | **done** |
+| **P3** | Make the silent repair observable — warn when `buildEdges` or `toApiGraph` drops an edge | D1 | **done** |
+| **P4** | jsdom and `@testing-library/react` for interaction-level tests | D2, D3, D5 | **done** |
+| **P5** | Codify "no fixed height cap on content of unbounded length" in `../architecture/patterns/component-patterns.md` | D2 | **done** |
+| **P6** | Backend graph errors name the neighbouring nodes and the remedy, not only a vertex id | D1 | **done** |
+| **P7** | Record the published handle/DID; reconcile chain against PDS | D3, D4 | **done** |
 | **P8** | Fixtures must exceed any layout capacity — test with `$N$` greater than any cap | D2 | **done** |
 | **P9** | When the app adds a bespoke path beside a framework built-in, test both against the same invariant | D1 | **done** for D1 |
 
@@ -581,18 +581,50 @@ Worth recording, so these are not lost in a future refactor.
 
 ## 9. Action items
 
-| # | Item | Owner | Effort | Closes |
-|---|---|---|---|---|
-| A1 | P3 — warn in development when an edge is dropped | frontend | S | the feedback gap of §6.4 |
-| A2 | P1 — lint rule against hand-built `remove` changes | frontend | S | D1 recurrence |
-| A3 | P5 — record the unbounded-list rule in `component-patterns.md` | frontend | S | D2 recurrence |
-| A4 | P6 — richer backend graph errors (node label + likely cause) | backend | S | §6.5 fault→failure distance |
-| A5 | P7 — publish state on the team record; chain↔PDS reconciliation | backend + frontend | M | D3 label, D4 entirely |
-| A6 | P4 — jsdom + testing-library for interaction tests | frontend | M | the residual half of §6.2 |
-| A7 | P2 — property-based round-trip tests (decide on `fast-check`) | frontend | M | D1 class, not just D1 |
-| A8 | An ADR recording P1 and P5 as project standards | frontend | S | drift back to the old patterns |
+All landed. Each is covered by a test that fails without it, verified by reverting
+the change and observing the failure.
 
----
+| # | Item | Closes | Where |
+|---|---|---|---|
+| A1 | Warn when an edge is dropped, naming the endpoints | §6.4 feedback gap | `lib/graph.ts` |
+| A2 | Lint rule against hand-built node removals | D1 recurrence | `apps/embers/eslint.config.js` |
+| A3 | Unbounded-list rule recorded for reuse | D2 recurrence | `component-patterns.md`, [ADR-003](../architecture/decisions/003-graph-invariants-and-unbounded-lists.md) |
+| A4 | Graph errors name the neighbouring nodes and the remedy | §6.5 fault→failure distance | `graphl_parsing.rs` |
+| A5 | Publish state recorded and reconciled against the PDS | D3 label, D4 entirely | `published_state.rs`, `GET …/published` |
+| A6 | jsdom + testing-library for interaction tests | residual half of §6.2 | `headerInteraction.test.tsx` |
+| A7 | Property-based round-trip tests | the D1 *class*, not just D1 | `graphProperties.test.ts` |
+| A8 | ADR recording the standards drawn from this | drift back to the old patterns | [ADR-003](../architecture/decisions/003-graph-invariants-and-unbounded-lists.md) |
+
+### What A5 turned up
+
+Implementing the reconciliation exposed a third divergence nobody had named. A
+publication is keyed by **deployment uri, not by team id** — every deploy mints a
+fresh uri, while the account's `com.f1r3sky.agentsteam.config` record keeps naming
+whichever uri was current when it was published. So re-deploying a published team
+leaves mentions running the **older build**, silently.
+
+`GET …/published` therefore reports `is_latest_deployment`, and the editor's menu
+says so. Against the real `RedTeam` it answers:
+
+```json
+{ "published_version": "019fb065-9fc7-71b2-bc91-9ba4befc3052",
+  "uri": "rho:id:f6pgt8k8zgd3gecfaz6i7useie5tw8m1q1joozbkjxippiay8nsb5s",
+  "is_latest_deployment": false,
+  "handle": null, "did": null, "account_exists": null }
+```
+
+`false` is correct — a later version was deployed after the publish — and the nulls
+are correct too: that publish predates handles being recorded, and the three-valued
+`account_exists` reports "unknown" rather than claiming the account is gone.
+
+### A note for whoever changes the API next
+
+The generated client under `packages/client/src/api-client` has been **hand-extended**
+— `Graph` is mapped through the WASM `astToGraphl`, which no generator emits.
+Regenerating it produces 117 differing entries and would discard those edits, breaking
+the editor. A5's endpoint is therefore read with a direct `fetch` in
+`useTeamPublishedState`, documented at the call site. `schema.json` is kept current
+regardless, so the spec stays honest about what the API offers.
 
 ## Appendix A: invariant check
 

@@ -27,11 +27,11 @@ rectangle "**BEFORE** — every layer had an aligned hole" as B #line:C62828;bac
 }
 
 rectangle "**AFTER** — holes closed, or deliberately left open" as A #line:2E7D32;back:E8F5E9 {
-  rectangle "L1  Type system\n<i>still open</i> — closing it needs ids branded by\nmembership, a larger refactor.  **P1** substitutes a\nlint rule that rejects hand-built ""remove"" changes" as A1 #line:EF6C00;back:FFF3E0
-  rectangle "L2  Unit tests — **closed**\n13 tests across ""graph.test.ts"" and\n""graphEditorMenu.test.ts"", including the real\nbroken topology; 10 fail if a fix is reverted,\nthe rest guard against over-correction" as A2 #line:2E7D32;back:E8F5E9
-  rectangle "L3  Component tests — **closed**\n15 render tests via ""renderToStaticMarkup"",\nplus jest mappings for css / png / svg.\n**P4** adds jsdom for interaction coverage" as A3 #line:2E7D32;back:E8F5E9
-  rectangle "L4  UI feedback\n<i>still open</i> — repair is now silent rather than\ncorruption being silent.  **P3** logs what was\ndropped so the user is told" as A4 #line:EF6C00;back:FFF3E0
-  rectangle "L5  Backend validation\nunchanged; **P6** would name the node's label\nand the likely cause instead of a bare id" as A5 #line:EF6C00;back:FFF3E0
+  rectangle "L1  Type system\n<i>still permits it</i> — ids are bare strings, and\nbranding them by membership is a larger refactor.\n**P1** substitutes a lint rule, now enforced, that\nrejects hand-built ""remove"" changes" as A1 #line:EF6C00;back:FFF3E0
+  rectangle "L2  Unit tests — **closed**\nexample tests over the real broken topology,\nplus property tests over generated graphs\nincluding deliberately corrupt ones" as A2 #line:2E7D32;back:E8F5E9
+  rectangle "L3  Component tests — **closed**\nrender tests via ""renderToStaticMarkup"" plus\njsdom interaction tests; jest mappings for\ncss / png / svg" as A3 #line:2E7D32;back:E8F5E9
+  rectangle "L4  UI feedback — **closed**\nthe repair now warns, naming the edges it\ndropped: a correction the author cannot see\nis the same failure as silent corruption" as A4 #line:2E7D32;back:E8F5E9
+  rectangle "L5  Backend validation — **closed**\nthe error now names the neighbouring nodes\nand the remedy, not a bare vertex id" as A5 #line:2E7D32;back:E8F5E9
   rectangle "L6  Manual QA — **closed by P8**\nfixtures must exceed any layout capacity:\nthe render tests use nine agents" as A6 #line:2E7D32;back:E8F5E9
   A1 -[hidden]down- A2
   A2 -[hidden]down- A3
@@ -43,11 +43,12 @@ rectangle "**AFTER** — holes closed, or deliberately left open" as A #line:2E7
 B -right[#455A64]-> A
 
 note bottom of A #FFF3E0
-  Three holes are still open and named, rather than
-  quietly closed on paper. The two that matter most are
-  **L4** — a repair the user cannot see is the same class
-  of failure that caused the incident — and **L1**, where
-  the type system still permits the illegal state.
+  Five layers now hold. **L1** is the one that does not:
+  the type system still permits an edge naming a node
+  that does not exist, because ids are bare strings.
+  Branding them by membership would close it properly;
+  until then the lint rule covers the site where the
+  mistake was actually made.
 end note
 
 legend right

@@ -137,6 +137,58 @@ interface WalletInputProps {
 }
 ```
 
+### No Fixed Height Cap on Content of Unbounded Length
+
+A `max-height` in pixels is only safe when the content it bounds has a knowable
+maximum size. Applied to a list that grows with user data it silently hides whatever
+does not fit, and the defect is invisible until the list crosses the threshold — so
+it ships, passes review, and resurfaces later as "items are missing".
+
+This happened. A 300px cap on the graph sidebar's agent panel, combined with
+`overflow: hidden`, hid every agent past the sixth with no scrollbar to reach them.
+The number of visible rows is `floor(300 / 48) = 6`, and there were six agents until
+there were seven. See
+[the post-mortem](../../post-mortems/AGENT_TEAM_EDITOR_GRAPH_CORRUPTION.md).
+
+**Do not:**
+
+```scss
+/* The cap is a guess about how much content there will be. Content wins. */
+.panel.open {
+  max-height: 300px;
+  overflow: hidden; /* worse: removes the scrollbar that would have saved it */
+}
+```
+
+**Do** — let the element size to its content, and give an ancestor the overflow:
+
+```scss
+.panel.open.fit-content {
+  max-height: none;
+  overflow: visible;
+}
+
+.sidebar-body {
+  flex: 1;
+  overflow-y: auto; /* one scroll region, not one per panel */
+}
+```
+
+`max-height: none` rather than a larger number is the point: the panel fits three
+rows or ninety, and shrinks again when rows are removed, so no count is encoded
+anywhere. `Accordion`'s `fitContent` prop is the sanctioned form of this — see
+`src/lib/components/Accordion/Accordion.tsx`.
+
+A fixed cap remains correct where a bounded, scrolling box is the intent — a log
+panel, for instance. The distinction is whether the content's length is knowable in
+advance, not whether the cap looks reasonable today.
+
+Two consequences worth knowing. `overflow: hidden` on a capped element is what turns
+an overflow into a dead end, so prefer `auto` even when you expect the content to
+fit. And no unit test can catch clipping — jsdom has no layout engine, so
+`scrollHeight` and `clientHeight` are both `0`. Fixtures should therefore exceed any
+cap the component could plausibly have, and the visual check belongs in a browser.
+
 ## State Management Patterns
 
 ### Local State with useState
