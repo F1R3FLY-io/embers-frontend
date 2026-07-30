@@ -48,6 +48,34 @@ export function toApiGraph(nodes: Node[], edges: Edge[]): Graph {
 }
 
 /**
+ * Announces a repair that would otherwise be invisible.
+ *
+ * Dropping a dangling edge is the right correction, but a correction the author
+ * cannot see is the same failure mode that made the original defect expensive: a
+ * connection they once drew disappears and nothing says so. Warning unconditionally
+ * rather than behind a development flag, because there is no environment in which
+ * silently discarding part of a user's graph should pass without a record, and
+ * because `import.meta.env` is unavailable under the CommonJS output the tests run.
+ */
+function reportDroppedEdges(where: string, dropped: Edge[]): void {
+  if (dropped.length === 0) {
+    return;
+  }
+
+  const endpoints = dropped
+    .map((edge) => `${edge.source}->${edge.target}`)
+    .join(", ");
+
+  // Intentional diagnostic, not debug output: this is the notification that a
+  // connection the author drew has been removed. Suppressing it would restore the
+  // silence that made the original defect costly.
+  // eslint-disable-next-line no-console
+  console.warn(
+    `[graph] ${where}: dropped ${dropped.length} edge(s) naming a node that does not exist, repairing a graph that would otherwise fail to deploy. Endpoints: ${endpoints}`,
+  );
+}
+
+/**
  * Keeps only edges whose endpoints are both being written.
  *
  * An edge to a node that no longer exists compiles to a channel read with no
@@ -62,9 +90,16 @@ function connectedEdges(nodes: Node[], edges: Edge[]): Edge[] {
   // vertex, so an edge naming one is not dangling.
   const present = new Set(nodes.map((node) => node.id));
 
-  return edges.filter(
+  const kept = edges.filter(
     (edge) => present.has(edge.source) && present.has(edge.target),
   );
+
+  reportDroppedEdges(
+    "toApiGraph",
+    edges.filter((edge) => !kept.includes(edge)),
+  );
+
+  return kept;
 }
 
 function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
@@ -318,24 +353,32 @@ function nameToString(name: Name): string {
 }
 
 function buildEdges(flatGraph: FlatGraph): Edge[] {
-  return [...flatGraph.edges]
-    .flatMap(([source, targets]) =>
-      [...targets].map((target) => [source, target]),
-    )
-    // Drop edges naming a vertex the graph does not define. This is what repairs
-    // an already-corrupted team: without it the phantom edge is read back into
-    // the editor, which cannot draw it and so shows nothing wrong, then written
-    // out again on the next save -- so every later deploy keeps failing. Opening
-    // and saving now produces a clean graph.
-    .filter(
-      ([source, target]) =>
-        flatGraph.vertexes.has(source) && flatGraph.vertexes.has(target),
-    )
-    .map(([source, target]) => ({
-      id: crypto.randomUUID(),
-      source,
-      target,
-    }));
+  const all = [...flatGraph.edges].flatMap(([source, targets]) =>
+    [...targets].map((target) => ({ source, target })),
+  );
+
+  // Drop edges naming a vertex the graph does not define. This is what repairs an
+  // already-corrupted team: without it the phantom edge is read back into the
+  // editor, which cannot draw it and so shows nothing wrong, then written out
+  // again on the next save -- so every later deploy keeps failing. Opening and
+  // saving now produces a clean graph.
+  const kept = all.filter(
+    ({ source, target }) =>
+      flatGraph.vertexes.has(source) && flatGraph.vertexes.has(target),
+  );
+
+  reportDroppedEdges(
+    "fromApiGraph",
+    all
+      .filter((edge) => !kept.includes(edge))
+      .map((edge) => ({ id: "", ...edge })),
+  );
+
+  return kept.map(({ source, target }) => ({
+    id: crypto.randomUUID(),
+    source,
+    target,
+  }));
 }
 
 function buildNodes(flatGraph: FlatGraph): Node[] {

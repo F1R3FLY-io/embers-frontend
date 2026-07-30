@@ -130,6 +130,15 @@ export function buildMenuItems(
 
             const children = nodes.filter((n) => n.parentId === container.id);
 
+            // The one place a hand-built removal is correct, so the lint rule that
+            // guards against stranded edges is waived here deliberately.
+            //
+            // This removes the container while *keeping* its children, re-parenting
+            // them to the root in the same batch. `rf.deleteElements` cannot express
+            // that: it cascades through `parentId` and would delete the children
+            // too. Nothing is stranded either way — containers carry no connection
+            // handles, so no edge can name one.
+            // eslint-disable-next-line no-restricted-syntax
             const changes: NodeChange<Node>[] = [
               ...children.map((child) => {
                 const { extent: _extent, parentId: _parentId, ...rest } = child;
