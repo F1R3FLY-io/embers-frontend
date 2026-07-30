@@ -1,10 +1,14 @@
 import type React from "react";
 
-import { useCallback } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+import type { MenuItem } from "@/lib/components/ContextMenu";
+import type { CurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
+
 import { Button } from "@/lib/components/Button";
+import { ContextMenu } from "@/lib/components/ContextMenu";
 import { PromptModal } from "@/lib/components/Modal/PromptModal";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useDock } from "@/lib/providers/dock/useDock";
@@ -16,6 +20,9 @@ import {
   useRunAgentsTeamMutation,
   useSaveAgentsTeamMutation,
 } from "@/lib/queries";
+import ChevronDownIcon from "@/public/icons/chevrondown-icon.svg?react";
+
+import styles from "./Header.module.scss";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
@@ -36,6 +43,32 @@ export const Header: React.FC = () => {
     [dock],
   );
   const canRun = Boolean(isDeployed && !agentsTeam.hasGraphChanges);
+
+  // The primary button can only ever offer one action, so once a deployed team
+  // has no pending graph edits it reads "Run" and both deploying and publishing
+  // become unreachable from the editor. The caret is where they live.
+  //
+  // Gated on being deployed because that is the precondition both share: a
+  // second deploy is only ever a *re*-deploy here, and the server rejects
+  // publishing an undeployed team outright ("agents team not deployed").
+  const hasMenu = Boolean(isDeployed);
+  const caretRef = useRef<HTMLDivElement>(null);
+  const [menuPosition, setMenuPosition] = useState<
+    { x: number; y: number } | undefined
+  >(undefined);
+
+  const openMenu = useCallback(() => {
+    const caret = caretRef.current?.getBoundingClientRect();
+    if (!caret) {
+      return;
+    }
+    // Hang the menu from the caret's own bottom-left corner so it tracks the
+    // button rather than the pointer -- this opens from a click, not a
+    // right-click, so there is no cursor position to anchor to.
+    setMenuPosition({ x: caret.left, y: caret.bottom + 4 });
+  }, []);
+
+  const closeMenu = useCallback(() => setMenuPosition(undefined), []);
 
   const saveOrCreate = useCallback(async () => {
     const payload = {
@@ -94,6 +127,29 @@ export const Header: React.FC = () => {
     }
   });
 
+  // Ordered as the workflow runs: deploy, then publish.
+  const menuItems = useMemo<MenuItem[]>(
+    () => [
+      {
+        content: t("deploy.deploy"),
+        onClick: () => void handleDeploy(),
+        type: "text",
+      },
+      {
+        content: t("deploy.publishToFiresky"),
+        onClick: () =>
+          void navigate("/agents-team/publish", {
+            // "latest" mirrors what the dashboard passes, and matches the
+            // server, which resolves the team by its latest version when
+            // publishing.
+            state: { id, version: "latest" } satisfies CurrentAgentsTeam,
+          }),
+        type: "text",
+      },
+    ],
+    [handleDeploy, id, navigate, t],
+  );
+
   const onRun = () => {
     open(
       <PromptModal
@@ -140,12 +196,33 @@ export const Header: React.FC = () => {
       <Button type="subtle" onClick={handleSave}>
         {t("deploy.saveAsDraft")}
       </Button>
-      <Button
-        type="primary"
-        onClick={async () => (canRun ? onRun() : handleDeploy())}
-      >
-        {canRun ? t("basic.run") : t("deploy.deploy")}
-      </Button>
+      <div className={styles.split}>
+        <Button
+          className={hasMenu ? styles["split-main"] : undefined}
+          type="primary"
+          onClick={async () => (canRun ? onRun() : handleDeploy())}
+        >
+          {canRun ? t("basic.run") : t("deploy.deploy")}
+        </Button>
+        {hasMenu && (
+          <div ref={caretRef}>
+            <Button
+              ariaLabel={t("deploy.moreActions")}
+              className={styles["split-caret"]}
+              expanded={menuPosition !== undefined}
+              icon={<ChevronDownIcon className={styles["caret-icon"]} />}
+              type="primary"
+              onClick={openMenu}
+            />
+          </div>
+        )}
+      </div>
+      <ContextMenu
+        items={menuItems}
+        open={menuPosition !== undefined}
+        position={menuPosition ?? { x: 0, y: 0 }}
+        onClose={closeMenu}
+      />
     </>
   );
 };

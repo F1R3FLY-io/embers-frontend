@@ -108,6 +108,8 @@
     "notes": "Notes",
     "deploy": "Deploy",
     "deploying": "Deploying",
+    "publishToFiresky": "Publish to F1R3SKY",
+    "moreActions": "More actions",
     "saveAsDraft": "Save as Draft",
     "back": "Back",
     "havingTrouble": "Having trouble?",
