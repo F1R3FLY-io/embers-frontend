@@ -52,3 +52,17 @@
 .accordion-content.open.overflow-hidden {
   overflow: hidden;
 }
+
+/* An open panel that is as tall as its content, for a list whose length is not
+ * known in advance. `max-height: none` rather than a larger number: the panel
+ * then fits three rows or ninety, and shrinks again when rows are removed, so no
+ * count is encoded anywhere. Overflow moves to whichever ancestor scrolls.
+ *
+ * The closed state above is untouched, so collapsing still works. The cost is
+ * the easing: max-height cannot transition to `none`, so these panels snap.
+ * Animating to content height instead needs `grid-template-rows: 0fr -> 1fr`,
+ * which requires wrapping the children in a single element. */
+.accordion-content.open.fit-content {
+  max-height: none;
+  overflow: visible;
+}

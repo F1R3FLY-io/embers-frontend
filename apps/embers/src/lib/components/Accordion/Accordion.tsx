@@ -14,6 +14,12 @@ export interface AccordionProps {
   className?: string;
   closedIcon?: React.ReactNode;
   defaultOpen?: boolean;
+  /** Drop the open panel's height cap so it is as tall as its content.
+   *
+   * The cap suits a bounded, scrolling panel such as a log. For a list that
+   * grows without bound it silently clips whatever does not fit, so an ancestor
+   * that already scrolls should own the overflow instead. */
+  fitContent?: boolean;
   iconPosition?: "inline" | "end";
   onToggle?: (open: boolean) => void;
   openedIcon?: React.ReactNode;
@@ -25,8 +31,10 @@ export interface AccordionProps {
 export const Accordion: React.FC<AccordionProps> = ({
   actions,
   children,
+  className,
   closedIcon,
   defaultOpen = false,
+  fitContent = false,
   iconPosition = "inline",
   onToggle,
   openedIcon,
@@ -67,7 +75,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   const closeIcon = closedIcon ?? <i className="fa fa-chevron-up" />;
 
   return (
-    <div>
+    <div className={className}>
       <div
         className={classNames(styles["accordion-header"], {
           [styles.open]: open,
@@ -91,6 +99,7 @@ export const Accordion: React.FC<AccordionProps> = ({
       <div
         className={classNames(styles["accordion-content"], {
           [styles.open]: open,
+          [styles["fit-content"]]: fitContent,
           [styles["overflow-hidden"]]: overflow === "hidden",
         })}
       >

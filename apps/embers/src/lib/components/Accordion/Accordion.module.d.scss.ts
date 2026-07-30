@@ -7,5 +7,6 @@ declare const classNames: {
   readonly actions: "actions";
   readonly "accordion-content": "accordion-content";
   readonly "overflow-hidden": "overflow-hidden";
+  readonly "fit-content": "fit-content";
 };
 export default classNames;

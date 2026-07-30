@@ -18,17 +18,24 @@ import { useAgents, useAgentsTeamVersions } from "@/lib/queries";
 import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 
 import styles from "./Graph.module.scss";
+import { selectSidebarAgents } from "./selectSidebarAgents";
 
 const NodeAccordion = (props: AccordionProps) => {
   const closeIcon = <i className="fa fa-chevron-right" />;
   const openIcon = <i className="fa fa-chevron-down" />;
   return (
+    // fitContent, and deliberately no `overflow="hidden"`: neither of these lists
+    // has a fixed length, and a capped panel drops whatever does not fit.
+    // `overflow: hidden` is what turned that overflow from scrollable into
+    // unreachable, so it stays off -- if a cap ever returns, the list should
+    // scroll rather than silently clip. The sidebar body already scrolls
+    // (`.body` in Graph.module.scss), so it owns the overflow.
     <Accordion
       {...props}
+      fitContent
       closedIcon={closeIcon}
       iconPosition="end"
       openedIcon={openIcon}
-      overflow="hidden"
     />
   );
 };
@@ -61,14 +68,10 @@ export const Sidebar: React.FC = () => {
   // Every saved agent, deployed or not: the team splices an agent's code in, so
   // its own deploy is irrelevant here, and filtering on it would hide the agent
   // the user just wrote.
-  const filteredAgents = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    return (agentsData?.agents ?? [])
-      .filter((agent) => agent.name.toLowerCase().includes(query))
-      .sort((left, right) =>
-        left.name.localeCompare(right.name, undefined, { sensitivity: "base" }),
-      );
-  }, [agentsData?.agents, searchQuery]);
+  const filteredAgents = useMemo(
+    () => selectSidebarAgents(agentsData?.agents ?? [], searchQuery),
+    [agentsData?.agents, searchQuery],
+  );
 
   const filteredNodes = Object.entries(NODE_REGISTRY).filter(
     ([key, def]) =>
@@ -96,6 +99,20 @@ export const Sidebar: React.FC = () => {
           />
         </div>
 
+        {/* Curated nodes first: this list is a fixed size, so keeping it above
+            means a growing agent list extends downward into the sidebar's scroll
+            instead of pushing the built-in nodes out of view. */}
+        <NodeAccordion defaultOpen title="All Nodes">
+          {filteredNodes.map(([key, def]) => (
+            <NodeItem
+              key={key}
+              iconSrc={def.iconSrc}
+              name={def.displayName}
+              type={key as NodeKind}
+            />
+          ))}
+        </NodeAccordion>
+
         <NodeAccordion defaultOpen title="Your Agents">
           {filteredAgents.length === 0 ? (
             <Text color="secondary" type="small">
@@ -120,17 +137,6 @@ export const Sidebar: React.FC = () => {
               />
             ))
           )}
-        </NodeAccordion>
-
-        <NodeAccordion defaultOpen title="All Nodes">
-          {filteredNodes.map(([key, def]) => (
-            <NodeItem
-              key={key}
-              iconSrc={def.iconSrc}
-              name={def.displayName}
-              type={key as NodeKind}
-            />
-          ))}
         </NodeAccordion>
       </div>
 
