@@ -1,0 +1,84 @@
+@startuml
+' The fault -> error -> failure chain of Avizienis et al. (2004), applied to D1,
+' with the dormancy and detection latency that made it expensive.
+title D1 through the dependability chain — <latex>\textrm{fault} \to \textrm{error} \to \textrm{failure}</latex>\n<size:11>after Avizienis, Laprie, Randell & Landwehr (2004), DOI 10.1109/TDSC.2004.2</size>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #455A64
+
+skinparam activity {
+  BorderThickness 1.5
+  DiamondBackgroundColor #ECEFF1
+  DiamondBorderColor #455A64
+}
+
+|#ECEFF1|Developer|
+start
+:**FAULT** — dormant
+""onNodesChange([{type:"remove"}])""
+in the delete-node menu action;
+note right #FFF3E0
+  A latent fault: correct-looking code that
+  omits the framework's edge cascade.
+  Dormant for as long as nobody deletes a
+  node that has edges.
+end note
+
+|#FFF3E0|Author in the editor|
+:**ACTIVATION** — delete a node
+that has at least one edge;
+:Edges survive their node;
+if (does the UI show anything?) then (**no**)
+  :React Flow silently skips
+  an edge to a missing node;
+  note right #FFEBEE
+    The error is now present and
+    **undetected**. This is the whole
+    incident in one step.
+  end note
+else (yes)
+  :author repairs it — never happened;
+  stop
+endif
+
+|#FFEBEE|Persistence|
+:**ERROR** committed
+graphl with <latex>\exists (u,v) \in E,\; u \notin V</latex>;
+:Every reopen re-materialises it;
+:Every save rewrites it;
+note right #FFEBEE
+  Error is now **self-sustaining**, so the
+  team is permanently undeployable — the
+  step that turned a slip into an outage.
+end note
+
+|#E3F2FD|embers backend|
+:**FAILURE** — deploy rejected
+""node <id> is missing context"";
+note right #FFF3E0
+  Detection latency: the fault was
+  introduced in one process and detected
+  in another, after two saves and a
+  deploy. Diagnosis needed a byte-level
+  comparison of contexts against vertex
+  ids to even locate it.
+end note
+
+|#E8F5E9|After the fix|
+:Fault removed — delegate to ""deleteElements"";
+:Error unrepresentable — save filters;
+:Existing errors repaired — load filters;
+:12 tests fail if any of the three is reverted;
+stop
+
+legend right
+  |= band |= meaning |
+  |<#ECEFF1>| where the fault was written |
+  |<#FFF3E0>| silent / unobserved |
+  |<#FFEBEE>| error present and spreading |
+  |<#E3F2FD>| where failure finally surfaced |
+  |<#E8F5E9>| post-fix state |
+endlegend
+@enduml

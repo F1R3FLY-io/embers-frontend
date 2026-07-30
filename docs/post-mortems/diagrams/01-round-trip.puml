@@ -1,0 +1,77 @@
+@startuml
+' Where a team graph travels, and where its well-formedness is now checked.
+' Colour legend is shared by every diagram in this directory:
+'   green  = well-formed / validated      red   = corrupt / rejecting
+'   amber  = silent, unobserved           blue  = external system
+'   grey   = neutral infrastructure
+title Agent-team graph round trip — and the three points that now enforce\n<latex>\mathcal{W}(G) \equiv \forall (u,v) \in E:\; u \in V \wedge v \in V</latex>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #455A64
+skinparam ArrowFontColor #263238
+
+skinparam rectangle {
+  BorderThickness 1.5
+  FontColor #263238
+}
+
+rectangle "**Graph editor**\nReact Flow state\nnodes + edges" as EDITOR #line:455A64;back:ECEFF1
+
+package "browser — apps/embers/src/lib/graph.ts" {
+  rectangle "**connectedEdges**\nGUARD 2 — drops an edge whose\nendpoint is not being written\n<size:10>graph.ts:60</size>" as GUARD_SAVE #line:2E7D32;back:E8F5E9
+  rectangle "toApiGraph\nnodes + edges → AST" as TOAPI #line:455A64;back:ECEFF1
+  rectangle "fromApiGraph\nAST → nodes + edges" as FROMAPI #line:455A64;back:ECEFF1
+  rectangle "**buildEdges**\nGUARD 1 — drops an edge naming\na vertex the graph never defined\n<size:10>graph.ts:330</size>" as GUARD_LOAD #line:2E7D32;back:E8F5E9
+}
+
+rectangle "astToGraphl / parseToAst\nWASM, @f1r3fly-io/graphl-parser" as WASM #line:1565C0;back:E3F2FD
+
+rectangle "**F1r3fly chain**\nteam version, append-only\ngraphl text" as CHAIN #line:1565C0;back:E3F2FD
+
+package "embers backend (Rust)" {
+  rectangle "parse\nGUARD 3 — the only check that\nexisted before, and the last\n<size:10>graphl_parsing.rs:280</size>" as PARSE #line:C62828;back:FFEBEE
+  rectangle "render\ngraphl → Rholang\ncontract agentsTeam" as RENDER #line:455A64;back:ECEFF1
+}
+
+rectangle "Rholang deploy\nregistry URI  <size:10>rho:id:…</size>" as DEPLOY #line:1565C0;back:E3F2FD
+
+EDITOR -down-> TOAPI : save
+TOAPI -right-> GUARD_SAVE : edges
+GUARD_SAVE -down-> WASM : well-formed AST
+WASM -down-> CHAIN : graphl text
+CHAIN -down-> PARSE : read for deploy
+PARSE -right-> RENDER : Code
+RENDER -down-> DEPLOY
+
+CHAIN -left-> WASM : read for edit
+WASM -up-> FROMAPI : AST
+FROMAPI -right-> GUARD_LOAD
+GUARD_LOAD -up-> EDITOR : repaired\nnodes + edges
+
+note right of PARSE #FFF3E0
+  Before the fix this was the **only**
+  enforcement of <latex>\mathcal{W}(G)</latex>, and it ran
+  in another process, minutes later,
+  reporting an opaque vertex id.
+  The fault→failure distance is what
+  made the defect expensive.
+end note
+
+note left of GUARD_LOAD #E8F5E9
+  Guard 1 is what **repairs** an already
+  corrupt stored graph: it makes load a
+  retraction onto <latex>W = \{G : \mathcal{W}(G)\}</latex>,
+  so one load-then-save cycle heals it.
+end note
+
+legend right
+  |= colour |= meaning |
+  |<#E8F5E9>| well-formed / validated |
+  |<#FFEBEE>| rejects, or where failure surfaced |
+  |<#FFF3E0>| silent or unobserved |
+  |<#E3F2FD>| external system |
+  |<#ECEFF1>| neutral transform |
+endlegend
+@enduml

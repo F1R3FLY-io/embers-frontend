@@ -1,0 +1,59 @@
+@startuml
+' Which layer should have stopped each defect, and the hole it slipped through.
+' The layered-defence framing follows Reason (2000), DOI 10.1136/bmj.320.7237.768:
+' an incident requires every layer to have an aligned hole.
+title Layered defences — the holes each defect passed through\n<size:11>layered-defence framing after Reason (2000), DOI 10.1136/bmj.320.7237.768</size>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam rectangle {
+  BorderThickness 1.5
+  FontColor #263238
+}
+
+rectangle "**BEFORE** — every layer had an aligned hole" as B #line:C62828;back:FFEBEE {
+  rectangle "L1  Type system\n<i>hole:</i> ""Edge"" carries ids as bare strings, so an\nedge naming a non-existent node is well-typed" as B1 #line:C62828;back:FFEBEE
+  rectangle "L2  Unit tests\n<i>hole:</i> every graph fixture had **one** edge and\nasserted ""toHaveLength(1)"" — no fan-out, fan-in,\nor malformed input was ever constructed" as B2 #line:C62828;back:FFEBEE
+  rectangle "L3  Component tests\n<i>hole:</i> none existed — ""testEnvironment: node"",\nno jsdom, and ""moduleNameMapper"" covering only\n"".module.scss"", so importing a component threw" as B3 #line:C62828;back:FFEBEE
+  rectangle "L4  UI feedback\n<i>hole:</i> React Flow silently skips an edge to a\nmissing node; CSS clips without reporting overflow" as B4 #line:C62828;back:FFEBEE
+  rectangle "L5  Backend validation\n<i>partial:</i> it **did** reject the graph — but in another\nprocess, minutes later, naming an opaque vertex id" as B5 #line:EF6C00;back:FFF3E0
+  rectangle "L6  Manual QA\n<i>hole:</i> a threshold fault is invisible below its\nthreshold; six agents existed for weeks" as B6 #line:C62828;back:FFEBEE
+  B1 -[hidden]down- B2
+  B2 -[hidden]down- B3
+  B3 -[hidden]down- B4
+  B4 -[hidden]down- B5
+  B5 -[hidden]down- B6
+}
+
+rectangle "**AFTER** — holes closed, or deliberately left open" as A #line:2E7D32;back:E8F5E9 {
+  rectangle "L1  Type system\n<i>still open</i> — closing it needs ids branded by\nmembership, a larger refactor.  **P1** substitutes a\nlint rule that rejects hand-built ""remove"" changes" as A1 #line:EF6C00;back:FFF3E0
+  rectangle "L2  Unit tests — **closed**\n13 tests across ""graph.test.ts"" and\n""graphEditorMenu.test.ts"", including the real\nbroken topology; 10 fail if a fix is reverted,\nthe rest guard against over-correction" as A2 #line:2E7D32;back:E8F5E9
+  rectangle "L3  Component tests — **closed**\n15 render tests via ""renderToStaticMarkup"",\nplus jest mappings for css / png / svg.\n**P4** adds jsdom for interaction coverage" as A3 #line:2E7D32;back:E8F5E9
+  rectangle "L4  UI feedback\n<i>still open</i> — repair is now silent rather than\ncorruption being silent.  **P3** logs what was\ndropped so the user is told" as A4 #line:EF6C00;back:FFF3E0
+  rectangle "L5  Backend validation\nunchanged; **P6** would name the node's label\nand the likely cause instead of a bare id" as A5 #line:EF6C00;back:FFF3E0
+  rectangle "L6  Manual QA — **closed by P8**\nfixtures must exceed any layout capacity:\nthe render tests use nine agents" as A6 #line:2E7D32;back:E8F5E9
+  A1 -[hidden]down- A2
+  A2 -[hidden]down- A3
+  A3 -[hidden]down- A4
+  A4 -[hidden]down- A5
+  A5 -[hidden]down- A6
+}
+
+B -right[#455A64]-> A
+
+note bottom of A #FFF3E0
+  Three holes are still open and named, rather than
+  quietly closed on paper. The two that matter most are
+  **L4** — a repair the user cannot see is the same class
+  of failure that caused the incident — and **L1**, where
+  the type system still permits the illegal state.
+end note
+
+legend right
+  |= colour |= meaning |
+  |<#E8F5E9>| defence now effective |
+  |<#FFF3E0>| partial — named action item |
+  |<#FFEBEE>| hole the defect passed through |
+endlegend
+@enduml
