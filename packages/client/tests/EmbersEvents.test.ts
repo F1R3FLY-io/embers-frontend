@@ -88,8 +88,11 @@ afterEach(() => {
 
 describe("EmbersEvents", () => {
   describe("constants", () => {
-    test("DEFAULT_MAX_WAIT_FOR_FINALISATION is 45_000ms", () => {
-      expect(DEFAULT_MAX_WAIT_FOR_FINALISATION).toBe(45_000);
+    test("DEFAULT_MAX_WAIT_FOR_FINALISATION matches the backend's 120s deploy-finalization budget", () => {
+      // Confirmation only arrives from the OBSERVER node, so the budget must
+      // absorb observer lag behind the validator; a shorter client budget
+      // reports failure for deploys that already landed on chain.
+      expect(DEFAULT_MAX_WAIT_FOR_FINALISATION).toBe(120_000);
     });
   });
 
@@ -153,9 +156,13 @@ describe("EmbersEvents", () => {
       ws.onmessage!({ data: validatorEvent("deploy-1") });
 
       // The Validator event should NOT have resolved the subscription.
-      // Advance past the timeout to prove it rejects.
+      // Advance past the timeout to prove it rejects, with a message that
+      // says the deploy was accepted and may still finalize -- a bare
+      // "timeout" reads as total failure and invites duplicating retries.
       jest.advanceTimersByTime(5_000);
-      await expect(promise).rejects.toThrow("timeout");
+      await expect(promise).rejects.toThrow(
+        "deploy deploy-1 was accepted but its observer finalization confirmation timed out after 5000ms",
+      );
     });
 
     test("ignores Validator events -- does not notify general subscribers", () => {
@@ -198,13 +205,15 @@ describe("EmbersEvents", () => {
       await expect(promise).resolves.toBeUndefined();
     });
 
-    test("rejects with 'timeout' after maxWait elapses", async () => {
+    test("rejects with the accepted-but-unconfirmed explanation after maxWait elapses", async () => {
       const events = createEvents();
 
       const promise = events.subscribeForDeploy("deploy-1", 5_000);
       jest.advanceTimersByTime(5_000);
 
-      await expect(promise).rejects.toThrow("timeout");
+      await expect(promise).rejects.toThrow(
+        "deploy deploy-1 was accepted but its observer finalization confirmation timed out after 5000ms; the deploy may still finalize -- verify the record before retrying",
+      );
     });
 
     test("clears timeout when resolved by event (no late rejection)", async () => {
@@ -225,7 +234,7 @@ describe("EmbersEvents", () => {
 
       const promise = events.subscribeForDeploy("deploy-1", 5_000);
       jest.advanceTimersByTime(5_000);
-      await expect(promise).rejects.toThrow("timeout");
+      await expect(promise).rejects.toThrow("timed out after 5000ms");
 
       // Late event should not throw or resolve anything.
       ws.onmessage!({ data: observerEvent("deploy-1") });

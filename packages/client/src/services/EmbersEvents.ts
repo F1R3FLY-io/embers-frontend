@@ -21,8 +21,18 @@ export const WalletEvent = z.discriminatedUnion("type", [
 ]);
 export type WalletEvent = z.infer<typeof WalletEvent>;
 
-/** Default time (ms) to wait for a deploy to be finalized in a block. */
-export const DEFAULT_MAX_WAIT_FOR_FINALISATION = 45_000;
+/**
+ * Default time (ms) to wait for a deploy's finalization confirmation.
+ *
+ * Confirmation arrives only once the OBSERVER node reports the deploy
+ * finalized (handleMessage below), so this budget must absorb observer lag
+ * behind the validator, not just consensus finality. It matches the
+ * backend's own implicit deploy-finalization budget
+ * (EMBERS__FINALIZATION__DEPLOY_TIMEOUT_MILLIS, default 120000): a client
+ * that gives up sooner than the server reports failure for deploys the
+ * server still considers in progress -- and that already land on chain.
+ */
+export const DEFAULT_MAX_WAIT_FOR_FINALISATION = 120_000;
 
 export class EmbersEvents {
   private ws!: WebSocket;
@@ -75,7 +85,16 @@ export class EmbersEvents {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         this.deploySubscriptions.delete(deployId);
-        reject(new Error("timeout"));
+        // The deploy was already accepted by send; only the observer's
+        // confirmation is missing. Say so: a bare "timeout" reads as total
+        // failure and invites a retry that duplicates the record.
+        reject(
+          new Error(
+            `deploy ${deployId} was accepted but its observer finalization ` +
+              `confirmation timed out after ${String(maxWait)}ms; the deploy ` +
+              `may still finalize -- verify the record before retrying`,
+          ),
+        );
       }, maxWait);
 
       this.deploySubscriptions.set(deployId, () => {
