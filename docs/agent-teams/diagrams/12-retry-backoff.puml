@@ -1,0 +1,38 @@
+@startuml
+title Retry and deterministic backoff for one activity effect
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Executing\n(attempt a)" as Executing #E9F5EA
+state "Routed onward\n(disposition completed)" as Routed #D9EFDF
+state "Retry wait\nretry:{token}:{a+1}" as RetryWait #FFF0D9
+state "Routed by failure disposition\n(failed / timedOut / resourceExhausted / custom)" as FailureRoute #F8DADA
+
+[*] --> Executing : effect requested\n(effectRequested)
+Executing --> Routed : observation completed\n/ push compensation record if declared
+Executing --> RetryWait : retryable disposition\n[<latex>a < \mathrm{maxAttempts}</latex>]\n/ attempt := a + 1, retryScheduled
+RetryWait --> Executing : timerFired [exact deadline]\nor retry command\n(Enter phase: the node re-executes)
+Executing --> FailureRoute : retryable disposition\n[<latex>a = \mathrm{maxAttempts}</latex>]\nor non-retryable disposition
+Routed --> [*]
+FailureRoute --> [*] : routes like any trigger\n(retry budgets never mask outcomes)
+
+note right of RetryWait #EAF7EE
+Deterministic schedule, normative in the specification:
+<latex>d_a = \min\!\bigl(d_{\max},\; d_0 \cdot (m/1000)^{\,a-2}\bigr)</latex>
+<latex>j_a = \mathrm{SHA256}(k \,\Vert\, a) \bmod (d_a + 1)</latex>
+where <latex>k</latex> is the effect key, so replay and
+recovery compute identical deadlines.
+end note
+note bottom of Executing #FFF3C9
+Retryable means: the disposition is in the node's
+retryOn list, or the list is empty and the disposition
+is failed, timedOut, or resourceExhausted.
+end note
+@enduml

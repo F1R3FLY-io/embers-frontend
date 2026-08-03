@@ -1,14 +1,15 @@
 @startuml
+title Hierarchical continuations: one encrypted tree, path-qualified commands
 skinparam backgroundColor #FCFCFF
 skinparam componentStyle rectangle
 skinparam ArrowColor #334155
 rectangle "Root continuation\nexecutionId = root" as Root #DBEAFE {
   rectangle "pending workflow effect A" as EffectA #BFDBFE
 }
-rectangle "Child continuation A\nexecutionId = hash(effect A)" as ChildA #DCFCE7 {
+rectangle "Child continuation A\nexecutionId = <latex>H(\mathrm{effect}_A)</latex>" as ChildA #DCFCE7 {
   rectangle "pending workflow effect B" as EffectB #BBF7D0
 }
-rectangle "Grandchild continuation B\nexecutionId = hash(effect B)" as ChildB #FEF3C7 {
+rectangle "Grandchild continuation B\nexecutionId = <latex>H(\mathrm{effect}_B)</latex>" as ChildB #FEF3C7 {
   rectangle "approval wait w" as Wait #FDE68A
 }
 database "One encrypted root checkpoint\ncontains the continuation tree" as Drive #EDE9FE

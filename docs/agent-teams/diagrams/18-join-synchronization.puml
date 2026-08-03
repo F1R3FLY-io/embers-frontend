@@ -1,0 +1,67 @@
+@startuml
+title Join synchronization: all, each, quorum, race, reduce
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "all" as AllJoin #E9F5EA {
+  state "accumulating" as AllAcc #DCEEFF
+  [*] --> AllAcc
+  state "fired: producer-keyed record" as AllFire #D9EFDF
+  AllAcc --> AllAcc : arrival [<latex>|\mathrm{dom}\,j| < |P_n|</latex>]
+  AllAcc --> AllFire : arrival [<latex>|\mathrm{dom}\,j| = |P_n|</latex>]\n/ state removed: re-arms next epoch
+}
+
+state "each" as EachJoin #DCEEFF {
+  state "pass-through" as EachPass #DCEEFF
+  [*] --> EachPass
+  EachPass --> EachPass : every arrival fires once;\nno accumulation, no state
+}
+
+state "quorum (late: cancel | discard | error)" as QuorumJoin #FFE0C8 {
+  state "accumulating " as QAcc #DCEEFF
+  [*] --> QAcc
+  state "fired: producer-keyed record " as QFire #D9EFDF
+  state "closed" as QClosed #E7DCF5
+  QAcc --> QFire : arrival [<latex>|\mathrm{dom}\,j| \ge k</latex>]\n/ join closes
+  QFire --> QClosed
+  QClosed --> QClosed : late arrival / late policy;\nstate removed once all expected seen
+}
+
+state "race (late: cancel | discard | error)" as RaceJoin #FFF0D9 {
+  state "open" as ROpen #DCEEFF
+  [*] --> ROpen
+  state "fired: winner's value" as RFire #D9EFDF
+  state "closed " as RClosed #E7DCF5
+  ROpen --> RFire : first arrival / join closes
+  RFire --> RClosed
+  RClosed --> RClosed : late arrival / late policy
+}
+
+state "reduce (collect | first | last | max | mergeRecords | min | sum)" as ReduceJoin #E7DCF5 {
+  state "folding" as RedAcc #DCEEFF
+  [*] --> RedAcc
+  state "fired: accumulator" as RedFire #D9EFDF
+  RedAcc --> RedAcc : arrival / fold into accumulator\n[until(accumulator) is false]
+  RedAcc --> RedFire : arrival [until(accumulator)]\n/ state removed: re-arms next epoch
+}
+
+note right of QuorumJoin #EAF7EE
+Occupancy is keyed by node and correlation:
+<latex>\mathrm{joinKey} = n \,\Vert\, \mathrm{corr}</latex>, where corr is the root
+epoch, the arrival's fork epoch for its route group,
+or <latex>H(\mathrm{eval}(\mathit{expr}))</latex> for key correlation. The expected
+set <latex>P_n</latex> is the node's incoming transition ids; a
+duplicate arrival per open epoch is an error. The
+merged token is the least-id arrival; all/quorum
+deliver a producer-labeled record (duplicate labels
+rejected), and the scope's live count collapses by
+<latex>|\mathrm{arrivals}| - 1</latex>.
+end note
+@enduml

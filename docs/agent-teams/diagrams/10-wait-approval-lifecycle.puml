@@ -1,0 +1,61 @@
+@startuml
+title Wait and approval suspension lifecycle
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Suspended run" as Suspended #FFF0D9 {
+  state "Signal wait\nwait:{token}:{node}" as SignalWait #FFF0D9
+  state "Event wait\nwait:{token}:{node}" as EventWait #FFF0D9
+  state "Timer wait\nwait:{token}:{node}" as TimerWait #FFF0D9
+  state "Retry wait\nretry:{token}:{attempt}" as RetryWait #FFE0C8
+  state "Durable-yield wait\nyield:{token}:{transition}" as YieldWait #F8DADA
+  state "Approval\napproval:{token}:{node}" as Approval #FFE0C8 {
+    state "Collecting decisions" as Collecting #FFE0C8
+    [*] --> Collecting
+    Collecting --> Collecting : approve [<latex>|D| < q</latex>]\n/ record unique decisionId,\nemit approvalRecorded
+  }
+}
+
+state "Resumed in Route phase\n(disposition completed)" as ResumedCompleted #D9EFDF
+state "Resumed in Route phase\n(disposition rejected)" as ResumedRejected #E7DCF5
+state "Re-entered in Enter phase\n(node re-executes, attempt + 1)" as ReEntered #E9F5EA
+state "Cancelled\n(compensation unwinds)" as Cancelled #E7DCF5
+
+SignalWait --> ResumedCompleted : signal [name matches]\n/ payload replaces value
+EventWait --> ResumedCompleted : event [name matches]\n/ payload replaces value
+TimerWait --> ResumedCompleted : timerFired\n[<latex>d = d_{\mathrm{expected}} \;\land\; \mathrm{now} \ge d</latex>]
+Collecting --> ResumedCompleted : approve [<latex>|D| \ge q</latex>]\n/ waitSatisfied, approvalRecorded, runResumed
+Collecting --> ResumedRejected : reject [actor is an approver]\n/ disposition rejected
+RetryWait --> ReEntered : timerFired [exact deadline]\nor retry command
+Suspended --> Cancelled : cancel command (run level)
+
+note right of YieldWait #FDECEA
+Current behavior: no command class accepts a
+durable-yield suspension, so this wait has no
+resume transition. Only run-level cancel or
+migrate can act on the run. Tracked as a known
+gap in the roadmap.
+end note
+note bottom of Approval #FFF3C9
+An empty approver set admits any ledger-authorized
+actor. Each actor decides at most once and every
+decisionId is globally unique. The approval deadline
+(from the node timeout policy) is recorded and
+published as the run's due_at but is not auto-enforced:
+no timedOut disposition fires, and the recovery scan
+reports an error until the approval resolves.
+end note
+note left of TimerWait #EAF7EE
+An unparseable deadline expression yields a wait
+with no due_at; timerFired then fails with
+"timer has no deadline". Validate computed
+deadlines before deploying.
+end note
+@enduml

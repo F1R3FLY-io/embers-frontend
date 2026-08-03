@@ -1,0 +1,50 @@
+@startuml
+title Kernel microstep automaton and macrostep boundaries
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Draining the token queue" as Drain #E9F5EA {
+  state "Enter phase\n(enter_node: join acceptance,\ninstantiation, suspension, effects)" as Enter #DCEEFF
+  state "Route phase\n(route_token: trigger filter,\nguards, selection, fan-out)" as Route #DCEEFF
+  [*] --> Enter : pop token (FIFO)
+  Enter --> Route : pass-through, join merge,\nor observation applied
+  Route --> Enter : transition selected\n(child tokens enqueued)
+}
+
+state "KernelOutcome::Effects\n(pending activity or lifecycle effects)" as Effects #FFF0D9
+state "KernelOutcome::Guards\n(Rholang guard needs on-chain observation)" as Guards #FFF0D9
+state "KernelOutcome::Suspended\n(waits pending; ledger publishes due_at)" as SuspendedOut #FFE0C8
+state "KernelOutcome::Cancelled" as CancelledOut #E7DCF5
+state "KernelOutcome::Completed\n(sequence-ordered output value)" as CompletedOut #D9EFDF
+
+Drain --> Effects : queue drained,\npending effects exist
+Drain --> Guards : Route token blocked on an\nunobserved guard (requeued at FRONT)
+Drain --> SuspendedOut : queue drained, no effects\nor guards, waits pending
+Drain --> CancelledOut : queue drained,\ncancellation in progress
+Drain --> CompletedOut : queue drained,\nnothing pending
+Effects --> Drain : signed activity observation applied
+Guards --> Drain : guard observation applied
+SuspendedOut --> Drain : authenticated command applied\n(claim, apply, advance)
+
+note right of Drain #EAF7EE
+One pop is one microstep; a macrostep is the maximal
+run of microsteps ending in a KernelOutcome, bounded
+defensively by <latex>10^{6}</latex> steps. Outcome precedence:
+Effects, then Guards, then a hard error if the queue is
+blocked, then Suspended, Cancelled, Completed.
+end note
+note bottom of Guards #FFF3C9
+External stimuli are admitted only between macrosteps.
+There is no internal event queue: dispositions are
+consumed by the producing token's own routing, never
+broadcast. Every macrostep boundary is a durable
+checkpoint opportunity.
+end note
+@enduml

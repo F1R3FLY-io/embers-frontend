@@ -16,8 +16,9 @@ state Root #E9F5EA {
   Intake --> ParallelReview : completed
   state ParallelReview #FFF0D9 {
     state "Research region" as Research #DCEEFF
-    state "Safety region" as Safety #E7DCF5
     [*] --> Research
+    --
+    state "Safety region" as Safety #E7DCF5
     [*] --> Safety
   }
   ParallelReview --> Approval : all join
@@ -30,13 +31,16 @@ state Root #E9F5EA {
 Root --> [*]
 
 note right of ParallelReview #EAF7EE
-Implemented now: flat canvas projection,
-parallel tokens, typed joins, guarded routes,
-bounded cycles, and scope-entry lowering.
+Implemented now: flat canvas projection, parallel
+tokens, typed joins, guarded routes, bounded cycles,
+scope entry/exit activities, completion propagation,
+shallow/deep history, durable resume, timer recovery,
+compensation, and encrypted snapshots.
 end note
 note right of Approval #FFF3C9
-Reserved next: durable resume, nested exit/history,
-timer service, compensation, encrypted snapshots,
-and MeTTaIL Foreign Language Terms.
+Reserved next: MeTTaIL Foreign Language Terms,
+run observability dashboards, a dedicated
+hierarchy-canvas editor, and the durable-yield
+resume command (see the roadmap's known gaps).
 end note
 @enduml

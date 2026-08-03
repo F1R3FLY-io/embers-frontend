@@ -1,0 +1,50 @@
+@startuml
+title Guarded routing: one route group under first-match and all-match
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "firstMatch group\n(unique priorities required)" as FM #E9F5EA {
+  state "Source node\n(disposition matched the group trigger)" as FMSrc #DCEEFF
+  state choiceFM <<choice>>
+  FMSrc --> choiceFM : evaluate guards in\n<latex>(p(e), \mathrm{id}(e))</latex> order
+  state "Target A (priority 0)" as FMA #D9EFDF
+  state "Target B (priority 1)" as FMB #DCEEFF
+  state "noMatch policy" as FMNo #FFE0C8
+  choiceFM --> FMA : first true guard\n(exactly one fires)
+  choiceFM --> FMB : only if A's guard was false
+  choiceFM --> FMNo : no guard true /\ncomplete: output + scope result\nskip: consume silently\nfail: hard error
+}
+
+state "allMatches group" as AM #DCEEFF {
+  state "Source node " as AMSrc #DCEEFF
+  state forkAM <<fork>>
+  AMSrc --> forkAM : evaluate ALL guards
+  state "Target X" as AMX #D9EFDF
+  state "Target Y" as AMY #D9EFDF
+  state "Target Z" as AMZ #D9EFDF
+  forkAM --> AMX : guard true
+  forkAM --> AMY : guard true
+  forkAM --> AMZ : guard false: no token
+  note on link
+    every true guard emits one child token;
+    more than one emission mints a fork epoch
+    <latex>\varepsilon' = H(\mathit{run} \Vert \varepsilon_{\mathrm{top}} \Vert \mathit{group} \Vert \mathit{gen})</latex>
+  end note
+}
+
+note bottom of FM #EAF7EE
+Trigger filtering precedes guard evaluation: a failed
+activity can never traverse a completed route merely
+because its predicate is true. Groups of one disposition
+all fire in the same Route microstep, each with its own
+selection; an unobserved Rholang guard anywhere among
+them blocks the whole token until its observation lands.
+end note
+@enduml

@@ -31,7 +31,7 @@ compiler --> teamcap : deploy
 teamcap --> rspace : read/write private workflow state
 rspace --> agent : explicit capability invocation
 agent --> models : explicit service channels
-limiter --> F1r3sky : <= 280 chars + URL
+limiter --> F1r3sky : <latex>\le 280</latex> chars + URL
 runcap --> inspector : bearer read authority
 inspector --> rspace : metadata only
 

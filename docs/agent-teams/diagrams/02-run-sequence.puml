@@ -41,6 +41,7 @@ Env --> API : metadata-only event ledger
 API --> Inspector : status + event types
 
 note over API,Env #FFF0C7
-The two acknowledgements establish\nrunStarted < work < runReturned < post.
+The two acknowledgements establish
+<latex>\mathrm{runStarted} \prec \mathrm{work} \prec \mathrm{runReturned} \prec \mathrm{post}</latex>
 end note
 @enduml

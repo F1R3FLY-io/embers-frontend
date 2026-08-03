@@ -1,4 +1,5 @@
 @startuml
+title Durable commit protocol: prepare, begin, observe, advance
 skinparam backgroundColor #FCFCFF
 skinparam sequence {
   ArrowColor #334155
@@ -27,7 +28,7 @@ Embers -> Effect: idempotent effect request
 Effect --> Embers: signed observation
 Embers -> Drive: persist outbox + observation + revision-1
 Drive --> Embers: finalized artifact pointers
-Embers -> Chain: advanceRun(expectedRevision = 0, pointers)
+Embers -> Chain: advanceRun(pointers)\n[revision CAS: <latex>\nu_{\mathrm{expected}} = 0 \Rightarrow \nu' = 1</latex>]
 Chain --> Embers: finalized
 loop bounded postcondition observation
   Embers -> Chain: getRun(runId)

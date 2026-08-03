@@ -1,0 +1,63 @@
+@startuml
+title The same workflow as a v2 statechart and as its lossy SCXML projection
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Workflow v2 semantics" as V2 #E9F5EA {
+  state "Classify" as V2Classify #DCEEFF
+  [*] --> V2Classify
+  state "Summarize" as V2Sum #DCEEFF
+  state "Escalate" as V2Esc #DCEEFF
+  V2Classify --> V2Sum : completed [priority 0]\nurgency low (first match)
+  V2Classify --> V2Esc : completed [priority 1]\nurgency high
+  state "Draft" as V2Draft #DCEEFF
+  V2Sum --> V2Draft : completed
+  V2Esc --> V2Draft : completed
+  V2Draft --> V2Draft : needsWork [<latex>\kappa < 3</latex>] / <latex>\kappa{+}{+}</latex>
+  state "QuorumJoin\n(2 of 3 reviewers)" as V2Join #FFE0C8
+  V2Draft --> V2Join : completed (all-match fan-out\nto three reviewers, then quorum)
+  state "Publish" as V2Pub #D9EFDF
+  V2Join --> V2Pub : completed [<latex>|\mathrm{dom}\, j| \ge 2</latex>]
+  V2Pub --> [*]
+}
+
+state "SCXML projection (lossy)" as SC #DCEEFF {
+  state "Classify " as SCClassify #DCEEFF
+  [*] --> SCClassify
+  state "Summarize " as SCSum #DCEEFF
+  state "Escalate " as SCEsc #DCEEFF
+  SCClassify --> SCSum : disposition.completed.classify\n[cond: urgency low] (document order)
+  SCClassify --> SCEsc : disposition.completed.classify\n(later in document order)
+  state "Draft " as SCDraft #F8DADA
+  SCSum --> SCDraft : disposition.completed.summarize
+  SCEsc --> SCDraft : disposition.completed.escalate
+  SCDraft --> SCDraft : disposition.needsWork.draft\n(datamodel counter: GLOBAL, not token-local)
+  state "Reviewers " as SCJoin #F8DADA
+  SCDraft --> SCJoin : disposition.completed.draft\n(single configuration: no simultaneous\nthree-reviewer fan-out)
+  state "Publish " as SCPub #D9EFDF
+  SCJoin --> SCPub : done.state.reviewers\n(all regions final; NO 2-of-3 quorum)
+  SCPub --> [*]
+}
+
+note bottom of SC #FDECEA
+Red-bordered states mark projection loss:
+the token-local bound <latex>\kappa</latex> becomes a global datamodel
+counter, all-match fan-out inside one region is not
+representable in a single configuration, and quorum,
+race, reduce joins, noMatch policies, and durable
+yields have no SCXML counterpart.
+end note
+note bottom of V2 #EAF7EE
+Explicit unique priorities replace SCXML document
+order; dispositions are token-local triggers, not
+queued events. The construct-by-construct mapping
+is the SCXML correspondence design document.
+end note
+@enduml
