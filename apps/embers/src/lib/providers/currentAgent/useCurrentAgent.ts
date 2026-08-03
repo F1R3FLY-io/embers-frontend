@@ -7,7 +7,6 @@ export type CurrentAgent = {
   iconUrl?: string;
   id?: string;
   name?: string;
-  rhoLimit?: bigint;
   version?: string;
 };
 

@@ -7,6 +7,17 @@ export default defineConfig(
   baseConfig,
   globalIgnores(["coverage", "docs", "src/generated"]),
   {
+    files: ["tests/**/*.{ts,tsx}"],
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.tests.json",
+        },
+      },
+    },
+  },
+  {
     files: ["src/api-client/**/*.{js,jsx,ts,tsx}"],
     linterOptions: {
       noInlineConfig: true,

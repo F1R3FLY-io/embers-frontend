@@ -1,12 +1,12 @@
 # Post-mortems
 
 Incident and defect analyses for the Embers frontend. A post-mortem is written when
-a defect is instructive — when *why it escaped* generalises beyond the fix itself.
+a defect is instructive — when _why it escaped_ generalises beyond the fix itself.
 Near-misses qualify: the demo in the first entry below was delivered successfully,
 and the analysis is still the most useful artifact to come out of it.
 
-These are blameless in the sense Beyer et al. describe in *Site Reliability
-Engineering* (O'Reilly, 2016): the subject is the system that let a defect through,
+These are blameless in the sense Beyer et al. describe in _Site Reliability
+Engineering_ (O'Reilly, 2016): the subject is the system that let a defect through,
 not the person who wrote it.
 
 ## Index
@@ -19,7 +19,13 @@ not the person who wrote it.
 
   Covers the well-formedness invariant a stored graph must satisfy, why the corrupt
   state was a fixed point of the edit cycle, why a threshold fault is invisible below
-  its threshold, and nine prevention measures — three of them still open.
+  its threshold, and nine prevention measures — all since closed.
+
+  Its most reusable part is §10. The six defects shared one property, and that
+  property was turned into a set of searches and re-run over the rest of the codebase,
+  finding seven more. Read that section before writing the next post-mortem: what
+  generalises from an incident is the shape of the hole, and a shape can be searched
+  for.
 
 ## Writing one
 
@@ -50,10 +56,17 @@ Conventions:
 - **Claims carry their source** — a commit SHA, a file and line, a log timestamp, or
   a stored version id. An assertion without one is a recollection.
 - **Citations** are linked to DOIs, and the DOIs are resolved before publishing.
-- **Mathematics** uses GitHub-flavored Markdown math delimiters: a backtick span
-  wrapped in dollar signs for inline, a fenced block with the `math` info-string for
-  display. Never `$…$` or `$$…$$` — GitHub's CommonMark pass strips backslash escapes
-  before MathJax sees them.
+- **Mathematics** uses GitHub's math delimiters. Inline is dollar, backtick,
+  expression, backtick, dollar — ``$`\mathcal{W}(G)`$`` — with the **dollars on the
+  outside**. Writing it the other way round produces an ordinary code span that
+  displays the dollar signs literally; the first draft of the entry above did exactly
+  that in 27 places, and nothing complained, because a code span is valid Markdown.
+  Display math is a fenced block with the `math` info-string.
+
+  Bare dollar delimiters are not used at all: GitHub's CommonMark pass strips the
+  backslash escapes `\_ \{ \} \; \,` before MathJax parses them, which corrupts an
+  expression either loudly or silently. Write a literal dollar sign as inline code,
+  and never let an ASCII letter abut an opening delimiter.
 
 ## Related documentation
 

@@ -14,10 +14,12 @@ import "@xyflow/react/dist/style.css";
 import { useCallback, useMemo, useState } from "react";
 
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
+import type { WorkflowDefinitionV2, WorkflowDiagnostic } from "@/lib/workflow";
 
 import { ContextMenu } from "@/lib/components/ContextMenu";
 import { nodeTypes } from "@/lib/components/GraphEditor/nodes";
 import { useModal } from "@/lib/providers/modal/useModal";
+import { toWorkflowDefinition, validateWorkflow } from "@/lib/workflow";
 
 import type { ContextMenuInput } from "./menuItems";
 import type { NodeKind } from "./nodes/nodes.registry";
@@ -28,6 +30,7 @@ import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 
 type GraphEditorProps = {
+  baseDefinition?: WorkflowDefinitionV2;
   edges: Edge[];
   nodes: Node[];
   onGraphChange: () => void;
@@ -36,6 +39,7 @@ type GraphEditorProps = {
 };
 
 export function GraphEditor({
+  baseDefinition,
   edges,
   nodes,
   onGraphChange,
@@ -44,6 +48,24 @@ export function GraphEditor({
 }: GraphEditorProps) {
   const { open } = useModal();
   const rf = useReactFlow<Node, Edge>();
+  const diagnostics = useMemo((): WorkflowDiagnostic[] => {
+    try {
+      return validateWorkflow(
+        toWorkflowDefinition(nodes, edges, baseDefinition),
+      );
+    } catch (error) {
+      return [
+        {
+          code: "invalid-canvas-projection",
+          message:
+            error instanceof Error
+              ? error.message
+              : "The workflow canvas cannot be serialized.",
+          severity: "error",
+        },
+      ];
+    }
+  }, [baseDefinition, edges, nodes]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<Node>[]) => {
@@ -85,10 +107,62 @@ export function GraphEditor({
     (connection: Connection) => {
       setEdges((edgesSnapshot) => {
         queueMicrotask(onGraphChange);
-        return addEdge(connection, edgesSnapshot);
+        const transitionId = crypto.randomUUID();
+        return addEdge(
+          {
+            ...connection,
+            data: {
+              noMatch: "fail",
+              priority: 0,
+              routeMode: "allMatches",
+              transitionId,
+              trigger: "completed",
+            },
+            id: transitionId,
+            label: "completed: always",
+          },
+          edgesSnapshot,
+        );
       });
     },
     [setEdges, onGraphChange],
+  );
+
+  const deleteContainer = useCallback(
+    (container: Node) => {
+      setNodes((nodesSnapshot) =>
+        nodesSnapshot.flatMap((node) => {
+          if (node.id === container.id) {
+            return [];
+          }
+          if (node.parentId !== container.id) {
+            return [node];
+          }
+
+          const { extent: _extent, parentId: _parentId, ...child } = node;
+          return [
+            {
+              ...child,
+              ...(container.parentId === undefined
+                ? {}
+                : { extent: "parent" as const, parentId: container.parentId }),
+              position: {
+                x: container.position.x + node.position.x,
+                y: container.position.y + node.position.y,
+              },
+            } as Node,
+          ];
+        }),
+      );
+      setEdges((edgesSnapshot) =>
+        edgesSnapshot.filter(
+          (edge) =>
+            edge.source !== container.id && edge.target !== container.id,
+        ),
+      );
+      queueMicrotask(onGraphChange);
+    },
+    [onGraphChange, setEdges, setNodes],
   );
 
   const {
@@ -104,14 +178,14 @@ export function GraphEditor({
     () =>
       contextMenuInput !== undefined
         ? buildMenuItems(contextMenuInput, {
-            nodes,
+            deleteContainer,
             onEdgesChange,
             onNodesChange,
             open,
             rf,
           })
         : [],
-    [contextMenuInput, nodes, onEdgesChange, onNodesChange, open, rf],
+    [contextMenuInput, deleteContainer, onEdgesChange, onNodesChange, open, rf],
   );
 
   return (
@@ -191,6 +265,7 @@ export function GraphEditor({
               <EditModal
                 initial={data}
                 inputs={NODE_REGISTRY[type].modalInputs}
+                title={`Configure ${NODE_REGISTRY[type].displayName}`}
                 onSave={(updatedData) => {
                   onNodesChange(createNodeChange(type, position, updatedData));
                 }}
@@ -210,6 +285,22 @@ export function GraphEditor({
         onPaneContextMenu={openEmptySpaceContextMenu}
         onSelectionContextMenu={openSelectionContextMenu}
       >
+        {diagnostics.length > 0 && (
+          <div className={styles.diagnostics} role="status">
+            <strong>
+              {
+                diagnostics.filter(({ severity }) => severity === "error")
+                  .length
+              }{" "}
+              publish issue(s)
+            </strong>
+            {diagnostics.slice(0, 4).map((diagnostic) => (
+              <span key={`${diagnostic.code}:${diagnostic.id ?? "workflow"}`}>
+                {diagnostic.message}
+              </span>
+            ))}
+          </div>
+        )}
         <Background
           className={styles.background}
           gap={5}

@@ -15,6 +15,7 @@ export default function EditAgentsTeam() {
   return (
     <GraphLayout title={agentsTeam.name!}>
       <GraphEditor
+        baseDefinition={agentsTeam.definition}
         edges={agentsTeam.edges ?? []}
         nodes={agentsTeam.nodes ?? []}
         setEdges={(change) => update({ edges: change(agentsTeam.edges ?? []) })}

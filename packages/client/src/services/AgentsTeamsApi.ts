@@ -7,21 +7,19 @@ import type {
   FireskyReply,
   HTTPHeaders,
   PublishToFireskyReq,
+  RunCommandReq,
 } from "../api-client";
+import type { Address } from "../entities/Address";
 import type {
   ContractCallConfig,
   QueryCallConfig,
 } from "../entities/HttpCallConfigs";
+import type { PrivateKey } from "../entities/PrivateKey";
 import type { Uri } from "../entities/Uri";
+import type { EmbersEvents } from "./EmbersEvents";
 
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
 import { insertSignedSignature, signContract } from "../functions";
-
-import type { Address } from "../entities/Address";
-import type { Amount } from "../entities/Amount";
-import type { PrivateKey } from "../entities/PrivateKey";
-import type { EmbersEvents } from "./EmbersEvents";
-
 import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
 export type AgentsTeamsConfig = {
@@ -120,7 +118,6 @@ export class AgentsTeamsApiSdk {
 
   public async deployGraph(
     graph: Graph,
-    phloLimit: Amount,
     registryVersion: bigint,
     registryKey: PrivateKey,
     config?: ContractCallConfig,
@@ -139,7 +136,6 @@ export class AgentsTeamsApiSdk {
         version: registryVersion,
       },
       graph,
-      phloLimit: phloLimit.value,
       type: "Graph" as const,
     };
 
@@ -181,7 +177,6 @@ export class AgentsTeamsApiSdk {
   public async deploy(
     id: string,
     version: string,
-    phloLimit: Amount,
     registryVersion: bigint,
     registryKey: PrivateKey,
     config?: ContractCallConfig,
@@ -201,7 +196,6 @@ export class AgentsTeamsApiSdk {
         version: registryVersion,
       },
       id,
-      phloLimit: phloLimit.value,
       type: "AgentsTeam" as const,
       version,
     };
@@ -244,12 +238,10 @@ export class AgentsTeamsApiSdk {
   public async run(
     agentTeamUri: Uri,
     prompt: string,
-    phloLimit: Amount,
     config?: ContractCallConfig,
   ) {
     const prepareRequest = {
       agentsTeam: agentTeamUri,
-      phloLimit: phloLimit.value,
       prompt,
     };
 
@@ -276,6 +268,50 @@ export class AgentsTeamsApiSdk {
       },
       { signal: config?.signal },
     );
+
+    return { prepareResponse, sendResponse };
+  }
+
+  public async getRun(runId: string, config?: QueryCallConfig) {
+    return this.client.apiAiAgentsTeamsRunsRunIdGet(
+      { runId },
+      { signal: config?.signal },
+    );
+  }
+
+  /**
+   * Atomically claims and applies one durable command against an exact run
+   * revision. The prepare request is intentionally preserved byte-for-byte in
+   * the send envelope so the backend can cross-check its signed public claim
+   * against the encrypted command artifact.
+   */
+  public async command(
+    runId: string,
+    runCommandReq: RunCommandReq,
+    config?: ContractCallConfig,
+  ) {
+    const prepareResponse =
+      await this.client.apiAiAgentsTeamsRunsRunIdCommandsPreparePost(
+        { runCommandReq, runId },
+        { signal: config?.signal },
+      );
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+    const sendResponse: unknown =
+      await this.client.apiAiAgentsTeamsRunsRunIdCommandsSendPost(
+        {
+          runId,
+          sendRequestBodySignedContractRunCommandReqRunCommandResp: {
+            prepareRequest: runCommandReq,
+            prepareResponse: prepareResponse.response,
+            request: signedContract,
+            token: prepareResponse.token,
+          },
+        },
+        { signal: config?.signal },
+      );
 
     return { prepareResponse, sendResponse };
   }
@@ -393,13 +429,11 @@ export class AgentsTeamsApiSdk {
   public async runOnFiresky(
     agentTeamUri: Uri,
     prompt: string,
-    phloLimit: Amount,
     replyTo?: FireskyReply,
     config?: ContractCallConfig,
   ) {
     const prepareRequest = {
       agentsTeam: agentTeamUri,
-      phloLimit: phloLimit.value,
       prompt,
     };
 

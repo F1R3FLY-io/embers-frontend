@@ -14,9 +14,12 @@ import { makeNodeId, makeSubgraphId } from "@/lib/graph";
 
 import type { NodeKind } from "./nodes/nodes.registry";
 
+import { ExecutionPolicyModal } from "./ExecutionPolicyModal";
 import styles from "./GraphEditor.module.scss";
+import { JoinModal } from "./JoinModal";
 import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
+import { TransitionModal } from "./TransitionModal";
 
 export type ContextMenuInput = {
   x: number;
@@ -46,19 +49,46 @@ export function createNodeChange<T extends keyof NodeTypes>(
   ];
 }
 
+function editInputs(node: Node) {
+  return node.type === "deploy-container"
+    ? [
+        { name: "containerId", type: "string" as const },
+        { name: "childScopeId", type: "string" as const },
+        { name: "scopeKind", type: "string" as const },
+        { name: "history", type: "string" as const },
+        { name: "initialNodeIds", type: "string" as const },
+        { name: "entryActivities", type: "string" as const },
+        { name: "exitActivities", type: "string" as const },
+      ]
+    : [
+        {
+          name: node.type === "agent" ? "agentName" : "label",
+          type: "string" as const,
+        },
+        ...NODE_REGISTRY[node.type].modalInputs,
+      ];
+}
+
+function routeGroupIdentity(edge: Edge): string {
+  return (
+    edge.data?.routeGroupId ??
+    `route:${edge.source}:${edge.data?.trigger ?? "completed"}`
+  );
+}
+
 /** Exported for tests: the delete actions are where a node's edges can be
  * stranded, and asserting that directly needs no React Flow instance beyond a
- * stub. */
+ * minimal typed test double. */
 export function buildMenuItems(
   input: ContextMenuInput,
   {
-    nodes,
+    deleteContainer,
     onEdgesChange,
     onNodesChange,
     open,
     rf,
   }: {
-    nodes: Node[];
+    deleteContainer: (container: Node) => void;
     onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
     onNodesChange: (changes: NodeChange<Node>[]) => void;
     open: (content: ReactNode, options?: ModalOptions) => void;
@@ -70,47 +100,178 @@ export function buildMenuItems(
       const deployContainers = input.nodes.filter(
         (n) => n.type === "deploy-container",
       );
+      const parentIds = new Set(input.nodes.map((node) => node.parentId));
+      const canGroupAsScope = input.nodes.length > 0 && parentIds.size === 1;
+      const selectedNode =
+        input.nodes.length === 1 ? input.nodes[0] : undefined;
+      const selectedInputs = selectedNode ? editInputs(selectedNode) : [];
 
       return [
         {
-          content: "Add to deploy container",
-          hidden:
-            deployContainers.length !== 0 ||
-            input.nodes.some((n) => !!n.parentId),
+          content: "Edit node",
+          hidden: selectedNode === undefined || selectedInputs.length === 0,
           onClick: () => {
+            const node = input.nodes[0];
+            open(
+              <EditModal
+                initial={node.data as Record<string, string | number>}
+                inputs={selectedInputs}
+                title={
+                  node.type === "deploy-container"
+                    ? "Edit state scope"
+                    : `Edit ${NODE_REGISTRY[node.type].displayName}`
+                }
+                onSave={(data) =>
+                  onNodesChange([
+                    {
+                      id: node.id,
+                      item: { ...node, data } as Node,
+                      type: "replace",
+                    },
+                  ])
+                }
+              />,
+              {
+                ariaLabel: "Edit node",
+                closeOnBlur: false,
+                maxWidth: 620,
+              },
+            );
+          },
+          type: "text",
+        },
+        {
+          content: "Configure execution policy",
+          hidden:
+            input.nodes.length !== 1 ||
+            input.nodes[0].type === "input-node" ||
+            input.nodes[0].type === "output-node" ||
+            input.nodes[0].type === "final-node",
+          onClick: () => {
+            const node = input.nodes[0];
+            open(
+              <ExecutionPolicyModal
+                initial={node.data}
+                onSave={(data) =>
+                  onNodesChange([
+                    {
+                      id: node.id,
+                      item: { ...node, data } as Node,
+                      type: "replace",
+                    },
+                  ])
+                }
+              />,
+              {
+                ariaLabel: "Configure execution policy",
+                closeOnBlur: false,
+                maxWidth: 620,
+              },
+            );
+          },
+          type: "text",
+        },
+        {
+          content: "Configure fan-in",
+          hidden:
+            input.nodes.length !== 1 || input.nodes[0].type === "input-node",
+          onClick: () => {
+            const node = input.nodes[0];
+            const incomingCount = rf
+              .getEdges()
+              .filter(({ target }) => target === node.id).length;
+            open(
+              <JoinModal
+                incomingCount={incomingCount}
+                initial={node.data}
+                onSave={(data) =>
+                  onNodesChange([
+                    {
+                      id: node.id,
+                      item: { ...node, data } as Node,
+                      type: "replace",
+                    },
+                  ])
+                }
+              />,
+              {
+                ariaLabel: "Configure fan-in",
+                closeOnBlur: false,
+                maxWidth: 520,
+              },
+            );
+          },
+          type: "text",
+        },
+        {
+          content: "Wrap in state scope",
+          hidden: !canGroupAsScope,
+          onClick: () => {
+            const commonParentId = input.nodes[0].parentId;
             const minX = Math.min(...input.nodes.map((n) => n.position.x));
             const maxX = Math.max(
               ...input.nodes.map(
-                (n) => n.position.x + (n.measured!.width ?? 0),
+                (n) => n.position.x + (n.measured?.width ?? n.width ?? 0),
               ),
             );
 
             const minY = Math.min(...input.nodes.map((n) => n.position.y));
             const maxY = Math.max(
               ...input.nodes.map(
-                (n) => n.position.y + (n.measured!.height ?? 0),
+                (n) => n.position.y + (n.measured?.height ?? n.height ?? 0),
               ),
             );
 
-            const parentId = makeSubgraphId();
+            const containerNodeId = makeSubgraphId();
+            const childScopeId = `scope:${crypto.randomUUID()}`;
 
             const subflowNode: Node = {
               className: styles["no-node-style"],
-              data: { containerId: "default" },
-              id: parentId,
+              data: {
+                childScopeId,
+                containerId: "Scope",
+                entryActivities: "",
+                exitActivities: "",
+                history: "none",
+                initialNodeIds:
+                  input.nodes
+                    .filter(({ type }) => type === "input-node")
+                    .map(({ id }) => id)
+                    .join(", ") || input.nodes[0].id,
+                scopeKind: "compound",
+              },
+              ...(commonParentId === undefined
+                ? {}
+                : {
+                    extent: "parent" as const,
+                    parentId: commonParentId,
+                  }),
+              id: containerNodeId,
               position: { x: minX - 5, y: minY - 5 },
-              style: { height: maxY - minY + 10, width: maxX - minX + 10 },
+              style: {
+                height: Math.max(20, maxY - minY + 10),
+                width: Math.max(20, maxX - minX + 10),
+              },
               type: "deploy-container",
             };
 
+            const parentIndex =
+              commonParentId === undefined
+                ? -1
+                : rf.getNodes().findIndex(({ id }) => id === commonParentId);
+
             onNodesChange([
-              { index: 0, item: subflowNode, type: "add" },
+              {
+                index: parentIndex + 1,
+                item: subflowNode,
+                type: "add",
+              },
               ...input.nodes.map((n) => ({
                 id: n.id,
                 item: {
                   ...n,
                   extent: "parent" as const,
-                  parentId,
+                  parentId: containerNodeId,
                   position: {
                     x: n.position.x - subflowNode.position.x,
                     y: n.position.y - subflowNode.position.y,
@@ -127,37 +288,7 @@ export function buildMenuItems(
           hidden: deployContainers.length !== 1,
           onClick: () => {
             const container = deployContainers[0];
-
-            const children = nodes.filter((n) => n.parentId === container.id);
-
-            // The one place a hand-built removal is correct, so the lint rule that
-            // guards against stranded edges is waived here deliberately.
-            //
-            // This removes the container while *keeping* its children, re-parenting
-            // them to the root in the same batch. `rf.deleteElements` cannot express
-            // that: it cascades through `parentId` and would delete the children
-            // too. Nothing is stranded either way — containers carry no connection
-            // handles, so no edge can name one.
-            // eslint-disable-next-line no-restricted-syntax
-            const changes: NodeChange<Node>[] = [
-              ...children.map((child) => {
-                const { extent: _extent, parentId: _parentId, ...rest } = child;
-
-                return {
-                  id: child.id,
-                  item: {
-                    ...rest,
-                    position: {
-                      x: container.position.x + child.position.x,
-                      y: container.position.y + child.position.y,
-                    },
-                  },
-                  type: "replace" as const,
-                };
-              }),
-              { id: container.id, type: "remove" as const },
-            ];
-            onNodesChange(changes);
+            deleteContainer(container);
           },
           type: "text",
         },
@@ -182,6 +313,52 @@ export function buildMenuItems(
 
     case "edgesSelected": {
       return [
+        {
+          content: "Configure transition",
+          hidden: input.edges.length !== 1,
+          onClick: () => {
+            const edge = input.edges[0];
+            open(
+              <TransitionModal
+                initial={edge.data ?? {}}
+                onSave={(data, label) => {
+                  const updated = { ...edge, data, label };
+                  const groupId = routeGroupIdentity(updated);
+                  onEdgesChange(
+                    rf
+                      .getEdges()
+                      .filter(
+                        (candidate) =>
+                          candidate.id === edge.id ||
+                          routeGroupIdentity(candidate) === groupId,
+                      )
+                      .map((candidate) => ({
+                        id: candidate.id,
+                        item:
+                          candidate.id === edge.id
+                            ? updated
+                            : {
+                                ...candidate,
+                                data: {
+                                  ...candidate.data,
+                                  noMatch: data.noMatch,
+                                  routeMode: data.routeMode,
+                                },
+                              },
+                        type: "replace" as const,
+                      })),
+                  );
+                }}
+              />,
+              {
+                ariaLabel: "Configure transition",
+                closeOnBlur: false,
+                maxWidth: 620,
+              },
+            );
+          },
+          type: "text",
+        },
         {
           content:
             input.edges.length > 1
@@ -227,6 +404,7 @@ export function buildMenuItems(
                   <EditModal
                     initial={NODE_REGISTRY[type].defaultData}
                     inputs={NODE_REGISTRY[type].modalInputs}
+                    title={`Configure ${NODE_REGISTRY[type].displayName}`}
                     onSave={(updatedData) =>
                       onNodesChange(
                         createNodeChange(type, position, updatedData),

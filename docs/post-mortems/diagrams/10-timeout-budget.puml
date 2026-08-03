@@ -1,0 +1,83 @@
+@startuml
+' Four measured service times against the request timeout and the retry budget that
+' were meant to bound them. Every measurement lies above the old request bound, so
+' every attempt died at 20s: the operation was not slow, it was impossible.
+'
+' Notes for whoever edits this. (1) This PlantUML build's timing diagrams accept
+' `caption`, `legend` and `highlight`, but reject multi-line note blocks and the
+' `A@t1 <-> A@t2 : label` duration constraint, so the measurements are carried in the
+' lane names and the commentary in the caption. (2) The axis draws one tick per time
+' unit, so the window is kept to 70s: running it to B=150 renders 151 unreadable
+' tick labels. The 150s budget is stated in the lane name instead.
+title Measured service time against the bounds meant to hold it\n<size:11>a request can succeed only when <latex>\tau > \tau_{obs}</latex>, and a retry budget is honest only when <latex>B \geq 2\tau</latex></size>
+
+scale 1 as 16 pixels
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+
+robust "listVersions #1\n<size:10>7 agents, 5 KB — 23.5 s</size>" as R1
+robust "listVersions #2\n<size:10>same team, re-run — 30.5 s</size>" as R2
+robust "listVersions #3\n<size:10>same team, re-run — 33.6 s</size>" as R3
+robust "GET …/published\n<size:10>the call quoted in §9 — 25.4 s</size>" as R4
+concise "BEFORE\n<size:10>20 s request bound,</size>\n<size:10>45 s budget</size>" as OLD
+concise "AFTER\n<size:10>60 s request bound,</size>\n<size:10>150 s budget</size>" as NEW
+
+highlight 0 to 20 #E1F5FE;line:0288D1
+highlight 20 to 60 #FFEBEE;line:C62828 : where every measurement actually landed
+
+@0
+R1 is "evaluating" #FFF3E0
+R2 is "evaluating" #FFF3E0
+R3 is "evaluating" #FFF3E0
+R4 is "evaluating" #FFF3E0
+OLD is "attempt 1" #FFCDD2
+NEW is "attempt 1" #C8E6C9
+
+@20
+OLD is "attempt 2" #FFCDD2
+
+@23.5
+R1 is "answered" #C8E6C9
+
+@25.4
+R4 is "answered" #C8E6C9
+
+@30.5
+R2 is "answered" #C8E6C9
+
+@33.6
+R3 is "answered" #C8E6C9
+NEW is "all four answered" #ECEFF1
+
+@40
+OLD is "budget spent" #EF9A9A
+
+@45
+OLD is "500 — read timed out" #E57373
+
+' Closing every lane at 60 s -- the new request bound -- so the axis covers the whole
+' band the old configuration could not reach. `{hidden}` rather than a repeat of each
+' lane's current state: repeating it makes PlantUML draw that state's name *past* the
+' final tick, where the viewport clips it.
+@60
+OLD is {hidden}
+NEW is {hidden}
+R1 is {hidden}
+R2 is {hidden}
+R3 is {hidden}
+R4 is {hidden}
+
+caption <size:12>Both conditions failed at once, which is why a healthy node read as a broken one. Every measurement exceeds the 20 s request bound, so no attempt</size>\n<size:12>could finish; and a 45 s budget cannot hold two 20 s attempts plus retry overhead, so it ended the operation part-way through a second attempt that was</size>\n<size:12>equally doomed. The caller received one 500, with no way to distinguish "the node is unreachable" from "the node needed 24 s and was allowed 20".</size>\n<size:12>The bounds are now <latex>\tau = 60</latex> s under <latex>B = 150</latex> s, and the test asserts the relationship <latex>B \geq 2\tau</latex> rather than either constant — it was the relationship that broke.</size>
+
+legend right
+  |= colour |= meaning |
+  |<#FFF3E0>| request in flight |
+  |<#C8E6C9>| answered |
+  |<#FFCDD2>| attempt that cannot succeed |
+  |<#E57373>| operation reported as failed |
+  |<#E1F5FE>| within the old request bound |
+  |<#FFEBEE>| beyond the old bound, within the new |
+endlegend
+@enduml

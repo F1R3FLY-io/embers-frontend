@@ -46,10 +46,10 @@ Draft --> Deployed : Deploy
 Deployed --> Edited : edit the graph
 Edited --> Deployed : Deploy
 Deployed --> Published : Publish\n<size:10>creates the PDS account</size>
-Published --> Deployed : re-deploy\n<size:10>mints a **new** URI; the config\nrecord still names the old one</size>
+Published --> Deployed : re-deploy\n<size:10>mints a **new** URI; the config</size>\n<size:10>record still names the old one</size>
 
 Published --> Divergent : ""stack.sh backend"" cold start\n<size:10>pg_clear + valkey flush</size>
-Divergent --> Published : publish again\n<size:10>the only exit</size>
+Divergent --> Published : publish again\n<size:10>the only exit — and it worked</size>\n<size:10>only because the wipe also</size>\n<size:10>freed the handle</size>
 
 note right of Deployed #FFF3E0
   **D3 — the gap.** The primary button can
@@ -74,11 +74,18 @@ note right of Divergent #FFEBEE
   defaults, so a published team should
   appear as a fourth repo.
 
-  Still open: the team record carries no
-  handle or DID, so the client cannot tell
-  published from unpublished — which is
-  also why the menu says "Publish" rather
-  than "Re-publish". See action item P7.
+  **Closed by** ""ed79aaa"": the publication
+  records its handle and DID, and
+  ""GET …/published"" consults the PDS
+  rather than trusting the chain alone.
+
+  **And a correction.** "Publish again" was
+  the prescribed exit, but publishing always
+  called ""create_account"", so it succeeded
+  here *only* because the wipe had also freed
+  the handle. Anywhere else it died on
+  ""400 Handle already taken"". Fixed in
+  ""d938999""; see figure 9.
 end note
 
 legend right

@@ -7,9 +7,9 @@ import ttsNodeIcon from "@/public/icons/tts-node.png";
 import type { ModalInput } from "./EditModal";
 import type styles from "./nodes.module.scss";
 
-interface NodeDefinition<Data extends Record<string, string | number>> {
+interface NodeDefinition {
   className: keyof typeof styles;
-  defaultData: Data;
+  defaultData: Record<string, string | number>;
   displayName: string;
   handlers: { position: Position; type: "source" | "target" }[];
   iconSrc: string;
@@ -19,13 +19,11 @@ interface NodeDefinition<Data extends Record<string, string | number>> {
    * and so render exactly as before.
    */
   labelKey?: string;
-  modalInputs: ModalInput<Data>[];
+  modalInputs: ModalInput<Record<string, string | number>>[];
   title: string;
 }
 
-const defineNode = <D extends Record<string, string | number>>(
-  definition: NodeDefinition<D>,
-) => definition;
+const defineNode = (definition: NodeDefinition) => definition;
 
 export const NODE_REGISTRY = {
   /**
@@ -35,7 +33,7 @@ export const NODE_REGISTRY = {
    */
   agent: defineNode({
     className: "service",
-    defaultData: {},
+    defaultData: { protocol: "simple-v1" },
     displayName: "Agent",
     handlers: [
       { position: Position.Left, type: "target" },
@@ -43,8 +41,24 @@ export const NODE_REGISTRY = {
     ],
     iconSrc: defaultNodeIcon,
     labelKey: "agentName",
-    modalInputs: [],
+    modalInputs: [{ name: "protocol", type: "string" }],
     title: "Agent",
+  }),
+  approval: defineNode({
+    className: "service",
+    defaultData: { approvers: "", policyId: "owner", quorum: 1 },
+    displayName: "Approval",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [
+      { name: "policyId", type: "string" },
+      { name: "quorum", type: "number" },
+      { name: "approvers", type: "string" },
+    ],
+    title: "Approval",
   }),
   compress: defineNode({
     className: "data-package",
@@ -57,6 +71,87 @@ export const NODE_REGISTRY = {
     iconSrc: defaultNodeIcon,
     modalInputs: [],
     title: "Compress",
+  }),
+  "fan-in-map": defineNode({
+    className: "data-package",
+    defaultData: {},
+    displayName: "Fan-in map",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [],
+    title: "Fan-in map",
+  }),
+  "final-node": defineNode({
+    className: "sink",
+    defaultData: {},
+    displayName: "Final",
+    handlers: [{ position: Position.Left, type: "target" }],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [],
+    title: "Final",
+  }),
+  "foreign-term": defineNode({
+    className: "service",
+    defaultData: {
+      activityAuthorities: "",
+      artifactHash: "",
+      entrypoint: "main",
+      fuel: 10000,
+      inputBinding: "input",
+      languageSpecificationHash: "",
+      languageTag: "lambda",
+      maxOutputBytes: 65536,
+      maxPhlo: 5000000,
+      outputBinding: "output",
+      source: "",
+    },
+    displayName: "Foreign-language term",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [
+      { name: "languageTag", type: "string" },
+      { name: "languageSpecificationHash", type: "string" },
+      { name: "source", type: "string" },
+      { name: "artifactHash", type: "string" },
+      { name: "entrypoint", type: "string" },
+      { name: "inputBinding", type: "string" },
+      { name: "outputBinding", type: "string" },
+      { name: "fuel", type: "number" },
+      { name: "maxOutputBytes", type: "number" },
+      { name: "maxPhlo", type: "number" },
+      { name: "activityAuthorities", type: "string" },
+    ],
+    title: "Foreign-language term",
+  }),
+  gateway: defineNode({
+    className: "data-package",
+    defaultData: {},
+    displayName: "Gateway",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [],
+    title: "Gateway",
+  }),
+  history: defineNode({
+    className: "data-package",
+    defaultData: { history: "shallow" },
+    displayName: "History",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [{ name: "history", type: "string" }],
+    title: "History",
   }),
   "input-node": defineNode({
     className: "source",
@@ -75,6 +170,21 @@ export const NODE_REGISTRY = {
     iconSrc: defaultNodeIcon,
     modalInputs: [],
     title: "Output",
+  }),
+  "rholang-activity": defineNode({
+    className: "service",
+    defaultData: { protocol: "structured-v1", uri: "" },
+    displayName: "Rholang activity",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [
+      { name: "uri", type: "string" },
+      { name: "protocol", type: "string" },
+    ],
+    title: "Rholang activity",
   }),
   "text-model": defineNode({
     className: "service",
@@ -111,6 +221,37 @@ export const NODE_REGISTRY = {
     iconSrc: ttsNodeIcon,
     modalInputs: [],
     title: "Text to speech model",
+  }),
+  wait: defineNode({
+    className: "service",
+    defaultData: { delayMillis: 60000, signal: "resume", waitFor: "signal" },
+    displayName: "Wait",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [
+      { name: "waitFor", type: "string" },
+      { name: "signal", type: "string" },
+      { name: "delayMillis", type: "number" },
+    ],
+    title: "Wait",
+  }),
+  "workflow-activity": defineNode({
+    className: "service",
+    defaultData: { teamId: "", version: "" },
+    displayName: "Nested workflow",
+    handlers: [
+      { position: Position.Left, type: "target" },
+      { position: Position.Right, type: "source" },
+    ],
+    iconSrc: defaultNodeIcon,
+    modalInputs: [
+      { name: "teamId", type: "string" },
+      { name: "version", type: "string" },
+    ],
+    title: "Nested workflow",
   }),
 } as const;
 

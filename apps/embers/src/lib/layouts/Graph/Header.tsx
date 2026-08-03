@@ -21,6 +21,7 @@ import {
   useSaveAgentsTeamMutation,
   useTeamPublishedState,
 } from "@/lib/queries";
+import { assertPublishable, toWorkflowDefinition } from "@/lib/workflow";
 import ChevronDownIcon from "@/public/icons/chevrondown-icon.svg?react";
 
 import styles from "./Header.module.scss";
@@ -78,6 +79,7 @@ export const Header: React.FC = () => {
 
   const saveOrCreate = useCallback(async () => {
     const payload = {
+      definition: agentsTeam.definition,
       description: agentsTeam.description,
       edges: agentsTeam.edges!,
       logo: agentsTeam.logo,
@@ -87,16 +89,30 @@ export const Header: React.FC = () => {
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
       await res.waitForFinalization;
-      return { id, version: res.prepareResponse.response.version };
+      return {
+        definition: toWorkflowDefinition(
+          agentsTeam.nodes!,
+          agentsTeam.edges!,
+          agentsTeam.definition,
+        ),
+        id,
+        version: res.prepareResponse.response.version,
+      };
     }
     const res = await createMutation.mutateAsync(payload);
     await res.waitForFinalization;
     return {
+      definition: toWorkflowDefinition(
+        agentsTeam.nodes!,
+        agentsTeam.edges!,
+        agentsTeam.definition,
+      ),
       id: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
   }, [
     agentsTeam.description,
+    agentsTeam.definition,
     agentsTeam.edges,
     agentsTeam.logo,
     agentsTeam.name,
@@ -108,8 +124,8 @@ export const Header: React.FC = () => {
 
   const handleSave = useCallbackWithLoader(async () => {
     try {
-      const { id, version } = await saveOrCreate();
-      update({ id, version });
+      const { definition, id, version } = await saveOrCreate();
+      update({ definition, id, version });
       dock.appendLog(`Agent ${id} with ${version} has been saved!`, "info");
     } catch (e) {
       dock.appendLog(
@@ -122,8 +138,15 @@ export const Header: React.FC = () => {
 
   const handleDeploy = useCallbackWithLoader(async () => {
     try {
-      const { id, version } = await saveOrCreate();
-      update({ id, version });
+      assertPublishable(
+        toWorkflowDefinition(
+          agentsTeam.nodes ?? [],
+          agentsTeam.edges ?? [],
+          agentsTeam.definition,
+        ),
+      );
+      const { definition, id, version } = await saveOrCreate();
+      update({ definition, id, version });
       void navigate("/agents-team/deploy");
     } catch (e) {
       dock.appendLog(
@@ -190,7 +213,6 @@ export const Header: React.FC = () => {
             void runAgentsTeam
               .mutateAsync({
                 prompt,
-                rhoLimit: 500_000_000n,
                 uri: agentsTeam.uri,
               })
               .then((result) => {

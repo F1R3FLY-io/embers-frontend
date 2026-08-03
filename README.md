@@ -195,13 +195,14 @@ Our project follows a documentation-first approach designed for both human contr
 - **[📋 Requirements](docs/requirements/)** - User stories, business requirements, and acceptance criteria
 - **[📐 Specifications](docs/specifications/)** - Technical specifications and design documents
 - **[🏗️ Architecture](docs/architecture/)** - System design and architectural decisions
+- **[🔥 Agent Teams Workflow v2](docs/agent-teams/)** - Cycles, branching, joins, runtime theory, security, formal model, and operations
 
 ### For LLM Assistance
 
 When using LLM tools, start by providing context from:
 
-1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
-2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
+1. Relevant requirements from [`docs/requirements/`](./docs/requirements/README.md)
+2. Technical specifications from [`docs/specifications/`](./docs/specifications/README.md)
 3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
 4. Source code context from directory-level READMEs
 

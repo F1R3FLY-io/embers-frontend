@@ -1,0 +1,37 @@
+@startuml
+skinparam backgroundColor #FCFCFF
+skinparam sequence {
+  ArrowColor #334155
+  LifeLineBorderColor #475569
+  LifeLineBackgroundColor #F8FAFC
+  ParticipantBorderColor #334155
+  ParticipantFontColor #0F172A
+}
+actor "F1r3sky user" as User #DBEAFE
+participant "Embers API\nand deterministic kernel" as Embers #E0E7FF
+database "F1r3drive\nencrypted artifacts" as Drive #DCFCE7
+database "F1r3node / RSpace\nmetadata ledger" as Chain #FEF3C7
+participant "External activity" as Effect #FCE7F3
+
+User -> Embers: prepare signed run
+Embers -> Drive: create request + revision-0\n(O_EXCL, fsync, publish, finality)
+Drive --> Embers: content hash + capability hash
+Embers --> User: prepared contract + hashes
+User -> Chain: signed beginDurableRun
+Chain --> Embers: finalized
+loop bounded read-node visibility lag
+  Embers -> Chain: getRun(runId)
+  Chain --> Embers: missing, stale, or exact revision 0
+end
+Embers -> Effect: idempotent effect request
+Effect --> Embers: signed observation
+Embers -> Drive: persist outbox + observation + revision-1
+Drive --> Embers: finalized artifact pointers
+Embers -> Chain: advanceRun(expectedRevision = 0, pointers)
+Chain --> Embers: finalized
+loop bounded postcondition observation
+  Embers -> Chain: getRun(runId)
+  Chain --> Embers: stale or exact revision 1
+end
+Embers --> User: result or qualified waits + run link
+@enduml

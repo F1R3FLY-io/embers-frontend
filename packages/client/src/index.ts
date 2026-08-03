@@ -6,8 +6,6 @@ export * from "./api-client";
 export * from "./entities/Amount";
 export type * from "./entities/HttpCallConfigs";
 export * from "./entities/PrivateKey";
-export * from "./entities/PublicKey";
-export * from "./entities/Uri";
 export * from "./serialization";
 export * from "./services/AgentsApi";
 export * from "./services/AgentsTeamsApi";
@@ -22,7 +20,6 @@ export type {
   GContext,
   GEdgeAnon,
   GEdgeNamed,
-  Graph,
   GraphBinding,
   GRuleAnon,
   GRuleNamed,

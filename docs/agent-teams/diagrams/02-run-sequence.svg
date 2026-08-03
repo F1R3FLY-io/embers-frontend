@@ -1,0 +1,1416 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="SEQUENCE"
+  height="944px"
+  preserveAspectRatio="none"
+  style="width: 1218px; height: 944px; background: #f8fbff"
+  version="1.1"
+  viewBox="0 0 1218 944"
+  width="1218px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <rect
+      fill="#F8FBFF"
+      height="944"
+      style="stroke: none; stroke-width: 1"
+      width="1218"
+      x="0"
+      y="0"
+    />
+    <g class="title" data-source-line="1">
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="352.1267"
+        x="429.9143"
+        y="29.9659"
+      >
+        Durable run and terminal reply &#8212; causal sequence
+      </text>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part1"
+      data-qualified-name="Author"
+      data-source-line="13"
+      id="part1-lifeline"
+    >
+      <g>
+        <title>Author</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="26.7779"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="30"
+          x2="30"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part2"
+      data-qualified-name="F1r3sky"
+      data-source-line="14"
+      id="part2-lifeline"
+    >
+      <g>
+        <title>F1r3sky</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="173.55"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="177.3571"
+          x2="177.3571"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part3"
+      data-qualified-name="API"
+      data-source-line="15"
+      id="part3-lifeline"
+    >
+      <g>
+        <title>Embers API</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="439.8313"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="442.9964"
+          x2="442.9964"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part4"
+      data-qualified-name="Env"
+      data-source-line="16"
+      id="part4-lifeline"
+    >
+      <g>
+        <title>RSpace team env</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="696.1285"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="699.9747"
+          x2="699.9747"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part5"
+      data-qualified-name="Team"
+      data-source-line="17"
+      id="part5-lifeline"
+    >
+      <g>
+        <title>Compiled team</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="888.0467"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="891.9059"
+          x2="891.9059"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part6"
+      data-qualified-name="Effect"
+      data-source-line="18"
+      id="part6-lifeline"
+    >
+      <g>
+        <title>Agent.effect</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="1041.0198"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="1044.238"
+          x2="1044.238"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part7"
+      data-qualified-name="Inspector"
+      data-source-line="19"
+      id="part7-lifeline"
+    >
+      <g>
+        <title>Run inspector</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="735.5324"
+          width="8"
+          x="1151.3785"
+          y="124.1358"
+        />
+        <line
+          style="stroke: #6a92aa; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="1154.8016"
+          x2="1154.8016"
+          y1="124.1358"
+          y2="859.6682"
+        />
+      </g>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part1"
+      data-qualified-name="Author"
+      data-source-line="13"
+      id="part1-head"
+    >
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="45.5558"
+        x="5"
+        y="120.0339"
+      >
+        Author
+      </text>
+      <ellipse
+        cx="30.7779"
+        cy="53.5679"
+        fill="#FFD8C2"
+        rx="8"
+        ry="8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M30.7779,61.5679 L30.7779,88.5679 M17.7779,69.5679 L43.7779,69.5679 M30.7779,88.5679 L17.7779,103.5679 M30.7779,88.5679 L43.7779,103.5679"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part1"
+      data-qualified-name="Author"
+      data-source-line="13"
+      id="part1-tail"
+    >
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="45.5558"
+        x="5"
+        y="873.6341"
+      >
+        Author
+      </text>
+      <ellipse
+        cx="30.7779"
+        cy="886.2361"
+        fill="#FFD8C2"
+        rx="8"
+        ry="8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M30.7779,894.2361 L30.7779,921.2361 M17.7779,902.2361 L43.7779,902.2361 M30.7779,921.2361 L17.7779,936.2361 M30.7779,921.2361 L43.7779,936.2361"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part2"
+      data-qualified-name="F1r3sky"
+      data-source-line="14"
+      id="part2-head"
+    >
+      <rect
+        fill="#D5EAF7"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="64.3858"
+        x="145.3571"
+        y="90.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="50.3858"
+        x="152.3571"
+        y="112.0339"
+      >
+        F1r3sky
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part2"
+      data-qualified-name="F1r3sky"
+      data-source-line="14"
+      id="part2-tail"
+    >
+      <rect
+        fill="#D5EAF7"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="64.3858"
+        x="145.3571"
+        y="858.6682"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="50.3858"
+        x="152.3571"
+        y="880.6341"
+      >
+        F1r3sky
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part3"
+      data-qualified-name="API"
+      data-source-line="15"
+      id="part3-head"
+    >
+      <rect
+        fill="#FFC9A8"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="89.6697"
+        x="398.9964"
+        y="90.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="75.6697"
+        x="405.9964"
+        y="112.0339"
+      >
+        Embers API
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part3"
+      data-qualified-name="API"
+      data-source-line="15"
+      id="part3-tail"
+    >
+      <rect
+        fill="#FFC9A8"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="89.6697"
+        x="398.9964"
+        y="858.6682"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="75.6697"
+        x="405.9964"
+        y="880.6341"
+      >
+        Embers API
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part4"
+      data-qualified-name="Env"
+      data-source-line="16"
+      id="part4-head"
+    >
+      <rect
+        fill="#CDEACC"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="126.3076"
+        x="636.9747"
+        y="90.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="112.3076"
+        x="643.9747"
+        y="112.0339"
+      >
+        RSpace team env
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part4"
+      data-qualified-name="Env"
+      data-source-line="16"
+      id="part4-tail"
+    >
+      <rect
+        fill="#CDEACC"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="126.3076"
+        x="636.9747"
+        y="858.6682"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="112.3076"
+        x="643.9747"
+        y="880.6341"
+      >
+        RSpace team env
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part5"
+      data-qualified-name="Team"
+      data-source-line="17"
+      id="part5-head"
+    >
+      <rect
+        fill="#FFE4A6"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="114.2816"
+        x="834.9059"
+        y="90.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="100.2816"
+        x="841.9059"
+        y="112.0339"
+      >
+        Compiled team
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part5"
+      data-qualified-name="Team"
+      data-source-line="17"
+      id="part5-tail"
+    >
+      <rect
+        fill="#FFE4A6"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="114.2816"
+        x="834.9059"
+        y="858.6682"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="100.2816"
+        x="841.9059"
+        y="880.6341"
+      >
+        Compiled team
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part6"
+      data-qualified-name="Effect"
+      data-source-line="18"
+      id="part6-head"
+    >
+      <rect
+        fill="#DDD2F2"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="95.5637"
+        x="997.238"
+        y="90.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="81.5637"
+        x="1004.238"
+        y="112.0339"
+      >
+        Agent/effect
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part6"
+      data-qualified-name="Effect"
+      data-source-line="18"
+      id="part6-tail"
+    >
+      <rect
+        fill="#DDD2F2"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="95.5637"
+        x="997.238"
+        y="858.6682"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="81.5637"
+        x="1004.238"
+        y="880.6341"
+      >
+        Agent/effect
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part7"
+      data-qualified-name="Inspector"
+      data-source-line="19"
+      id="part7-head"
+    >
+      <rect
+        fill="#D5EAF7"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="105.1536"
+        x="1102.8016"
+        y="90.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="91.1536"
+        x="1109.8016"
+        y="112.0339"
+      >
+        Run inspector
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part7"
+      data-qualified-name="Inspector"
+      data-source-line="19"
+      id="part7-tail"
+    >
+      <rect
+        fill="#D5EAF7"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #38789e; stroke-width: 0.5"
+        width="105.1536"
+        x="1102.8016"
+        y="858.6682"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="91.1536"
+        x="1109.8016"
+        y="880.6341"
+      >
+        Run inspector
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part1"
+      data-entity-2="part2"
+      data-source-line="21"
+      id="msg1"
+    >
+      <polygon
+        fill="#294C60"
+        points="165.55,153.8419,175.55,157.8419,165.55,161.8419,169.55,157.8419"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="30.7779"
+        x2="171.55"
+        y1="157.8419"
+        y2="157.8419"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="122.7721"
+        x="37.7779"
+        y="152.0328"
+      >
+        post @team prompt
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part3"
+      data-source-line="22"
+      id="msg2"
+    >
+      <polygon
+        fill="#294C60"
+        points="431.8313,185.5479,441.8313,189.5479,431.8313,193.5479,435.8313,189.5479"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="177.55"
+        x2="437.8313"
+        y1="189.5479"
+        y2="189.5479"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="184.1452"
+        x="184.55"
+        y="183.7389"
+      >
+        prepareRun(prompt, replyRef)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part2"
+      data-source-line="23"
+      id="msg3"
+    >
+      <polygon
+        fill="#294C60"
+        points="188.55,217.2539,178.55,221.2539,188.55,225.2539,184.55,221.2539"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="182.55"
+        x2="442.8313"
+        y1="221.2539"
+        y2="221.2539"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="242.2812"
+        x="194.55"
+        y="215.4449"
+      >
+        signed contract + UUIDv7 run capability
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part3"
+      data-source-line="24"
+      id="msg4"
+    >
+      <polygon
+        fill="#294C60"
+        points="431.8313,248.9599,441.8313,252.9599,431.8313,256.9599,435.8313,252.9599"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="177.55"
+        x2="437.8313"
+        y1="252.9599"
+        y2="252.9599"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="132.1321"
+        x="184.55"
+        y="247.1509"
+      >
+        send(signed contract)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="25"
+      id="msg5"
+    >
+      <polygon
+        fill="#294C60"
+        points="688.1285,280.6659,698.1285,284.6659,688.1285,288.6659,692.1285,284.6659"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="443.8313"
+        x2="694.1285"
+        y1="284.6659"
+        y2="284.6659"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="232.2972"
+        x="450.8313"
+        y="278.8569"
+      >
+        beginRun(runId, team, createdAt, ack)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part4"
+      data-source-line="26"
+      id="msg6"
+    >
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="700.1285"
+        x2="742.1285"
+        y1="316.3719"
+        y2="316.3719"
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="742.1285"
+        x2="742.1285"
+        y1="316.3719"
+        y2="329.3719"
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="701.1285"
+        x2="742.1285"
+        y1="329.3719"
+        y2="329.3719"
+      />
+      <polygon
+        fill="#294C60"
+        points="711.1285,325.3719,701.1285,329.3719,711.1285,333.3719,707.1285,329.3719"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="177.9182"
+        x="707.1285"
+        y="310.5629"
+      >
+        commit runStarted metadata
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="27"
+      id="msg7"
+    >
+      <polygon
+        fill="#294C60"
+        points="454.8313,357.0779,444.8313,361.0779,454.8313,365.0779,450.8313,361.0779"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="448.8313"
+        x2="699.1285"
+        y1="361.0779"
+        y2="361.0779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="20.475"
+        x="460.8313"
+        y="355.2689"
+      >
+        ack
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part5"
+      data-source-line="28"
+      id="msg8"
+    >
+      <polygon
+        fill="#294C60"
+        points="880.0467,388.784,890.0467,392.784,880.0467,396.784,884.0467,392.784"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="443.8313"
+        x2="886.0467"
+        y1="392.784"
+        y2="392.784"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="94.0031"
+        x="450.8313"
+        y="386.975"
+      >
+        invoke(prompt)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part5"
+      data-entity-2="part6"
+      data-source-line="29"
+      id="msg9"
+    >
+      <polygon
+        fill="#294C60"
+        points="1033.0198,420.49,1043.0198,424.49,1033.0198,428.49,1037.0198,424.49"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="892.0467"
+        x2="1039.0198"
+        y1="424.49"
+        y2="424.49"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="128.9731"
+        x="899.0467"
+        y="418.681"
+      >
+        activity(value, return)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part6"
+      data-entity-2="part5"
+      data-source-line="30"
+      id="msg10"
+    >
+      <polygon
+        fill="#294C60"
+        points="903.0467,452.196,893.0467,456.196,903.0467,460.196,899.0467,456.196"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="897.0467"
+        x2="1044.0198"
+        y1="456.196"
+        y2="456.196"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="35.009"
+        x="909.0467"
+        y="450.387"
+      >
+        result
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part5"
+      data-entity-2="part3"
+      data-source-line="31"
+      id="msg11"
+    >
+      <polygon
+        fill="#294C60"
+        points="454.8313,483.902,444.8313,487.902,454.8313,491.902,450.8313,487.902"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="448.8313"
+        x2="891.0467"
+        y1="487.902"
+        y2="487.902"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="87.5811"
+        x="460.8313"
+        y="482.093"
+      >
+        terminal value
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="32"
+      id="msg12"
+    >
+      <polygon
+        fill="#294C60"
+        points="688.1285,515.608,698.1285,519.608,688.1285,523.608,692.1285,519.608"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="443.8313"
+        x2="694.1285"
+        y1="519.608"
+        y2="519.608"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="126.6071"
+        x="450.8313"
+        y="513.799"
+      >
+        finishRun(runId, ack)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part4"
+      data-source-line="33"
+      id="msg13"
+    >
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="700.1285"
+        x2="742.1285"
+        y1="551.314"
+        y2="551.314"
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="742.1285"
+        x2="742.1285"
+        y1="551.314"
+        y2="564.314"
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="701.1285"
+        x2="742.1285"
+        y1="564.314"
+        y2="564.314"
+      />
+      <polygon
+        fill="#294C60"
+        points="711.1285,560.314,701.1285,564.314,711.1285,568.314,707.1285,564.314"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="128.1541"
+        x="707.1285"
+        y="545.505"
+      >
+        commit runReturned
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="34"
+      id="msg14"
+    >
+      <polygon
+        fill="#294C60"
+        points="454.8313,592.0201,444.8313,596.0201,454.8313,600.0201,450.8313,596.0201"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="448.8313"
+        x2="699.1285"
+        y1="596.0201"
+        y2="596.0201"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="20.475"
+        x="460.8313"
+        y="590.2111"
+      >
+        ack
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part2"
+      data-source-line="35"
+      id="msg15"
+    >
+      <polygon
+        fill="#294C60"
+        points="188.55,641.4321,178.55,645.4321,188.55,649.4321,184.55,645.4321"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="182.55"
+        x2="442.8313"
+        y1="645.4321"
+        y2="645.4321"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="171.9122"
+        x="194.55"
+        y="621.9171"
+      >
+        reply truncated to 280 chars
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="91.8711"
+        x="194.55"
+        y="639.6231"
+      >
+        + /runs/{runId}
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part1"
+      data-entity-2="part7"
+      data-source-line="36"
+      id="msg16"
+    >
+      <polygon
+        fill="#294C60"
+        points="1143.3785,673.1381,1153.3785,677.1381,1143.3785,681.1381,1147.3785,677.1381"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="30.7779"
+        x2="1149.3785"
+        y1="677.1381"
+        y2="677.1381"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="83.8241"
+        x="37.7779"
+        y="671.3291"
+      >
+        open run URL
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part7"
+      data-entity-2="part3"
+      data-source-line="37"
+      id="msg17"
+    >
+      <polygon
+        fill="#294C60"
+        points="454.8313,704.8441,444.8313,708.8441,454.8313,712.8441,450.8313,708.8441"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="448.8313"
+        x2="1154.3785"
+        y1="708.8441"
+        y2="708.8441"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="108.3551"
+        x="460.8313"
+        y="703.0351"
+      >
+        GET /runs/{runId}
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="38"
+      id="msg18"
+    >
+      <polygon
+        fill="#294C60"
+        points="688.1285,736.5501,698.1285,740.5501,688.1285,744.5501,692.1285,740.5501"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1"
+        x1="443.8313"
+        x2="694.1285"
+        y1="740.5501"
+        y2="740.5501"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="85.8131"
+        x="450.8313"
+        y="734.7411"
+      >
+        getRun(runId)
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="39"
+      id="msg19"
+    >
+      <polygon
+        fill="#294C60"
+        points="454.8313,768.2562,444.8313,772.2562,454.8313,776.2562,450.8313,772.2562"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="448.8313"
+        x2="699.1285"
+        y1="772.2562"
+        y2="772.2562"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="168.9481"
+        x="460.8313"
+        y="766.4472"
+      >
+        metadata-only event ledger
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part7"
+      data-source-line="40"
+      id="msg20"
+    >
+      <polygon
+        fill="#294C60"
+        points="1143.3785,799.9622,1153.3785,803.9622,1143.3785,807.9622,1147.3785,803.9622"
+        style="
+          stroke: #294c60;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #294c60; stroke-width: 1; stroke-dasharray: 2, 2"
+        x1="443.8313"
+        x2="1149.3785"
+        y1="803.9622"
+        y2="803.9622"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="121.6151"
+        x="450.8313"
+        y="798.1532"
+      >
+        status + event types
+      </text>
+    </g>
+    <path
+      d="M316,816.9622 L316,843.9622 L826,843.9622 L826,826.9622 L816,816.9622 L316,816.9622"
+      fill="#FFF0C7"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <path
+      d="M816,816.9622 L816,826.9622 L826,826.9622 L816,816.9622"
+      fill="#FFF0C7"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="489.4374"
+      x="322"
+      y="835.8592"
+    >
+      The two acknowledgements establish\nrunStarted &lt; work &lt; runReturned
+      &lt; post.
+    </text>
+    <?plantuml-src VLJDRjf04BxxAKRD9IZGf2G1WwgeZi4HKWuHIMwvBFO0A-nTTtTjXA98VOW-OP-aisimDb5xCdY-d_bcPssuIH4cXM8BUgf201C965GP5om5XNcwWp-_VaFC2aqlDFuiKCJewGqNELCiWmMBDoib2v64CfKApY8_ke-Y1aAlMIAtNAnWoLBTv0PAoUsUrX_TX8Eh9ctl1UyUm1DJXiSyPyBSdnfEW-YM3DiWgH9KUy2rF_H7Km8yyYK-Se6jwY0OzOE0gWyacdzIZwBeUkhNvIPpCXeEhdtlm_DOREX5K9XrHPduOT_BZ-r0z4rTwysEEBVKxh1L-pBD5gWq14-pBy3Sqsg4ey1lu-RFEQDv6AJfe2WTU2fAE0idqo0Cs-1GPZbFCN5m1tsnF1AUtWI3DZPOeJ2Nk5nYR2fLzvEwdKpwKV-a2zeIBdIEDhD3pmx_wdZUVXIzkphv67Af3VnmtUUAkZFUeKOm6veWj75C8LcSLv1kjODpN7Oy2-cr53LV2KeOIs4K7G5SmElhR58EtIR7B6SBddAp--oZKIJd9-ozmPqRwHWMkEB2Da9QiwJhnjY5M24pc0JK62rAnxFOcXBBBEF6cZyRcXXfPsXOmWohSBKzKGzcxb36DD1IRd0VkkEvjrQtEWVBCBoaAESbImkqKp654kHV0Nf79OMwICrUeNQihxJZjvCkkU1wtOZwlsHpPup9lnCTZwVwV1XYnNPeO2Jq_Ik8rqpfDt41brJHb-_EzQEnCiTz6eFCKRZZV9q_UiT2RVmmVJdLQMPReQc3TKvwFXnEJmfg4qkw0q0NPeMgNhLc9zemKsZQiGffTZbgpnFI8CWIbHNjkjj8NuohSEYzhEcgRgKTZP1R9vmHKGEIqYAbaR-9ngfyXwrK6teqXap_xANvwj6wWdNw2m00?>
+  </g>
+</svg>

@@ -1,0 +1,1092 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="ACTIVITY"
+  height="946px"
+  preserveAspectRatio="none"
+  style="width: 573px; height: 946px; background: #fffbf6"
+  version="1.1"
+  viewBox="0 0 573 946"
+  width="573px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <rect
+      fill="#FFFBF6"
+      height="946"
+      style="stroke: none; stroke-width: 1"
+      width="573"
+      x="0"
+      y="0"
+    />
+    <g class="title" data-source-line="1">
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="531.032"
+        x="20"
+        y="34.9659"
+      >
+        Workflow token semantics &#8212; fan-out, guards, fan-in, and bounded
+        feedback
+      </text>
+    </g>
+    <ellipse
+      cx="241.9441"
+      cy="65.0679"
+      fill="#2E7D5B"
+      rx="10"
+      ry="10"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <rect
+      fill="#CDEACC"
+      height="52.6882"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="105.8606"
+      x="189.0138"
+      y="95.0679"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="65.9165"
+      x="199.0138"
+      y="117.896"
+    >
+      Input token
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="85.8606"
+      x="199.0138"
+      y="134.2401"
+    >
+      (value, context)
+    </text>
+    <rect
+      fill="#FFE0B2"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="99.3925"
+      x="192.2479"
+      y="167.7561"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="79.3925"
+      x="202.2479"
+      y="190.5842"
+    >
+      Planner agent
+    </text>
+    <polygon
+      fill="#D9ECFF"
+      points="55.9007,224.1003,144.8021,224.1003,156.8021,236.1003,144.8021,248.1003,55.9007,248.1003,43.9007,236.1003,55.9007,224.1003"
+      style="
+        stroke: #3979a4;
+        stroke-width: 0.5;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="46.9147"
+      x="104.3514"
+      y="259.8592"
+    >
+      priority 0
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="88.9014"
+      x="55.9007"
+      y="240.3682"
+    >
+      firstMatch routes
+    </text>
+    <rect
+      fill="#D7EAF8"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="114.3927"
+      x="43.1551"
+      y="283.0821"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="94.3927"
+      x="53.1551"
+      y="305.9102"
+    >
+      Research branch
+    </text>
+    <polygon
+      fill="#D9ECFF"
+      points="207.7947,224.1003,254.7094,224.1003,266.7094,236.1003,254.7094,248.1003,207.7947,248.1003,195.7947,236.1003,207.7947,224.1003"
+      style="
+        stroke: #3979a4;
+        stroke-width: 0.5;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="46.9147"
+      x="207.7947"
+      y="240.3682"
+    >
+      priority 1
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="48.8177"
+      x="266.7094"
+      y="232.8773"
+    >
+      no match
+    </text>
+    <rect
+      fill="#E3D8F5"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="107.4086"
+      x="177.5477"
+      y="268.1003"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="87.4086"
+      x="187.5477"
+      y="290.9283"
+    >
+      Critique branch
+    </text>
+    <rect
+      fill="#F7C7C7"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="135.7769"
+      x="304.9563"
+      y="263.8457"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="115.7769"
+      x="314.9563"
+      y="286.6738"
+    >
+      Fail / skip / complete
+    </text>
+    <ellipse
+      cx="372.8448"
+      cy="346.1898"
+      fill="none"
+      rx="11"
+      ry="11"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <ellipse
+      cx="372.8448"
+      cy="346.1898"
+      fill="#222222"
+      rx="6"
+      ry="6"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <rect
+      fill="#555555"
+      height="6"
+      rx="2.5"
+      ry="2.5"
+      style="stroke: #555555; stroke-width: 1"
+      width="226.7889"
+      x="128.5497"
+      y="397.1898"
+    />
+    <rect
+      fill="#D7EAF8"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="82.9644"
+      x="142.5497"
+      y="423.1898"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="62.9644"
+      x="152.5497"
+      y="446.0179"
+    >
+      Text model
+    </text>
+    <rect
+      fill="#E3D8F5"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="87.8245"
+      x="253.5141"
+      y="423.1898"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="67.8245"
+      x="263.5141"
+      y="446.0179"
+    >
+      Policy check
+    </text>
+    <rect
+      fill="#555555"
+      height="6"
+      rx="2.5"
+      ry="2.5"
+      style="stroke: #555555; stroke-width: 1"
+      width="226.7889"
+      x="128.5497"
+      y="479.534"
+    />
+    <rect
+      fill="#FFE0B2"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="148.1849"
+      x="167.8517"
+      y="505.534"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="128.1849"
+      x="177.8517"
+      y="528.3621"
+    >
+      all / quorum / race join
+    </text>
+    <rect
+      fill="#CDEACC"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="121.1487"
+      x="181.3698"
+      y="561.8781"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="101.1487"
+      x="191.3698"
+      y="584.7062"
+    >
+      Synthesize output
+    </text>
+    <polygon
+      fill="#D9ECFF"
+      points="196.85,618.2222,287.0383,618.2222,299.0383,630.2222,287.0383,642.2222,196.85,642.2222,184.85,630.2222,196.85,618.2222"
+      style="
+        stroke: #3979a4;
+        stroke-width: 0.5;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="90.1884"
+      x="196.85"
+      y="634.4902"
+    >
+      quality sufficient?
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="17.0829"
+      x="167.7671"
+      y="626.9992"
+    >
+      yes
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="13.4529"
+      x="299.0383"
+      y="626.9992"
+    >
+      no
+    </text>
+    <rect
+      fill="#BEE5CF"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="125.1208"
+      x="53.9406"
+      y="652.2222"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="105.1208"
+      x="63.9406"
+      y="675.0503"
+    >
+      Terminal response
+    </text>
+    <ellipse
+      cx="116.501"
+      cy="719.5663"
+      fill="none"
+      rx="11"
+      ry="11"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <ellipse
+      cx="116.501"
+      cy="719.5663"
+      fill="#222222"
+      rx="6"
+      ry="6"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <rect
+      fill="#FFF0A8"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="183.2372"
+      x="275.7687"
+      y="652.2222"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="163.2372"
+      x="285.7687"
+      y="675.0503"
+    >
+      Increment transition counter
+    </text>
+    <polygon
+      fill="#D9ECFF"
+      points="309.5717,708.5663,425.2029,708.5663,437.2029,720.5663,425.2029,732.5663,309.5717,732.5663,297.5717,720.5663,309.5717,708.5663"
+      style="
+        stroke: #3979a4;
+        stroke-width: 0.5;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="115.6312"
+      x="309.5717"
+      y="724.8343"
+    >
+      counter below bound?
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="17.0829"
+      x="280.4888"
+      y="717.3433"
+    >
+      yes
+    </text>
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="11"
+      lengthAdjust="spacing"
+      textLength="13.4529"
+      x="437.2029"
+      y="717.3433"
+    >
+      no
+    </text>
+    <rect
+      fill="#FFD0B5"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="144.1169"
+      x="209.0614"
+      y="742.5663"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="124.1169"
+      x="219.0614"
+      y="765.3944"
+    >
+      Route back to Planner
+    </text>
+    <rect
+      fill="#F7C7C7"
+      height="36.3441"
+      rx="12.5"
+      ry="12.5"
+      style="stroke: #a55b30; stroke-width: 0.5"
+      width="160.953"
+      x="373.1783"
+      y="742.5663"
+    />
+    <text
+      fill="#000000"
+      font-family="sans-serif"
+      font-size="12"
+      lengthAdjust="spacing"
+      textLength="140.953"
+      x="383.1783"
+      y="765.3944"
+    >
+      iterationLimit disposition
+    </text>
+    <ellipse
+      cx="453.6548"
+      cy="809.9104"
+      fill="none"
+      rx="11"
+      ry="11"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <ellipse
+      cx="453.6548"
+      cy="809.9104"
+      fill="#222222"
+      rx="6"
+      ry="6"
+      style="stroke: #222222; stroke-width: 1"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="75.0679"
+      y2="95.0679"
+    />
+    <polygon
+      fill="#54413A"
+      points="237.9441,85.0679,241.9441,95.0679,245.9441,85.0679,241.9441,89.0679"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="147.7561"
+      y2="167.7561"
+    />
+    <polygon
+      fill="#54413A"
+      points="237.9441,157.7561,241.9441,167.7561,245.9441,157.7561,241.9441,161.7561"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="372.8448"
+      x2="372.8448"
+      y1="300.1898"
+      y2="335.1898"
+    />
+    <polygon
+      fill="#54413A"
+      points="368.8448,325.1898,372.8448,335.1898,376.8448,325.1898,372.8448,329.1898"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="100.3514"
+      x2="100.3514"
+      y1="248.1003"
+      y2="283.0821"
+    />
+    <polygon
+      fill="#54413A"
+      points="96.3514,273.0821,100.3514,283.0821,104.3514,273.0821,100.3514,277.0821"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="100.3514"
+      x2="100.3514"
+      y1="319.4263"
+      y2="377.1898"
+    />
+    <polygon
+      fill="#54413A"
+      points="96.3514,367.1898,100.3514,377.1898,104.3514,367.1898,100.3514,371.1898"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="231.252"
+      x2="231.252"
+      y1="248.1003"
+      y2="268.1003"
+    />
+    <polygon
+      fill="#54413A"
+      points="227.252,258.1003,231.252,268.1003,235.252,258.1003,231.252,262.1003"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="231.252"
+      x2="231.252"
+      y1="304.4444"
+      y2="377.1898"
+    />
+    <polygon
+      fill="#54413A"
+      points="227.252,367.1898,231.252,377.1898,235.252,367.1898,231.252,371.1898"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="156.8021"
+      x2="195.7947"
+      y1="236.1003"
+      y2="236.1003"
+    />
+    <polygon
+      fill="#54413A"
+      points="185.7947,232.1003,195.7947,236.1003,185.7947,240.1003,189.7947,236.1003"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="204.1003"
+      y2="209.1003"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="100.3514"
+      y1="209.1003"
+      y2="209.1003"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="100.3514"
+      x2="100.3514"
+      y1="209.1003"
+      y2="224.1003"
+    />
+    <polygon
+      fill="#54413A"
+      points="96.3514,214.1003,100.3514,224.1003,104.3514,214.1003,100.3514,218.1003"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="266.7094"
+      x2="372.8448"
+      y1="236.1003"
+      y2="236.1003"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="372.8448"
+      x2="372.8448"
+      y1="236.1003"
+      y2="263.8457"
+    />
+    <polygon
+      fill="#54413A"
+      points="368.8448,253.8457,372.8448,263.8457,376.8448,253.8457,372.8448,257.8457"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="100.3514"
+      x2="241.9441"
+      y1="377.1898"
+      y2="377.1898"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="184.0319"
+      x2="184.0319"
+      y1="403.1898"
+      y2="423.1898"
+    />
+    <polygon
+      fill="#54413A"
+      points="180.0319,413.1898,184.0319,423.1898,188.0319,413.1898,184.0319,417.1898"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="297.4264"
+      x2="297.4264"
+      y1="403.1898"
+      y2="423.1898"
+    />
+    <polygon
+      fill="#54413A"
+      points="293.4264,413.1898,297.4264,423.1898,301.4264,413.1898,297.4264,417.1898"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="184.0319"
+      x2="184.0319"
+      y1="459.534"
+      y2="479.534"
+    />
+    <polygon
+      fill="#54413A"
+      points="180.0319,469.534,184.0319,479.534,188.0319,469.534,184.0319,473.534"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="297.4264"
+      x2="297.4264"
+      y1="459.534"
+      y2="479.534"
+    />
+    <polygon
+      fill="#54413A"
+      points="293.4264,469.534,297.4264,479.534,301.4264,469.534,297.4264,473.534"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="377.1898"
+      y2="397.1898"
+    />
+    <polygon
+      fill="#54413A"
+      points="237.9441,387.1898,241.9441,397.1898,245.9441,387.1898,241.9441,391.1898"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="485.534"
+      y2="505.534"
+    />
+    <polygon
+      fill="#54413A"
+      points="237.9441,495.534,241.9441,505.534,245.9441,495.534,241.9441,499.534"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="541.8781"
+      y2="561.8781"
+    />
+    <polygon
+      fill="#54413A"
+      points="237.9441,551.8781,241.9441,561.8781,245.9441,551.8781,241.9441,555.8781"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="116.501"
+      x2="116.501"
+      y1="688.5663"
+      y2="708.5663"
+    />
+    <polygon
+      fill="#54413A"
+      points="112.501,698.5663,116.501,708.5663,120.501,698.5663,116.501,702.5663"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="453.6548"
+      x2="453.6548"
+      y1="778.9104"
+      y2="798.9104"
+    />
+    <polygon
+      fill="#54413A"
+      points="449.6548,788.9104,453.6548,798.9104,457.6548,788.9104,453.6548,792.9104"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="297.5717"
+      x2="281.1198"
+      y1="720.5663"
+      y2="720.5663"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="281.1198"
+      x2="281.1198"
+      y1="720.5663"
+      y2="742.5663"
+    />
+    <polygon
+      fill="#54413A"
+      points="277.1198,732.5663,281.1198,742.5663,285.1198,732.5663,281.1198,736.5663"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="437.2029"
+      x2="453.6548"
+      y1="720.5663"
+      y2="720.5663"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="453.6548"
+      x2="453.6548"
+      y1="720.5663"
+      y2="742.5663"
+    />
+    <polygon
+      fill="#54413A"
+      points="449.6548,732.5663,453.6548,742.5663,457.6548,732.5663,453.6548,736.5663"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="281.1198"
+      x2="281.1198"
+      y1="778.9104"
+      y2="832.9104"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="281.1198"
+      x2="241.9441"
+      y1="832.9104"
+      y2="832.9104"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="367.3873"
+      x2="367.3873"
+      y1="688.5663"
+      y2="708.5663"
+    />
+    <polygon
+      fill="#54413A"
+      points="363.3873,698.5663,367.3873,708.5663,371.3873,698.5663,367.3873,702.5663"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="184.85"
+      x2="116.501"
+      y1="630.2222"
+      y2="630.2222"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="116.501"
+      x2="116.501"
+      y1="630.2222"
+      y2="652.2222"
+    />
+    <polygon
+      fill="#54413A"
+      points="112.501,642.2222,116.501,652.2222,120.501,642.2222,116.501,646.2222"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="299.0383"
+      x2="367.3873"
+      y1="630.2222"
+      y2="630.2222"
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="367.3873"
+      x2="367.3873"
+      y1="630.2222"
+      y2="652.2222"
+    />
+    <polygon
+      fill="#54413A"
+      points="363.3873,642.2222,367.3873,652.2222,371.3873,642.2222,367.3873,646.2222"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <line
+      style="stroke: #54413a; stroke-width: 1"
+      x1="241.9441"
+      x2="241.9441"
+      y1="598.2222"
+      y2="618.2222"
+    />
+    <polygon
+      fill="#54413A"
+      points="237.9441,608.2222,241.9441,618.2222,245.9441,608.2222,241.9441,612.2222"
+      style="
+        stroke: #54413a;
+        stroke-width: 1;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 10;
+      "
+    />
+    <g class="legend" data-source-line="46">
+      <rect
+        fill="none"
+        height="67.2038"
+        rx="7.5"
+        ry="7.5"
+        style="stroke: #000000; stroke-width: 1"
+        width="300.2329"
+        x="229.8983"
+        y="854.9104"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="245.951"
+        x="234.8983"
+        y="874.8764"
+      >
+        Every token carries the original input,
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="283.8069"
+        x="234.8983"
+        y="893.9443"
+      >
+        portable state, and per-transition counters.
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="290.2329"
+        x="234.8983"
+        y="913.0122"
+      >
+        Persistent Rholang contracts permit revisits.
+      </text>
+    </g>
+    <?plantuml-src RLJRRjim37ttLn3eImgaMzeqIveL7U8RK603YdR0NlQYsBJ3nPPSIawN3WFs4Vl2VSaenolSTl23RP7dwF2GaYDN8Nmnl2qgym3ER563nLffHvc5Fxz-Gw7qYMdT6CfMSMx7tGBfCIYTmzgqEiSS2iHyhR9jOBUa6yMg1lzRiez7fZ8CHscQXkcxGORTgDmya2w5ih8uYAoOpKCFcvsVdqvNWw3A7Et8xU57013-PvVJEFOHmpbolxgQpSBfH5PZKhNH-IjOV954QJf86AAd5_EBrRa4xvnYro-U9VDu5ifYyaGo3wVf8Wf-1e7rYS7oMZUjExZwLOzsgcfn39dH3h-xu_TmUNaKnSagYgwkWkLDfRH61bMYTbqiJPD9U2OnAc1K45ltIRbi0wBReJq6jv5cZHecmzwEoR68MTwYHSMIjMQbiqr75C-JLReG8XIRFTaJvhJ3HF9DzoqECSaqNgIp7WCZRQ3sctVvgQ8AteAqf95NPkgcGeS7pVD87e41M6UQ07LEHH0KCc4U-LaAXzhaM3qNvkDIkIBjisvCHTaUiWrcsnTYPEOwhgMgl8Jxrd1RomUh3E6R8VtSkUNTNejDbXuHn3NfndFNlHdthQgy5xOj2if8tF_mpzkzs7oGpJLfLG6ZROosXrh399b5wQ3MtgaESgqpnbh8m8cfLWmsMgngfVVSQqmdgqM7zYhw4ApH7yJkNBsKuRlhMzyTBPagw4UcfuiduQoZ6-eG30cjyjj_f9eSv2Gb7FIyx5XVXp1qNUjxLs7fRMSgDywF-mvvtzyKcM8cj5uco42LdKVaXtuicOrXfzPolyXfS7YuC1haazU6s3UIVYDliivRThinKbhP7HNfhBCUvyKpxaYWaY-I3iB-0W00?>
+  </g>
+</svg>

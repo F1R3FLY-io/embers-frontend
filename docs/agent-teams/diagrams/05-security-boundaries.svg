@@ -1,0 +1,1110 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="DESCRIPTION"
+  height="1066px"
+  preserveAspectRatio="none"
+  style="width: 1073px; height: 1066px; background: #fffaf8"
+  version="1.1"
+  viewBox="0 0 1073 1066"
+  width="1073px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <rect
+      fill="#FFFAF8"
+      height="1066"
+      style="stroke: none; stroke-width: 1"
+      width="1073"
+      x="0"
+      y="0"
+    />
+    <g class="title" data-source-line="1">
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="417.0584"
+        x="324.4958"
+        y="24.9659"
+      >
+        Agent Teams Workflow v2 &#8212; authority and data boundaries
+      </text>
+    </g>
+    <!--cluster Public interaction-->
+    <g
+      class="cluster"
+      data-qualified-name="Public interaction"
+      data-source-line="8"
+      id="ent0002"
+    >
+      <rect
+        fill="#E2F1FA"
+        height="125.07"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="289"
+        x="770.05"
+        y="493.7779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="123.5635"
+        x="852.7682"
+        y="510.7439"
+      >
+        Public interaction
+      </text>
+    </g>
+    <!--cluster Embers trust boundary-->
+    <g
+      class="cluster"
+      data-qualified-name="Embers trust boundary"
+      data-source-line="12"
+      id="ent0005"
+    >
+      <rect
+        fill="#FFF0DB"
+        height="253.14"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="466"
+        x="296.05"
+        y="189.6379"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="161.0834"
+        x="448.5083"
+        y="206.6039"
+      >
+        Embers trust boundary
+      </text>
+    </g>
+    <!--cluster Capability boundary-->
+    <g
+      class="cluster"
+      data-qualified-name="Capability boundary"
+      data-source-line="17"
+      id="ent0009"
+    >
+      <rect
+        fill="#E7F3E7"
+        height="254.13"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="427"
+        x="297.05"
+        y="493.7779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="140.9935"
+        x="440.0533"
+        y="510.7439"
+      >
+        Capability boundary
+      </text>
+    </g>
+    <!--cluster Effect boundary-->
+    <g
+      class="cluster"
+      data-qualified-name="Effect boundary"
+      data-source-line="22"
+      id="ent0013"
+    >
+      <rect
+        fill="#EEE6F8"
+        height="253.14"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="242"
+        x="575.05"
+        y="798.9079"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="111.2576"
+        x="640.4212"
+        y="815.8739"
+      >
+        Effect boundary
+      </text>
+    </g>
+    <!--entity F1r3sky-->
+    <g
+      class="entity"
+      data-qualified-name="Public interaction.F1r3sky"
+      data-source-line="9"
+      id="ent0003"
+    >
+      <rect
+        fill="#CDE7F5"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="90.3858"
+        x="785.85"
+        y="553.7779"
+      />
+      <rect
+        fill="#CDE7F5"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="856.2358"
+        y="558.7779"
+      />
+      <rect
+        fill="#CDE7F5"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="854.2358"
+        y="560.7779"
+      />
+      <rect
+        fill="#CDE7F5"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="854.2358"
+        y="564.7779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="50.3858"
+        x="800.85"
+        y="588.7439"
+      >
+        F1r3sky
+      </text>
+    </g>
+    <!--entity inspector-->
+    <g
+      class="entity"
+      data-qualified-name="Public interaction.inspector"
+      data-source-line="10"
+      id="ent0004"
+    >
+      <rect
+        fill="#CDE7F5"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="131.1536"
+        x="911.47"
+        y="553.7779"
+      />
+      <rect
+        fill="#CDE7F5"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="1022.6236"
+        y="558.7779"
+      />
+      <rect
+        fill="#CDE7F5"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="1020.6236"
+        y="560.7779"
+      />
+      <rect
+        fill="#CDE7F5"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="1020.6236"
+        y="564.7779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="91.1536"
+        x="926.47"
+        y="588.7439"
+      >
+        Run inspector
+      </text>
+    </g>
+    <!--entity validator-->
+    <g
+      class="entity"
+      data-qualified-name="Embers trust boundary.validator"
+      data-source-line="13"
+      id="ent0006"
+    >
+      <rect
+        fill="#FFD5AC"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="208.2934"
+        x="311.9"
+        y="249.6379"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="500.1934"
+        y="254.6379"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="498.1934"
+        y="256.6379"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="498.1934"
+        y="260.6379"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="168.2934"
+        x="326.9"
+        y="284.6039"
+      >
+        Schema + graph validator
+      </text>
+    </g>
+    <!--entity compiler-->
+    <g
+      class="entity"
+      data-qualified-name="Embers trust boundary.compiler"
+      data-source-line="14"
+      id="ent0007"
+    >
+      <rect
+        fill="#FFD5AC"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="155.9895"
+        x="336.05"
+        y="377.7079"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="472.0395"
+        y="382.7079"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="470.0395"
+        y="384.7079"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="470.0395"
+        y="388.7079"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="115.9895"
+        x="351.05"
+        y="412.6739"
+      >
+        Rholang compiler
+      </text>
+    </g>
+    <!--entity limiter-->
+    <g
+      class="entity"
+      data-qualified-name="Embers trust boundary.limiter"
+      data-source-line="15"
+      id="ent0008"
+    >
+      <rect
+        fill="#FFD5AC"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="190.9194"
+        x="555.59"
+        y="249.6379"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="726.5094"
+        y="254.6379"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="724.5094"
+        y="256.6379"
+      />
+      <rect
+        fill="#FFD5AC"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="724.5094"
+        y="260.6379"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="150.9194"
+        x="570.59"
+        y="284.6039"
+      >
+        Reply redactor / limiter
+      </text>
+    </g>
+    <!--entity rspace-->
+    <g
+      class="entity"
+      data-qualified-name="Capability boundary.rspace"
+      data-source-line="18"
+      id="ent0010"
+    >
+      <path
+        d="M638.31,693.8479 C638.31,683.8479 672.0469,683.8479 672.0469,683.8479 C672.0469,683.8479 705.7838,683.8479 705.7838,693.8479 L705.7838,721.9158 C705.7838,731.9158 672.0469,731.9158 672.0469,731.9158 C672.0469,731.9158 638.31,731.9158 638.31,721.9158 L638.31,693.8479"
+        fill="#CBE7CC"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M638.31,693.8479 C638.31,703.8479 672.0469,703.8479 672.0469,703.8479 C672.0469,703.8479 705.7838,703.8479 705.7838,693.8479"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="47.4738"
+        x="648.31"
+        y="722.8139"
+      >
+        RSpace
+      </text>
+    </g>
+    <!--entity teamcap-->
+    <g
+      class="entity"
+      data-qualified-name="Capability boundary.teamcap"
+      data-source-line="19"
+      id="ent0011"
+    >
+      <rect
+        fill="#B9DCBE"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="202.2454"
+        x="312.92"
+        y="553.7779"
+      />
+      <rect
+        fill="#B9DCBE"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="495.1654"
+        y="558.7779"
+      />
+      <rect
+        fill="#B9DCBE"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="493.1654"
+        y="560.7779"
+      />
+      <rect
+        fill="#B9DCBE"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="493.1654"
+        y="564.7779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="162.2454"
+        x="327.92"
+        y="588.7439"
+      >
+        Team unforgeable name
+      </text>
+    </g>
+    <!--entity runcap-->
+    <g
+      class="entity"
+      data-qualified-name="Capability boundary.runcap"
+      data-source-line="20"
+      id="ent0012"
+    >
+      <rect
+        fill="#B9DCBE"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="158.3555"
+        x="549.87"
+        y="553.7779"
+      />
+      <rect
+        fill="#B9DCBE"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="688.2255"
+        y="558.7779"
+      />
+      <rect
+        fill="#B9DCBE"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="686.2255"
+        y="560.7779"
+      />
+      <rect
+        fill="#B9DCBE"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="686.2255"
+        y="564.7779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="118.3555"
+        x="564.87"
+        y="588.7439"
+      >
+        Opaque run UUID
+      </text>
+    </g>
+    <!--entity agent-->
+    <g
+      class="entity"
+      data-qualified-name="Effect boundary.agent"
+      data-source-line="23"
+      id="ent0014"
+    >
+      <rect
+        fill="#DDD0F0"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="162.9335"
+        x="590.58"
+        y="858.9079"
+      />
+      <rect
+        fill="#DDD0F0"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="733.5135"
+        y="863.9079"
+      />
+      <rect
+        fill="#DDD0F0"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="731.5135"
+        y="865.9079"
+      />
+      <rect
+        fill="#DDD0F0"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="731.5135"
+        y="869.9079"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="122.9335"
+        x="605.58"
+        y="893.8739"
+      >
+        Pinned agent code
+      </text>
+    </g>
+    <!--entity models-->
+    <g
+      class="entity"
+      data-qualified-name="Effect boundary.models"
+      data-source-line="24"
+      id="ent0015"
+    >
+      <rect
+        fill="#DDD0F0"
+        height="49.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="210.8133"
+        x="590.64"
+        y="986.9779"
+      />
+      <rect
+        fill="#DDD0F0"
+        height="10"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="15"
+        x="781.4533"
+        y="991.9779"
+      />
+      <rect
+        fill="#DDD0F0"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="779.4533"
+        y="993.9779"
+      />
+      <rect
+        fill="#DDD0F0"
+        height="2"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="4"
+        x="779.4533"
+        y="997.9779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="170.8133"
+        x="605.64"
+        y="1021.9439"
+      >
+        Model and media services
+      </text>
+    </g>
+    <!--entity wallet-->
+    <g
+      class="entity"
+      data-qualified-name="wallet"
+      data-source-line="7"
+      id="ent0001"
+    >
+      <ellipse
+        cx="416.0448"
+        cy="54.0679"
+        fill="#FFD4BA"
+        rx="8"
+        ry="8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M416.0448,62.0679 L416.0448,89.0679 M403.0448,70.0679 L429.0448,70.0679 M416.0448,89.0679 L403.0448,104.0679 M416.0448,89.0679 L429.0448,104.0679"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="87.7097"
+        x="372.19"
+        y="120.5339"
+      >
+        Wallet holder
+      </text>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="GMN25"
+      data-source-line="38"
+      id="ent0026"
+    >
+      <path
+        d="M740.66,685.1679 L740.66,703.8779 L705.93,707.8779 L740.66,711.8779 L740.66,730.5799 A0,0 0 0 0 740.66,730.5799 L1021.4262,730.5799 A0,0 0 0 0 1021.4262,730.5799 L1021.4262,695.1679 L1011.4262,685.1679 L740.66,685.1679 A0,0 0 0 0 740.66,685.1679"
+        fill="#FFF6C9"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1011.4262,685.1679 L1011.4262,695.1679 L1021.4262,695.1679 L1011.4262,685.1679"
+        fill="#FFF6C9"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="259.7662"
+        x="746.66"
+        y="704.0649"
+      >
+        Never place prompts, outputs, credentials,
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="245.8952"
+        x="746.66"
+        y="721.7709"
+      >
+        or artifact bytes in the public run ledger.
+      </text>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="GMN28"
+      data-source-line="42"
+      id="ent0029"
+    >
+      <path
+        d="M6,555.6079 L6,601.0199 A0,0 0 0 0 6,601.0199 L278.0952,601.0199 A0,0 0 0 0 278.0952,601.0199 L278.0952,565.6079 L268.0952,555.6079 L180.62,555.6079 L376.51,427.2579 L172.62,555.6079 L6,555.6079 A0,0 0 0 0 6,555.6079"
+        fill="#FAD8D8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M268.0952,555.6079 L268.0952,565.6079 L278.0952,565.6079 L268.0952,555.6079"
+        fill="#FAD8D8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="220.2592"
+        x="12"
+        y="574.5049"
+      >
+        Pure Rholang guards reject binding,
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="251.0952"
+        x="12"
+        y="592.2109"
+      >
+        communication, URI, and effectful forms.
+      </text>
+    </g>
+    <!--link wallet to validator-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0006"
+      data-link-type="dependency"
+      data-source-line="27"
+      id="lnk16"
+    >
+      <path
+        d="M416.05,124.8679 C416.05,162.3279 416.05,212.8779 416.05,244.2779"
+        fill="none"
+        id="wallet-to-validator"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="416.05,249.2779,420.05,240.2779,416.05,244.2779,412.05,240.2779,416.05,249.2779"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="135.8371"
+        x="417.05"
+        y="169.5349"
+      >
+        signed definition / run
+      </text>
+    </g>
+    <!--link validator to compiler-->
+    <g
+      class="link"
+      data-entity-1="ent0006"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="28"
+      id="lnk17"
+    >
+      <path
+        d="M415.67,299.1879 C415.31,321.6179 414.8581,349.9185 414.5081,372.3185"
+        fill="none"
+        id="validator-to-compiler"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="414.43,377.3179,418.5701,368.3815,414.5081,372.3185,410.5711,368.2565,414.43,377.3179"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="154.1282"
+        x="416.17"
+        y="343.6049"
+      >
+        publishable typed IR only
+      </text>
+    </g>
+    <!--link compiler to teamcap-->
+    <g
+      class="link"
+      data-entity-1="ent0007"
+      data-entity-2="ent0011"
+      data-link-type="dependency"
+      data-source-line="29"
+      id="lnk18"
+    >
+      <path
+        d="M414.05,427.0779 C414.05,460.3179 414.05,515.2479 414.05,548.4779"
+        fill="none"
+        id="compiler-to-teamcap"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="414.05,553.4779,418.05,544.4779,414.05,548.4779,410.05,544.4779,414.05,553.4779"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="41.171"
+        x="415.05"
+        y="473.6749"
+      >
+        deploy
+      </text>
+    </g>
+    <!--link teamcap to rspace-->
+    <g
+      class="link"
+      data-entity-1="ent0011"
+      data-entity-2="ent0010"
+      data-link-type="dependency"
+      data-source-line="30"
+      id="lnk19"
+    >
+      <path
+        d="M462.58,603.3079 C513.81,628.6379 588.7577,665.7022 633.6477,687.8922"
+        fill="none"
+        id="teamcap-to-rspace"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="638.13,690.1079,631.8344,682.5339,633.6477,687.8922,628.2894,689.7055,638.13,690.1079"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="203.1121"
+        x="559.49"
+        y="649.7449"
+      >
+        read/write private workflow state
+      </text>
+    </g>
+    <!--link rspace to agent-->
+    <g
+      class="link"
+      data-entity-1="ent0010"
+      data-entity-2="ent0014"
+      data-link-type="dependency"
+      data-source-line="31"
+      id="lnk20"
+    >
+      <path
+        d="M672.05,732.2879 C672.05,765.3179 672.05,820.2879 672.05,853.5779"
+        fill="none"
+        id="rspace-to-agent"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="672.05,858.5779,676.05,849.5779,672.05,853.5779,668.05,849.5779,672.05,858.5779"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="171.4962"
+        x="673.05"
+        y="778.8049"
+      >
+        explicit capability invocation
+      </text>
+    </g>
+    <!--link agent to models-->
+    <g
+      class="link"
+      data-entity-1="ent0014"
+      data-entity-2="ent0015"
+      data-link-type="dependency"
+      data-source-line="32"
+      id="lnk21"
+    >
+      <path
+        d="M676.62,908.4579 C680.89,930.8879 686.2963,959.2759 690.5563,981.6859"
+        fill="none"
+        id="agent-to-models"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="691.49,986.5979,693.7389,977.0093,690.5563,981.6859,685.8796,978.5032,691.49,986.5979"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="146.9651"
+        x="686.48"
+        y="952.8749"
+      >
+        explicit service channels
+      </text>
+    </g>
+    <!--link limiter to F1r3sky-->
+    <g
+      class="link"
+      data-entity-1="ent0008"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="33"
+      id="lnk22"
+    >
+      <path
+        d="M657.92,299.0179 C669.92,338.3579 697.19,418.4179 736.05,477.7779 C754.89,506.5579 778.9024,531.0712 799.5424,549.9712"
+        fill="none"
+        id="limiter-to-F1r3sky"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="803.23,553.3479,799.2938,544.3199,799.5424,549.9712,793.8911,550.2199,803.23,553.3479"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="115.7001"
+        x="720.05"
+        y="407.6349"
+      >
+        &lt;= 280 chars + URL
+      </text>
+    </g>
+    <!--link runcap to inspector-->
+    <g
+      class="link"
+      data-entity-1="ent0012"
+      data-entity-2="ent0004"
+      data-link-type="dependency"
+      data-source-line="34"
+      id="lnk23"
+    >
+      <path
+        d="M649.73,553.5879 C670.65,530.6679 705.31,498.1179 743.55,484.4479 C806.54,461.9279 834.04,456.2179 894.05,485.7779 C924.05,500.5579 945.4192,527.1695 959.7692,549.1795"
+        fill="none"
+        id="runcap-to-inspector"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="962.5,553.3679,960.9354,543.6441,959.7692,549.1795,954.2339,548.0133,962.5,553.3679"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="131.4041"
+        x="744.55"
+        y="473.6749"
+      >
+        bearer read authority
+      </text>
+    </g>
+    <!--link inspector to rspace-->
+    <g
+      class="link"
+      data-entity-1="ent0004"
+      data-entity-2="ent0010"
+      data-link-type="dependency"
+      data-source-line="35"
+      id="lnk24"
+    >
+      <path
+        d="M939.03,603.1879 C925.18,611.3179 909.2,620.0579 894.05,626.8479 C820.93,659.5779 797.65,654.6479 723.05,683.8479 C717.53,686.0079 716.3161,686.4231 710.7061,688.8931"
+        fill="none"
+        id="inspector-to-rspace"
+        style="stroke: #553c35; stroke-width: 1"
+      />
+      <polygon
+        fill="#553C35"
+        points="706.13,690.9079,715.9788,690.9422,710.7061,688.8931,712.7551,683.6204,706.13,690.9079"
+        style="
+          stroke: #553c35;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="88.0101"
+        x="874.51"
+        y="649.7449"
+      >
+        metadata only
+      </text>
+    </g>
+    <?plantuml-src TLHHRziu37xNho2InsMthbtQBBWDIECOAB3TYlQAFTCsxUWgIpf9JcOC0-v7x1VkbuoodSGfS4-sH7uY-V4ZWmoAO5MH3l0tOUtXgt7FfJ9xs5t2h_z-0ZPXQvmCBQ0keC20a9b65-WaUU6VfRRei8OCy-VAHSlQAEDWcgRfAbsCFFmM2xENke8IbQUHPUMSsG-m-VngVJKV6Iq_Z1KzXfOpTPG7r9KY8J0Fx3_vYafHWArH1Ra9e8TzVyC99EzkLsB0m-I-oPJCGUf0Zi7Iw0bCDvVfstG5tmL0RcfhT6GYVUkk_7CBqtMokKddPxR9GwFv3Myfnky27az7m8zJr4sTaVCGNEF3WRbsqj5paTo-23nvpBTK8xo2og7TmWwLPCg7ECTJLzjyjNwH67F0t7HNKWra70x_0o6hMYQrwCby0qhMCWpGuV-871MrHekPL54LevAuzAlDJLTIr4c6dbqV7Xb5tOFEnrycwNPpitwHIHGVDBeqhYBCkDCQwnuLs9AZXUdj-uIHvx0l5lzjM1RSawUdkwGFq-Yn_xWNPSbzEajvixbE5o-xS2-rfWAm6ulS57qY_N6Q9Cb5Ud4E-Cm-gXkGcWg9uCdjP4w-mzNHw8_07q8C2dtz-kEefqlmiefX2ogbbb6Vt10kHfny8kBOqINOg6WUgyXNQ2rZxnx0QDMAerD471XSyjDMcLOSBg9nQCgILO35cprFEe5rSeVytHzsWGzy58DhHFLSB86-MPufoIoT527rpkGOynUzMmGC98mG0qUGRv7PLbuSz1RT3nEuX3y_mENY8dhn5Bs2fuTFOcXmz3kDtX8oGiVmMCTfQucJnrcrDGNibbb7bz26otMosWOmvL6eFAFNw_VYBzhnkrR5E-kOsU1dO9fWc_YJy_XmbP9tsanm67H1bXXbrWQAom72blfMvPrG5HKLkJy4iLnYt3vuPa8mTOm-6jbLiaWMuhvn18VfhXfq1OkS_kcaB7N16tKM6rutMlQypvYckrcdH-eaNpOAUBHgVuhw6m00?>
+  </g>
+</svg>

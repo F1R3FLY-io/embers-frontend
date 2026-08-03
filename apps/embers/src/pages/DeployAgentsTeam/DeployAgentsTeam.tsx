@@ -96,7 +96,6 @@ export default function DeployAgentsTeam() {
           agentsTeamId: agentsTeam.id!,
           registryKey,
           registryVersion: 1n,
-          rhoLimit: 1_000_000n,
           version: agentsTeam.version!,
         });
 

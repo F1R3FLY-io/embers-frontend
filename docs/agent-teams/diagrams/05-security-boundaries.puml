@@ -1,0 +1,46 @@
+@startuml
+title Agent Teams Workflow v2 — authority and data boundaries
+skinparam backgroundColor #FFFAF8
+skinparam shadowing false
+skinparam ArrowColor #553C35
+skinparam packageStyle rectangle
+
+actor "Wallet holder" as wallet #FFD4BA
+package "Public interaction" #E2F1FA {
+  component F1r3sky #CDE7F5
+  component "Run inspector" as inspector #CDE7F5
+}
+package "Embers trust boundary" #FFF0DB {
+  component "Schema + graph validator" as validator #FFD5AC
+  component "Rholang compiler" as compiler #FFD5AC
+  component "Reply redactor / limiter" as limiter #FFD5AC
+}
+package "Capability boundary" #E7F3E7 {
+  database "RSpace" as rspace #CBE7CC
+  component "Team unforgeable name" as teamcap #B9DCBE
+  component "Opaque run UUID" as runcap #B9DCBE
+}
+package "Effect boundary" #EEE6F8 {
+  component "Pinned agent code" as agent #DDD0F0
+  component "Model and media services" as models #DDD0F0
+}
+
+wallet --> validator : signed definition / run
+validator --> compiler : publishable typed IR only
+compiler --> teamcap : deploy
+teamcap --> rspace : read/write private workflow state
+rspace --> agent : explicit capability invocation
+agent --> models : explicit service channels
+limiter --> F1r3sky : <= 280 chars + URL
+runcap --> inspector : bearer read authority
+inspector --> rspace : metadata only
+
+note right of rspace #FFF6C9
+Never place prompts, outputs, credentials,
+or artifact bytes in the public run ledger.
+end note
+note bottom of compiler #FAD8D8
+Pure Rholang guards reject binding,
+communication, URI, and effectful forms.
+end note
+@enduml

@@ -2,9 +2,8 @@ import type { HTTPHeaders } from "../api-client";
 import type { QueryCallConfig } from "../entities/HttpCallConfigs";
 
 import { Configuration, TestnetApi } from "../api-client";
-import { signContract } from "../functions";
-
 import { PrivateKey } from "../entities/PrivateKey";
+import { signContract } from "../functions";
 
 export type TestnetConfig = {
   basePath: string;

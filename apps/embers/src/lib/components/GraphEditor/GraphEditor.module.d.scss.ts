@@ -4,5 +4,6 @@ declare const classNames: {
   readonly pattern: "pattern";
   readonly edge: "edge";
   readonly "no-node-style": "no-node-style";
+  readonly diagnostics: "diagnostics";
 };
 export default classNames;

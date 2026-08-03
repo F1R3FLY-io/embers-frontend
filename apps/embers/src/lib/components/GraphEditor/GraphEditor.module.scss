@@ -22,3 +22,20 @@
   border: unset !important;
   box-shadow: unset !important;
 }
+
+.diagnostics {
+  position: absolute;
+  z-index: 5;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  max-width: 420px;
+  padding: 12px 14px;
+  color: #f8d7da;
+  background: rgb(91 24 31 / 94%);
+  border: 1px solid #c95b66;
+  border-radius: 8px;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}

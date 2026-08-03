@@ -33,7 +33,7 @@
     "format:css": "stylelint --allow-empty-input --fix '**/*.{css,scss}'",
     "ci:lint": "eslint .",
     "ci:check:code": "prettier --check '**/*.{js,jsx,cjs,ts,tsx,mts,html,svg,json,css,scss}'",
-    "ci:check:css": "stylelint '**/*.{css,scss}'"
+    "ci:check:css": "stylelint --allow-empty-input '**/*.{css,scss}'"
   },
   "dependencies": {
     "@blockly/plugin-cross-tab-copy-paste": "^8.0.7",

@@ -189,6 +189,40 @@ fit. And no unit test can catch clipping — jsdom has no layout engine, so
 `scrollHeight` and `clientHeight` are both `0`. Fixtures should therefore exceed any
 cap the component could plausibly have, and the visual check belongs in a browser.
 
+#### When the container's size is genuinely fixed
+
+Sometimes the container cannot size to its content: a dashboard card is a fixed
+`height: 200px` because a grid of cards has to line up. The rule still applies, but
+its remedy changes — bound the _content_ instead, in both directions:
+
+```scss
+/* The card is fixed at 200px and a name is user-supplied text of no fixed length.
+   Clamping contains it; without this, a long name overflows the card and pushes the
+   grid around it out of shape. */
+.agent-name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+```
+
+```ts
+// src/lib/forms/nameField.ts — the other half, shared so the agent and team forms
+// cannot drift apart.
+export const NAME_MAX_LENGTH = 64;
+export const nameField = () => z.string().nonempty().max(NAME_MAX_LENGTH);
+```
+
+**Both halves are required, and for different reasons.** Validation stops new names
+from ever needing the clamp, but it cannot reach the ones already written: a record on
+chain is immutable, and a wallet may hold names created before the bound existed. The
+clamp cannot replace validation either, since it only hides the overflow and leaves a
+name nobody can read in full. This is the same defect as the sidebar's, found by
+re-running that defect's own pattern over the rest of the stylesheets — see
+[§10.1](../../post-mortems/AGENT_TEAM_EDITOR_GRAPH_CORRUPTION.md#101-the-patterns-as-searches).
+
 ## State Management Patterns
 
 ### Local State with useState

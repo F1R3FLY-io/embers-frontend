@@ -23,15 +23,24 @@ function makeNode(id: string, type: Node["type"]): Node {
 
 type Harness = {
   deleted: { edges?: Edge[]; nodes?: Node[] }[];
+  deletedContainers: Node[];
   edgeChanges: unknown[][];
   nodeChanges: unknown[][];
 };
 
-function harness(): {
+function harness({
+  edges = [],
+  nodes = [],
+}: { edges?: Edge[]; nodes?: Node[] } = {}): {
   context: Parameters<typeof buildMenuItems>[1];
   recorded: Harness;
 } {
-  const recorded: Harness = { deleted: [], edgeChanges: [], nodeChanges: [] };
+  const recorded: Harness = {
+    deleted: [],
+    deletedContainers: [],
+    edgeChanges: [],
+    nodeChanges: [],
+  };
 
   const rf = {
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -39,11 +48,14 @@ function harness(): {
       recorded.deleted.push(elements);
       return { deletedEdges: [], deletedNodes: [] };
     },
+    getEdges: () => edges,
+    getNodes: () => nodes,
   } as unknown as ReactFlowInstance<Node, Edge>;
 
   return {
     context: {
-      nodes: [],
+      deleteContainer: (container) =>
+        recorded.deletedContainers.push(container),
       onEdgesChange: (changes) => recorded.edgeChanges.push(changes),
       onNodesChange: (changes) => recorded.nodeChanges.push(changes),
       open: () => undefined,
@@ -139,6 +151,29 @@ describe("the delete-node menu action", () => {
     expect(withContainer?.hidden).toBe(true);
   });
 
+  it("routes container deletion through the graph-level transaction", () => {
+    const { context, recorded } = harness();
+    const container = makeNode("C1", "deploy-container");
+    const item = buildMenuItems(
+      {
+        nodes: [container],
+        type: "nodesSelected",
+        x: 0,
+        y: 0,
+      },
+      context,
+    ).find((candidate) => candidate.content === "Delete deploy container");
+
+    if (!item) {
+      throw new Error("no delete-container menu item was offered");
+    }
+    item.onClick();
+
+    expect(recorded.deletedContainers).toEqual([container]);
+    expect(recorded.nodeChanges).toEqual([]);
+    expect(recorded.edgeChanges).toEqual([]);
+  });
+
   it("still removes a selected connector through edge changes", () => {
     // Deleting an edge strands nothing, so that path is unchanged and must stay
     // working.
@@ -161,5 +196,64 @@ describe("the delete-node menu action", () => {
 
     expect(recorded.edgeChanges.flat()).toEqual([{ id: "e1", type: "remove" }]);
     expect(recorded.deleted).toEqual([]);
+  });
+
+  it("wraps siblings inside an existing scope without flattening hierarchy", () => {
+    const parent = makeNode("parent", "deploy-container");
+    const first = {
+      ...makeNode("first", "compress"),
+      measured: { height: 40, width: 80 },
+      parentId: parent.id,
+      position: { x: 20, y: 30 },
+    } as Node;
+    const second = {
+      ...makeNode("second", "output-node"),
+      measured: { height: 40, width: 80 },
+      parentId: parent.id,
+      position: { x: 160, y: 90 },
+    } as Node;
+    const { context, recorded } = harness({ nodes: [parent, first, second] });
+    const item = buildMenuItems(
+      {
+        nodes: [first, second],
+        type: "nodesSelected",
+        x: 0,
+        y: 0,
+      },
+      context,
+    ).find((candidate) => candidate.content === "Wrap in state scope");
+
+    expect(item?.hidden).toBe(false);
+    item?.onClick();
+
+    const changes = recorded.nodeChanges[0] as {
+      id?: string;
+      item: Node;
+      type: string;
+    }[];
+    const addition = changes.find(({ type }) => type === "add");
+    expect(addition?.item).toMatchObject({
+      extent: "parent",
+      parentId: "parent",
+      type: "deploy-container",
+    });
+    expect(addition?.item.data.childScopeId).not.toBe(addition?.item.id);
+    expect(
+      changes
+        .filter(({ type }) => type === "replace")
+        .map(({ item }) => item.parentId),
+    ).toEqual([addition?.item.id, addition?.item.id]);
+  });
+
+  it("does not offer one scope wrapper for nodes with different parents", () => {
+    const left = { ...makeNode("left", "compress"), parentId: "scope-a" };
+    const right = { ...makeNode("right", "compress"), parentId: "scope-b" };
+    const { context } = harness();
+    const item = buildMenuItems(
+      { nodes: [left, right] as Node[], type: "nodesSelected", x: 0, y: 0 },
+      context,
+    ).find((candidate) => candidate.content === "Wrap in state scope");
+
+    expect(item?.hidden).toBe(true);
   });
 });

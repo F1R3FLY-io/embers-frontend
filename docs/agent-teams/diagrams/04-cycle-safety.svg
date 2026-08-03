@@ -1,0 +1,505 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="DESCRIPTION"
+  height="800px"
+  preserveAspectRatio="none"
+  style="width: 579px; height: 800px; background: #fbfcff"
+  version="1.1"
+  viewBox="0 0 579 800"
+  width="579px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <rect
+      fill="#FBFCFF"
+      height="800"
+      style="stroke: none; stroke-width: 1"
+      width="579"
+      x="0"
+      y="0"
+    />
+    <g class="title" data-source-line="1">
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="396.8285"
+        x="87.8674"
+        y="24.9659"
+      >
+        Exact hot-cycle validation by progress-boundary removal
+      </text>
+    </g>
+    <!--entity original-->
+    <g
+      class="entity"
+      data-qualified-name="original"
+      data-source-line="10"
+      id="ent0001"
+    >
+      <rect
+        fill="#DCEEFF"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="191.3033"
+        x="104.7"
+        y="47.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="171.3033"
+        x="114.7"
+        y="72.0339"
+      >
+        Published graph G = (N, E)
+      </text>
+    </g>
+    <!--entity waits-->
+    <g
+      class="entity"
+      data-qualified-name="waits"
+      data-source-line="11"
+      id="ent0002"
+    >
+      <rect
+        fill="#DDF2DF"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="158.7534"
+        x="120.97"
+        y="147.1379"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="138.7534"
+        x="130.97"
+        y="172.1039"
+      >
+        Remove wait vertices
+      </text>
+    </g>
+    <!--entity boundaries-->
+    <g
+      class="entity"
+      data-qualified-name="boundaries"
+      data-source-line="12"
+      id="ent0003"
+    >
+      <rect
+        fill="#FFF0C2"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="180.1874"
+        x="110.26"
+        y="247.2079"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="145.0674"
+        x="120.26"
+        y="272.1739"
+      >
+        Remove bounded and
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="160.1874"
+        x="120.26"
+        y="291.2418"
+      >
+        durable-yield transitions
+      </text>
+    </g>
+    <!--entity scc-->
+    <g
+      class="entity"
+      data-qualified-name="scc"
+      data-source-line="13"
+      id="ent0004"
+    >
+      <rect
+        fill="#E8DDF5"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="232.7712"
+        x="83.97"
+        y="366.3379"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="190.5953"
+        x="93.97"
+        y="391.3039"
+      >
+        Compute strongly connected
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="212.7712"
+        x="93.97"
+        y="410.3718"
+      >
+        components of residual graph H
+      </text>
+    </g>
+    <!--entity cyclic-->
+    <g
+      class="entity"
+      data-qualified-name="cyclic"
+      data-source-line="14"
+      id="ent0005"
+    >
+      <rect
+        fill="#FFD7CC"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="117.9996"
+        x="141.35"
+        y="485.4779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="97.9996"
+        x="151.35"
+        y="510.4439"
+      >
+        Any cyclic SCC?
+      </text>
+    </g>
+    <!--entity reject-->
+    <g
+      class="entity"
+      data-qualified-name="reject"
+      data-source-line="15"
+      id="ent0006"
+    >
+      <rect
+        fill="#F6BFC0"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="234.7032"
+        x="7"
+        y="603.5479"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="167.5093"
+        x="17"
+        y="628.5139"
+      >
+        Reject: a hot subcycle can
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="214.7032"
+        x="17"
+        y="647.5818"
+      >
+        bypass every progress boundary
+      </text>
+    </g>
+    <!--entity accept-->
+    <g
+      class="entity"
+      data-qualified-name="accept"
+      data-source-line="16"
+      id="ent0007"
+    >
+      <rect
+        fill="#C8E8D0"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #4e7b99; stroke-width: 0.5"
+        width="183.4354"
+        x="276.63"
+        y="613.0779"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="163.4354"
+        x="286.63"
+        y="638.0439"
+      >
+        Accept cycle-safety proof
+      </text>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="GMN14"
+      data-source-line="26"
+      id="ent0015"
+    >
+      <path
+        d="M172.14,722.6779 L172.14,785.796 A0,0 0 0 0 172.14,785.796 L564.5633,785.796 A0,0 0 0 0 564.5633,785.796 L564.5633,732.6779 L554.5633,722.6779 L372.35,722.6779 L368.35,652.5679 L364.35,722.6779 L172.14,722.6779 A0,0 0 0 0 172.14,722.6779"
+        fill="#EAF7EE"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M554.5633,722.6779 L554.5633,732.6779 L564.5633,732.6779 L554.5633,722.6779"
+        fill="#EAF7EE"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="232.1282"
+        x="178.14"
+        y="741.5749"
+      >
+        H is acyclic iff every directed cycle in G
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="297.6352"
+        x="178.14"
+        y="759.2809"
+      >
+        intersects a wait vertex or a bounded/yield edge.
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="371.4233"
+        x="178.14"
+        y="776.987"
+      >
+        This catches a smaller bypass cycle inside a safe-looking SCC.
+      </text>
+    </g>
+    <!--link original to waits-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0002"
+      data-link-type="dependency"
+      data-source-line="18"
+      id="lnk8"
+    >
+      <path
+        d="M200.35,86.5079 C200.35,103.8779 200.35,124.4679 200.35,141.8179"
+        fill="none"
+        id="original-to-waits"
+        style="stroke: #3d5366; stroke-width: 1"
+      />
+      <polygon
+        fill="#3D5366"
+        points="200.35,146.8179,204.35,137.8179,200.35,141.8179,196.35,137.8179,200.35,146.8179"
+        style="
+          stroke: #3d5366;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link waits to boundaries-->
+    <g
+      class="link"
+      data-entity-1="ent0002"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="19"
+      id="lnk9"
+    >
+      <path
+        d="M200.35,186.4179 C200.35,203.1479 200.35,222.9079 200.35,242.0479"
+        fill="none"
+        id="waits-to-boundaries"
+        style="stroke: #3d5366; stroke-width: 1"
+      />
+      <polygon
+        fill="#3D5366"
+        points="200.35,247.0479,204.35,238.0479,200.35,242.0479,196.35,238.0479,200.35,247.0479"
+        style="
+          stroke: #3d5366;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link boundaries to scc-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0004"
+      data-link-type="dependency"
+      data-source-line="20"
+      id="lnk10"
+    >
+      <path
+        d="M200.35,305.6279 C200.35,323.9079 200.35,342.5979 200.35,360.9079"
+        fill="none"
+        id="boundaries-to-scc"
+        style="stroke: #3d5366; stroke-width: 1"
+      />
+      <polygon
+        fill="#3D5366"
+        points="200.35,365.9079,204.35,356.9079,200.35,360.9079,196.35,356.9079,200.35,365.9079"
+        style="
+          stroke: #3d5366;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link scc to cyclic-->
+    <g
+      class="link"
+      data-entity-1="ent0004"
+      data-entity-2="ent0005"
+      data-link-type="dependency"
+      data-source-line="21"
+      id="lnk11"
+    >
+      <path
+        d="M200.35,424.9579 C200.35,444.0079 200.35,463.5279 200.35,480.1679"
+        fill="none"
+        id="scc-to-cyclic"
+        style="stroke: #3d5366; stroke-width: 1"
+      />
+      <polygon
+        fill="#3D5366"
+        points="200.35,485.1679,204.35,476.1679,200.35,480.1679,196.35,476.1679,200.35,485.1679"
+        style="
+          stroke: #3d5366;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link cyclic to reject-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0006"
+      data-link-type="dependency"
+      data-source-line="22"
+      id="lnk12"
+    >
+      <path
+        d="M188.97,524.8179 C176.39,545.6179 158.5477,575.0896 144.0377,599.0796"
+        fill="none"
+        id="cyclic-to-reject"
+        style="stroke: #3d5366; stroke-width: 1"
+      />
+      <polygon
+        fill="#3D5366"
+        points="141.45,603.3579,149.5305,597.7271,144.0377,599.0796,142.6852,593.5868,141.45,603.3579"
+        style="
+          stroke: #3d5366;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="20.189"
+        x="170.16"
+        y="569.4449"
+      >
+        yes
+      </text>
+    </g>
+    <!--link cyclic to accept-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="23"
+      id="lnk13"
+    >
+      <path
+        d="M225.5,524.8179 C257.17,548.4879 307.2756,585.9438 339.0256,609.6838"
+        fill="none"
+        id="cyclic-to-accept"
+        style="stroke: #3d5366; stroke-width: 1"
+      />
+      <polygon
+        fill="#3D5366"
+        points="343.03,612.6779,338.2174,604.0849,339.0256,609.6838,333.4268,610.492,343.03,612.6779"
+        style="
+          stroke: #3d5366;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="15.899"
+        x="290.39"
+        y="569.4449"
+      >
+        no
+      </text>
+    </g>
+    <?plantuml-src RLF1Rjim3BthAuZciW5p5xHhqWROXiInszCmR3lsGakqhSMH34bkQmpxzr6sixZ3RXQVtjFZ8nrqQ0Yo5vG1QXiIsKi-Fs6Z5GPj3HGzjCvMZhnF2jiPXQu7HqVBTuG_QDEYmoCKA0-LYtXg6-jWaU_oDCzdDtoDoZvhKq69ZQSPidNEFa-qw_tDzMer0nt9WAPYKxy4mExVPx8iN-LfHAnJvARgXsozkxiJluKuqo--TaMZVKqAAeTj3VVm4TvyUGVPsmj03zRfIXjiOB5FMJMVKx_5VWcUKGTu8XUq93-GOiKpOvzVxV_761BZ5z6eHwCwXqL3IQ-fKH0S6gzZngFK5AucrilpV9bUpVLIUsoxGE23irpfGLfZ62RMbOnPGuQTs983yrfrtCVOvSCWxgNah6xPvyrSTMjOY2Uk9NnFqy_3rUdC7lRhD7tTqqy-R03Zfe3lYd5P99f7K_GjUW_4wPmNvjHJFmYxWSx2ArwDvIiRKb8RXfSfyLXI63HiEV1mH1VfBJUm5EBle9BaqpW0COuXdiyfYbcW4U48H8mXVeyzYgdLM9dCRQ1dvgm-FRu1OuKmDiIHXc2FCUcJiMoRhxDCF82EPaUkBiif3ANTCAUnFT06xeKsWPpdCXFEMqKll8HSc9Rc_RWdf2gw53zg5fSOP4sHuu_ODEHWYlqapPEdY7A4IMFj8VvjFDXBGKP1TFy7?>
+  </g>
+</svg>

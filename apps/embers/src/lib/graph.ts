@@ -226,6 +226,15 @@ function buildNodeContext(node: Node) {
     case "compress": {
       return JSON.stringify({ type: "compress" });
     }
+    case "fan-in-map": {
+      return JSON.stringify({ type: "fan-in-map" });
+    }
+    case "approval": {
+      return JSON.stringify({ policyId: node.data.policyId, type: "approval" });
+    }
+    case "gateway": {
+      return JSON.stringify({ type: "gateway" });
+    }
     case "input-node": {
       return JSON.stringify({ type: "input-node" });
     }
@@ -241,8 +250,18 @@ function buildNodeContext(node: Node) {
     case "tts-model": {
       return JSON.stringify({ type: "tts-model" });
     }
+    case "wait": {
+      return JSON.stringify({ type: "wait", waitFor: node.data.waitFor });
+    }
     case "deploy-container": {
-      return JSON.stringify({ type: "deploy-container" });
+      return JSON.stringify({ ...node.data, type: "deploy-container" });
+    }
+    case "final-node":
+    case "foreign-term":
+    case "history":
+    case "rholang-activity":
+    case "workflow-activity": {
+      return JSON.stringify({ ...node.data, type: node.type });
     }
   }
 }

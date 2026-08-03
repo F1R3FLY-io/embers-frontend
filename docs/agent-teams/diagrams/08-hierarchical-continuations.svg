@@ -1,0 +1,668 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="DESCRIPTION"
+  height="777px"
+  preserveAspectRatio="none"
+  style="width: 729px; height: 777px; background: #fcfcff"
+  version="1.1"
+  viewBox="0 0 729 777"
+  width="729px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <rect
+      fill="#FCFCFF"
+      height="777"
+      style="stroke: none; stroke-width: 1"
+      width="729"
+      x="0"
+      y="0"
+    />
+    <!--cluster Root-->
+    <g
+      class="cluster"
+      data-qualified-name="Root"
+      data-source-line="4"
+      id="ent0001"
+    >
+      <rect
+        fill="#DBEAFE"
+        height="128.06"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="260"
+        x="295.23"
+        y="7"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="126.4335"
+        x="362.0132"
+        y="23.9659"
+      >
+        Root continuation
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="128.6595"
+        x="360.9002"
+        y="43.0339"
+      >
+        executionId = root
+      </text>
+    </g>
+    <!--cluster ChildA-->
+    <g
+      class="cluster"
+      data-qualified-name="ChildA"
+      data-source-line="7"
+      id="ent0003"
+    >
+      <rect
+        fill="#DCFCE7"
+        height="128.07"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="260"
+        x="455.23"
+        y="202.06"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="142.2954"
+        x="514.0823"
+        y="219.0259"
+      >
+        Child continuation A
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="196.1112"
+        x="487.1744"
+        y="238.0939"
+      >
+        executionId = hash(effect A)
+      </text>
+    </g>
+    <!--cluster ChildB-->
+    <g
+      class="cluster"
+      data-qualified-name="ChildB"
+      data-source-line="10"
+      id="ent0005"
+    >
+      <rect
+        fill="#FEF3C7"
+        height="214.96"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="211"
+        x="458.23"
+        y="397.13"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="182.8813"
+        x="472.2894"
+        y="414.0959"
+      >
+        Grandchild continuation B
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="195.7332"
+        x="465.8634"
+        y="433.1639"
+      >
+        executionId = hash(effect B)
+      </text>
+    </g>
+    <!--entity EffectA-->
+    <g
+      class="entity"
+      data-qualified-name="Root.EffectA"
+      data-source-line="5"
+      id="ent0002"
+    >
+      <rect
+        fill="#BFDBFE"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="192.3393"
+        x="339.06"
+        y="72"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="172.3393"
+        x="349.06"
+        y="96.9659"
+      >
+        pending workflow effect A
+      </text>
+    </g>
+    <!--entity EffectB-->
+    <g
+      class="entity"
+      data-qualified-name="ChildA.EffectB"
+      data-source-line="8"
+      id="ent0004"
+    >
+      <rect
+        fill="#BBF7D0"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="192.4933"
+        x="498.98"
+        y="267.06"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="172.4933"
+        x="508.98"
+        y="292.0259"
+      >
+        pending workflow effect B
+      </text>
+    </g>
+    <!--entity Wait-->
+    <g
+      class="entity"
+      data-qualified-name="ChildB.Wait"
+      data-source-line="11"
+      id="ent0006"
+    >
+      <rect
+        fill="#FDE68A"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 0.5"
+        width="123.7116"
+        x="482.37"
+        y="549.03"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="103.7116"
+        x="492.37"
+        y="573.9959"
+      >
+        approval wait w
+      </text>
+    </g>
+    <!--entity Drive-->
+    <g
+      class="entity"
+      data-qualified-name="Drive"
+      data-source-line="13"
+      id="ent0007"
+    >
+      <path
+        d="M210.03,544.99 C210.03,534.99 322.2296,534.99 322.2296,534.99 C322.2296,534.99 434.4292,534.99 434.4292,544.99 L434.4292,592.1258 C434.4292,602.1258 322.2296,602.1258 322.2296,602.1258 C322.2296,602.1258 210.03,602.1258 210.03,592.1258 L210.03,544.99"
+        fill="#EDE9FE"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M210.03,544.99 C210.03,554.99 322.2296,554.99 322.2296,554.99 C322.2296,554.99 434.4292,554.99 434.4292,544.99"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="204.3992"
+        x="220.03"
+        y="573.9559"
+      >
+        One encrypted root checkpoint
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="198.3232"
+        x="220.03"
+        y="593.0239"
+      >
+        contains the continuation tree
+      </text>
+    </g>
+    <!--entity Ledger-->
+    <g
+      class="entity"
+      data-qualified-name="Ledger"
+      data-source-line="14"
+      id="ent0008"
+    >
+      <path
+        d="M6,695.09 C6,685.09 100.2307,685.09 100.2307,685.09 C100.2307,685.09 194.4613,685.09 194.4613,695.09 L194.4613,742.2258 C194.4613,752.2258 100.2307,752.2258 100.2307,752.2258 C100.2307,752.2258 6,752.2258 6,742.2258 L6,695.09"
+        fill="#FCE7F3"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M6,695.09 C6,705.09 100.2307,705.09 100.2307,705.09 C100.2307,705.09 194.4613,705.09 194.4613,695.09"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="138.0955"
+        x="16"
+        y="724.0559"
+      >
+        Public metadata only
+      </text>
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="168.4613"
+        x="16"
+        y="743.1239"
+      >
+        wait id + revision + grants
+      </text>
+    </g>
+    <!--link EffectA to ChildA-->
+    <g
+      class="link"
+      data-entity-1="ent0002"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="16"
+      id="lnk9"
+    >
+      <path
+        d="M437.97,111.39 C441.435,135.305 447.6075,177.88 452.9838,214.9538 C453.6558,219.588 454.3154,224.1362 454.9557,228.5513 C455.0357,229.1032 454.3978,224.7048 454.4772,225.2524"
+        fill="none"
+        id="EffectA-to-ChildA"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="455.1949,230.2007,457.8617,220.7198,454.4772,225.2524,449.9446,221.868,455.1949,230.2007"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="32.344"
+        x="448.55"
+        y="173.957"
+      >
+        owns
+      </text>
+    </g>
+    <!--link EffectB to ChildB-->
+    <g
+      class="link"
+      data-entity-1="ent0004"
+      data-entity-2="ent0005"
+      data-link-type="dependency"
+      data-source-line="17"
+      id="lnk10"
+    >
+      <path
+        d="M590.96,306.58 C586.37,324.59 577.98,351.97 565.23,373.13 C562.4913,377.6763 559.4333,382.1825 556.1736,386.5918 C554.5437,388.7964 552.8634,390.9768 551.1474,393.1258 C550.2894,394.2004 549.4224,395.267 548.5484,396.325 C548.3298,396.5895 551.3109,393.0115 551.0915,393.2749"
+        fill="none"
+        id="EffectB-to-ChildB"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="547.8915,397.1168,556.725,392.7613,551.0915,393.2749,550.578,387.6414,547.8915,397.1168"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="32.344"
+        x="575.33"
+        y="369.027"
+      >
+        owns
+      </text>
+    </g>
+    <!--link Wait to Ledger-->
+    <g
+      class="link"
+      data-entity-1="ent0006"
+      data-entity-2="ent0008"
+      data-link-type="dependency"
+      data-source-line="18"
+      id="lnk11"
+    >
+      <path
+        d="M519.28,588.52 C501.43,601.3 476.39,617.66 452.23,628.09 C368.59,664.24 272.1299,687.175 199.6999,701.115"
+        fill="none"
+        id="Wait-to-Ledger"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="194.79,702.06,204.3838,704.287,199.6999,701.115,202.8718,696.4311,194.79,702.06"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="124.1371"
+        x="426.01"
+        y="650.987"
+      >
+        nested:A:nested:B:w
+      </text>
+    </g>
+    <!--link Root to Drive-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="19"
+      id="lnk12"
+    >
+      <path
+        d="M299.4393,135.1268 C299.0476,140.1297 298.6442,145.4939 298.2389,151.1755 C297.4282,162.5388 296.6097,175.1719 295.8613,188.725 C292.8675,242.9375 290.995,311.87 295.23,373.13 C299.18,430.25 308.7163,491.2034 315.3963,529.7534"
+        fill="none"
+        id="Root-to-Drive"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="316.25,534.68,318.6546,525.1292,315.3963,529.7534,310.7721,526.4951,316.25,534.68"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="115.3361"
+        x="296.23"
+        y="369.027"
+      >
+        serialize atomically
+      </text>
+    </g>
+    <!--link ChildA to Drive-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="20"
+      id="lnk13"
+    >
+      <path
+        d="M454.9213,304.1008 C454.7056,304.529 454.4862,304.9646 454.2632,305.4073 C452.4791,308.949 450.4642,312.9491 448.2508,317.3434 C439.3972,334.9206 427.3681,358.8038 414.2388,384.8725 C387.98,437.01 359.5687,493.4242 341.1087,530.0842"
+        fill="none"
+        id="ChildA-to-Drive"
+        style="stroke: #334155; stroke-width: 1; stroke-dasharray: 7, 7"
+      />
+      <polygon
+        fill="#334155"
+        points="338.86,534.55,346.4803,528.3106,341.1087,530.0842,339.3351,524.7126,338.86,534.55"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link ChildB to Drive-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="21"
+      id="lnk14"
+    >
+      <path
+        d="M458.1683,487.9659 C457.9508,488.1597 457.7328,488.3534 457.5145,488.5469 C457.0779,488.9339 456.6398,489.3203 456.2003,489.706 C455.3213,490.4774 454.4368,491.2457 453.5476,492.0096 C451.7693,493.5375 449.9724,495.0478 448.164,496.5296 C444.547,499.4931 440.8838,502.3425 437.23,504.99 C422.51,515.66 410.1392,523.3571 394.0592,532.2171"
+        fill="none"
+        id="ChildB-to-Drive"
+        style="stroke: #334155; stroke-width: 1; stroke-dasharray: 7, 7"
+      />
+      <polygon
+        fill="#334155"
+        points="389.68,534.63,399.493,533.7901,394.0592,532.2171,395.6323,526.7833,389.68,534.63"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link Ledger to Root-->
+    <g
+      class="link"
+      data-entity-1="ent0008"
+      data-entity-2="ent0001"
+      data-link-type="dependency"
+      data-source-line="22"
+      id="lnk15"
+    >
+      <path
+        d="M90.01,684.79 C81.66,655.01 71.23,609.78 71.23,569.56 C71.23,285.6 71.23,285.6 71.23,285.6 C71.23,219.575 127.4325,171.7725 184.5125,140.2488 C213.0525,124.4869 241.8119,112.7947 263.875,104.9292 C274.9066,100.9965 284.2641,98.0204 291.083,95.9707 C291.9354,95.7145 292.7481,95.4727 293.5195,95.2454 C293.9052,95.1317 294.2805,95.0217 294.6453,94.9152 C294.8277,94.862 290.2059,96.2042 290.383,96.1528"
+        fill="none"
+        id="Ledger-to-Root"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="295.1845,94.7582,285.426,93.4272,290.383,96.1528,287.6574,101.1097,295.1845,94.7582"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="150.1371"
+        x="72.23"
+        y="451.887"
+      >
+        authenticated command
+      </text>
+    </g>
+    <!--link Root to ChildA-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="23"
+      id="lnk16"
+    >
+      <path
+        d="M315.4751,135.2699 C315.5159,135.3694 315.5568,135.469 315.5978,135.5685 C315.6799,135.7675 315.7624,135.9665 315.8453,136.1653 C316.0112,136.5629 316.1788,136.96 316.3482,137.3564 C317.0259,138.9421 317.7321,140.517 318.4672,142.0709 C319.9375,145.1788 321.5238,148.2025 323.23,151.06 C345,187.535 379.255,220.6975 408.4313,244.9713 C423.0194,257.1081 436.3378,267.0228 446.1911,274.0183 C448.6544,275.7671 450.9012,277.3336 452.897,278.7066 C453.396,279.0499 453.8793,279.3811 454.3464,279.7 C454.5799,279.8595 450.6754,277.2034 450.9007,277.3568"
+        fill="none"
+        id="Root-to-ChildA"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="455.0347,280.1692,449.8435,271.7996,450.9007,277.3568,445.3435,278.414,455.0347,280.1692"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="87.9061"
+        x="342.12"
+        y="173.957"
+      >
+        strip nested:A:
+      </text>
+    </g>
+    <!--link ChildA to ChildB-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0005"
+      data-link-type="dependency"
+      data-source-line="24"
+      id="lnk17"
+    >
+      <path
+        d="M464.9916,330.1783 C465.0153,330.4604 465.0393,330.7432 465.0636,331.0265 C465.4525,335.5601 465.9231,340.2473 466.4925,344.9828 C467.6313,354.4538 469.165,364.1175 471.23,373.13 C472.1588,377.1825 473.2584,381.3147 474.474,385.4478 C475.0818,387.5144 475.7186,389.5812 476.3775,391.6384 C476.707,392.667 477.0419,393.6932 477.3816,394.7158 C477.5514,395.2271 477.7224,395.7375 477.8944,396.2468 C477.9804,396.5015 476.4549,392.0228 476.5414,392.2769"
+        fill="none"
+        id="ChildA-to-ChildB"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="478.1532,397.01,479.0384,387.2009,476.5414,392.2769,471.4655,389.7799,478.1532,397.01"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="88.0491"
+        x="472.23"
+        y="369.027"
+      >
+        strip nested:B:
+      </text>
+    </g>
+    <!--link ChildB to Wait-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0006"
+      data-link-type="dependency"
+      data-source-line="25"
+      id="lnk18"
+    >
+      <path
+        d="M498.26,447.58 C499.3,450.28 522.4612,510.7309 535.1612,543.8809"
+        fill="none"
+        id="ChildB-to-Wait"
+        style="stroke: #334155; stroke-width: 1"
+      />
+      <polygon
+        fill="#334155"
+        points="536.95,548.55,537.4655,538.7146,535.1612,543.8809,529.995,541.5767,536.95,548.55"
+        style="
+          stroke: #334155;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="134.1991"
+        x="520.85"
+        y="500.887"
+      >
+        apply exact command
+      </text>
+    </g>
+    <?plantuml-src ZPD1ZzCm48Nl-HMZpGMqsXMeB8L88CLDWf2GG73WqilKcRPMtN5aEyq6n7_7CKdRi192kJZsytlVp2JkeBX1YqVOe3pih6cvNXbjBAJLAZnLuiuAQOwDOMB_pVUQm9Bqo3jDLvBSMjEDznUBLoyV7fAp36w-6kE32tl5BNfbUCtqIB8TbXzhU0Ss26u07KHbMeWohqhucG1SkJJ4jU8TTCOUjjfqGDjjE8KytYpZImwfg0fHbSclQu3LNkbwHW3vtmnxTFjda-Npw1cl1SiYTAHS_Y-FkE8HWKTKo-B5dEU3HQxbKoZnBoXn1HLygx9Qh9v0OTDOSq8D7IeFNRpnVLYcLL6-VfC7ZXezRj05yMSc89QsRppLSGWWzoGFZL7irpoWeM87VazpJc-9edLXrOaWBOloRUZvnVbBkz5Amf4y3fjWMFThZaogXjj0V59kSBg5NUY5Tz7j4zKxYbzWkQmMIJBDzExk_JIB34p7BfcwUpuHqqaiTjWUpJ9WSg6yBC_6XSYw97vdW-fF0HauiWgr-a60tXoLHAtxPCoylnzroHXrsHX31gTecG6seLkXLHA7dePVvnX6VSaxb-6yLSs5RSgQ5JJJY6oA7pInp93MDBe7UaJffwpV?>
+  </g>
+</svg>

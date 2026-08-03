@@ -8,14 +8,16 @@ import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./EditModal.module.scss";
 
+type ModalInputKind<Value> = Value extends string
+  ? "string"
+  : Value extends number
+    ? "number"
+    : never;
+
 export type ModalInput<T extends Record<string, string | number>> = {
   [K in keyof T]: {
     name: K;
-    type: T[K] extends string
-      ? "string"
-      : T[K] extends number
-        ? "number"
-        : never;
+    type: ModalInputKind<T[K]>;
   };
 }[keyof T];
 
@@ -24,6 +26,7 @@ type EditModalProps<T extends Record<string, string | number>> = {
   inputs: ModalInput<T>[];
   onCancel?: () => void;
   onSave: (data: T) => void;
+  title: string;
 };
 
 /** Turns a data key into a readable label: `agentName` -> `Agent name`. */
@@ -40,6 +43,7 @@ export function EditModal<T extends Record<string, string | number>>({
   inputs,
   onCancel,
   onSave,
+  title,
 }: EditModalProps<T>) {
   const { close } = useModal();
 
@@ -85,7 +89,7 @@ export function EditModal<T extends Record<string, string | number>>({
   return (
     <div className={styles["nim-modal"]}>
       <Text className={styles["nim-title"]} type="H2">
-        Edit Manual Input Node
+        {title}
       </Text>
       {error && <Text className={styles["nim-error"]}>{error}</Text>}
 

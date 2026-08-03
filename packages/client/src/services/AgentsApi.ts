@@ -1,19 +1,16 @@
 import { base16 } from "@scure/base";
 
 import type { CreateAgentReq, HTTPHeaders } from "../api-client";
+import type { Address } from "../entities/Address";
 import type {
   ContractCallConfig,
   QueryCallConfig,
 } from "../entities/HttpCallConfigs";
-
-import { AIAgentsApi, Configuration } from "../api-client";
-import { signContract } from "../functions";
-
-import type { Address } from "../entities/Address";
-import type { Amount } from "../entities/Amount";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { AIAgentsApi, Configuration } from "../api-client";
+import { signContract } from "../functions";
 import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
 export type AiAgentConfig = {
@@ -85,14 +82,9 @@ export class AgentsApiSdk {
     return { prepareResponse, sendResponse, waitForFinalization };
   }
 
-  public async deployCode(
-    code: string,
-    phloLimit: Amount,
-    config?: ContractCallConfig,
-  ) {
+  public async deployCode(code: string, config?: ContractCallConfig) {
     const prepareRequest = {
       code,
-      phloLimit: phloLimit.value,
       type: "Code" as const,
     };
 
@@ -138,13 +130,11 @@ export class AgentsApiSdk {
   public async deploy(
     id: string,
     version: string,
-    phloLimit: Amount,
     config?: ContractCallConfig,
   ) {
     const prepareRequest = {
       address: this.address,
       id,
-      phloLimit: phloLimit.value,
       type: "Agent" as const,
       version,
     };

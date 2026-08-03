@@ -11,7 +11,6 @@ import type {
 } from "@f1r3fly-io/embers-client-sdk";
 import type { QueryClient } from "@tanstack/react-query";
 
-import { Amount } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -21,8 +20,10 @@ import { useAlert } from "@/lib/providers/modal/useConfirm";
 import { useApi } from "@/lib/providers/wallet/useApi";
 
 import type { Edge, Node } from "./components/GraphEditor";
+import type { WorkflowDefinitionV2 } from "./workflow";
 
 import { layoutAndNormalizeFromApi, toApiGraph } from "./graph";
+import { fromWorkflowDefinition, toWorkflowDefinition } from "./workflow";
 
 interface DeleteContext<T> {
   listKey: readonly [string, string];
@@ -434,8 +435,8 @@ export function useDeployCodeMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: { code: string; rhoLimit: bigint }) =>
-      api.agents.deployCode(params.code, Amount.tryFrom(params.rhoLimit)),
+    mutationFn: async (params: { code: string }) =>
+      api.agents.deployCode(params.code),
   });
 }
 
@@ -443,16 +444,8 @@ export function useDeployAgentMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: {
-      agentId: string;
-      rhoLimit: bigint;
-      version: string;
-    }) =>
-      api.agents.deploy(
-        params.agentId,
-        params.version,
-        Amount.tryFrom(params.rhoLimit),
-      ),
+    mutationFn: async (params: { agentId: string; version: string }) =>
+      api.agents.deploy(params.agentId, params.version),
   });
 }
 
@@ -501,23 +494,26 @@ export function useAgentsTeam(id?: string, version?: string) {
   return useQuery({
     enabled: !!id && !!version,
     queryFn: async ({ signal }) => {
-      const { graph, ...rest } = await api.agentsTeams.getVersion(
-        id!,
-        version!,
-        {
-          signal,
-        },
-      );
+      const response = await api.agentsTeams.getVersion(id!, version!, {
+        signal,
+      });
+      const definition: unknown = response.definition;
+      const { graph } = response;
 
       let nodes: Node[] | undefined;
       let edges: Edge[] | undefined;
 
-      if (graph !== undefined) {
+      if (definition !== undefined) {
+        [nodes, edges] = fromWorkflowDefinition(
+          definition as WorkflowDefinitionV2,
+        );
+      } else if (graph !== undefined) {
         [nodes, edges] = layoutAndNormalizeFromApi(graph);
       }
 
       return {
-        ...rest,
+        ...response,
+        definition: definition as WorkflowDefinitionV2 | undefined,
         edges,
         nodes,
       };
@@ -545,23 +541,30 @@ export function useCreateAgentsTeamMutation() {
       { client },
     ) => {
       const graph = toApiGraph(nodes, edges);
-      return api.agentsTeams.create({ ...rest, graph }).then((r) => {
-        const { id } = r.prepareResponse.response;
-        const listKey = ["agents-teams", String(api.wallets.address)];
-        void r.waitForFinalization.finally(
-          () =>
-            void refetchUntilPresent(
-              client,
-              listKey,
-              () =>
-                client
-                  .getQueryData<AgentsTeams>(listKey)
-                  ?.agentsTeams.some((team) => team.id === id) ?? false,
-            ),
-        );
+      const definition = toWorkflowDefinition(
+        nodes,
+        edges,
+        rest.definition as WorkflowDefinitionV2 | undefined,
+      );
+      return api.agentsTeams
+        .create({ ...rest, definition, graph })
+        .then((r) => {
+          const { id } = r.prepareResponse.response;
+          const listKey = ["agents-teams", String(api.wallets.address)];
+          void r.waitForFinalization.finally(
+            () =>
+              void refetchUntilPresent(
+                client,
+                listKey,
+                () =>
+                  client
+                    .getQueryData<AgentsTeams>(listKey)
+                    ?.agentsTeams.some((team) => team.id === id) ?? false,
+              ),
+          );
 
-        return r;
-      });
+          return r;
+        });
     },
   });
 }
@@ -575,27 +578,34 @@ export function useSaveAgentsTeamMutation(id: string) {
       { client },
     ) => {
       const graph = toApiGraph(nodes, edges);
-      return api.agentsTeams.save(id, { ...rest, graph }).then((r) => {
-        const { version } = r.prepareResponse.response;
-        void r.waitForFinalization.finally(() => {
-          const listKey = ["agents-teams", String(api.wallets.address)];
-          void refetchUntilPresent(
-            client,
-            listKey,
-            () =>
-              client
-                .getQueryData<AgentsTeams>(listKey)
-                ?.agentsTeams.some(
-                  (team) => team.id === id && team.version === version,
-                ) ?? false,
-          );
-          void client.invalidateQueries({
-            exact: true,
-            queryKey: ["agents-teams", String(api.wallets.address), id],
+      const definition = toWorkflowDefinition(
+        nodes,
+        edges,
+        rest.definition as WorkflowDefinitionV2 | undefined,
+      );
+      return api.agentsTeams
+        .save(id, { ...rest, definition, graph })
+        .then((r) => {
+          const { version } = r.prepareResponse.response;
+          void r.waitForFinalization.finally(() => {
+            const listKey = ["agents-teams", String(api.wallets.address)];
+            void refetchUntilPresent(
+              client,
+              listKey,
+              () =>
+                client
+                  .getQueryData<AgentsTeams>(listKey)
+                  ?.agentsTeams.some(
+                    (team) => team.id === id && team.version === version,
+                  ) ?? false,
+            );
+            void client.invalidateQueries({
+              exact: true,
+              queryKey: ["agents-teams", String(api.wallets.address), id],
+            });
           });
+          return r;
         });
-        return r;
-      });
     },
   });
 }
@@ -669,12 +679,10 @@ export function useDeployGraphMutation() {
       nodes: Node[];
       registryKey: PrivateKey;
       registryVersion: bigint;
-      rhoLimit: bigint;
     }) => {
       const graph = toApiGraph(params.nodes, params.edges);
       return api.agentsTeams.deployGraph(
         graph,
-        Amount.tryFrom(params.rhoLimit),
         params.registryVersion,
         params.registryKey,
       );
@@ -690,13 +698,11 @@ export function useDeployAgentsTeamMutation() {
       agentsTeamId: string;
       registryKey: PrivateKey;
       registryVersion: bigint;
-      rhoLimit: bigint;
       version: string;
     }) =>
       api.agentsTeams.deploy(
         params.agentsTeamId,
         params.version,
-        Amount.tryFrom(params.rhoLimit),
         params.registryVersion,
         params.registryKey,
       ),
@@ -707,16 +713,8 @@ export function useRunAgentsTeamMutation() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: {
-      prompt: string;
-      rhoLimit: bigint;
-      uri: Uri;
-    }) =>
-      api.agentsTeams.run(
-        params.uri,
-        params.prompt,
-        Amount.tryFrom(params.rhoLimit),
-      ),
+    mutationFn: async (params: { prompt: string; uri: Uri }) =>
+      api.agentsTeams.run(params.uri, params.prompt),
   });
 }
 

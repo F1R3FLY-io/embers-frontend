@@ -31,14 +31,14 @@ storage or the screen with nothing reporting it.
 
 ### 1. A graph's well-formedness is enforced where it is written and where it is read
 
-For a graph `$G=(V,E)$`, every edge must connect vertices that exist:
+For a graph $`G=(V,E)`$, every edge must connect vertices that exist:
 
 ```math
 \mathcal{W}(G) \;\equiv\; \forall\,(u,v) \in E:\; u \in V \;\wedge\; v \in V
 ```
 
 `toApiGraph` will not emit an edge whose endpoints are not being written, and
-`fromApiGraph` will not return one the graph does not define. Enforcing on *both*
+`fromApiGraph` will not return one the graph does not define. Enforcing on _both_
 sides is deliberate and not redundant: the write-side guard prevents new corruption,
 and the read-side guard is what repairs graphs already stored — it makes load a
 retraction onto the well-formed graphs, so opening a broken team and saving it
@@ -76,7 +76,13 @@ Panels holding user data use `max-height: none` and let an ancestor own the over
 used on a capped element, since it converts an overflow into a dead end. A fixed cap
 remains correct for genuinely bounded content, such as a log panel.
 
-Recorded with an example in
+Where the container's size is genuinely fixed — a dashboard card in a grid that has to
+line up — the _content_ is bounded instead, in **both** directions: validation caps
+what can be created, and CSS clamps what already exists. Neither half suffices alone.
+Validation cannot reach a name already written to an immutable record, and a clamp on
+its own leaves a name nobody can read in full.
+
+Recorded with both examples in
 [component patterns](../patterns/component-patterns.md#no-fixed-height-cap-on-content-of-unbounded-length).
 
 ### 4. A repair the user cannot see is reported
@@ -107,7 +113,21 @@ the mistake was actually made.
 
 **Testing.** These invariants are covered by example-based tests over the exact
 graphs that broke, and by property-based tests over generated graphs — including
-deliberately corrupt ones — asserting `$\mathcal{W}$` holds after any round trip.
+deliberately corrupt ones — asserting $`\mathcal{W}`$ holds after any round trip.
 Clipping itself cannot be unit-tested: jsdom has no layout engine, so `scrollHeight`
 and `clientHeight` are both `0`. The tests assert the mechanism; the outcome is
 verified in a browser.
+
+**Recording a rule is not applying it.** Decision (3) was written down and the
+codebase was not then swept for other instances of what it forbids. There was one: an
+agent or team name, of unbounded length, rendered into a dashboard card of fixed
+height. It was found later, by re-running the pattern this record was extracted from,
+and is [F6 in the post-mortem](../../post-mortems/AGENT_TEAM_EDITOR_GRAPH_CORRUPTION.md#102-what-it-found).
+
+The general lesson belongs here rather than there, because it applies to every future
+entry in this directory: **an ADR that states a rule should be accompanied by the
+search that finds the rule's existing violations, and by what that search returned.**
+Otherwise the record documents an intention while the violations it describes remain
+in the tree, and the next reader has no way to tell which of the two they are looking
+at. §10.1 of the post-mortem records eight such searches and their results, including
+the three that came back clean.

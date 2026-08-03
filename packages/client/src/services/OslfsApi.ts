@@ -1,18 +1,16 @@
 import { base16 } from "@scure/base";
 
 import type { CreateOslfReq, HTTPHeaders } from "../api-client";
+import type { Address } from "../entities/Address";
 import type {
   ContractCallConfig,
   QueryCallConfig,
 } from "../entities/HttpCallConfigs";
-
-import { Configuration, OslfsApi } from "../api-client";
-import { signContract } from "../functions";
-
-import type { Address } from "../entities/Address";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { Configuration, OslfsApi } from "../api-client";
+import { signContract } from "../functions";
 import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
 export type OslfsConfig = {

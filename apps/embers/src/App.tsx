@@ -29,6 +29,7 @@ const Login = lazy(async () => import("@/pages/Login"));
 const EditAgentsTeam = lazy(async () => import("@/pages/EditAgentsTeam"));
 const EditAgent = lazy(async () => import("@/pages/EditAgent"));
 const PublishAgentsTeam = lazy(async () => import("@/pages/PublishAgentsTeam"));
+const AgentTeamRun = lazy(async () => import("@/pages/AgentTeamRun"));
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,10 @@ export default function App() {
                         <Routes>
                           <Route element={<Home />} path="/" />
                           <Route element={<Login />} path="/login" />
+                          <Route
+                            element={<AgentTeamRun />}
+                            path="/runs/:runId"
+                          />
                           <Route element={<ProtectedRoute />}>
                             <Route element={<Dashboard />} path="/dashboard" />
                             <Route

@@ -32,6 +32,7 @@
     "@f1r3fly-io/oslf-editor": "workspace:*",
     "@f1r3fly-io/tree-sitter-rholang-js-with-comments": "1.1.9",
     "@fortawesome/fontawesome-free": "^7.2.0",
+    "@noble/hashes": "^2.0.1",
     "@scure/base": "^2.0.0",
     "@szhsin/react-menu": "^4.5.1",
     "@tanstack/react-form": "^1.28.1",

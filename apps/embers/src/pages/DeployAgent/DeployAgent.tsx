@@ -39,7 +39,6 @@ const estimatedCost = 50000;
 
 const formModel = z.object({
   environment: z.string().optional(),
-  rhoLimit: z.string().refine((v) => BigInt(v)),
 });
 
 export default function DeployAgent() {
@@ -60,21 +59,18 @@ export default function DeployAgent() {
     async ({ value }: { value: z.infer<typeof formModel> }) => {
       update({
         environment: value.environment,
-        rhoLimit: BigInt(value.rhoLimit),
       });
 
       const modalData = [
         { label: "deploy.labels.agentId" as const, value: agent.id },
         { label: "deploy.version" as const, value: agent.version },
         { label: "deploy.labels.status" as const, value: "ok" },
-        { label: "deploy.rhoLimit" as const, value: value.rhoLimit },
         { label: "deploy.labels.note" as const, value: agent.description },
       ];
 
       return deployMutation.mutateAsync(
         {
           agentId: agent.id!,
-          rhoLimit: BigInt(value.rhoLimit),
           version: agent.version!,
         },
         {
@@ -119,7 +115,6 @@ export default function DeployAgent() {
   const form = useForm({
     defaultValues: {
       ...agent,
-      rhoLimit: agent.rhoLimit?.toString() ?? "50000",
     },
     onSubmit,
     validators: {
@@ -203,29 +198,6 @@ export default function DeployAgent() {
               </div>
             </div>
           </div>
-
-          <form.Field name="rhoLimit">
-            {(field) => (
-              <div className={styles["form-section"]}>
-                <div className={styles["form-fields"]}>
-                  <div>
-                    <Text color="secondary" type="small">
-                      {t("deploy.rhoLimit")}
-                    </Text>
-                    <Input
-                      error={
-                        field.state.meta.isTouched && !field.state.meta.isValid
-                      }
-                      placeholder={field.state.value}
-                      type="number"
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </form.Field>
 
           <div className={styles["form-section"]}>
             <div className={styles["estimation-bar"]}>

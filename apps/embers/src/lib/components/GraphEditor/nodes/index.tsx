@@ -1,5 +1,7 @@
 import type { Edge as REdge, Node as RNode } from "@xyflow/react";
 
+import type { WorkflowEdgeData } from "@/lib/workflow";
+
 import type { NodeRegistry } from "./nodes.registry";
 import type { NodeTemplateProps } from "./NodeTemplate";
 
@@ -12,7 +14,7 @@ export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
 }[keyof NodeTypes];
 
-export type Edge = REdge;
+export type Edge = REdge<WorkflowEdgeData>;
 export type NodeData<T extends keyof NodeTypes> = Extract<
   Node,
   { type: T }

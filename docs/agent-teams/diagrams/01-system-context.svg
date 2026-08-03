@@ -1,0 +1,1181 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="DESCRIPTION"
+  height="896px"
+  preserveAspectRatio="none"
+  style="width: 971px; height: 896px; background: #fff8f2"
+  version="1.1"
+  viewBox="0 0 971 896"
+  width="971px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <rect
+      fill="#FFF8F2"
+      height="896"
+      style="stroke: none; stroke-width: 1"
+      width="971"
+      x="0"
+      y="0"
+    />
+    <g class="title" data-source-line="1">
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="310.7708"
+        x="326.9025"
+        y="24.9659"
+      >
+        Agent Teams Workflow v2 &#8212; system context
+      </text>
+    </g>
+    <!--cluster future-->
+    <g
+      class="cluster"
+      data-qualified-name="future"
+      data-source-line="20"
+      id="ent0009"
+    >
+      <rect
+        fill="#F3E5F5"
+        height="93.07"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1"
+        width="191"
+        x="333.1166"
+        y="610.0379"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="175.3913"
+        x="340.9209"
+        y="627.0039"
+      >
+        Protected future adapter
+      </text>
+    </g>
+    <!--entity flt-->
+    <g
+      class="entity"
+      data-qualified-name="future.flt"
+      data-source-line="21"
+      id="ent0010"
+    >
+      <rect
+        fill="#EADCF8"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #a85c32; stroke-width: 0.5"
+        width="108.8297"
+        x="373.6966"
+        y="648.0379"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="88.8297"
+        x="383.6966"
+        y="673.0039"
+      >
+        MeTTaIL FLTs
+      </text>
+    </g>
+    <!--entity author-->
+    <g
+      class="entity"
+      data-qualified-name="author"
+      data-source-line="12"
+      id="ent0001"
+    >
+      <ellipse
+        cx="382.1114"
+        cy="54.0679"
+        fill="#FFD7C2"
+        rx="8"
+        ry="8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M382.1114,62.0679 L382.1114,89.0679 M369.1114,70.0679 L395.1114,70.0679 M382.1114,89.0679 L369.1114,104.0679 M382.1114,89.0679 L395.1114,104.0679"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="98.4896"
+        x="332.8666"
+        y="120.5339"
+      >
+        F1r3sky author
+      </text>
+    </g>
+    <!--entity sky-->
+    <g
+      class="entity"
+      data-qualified-name="sky"
+      data-source-line="13"
+      id="ent0002"
+    >
+      <rect
+        fill="#B9DCF7"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #a85c32; stroke-width: 0.5"
+        width="154.4415"
+        x="198.8866"
+        y="203.6279"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="50.3858"
+        x="208.8866"
+        y="228.5939"
+      >
+        F1r3sky
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="134.4415"
+        x="208.8866"
+        y="247.6618"
+      >
+        @-mention interface
+      </text>
+    </g>
+    <!--entity api-->
+    <g
+      class="entity"
+      data-qualified-name="api"
+      data-source-line="14"
+      id="ent0003"
+    >
+      <rect
+        fill="#FFC59F"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #a85c32; stroke-width: 0.5"
+        width="225.4352"
+        x="316.3966"
+        y="340.7679"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="75.6697"
+        x="326.3966"
+        y="365.7339"
+      >
+        Embers API
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="205.4352"
+        x="326.3966"
+        y="384.8018"
+      >
+        validation, compilation, signing
+      </text>
+    </g>
+    <!--entity editor-->
+    <g
+      class="entity"
+      data-qualified-name="editor"
+      data-source-line="15"
+      id="ent0004"
+    >
+      <rect
+        fill="#FFE1A8"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #a85c32; stroke-width: 0.5"
+        width="170.3874"
+        x="624.9166"
+        y="203.6279"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="92.9317"
+        x="634.9166"
+        y="228.5939"
+      >
+        Embers editor
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="150.3874"
+        x="634.9166"
+        y="247.6618"
+      >
+        Workflow v2 authoring
+      </text>
+    </g>
+    <!--entity rspace-->
+    <g
+      class="entity"
+      data-qualified-name="rspace"
+      data-source-line="16"
+      id="ent0005"
+    >
+      <path
+        d="M156.8566,487.9079 C156.8566,477.9079 273.1092,477.9079 273.1092,477.9079 C273.1092,477.9079 389.3618,477.9079 389.3618,487.9079 L389.3618,535.0438 C389.3618,545.0438 273.1092,545.0438 273.1092,545.0438 C273.1092,545.0438 156.8566,545.0438 156.8566,535.0438 L156.8566,487.9079"
+        fill="#C8E6C9"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M156.8566,487.9079 C156.8566,497.9079 273.1092,497.9079 273.1092,497.9079 C273.1092,497.9079 389.3618,497.9079 389.3618,487.9079"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="47.4738"
+        x="166.8566"
+        y="516.8739"
+      >
+        RSpace
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="212.5052"
+        x="166.8566"
+        y="535.9418"
+      >
+        team definitions + run metadata
+      </text>
+    </g>
+    <!--entity drive-->
+    <g
+      class="entity"
+      data-qualified-name="drive"
+      data-source-line="17"
+      id="ent0006"
+    >
+      <path
+        d="M485.0566,487.9079 C485.0566,477.9079 584.1103,477.9079 584.1103,477.9079 C584.1103,477.9079 683.1639,477.9079 683.1639,487.9079 L683.1639,535.0438 C683.1639,545.0438 584.1103,545.0438 584.1103,545.0438 C584.1103,545.0438 485.0566,545.0438 485.0566,535.0438 L485.0566,487.9079"
+        fill="#BEE5CF"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M485.0566,487.9079 C485.0566,497.9079 584.1103,497.9079 584.1103,497.9079 C584.1103,497.9079 683.1639,497.9079 683.1639,487.9079"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="62.0758"
+        x="495.0566"
+        y="516.8739"
+      >
+        F1r3drive
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="178.1073"
+        x="495.0566"
+        y="535.9418"
+      >
+        encrypted durable artifacts
+      </text>
+    </g>
+    <!--entity effects-->
+    <g
+      class="entity"
+      data-qualified-name="effects"
+      data-source-line="18"
+      id="ent0007"
+    >
+      <path
+        d="M20.3354,642.8313 C25.7985,635.6758 31.861,634.0924 37.0584,643.106 C41.0759,633.6095 47.6462,634.4448 53.7122,640.9779 C57.3003,632.7311 65.1064,631.9154 70.5634,638.9119 C74.6307,632.3872 81.4304,633.041 84.9281,639.5402 C88.3256,629.6821 96.4281,629.7508 102.2285,637.1282 C105.9866,630.4675 111.0933,627.5286 117.0253,634.8232 C122.3623,627.0306 128.5995,627.7322 133.9361,634.8237 C139.565,626.197 146.7479,628.1371 150.6903,636.4881 C155.3536,630.5065 161.1944,631.226 164.7875,637.6994 C169.6794,629.8577 177.5099,631.3812 181.3122,638.8737 C186.7084,631.343 192.4624,631.3767 197.9638,638.7562 C204.1841,633.1586 210.6363,632.9585 213.6015,642.189 C218.2691,632.5871 224.0095,633.6821 230.2795,640.5681 C236.7144,635.7194 241.1613,636.6536 244.8766,643.8609 C258.1911,649.8814 260.3414,660.219 248.9278,670.0629 C258.5217,679.2904 261.1329,689.4621 246.0656,695.9644 C241.6596,704.6719 235.1591,704.4443 229.3829,697.4172 C223.169,705.2734 217.1682,703.5892 212.9059,695.4117 C209.3245,702.7072 204.4,703.4064 198.3341,698.3404 C193.0343,706.8731 186.7763,706.3545 182.1157,697.736 C178.7489,707.2852 170.3164,706.7986 165.3402,699.3217 C161.0727,705.7561 155.6231,706.3277 150.5969,700.2131 C146.466,707.9998 140.8198,709.2846 134.9444,702.0283 C128.5685,708.3557 121.9801,708.6758 118.3948,699.1205 C114.4797,706.829 107.8713,708.4502 102.4562,700.6635 C96.1651,707.2082 89.3,705.2516 85.8361,697.3998 C79.8527,705.0125 74.1974,705.202 68.5598,697.0214 C63.2811,704.7504 56.6093,702.9378 52.6745,695.6041 C49.0793,701.6752 42.3532,703.4684 38.3359,696.053 C31.7886,703.4924 26.6237,703.1655 21.2179,694.8155 C6.481,688.7293 6,678.8978 16.6877,668.4441 C7.3539,658.0557 6.7274,649.9523 20.3354,642.8313"
+        fill="#E1D5F7"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="137.6335"
+        x="27.2666"
+        y="663.4739"
+      >
+        Agent/effect services
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="209.6912"
+        x="27.2666"
+        y="682.5418"
+      >
+        LLM, image, audio, Rholang URI
+      </text>
+    </g>
+    <!--entity inspector-->
+    <g
+      class="entity"
+      data-qualified-name="inspector"
+      data-source-line="19"
+      id="ent0008"
+    >
+      <rect
+        fill="#D8EDF8"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #a85c32; stroke-width: 0.5"
+        width="201.1033"
+        x="388.5566"
+        y="203.6279"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="141.7355"
+        x="398.5566"
+        y="228.5939"
+      >
+        Embers run inspector
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="181.1033"
+        x="398.5566"
+        y="247.6618"
+      >
+        capability-scoped metadata
+      </text>
+    </g>
+    <!--link author to sky-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0002"
+      data-link-type="dependency"
+      data-source-line="24"
+      id="lnk11"
+    >
+      <path
+        d="M332.6366,111.5679 C315.9366,122.5879 298.8366,137.0479 288.1166,154.6279 C279.2966,169.0879 276.4962,182.8052 275.6662,198.1752"
+        fill="none"
+        id="author-to-sky"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="275.3966,203.1679,279.8761,194.3967,275.6662,198.1752,271.8877,193.9653,275.3966,203.1679"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="151.3722"
+        x="289.1166"
+        y="169.5249"
+      >
+        publish post with @team
+      </text>
+    </g>
+    <!--link sky to api-->
+    <g
+      class="link"
+      data-entity-1="ent0002"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="25"
+      id="lnk12"
+    >
+      <path
+        d="M198.6866,248.1779 C152.8266,260.2379 108.1166,280.3879 133.1166,310.7679 C156.4066,339.0779 237.7726,353.2787 311.2326,360.7987"
+        fill="none"
+        id="sky-to-api"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="316.2066,361.3079,307.6607,356.4122,311.2326,360.7987,306.846,364.3706,316.2066,361.3079"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="116.1161"
+        x="134.1166"
+        y="306.6649"
+      >
+        signed run request
+      </text>
+    </g>
+    <!--link api to sky-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0002"
+      data-link-type="dependency"
+      data-source-line="32"
+      id="lnk19"
+    >
+      <path
+        d="M323.0766,340.4179 C309.3066,332.7579 296.6966,323.0579 287.1166,310.7679 C276.4766,297.1279 273.755,282.8578 273.665,266.9978"
+        fill="none"
+        id="api-to-sky"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="273.6366,261.9979,269.6877,271.0205,273.665,266.9978,277.6876,270.9751,273.6366,261.9979"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="229.5412"
+        x="288.1166"
+        y="306.6649"
+      >
+        terminal reply &lt;= 280 chars + run URL
+      </text>
+    </g>
+    <!--link editor to api-->
+    <g
+      class="link"
+      data-entity-1="ent0004"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="26"
+      id="lnk13"
+    >
+      <path
+        d="M685.3766,262.1279 C669.8166,278.4279 648.5066,298.1079 626.1166,310.7679 C600.3466,325.3279 575.3767,335.1244 546.9067,343.6444"
+        fill="none"
+        id="editor-to-api"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="542.1166,345.0779,551.8856,346.3297,546.9067,343.6444,549.592,338.6655,542.1166,345.0779"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="148.2782"
+        x="652.7866"
+        y="306.6649"
+      >
+        draft / publish definition
+      </text>
+    </g>
+    <!--link api to rspace-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0005"
+      data-link-type="dependency"
+      data-source-line="27"
+      id="lnk14"
+    >
+      <path
+        d="M316.0166,376.3579 C234.8666,382.9779 135.3966,397.4279 109.1166,428.9079 C85.8266,456.7979 111.2273,474.5368 151.7673,487.2968"
+        fill="none"
+        id="api-to-rspace"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="156.5366,488.7979,149.1527,482.2804,151.7673,487.2968,146.7509,489.9113,156.5366,488.7979"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="219.8822"
+        x="110.1166"
+        y="443.8049"
+      >
+        deploy persistent Rholang contracts
+      </text>
+    </g>
+    <!--link api to rspace-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0005"
+      data-link-type="dependency"
+      data-source-line="35"
+      id="lnk22"
+    >
+      <path
+        d="M397.5466,399.0979 C372.1666,421.8079 340.2124,450.4135 313.5624,474.2635"
+        fill="none"
+        id="api-to-rspace-1"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="309.8366,477.5979,319.2106,474.5767,313.5624,474.2635,313.8756,468.6154,309.8366,477.5979"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="70.746"
+        x="361.4566"
+        y="443.8049"
+      >
+        read ledger
+      </text>
+    </g>
+    <!--link api to drive-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0006"
+      data-link-type="dependency"
+      data-source-line="28"
+      id="lnk15"
+    >
+      <path
+        d="M444.7566,399.3779 C454.1966,414.9279 467.2766,433.8179 482.1166,447.9079 C493.6366,458.8479 503.1639,466.1604 516.7739,474.7904"
+        fill="none"
+        id="api-to-drive"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="520.9966,477.4679,515.5379,469.2702,516.7739,474.7904,511.2538,476.0264,520.9966,477.4679"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="232.7652"
+        x="483.1166"
+        y="443.8049"
+      >
+        encrypt + fsync before ledger advance
+      </text>
+    </g>
+    <!--link drive to api-->
+    <g
+      class="link"
+      data-entity-1="ent0006"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="29"
+      id="lnk16"
+    >
+      <path
+        d="M683.3566,484.7079 C716.0766,471.3379 739.6666,452.7479 720.1166,428.9079 C697.4466,401.2679 618.838,387.0718 547.038,379.3618"
+        fill="none"
+        id="drive-to-api"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="542.0666,378.8279,550.5881,383.766,547.038,379.3618,551.4422,375.8117,542.0666,378.8279"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="227.4092"
+        x="728.1666"
+        y="443.8049"
+      >
+        decrypt continuation during recovery
+      </text>
+    </g>
+    <!--link rspace to effects-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="30"
+      id="lnk17"
+    >
+      <path
+        d="M156.5966,530.3779 C106.5366,540.6779 56.0766,555.4979 41.1166,575.0379 C25.2366,595.7679 38.5564,613.7164 62.2564,630.2564"
+        fill="none"
+        id="rspace-to-effects"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="66.3566,633.1179,61.2654,624.687,62.2564,630.2564,56.687,631.2474,66.3566,633.1179"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="187.2522"
+        x="42.1166"
+        y="589.9349"
+      >
+        capability-mediated invocation
+      </text>
+    </g>
+    <!--link effects to rspace-->
+    <g
+      class="link"
+      data-entity-1="ent0007"
+      data-entity-2="ent0005"
+      data-link-type="dependency"
+      data-source-line="31"
+      id="lnk18"
+    >
+      <path
+        d="M189.8066,633.1379 C205.5466,622.1179 221.6666,608.8379 234.1166,594.0379 C246.1366,579.7479 253.5144,565.7461 259.9944,549.8961"
+        fill="none"
+        id="effects-to-rspace"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="261.8866,545.2679,254.7782,552.0849,259.9944,549.8961,262.1833,555.1123,261.8866,545.2679"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="113.5681"
+        x="247.8366"
+        y="589.9349"
+      >
+        result / disposition
+      </text>
+    </g>
+    <!--link author to inspector-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0008"
+      data-link-type="dependency"
+      data-source-line="33"
+      id="lnk20"
+    >
+      <path
+        d="M420.6766,125.0279 C429.1466,134.3779 437.7666,144.5879 445.1166,154.6279 C456.2966,169.9379 464.5335,183.9062 472.5235,198.8862"
+        fill="none"
+        id="author-to-inspector"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="474.8766,203.2979,474.1704,193.4744,472.5235,198.8862,467.1117,197.2394,474.8766,203.2979"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="167.5182"
+        x="458.3266"
+        y="169.5249"
+      >
+        open opaque run capability
+      </text>
+    </g>
+    <!--link inspector to api-->
+    <g
+      class="link"
+      data-entity-1="ent0008"
+      data-entity-2="ent0003"
+      data-link-type="dependency"
+      data-source-line="34"
+      id="lnk21"
+    >
+      <path
+        d="M516.2466,261.9979 C527.0566,276.7779 535.0366,295.0179 526.1166,310.7679 C519.3366,322.7179 513.1348,329.6424 501.7048,337.5124"
+        fill="none"
+        id="inspector-to-api"
+        style="stroke: #5b3a29; stroke-width: 1"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="497.5866,340.3479,507.2678,338.5385,501.7048,337.5124,502.7309,331.9494,497.5866,340.3479"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="86.0471"
+        x="530.9566"
+        y="306.6649"
+      >
+        GET metadata
+      </text>
+    </g>
+    <!--link rspace to flt-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0010"
+      data-link-type="dependency"
+      data-source-line="36"
+      id="lnk23"
+    >
+      <path
+        d="M333.1266,545.3979 C346.1366,554.0579 359.2466,564.0879 370.1166,575.0379 C391.7066,596.8079 407.0697,623.5012 417.0097,643.2612"
+        fill="none"
+        id="rspace-to-flt"
+        style="stroke: #5b3a29; stroke-width: 1; stroke-dasharray: 7, 7"
+      />
+      <polygon
+        fill="#5B3A29"
+        points="419.2566,647.7279,418.7855,637.8903,417.0097,643.2612,411.6388,641.4854,419.2566,647.7279"
+        style="
+          stroke: #5b3a29;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="137.8001"
+        x="386.5766"
+        y="589.9349"
+      >
+        future language terms
+      </text>
+    </g>
+    <g class="legend" data-source-line="38">
+      <rect
+        fill="none"
+        height="147.4754"
+        rx="7.5"
+        ry="7.5"
+        style="stroke: #000000; stroke-width: 1"
+        width="253.9631"
+        x="698.6128"
+        y="730.2846"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="36.9179"
+        x="707.2527"
+        y="752.2506"
+      >
+        Color
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="97.9436"
+        x="751.4506"
+        y="752.2506"
+      >
+        Responsibility
+      </text>
+      <rect
+        fill="#B9DCF7"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="44.1978"
+        x="703.6128"
+        y="756.3526"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="703.6128"
+        y="771.3185"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="112.9516"
+        x="751.4506"
+        y="771.3185"
+      >
+        Social interaction
+      </text>
+      <rect
+        fill="#FFC59F"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="44.1978"
+        x="703.6128"
+        y="775.4205"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="703.6128"
+        y="790.3864"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="140.5315"
+        x="751.4506"
+        y="790.3864"
+      >
+        Embers control plane
+      </text>
+      <rect
+        fill="#C8E6C9"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="44.1978"
+        x="703.6128"
+        y="794.4884"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="703.6128"
+        y="809.4543"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="173.0674"
+        x="751.4506"
+        y="809.4543"
+      >
+        Authoritative RSpace state
+      </text>
+      <rect
+        fill="#BEE5CF"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="44.1978"
+        x="703.6128"
+        y="813.5563"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="703.6128"
+        y="828.5222"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="177.9953"
+        x="751.4506"
+        y="828.5222"
+      >
+        Encrypted durable artifacts
+      </text>
+      <rect
+        fill="#E1D5F7"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="44.1978"
+        x="703.6128"
+        y="832.6242"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="703.6128"
+        y="847.5902"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="161.6014"
+        x="751.4506"
+        y="847.5902"
+      >
+        Nondeterministic effects
+      </text>
+      <rect
+        fill="#EADCF8"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="44.1978"
+        x="703.6128"
+        y="851.6921"
+      />
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="703.6128"
+        y="866.6581"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#2B1D17"
+        font-family="sans-serif"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="192.4853"
+        x="751.4506"
+        y="866.6581"
+      >
+        Protected, not yet executable
+      </text>
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="737.2846"
+        y2="737.2846"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="756.3526"
+        y2="756.3526"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="775.4205"
+        y2="775.4205"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="794.4884"
+        y2="794.4884"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="813.5563"
+        y2="813.5563"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="832.6242"
+        y2="832.6242"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="851.6921"
+        y2="851.6921"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="947.5758"
+        y1="870.7601"
+        y2="870.7601"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="703.6128"
+        x2="703.6128"
+        y1="737.2846"
+        y2="870.7601"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="747.8106"
+        x2="747.8106"
+        y1="737.2846"
+        y2="870.7601"
+      />
+      <line
+        style="stroke: #2b1d17; stroke-width: 1"
+        x1="947.5758"
+        x2="947.5758"
+        y1="737.2846"
+        y2="870.7601"
+      />
+    </g>
+    <?plantuml-src TLJBRjiu5DtpAoxiPPrsxC0JnsY3-gL107TGE2wwyOQMhcmY5AcIb5EXAT2Fc2-SBvbBKh8LDBCnBFBSrpc7rmad4MO7L0wso0iBNxLvpAL-WjC8_ltr3zZQEYmWrShXTyVier0bDxo0FKyV3qPNAbjegGtqaoIP9ACEmXvvff-4Ea3EfSNEJQgBKYig-k1ggcymTLmTP1SoCqO_DPd7y-lPwBPpcM7EA-aIQgg1ZER3vV3cjHBmWm7CNsbscSpzZJOPckPqDXalhaVi9sCyTNJGIuRcsZxMm2jtrAO7t3P_VORbpMB4BdLQy4vzl2heG6W5WbWpEKynXFfC_VdjSf7STEDMnHwDXTdd-vqwSIaoxcC7OGGXcmyh3egeZ2sKmjTVZ6-JL_9W9gZtdUeg6PjkuoF2frWDPnD6zVYUMuJUvg6aNdVKT2HPAE6hMtW3fb9GeECU798Owx7GNqnMVovkEqay3PaH9yg3AZLrwJ23h39yJr9pumJnuMp84M14oMerNj0eKbSPz88Rts6Uaol0eZc95ErEhTUV1Y0AVi01ZPC9FO3DKKlo3NpPtCUvGeo5_cgu7B_AiPz2A5jY6YXAUSdtGWfNNzbKbzJdYn7FIEWl9wjbCc5dfqBliz6ElYWchrnbQBICqwZH9CrHFxbUZPDni62dcK-utVBxDIJhRUGXbuwQdf4n9i5yqM9NLtV1CbCegxqKzWYbjWwUX3l2HoyHyxSUvGqn3HQXTloC1hzLQ1rhbBvWCiDp1-_E6IyYCm_mm4POmc8fTGqb4ITe2L3dBU5-6nYluZaeAZc5Hd4oJ6vhbS8USqr4ICmEQ8YY4rSfieZkT8KnokSLgWgMzvRnkuCeroSqDMlwyb6jq5FeA5ZGiDph8TH9fo47Qu4lvZ9eQNaG2PcmnEZBwIFXf6CX59U4BMKDxp_0QF87f4TkshVmPRFkwdInoXJ8I8f-E4aGe9SUsGLs6VwlrVPikzz5CCYpXhwMWRTlxu9ZfgtDl2OLFOpGjcLC8ZqXCe8u71qvx_a3nFr6VpP88oihOZ_mxA_VDplfxXaUT2fewh2sI5ylGmE9wuOWpKiA5j0IIYgEBIZk0WBDuhvnf0897TSAMFeyG-ERz_d-VqUqsFYS2VktLXb6RSYH8ZqReGM69qJ0y-CSWD8EQdI0tp6jN2Zmp8YUID9_?>
+  </g>
+</svg>

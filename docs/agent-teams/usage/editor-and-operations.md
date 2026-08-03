@@ -1,0 +1,140 @@
+# Editor and operator guide
+
+This guide is for a team author using Embers and for an operator running the local F1r3sky–Embers–F1r3node stack.
+
+## Build a cyclic, branching team
+
+1. Open the Agent Team graph editor and add agent, gateway, wait, approval, input, and output nodes as needed.
+2. Connect nodes in the natural direction of control flow. Back-edges are valid; the canvas no longer assumes a directed acyclic graph.
+3. Open an edge’s context menu and choose **Configure transition**.
+4. Select a trigger disposition. `completed` is the ordinary successful result; structured agents can also produce application-specific dispositions such as `failed`, `rejected`, or `timedOut`.
+5. Select `firstMatch` when exactly one ordered route should win, or `allMatches` when every true route should fan out.
+6. Define a guard using a literal, comparison, existence test, or pure Rholang expression.
+7. For every feedback path, choose a positive iteration bound or a durable yield. A path through a wait node is already a progress boundary.
+8. Where several branches converge, open the target node’s context menu and choose **Configure fan-in**. Select `all`, `each`, `quorum`, or `race`, plus the late-arrival disposition where applicable.
+
+![Token execution example](../diagrams/03-token-semantics.svg)
+
+### Example: bounded critique loop
+
+Create `Draft -> Critique -> Decide`. Configure two transitions from `Decide` in one first-match route group:
+
+```json
+{
+  "accept": {
+    "guard": {
+      "kind": "compare",
+      "left": { "kind": "path", "root": "output", "path": ["score"] },
+      "operator": "ge",
+      "right": { "kind": "literal", "value": 0.8 }
+    },
+    "priority": 0,
+    "targetNodeId": "publish"
+  },
+  "revise": {
+    "guard": { "kind": "literal", "value": true },
+    "loop": { "maxIterations": 3 },
+    "priority": 1,
+    "targetNodeId": "draft"
+  }
+}
+```
+
+The unconditional `revise` route is the fallback. Its bound belongs to that transition, not to the nodes, so another feedback edge can have a different budget.
+
+## Draft versus deploy
+
+Save accepts structurally valid but incomplete work. This permits ordinary editor workflows such as placing a node before connecting it. Deploy is the semantic gate and checks all references, route groups, agent version pins, joins, pure guards, and cycle progress boundaries. The diagnostic panel on the canvas previews these errors before deployment.
+
+The exact cycle check removes all wait nodes and all bounded or durable-yield edges, then rejects any strongly connected component that still contains a cycle. It therefore rejects a hot inner loop even if a larger surrounding cycle contains a bound.
+
+## Guard roots
+
+Value paths begin at one of four roots:
+
+| Root     | Meaning at a transition                                          |
+| -------- | ---------------------------------------------------------------- |
+| `input`  | The immutable invocation input carried in the execution context. |
+| `output` | The value produced by the source node.                           |
+| `state`  | Portable workflow state in the execution context.                |
+| `error`  | The source value interpreted by an error route.                  |
+
+A pure Rholang guard declares the paths it consumes and then references them as `$name`. Communication, receives, fresh-name binding, contracts, URI literals, registry access, and other effectful forms are rejected. Keep guards small; call an activity node when computation requires authority or effects.
+
+## Invoke from F1r3sky
+
+Publish a post that mentions the F1r3sky identity configured for the team. F1r3sky resolves the identity’s `com.f1r3sky.agentsteam.config`, prepares and signs the Embers invocation with the active wallet, and marks the thread as pending. Embers runs the team and posts one terminal reply.
+
+The terminal post is at most 280 Unicode scalar values. If the result is longer, Embers truncates it with an ellipsis before appending the run URL. The URL is never omitted. Opening it shows the run capability, team URI, start time, status, and ordered event types. It never shows prompt text, model output, credentials, or artifacts.
+
+## Inspect and resume a durable run
+
+The run page polls while a run is `running`, `resuming`, or `suspended`, shows its revision, public wait IDs, deadline, approval grants, and event sequence, and exposes commands when the current browser has a wallet session. Select the exact wait before sending `signal`, `event`, `approve`, `reject`, or `retry`. Cancellation targets the whole run. Due timers are normally fired by the Embers recovery scheduler, including timers nested at arbitrary depth. The UI prepares a contract, signs it with the active wallet, and sends the same request/response/token bundle used by every Embers mutation.
+
+Commands use optimistic concurrency. A request made against revision 4 cannot mutate revision 5; refresh and inspect the new waits instead. A delegated approver can decide only a grant for the exact wait and wallet address. The owner and configured Embers service retain run-level authority for recovery, scheduling, cancellation, and migration.
+
+The raw API has two phases:
+
+```http
+POST /api/ai-agents-teams/runs/{runId}/commands/prepare
+Content-Type: application/json
+
+{
+  "expected_revision": "4",
+  "type": "signal",
+  "wait_id": "nested:7f…:wait:token:3",
+  "name": "reviewReady",
+  "payload": { "approved": true }
+}
+```
+
+Sign the returned `response.contract`, then post the signed contract together with the unchanged prepare request, prepare response, and token to `/commands/send`. Client applications should use `AgentsTeamsApiSdk.command`, which performs this protocol and preserves all hashes and timestamps.
+
+Timer commands must repeat the ledger’s exact `dueAt` value and cannot be applied early. Approval commands require a unique `decisionId`; replay is rejected. Migration is intentionally not a casual run-page operation because it changes the pinned definition and requires a reviewed target URI, target hash, and state patch.
+
+## Start the local stack safely
+
+From `../embers-local-stack/`:
+
+```bash
+./stack.sh up
+```
+
+`up` is idempotent and does not wipe chain or F1r3sky state. A new profile creates its browser-importable wallet before genesis so that wallet is funded. If a preserved chain predates that file, `up` exports the already-funded local Embers service wallet instead of resetting or rewriting genesis; the banner prints the exact JSON file to import through **Wallets → Add wallet**. It reuses the standard `../f1r3node-rust/target/release/node` binary by default. Override repository or binary locations with `F1R3NODE_BIN`, `EMBERS_REPO`, `F1R3SKY_REPO`, and `F1R3SKY_BACKEND`.
+
+`up` also mounts F1r3drive and starts storage, Embers, and the F1r3sky web UI as restartable user services. Unit names are scoped by the first 12 hexadecimal digits of `SHA-256(canonical run directory)`, for example `embers-local-stack-85acf1f3910a-f1r3drive.service`, `embers-local-stack-85acf1f3910a-embers.service`, and `embers-local-stack-85acf1f3910a-f1r3sky-web.service`. This prevents one profile's status or stop command from claiming another profile's processes. For foreground development logs, stop the managed stack and run:
+
+```bash
+./stack.sh embers
+```
+
+The script mounts an owner-isolated F1r3drive, starts it in manual-propose mode, configures independent encryption and capability-derivation keys, and sets `EMBERS__PUBLIC_RUN_URL` to the configured Embers UI plus `/runs`. Embers refuses durable startup if the path is not an actual F1r3drive FUSE mount. F1r3drive recovers stale FUSE registrations and restarts on failure. Embers is ordered after, requires, and is bound to the matching drive unit; the drive unit continuously upholds Embers so a recovered mount recreates the API service. The managed F1r3sky web unit retains its process tree after `up` exits and is restarted on failure. `./stack.sh status` distinguishes managed, external, starting, down, and durable/degraded states. `./stack.sh stop` stops the web UI and Embers before its drive and unmounts only the selected profile. Start the Embers frontend development server in `embers-frontend` if it is not already available.
+
+The stack sets `EMBERS__FINALIZATION__DEPLOY_TIMEOUT_MILLIS=120000`. This is the shared budget for implicit finalized-deploy waits during bootstrap, Testnet deployment, Agent Team runs and commands, guards, effects, and run advancement. Explicit activity timeouts remain authoritative. Increase the value for a deliberately slower network; it must remain positive. Client request timeouts should exceed it so transport and observer visibility retain their own headroom.
+
+Only the explicit command below deletes the local chain and F1r3sky development-network state. It requires an interactive confirmation:
+
+```bash
+./stack.sh reset
+```
+
+Use `./stack.sh status` to check nodes, Embers, PostgreSQL, Valkey, F1r3sky services, the web UI, and the local wallet.
+
+## Operational failure modes
+
+| Symptom                                                | Likely cause                                                        | Action                                                                                      |
+| ------------------------------------------------------ | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Deploy rejects a cycle                                 | A hot subcycle bypasses every wait/bound/yield                      | Bound the bypass edge or route it through a wait.                                           |
+| Deploy reports an unpinned agent                       | The node has an ID but no version                                   | Select and save an immutable agent version.                                                 |
+| `up` refuses to start F1r3sky                          | The service is down while its database contains an old dev network  | Preserve it for diagnosis, or deliberately run `./stack.sh reset`.                          |
+| Run link returns 404                                   | The UUID capability is malformed or belongs to another environment  | Use the exact link from the terminal reply.                                                 |
+| Thread keeps showing pending after a failed invocation | A stale F1r3sky client predates pending cleanup                     | Reload after upgrading; current code clears both parent and root immediately.               |
+| Command returns stale revision                         | Another command or recovery step already advanced the run           | Refresh the inspector and target the new revision/wait.                                     |
+| Approval is rejected as unauthorized                   | The wallet is neither owner/service nor granted for that exact wait | Use the designated approver wallet or update the workflow’s approval policy.                |
+| F1r3drive flush fails                                  | The encrypted object did not reach proposal finality                | Keep the run unadvanced, restore drive/node health, and let recovery retry.                 |
+| A profile reports Embers as external                   | Another run directory owns the API process on the shared port       | Run `status` with that profile's `EMBERS_STACK_RUN_DIR`; stop it before switching profiles. |
+| Nested wait command cannot find a child                | The qualified path is stale or was copied without its prefixes      | Copy the exact current `waitId` from the run inspector.                                     |
+
+## Current boundary
+
+Cycles, deterministic branching, all five join families, correlated epochs, compound/parallel scopes, history, pinned agents and child teams, Rholang URI activities, durable waits/commands, deadlines, retry, cancellation, compensation, encrypted snapshots, recovery, short F1r3sky replies, and the metadata-only run inspector execute without f1r3node or MeTTaIL changes. Foreign Language Terms remain publish-time rejected until the Rholang 1.4 specification and the under-review FLT/virtual-bridge FIPS stabilize. See the [capability matrix](../README.md#capability-matrix).

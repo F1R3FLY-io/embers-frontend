@@ -1,0 +1,2550 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="DESCRIPTION"
+  height="1558px"
+  preserveAspectRatio="none"
+  style="width: 1493px; height: 1558px; background: #ffffff"
+  version="1.1"
+  viewBox="0 0 1493 1558"
+  width="1493px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <g class="title" data-source-line="4">
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="485.2802"
+        x="500.6786"
+        y="24.9659"
+      >
+        Turning the report into searches &#8212; eight patterns, seven new
+        defects
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="11"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="493.3465"
+        x="496.6454"
+        y="40.8268"
+      >
+        left: the class established by D1-D6 &#183; centre: the search it
+        becomes &#183; right: what it returned
+      </text>
+    </g>
+    <!--cluster P-->
+    <g
+      class="cluster"
+      data-qualified-name="P"
+      data-source-line="16"
+      id="ent0001"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="1008.54"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="292"
+        x="7"
+        y="62.0498"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="62.9438"
+        x="14.9676"
+        y="79.0157"
+      >
+        PATTERN
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="209.4811"
+        x="81.5513"
+        y="79.0157"
+      >
+        &#8212; what D1-D6 had in common
+      </text>
+    </g>
+    <!--cluster S-->
+    <g
+      class="cluster"
+      data-qualified-name="S"
+      data-source-line="34"
+      id="ent0017"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="1046.69"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="316"
+        x="323"
+        y="180.1798"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="54.1238"
+        x="366.3825"
+        y="197.1457"
+      >
+        SEARCH
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="171.4713"
+        x="424.1462"
+        y="197.1457"
+      >
+        &#8212; what was actually run
+      </text>
+    </g>
+    <!--cluster R-->
+    <g
+      class="cluster"
+      data-qualified-name="R"
+      data-source-line="52"
+      id="ent0033"
+    >
+      <rect
+        fill="#FAFAFA"
+        height="1071.75"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="290"
+        x="671"
+        y="300.3198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="51.2258"
+        x="790.3871"
+        y="317.2857"
+      >
+        RESULT
+      </text>
+    </g>
+    <!--entity P1-->
+    <g
+      class="entity"
+      data-qualified-name="P.P1"
+      data-source-line="17"
+      id="ent0002"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="213.9832"
+        x="69.01"
+        y="100.0498"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="18.2559"
+        x="79.01"
+        y="125.0157"
+      >
+        D2
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="79.9257"
+        x="100.9059"
+        y="125.0157"
+      >
+        fixed cap on
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="193.9832"
+        x="79.01"
+        y="144.0837"
+      >
+        content of unbounded length
+      </text>
+    </g>
+    <!--entity P2-->
+    <g
+      class="entity"
+      data-qualified-name="P.P2"
+      data-source-line="18"
+      id="ent0003"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="109.7816"
+        x="126.11"
+        y="218.1798"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="18.2559"
+        x="136.11"
+        y="243.1457"
+      >
+        D5
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="60.7318"
+        x="158.0059"
+        y="243.1457"
+      >
+        declared,
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="89.7816"
+        x="136.11"
+        y="262.2137"
+      >
+        never applied
+      </text>
+    </g>
+    <!--entity P3-->
+    <g
+      class="entity"
+      data-qualified-name="P.P3"
+      data-source-line="19"
+      id="ent0004"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="204.8553"
+        x="78.57"
+        y="346.3198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="26.7539"
+        x="88.57"
+        y="371.2857"
+      >
+        &#167;6.4
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="95.9696"
+        x="118.9639"
+        y="371.2857"
+      >
+        silent recovery
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="184.8553"
+        x="88.57"
+        y="390.3537"
+      >
+        at a layer that cannot report
+      </text>
+    </g>
+    <!--entity P4-->
+    <g
+      class="entity"
+      data-qualified-name="P.P4"
+      data-source-line="20"
+      id="ent0005"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="136.8295"
+        x="115.59"
+        y="484.6498"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="18.2559"
+        x="125.59"
+        y="509.6157"
+      >
+        D6
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="76.3977"
+        x="147.4859"
+        y="509.6157"
+      >
+        a stale read
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="116.8295"
+        x="125.59"
+        y="528.6837"
+      >
+        cached as current
+      </text>
+    </g>
+    <!--entity P5-->
+    <g
+      class="entity"
+      data-qualified-name="P.P5"
+      data-source-line="21"
+      id="ent0006"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="189.8333"
+        x="89.08"
+        y="622.9798"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="18.2559"
+        x="99.08"
+        y="647.9457"
+      >
+        D1
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="147.9374"
+        x="120.9759"
+        y="647.9457"
+      >
+        a bespoke path beside
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="151.0874"
+        x="99.08"
+        y="667.0137"
+      >
+        a framework's own API
+      </text>
+    </g>
+    <!--entity P6-->
+    <g
+      class="entity"
+      data-qualified-name="P.P6"
+      data-source-line="22"
+      id="ent0007"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="208.2713"
+        x="74.86"
+        y="741.1198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="18.2559"
+        x="84.86"
+        y="766.0857"
+      >
+        D1
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="166.3754"
+        x="106.7559"
+        y="766.0857"
+      >
+        a reference to something
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="135.0575"
+        x="84.86"
+        y="785.1537"
+      >
+        that no longer exists
+      </text>
+    </g>
+    <!--entity P7-->
+    <g
+      class="entity"
+      data-qualified-name="P.P7"
+      data-source-line="23"
+      id="ent0008"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="179.2214"
+        x="103.39"
+        y="859.2598"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="58.0998"
+        x="113.39"
+        y="884.2257"
+      >
+        D4 / &#167;6.6
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="85.2177"
+        x="175.1297"
+        y="884.2257"
+      >
+        two systems,
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="159.2214"
+        x="113.39"
+        y="903.2937"
+      >
+        one fact, no comparison
+      </text>
+    </g>
+    <!--entity P8-->
+    <g
+      class="entity"
+      data-qualified-name="P.P8"
+      data-source-line="24"
+      id="ent0009"
+    >
+      <rect
+        fill="#ECEFF1"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #455a64; stroke-width: 1.5"
+        width="176.2954"
+        x="105.85"
+        y="996.4598"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="18.2559"
+        x="115.85"
+        y="1021.4257"
+      >
+        D2
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="134.3995"
+        x="137.7459"
+        y="1021.4257"
+      >
+        threshold arithmetic
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="128.2255"
+        x="115.85"
+        y="1040.4937"
+      >
+        (a hard-coded limit)
+      </text>
+    </g>
+    <!--entity S1-->
+    <g
+      class="entity"
+      data-qualified-name="S.S1"
+      data-source-line="35"
+      id="ent0018"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="283.003"
+        x="339.5"
+        y="218.1798"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="55.4818"
+        x="349.5"
+        y="243.1457"
+      >
+        every px
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="83.9996"
+        x="408.6218"
+        y="243.1457"
+      >
+        max-height
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="5.208"
+        x="496.2614"
+        y="243.1457"
+      >
+        /
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="50.3998"
+        x="505.1093"
+        y="243.1457"
+      >
+        height
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="263.003"
+        x="349.5"
+        y="262.2137"
+      >
+        in SCSS, checked against what it bounds
+      </text>
+    </g>
+    <!--entity S2-->
+    <g
+      class="entity"
+      data-qualified-name="S.S2"
+      data-source-line="36"
+      id="ent0019"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="237.6151"
+        x="362.19"
+        y="346.3198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="35.8259"
+        x="372.19"
+        y="371.2857"
+      >
+        every
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="50.3998"
+        x="411.6558"
+        y="371.2857"
+      >
+        *Props
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="124.1095"
+        x="465.6956"
+        y="371.2857"
+      >
+        field, checked for a
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="195.1452"
+        x="372.19"
+        y="390.3537"
+      >
+        reference after its declaration
+      </text>
+    </g>
+    <!--entity S3-->
+    <g
+      class="entity"
+      data-qualified-name="S.S3"
+      data-source-line="37"
+      id="ent0020"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="252.973"
+        x="354.51"
+        y="484.6498"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="41.7898"
+        x="364.51"
+        y="509.6157"
+      >
+        empty
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="41.9998"
+        x="409.9398"
+        y="509.6157"
+      >
+        catch
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.752"
+        x="451.9396"
+        y="509.6157"
+      >
+        ,
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="134.3994"
+        x="459.3316"
+        y="509.6157"
+      >
+        .catch(()&#160;=&gt;&#160;{})
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.752"
+        x="593.731"
+        y="509.6157"
+      >
+        ,
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="41.9998"
+        x="364.51"
+        y="528.6837"
+      >
+        ??&#160;[]
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="104.4116"
+        x="410.1498"
+        y="528.6837"
+      >
+        on an API result
+      </text>
+    </g>
+    <!--entity S4-->
+    <g
+      class="entity"
+      data-qualified-name="S.S4"
+      data-source-line="38"
+      id="ent0021"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="208.5233"
+        x="376.74"
+        y="622.9798"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="188.5233"
+        x="386.74"
+        y="647.9457"
+      >
+        mutations that write without
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="132.2715"
+        x="386.74"
+        y="667.0137"
+      >
+        awaiting finalization
+      </text>
+    </g>
+    <!--entity S5-->
+    <g
+      class="entity"
+      data-qualified-name="S.S5"
+      data-source-line="39"
+      id="ent0022"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="179.2914"
+        x="391.35"
+        y="741.1198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="159.2914"
+        x="401.35"
+        y="766.0857"
+      >
+        other React Flow callers,
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="148.8055"
+        x="401.35"
+        y="785.1537"
+      >
+        other graph serialisers
+      </text>
+    </g>
+    <!--entity S6-->
+    <g
+      class="entity"
+      data-qualified-name="S.S6"
+      data-source-line="40"
+      id="ent0023"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="201.2713"
+        x="380.36"
+        y="859.2598"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="90.0757"
+        x="390.36"
+        y="884.2257"
+      >
+        who validates
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="58.7997"
+        x="484.0756"
+        y="884.2257"
+      >
+        agentId
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="25.1159"
+        x="546.5154"
+        y="884.2257"
+      >
+        and
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="100.7996"
+        x="390.36"
+        y="903.2937"
+      >
+        agentVersion
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="72.3517"
+        x="491.1596"
+        y="903.2937"
+      >
+        , and when
+      </text>
+    </g>
+    <!--entity S7-->
+    <g
+      class="entity"
+      data-qualified-name="S.S7"
+      data-source-line="41"
+      id="ent0024"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="39.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="210.9173"
+        x="375.54"
+        y="1005.9898"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="125.3275"
+        x="385.54"
+        y="1030.9557"
+      >
+        what deletion does
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="23.9259"
+        x="514.5075"
+        y="1030.9557"
+      >
+        not
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="34.3839"
+        x="542.0734"
+        y="1030.9557"
+      >
+        undo
+      </text>
+    </g>
+    <!--entity S8-->
+    <g
+      class="entity"
+      data-qualified-name="S.S8"
+      data-source-line="42"
+      id="ent0025"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #1565c0; stroke-width: 1.5"
+        width="167.7974"
+        x="397.1"
+        y="1152.7298"
+      />
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="67.1997"
+        x="407.1"
+        y="1177.6957"
+      >
+        slice(0,
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.752"
+        x="474.2997"
+        y="1177.6957"
+      >
+        ,
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="41.9998"
+        x="481.6917"
+        y="1177.6957"
+      >
+        take(
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.752"
+        x="523.6915"
+        y="1177.6957"
+      >
+        ,
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="147.7974"
+        x="407.1"
+        y="1196.7637"
+      >
+        every hard-coded limit
+      </text>
+    </g>
+    <!--entity F6-->
+    <g
+      class="entity"
+      data-qualified-name="R.F6"
+      data-source-line="53"
+      id="ent0034"
+    >
+      <rect
+        fill="#FFFDE7"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #f9a825; stroke-width: 1.5"
+        width="193.4033"
+        x="695.3"
+        y="346.3198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="705.3"
+        y="371.2857"
+      >
+        F6
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="154.0694"
+        x="724.6339"
+        y="371.2857"
+      >
+        names unbounded into
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="101.7796"
+        x="705.3"
+        y="390.3537"
+      >
+        a 200px card &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="24.9059"
+        x="810.7196"
+        y="390.3537"
+      >
+        low
+      </text>
+    </g>
+    <!--entity C2-->
+    <g
+      class="entity"
+      data-qualified-name="R.C2"
+      data-source-line="54"
+      id="ent0035"
+    >
+      <rect
+        fill="#E8F5E9"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #2e7d32; stroke-width: 1.5"
+        width="183.3233"
+        x="695.34"
+        y="484.6498"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="37.2399"
+        x="705.34"
+        y="509.6157"
+      >
+        clean
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="13.9999"
+        x="746.2198"
+        y="509.6157"
+      >
+        &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="monospace"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="75.5997"
+        x="763.8598"
+        y="509.6157"
+      >
+        className
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="25.5639"
+        x="843.0994"
+        y="509.6157"
+      >
+        was
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="111.9016"
+        x="705.34"
+        y="528.6837"
+      >
+        the only instance
+      </text>
+    </g>
+    <!--entity F1-->
+    <g
+      class="entity"
+      data-qualified-name="R.F1"
+      data-source-line="55"
+      id="ent0036"
+    >
+      <rect
+        fill="#FFEBEE"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #c62828; stroke-width: 1.5"
+        width="182.1333"
+        x="694.93"
+        y="622.9798"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="704.93"
+        y="647.9457"
+      >
+        F1
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="121.8835"
+        x="724.2639"
+        y="647.9457"
+      >
+        a failed delete told
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="127.2595"
+        x="704.93"
+        y="667.0137"
+      >
+        the user nothing &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="31.2339"
+        x="835.8295"
+        y="667.0137"
+      >
+        high
+      </text>
+    </g>
+    <!--entity F2-->
+    <g
+      class="entity"
+      data-qualified-name="R.F2"
+      data-source-line="56"
+      id="ent0037"
+    >
+      <rect
+        fill="#FFF3E0"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #ef6c00; stroke-width: 1.5"
+        width="171.4514"
+        x="700.27"
+        y="741.1198"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="710.27"
+        y="766.0857"
+      >
+        F2
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="117.2495"
+        x="729.6039"
+        y="766.0857"
+      >
+        no delete awaited
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="90.0196"
+        x="710.27"
+        y="785.1537"
+      >
+        finalization &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="57.7918"
+        x="803.9296"
+        y="785.1537"
+      >
+        medium
+      </text>
+    </g>
+    <!--entity C5-->
+    <g
+      class="entity"
+      data-qualified-name="R.C5"
+      data-source-line="57"
+      id="ent0038"
+    >
+      <rect
+        fill="#E8F5E9"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #2e7d32; stroke-width: 1.5"
+        width="191.9193"
+        x="695.04"
+        y="859.2598"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="37.2399"
+        x="705.04"
+        y="884.2257"
+      >
+        clean
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="130.4935"
+        x="745.9198"
+        y="884.2257"
+      >
+        &#8212; one editor exists,
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="171.9193"
+        x="705.04"
+        y="903.2937"
+      >
+        so the lint rule covers it all
+      </text>
+    </g>
+    <!--entity F34-->
+    <g
+      class="entity"
+      data-qualified-name="R.F34"
+      data-source-line="58"
+      id="ent0039"
+    >
+      <rect
+        fill="#FFEBEE"
+        height="96.2717"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #c62828; stroke-width: 1.5"
+        width="212.2612"
+        x="694.87"
+        y="977.3898"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="704.87"
+        y="1002.3557"
+      >
+        F3
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="157.6674"
+        x="724.2039"
+        y="1002.3557"
+      >
+        deleting an agent broke
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="143.1774"
+        x="704.87"
+        y="1021.4237"
+      >
+        every team using it &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="31.2339"
+        x="851.6874"
+        y="1021.4237"
+      >
+        high
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="704.87"
+        y="1040.4916"
+      >
+        F4
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="139.9715"
+        x="724.2039"
+        y="1040.4916"
+      >
+        a team pins a version
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="130.8295"
+        x="704.87"
+        y="1059.5595"
+      >
+        nothing rechecks &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="57.7918"
+        x="839.3395"
+        y="1059.5595"
+      >
+        medium
+      </text>
+    </g>
+    <!--entity F57-->
+    <g
+      class="entity"
+      data-qualified-name="R.F57"
+      data-source-line="59"
+      id="ent0040"
+    >
+      <rect
+        fill="#FFF3E0"
+        height="96.2717"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #ef6c00; stroke-width: 1.5"
+        width="233.6112"
+        x="695.19"
+        y="1133.6598"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="705.19"
+        y="1158.6257"
+      >
+        F5
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="131.2775"
+        x="724.5239"
+        y="1158.6257"
+      >
+        a deleted team kept
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="152.1794"
+        x="705.19"
+        y="1177.6937"
+      >
+        answering mentions &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="57.7918"
+        x="861.0094"
+        y="1177.6937"
+      >
+        medium
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="15.6939"
+        x="705.19"
+        y="1196.7616"
+      >
+        F7
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="165.8714"
+        x="724.5239"
+        y="1196.7616"
+      >
+        an Unpublish button that
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="93.8136"
+        x="705.19"
+        y="1215.8295"
+      >
+        did nothing &#8212;
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="57.7918"
+        x="802.6436"
+        y="1215.8295"
+      >
+        medium
+      </text>
+    </g>
+    <!--entity C8-->
+    <g
+      class="entity"
+      data-qualified-name="R.C8"
+      data-source-line="60"
+      id="ent0041"
+    >
+      <rect
+        fill="#E8F5E9"
+        height="58.1358"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #2e7d32; stroke-width: 1.5"
+        width="182.9453"
+        x="707.53"
+        y="1289.9298"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="37.2399"
+        x="717.53"
+        y="1314.8957"
+      >
+        clean
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="122.0655"
+        x="758.4098"
+        y="1314.8957"
+      >
+        &#8212; every fixed limit
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="162.5534"
+        x="717.53"
+        y="1333.9637"
+      >
+        bounds a bounded thing
+      </text>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="GMN65"
+      data-source-line="89"
+      id="ent0066"
+    >
+      <path
+        d="M985.36,464.4498 L985.36,562.9799 L1478.6374,562.9799 L1478.6374,474.4498 L1468.6374,464.4498 L985.36,464.4498"
+        fill="#E3F2FD"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1468.6374,464.4498 L1468.6374,474.4498 L1478.6374,474.4498 L1468.6374,464.4498"
+        fill="#E3F2FD"
+        style="stroke: #181818; stroke-width: 1"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="316.2772"
+        x="991.36"
+        y="483.3468"
+      >
+        One false positive, recorded so it is not re-raised.
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="86.9571"
+        x="1311.0172"
+        y="483.3468"
+      >
+        The backend's
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="156.0001"
+        x="991.36"
+        y="501.0528"
+      >
+        .unwrap_or_default()
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="271.8692"
+        x="1150.7401"
+        y="501.0528"
+      >
+        on list reads has F1's exact shape &#8212; a failure
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="277.7842"
+        x="991.36"
+        y="518.7589"
+      >
+        becoming an empty success &#8212; and is correct:
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="124.8"
+        x="1272.5242"
+        y="518.7589"
+      >
+        get_data_or_none
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="62.9331"
+        x="1400.7043"
+        y="518.7589"
+      >
+        maps only
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="140.4001"
+        x="991.36"
+        y="536.4649"
+      >
+        ReturnValueMissing
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="12.558"
+        x="1135.1401"
+        y="536.4649"
+      >
+        to
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="31.2"
+        x="1151.0781"
+        y="536.4649"
+      >
+        None
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="234.4812"
+        x="1185.6581"
+        y="536.4649"
+      >
+        and propagates every real error, so an
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="278.9932"
+        x="991.36"
+        y="554.1709"
+      >
+        empty list can never stand in for a failed read.
+      </text>
+    </g>
+    <!--link P1 to P2--><!--link P2 to P3--><!--link P3 to P4--><!--link P4 to P5--><!--link P5 to P6--><!--link P6 to P7--><!--link P7 to P8--><!--link S1 to S2--><!--link S2 to S3--><!--link S3 to S4--><!--link S4 to S5--><!--link S5 to S6--><!--link S6 to S7--><!--link S7 to S8--><!--link F6 to C2--><!--link C2 to F1--><!--link F1 to F2--><!--link F2 to C5--><!--link C5 to F34--><!--link F34 to F57--><!--link F57 to C8--><!--link P1 to S1-->
+    <g
+      class="link"
+      data-entity-1="ent0002"
+      data-entity-2="ent0018"
+      data-link-type="dependency"
+      data-source-line="70"
+      id="lnk49"
+    >
+      <path
+        d="M261.25,158.5698 C273.95,163.0098 286.85,167.6298 299,172.1798 C337.18,186.4698 374.752,201.6331 408.892,215.8031"
+        fill="none"
+        id="P1-to-S1"
+        style="stroke: #f9a825; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#F9A825"
+        points="413.51,217.7198,406.7309,210.5753,408.892,215.8031,403.6642,217.9641,413.51,217.7198"
+        style="
+          stroke: #f9a825;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P2 to S2-->
+    <g
+      class="link"
+      data-entity-1="ent0003"
+      data-entity-2="ent0019"
+      data-link-type="dependency"
+      data-source-line="71"
+      id="lnk50"
+    >
+      <path
+        d="M236.28,263.1198 C256.28,269.0298 278.89,276.3298 299,284.3198 C344.05,302.2098 388.7913,324.5299 424.6513,343.5199"
+        fill="none"
+        id="P2-to-S2"
+        style="stroke: #2e7d32; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#2E7D32"
+        points="429.07,345.8598,422.9884,338.113,424.6513,343.5199,419.2444,345.1828,429.07,345.8598"
+        style="
+          stroke: #2e7d32;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P3 to S3-->
+    <g
+      class="link"
+      data-entity-1="ent0004"
+      data-entity-2="ent0020"
+      data-link-type="dependency"
+      data-source-line="72"
+      id="lnk51"
+    >
+      <path
+        d="M243.52,404.7998 C294.78,428.0898 362.4377,458.8417 413.7477,482.1517"
+        fill="none"
+        id="P3-to-S3"
+        style="stroke: #c62828; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#C62828"
+        points="418.3,484.2198,411.7604,476.8555,413.7477,482.1517,408.4515,484.1391,418.3,484.2198"
+        style="
+          stroke: #c62828;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P4 to S4-->
+    <g
+      class="link"
+      data-entity-1="ent0005"
+      data-entity-2="ent0021"
+      data-link-type="dependency"
+      data-source-line="73"
+      id="lnk52"
+    >
+      <path
+        d="M245.9,543.1298 C296.65,566.4298 363.5859,597.1538 414.3859,620.4738"
+        fill="none"
+        id="P4-to-S4"
+        style="stroke: #ef6c00; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#EF6C00"
+        points="418.93,622.5598,412.4194,615.1698,414.3859,620.4738,409.0819,622.4403,418.93,622.5598"
+        style="
+          stroke: #ef6c00;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P5 to S5-->
+    <g
+      class="link"
+      data-entity-1="ent0006"
+      data-entity-2="ent0022"
+      data-link-type="dependency"
+      data-source-line="74"
+      id="lnk53"
+    >
+      <path
+        d="M257.03,681.6098 C302.98,699.5798 357.3936,720.8484 403.3336,738.8184"
+        fill="none"
+        id="P5-to-S5"
+        style="stroke: #2e7d32; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#2E7D32"
+        points="407.99,740.6398,401.0656,733.6361,403.3336,738.8184,398.1513,741.0864,407.99,740.6398"
+        style="
+          stroke: #2e7d32;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P6 to S6-->
+    <g
+      class="link"
+      data-entity-1="ent0007"
+      data-entity-2="ent0023"
+      data-link-type="dependency"
+      data-source-line="75"
+      id="lnk54"
+    >
+      <path
+        d="M253.26,799.7498 C299.98,817.7098 355.3831,839.0154 402.0931,856.9754"
+        fill="none"
+        id="P6-to-S6"
+        style="stroke: #c62828; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#C62828"
+        points="406.76,858.7698,399.7951,851.8063,402.0931,856.9754,396.924,859.2734,406.76,858.7698"
+        style="
+          stroke: #c62828;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P7 to S7-->
+    <g
+      class="link"
+      data-entity-1="ent0008"
+      data-entity-2="ent0024"
+      data-link-type="dependency"
+      data-source-line="76"
+      id="lnk55"
+    >
+      <path
+        d="M253.73,917.8298 C310,944.2498 387.6037,980.6855 436.1837,1003.4855"
+        fill="none"
+        id="P7-to-S7"
+        style="stroke: #ef6c00; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#EF6C00"
+        points="440.71,1005.6098,434.2621,998.165,436.1837,1003.4855,430.8632,1005.4071,440.71,1005.6098"
+        style="
+          stroke: #ef6c00;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link P8 to S8-->
+    <g
+      class="link"
+      data-entity-1="ent0009"
+      data-entity-2="ent0025"
+      data-link-type="dependency"
+      data-source-line="77"
+      id="lnk56"
+    >
+      <path
+        d="M246.97,1054.9998 C298.64,1082.7798 372.3661,1122.4022 423.9261,1150.1222"
+        fill="none"
+        id="P8-to-S8"
+        style="stroke: #2e7d32; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#2E7D32"
+        points="428.33,1152.4898,422.2971,1144.7049,423.9261,1150.1222,418.5089,1151.7512,428.33,1152.4898"
+        style="
+          stroke: #2e7d32;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S1 to F6-->
+    <g
+      class="link"
+      data-entity-1="ent0018"
+      data-entity-2="ent0034"
+      data-link-type="dependency"
+      data-source-line="79"
+      id="lnk57"
+    >
+      <path
+        d="M617.98,276.7398 C625.15,279.0898 632.2,281.6198 639,284.3198 C679.39,300.3698 717.535,323.2934 747.405,343.1334"
+        fill="none"
+        id="S1-to-F6"
+        style="stroke: #f9a825; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#F9A825"
+        points="751.57,345.8998,746.2862,337.5883,747.405,343.1334,741.8599,344.2522,751.57,345.8998"
+        style="
+          stroke: #f9a825;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S2 to C2-->
+    <g
+      class="link"
+      data-entity-1="ent0019"
+      data-entity-2="ent0035"
+      data-link-type="dependency"
+      data-source-line="80"
+      id="lnk58"
+    >
+      <path
+        d="M544.78,404.7998 C597.06,428.0898 666.1426,458.8753 718.4726,482.1853"
+        fill="none"
+        id="S2-to-C2"
+        style="stroke: #2e7d32; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#2E7D32"
+        points="723.04,484.2198,716.4463,476.9038,718.4726,482.1853,713.1911,484.2116,723.04,484.2198"
+        style="
+          stroke: #2e7d32;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S3 to F1-->
+    <g
+      class="link"
+      data-entity-1="ent0020"
+      data-entity-2="ent0036"
+      data-link-type="dependency"
+      data-source-line="81"
+      id="lnk59"
+    >
+      <path
+        d="M544.57,543.1298 C596.68,566.4298 665.5254,597.199 717.6854,620.519"
+        fill="none"
+        id="S3-to-F1"
+        style="stroke: #c62828; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#C62828"
+        points="722.25,622.5598,715.6664,615.2348,717.6854,620.519,712.4012,622.5381,722.25,622.5598"
+        style="
+          stroke: #c62828;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S4 to F2-->
+    <g
+      class="link"
+      data-entity-1="ent0021"
+      data-entity-2="ent0037"
+      data-link-type="dependency"
+      data-source-line="82"
+      id="lnk60"
+    >
+      <path
+        d="M556,681.6098 C603.18,699.5798 659.1776,720.8898 706.3476,738.8598"
+        fill="none"
+        id="S4-to-F2"
+        style="stroke: #ef6c00; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#EF6C00"
+        points="711.02,740.6398,704.0337,733.6978,706.3476,738.8598,701.1856,741.1737,711.02,740.6398"
+        style="
+          stroke: #ef6c00;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S5 to C5-->
+    <g
+      class="link"
+      data-entity-1="ent0022"
+      data-entity-2="ent0038"
+      data-link-type="dependency"
+      data-source-line="83"
+      id="lnk61"
+    >
+      <path
+        d="M557.23,799.7498 C605.19,817.7098 662.1577,839.056 710.1077,857.016"
+        fill="none"
+        id="S5-to-C5"
+        style="stroke: #2e7d32; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#2E7D32"
+        points="714.79,858.7698,707.7648,851.8671,710.1077,857.016,704.9588,859.3588,714.79,858.7698"
+        style="
+          stroke: #2e7d32;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S6 to F34-->
+    <g
+      class="link"
+      data-entity-1="ent0023"
+      data-entity-2="ent0039"
+      data-link-type="dependency"
+      data-source-line="84"
+      id="lnk62"
+    >
+      <path
+        d="M548.47,917.8298 C590.83,935.7298 641.7643,957.2438 689.9743,977.6138"
+        fill="none"
+        id="S6-to-F34"
+        style="stroke: #c62828; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#C62828"
+        points="694.58,979.5598,687.8465,972.3723,689.9743,977.6138,684.7328,979.7415,694.58,979.5598"
+        style="
+          stroke: #c62828;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S7 to F57-->
+    <g
+      class="link"
+      data-entity-1="ent0024"
+      data-entity-2="ent0040"
+      data-link-type="dependency"
+      data-source-line="85"
+      id="lnk63"
+    >
+      <path
+        d="M521.59,1045.4398 C568.2,1067.1698 641.8782,1101.5073 705.3982,1131.1173"
+        fill="none"
+        id="S7-to-F57"
+        style="stroke: #ef6c00; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#EF6C00"
+        points="709.93,1133.2298,703.4628,1125.8018,705.3982,1131.1173,700.0827,1133.0527,709.93,1133.2298"
+        style="
+          stroke: #ef6c00;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link S8 to C8-->
+    <g
+      class="link"
+      data-entity-1="ent0025"
+      data-entity-2="ent0041"
+      data-link-type="dependency"
+      data-source-line="86"
+      id="lnk64"
+    >
+      <path
+        d="M548.05,1211.3098 C602.17,1234.3198 673.3487,1264.5733 727.4387,1287.5733"
+        fill="none"
+        id="S8-to-C8"
+        style="stroke: #2e7d32; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#2E7D32"
+        points="732.04,1289.5298,725.3229,1282.327,727.4387,1287.5733,722.1924,1289.6891,732.04,1289.5298"
+        style="
+          stroke: #2e7d32;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+    </g>
+    <!--link R to GMN65-->
+    <g
+      class="link"
+      data-entity-1="ent0033"
+      data-entity-2="ent0066"
+      data-link-type="association"
+      data-source-line="89"
+      id="lnk67"
+    >
+      <path
+        d="M961.1407,380.3649 C961.2584,380.4225 961.3774,380.4806 961.4975,380.5394 C961.7378,380.6568 961.9827,380.7765 962.2323,380.8984 C962.7314,381.1424 963.249,381.3953 963.7846,381.6571 C965.9271,382.7042 968.3584,383.8924 971.0506,385.2081 C981.8194,390.4707 996.7625,397.7729 1014.0975,406.2436 C1048.7675,423.1848 1093.005,444.7998 1132.55,464.1198"
+        fill="none"
+        id="R-GMN65"
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 7, 7"
+      />
+    </g>
+    <g class="legend" data-source-line="96">
+      <rect
+        fill="none"
+        height="147.4754"
+        rx="7.5"
+        ry="7.5"
+        style="stroke: #000000; stroke-width: 1"
+        width="230.8631"
+        x="1243.7742"
+        y="1392.0698"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="44.2538"
+        x="1252.4142"
+        y="1414.0357"
+      >
+        colour
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="61.6278"
+        x="1303.948"
+        y="1414.0357"
+      >
+        meaning
+      </text>
+      <rect
+        fill="#FFEBEE"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1248.7742"
+        y="1418.1377"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1248.7742"
+        y="1433.1037"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="84.3637"
+        x="1303.948"
+        y="1433.1037"
+      >
+        high severity
+      </text>
+      <rect
+        fill="#FFF3E0"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1248.7742"
+        y="1437.2056"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1248.7742"
+        y="1452.1716"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="109.7876"
+        x="1303.948"
+        y="1452.1716"
+      >
+        medium severity
+      </text>
+      <rect
+        fill="#FFFDE7"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1248.7742"
+        y="1456.2736"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1248.7742"
+        y="1471.2395"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="77.9237"
+        x="1303.948"
+        y="1471.2395"
+      >
+        low severity
+      </text>
+      <rect
+        fill="#E8F5E9"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1248.7742"
+        y="1475.3415"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1248.7742"
+        y="1490.3074"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="162.0494"
+        x="1303.948"
+        y="1490.3074"
+      >
+        searched, nothing found
+      </text>
+      <rect
+        fill="#E3F2FD"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1248.7742"
+        y="1494.4094"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1248.7742"
+        y="1509.3753"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="104.1876"
+        x="1303.948"
+        y="1509.3753"
+      >
+        the search itself
+      </text>
+      <rect
+        fill="#ECEFF1"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1248.7742"
+        y="1513.4773"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1248.7742"
+        y="1528.4432"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="161.4474"
+        x="1303.948"
+        y="1528.4432"
+      >
+        the pattern it came from
+      </text>
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1399.0698"
+        y2="1399.0698"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1418.1377"
+        y2="1418.1377"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1437.2056"
+        y2="1437.2056"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1456.2736"
+        y2="1456.2736"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1475.3415"
+        y2="1475.3415"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1494.4094"
+        y2="1494.4094"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1513.4773"
+        y2="1513.4773"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1469.6374"
+        y1="1532.5452"
+        y2="1532.5452"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1248.7742"
+        x2="1248.7742"
+        y1="1399.0698"
+        y2="1532.5452"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1300.308"
+        x2="1300.308"
+        y1="1399.0698"
+        y2="1532.5452"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1469.6374"
+        x2="1469.6374"
+        y1="1399.0698"
+        y2="1532.5452"
+      />
+    </g>
+    <?plantuml-src dLZTRkEs4hxNKn3AnMOD9ut_tNIR8dKij43FdaMKzgPUB1Y9jeH8f41IST9kWVCGvntE8vpxFagVfD-GKk9OsuNRxaKT_imt_3ZppL2ls98d6Kl5MYIM9GKtXgsrAfdD1DEYKjhstMyZkCR2tB8jDypMMegKvTAgFkCoPTkCOpilHV2AtVBaxfJTP5gqsuI1hMQFL3RBvUOhM5L6CAu5IpNVoZwx5GclQQW5isGKSB0fnRtGJDVIeRrSiLQrVBBh3EOopOt5NtLkCdvRmERQOZyTPCqJUnhOt6Bq1YxHdkV3kYCzU_t7V_xBHBx9BAkuXGLf-fYy5n8ERHlMp4g-CValudmmk2Z4sfuxSvvAOIpWuGGEVll8hWOdLrFs-_zP8gJLudoFMH2WIg1YWIRGSqyhPbhstdn1I1T1OEvoMN7DIyVsHXC52rKepOuYzz_E2hZ9wy96Ijgtk27sdIZkXSqJlhC6DALgIroiUM74piobrchRc1vF9fVJyVxaJPOdTrBWk8FJqSwa1ZbSRi3phm5ZtogT2hsxTe9HSgenFfoEXgDvy5iGF6yCUxrtbpSto-ktlPwx34U8fn4UuxOOA2kL31cYyXqxAd8fphsRNn4pvyl5Cee6peCNPg-6iBZE7t0n2Q-OaYkPm1VS2rDhLijROXIJXP0RctdpWx-qtx4-WVLK80YqIFihwSENLrMHYzGR6nvixFV_JK_7i6VoWjp3d8ArnvK45PmL_D55jii_YIne8jcZZ0vtUGe899Rb1IK3Jq48f04Km4vIQmriRtDykCs1itahJANk1ELGHd_agO3pq1b4urRfkrU6gQrab---zm2JlmkWaOZmBn6CaXSvvAHW9HqhKh52oGr84WzG1UCnfeTZZDaNZEw02B9R03mQAqg3QrNIwqcVG128YFlSjC4uEno1Oj52Bqsc2l2jSvkLbA4hUSmHvpezIPGBnhpCxMjlVluvymZLav-pF4s5V8-ybYU8DneUTeP7D3pg38zfUDmPffJ5zUmFJsbusXcUqV2iCzpDyNXvURtuRZV5gSY0s9eNnIF9lZjpt1nvC9bE5cVDaKVHCBhQpszAjqTMFR0mBFd3IUOqF0nnaM7O_h62zBDu4STzXZ1FxYZIDpoNnZx9hXC17p3nu2_1FmKTXhrtMbK6cEjS5EapnXfQnrVoEMHzQSgjQGI3sxm9eNXuA6PPMS9Ck4soCEpZvwdxVNpycdrzmNxzxJL6Lp8Cl_c6_VmUJYagf9HnC6DG73pUw42yihREIzEKQ0IiO5j4hQejCdlBS-jAIIvvaV-oSw3nWG2evU3aMY04M5IeBQIjA8HsEUUcDffN6Kgdpe60_pMND3dG_ZPJx1uxKsvHRyEGRw1ktwSW1kq5yUG6Ve9TSZriUnpH76DwC0pOIKKXY06MAc3rUZW18Xs1fRonsO76mj0KUIAEp_h-XYs_4yVkMdt8xUk4jpx_dFMu8nCnoKJSaOcOP2Bko4HCCX5tP28ccOWxCX6JJCGTcOX99kAEJCHTcRXUnZ_-SDFhkPDTVqB_ealwrots4KctvDHRFLTswlIe30tFpY0K2TXpyjFh8TuQZAYzwEZBo_bmqe14qTLojW-H58BBHi6GYDJzKRE5Y8AKKIKIo3be6UaBHzex-uismOVBsTLesDpEF9eil-mSmLUwDKSJaFgOecfNfDus-cRzr0BxOsIGkVOShNWjfiFvSDwUO_djSjd1eLg4QjOWk5mM0DdDvGQW56bUbor4UvHbD5sSdJrHDLgUVOuggg0mOrLRdH7EHhc-6DRGozJOu_eTGu8C5V34JGudRkHQCSf1UXr0zoYrsQr6HzAcZXLeLsj32m2oIzyAZaPZHxrRLE7-yFlUAyDAjfG3alJTV9AQqVXm-YSEoxEVUimxKP6gIhE5t06hXFzEV5zYELTdj5so7sLLktS7kwsjnOsHJg_mAahtWkIbevFPFxf4Jw9lfftqh7oI4LDjjZbGVtVppzrTrD671KdIeYD9hi-9EW8MqUgeitf1ahJeI1AkXfQFEX86AcXYqf6bXPCbrryTULLuVt818GrSRtNap-I6Xe7hguxyfRkXKU1wgYDFhniQ1wwVsjqu2LmljRjn6hW-QdVZB40B-7BZF0ZYFSUYQH3lEGO-upt7m6MyvnXuZFSS0uVndcF4Nxpd6L4Nxxa6rW84da0u81nBUc91lv_gKA_tRzT9u-N9AcNGFToBldleQ8eT20BICZVClsvED4V9JqyHVJVG2OeV8TDN1eRGzzHoYzxWWz8VcdVlyMlVxo0Th7lO69HAqaGyEyG3THXu_5R2HR8Ns5eBs7AlyKOpV8DbwYIXfwjRYOO07i53Iejp86-4_O1-WXCqlGo0MlBAEDbthbsxH_nFlAZ5lt93QeCbUB24uLk_d6nMw1hHXb9RujCA7XTCu9sj-qG4bx3btN47mfkl-JX2TSMzY5s7sLOAEl1f8Fm74X44XTZG7-xx0Ynz_1f7A5IjwLU9bAO3VwI9DqTUeIu-Cf92zza3VTxZyop90cQzX7ng7cKIyzI-xK_wTCTaywKbxJ_fal-Qqwvp4O9rBpwK656idrQu9q-pelb8Gz52twBybwoFT7f_x3y1?>
+  </g>
+</svg>

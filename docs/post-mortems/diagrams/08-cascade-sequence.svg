@@ -1,0 +1,2617 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="SEQUENCE"
+  height="1875px"
+  preserveAspectRatio="none"
+  style="width: 1317px; height: 1875px; background: #ffffff"
+  version="1.1"
+  viewBox="0 0 1317 1875"
+  width="1317px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <g class="title" data-source-line="4">
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="555.0138"
+        x="377.7271"
+        y="29.9659"
+      >
+        Deleting an agent &#8212; ask what it would break, then break only what
+        was agreed
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="11"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="50.9626"
+        x="399.5949"
+        y="58.8449"
+      >
+        restoring
+      </text>
+      <image
+        height="28"
+        width="253"
+        x="453.4175"
+        xlink:href="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI4IiB3aWR0aD0iMjUzIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiA+PCEtLUdlbmVyYXRlZCBieSB0aGUgQmF0aWsgR3JhcGhpY3MyRCBTVkcgR2VuZXJhdG9yLS0+PGRlZnMgaWQ9ImdlbmVyaWNEZWZzIgogIC8+PGcKICA+PGcgdHJhbnNmb3JtPSJzY2FsZSgyMCwyMCkgdHJhbnNsYXRlKDAuMiwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21zeTEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTQwLjcwMzEgLTYyLjc5NjkgTDM1Ljc5NjkgLTYyLjc5NjkgUTMzLjA5MzggLTM1IDIxLjUgLTYuMDkzOCBRMjAuMDkzOCAtMi43MDMxIDE5LjcwMzEgLTEuOTA2MiBRMTguMjAzMSAwLjI5NjkgMTQuNSAxLjc5NjkgUTEzLjI5NjkgMi4yMDMxIDEyLjU5MzggMi4yMDMxIFExMS41IDIuMjAzMSAxMS41IDEuNSBRMTEuNSAxLjIwMzEgMTIuNTkzOCAtMS40MDYyIFEyNC41OTM4IC0zMSAyNy41OTM4IC02Mi43OTY5IFExNC41OTM4IC02Mi4yMDMxIDExLjU5MzggLTU2LjUgUTExLjA5MzggLTU1LjU5MzggMTAuNTkzOCAtNTQgUTkuNSAtNTAuOTA2MiA0Ljc5NjkgLTQ5LjI5NjkgUTMuNTkzOCAtNDguOTA2MiAzIC00OC45MDYyIFEyLjc5NjkgLTQ4LjkwNjIgMiAtNDkuMjAzMSBRMy41OTM4IC01Ny43OTY5IDE2LjIwMzEgLTY0LjIwMzEgUTI0LjA5MzggLTY4IDM1LjQwNjIgLTY4LjI5NjkgTDQxLjQwNjIgLTY4LjI5NjkgUTU3LjkwNjIgLTY4LjI5NjkgNjQgLTY2LjQwNjIgUTczLjIwMzEgLTYzLjcwMzEgNzMuMjAzMSAtNTUuNzk2OSBRNzMuMjAzMSAtNDUuNzk2OSA2Mi43OTY5IC0zNy4yOTY5IFE1NyAtMzIuNzAzMSA0OSAtMjkuNSBRNTEuNSAtMjYuNTkzOCA1NS40MDYyIC0xNy43OTY5IFE1OS43OTY5IC03LjUgNjIuNzk2OSAtNC45MDYyIFE2NC41OTM4IC0zLjI5NjkgNjYuNTkzOCAtMy4yOTY5IFE3MS41OTM4IC0zLjI5NjkgNzUuMDkzOCAtOC4yMDMxIFE3Ny45MDYyIC0xMi4yOTY5IDgyLjU5MzggLTEzIFE4My43MDMxIC0xMyA4My43MDMxIC0xMi4yOTY5IFE4My43MDMxIC0xMC41OTM4IDc5LjIwMzEgLTYuNSBRNjkuMjk2OSAxLjcwMzEgNjAgMi4yMDMxIFE1NSAyLjIwMzEgNTEuNDA2MiAtMy43OTY5IFE0OS43MDMxIC02LjUgNDcuMjk2OSAtMTIuMjAzMSBRNDEuNzk2OSAtMjQuNSAzOC41OTM4IC0yNi41IEwzOC41IC0yNi41IFEzNy41OTM4IC0yNy4wOTM4IDM1LjU5MzggLTI3LjQwNjIgUTM1LjA5MzggLTI3LjQwNjIgMzUuMDkzOCAtMjggUTM1LjA5MzggLTI5LjIwMzEgMzcuNzk2OSAtMzEgUTQwLjI5NjkgLTMyLjcwMzEgNDMuNDA2MiAtMzIuNzk2OSBRNTcgLTMzLjI5NjkgNjIuNSAtNDMuNDA2MiBRNjQuNzAzMSAtNDcuNSA2NC43MDMxIC01MS41IFE2NC43MDMxIC01OC41OTM4IDU1LjkwNjIgLTYxLjIwMzEgTDU1Ljc5NjkgLTYxLjIwMzEgUTUwLjIwMzEgLTYyLjc5NjkgNDAuNzAzMSAtNjIuNzk2OSBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoMS4zMjUzLDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXN5MTAmYXBvczs7IGNvbG9yLWludGVycG9sYXRpb246bGluZWFyUkdCOyIKICAgID48cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNNjguNzAzMSAtNDIuNDA2MiBMOSAtNDIuNDA2MiBRNS43OTY5IC00Mi40MDYyIDUuNTkzOCAtNDQuNDA2MiBRNS41OTM4IC00Ni40MDYyIDguOTA2MiAtNDYuNDA2MiBMNjguNzk2OSAtNDYuNDA2MiBRNzIgLTQ2LjQwNjIgNzIuMDkzOCAtNDQuNDA2MiBRNzIuMDkzOCAtNDIuNDA2MiA2OC43MDMxIC00Mi40MDYyIFpNNjguNzk2OSAtMy41OTM4IEw4LjkwNjIgLTMuNTkzOCBRNS43MDMxIC0zLjU5MzggNS41OTM4IC01LjU5MzggUTUuNTkzOCAtNy41OTM4IDkgLTcuNTkzOCBMNjguNzAzMSAtNy41OTM4IFE3MS45MDYyIC03LjU5MzggNzIuMDkzOCAtNS41OTM4IFE3Mi4wOTM4IC0zLjU5MzggNjguNzk2OSAtMy41OTM4IFpNNjguNzk2OSAtMjMgTDguOTA2MiAtMjMgUTUuNzAzMSAtMjMgNS41OTM4IC0yNSBRNS41OTM4IC0yNyA4LjkwNjIgLTI3IEw2OC43OTY5IC0yNyBRNzIgLTI3IDcyLjA5MzggLTI1IFE3Mi4wOTM4IC0yMyA2OC43OTY5IC0yMyBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoMi4zODA4LDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXN5MTAmYXBvczs7IGNvbG9yLWludGVycG9sYXRpb246bGluZWFyUkdCOyIKICAgID48cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNNTUuMDkzOCAtNjUuNTkzOCBMMjkuOTA2MiAwLjIwMzEgUTI5LjIwMzEgMi4wOTM4IDI3Ljc5NjkgMi4yMDMxIFEyNi41IDIuMjAzMSAyNS45MDYyIDAuNzAzMSBRMjUuNzk2OSAwLjUgMjUuNTkzOCAwIEwwLjUgLTY1LjcwMzEgUTAgLTY2LjkwNjIgMCAtNjcuNDA2MiBRMCAtNjguOTA2MiAxLjU5MzggLTY5LjI5NjkgUTEuNzk2OSAtNjkuNDA2MiAyIC02OS40MDYyIFEzLjI5NjkgLTY5LjQwNjIgMy45MDYyIC02Ny45MDYyIFE0IC02Ny43MDMxIDQuMjAzMSAtNjcuMjAzMSBMMTIuNTkzOCAtNDUuMDkzOCBMNDMgLTQ1LjA5MzggTDUxLjUgLTY3LjQwNjIgUTUyLjI5NjkgLTY5LjI5NjkgNTMuNTkzOCAtNjkuNDA2MiBRNTUuMjk2OSAtNjkuNDA2MiA1NS41OTM4IC02Ny40MDYyIFE1NS41OTM4IC02Ni43OTY5IDU1LjA5MzggLTY1LjU5MzggWk0xNC4yMDMxIC00MS4wOTM4IEwyNy43OTY5IC01LjUgTDQxLjQwNjIgLTQxLjA5MzggTDE0LjIwMzEgLTQxLjA5MzggWiIKICAgIC8+PC9nCiAgICA+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMjAsMCwwLDIwLDAsMCkgdHJhbnNsYXRlKDIuOTM2NCwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21taTEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTIwLjU5MzggLTQwIEwxMy4yMDMxIC0xMC41IFExMi41OTM4IC04IDEyLjU5MzggLTUuNzAzMSBRMTIuNTkzOCAtMS4wOTM4IDE1LjcwMzEgLTEuMDkzOCBRMjIuMjk2OSAtMS4wOTM4IDI3LjI5NjkgLTEwLjc5NjkgTDI4LjcwMzEgLTEzLjkwNjIgUTI5LjI5NjkgLTE1LjIwMzEgMzAuMjAzMSAtMTUuMjk2OSBRMzEuNDA2MiAtMTUuMjk2OSAzMS40MDYyIC0xNC4yOTY5IFEzMS40MDYyIC0xMyAyOC43OTY5IC04LjU5MzggUTIzIDEuMDkzOCAxNS41IDEuMDkzOCBROS43MDMxIDEuMDkzOCA3LjI5NjkgLTMuNzAzMSBRNi4yOTY5IC01LjcwMzEgNi4yOTY5IC04LjA5MzggUTYuMjk2OSAtMTAgMTIuNDA2MiAtMzQgTDEzLjkwNjIgLTQwIEw1LjA5MzggLTQwIFEyLjU5MzggLTQwIDIuNDA2MiAtNDAuNzk2OSBMMi4yOTY5IC00MC43OTY5IEwyLjI5NjkgLTQxLjIwMzEgUTIuMjk2OSAtNDIuOTA2MiAzLjkwNjIgLTQzLjA5MzggTDUuMjk2OSAtNDMuMDkzOCBMMTQuNzAzMSAtNDMuMDkzOCBMMTguNTkzOCAtNTkgUTE5LjUgLTYyLjUgMjIuNTkzOCAtNjIuNTkzOCBRMjUuMjAzMSAtNjIuNTkzOCAyNS41IC01OS45MDYyIFEyNS41IC01OS4yOTY5IDIxLjQwNjIgLTQzLjA5MzggTDMwLjIwMzEgLTQzLjA5MzggUTMyLjc5NjkgLTQzLjA5MzggMzMgLTQyIFEzMyAtNDAuMjAzMSAzMS40MDYyIC00MCBMMzEuMjk2OSAtNDAgTDMwIC00MCBMMjAuNTkzOCAtNDAgWiIKICAgIC8+PC9nCiAgICA+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMjAsMCwwLDIwLDAsMCkgdHJhbnNsYXRlKDMuNTc1MywwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21zeTEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTU1IC0yMyBMNTUgLTIzIEwxMi40MDYyIC0yMyBRMTMuNDA2MiAtMTEuNzk2OSAyMi41OTM4IC01LjIwMzEgUTI5LjcwMzEgMCAzOS4wOTM4IDAgTDU1IDAgUTU4LjIwMzEgMCA1OC4yOTY5IDIgUTU4LjI5NjkgNCA1NSA0IEwzOC43OTY5IDQgUTI2LjIwMzEgNCAxNy4yOTY5IC00LjQwNjIgUTguMjk2OSAtMTIuOTA2MiA4LjI5NjkgLTI1IFE4LjI5NjkgLTM3LjcwMzEgMTcuOTA2MiAtNDYuMjAzMSBRMjYuNzk2OSAtNTQgMzguNzAzMSAtNTQgTDU1IC01NCBRNTguMjAzMSAtNTQgNTguMjk2OSAtNTIgUTU4LjI5NjkgLTUwIDU1IC01MCBMMzkgLTUwIFEyNy4yOTY5IC01MCAxOS41IC00Mi4yMDMxIFExMy4yMDMxIC0zNS45MDYyIDEyLjQwNjIgLTI3IEw1NSAtMjcgUTU4LjIwMzEgLTI3IDU4LjI5NjkgLTI1IFE1OC4yOTY5IC0yMyA1NSAtMjMgWiIKICAgIC8+PC9nCiAgICA+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMjAsMCwwLDIwLDAsMCkgdHJhbnNsYXRlKDQuNTE5NywwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21taTEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTQyLjcwMzEgLTYwLjcwMzEgTDI5LjQwNjIgLTcuNTkzOCBRMjkgLTYuMDkzOCAyOSAtNS41IFEyOSAtNCAzMC41OTM4IC0zLjU5MzggTDMwLjcwMzEgLTMuNTkzOCBRMzEuNDA2MiAtMy40MDYyIDMyLjcwMzEgLTMuMjk2OSBRMzUuMjk2OSAtMy4wOTM4IDM5LjA5MzggLTMuMDkzOCBRNDIuMjAzMSAtMy4wOTM4IDQyLjQwNjIgLTIuNSBRNDIuNSAtMi4yOTY5IDQyLjUgLTIgUTQyLjA5MzggLTAuMDkzOCA0MC4yOTY5IDAgTDMxLjcwMzEgLTAuMjAzMSBMMzEuNTkzOCAtMC4yMDMxIEwyMy41IC0wLjI5NjkgTDIzLjI5NjkgLTAuMjk2OSBMMTUgLTAuMjAzMSBMMTQuNzk2OSAtMC4yMDMxIEw2LjcwMzEgMCBMNi41OTM4IDAgUTQuOTA2MiAwIDQuOTA2MiAtMS4yMDMxIFE0LjkwNjIgLTIuNzAzMSA2IC0zIFE2LjcwMzEgLTMuMDkzOCA5LjA5MzggLTMuMDkzOCBRMTggLTMuMDkzOCAxOS43MDMxIC00Ljc5NjkgUTIwLjI5NjkgLTUuNDA2MiAyMC43MDMxIC02LjU5MzggUTIwLjcwMzEgLTYuNzk2OSAyMC43OTY5IC03LjA5MzggTDIwLjc5NjkgLTcuMjk2OSBMMjAuOTA2MiAtNy4yOTY5IEwyMC45MDYyIC03LjQwNjIgUTIwLjkwNjIgLTcuNSAyMSAtNy45MDYyIEwzNC40MDYyIC02MS4yOTY5IFEzNC43OTY5IC02Mi41IDM0Ljc5NjkgLTYzLjM5MDYgUTM0Ljc5NjkgLTY0LjI5NjkgMzMuOTA2MiAtNjQuNSBRMzMuMjk2OSAtNjQuNTkzOCAzMiAtNjQuNTkzOCBMMjguMDkzOCAtNjQuNTkzOCBRMTcuNzk2OSAtNjQuNTkzOCAxNCAtNjIuMjk2OSBRMTEuOTA2MiAtNjEuMDkzOCAxMC4yOTY5IC01OC41OTM4IEwxMC4yMDMxIC01OC41IEwxMC4yMDMxIC01OC40MDYyIEwxMC4wOTM4IC01OC40MDYyIFE4IC01NS4wOTM4IDUuMjk2OSAtNDcuMjk2OSBRNC41OTM4IC00NS40MDYyIDQuMDkzOCAtNDUuMjk2OSBRMy45MDYyIC00NS4yMDMxIDMuNTkzOCAtNDUuMjAzMSBRMi40MDYyIC00NS4yMDMxIDIuNDA2MiAtNDYuMjk2OSBRMi40MDYyIC00Ni45MDYyIDMgLTQ4LjA5MzggTDkgLTY1LjcwMzEgUTkuNTkzOCAtNjcuNDA2MiAxMC40MDYyIC02Ny41OTM4IFExMC45MDYyIC02Ny43MDMxIDEyLjIwMzEgLTY3LjcwMzEgTDY3LjcwMzEgLTY3LjcwMzEgUTcwLjIwMzEgLTY3LjcwMzEgNzAuNDA2MiAtNjYuNTkzOCBRNzAuNDA2MiAtNjUuNzAzMSA3MC4yMDMxIC02NC45MDYyIEw2Ny41IC00Ny41IFE2Ny4yMDMxIC00NS40MDYyIDY2IC00NS4yMDMxIFE2NC43OTY5IC00NS4yMDMxIDY0Ljc5NjkgLTQ2LjUgUTY0Ljc5NjkgLTQ3LjIwMzEgNjUuMDkzOCAtNDguNDA2MiBRNjUuOTA2MiAtNTMuNTkzOCA2NS45MDYyIC01Ni40MDYyIFE2NS45MDYyIC02Mi4yMDMxIDYxLjc5NjkgLTYzLjcwMzEgUTU5LjIwMzEgLTY0LjU5MzggNTEuMjk2OSAtNjQuNTkzOCBRNDUuOTA2MiAtNjQuNTkzOCA0NSAtNjQuNDA2MiBRNDMuNzAzMSAtNjQuMDkzOCA0My4wOTM4IC02Mi4yMDMxIEw0My4wOTM4IC02Mi4wOTM4IFE0Mi45MDYyIC02MS41OTM4IDQyLjcwMzEgLTYwLjcwMzEgWiIKICAgIC8+PC9nCiAgICA+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMjAsMCwwLDIwLDAsMCkgdHJhbnNsYXRlKDUuNTIwOCwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21yMTAmYXBvczs7IGNvbG9yLWludGVycG9sYXRpb246bGluZWFyUkdCOyIKICAgID48cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNMTkuMjAzMSAtMzcuNzk2OSBRMTkuMjAzMSAtMzQuNSAxNi4yMDMxIC0zMyBRMTUuMDkzOCAtMzIuNSAxMy45MDYyIC0zMi41IFExMC41OTM4IC0zMi41IDkuMDkzOCAtMzUuNSBROC41OTM4IC0zNi41OTM4IDguNTkzOCAtMzcuNzk2OSBROC41OTM4IC00MS4wOTM4IDExLjU5MzggLTQyLjU5MzggUTEyLjcwMzEgLTQzLjA5MzggMTMuOTA2MiAtNDMuMDkzOCBRMTcuMjAzMSAtNDMuMDkzOCAxOC43MDMxIC00MC4wOTM4IFExOS4yMDMxIC0zOSAxOS4yMDMxIC0zNy43OTY5IFpNMTkuMjAzMSAtNS4yOTY5IEwxOS4yMDMxIC01LjI5NjkgUTE5LjIwMzEgLTIgMTYuMjAzMSAtMC41IFExNS4wOTM4IDAgMTMuOTA2MiAwIFExMC41OTM4IDAgOS4wOTM4IC0zIFE4LjU5MzggLTQuMDkzOCA4LjU5MzggLTUuMjk2OSBROC41OTM4IC04LjU5MzggMTEuNTkzOCAtMTAuMDkzOCBRMTIuNzAzMSAtMTAuNTkzOCAxMy45MDYyIC0xMC41OTM4IFExNy4yMDMxIC0xMC41OTM4IDE4LjcwMzEgLTcuNTkzOCBRMTkuMjAzMSAtNi41IDE5LjIwMzEgLTUuMjk2OSBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoNi40MDk3LDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXIxMCZhcG9zOzsgY29sb3ItaW50ZXJwb2xhdGlvbjpsaW5lYXJSR0I7IgogICAgPjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0zMy4yOTY5IC03LjU5MzggUTMwLjc5NjkgLTEuNDA2MiAyNC41IDAuNSBRMjIuNSAxLjA5MzggMjAuMjAzMSAxLjA5MzggUTExLjcwMzEgMS4wOTM4IDcuMDkzOCAtMyBRNC4yMDMxIC01LjU5MzggNC4yMDMxIC05LjUgUTQuMjAzMSAtMTcuMjAzMSAxMi43MDMxIC0yMS43OTY5IFExMy40MDYyIC0yMi4yMDMxIDE0LjIwMzEgLTIyLjUgUTIwLjI5NjkgLTI1LjQwNjIgMzIuMDkzOCAtMjYuMDkzOCBMMzIuNTkzOCAtMjYuMDkzOCBMMzIuNTkzOCAtMjkuNzk2OSBRMzIuNTkzOCAtMzguMjk2OSAyNi41IC00MS41IFEyNC40MDYyIC00Mi41OTM4IDIyIC00Mi41OTM4IFExNS40MDYyIC00Mi41OTM4IDExLjc5NjkgLTM4LjcwMzEgUTExLjUgLTM4LjI5NjkgMTEuMjAzMSAtMzggUTE1LjkwNjIgLTM3LjQwNjIgMTYuMjk2OSAtMzMuNDA2MiBRMTYuMjk2OSAtMzAgMTMuMjAzMSAtMjkgUTEyLjUgLTI4Ljc5NjkgMTEuNzAzMSAtMjguNzk2OSBROC4wOTM4IC0yOC43OTY5IDcuMjk2OSAtMzIuMDkzOCBRNy4wOTM4IC0zMi41OTM4IDcuMDkzOCAtMzMuNSBRNy4wOTM4IC0zOS41IDEzLjQwNjIgLTQyLjcwMzEgUTE3LjI5NjkgLTQ0Ljc5NjkgMjIuMjAzMSAtNDQuNzk2OSBRMzAuNDA2MiAtNDQuNzk2OSAzNS45MDYyIC0zOS4yOTY5IFEzOS40MDYyIC0zNS43MDMxIDM5LjUgLTI5LjI5NjkgTDM5LjUgLTI5LjIwMzEgTDM5LjUgLTI3LjUgTDM5LjUgLTcuNSBRMzkuNSAtNC41OTM4IDQxLjI5NjkgLTMuMjAzMSBRNDIuMDkzOCAtMi41IDQzLjIwMzEgLTIuNSBRNDYuNzAzMSAtMi41IDQ2Ljc5NjkgLTguOTA2MiBMNDYuNzk2OSAtMTQuNSBMNDkuMjk2OSAtMTQuNSBMNDkuMjk2OSAtOC45MDYyIFE0OS4yOTY5IC0xLjU5MzggNDMuMjk2OSAwLjIwMzEgUTQyLjA5MzggMC41OTM4IDQxLjA5MzggMC41OTM4IFEzNi4yMDMxIDAuNTkzOCAzNC4wOTM4IC00LjU5MzggUTMzLjUgLTYgMzMuMjk2OSAtNy41OTM4IFpNMzIuNTkzOCAtMjQgUTE3LjIwMzEgLTIzLjQwNjIgMTMgLTE0LjU5MzggUTExLjkwNjIgLTEyLjIwMzEgMTEuOTA2MiAtOS41OTM4IFExMS45MDYyIC00LjUgMTYuNSAtMi4wOTM4IFExOC41IC0xLjA5MzggMjAuOTA2MiAtMS4wOTM4IFEyNi4wOTM4IC0xLjA5MzggMjkuNTkzOCAtNS4yMDMxIFEzMi41OTM4IC04LjU5MzggMzIuNTkzOCAtMTQgTDMyLjU5MzggLTI0IFoiCiAgICAvPjwvZwogICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDIwLDAsMCwyMCwwLDApIHRyYW5zbGF0ZSg2LjkwOTcsMC45NSkgc2NhbGUoMC4wMSwwLjAxKSIgc3R5bGU9ImZvbnQtc2l6ZToxMDA7IHRleHQtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgY29sb3ItcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgaW1hZ2UtcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgZm9udC1mYW1pbHk6JmFwb3M7amxtX2NtcjEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTIyLjIwMzEgLTE3LjIwMzEgUTI2LjU5MzggLTE3LjIwMzEgMjkuMjk2OSAtMjEuMjAzMSBRMzAuOTA2MiAtMjMuOTA2MiAzMC45MDYyIC0yOS41OTM4IFEzMC41IC00MS41OTM4IDIyLjIwMzEgLTQxLjkwNjIgUTE3Ljc5NjkgLTQxLjkwNjIgMTUuMDkzOCAtMzcuOTA2MiBRMTMuNSAtMzUuMjAzMSAxMy41IC0yOS41IFExMy45MDYyIC0xNy41IDIyLjIwMzEgLTE3LjIwMzEgWk0xMi4yOTY5IC0xOCBRMTAuNTkzOCAtMTYgMTAuNTkzOCAtMTMuMjk2OSBRMTAuNTkzOCAtOS4yMDMxIDEzLjc5NjkgLTcuMjk2OSBRMTQuNzk2OSAtNi43MDMxIDE1LjkwNjIgLTYuNTkzOCBRMTYuNTkzOCAtNi41IDIzLjQwNjIgLTYuNSBRMzMuNzAzMSAtNi41IDM4LjQwNjIgLTQuNzAzMSBRMzkuNSAtNC4yOTY5IDQwLjU5MzggLTMuNzAzMSBRNDYuNzAzMSAwLjI5NjkgNDcuMDkzOCA3LjcwMzEgUTQ3LjA5MzggMTQuMjAzMSAzOC43MDMxIDE3LjkwNjIgUTMyLjcwMzEgMjAuNTkzOCAyNC45MDYyIDIwLjU5MzggUTEzLjI5NjkgMjAuNTkzOCA2Ljc5NjkgMTUuMjAzMSBRMi43OTY5IDEyIDIuNzk2OSA3LjkwNjIgUTIuNzk2OSAyLjkwNjIgNy45MDYyIC0wLjI5NjkgUTkuNzAzMSAtMS41IDEyIC0yLjA5MzggUTcuOTA2MiAtNS4yOTY5IDcuNTkzOCAtMTEgUTcuNTkzOCAtMTUuNzAzMSAxMC43MDMxIC0xOS4yOTY5IFE2LjIwMzEgLTIzLjU5MzggNiAtMjkuNTkzOCBRNiAtMzYuNSAxMiAtNDAuOTA2MiBRMTYuNDA2MiAtNDQuMjAzMSAyMi4yMDMxIC00NC4yMDMxIFEyOC4yMDMxIC00NC4yMDMxIDMyLjc5NjkgLTQwLjU5MzggUTM3LjU5MzggLTQ1LjI5NjkgNDMuNDA2MiAtNDUuMjk2OSBRNDcuMjk2OSAtNDUuMjk2OSA0OC4yOTY5IC00MS43MDMxIFE0OC41IC00MS4wOTM4IDQ4LjUgLTQwLjQwNjIgUTQ4LjA5MzggLTM3Ljc5NjkgNDUuNTkzOCAtMzcuNDA2MiBRNDMuNDA2MiAtMzcuNDA2MiA0Mi43OTY5IC0zOS41IFE0Mi43MDMxIC0zOS45MDYyIDQyLjcwMzEgLTQwLjI5NjkgUTQyLjcwMzEgLTQyLjQwNjIgNDQuMjk2OSAtNDMgUTQ0IC00My4wOTM4IDQzLjI5NjkgLTQzLjA5MzggUTM4LjQwNjIgLTQzLjA5MzggMzQuMjk2OSAtMzkuMjAzMSBRMzguNDA2MiAtMzUuNDA2MiAzOC40MDYyIC0yOS41IFEzOC40MDYyIC0yMi41OTM4IDMyLjQwNjIgLTE4LjIwMzEgUTI4IC0xNC45MDYyIDIyLjIwMzEgLTE0LjkwNjIgUTE2LjU5MzggLTE0LjkwNjIgMTIuMjk2OSAtMTggWk0yNSAxOC4yOTY5IEwyNSAxOC4yOTY5IFEzNC41IDE4LjI5NjkgMzkuNDA2MiAxMy4yOTY5IFE0MS45MDYyIDEwLjc5NjkgNDEuOTA2MiA3LjkwNjIgUTQxLjkwNjIgMC41IDMwLjA5MzggLTAuNSBMMzAuMDkzOCAtMC41IEwzMCAtMC41IFEyNy40MDYyIC0wLjcwMzEgMjIuMDkzOCAtMC43MDMxIEwxNi4yMDMxIC0wLjcwMzEgUTExLjUgLTAuNDA2MiA5LjA5MzggMy43OTY5IFE4IDUuNzAzMSA4IDcuOTA2MiBROCAxMi41OTM4IDEzLjc5NjkgMTUuNzAzMSBRMTguNSAxOC4yOTY5IDI1IDE4LjI5NjkgWiIKICAgIC8+PC9nCiAgICA+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMjAsMCwwLDIwLDAsMCkgdHJhbnNsYXRlKDcuNDIzNiwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21yMTAmYXBvczs7IGNvbG9yLWludGVycG9sYXRpb246bGluZWFyUkdCOyIKICAgID48cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNMzkgLTIzLjA5MzggTDM5IC0yMy4wOTM4IEwxMS4wOTM4IC0yMy4wOTM4IFExMS4wOTM4IC0xMi45MDYyIDE0LjA5MzggLTguMDkzOCBRMTguOTA2MiAtMS45MDYyIDI1LjQwNjIgLTEuNDA2MiBRMzIuMjk2OSAtMS40MDYyIDM2LjUgLTcgUTM4IC05IDM4LjkwNjIgLTExLjcwMzEgUTM5LjIwMzEgLTEzLjA5MzggNDAuMjAzMSAtMTMuMDkzOCBRNDEuNSAtMTMuMDkzOCA0MS41IC0xMS45MDYyIFE0MS41IC05LjcwMzEgMzguNzAzMSAtNS45MDYyIFEzNC41OTM4IC0wLjI5NjkgMjcuOTA2MiAwLjc5NjkgUTI2LjQwNjIgMS4wOTM4IDI0Ljc5NjkgMS4wOTM4IFExNS40MDYyIDEuMDkzOCA4Ljc5NjkgLTYuMDkzOCBRMi43OTY5IC0xMi43MDMxIDIuNzk2OSAtMjIgUTIuNzk2OSAtMzIuNDA2MiAxMCAtMzkuMjAzMSBRMTUuNzk2OSAtNDQuNzk2OSAyMy41OTM4IC00NC43OTY5IFEzNC45MDYyIC00NC43OTY5IDM5LjQwNjIgLTM1LjIwMzEgUTQxLjUgLTMwLjcwMzEgNDEuNSAtMjUuMjAzMSBRNDEuNSAtMjMuNSA0MC43OTY5IC0yMy4yMDMxIFE0MC41IC0yMy4wOTM4IDM5IC0yMy4wOTM4IFpNMTEuMjAzMSAtMjUuMjAzMSBMMTEuMjAzMSAtMjUuMjAzMSBMMzQuOTA2MiAtMjUuMjAzMSBRMzQuOTA2MiAtMzQuNzAzMSAzMC43MDMxIC0zOS41IFEyNy45MDYyIC00Mi41OTM4IDIzLjU5MzggLTQyLjU5MzggUTE4LjUgLTQyLjU5MzggMTUgLTM3LjkwNjIgUTExLjUgLTMzLjQwNjIgMTEuMjAzMSAtMjUuMjAzMSBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoNy44NjgsMC45NSkgc2NhbGUoMC4wMSwwLjAxKSIgc3R5bGU9ImZvbnQtc2l6ZToxMDA7IHRleHQtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgY29sb3ItcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgaW1hZ2UtcmVuZGVyaW5nOm9wdGltaXplUXVhbGl0eTsgZm9udC1mYW1pbHk6JmFwb3M7amxtX2NtcjEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTExIC0zNC40MDYyIFExMSAtMzguMjk2OSA5LjUgLTM5LjIwMzEgUTguMjk2OSAtMzkuOTA2MiA1LjIwMzEgLTQwIEwzLjIwMzEgLTQwIEwzLjIwMzEgLTQzLjA5MzggTDE3LjI5NjkgLTQ0LjIwMzEgTDE3LjI5NjkgLTMzLjcwMzEgUTIyIC00NC4yMDMxIDMyLjA5MzggLTQ0LjIwMzEgUTM5LjU5MzggLTQ0LjIwMzEgNDIuNTkzOCAtNDAuNSBRNDUuMjk2OSAtMzcuNDA2MiA0NS41OTM4IC0zMiBRNDUuNzAzMSAtMzAuMDkzOCA0NS43MDMxIC0yNS4yMDMxIEw0NS43MDMxIC02LjA5MzggUTQ1Ljc5NjkgLTMuNzAzMSA0OC41OTM4IC0zLjI5NjkgUTQ5Ljc5NjkgLTMuMDkzOCA1My41IC0zLjA5MzggTDUzLjUgMCBRNDMuMjk2OSAtMC4yOTY5IDQyLjI5NjkgLTAuMjk2OSBRNDEuNSAtMC4yOTY5IDMxIDAgTDMxIC0zLjA5MzggUTM2LjkwNjIgLTMuMDkzOCAzNy45MDYyIC00IEwzOC4wOTM4IC00LjIwMzEgUTM4Ljc5NjkgLTUgMzguNzk2OSAtNy41OTM4IEwzOC43OTY5IC0zMC45MDYyIFEzOC43OTY5IC00MC43OTY5IDMzLjA5MzggLTQxLjc5NjkgUTMyLjI5NjkgLTQyIDMxLjQwNjIgLTQyIFEyNS4yOTY5IC00MiAyMS4yMDMxIC0zNi43MDMxIFExNy45MDYyIC0zMi40MDYyIDE3LjkwNjIgLTI2IEwxNy45MDYyIC03LjU5MzggUTE3LjkwNjIgLTQuMjAzMSAxOS41IC0zLjU5MzggUTIwLjU5MzggLTMuMDkzOCAyNS43MDMxIC0zLjA5MzggTDI1LjcwMzEgMCBRMTUuNSAtMC4yOTY5IDE0LjUgLTAuMjk2OSBRMTMuNzAzMSAtMC4yOTY5IDMuMjAzMSAwIEwzLjIwMzEgLTMuMDkzOCBROS4wOTM4IC0zLjA5MzggMTAuMDkzOCAtNCBMMTAuMjk2OSAtNC4yMDMxIFExMSAtNSAxMSAtNy41OTM4IEwxMSAtMzQuNDA2MiBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoOC4zOTU4LDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXIxMCZhcG9zOzsgY29sb3ItaW50ZXJwb2xhdGlvbjpsaW5lYXJSR0I7IgogICAgPjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0xNy4yOTY5IC00MCBMMTcuMjk2OSAtNDAgTDE3LjI5NjkgLTEyLjIwMzEgUTE3LjI5NjkgLTIuMjAzMSAyMy4wOTM4IC0xLjUgUTIzLjUgLTEuNDA2MiAyNCAtMS40MDYyIFEyOC4yOTY5IC0xLjQwNjIgMzAgLTcgUTMwLjcwMzEgLTkuNDA2MiAzMC43MDMxIC0xMi41OTM4IEwzMC43MDMxIC0xOC4wOTM4IEwzMy4yMDMxIC0xOC4wOTM4IEwzMy4yMDMxIC0xMi40MDYyIFEzMy4yMDMxIC00LjIwMzEgMjguNTkzOCAtMC41OTM4IFEyNi40MDYyIDEuMDkzOCAyMy4yOTY5IDEuMDkzOCBRMTQuOTA2MiAxLjA5MzggMTEuNzk2OSAtNS4yMDMxIFExMC40MDYyIC04LjIwMzEgMTAuNDA2MiAtMTIuNDA2MiBMMTAuNDA2MiAtNDAgTDEuOTA2MiAtNDAgTDEuOTA2MiAtNDIuMjAzMSBRMTAuNzk2OSAtNDIuNTkzOCAxMy43MDMxIC01My40MDYyIFExNC43MDMxIC01Ny4yMDMxIDE0Ljc5NjkgLTYxLjUgTDE3LjI5NjkgLTYxLjUgTDE3LjI5NjkgLTQzLjA5MzggTDMxLjU5MzggLTQzLjA5MzggTDMxLjU5MzggLTQwIEwxNy4yOTY5IC00MCBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoOC43ODQ3LDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXIxMCZhcG9zOzsgY29sb3ItaW50ZXJwb2xhdGlvbjpsaW5lYXJSR0I7IgogICAgPjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0yMC43OTY5IC0xOS40MDYyIEwyMC43OTY5IC0xOS40MDYyIFExMi4yMDMxIC0yMS4wOTM4IDkuNSAtMjIuNzAzMSBROC41IC0yMy4yMDMxIDcuNTkzOCAtMjQgUTMuMjk2OSAtMjcuNSAzLjI5NjkgLTMyLjUgUTMuMjk2OSAtMzkuNSA5LjUgLTQyLjcwMzEgUTEzLjQwNjIgLTQ0Ljc5NjkgMTkuMjk2OSAtNDQuNzk2OSBRMjQuOTA2MiAtNDQuNzk2OSAyOC43MDMxIC00MiBRMjkuNzk2OSAtNDIuOTA2MiAzMC40MDYyIC00My41OTM4IFEzMS43MDMxIC00NC43OTY5IDMyLjQwNjIgLTQ0Ljc5NjkgUTMzLjQwNjIgLTQzLjkwNjIgMzMuNSAtNDIuNDA2MiBMMzMuNSAtMzIuMjk2OSBRMzMuNSAtMzAuMjAzMSAzMi45MDYyIC0zMCBMMzIuNzk2OSAtMzAgTDMyLjcwMzEgLTI5LjkwNjIgTDMyLjIwMzEgLTI5LjkwNjIgUTMxLjA5MzggLTI5LjkwNjIgMzEgLTMwLjc5NjkgUTMwLjI5NjkgLTQwLjkwNjIgMjIuNzAzMSAtNDIuNTkzOCBRMjEuMDkzOCAtNDIuOTA2MiAxOS4yOTY5IC00Mi45MDYyIFE5LjkwNjIgLTQyLjkwNjIgOC4yOTY5IC0zNy4wOTM4IFE4LjA5MzggLTM2LjIwMzEgOC4wOTM4IC0zNS4yOTY5IFE4LjA5MzggLTMwLjIwMzEgMTUuNzk2OSAtMjguMDkzOCBRMTcuMjk2OSAtMjcuNzAzMSAyMC40MDYyIC0yNy4wOTM4IFEyNy41OTM4IC0yNS43MDMxIDMwLjcwMzEgLTIzLjIwMzEgUTMxLjI5NjkgLTIyLjc5NjkgMzEuNzk2OSAtMjIuMjk2OSBRMzYgLTE4LjA5MzggMzYgLTEyLjc5NjkgUTM2IC00LjI5NjkgMjkgLTAuNzk2OSBRMjUuMjAzMSAxLjA5MzggMTkuOTA2MiAxLjA5MzggUTEzLjQwNjIgMS4wOTM4IDguOTA2MiAtMy4yMDMxIEw2LjkwNjIgLTAuOTA2MiBRNC45MDYyIDEuMDkzOCA0LjQwNjIgMS4wOTM4IFEzLjQwNjIgMC4yMDMxIDMuMjk2OSAtMS4yOTY5IEwzLjI5NjkgLTE0LjUgUTMuMjk2OSAtMTYuNzAzMSA0IC0xNi45MDYyIEw0IC0xNi45MDYyIEw0LjA5MzggLTE3IEw0LjU5MzggLTE3IFE1LjU5MzggLTE3IDUuOTA2MiAtMTUuOTA2MiBRNS45MDYyIC0xNS43MDMxIDYgLTE1LjI5NjkgUTguNTkzOCAtMy43MDMxIDE1LjkwNjIgLTEuNTkzOCBRMTcuNzAzMSAtMS4wOTM4IDE5LjkwNjIgLTEuMDkzOCBRMjguOTA2MiAtMS4wOTM4IDMwLjc5NjkgLTcuNDA2MiBRMzEuMjAzMSAtOC43MDMxIDMxLjIwMzEgLTEwLjIwMzEgUTMxLjIwMzEgLTE3LjUgMjAuNzk2OSAtMTkuNDA2MiBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoOS4xNzkxLDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXIxMCZhcG9zOzsgY29sb3ItaW50ZXJwb2xhdGlvbjpsaW5lYXJSR0I7IgogICAgPjxwYXRoIHN0eWxlPSJzdHJva2U6bm9uZTsiIGQ9Ik0zMy4wOTM4IDI0IEwzMy4wOTM4IDI0IFEzMy4wOTM4IDI1IDMyLjA5MzggMjUgUTMwLjkwNjIgMjUgMjYuNzk2OSAyMC45MDYyIFEyMC41OTM4IDE0LjcwMzEgMTYuNSA2LjIwMzEgUTkuOTA2MiAtNy40MDYyIDkuOTA2MiAtMjUgUTkuOTA2MiAtNDEuOTA2MiAxNi4yMDMxIC01NS41IFEyMS40MDYyIC02Ni41OTM4IDI5LjQwNjIgLTczLjI5NjkgUTMxLjUgLTc1IDMyLjA5MzggLTc1IFEzMy4wOTM4IC03NSAzMy4wOTM4IC03NCBRMzMuMDkzOCAtNzMuNSAzMS43OTY5IC03Mi4yOTY5IFExNS43MDMxIC01NS45MDYyIDE1LjcwMzEgLTI1IFExNS43MDMxIDUuNzk2OSAzMS40MDYyIDIxLjc5NjkgUTMzLjA5MzggMjMuNSAzMy4wOTM4IDI0IFoiCiAgICAvPjwvZwogICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDIwLDAsMCwyMCwwLDApIHRyYW5zbGF0ZSg5LjU2OCwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21taTEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTIwLjU5MzggLTQwIEwxMy4yMDMxIC0xMC41IFExMi41OTM4IC04IDEyLjU5MzggLTUuNzAzMSBRMTIuNTkzOCAtMS4wOTM4IDE1LjcwMzEgLTEuMDkzOCBRMjIuMjk2OSAtMS4wOTM4IDI3LjI5NjkgLTEwLjc5NjkgTDI4LjcwMzEgLTEzLjkwNjIgUTI5LjI5NjkgLTE1LjIwMzEgMzAuMjAzMSAtMTUuMjk2OSBRMzEuNDA2MiAtMTUuMjk2OSAzMS40MDYyIC0xNC4yOTY5IFEzMS40MDYyIC0xMyAyOC43OTY5IC04LjU5MzggUTIzIDEuMDkzOCAxNS41IDEuMDkzOCBROS43MDMxIDEuMDkzOCA3LjI5NjkgLTMuNzAzMSBRNi4yOTY5IC01LjcwMzEgNi4yOTY5IC04LjA5MzggUTYuMjk2OSAtMTAgMTIuNDA2MiAtMzQgTDEzLjkwNjIgLTQwIEw1LjA5MzggLTQwIFEyLjU5MzggLTQwIDIuNDA2MiAtNDAuNzk2OSBMMi4yOTY5IC00MC43OTY5IEwyLjI5NjkgLTQxLjIwMzEgUTIuMjk2OSAtNDIuOTA2MiAzLjkwNjIgLTQzLjA5MzggTDUuMjk2OSAtNDMuMDkzOCBMMTQuNzAzMSAtNDMuMDkzOCBMMTguNTkzOCAtNTkgUTE5LjUgLTYyLjUgMjIuNTkzOCAtNjIuNTkzOCBRMjUuMjAzMSAtNjIuNTkzOCAyNS41IC01OS45MDYyIFEyNS41IC01OS4yOTY5IDIxLjQwNjIgLTQzLjA5MzggTDMwLjIwMzEgLTQzLjA5MzggUTMyLjc5NjkgLTQzLjA5MzggMzMgLTQyIFEzMyAtNDAuMjAzMSAzMS40MDYyIC00MCBMMzEuMjk2OSAtNDAgTDMwIC00MCBMMjAuNTkzOCAtNDAgWiIKICAgIC8+PC9nCiAgICA+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMjAsMCwwLDIwLDAsMCkgdHJhbnNsYXRlKDkuOTI5MSwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21yMTAmYXBvczs7IGNvbG9yLWludGVycG9sYXRpb246bGluZWFyUkdCOyIKICAgID48cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNMjguOTA2MiAtMjUgTDI4LjkwNjIgLTI1IFEyOC45MDYyIC04LjA5MzggMjIuNTkzOCA1LjUgUTE3LjQwNjIgMTYuNTkzOCA5LjQwNjIgMjMuMjk2OSBRNy4yOTY5IDI1IDYuNzAzMSAyNSBRNS43MDMxIDI1IDUuNzAzMSAyNCBRNS43MDMxIDIzLjUgNyAyMi4yOTY5IFEyMy4wOTM4IDUuOTA2MiAyMy4wOTM4IC0yNSBRMjMuMDkzOCAtNTUuNSA4LjA5MzggLTcxLjIwMzEgTDcuNTkzOCAtNzEuNzAzMSBRNS43MDMxIC03My41IDUuNzAzMSAtNzQgUTUuNzAzMSAtNzUgNi43MDMxIC03NSBRNy45MDYyIC03NSAxMiAtNzAuOTA2MiBRMTguMjAzMSAtNjQuNzAzMSAyMi4yOTY5IC01Ni4yMDMxIFEyOC45MDYyIC00Mi41OTM4IDI4LjkwNjIgLTI1IFoiCiAgICAvPjwvZwogICAgPjxnIHRyYW5zZm9ybT0ibWF0cml4KDIwLDAsMCwyMCwwLDApIHRyYW5zbGF0ZSgxMC41OTU4LDAuOTUpIHNjYWxlKDAuMDEsMC4wMSkiIHN0eWxlPSJmb250LXNpemU6MTAwOyB0ZXh0LXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGNvbG9yLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZvbnQtZmFtaWx5OiZhcG9zO2psbV9jbXN5MTAmYXBvczs7IGNvbG9yLWludGVycG9sYXRpb246bGluZWFyUkdCOyIKICAgID48cGF0aCBzdHlsZT0ic3Ryb2tlOm5vbmU7IiBkPSJNNjYuMDkzOCAtNTkuNTkzOCBMMzkgLTU5LjU5MzggUTI3LjA5MzggLTU5LjU5MzggMTkuMjAzMSAtNTEuNSBRMTIuMjk2OSAtNDQuNDA2MiAxMi4yOTY5IC0zNC41OTM4IFExMi4yOTY5IC0yMy45MDYyIDIwLjUgLTE2LjU5MzggUTI4LjA5MzggLTkuNzAzMSAzOS4wOTM4IC05LjcwMzEgTDY2LjA5MzggLTkuNzAzMSBRNjkuMjk2OSAtOS43MDMxIDY5LjQwNjIgLTcuNzAzMSBRNjkuNDA2MiAtNS43MDMxIDY2LjA5MzggLTUuNzAzMSBMMzguNzk2OSAtNS43MDMxIFEyNi4yOTY5IC01LjcwMzEgMTcuMjk2OSAtMTQuMDkzOCBROC4yOTY5IC0yMi41IDguMjk2OSAtMzQuNzAzMSBROC4yOTY5IC00Ny4wOTM4IDE3Ljc5NjkgLTU1LjU5MzggUTI2LjcwMzEgLTYzLjU5MzggMzguNzAzMSAtNjMuNTkzOCBMNjYuMDkzOCAtNjMuNTkzOCBRNjkuMjk2OSAtNjMuNTkzOCA2OS40MDYyIC02MS41OTM4IFE2OS40MDYyIC01OS41OTM4IDY2LjA5MzggLTU5LjU5MzggWk0xMy41OTM4IDkuNzAzMSBMNjYuMDkzOCA5LjcwMzEgUTY5LjI5NjkgOS43MDMxIDY5LjQwNjIgMTEuNzAzMSBRNjkuNDA2MiAxMy43MDMxIDY2LjA5MzggMTMuNzAzMSBMMTMuNTkzOCAxMy43MDMxIFExMC40MDYyIDEzLjcwMzEgMTAuMjk2OSAxMS43MDMxIFExMC4yOTY5IDkuNzAzMSAxMy41OTM4IDkuNzAzMSBaIgogICAgLz48L2cKICAgID48ZyB0cmFuc2Zvcm09Im1hdHJpeCgyMCwwLDAsMjAsMCwwKSB0cmFuc2xhdGUoMTEuNjUxNCwwLjk1KSBzY2FsZSgwLjAxLDAuMDEpIiBzdHlsZT0iZm9udC1zaXplOjEwMDsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBjb2xvci1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmb250LWZhbWlseTomYXBvcztqbG1fY21taTEwJmFwb3M7OyBjb2xvci1pbnRlcnBvbGF0aW9uOmxpbmVhclJHQjsiCiAgICA+PHBhdGggc3R5bGU9InN0cm9rZTpub25lOyIgZD0iTTE3LjkwNjIgLTExLjUgTDUyLjcwMzEgLTY5LjkwNjIgUTUzLjcwMzEgLTcxLjUgNTUuMjk2OSAtNzEuNTkzOCBRNTYuNzk2OSAtNzEuNTkzOCA1NyAtNzAuNTkzOCBRNTcuMDkzOCAtNzAuMjk2OSA1Ny4yMDMxIC02OS4yMDMxIEw2My4yOTY5IC02LjcwMzEgUTYzLjU5MzggLTQuMjAzMSA2NC41IC0zLjcwMzEgTDY0LjU5MzggLTMuNzAzMSBMNjQuNTkzOCAtMy43MDMxIEw2NC41OTM4IC0zLjcwMzEgTDY0LjU5MzggLTMuNzAzMSBMNjQuNTkzOCAtMy41OTM4IFE2NS43OTY5IC0zLjA5MzggNjkuNzk2OSAtMy4wOTM4IFE3MiAtMy4wOTM4IDcyLjA5MzggLTIgUTcyLjA5MzggMCA3MC4yOTY5IDAgTDU5LjA5MzggLTAuMjk2OSBMNTkgLTAuMjk2OSBMNDYuNTkzOCAwIEw0Ni41IDAgUTQ1LjA5MzggMCA0NS4wOTM4IC0xLjA5MzggUTQ1LjkwNjIgLTMgNDcuNSAtMy4wOTM4IFE1NC43MDMxIC0zLjA5MzggNTQuNzAzMSAtNi40MDYyIFE1NC43MDMxIC02LjI5NjkgNTMuMDkzOCAtMjMuMDkzOCBMMjggLTIzLjA5MzggTDIwLjQwNjIgLTEwLjI5NjkgUTE5IC03Ljc5NjkgMTkgLTYuNTkzOCBRMTkgLTMuNSAyMy43MDMxIC0zLjA5MzggUTI1LjI5NjkgLTMuMDkzOCAyNS4yOTY5IC0xLjkwNjIgUTI1LjI5NjkgMCAyMy40MDYyIDAgTDEzLjc5NjkgLTAuMjk2OSBMMTMuNDA2MiAtMC4yOTY5IEw1IDAgTDQuNzk2OSAwIFEzLjUgMCAzLjUgLTEuMDkzOCBRMy41IC0yLjkwNjIgNSAtMyBMNSAtMy4wOTM4IEw1LjU5MzggLTMuMDkzOCBRMTEuOTA2MiAtMy41IDE1LjkwNjIgLTguNSBRMTYuOTA2MiAtOS43OTY5IDE3LjkwNjIgLTExLjUgWk0yOS45MDYyIC0yNi4yMDMxIEw1Mi43OTY5IC0yNi4yMDMxIEw0OS41OTM4IC01OS4yMDMxIEwyOS45MDYyIC0yNi4yMDMxIFoiCiAgICAvPjwvZwogID48L2cKPjwvc3ZnCj4K"
+        y="34.0679"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="11"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="201.5955"
+        x="709.2775"
+        y="58.8449"
+      >
+        without leaving a publication behind
+      </text>
+    </g>
+    <rect
+      fill="#F5F5F5"
+      height="1603.1563"
+      style="stroke: #181818; stroke-width: 0.5"
+      width="94.7577"
+      x="296.9988"
+      y="74.0679"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="53.378"
+      x="317.6886"
+      y="87.9649"
+    >
+      browser
+    </text>
+    <rect
+      fill="#F5F5F5"
+      height="1603.1563"
+      style="stroke: #181818; stroke-width: 0.5"
+      width="82.2138"
+      x="727.2706"
+      y="74.0679"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="48.75"
+      x="744.0025"
+      y="87.9649"
+    >
+      embers
+    </text>
+    <rect
+      fill="#F5F5F5"
+      height="1603.1563"
+      style="stroke: #181818; stroke-width: 0.5"
+      width="257.2642"
+      x="1053.2038"
+      y="74.0679"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="251.2642"
+      x="1056.2038"
+      y="87.9649"
+    >
+      systems that each hold part of the fact
+    </text>
+    <g>
+      <title>Dashboard</title>
+      <rect
+        fill="#E3F2FD"
+        height="1214.5304"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="339.3776"
+        y="213.6158"
+      />
+    </g>
+    <g>
+      <title>HTTP API</title>
+      <rect
+        fill="#E8EAF6"
+        height="357.7122"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="763.3775"
+        y="272.0278"
+      />
+    </g>
+    <g>
+      <title>HTTP API</title>
+      <rect
+        fill="#E8EAF6"
+        height="176.2361"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="763.3775"
+        y="1063.8461"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="303.7338"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="380.7659"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="552.708"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="1095.5521"
+      />
+    </g>
+    <g>
+      <title>PDS</title>
+      <rect
+        fill="#FCE4EC"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1207.1518"
+        y="1176.6702"
+      />
+    </g>
+    <rect
+      fill="#E3F2FD"
+      height="409.1242"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="889.3061"
+      x="290.9988"
+      y="228.6158"
+    />
+    <rect
+      fill="#FFF8E1"
+      height="301.282"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="550.6721"
+      x="10"
+      y="651.74"
+    />
+    <rect
+      fill="#FFEBEE"
+      height="155.512"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="530.6721"
+      x="20"
+      y="790.51"
+    />
+    <rect
+      fill="#E8F5E9"
+      height="48.6879"
+      style="stroke: none; stroke-width: 1"
+      width="530.6721"
+      x="20"
+      y="897.3341"
+    />
+    <rect
+      fill="#FCE4EC"
+      height="372.0922"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="1002.9999"
+      x="270.9988"
+      y="967.022"
+    />
+    <rect
+      fill="none"
+      height="306.6802"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="982.9999"
+      x="280.9988"
+      y="993.728"
+    />
+    <rect
+      fill="#FFF3E0"
+      height="227.6481"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="962.9999"
+      x="290.9988"
+      y="1020.4341"
+    />
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part1"
+      data-qualified-name="U"
+      data-source-line="19"
+      id="part1-lifeline"
+    >
+      <g>
+        <title>Author</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="1410.1786"
+          width="8"
+          x="51.7779"
+          y="179.9098"
+        />
+        <line
+          style="stroke: #90a4ae; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="55"
+          x2="55"
+          y1="179.9098"
+          y2="1590.0883"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part2"
+      data-qualified-name="D"
+      data-source-line="21"
+      id="part2-lifeline"
+    >
+      <g>
+        <title>Dashboard</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="1410.1786"
+          width="8"
+          x="340.3776"
+          y="179.9098"
+        />
+        <line
+          style="stroke: #90a4ae; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="343.9988"
+          x2="343.9988"
+          y1="179.9098"
+          y2="1590.0883"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part3"
+      data-qualified-name="E"
+      data-source-line="24"
+      id="part3-lifeline"
+    >
+      <g>
+        <title>HTTP API</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="1410.1786"
+          width="8"
+          x="764.3775"
+          y="179.9098"
+        />
+        <line
+          style="stroke: #90a4ae; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="768.2706"
+          x2="768.2706"
+          y1="179.9098"
+          y2="1590.0883"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part4"
+      data-qualified-name="C"
+      data-source-line="27"
+      id="part4-lifeline"
+    >
+      <g>
+        <title>F1r3fly</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="1410.1786"
+          width="8"
+          x="1140.989"
+          y="179.9098"
+        />
+        <line
+          style="stroke: #90a4ae; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="1144.6731"
+          x2="1144.6731"
+          y1="179.9098"
+          y2="1590.0883"
+        />
+      </g>
+    </g>
+    <g
+      class="participant-lifeline"
+      data-entity-uid="part5"
+      data-qualified-name="P"
+      data-source-line="28"
+      id="part5-lifeline"
+    >
+      <g>
+        <title>PDS</title>
+        <rect
+          fill="#000000"
+          fill-opacity="0.00000"
+          height="1410.1786"
+          width="8"
+          x="1208.1518"
+          y="179.9098"
+        />
+        <line
+          style="stroke: #90a4ae; stroke-width: 0.5; stroke-dasharray: 5, 5"
+          x1="1211.3049"
+          x2="1211.3049"
+          y1="179.9098"
+          y2="1590.0883"
+        />
+      </g>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part1"
+      data-qualified-name="U"
+      data-source-line="19"
+      id="part1-head"
+    >
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="45.5558"
+        x="30"
+        y="175.8078"
+      >
+        Author
+      </text>
+      <ellipse
+        cx="55.7779"
+        cy="109.3419"
+        fill="#FFF8E1"
+        rx="8"
+        ry="8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M55.7779,117.3419 L55.7779,144.3419 M42.7779,125.3419 L68.7779,125.3419 M55.7779,144.3419 L42.7779,159.3419 M55.7779,144.3419 L68.7779,159.3419"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part1"
+      data-qualified-name="U"
+      data-source-line="19"
+      id="part1-tail"
+    >
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="45.5558"
+        x="30"
+        y="1604.0543"
+      >
+        Author
+      </text>
+      <ellipse
+        cx="55.7779"
+        cy="1616.6563"
+        fill="#FFF8E1"
+        rx="8"
+        ry="8"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M55.7779,1624.6563 L55.7779,1651.6563 M42.7779,1632.6563 L68.7779,1632.6563 M55.7779,1651.6563 L42.7779,1666.6563 M55.7779,1651.6563 L68.7779,1666.6563"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part2"
+      data-qualified-name="D"
+      data-source-line="21"
+      id="part2-head"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="46.6879"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1.5"
+        width="86.7577"
+        x="300.9988"
+        y="132.2219"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="72.7577"
+        x="307.9988"
+        y="154.1878"
+      >
+        Dashboard
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="50.08"
+        x="319.3377"
+        y="168.9798"
+      >
+        AgentsTab
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part2"
+      data-qualified-name="D"
+      data-source-line="21"
+      id="part2-tail"
+    >
+      <rect
+        fill="#E3F2FD"
+        height="46.6879"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1.5"
+        width="86.7577"
+        x="300.9988"
+        y="1589.0883"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="72.7577"
+        x="307.9988"
+        y="1611.0543"
+      >
+        Dashboard
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="50.08"
+        x="319.3377"
+        y="1625.8462"
+      >
+        AgentsTab
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part3"
+      data-qualified-name="E"
+      data-source-line="24"
+      id="part3-head"
+    >
+      <rect
+        fill="#E8EAF6"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1.5"
+        width="74.2138"
+        x="731.2706"
+        y="145.8419"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="60.2138"
+        x="738.2706"
+        y="167.8078"
+      >
+        HTTP API
+      </text>
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part3"
+      data-qualified-name="E"
+      data-source-line="24"
+      id="part3-tail"
+    >
+      <rect
+        fill="#E8EAF6"
+        height="33.0679"
+        rx="2.5"
+        ry="2.5"
+        style="stroke: #181818; stroke-width: 1.5"
+        width="74.2138"
+        x="731.2706"
+        y="1589.0883"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="60.2138"
+        x="738.2706"
+        y="1611.0543"
+      >
+        HTTP API
+      </text>
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part4"
+      data-qualified-name="C"
+      data-source-line="27"
+      id="part4-head"
+    >
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="44.6318"
+        x="1119.6731"
+        y="156.7399"
+      >
+        F1r3fly
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="35.4899"
+        x="1124.244"
+        y="175.8078"
+      >
+        chain
+      </text>
+      <path
+        d="M1126.989,105.7739 C1126.989,95.7739 1144.989,95.7739 1144.989,95.7739 C1144.989,95.7739 1162.989,95.7739 1162.989,105.7739 L1162.989,131.7739 C1162.989,141.7739 1144.989,141.7739 1144.989,141.7739 C1144.989,141.7739 1126.989,141.7739 1126.989,131.7739 L1126.989,105.7739"
+        fill="#E0F2F1"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1126.989,105.7739 C1126.989,115.7739 1144.989,115.7739 1144.989,115.7739 C1144.989,115.7739 1162.989,115.7739 1162.989,105.7739"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part4"
+      data-qualified-name="C"
+      data-source-line="27"
+      id="part4-tail"
+    >
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="44.6318"
+        x="1119.6731"
+        y="1604.0543"
+      >
+        F1r3fly
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="35.4899"
+        x="1124.244"
+        y="1623.1222"
+      >
+        chain
+      </text>
+      <path
+        d="M1126.989,1637.2242 C1126.989,1627.2242 1144.989,1627.2242 1144.989,1627.2242 C1144.989,1627.2242 1162.989,1627.2242 1162.989,1637.2242 L1162.989,1663.2242 C1162.989,1673.2242 1144.989,1673.2242 1144.989,1673.2242 C1144.989,1673.2242 1126.989,1673.2242 1126.989,1663.2242 L1126.989,1637.2242"
+        fill="#E0F2F1"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1126.989,1637.2242 C1126.989,1647.2242 1144.989,1647.2242 1144.989,1647.2242 C1144.989,1647.2242 1162.989,1647.2242 1162.989,1637.2242"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-head"
+      data-entity-uid="part5"
+      data-qualified-name="P"
+      data-source-line="28"
+      id="part5-head"
+    >
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="26.3759"
+        x="1195.9638"
+        y="156.7399"
+      >
+        PDS
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="57.6938"
+        x="1180.3049"
+        y="175.8078"
+      >
+        (atproto)
+      </text>
+      <path
+        d="M1194.1518,105.7739 C1194.1518,95.7739 1212.1518,95.7739 1212.1518,95.7739 C1212.1518,95.7739 1230.1518,95.7739 1230.1518,105.7739 L1230.1518,131.7739 C1230.1518,141.7739 1212.1518,141.7739 1212.1518,141.7739 C1212.1518,141.7739 1194.1518,141.7739 1194.1518,131.7739 L1194.1518,105.7739"
+        fill="#FCE4EC"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1194.1518,105.7739 C1194.1518,115.7739 1212.1518,115.7739 1212.1518,115.7739 C1212.1518,115.7739 1230.1518,115.7739 1230.1518,105.7739"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g
+      class="participant participant-tail"
+      data-entity-uid="part5"
+      data-qualified-name="P"
+      data-source-line="28"
+      id="part5-tail"
+    >
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="26.3759"
+        x="1195.9638"
+        y="1604.0543"
+      >
+        PDS
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="57.6938"
+        x="1180.3049"
+        y="1623.1222"
+      >
+        (atproto)
+      </text>
+      <path
+        d="M1194.1518,1637.2242 C1194.1518,1627.2242 1212.1518,1627.2242 1212.1518,1627.2242 C1212.1518,1627.2242 1230.1518,1627.2242 1230.1518,1637.2242 L1230.1518,1663.2242 C1230.1518,1673.2242 1212.1518,1673.2242 1212.1518,1673.2242 C1212.1518,1673.2242 1194.1518,1673.2242 1194.1518,1663.2242 L1194.1518,1637.2242"
+        fill="#FCE4EC"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1194.1518,1637.2242 C1194.1518,1647.2242 1212.1518,1647.2242 1212.1518,1647.2242 C1212.1518,1647.2242 1230.1518,1647.2242 1230.1518,1637.2242"
+        fill="none"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+    </g>
+    <g>
+      <title>Dashboard</title>
+      <rect
+        fill="#E3F2FD"
+        height="1214.5304"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="339.3776"
+        y="213.6158"
+      />
+    </g>
+    <g>
+      <title>HTTP API</title>
+      <rect
+        fill="#E8EAF6"
+        height="357.7122"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="763.3775"
+        y="272.0278"
+      />
+    </g>
+    <g>
+      <title>HTTP API</title>
+      <rect
+        fill="#E8EAF6"
+        height="176.2361"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="763.3775"
+        y="1063.8461"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="303.7338"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="380.7659"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="552.708"
+      />
+    </g>
+    <g>
+      <title>F1r3fly</title>
+      <rect
+        fill="#E0F2F1"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1139.989"
+        y="1095.5521"
+      />
+    </g>
+    <g>
+      <title>PDS</title>
+      <rect
+        fill="#FCE4EC"
+        height="31.706"
+        style="stroke: #181818; stroke-width: 1"
+        width="10"
+        x="1207.1518"
+        y="1176.6702"
+      />
+    </g>
+    <g
+      class="message"
+      data-entity-1="part1"
+      data-entity-2="part2"
+      data-source-line="31"
+      id="msg1"
+    >
+      <polygon
+        fill="#455A64"
+        points="327.3776,209.6158,337.3776,213.6158,327.3776,217.6158,331.3776,213.6158"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="55.7779"
+        x2="333.3776"
+        y1="213.6158"
+        y2="213.6158"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="76.7651"
+        x="130.5692"
+        y="207.8068"
+      >
+        delete agent
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="53.8721"
+        x="210.7143"
+        y="207.8068"
+      >
+        "Refine"
+      </text>
+    </g>
+    <path
+      d="M290.9988,228.6158 L525.6039,228.6158 L525.6039,238.3218 L515.6039,248.3218 L290.9988,248.3218 L290.9988,228.6158"
+      fill="#455A64"
+      style="stroke: #000000; stroke-width: 1.5"
+    />
+    <rect
+      fill="none"
+      height="409.1242"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="889.3061"
+      x="290.9988"
+      y="228.6158"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="189.6051"
+      x="305.9988"
+      y="243.5128"
+    >
+      1 &#183; find out what would break
+    </text>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part3"
+      data-source-line="34"
+      id="msg2"
+    >
+      <polygon
+        fill="#455A64"
+        points="751.3775,268.0278,761.3775,272.0278,751.3775,276.0278,755.3775,272.0278"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="349.3776"
+        x2="757.3775"
+        y1="272.0278"
+        y2="272.0278"
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="210.6001"
+        x="451.0775"
+        y="266.2188"
+      >
+        GET&#160;/referencing/{agent_id}
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="35"
+      id="msg3"
+    >
+      <polygon
+        fill="#455A64"
+        points="1127.989,299.7338,1137.989,303.7338,1127.989,307.7338,1131.989,303.7338"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="773.3775"
+        x2="1133.989"
+        y1="303.7338"
+        y2="303.7338"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="130.9231"
+        x="891.2217"
+        y="297.9248"
+      >
+        list the wallet's teams
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="36"
+      id="msg4"
+    >
+      <polygon
+        fill="#455A64"
+        points="784.3775,331.4398,774.3775,335.4398,784.3775,339.4398,780.3775,335.4398"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="778.3775"
+        x2="1143.989"
+        y1="335.4398"
+        y2="335.4398"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="84.4351"
+        x="916.9657"
+        y="329.6308"
+      >
+        team headers
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="37"
+      id="msg5"
+    >
+      <polygon
+        fill="#455A64"
+        points="1127.989,376.7659,1137.989,380.7659,1127.989,384.7659,1131.989,380.7659"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="773.3775"
+        x2="1133.989"
+        y1="380.7659"
+        y2="380.7659"
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="132.6001"
+        x="860.9187"
+        y="361.3369"
+      >
+        get(id,&#160;"latest")
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="55.549"
+        x="996.8988"
+        y="361.3369"
+      >
+        per team
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="129.6588"
+        x="891.8539"
+        y="375.8359"
+      >
+        8 reads in flight; 97 s &#8594; 50 s
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="38"
+      id="msg6"
+    >
+      <polygon
+        fill="#455A64"
+        points="784.3775,408.4719,774.3775,412.4719,784.3775,416.4719,780.3775,412.4719"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="778.3775"
+        x2="1143.989"
+        y1="412.4719"
+        y2="412.4719"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="121.6541"
+        x="898.3562"
+        y="406.6629"
+      >
+        latest graph of each
+      </text>
+    </g>
+    <path
+      d="M621,425.4719 L621,523.4719 L915,523.4719 L915,435.4719 L905,425.4719 L621,425.4719"
+      fill="#FFF3E0"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <path
+      d="M905,425.4719 L905,435.4719 L915,435.4719 L905,425.4719"
+      fill="#FFF3E0"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="138.2811"
+      x="627"
+      y="444.3689"
+    >
+      Keep the teams whose
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="37.232"
+      x="768.6611"
+      y="444.3689"
+    >
+      latest
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="44.785"
+      x="809.2731"
+      y="444.3689"
+    >
+      version
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="249.3922"
+      x="627"
+      y="462.0749"
+    >
+      references the agent. Latest only: a team
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="252.4213"
+      x="627"
+      y="479.7809"
+    >
+      that no longer uses it is not broken going
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="262.7042"
+      x="627"
+      y="497.4869"
+    >
+      forward, and destroying it would trade real
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="273.5072"
+      x="627"
+      y="515.1929"
+    >
+      work for a historical version nobody deploys.
+    </text>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="46"
+      id="msg7"
+    >
+      <polygon
+        fill="#455A64"
+        points="1127.989,548.708,1137.989,552.708,1127.989,556.708,1131.989,552.708"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="773.3775"
+        x2="1133.989"
+        y1="552.708"
+        y2="552.708"
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="156.0001"
+        x="814.1122"
+        y="546.899"
+      >
+        publication_of(team)
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="125.7621"
+        x="973.4922"
+        y="546.899"
+      >
+        for the matches only
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="47"
+      id="msg8"
+    >
+      <polygon
+        fill="#455A64"
+        points="784.3775,580.414,774.3775,584.414,784.3775,588.414,780.3775,584.414"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="778.3775"
+        x2="1143.989"
+        y1="584.414"
+        y2="584.414"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="122.9541"
+        x="897.7062"
+        y="578.605"
+      >
+        publication, or none
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part2"
+      data-source-line="48"
+      id="msg9"
+    >
+      <polygon
+        fill="#455A64"
+        points="360.3776,625.74,350.3776,629.74,360.3776,633.74,356.3776,629.74"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="354.3776"
+        x2="767.3775"
+        y1="629.74"
+        y2="629.74"
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="389.9999"
+        x="363.8776"
+        y="610.311"
+      >
+        [{id,&#160;name,&#160;published,&#160;published_handle,&#160;version}]
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="334.1696"
+        x="391.7928"
+        y="624.81"
+      >
+        sorted by name &#8212; completion order is arbitrary once the reads
+        overlap
+      </text>
+    </g>
+    <path
+      d="M10,651.74 L257.9172,651.74 L257.9172,661.446 L247.9172,671.446 L10,671.446 L10,651.74"
+      fill="#455A64"
+      style="stroke: #000000; stroke-width: 1.5"
+    />
+    <rect
+      fill="none"
+      height="301.282"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="550.6721"
+      x="10"
+      y="651.74"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="202.9172"
+      x="25"
+      y="666.637"
+    >
+      2 &#183; ask, naming what is at stake
+    </text>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part1"
+      data-source-line="52"
+      id="msg10"
+    >
+      <polygon
+        fill="#455A64"
+        points="66.7779,771.51,56.7779,775.51,66.7779,779.51,62.7779,775.51"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="60.7779"
+        x2="338.3776"
+        y1="775.51"
+        y2="775.51"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="105.7681"
+        x="144.6937"
+        y="689.343"
+      >
+        Delete "Refine"?
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="206.8822"
+        x="94.1367"
+        y="707.049"
+      >
+        2 teams use it and will be deleted:
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="145.7691"
+        x="74.7277"
+        y="724.7551"
+      >
+        &#8226; RedTeam &#8212; published
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="96.551"
+        x="223.8768"
+        y="724.7551"
+      >
+        @redteam.test
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="193.5052"
+        x="100.8252"
+        y="742.4611"
+      >
+        &#8226; Experiment 3 &#8212; not published
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="229.3698"
+        x="82.8929"
+        y="756.9601"
+      >
+        @redteam.test will stop responding to mentions.
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="259.5997"
+        x="67.7779"
+        y="770.5801"
+      >
+        The account is kept, so you can publish to it again later.
+      </text>
+    </g>
+    <path
+      d="M20,790.51 L82.303,790.51 L82.303,800.2161 L72.303,810.2161 L20,810.2161 L20,790.51"
+      fill="#C62828"
+      style="stroke: #000000; stroke-width: 1.5"
+    />
+    <rect
+      fill="none"
+      height="155.512"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="530.6721"
+      x="20"
+      y="790.51"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="17.303"
+      x="35"
+      y="805.4071"
+    >
+      alt
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="11"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="109.4052"
+      x="97.303"
+      y="804.269"
+    >
+      [the author cancels]
+    </text>
+    <g
+      class="message"
+      data-entity-1="part1"
+      data-entity-2="part2"
+      data-source-line="54"
+      id="msg11"
+    >
+      <polygon
+        fill="#455A64"
+        points="327.3776,829.9221,337.3776,833.9221,327.3776,837.9221,331.3776,833.9221"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="55.7779"
+        x2="333.3776"
+        y1="833.9221"
+        y2="833.9221"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="40.469"
+        x="177.3433"
+        y="828.1131"
+      >
+        Cancel
+      </text>
+    </g>
+    <path
+      d="M354,846.9221 L354,891.9221 L540,891.9221 L540,856.9221 L530,846.9221 L354,846.9221"
+      fill="#E8F5E9"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <path
+      d="M530,846.9221 L530,856.9221 L540,856.9221 L530,846.9221"
+      fill="#E8F5E9"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="159.4192"
+      x="360"
+      y="865.8191"
+    >
+      Nothing has been written.
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="165.6721"
+      x="360"
+      y="883.5251"
+    >
+      The read was the only cost.
+    </text>
+    <line
+      style="stroke: #000000; stroke-width: 1; stroke-dasharray: 2, 2"
+      x1="20"
+      x2="550.6721"
+      y1="898.3341"
+      y2="898.3341"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="11"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="117.3582"
+      x="25"
+      y="910.093"
+    >
+      [the author confirms]
+    </text>
+    <g
+      class="message"
+      data-entity-1="part1"
+      data-entity-2="part2"
+      data-source-line="60"
+      id="msg12"
+    >
+      <polygon
+        fill="#455A64"
+        points="327.3776,934.022,337.3776,938.022,327.3776,942.022,331.3776,938.022"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="55.7779"
+        x2="333.3776"
+        y1="938.022"
+        y2="938.022"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="56.914"
+        x="169.1208"
+        y="932.213"
+      >
+        Delete all
+      </text>
+    </g>
+    <path
+      d="M270.9988,967.022 L633.147,967.022 L633.147,976.728 L623.147,986.728 L270.9988,986.728 L270.9988,967.022"
+      fill="#455A64"
+      style="stroke: #000000; stroke-width: 1.5"
+    />
+    <rect
+      fill="none"
+      height="372.0922"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="1002.9999"
+      x="270.9988"
+      y="967.022"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="317.1483"
+      x="285.9988"
+      y="981.919"
+    >
+      3 &#183; remove, in an order that survives interruption
+    </text>
+    <path
+      d="M280.9988,993.728 L354.3388,993.728 L354.3388,1003.4341 L344.3388,1013.4341 L280.9988,1013.4341 L280.9988,993.728"
+      fill="#EEEEEE"
+      style="stroke: #000000; stroke-width: 1.5"
+    />
+    <rect
+      fill="none"
+      height="306.6802"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="982.9999"
+      x="280.9988"
+      y="993.728"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="28.34"
+      x="295.9988"
+      y="1008.625"
+    >
+      loop
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="11"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="305.1158"
+      x="369.3388"
+      y="1007.4869"
+    >
+      [for each referencing team, stopping at the first failure]
+    </text>
+    <path
+      d="M290.9988,1020.4341 L353.3018,1020.4341 L353.3018,1030.1401 L343.3018,1040.1401 L290.9988,1040.1401 L290.9988,1020.4341"
+      fill="#EF6C00"
+      style="stroke: #000000; stroke-width: 1.5"
+    />
+    <rect
+      fill="none"
+      height="227.6481"
+      style="stroke: #000000; stroke-width: 1.5"
+      width="962.9999"
+      x="290.9988"
+      y="1020.4341"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="17.303"
+      x="305.9988"
+      y="1035.3311"
+    >
+      alt
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="11"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="125.6301"
+      x="368.3018"
+      y="1034.193"
+    >
+      [the team is published]
+    </text>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part3"
+      data-source-line="67"
+      id="msg13"
+    >
+      <polygon
+        fill="#455A64"
+        points="751.3775,1059.8461,761.3775,1063.8461,751.3775,1067.8461,755.3775,1063.8461"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="349.3776"
+        x2="757.3775"
+        y1="1063.8461"
+        y2="1063.8461"
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="156.0001"
+        x="478.3776"
+        y="1058.0371"
+      >
+        POST&#160;/{id}/unpublish
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part4"
+      data-source-line="68"
+      id="msg14"
+    >
+      <polygon
+        fill="#455A64"
+        points="1127.989,1091.5521,1137.989,1095.5521,1127.989,1099.5521,1131.989,1095.5521"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="773.3775"
+        x2="1133.989"
+        y1="1095.5521"
+        y2="1095.5521"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="158.6651"
+        x="877.3507"
+        y="1089.7431"
+      >
+        read the stored credential
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part4"
+      data-entity-2="part3"
+      data-source-line="69"
+      id="msg15"
+    >
+      <polygon
+        fill="#455A64"
+        points="784.3775,1123.2581,774.3775,1127.2581,784.3775,1131.2581,780.3775,1127.2581"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="778.3775"
+        x2="1143.989"
+        y1="1127.2581"
+        y2="1127.2581"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="85.8521"
+        x="916.2572"
+        y="1121.4491"
+      >
+        app password
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part5"
+      data-source-line="70"
+      id="msg16"
+    >
+      <polygon
+        fill="#455A64"
+        points="1195.1518,1172.6702,1205.1518,1176.6702,1195.1518,1180.6702,1199.1518,1176.6702"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="773.3775"
+        x2="1201.1518"
+        y1="1176.6702"
+        y2="1176.6702"
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="93.6"
+        x="943.4646"
+        y="1153.1551"
+      >
+        deleteRecord
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="226.2001"
+        x="837.5146"
+        y="1170.8611"
+      >
+        com.f1r3sky.agentsteam.config
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="41.34"
+        x="1067.0947"
+        y="1170.8611"
+      >
+        @ rkey
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="31.2"
+        x="1111.8147"
+        y="1170.8611"
+      >
+        self
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part5"
+      data-entity-2="part3"
+      data-source-line="71"
+      id="msg17"
+    >
+      <polygon
+        fill="#455A64"
+        points="784.3775,1204.3762,774.3775,1208.3762,784.3775,1212.3762,780.3775,1208.3762"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="778.3775"
+        x2="1211.1518"
+        y1="1208.3762"
+        y2="1208.3762"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="233.2202"
+        x="876.1545"
+        y="1202.5672"
+      >
+        deleted &#8212; account and handle survive
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part3"
+      data-entity-2="part2"
+      data-source-line="72"
+      id="msg18"
+    >
+      <polygon
+        fill="#455A64"
+        points="360.3776,1236.0822,350.3776,1240.0822,360.3776,1244.0822,356.3776,1240.0822"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="354.3776"
+        x2="767.3775"
+        y1="1240.0822"
+        y2="1240.0822"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="232.6742"
+        x="442.5405"
+        y="1234.2732"
+      >
+        the team no longer answers mentions
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part4"
+      data-source-line="74"
+      id="msg19"
+    >
+      <polygon
+        fill="#455A64"
+        points="1132.989,1288.4082,1142.989,1292.4082,1132.989,1296.4082,1136.989,1292.4082"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="349.3776"
+        x2="1138.989"
+        y1="1292.4082"
+        y2="1292.4082"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="96.3301"
+        x="699.0183"
+        y="1272.9792"
+      >
+        delete the team
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="155.0799"
+        x="669.6434"
+        y="1287.4782"
+      >
+        client-signed: prepare, then send
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part4"
+      data-source-line="76"
+      id="msg20"
+    >
+      <polygon
+        fill="#455A64"
+        points="1132.989,1327.1142,1142.989,1331.1142,1132.989,1335.1142,1136.989,1331.1142"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="349.3776"
+        x2="1138.989"
+        y1="1331.1142"
+        y2="1331.1142"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="100.2041"
+        x="697.0813"
+        y="1325.3052"
+      >
+        delete the agent
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part2"
+      data-source-line="79"
+      id="msg21"
+    >
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="349.3776"
+        x2="391.3776"
+        y1="1383.4402"
+        y2="1383.4402"
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="391.3776"
+        x2="391.3776"
+        y1="1383.4402"
+        y2="1396.4402"
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3"
+        x1="350.3776"
+        x2="391.3776"
+        y1="1396.4402"
+        y2="1396.4402"
+      />
+      <polygon
+        fill="#455A64"
+        points="360.3776,1392.4402,350.3776,1396.4402,360.3776,1400.4402,356.3776,1396.4402"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="93.6"
+        x="400.3314"
+        y="1364.0112"
+      >
+        refetchUntil
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="93.2101"
+        x="497.3115"
+        y="1364.0112"
+      >
+        the records are
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="44.382"
+        x="593.9015"
+        y="1364.0112"
+      >
+        absent
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="10"
+        lengthAdjust="spacing"
+        textLength="325.8597"
+        x="356.3776"
+        y="1378.5102"
+      >
+        the observer trails the validator, so a plain refetch can resurrect them
+      </text>
+    </g>
+    <g
+      class="message"
+      data-entity-1="part2"
+      data-entity-2="part1"
+      data-source-line="80"
+      id="msg22"
+    >
+      <polygon
+        fill="#455A64"
+        points="66.7779,1424.1462,56.7779,1428.1462,66.7779,1432.1462,62.7779,1428.1462"
+        style="
+          stroke: #455a64;
+          stroke-width: 1;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <line
+        style="stroke: #455a64; stroke-width: 1.3; stroke-dasharray: 2, 2"
+        x1="60.7779"
+        x2="343.3776"
+        y1="1428.1462"
+        y2="1428.1462"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="204.1132"
+        x="98.0212"
+        y="1422.3372"
+      >
+        the rows are gone, and stay gone
+      </text>
+    </g>
+    <path
+      d="M29,1441.1462 L29,1574.1462 L1237,1574.1462 L1237,1451.1462 L1227,1441.1462 L29,1441.1462"
+      fill="#FFEBEE"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <path
+      d="M1227,1441.1462 L1227,1451.1462 L1237,1451.1462 L1227,1441.1462"
+      fill="#FFEBEE"
+      style="stroke: #181818; stroke-width: 0.5"
+    />
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      font-weight="700"
+      lengthAdjust="spacing"
+      textLength="233.6882"
+      x="308.7181"
+      y="1460.0432"
+    >
+      Why this order, and not the reverse.
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="403.4944"
+      x="545.7862"
+      y="1460.0432"
+    >
+      Unpublishing needs the credential the publication was made with,
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="622.4796"
+      x="308.7181"
+      y="1477.7493"
+    >
+      and that credential is reached *through* the team record. Delete the team
+      first and a failed unpublish
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="611.9622"
+      x="308.7181"
+      y="1495.4553"
+    >
+      strands a live handle answering for a team that no longer exists, with the
+      means to stop it destroyed
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="602.9664"
+      x="308.7181"
+      y="1513.1613"
+    >
+      alongside it. Unpublish first and the worst interruption leaves a team
+      that is merely unpublished &#8212;
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="621.6602"
+      x="308.7181"
+      y="1530.8673"
+    >
+      visible, intact, and republishable. The agent goes last for the same
+      reason: an interruption then leaves
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="614.6794"
+      x="308.7181"
+      y="1548.5733"
+    >
+      teams pointing at an agent that still exists, rather than the dangling
+      references this whole flow exists
+    </text>
+    <text
+      fill="#000000"
+      font-family="Helvetica"
+      font-size="13"
+      lengthAdjust="spacing"
+      textLength="66.7811"
+      x="308.7181"
+      y="1566.2793"
+    >
+      to prevent.
+    </text>
+    <g class="legend" data-source-line="92">
+      <rect
+        fill="none"
+        height="166.5433"
+        rx="7.5"
+        ry="7.5"
+        style="stroke: #000000; stroke-width: 1"
+        width="326.1748"
+        x="972.2932"
+        y="1690.2242"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="44.2538"
+        x="980.9332"
+        y="1712.1901"
+      >
+        colour
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="61.6278"
+        x="1032.467"
+        y="1712.1901"
+      >
+        meaning
+      </text>
+      <rect
+        fill="#E3F2FD"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1716.2921"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1731.258"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="54.2498"
+        x="1032.467"
+        y="1731.258"
+      >
+        browser
+      </text>
+      <rect
+        fill="#E8EAF6"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1735.36"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1750.3259"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="49.9798"
+        x="1032.467"
+        y="1750.3259"
+      >
+        embers
+      </text>
+      <rect
+        fill="#E0F2F1"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1754.4279"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1769.3939"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="208.2492"
+        x="1032.467"
+        y="1769.3939"
+      >
+        chain &#8212; the wallet's team index
+      </text>
+      <rect
+        fill="#FCE4EC"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1773.4958"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1788.4618"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="257.361"
+        x="1032.467"
+        y="1788.4618"
+      >
+        PDS &#8212; the handle and its config record
+      </text>
+      <rect
+        fill="#E8F5E9"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1792.5638"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1807.5297"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="89.2637"
+        x="1032.467"
+        y="1807.5297"
+      >
+        safe outcome
+      </text>
+      <rect
+        fill="#FFF3E0"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1811.6317"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1826.5976"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="105.2236"
+        x="1032.467"
+        y="1826.5976"
+      >
+        conditional step
+      </text>
+      <rect
+        fill="#FFEBEE"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="977.2932"
+        y="1830.6996"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="977.2932"
+        y="1845.6655"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="202.8732"
+        x="1032.467"
+        y="1845.6655"
+      >
+        the hazard the ordering avoids
+      </text>
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1697.2242"
+        y2="1697.2242"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1716.2921"
+        y2="1716.2921"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1735.36"
+        y2="1735.36"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1754.4279"
+        y2="1754.4279"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1773.4958"
+        y2="1773.4958"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1792.5638"
+        y2="1792.5638"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1811.6317"
+        y2="1811.6317"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1830.6996"
+        y2="1830.6996"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="1293.468"
+        y1="1849.7675"
+        y2="1849.7675"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="977.2932"
+        x2="977.2932"
+        y1="1697.2242"
+        y2="1849.7675"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1028.827"
+        x2="1028.827"
+        y1="1697.2242"
+        y2="1849.7675"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1293.468"
+        x2="1293.468"
+        y1="1697.2242"
+        y2="1849.7675"
+      />
+    </g>
+    <?plantuml-src TLTTSjl84NxdAQQm3xQvMkhFKcH5KPPBaRkfE1kLLweyX2dN46WIA88ps9aXAQwjgdtA0L8vGIwHznp59ydNFG08UMMxoYQ0wV_-lkvveMwef52OXT96wGMPSA38P2fO_c-Wxd9IZZHUv3eeerVayPEKdiyf3OJtf5TUvRggoFZU2pMZkNKaPzQUd2gyqdv9sG4CPFBQqSfkTEcLMnjL63PiNOQZQMuz6ULjDARD3leA4yYvTHKAQrH9UWC7D7IaTaDEpqfIFkX0Wrue0Xv-4uxwzEk_sGErPPr5K5kxBZCrGr3B0_R7nD_Acd8N3sqrJ2mSKJOrLxxuXIwFZwyT-M0TQxugOU_XUhhI8Kzr-U7TevhIp-jYewO8NPUb2cgAkEukfqeEkTK7SSK_lWolrDIlPvu2_Qo6LuTHbTeM8RVh8F69ywfQpyeYrHBrZFB2P5U7xCfrh-UNXQcqqoirq-bouUpQP2DRMgU-ciYVpecCvdfTXearuKVKJlr0vGRvINNdZCzrPhTiTewgKFSBmYAJqb_8UqGmB8k5KIbnHPuvfJxqb1ewPxUrDw_FpeRdhvkNTtcHBWqqgUF1ALw-BURqjZ3qdHI_5dbpD7mz77U_VXxYU3IUJ8vnubOx159KseIeeclWxEa1Zh-MFpa_FJczw3tsUZf5GLKoN2FtBa6Fg7l9uCNuk3Up3ogPmMkqS8AtP_mNEgkzJfNSQ9_Fh7RxDZcw7agXx_IiBfVelO7RfvEJoKsFeGNTKJ-jPkJy5zN_S7TtguQtVn8LOwYu60ydvqzL-9qFjF8HCAJJNEKMtSrwb9qBtEQ8isiZqq7Fj2ULJ8xTwRpSJKsQwyA8cH7C7C7JuoS7Rsz-cfgNEbJE1ljA3jv2usZyUZng_UdTgs-k4UhNNpVHgalq7-18DHBx_UGTpL7KfD_lzRYgLTqZhSIn-jz_5OvaYk4GqRZ7AvowOIFZQ4Jo0ID9yltuJXqwcfD38wAJ3oFWtXVPOv90QinIeoWbuK6gB7oG16q1MGelVAGod7OKrix8eyh1VIZI5tGaoOB2omBabZ2IVKXU9Ocgm6Kit6cB2o5HptGt1uhoy7lrvdVAgq___9SwErA-0NThFAfJ2wUhd2l9jSLNOv5DPZvk2FJgwVW8RvNwCr4bmKGwtZAJ8jzHIx-l8E519NAsoLF3v9ofWNeR3J8BNe9_M8-SZhnlLMdD0cR1wPvP5BGENr0MkmI3BYoIBiV1W5iW8h9z1etExfXQMk8D3WdbR9HoVclTaeLWCY-4OK6fZRimCRFP3dggqkxy01BSRPo4BnQaGvplxVmbny4rOHCSBVWupH42nxdFTaVe0CC85WpjloR9tpzmZNdw7SIpFkU9rlvydoFS4Xzhnn__aIITwdlhU5JETg929b9gLnLFAjiCFvwJRbOWFMu7xrAgPoLt3HUyr5NJ9CZ1v_29jALE63uOTk8hfpqEFQWEF2QNr23e7hdgzsyYEXjK_h7VdvgJkeLGQ2uQbt5ROARDg0PpTZardtxzZtf7sHqZXADf4m6btphAMCKWjbuyF7u0A8eLiy2fI73pj5ATL3sHZfRH5HKIuIjhCeu9gmahGkhye4v9Hm4lB3fDCJ4ay2LLs6YmKkpiMgNQD4PP2uUt0FC9sDnWZq5TXgz6voSN9nUSsV5tut54YamArf9IwQLzQywxL2DvAUy4euv1pi1bxh-Od8tVo3UbVhGXvoXoaEYCW9sjAq8WCwY_jmiNRo5iLVQIrFeGJtG002UeqVx4GMlcXLjzvc5TR91TXD6pRIIKZXAXZMHDGqjtDpGX0xzscuBNiEvg1fsbHPqOPpA7Ecmi7NKWTQnakucy2nzHuhakohKZyPNpFfwSZuwE6d9hEOrhsVPBdQhdPy7jNt_2C01W7m_NfXQH8S1_dkECUhtbHHARQwPI_CFzLJDKImDOSJ5OlGTbPLrrjwAkJXrx477o3YkgovW7aWHe7ymnRVroDuYheFIu56e1TlfMkINj8EgfdBVErdPhsCL5jkviXcNadAOSJsNQjEsPMnk_1Jkrs6cwgTUcShGVs8ry1rXfMK3o6uyT41oWAaVOCgXUeR6tPtlyHAtFwPJWO-VTD8sP9DmheELxE5OY6v7uE7lCYJp7D3Pc8sJIkYFGm6l7mn2iMPGHBhXP5DXSh1FKOv4k6U6r1M40KCdQGRzquQhnkfCuNll4y09Z84uoaETE7dizWRTEdSMYMRC3Wktt_vRl88qs5QX4CMQv60qF1XfW4jytFSb8CBXZHBVtJIUFtVMVYM35GvDl2GTCJwQ-ZdM4ODSnxfY2SUEmwqNUttT1pEQWuO3sVOGWwzC2H4Ytc84XJ6zyu_jMYGvh6YusajmNP6wBfi_M17h0CFS7udASkmGn9brXSp1llHi8c3LB-IBZYJFOPwZZdknfbf-Ulm_kVIYumns1Czj88dPWPrFuObOAfmLinR56wEDuZ2-JyS8RrzM5XUfICqVLouFdwOqqUsikcHIV-28uY0x1L1oY5VQYK5DUUo6D91fuj3LfShWbHdgD7PXfioXPxickLiXYXmhCIxkjPTcKPJ1kU8lhjTEXLzA27sGEuT37Fs0ib7Rj-1SNWxL_v0zNzUvz_L7L5vxslP0gtiUBIljQY1ElvTeWjFIRDHgfoUYXaOZS20bS9DhpRJTbgBgFGsjHT-hU0vvj4FHwJdmb095IgrKc1Fl1Ym7NGFEoW4MuFS3Wn85exXVifN6YCa2bAXjRP1mNiIkSh_y3?>
+  </g>
+</svg>
