@@ -70,7 +70,8 @@ end note
 :Fault removed — delegate to ""deleteElements"";
 :Error unrepresentable — save filters;
 :Existing errors repaired — load filters;
-:12 tests fail if any of the three is reverted;
+:Reverting the fixes fails 10 of 13 D1 tests
+and 6 of 15 render tests (§8);
 stop
 
 legend right

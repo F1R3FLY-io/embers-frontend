@@ -270,15 +270,15 @@ Three changes, in `f9f3759`:
    the keyboard cannot diverge again:
 
    ```ts
-   // apps/embers/src/lib/components/GraphEditor/menuItems.tsx:167
+   // apps/embers/src/lib/components/GraphEditor/menuItems.tsx:307
    void rf.deleteElements({ nodes: input.nodes });
    ```
 
-2. **Repair** — load drops edges naming an undefined vertex (`graph.ts:330`), which
+2. **Repair** — load drops edges naming an undefined vertex (`graph.ts:374`), which
    is what makes $`l`$ a retraction onto $`W`$ and heals stored graphs.
 
 3. **Refuse** — save drops edges whose endpoints are not being written
-   (`graph.ts:60`), so no future path can persist one.
+   (`graph.ts:88`), so no future path can persist one.
 
 The choice to **filter rather than throw** is deliberate, and differs from
 `requireString`, which throws when an agent node lacks its id. The distinction is
@@ -1077,9 +1077,12 @@ fn read_budget_fits_two_attempts() {
 The write path had the same shape at $`\tau = 10\,\text{s}`$: steady state is
 5–45 ms, but the first call after an idle period pays to re-establish the gRPC channel,
 and eleven consecutive requests died at exactly 10.00 s while the node was busy. One
-succeeded at 13.8 s once the bound was raised. It is now 20 s — deliberately _below_
-the 30 s a typical HTTP client allows, so the caller sees this client's diagnostic,
-which knows what it was waiting for, rather than its own timeout, which does not.
+succeeded at 13.8 s once the bound was raised. The incident fix raised it to 20 s; the
+Workflow v2 backend work later settled it at a hard 30 s per-request deadline (as of
+`67003ed`, `packages/firefly-client/src/write_node_client.rs:75`). The principle
+survives the number: pair the write deadline with a client-side outer budget that
+exceeds it, so the caller sees this client's diagnostic, which knows what it was
+waiting for, rather than its own timeout, which does not.
 
 The general form is worth stating, because a timeout is the easiest constant in a
 system to choose by feel:
@@ -1182,7 +1185,7 @@ algorithm CONNECTED-EDGES(nodes, edges):
     return [ e ∈ edges : e.source ∈ present ∧ e.target ∈ present ]
 ```
 
-Implemented as `connectedEdges` in `apps/embers/src/lib/graph.ts:60`, applied at
+Implemented as `connectedEdges` in `apps/embers/src/lib/graph.ts:88` (line anchors in this appendix refreshed as of `01e8ea0`), applied at
 `graph.ts:45`.
 
 ### B.2 The load-side guard
@@ -1200,7 +1203,7 @@ algorithm BUILD-EDGES(flatGraph):
     return [ { id: fresh(), source: u, target: v } : (u, v) ∈ kept ]
 ```
 
-Implemented as `buildEdges` in `apps/embers/src/lib/graph.ts:330`.
+Implemented as `buildEdges` in `apps/embers/src/lib/graph.ts:374`.
 
 ---
 

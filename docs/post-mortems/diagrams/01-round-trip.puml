@@ -20,10 +20,10 @@ skinparam rectangle {
 rectangle "**Graph editor**\nReact Flow state\nnodes + edges" as EDITOR #line:455A64;back:ECEFF1
 
 package "browser — apps/embers/src/lib/graph.ts" {
-  rectangle "**connectedEdges**\nGUARD 2 — drops an edge whose\nendpoint is not being written\n<size:10>graph.ts:60</size>" as GUARD_SAVE #line:2E7D32;back:E8F5E9
+  rectangle "**connectedEdges**\nGUARD 2 — drops an edge whose\nendpoint is not being written\n<size:10>graph.ts:88</size>" as GUARD_SAVE #line:2E7D32;back:E8F5E9
   rectangle "toApiGraph\nnodes + edges → AST" as TOAPI #line:455A64;back:ECEFF1
   rectangle "fromApiGraph\nAST → nodes + edges" as FROMAPI #line:455A64;back:ECEFF1
-  rectangle "**buildEdges**\nGUARD 1 — drops an edge naming\na vertex the graph never defined\n<size:10>graph.ts:330</size>" as GUARD_LOAD #line:2E7D32;back:E8F5E9
+  rectangle "**buildEdges**\nGUARD 1 — drops an edge naming\na vertex the graph never defined\n<size:10>graph.ts:374</size>" as GUARD_LOAD #line:2E7D32;back:E8F5E9
 }
 
 rectangle "astToGraphl / parseToAst\nWASM, @f1r3fly-io/graphl-parser" as WASM #line:1565C0;back:E3F2FD
@@ -31,7 +31,7 @@ rectangle "astToGraphl / parseToAst\nWASM, @f1r3fly-io/graphl-parser" as WASM #l
 rectangle "**F1r3fly chain**\nteam version, append-only\ngraphl text" as CHAIN #line:1565C0;back:E3F2FD
 
 package "embers backend (Rust)" {
-  rectangle "parse\nGUARD 3 — the only check that\nexisted before, and the last\n<size:10>graphl_parsing.rs:280</size>" as PARSE #line:C62828;back:FFEBEE
+  rectangle "parse\nGUARD 3 — the only check that\nexisted before, and the last\n<size:10>compilation/graphl_parsing.rs:339</size>" as PARSE #line:C62828;back:FFEBEE
   rectangle "render\ngraphl → Rholang\ncontract agentsTeam" as RENDER #line:455A64;back:ECEFF1
 }
 
