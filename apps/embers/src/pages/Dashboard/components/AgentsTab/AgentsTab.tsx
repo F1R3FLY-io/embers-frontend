@@ -41,37 +41,51 @@ export default function AgentsTab({ searchQuery, sortBy }: AgentsTabProps) {
   // read plus a parse per team, which nobody should pay for merely opening the page.
   const referencingTeams = useReferencingTeamsReader();
 
-  const runDelete = useCallbackWithLoader(async (id: string, name: string) => {
-    let teams;
-    try {
-      teams = await referencingTeams(id);
-    } catch {
-      // Refusing rather than guessing. Deleting without knowing which teams use
-      // the agent is how a team ends up silently unrepairable, which is the whole
-      // reason this check exists.
-      await alert({
-        message:
-          "Could not determine which teams use this agent, so it was not deleted. Try again once the node is responsive.",
-        title: "Delete failed",
-      });
-      return;
-    }
+  // The loader wraps only the work, never the dialogs: the spinner overlay
+  // renders above every modal, so a confirm awaited under it is unreachable
+  // and its promise can never settle -- the exact deadlock this structure
+  // prevents. Each loader-wrapped step is refcounted, so the independently
+  // wrapped delete mutation nests safely.
+  const readReferencingTeams = useCallbackWithLoader(referencingTeams);
+  const runCascadeWithLoader = useCallbackWithLoader(
+    (id: string, teams: Awaited<ReturnType<typeof referencingTeams>>) =>
+      // Each team stopped and removed, then the agent, halting at the first
+      // failure: an interrupted cascade must never leave a team pointing at an
+      // agent that no longer exists. Every mutation here reports its own
+      // failure, so this only has to stop the cascade rather than re-announce
+      // it -- a second dialog for one failure reads as a second failure.
+      runCascade(id, teams, {
+        deleteAgent: deleteAgent.mutateAsync,
+        deleteTeam: deleteTeam.mutateAsync,
+        unpublishTeam: unpublishTeam.mutateAsync,
+      }).catch(() => undefined),
+  );
 
-    if (!(await confirm({ message: cascadeMessage(name, teams) }))) {
-      return;
-    }
+  const runDelete = useCallback(
+    async (id: string, name: string) => {
+      let teams;
+      try {
+        teams = await readReferencingTeams(id);
+      } catch {
+        // Refusing rather than guessing. Deleting without knowing which teams use
+        // the agent is how a team ends up silently unrepairable, which is the whole
+        // reason this check exists.
+        await alert({
+          message:
+            "Could not determine which teams use this agent, so it was not deleted. Try again once the node is responsive.",
+          title: "Delete failed",
+        });
+        return;
+      }
 
-    // Each team stopped and removed, then the agent, halting at the first failure:
-    // an interrupted cascade must never leave a team pointing at an agent that no
-    // longer exists. Every mutation here reports its own failure, so this only has
-    // to stop the cascade rather than re-announce it -- a second dialog for one
-    // failure reads as a second failure.
-    await runCascade(id, teams, {
-      deleteAgent: deleteAgent.mutateAsync,
-      deleteTeam: deleteTeam.mutateAsync,
-      unpublishTeam: unpublishTeam.mutateAsync,
-    }).catch(() => undefined);
-  });
+      if (!(await confirm({ message: cascadeMessage(name, teams) }))) {
+        return;
+      }
+
+      await runCascadeWithLoader(id, teams);
+    },
+    [alert, confirm, readReferencingTeams, runCascadeWithLoader],
+  );
 
   const onDelete = useCallback(
     (id: string, name: string) => void runDelete(id, name),

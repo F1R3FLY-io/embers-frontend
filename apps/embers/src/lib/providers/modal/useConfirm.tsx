@@ -41,6 +41,10 @@ export function useConfirm() {
           closeOnBlur,
           closeOnEsc,
           maxWidth,
+          // A dialog dismissed without a decision (Escape, backdrop, or a
+          // programmatic close) is a cancellation: the promise must settle so
+          // the caller can never be stranded awaiting it.
+          onDismiss: () => resolve(false),
           showCloseButton: false,
         },
       );
@@ -81,7 +85,15 @@ export function useAlert() {
           onCancel={() => resolve()}
           onConfirm={() => resolve()}
         />,
-        { ariaLabel: title, closeOnBlur: true, closeOnEsc: true, maxWidth },
+        {
+          ariaLabel: title,
+          closeOnBlur: true,
+          closeOnEsc: true,
+          maxWidth,
+          // Dismissal is acknowledgement for an alert; the promise settles by
+          // every close path.
+          onDismiss: () => resolve(),
+        },
       );
     });
   };

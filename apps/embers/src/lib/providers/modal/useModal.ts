@@ -7,6 +7,14 @@ export type ModalOptions = {
   closeOnBlur?: boolean;
   closeOnEsc?: boolean;
   maxWidth: number | string;
+  /**
+   * Invoked exactly once when the dialog closes by ANY path — Escape,
+   * backdrop, the close button, or a programmatic close. Promise-based
+   * dialogs (confirm/alert) settle their pending promise here so that a
+   * dismissed dialog can never strand its caller; an explicit button
+   * resolution earlier makes this a harmless no-op.
+   */
+  onDismiss?: () => void;
   showCloseButton?: boolean;
 };
 
