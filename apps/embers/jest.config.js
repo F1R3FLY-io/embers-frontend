@@ -6,6 +6,11 @@ export default {
     // module that reaches a stylesheet or an icon fails before a test can run.
     // The svg mock is a component because `?react` imports are components.
     "\\.svg(\\?react)?$": "<rootDir>/tests/__mocks__/svgMock.tsx",
+    // Vite-only module: it contains `import.meta`, which the CommonJS test
+    // transform cannot parse. Order-sensitive: this specific mapping must
+    // precede the generic @/ alias or jest never applies it.
+    "^@/lib/viteHmr$": "<rootDir>/tests/__mocks__/viteHmrMock.ts",
+    // eslint-disable-next-line perfectionist/sort-objects
     "^@/(.*)$": "<rootDir>/src/$1",
   },
   preset: "ts-jest/presets/default-esm",

@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
+import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CurrentAgentProvider } from "@/lib/providers/currentAgent/CurrentAgentProvider";
 import { CurrentAgentsTeamProvider } from "@/lib/providers/currentAgentsTeam/CurrentAgentsTeamProvider";
 import { DockProvider } from "@/lib/providers/dock/DockProvider";
@@ -44,7 +45,12 @@ export default function App() {
                 <BrowserRouter>
                   <ModalProvider>
                     <div className={styles.background}>
-                      <Suspense fallback={null}>
+                      {/* The last line of defense: without a boundary above
+                          the routes, any uncaught render or effect error
+                          unmounts the entire application to a bare background
+                          with no message. */}
+                      <ErrorBoundary>
+                        <Suspense fallback={null}>
                         <Routes>
                           <Route element={<Home />} path="/" />
                           <Route element={<Login />} path="/login" />
@@ -120,7 +126,8 @@ export default function App() {
                             />
                           </Route>
                         </Routes>
-                      </Suspense>
+                        </Suspense>
+                      </ErrorBoundary>
                     </div>
                   </ModalProvider>
                 </BrowserRouter>
