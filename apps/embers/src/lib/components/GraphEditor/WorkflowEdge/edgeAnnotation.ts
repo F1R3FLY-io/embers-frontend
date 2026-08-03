@@ -77,16 +77,24 @@ export function edgeAnnotation(
     );
   }
 
-  const guard = data.guard;
-  if (guard !== undefined && !(guard.kind === "literal" && guard.value)) {
+  // The nominal type says `Condition | undefined`, but a backend-reloaded
+  // definition serializes absent optionals as explicit `null`. reactFlow.ts
+  // normalizes that at the parse boundary; the casts here let this pure
+  // helper stay safe on its own if that normalization is ever bypassed,
+  // rather than reaching `.kind` / `in` on null.
+  const guard = data.guard as Condition | null | undefined;
+  if (
+    guard !== undefined &&
+    guard !== null &&
+    !(guard.kind === "literal" && guard.value)
+  ) {
     parts.push(conditionText(guard, false));
   }
 
-  if (data.loop !== undefined) {
+  const loop = data.loop as WorkflowEdgeData["loop"] | null;
+  if (loop !== undefined && loop !== null) {
     parts.push(
-      "maxIterations" in data.loop
-        ? `↻ ≤ ${String(data.loop.maxIterations)}`
-        : "↻ d",
+      "maxIterations" in loop ? `↻ ≤ ${String(loop.maxIterations)}` : "↻ d",
     );
   }
 

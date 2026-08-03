@@ -1,6 +1,7 @@
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
 import type { WorkflowDefinitionV2 } from "@/lib/workflow";
 
+import { edgeAnnotation } from "@/lib/components/GraphEditor/WorkflowEdge/edgeAnnotation";
 import {
   activityReferenceFromJson,
   conditionFromJson,
@@ -167,6 +168,41 @@ describe("WorkflowDefinition v2", () => {
     );
   });
 
+  test("projects a backend-reloaded definition whose optionals are explicit null", () => {
+    // The editor emits a default edge by omitting guard/loop/ports; the
+    // backend round-trips that as explicit `null` (its Rust Option fields
+    // carry no skip_serializing_if). Reproduce that exact on-the-wire shape
+    // and prove the projection normalizes it to key-absent `undefined` and
+    // the annotation stays silent -- the regression that blanked the editor
+    // with "Cannot read properties of null (reading 'kind')".
+    const base = toWorkflowDefinition(
+      [node("in", "input-node"), node("out", "output-node")],
+      [edge("in", "out")],
+    );
+    const [transitionId] = Object.keys(base.transitions);
+    const backendShaped = {
+      ...base,
+      transitions: {
+        [transitionId]: {
+          ...base.transitions[transitionId],
+          guard: null,
+          loop: null,
+          sourcePort: null,
+          targetPort: null,
+        },
+      },
+    } as unknown as WorkflowDefinitionV2;
+
+    const [, edges] = fromWorkflowDefinition(backendShaped);
+    const projected = edges[0];
+
+    expect(projected.data?.guard).toBeUndefined();
+    expect(projected.data?.loop).toBeUndefined();
+    expect(projected.sourceHandle).toBeUndefined();
+    expect(projected.targetHandle).toBeUndefined();
+    expect(edgeAnnotation(projected.data)).toBeNull();
+  });
+
   test("accepts and round-trips the approval rejection disposition", () => {
     const original = toWorkflowDefinition(
       [
@@ -262,19 +298,19 @@ describe("WorkflowDefinition v2", () => {
           label: "Outer entry",
           scopeId: "scope:outer",
         },
-        prep: {
-          activity: { kind: "builtin", name: "compress" },
-          id: "prep",
-          kind: "activity",
-          label: "Lifecycle prep",
-          scopeId: "scope:inner",
-        },
         "outer-owner": {
           childScopeId: "scope:outer",
           id: "outer-owner",
           kind: "scope",
           label: "Outer state",
           scopeId: "root:custom",
+        },
+        prep: {
+          activity: { kind: "builtin", name: "compress" },
+          id: "prep",
+          kind: "activity",
+          label: "Lifecycle prep",
+          scopeId: "scope:inner",
         },
         root: {
           id: "root",

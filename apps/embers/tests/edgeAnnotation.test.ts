@@ -43,6 +43,33 @@ describe("default transitions are silent", () => {
   it("ignores priority under all-matches routing, where it is inert", () => {
     expect(edgeAnnotation({ priority: 5, routeMode: "allMatches" })).toBeNull();
   });
+
+  // The backend serializes absent optionals as explicit null; a reloaded
+  // definition therefore hands the helper null where an editor-fresh one
+  // omits the key. These pin that null never reaches `.kind` / `in null`.
+  it("treats an explicit-null guard as no guard", () => {
+    expect(
+      edgeAnnotation({ guard: null } as unknown as WorkflowEdgeData),
+    ).toBeNull();
+  });
+
+  it("treats an explicit-null loop as no loop", () => {
+    expect(
+      edgeAnnotation({ loop: null } as unknown as WorkflowEdgeData),
+    ).toBeNull();
+  });
+
+  it("composes a fully-null backend-shaped edge without throwing", () => {
+    const backendNulls = {
+      guard: null,
+      loop: null,
+      noMatch: null,
+      priority: null,
+      routeMode: null,
+      trigger: null,
+    } as unknown as WorkflowEdgeData;
+    expect(edgeAnnotation(backendNulls)).toBeNull();
+  });
 });
 
 describe("trigger deviations", () => {

@@ -816,9 +816,15 @@ export function fromWorkflowDefinition(
         );
       }
       return {
+        // The backend serializes absent optionals as explicit `null` (its
+        // Rust `Option` fields carry no skip_serializing_if), so a reloaded
+        // definition arrives with `guard: null` / `loop: null` where an
+        // editor-fresh one omits the key. `?? undefined` restores the
+        // `guard?: Condition` contract every consumer relies on -- without it
+        // a null slips past an `!== undefined` guard and throws on `.kind`.
         data: {
-          guard: transition.guard,
-          loop: transition.loop,
+          guard: transition.guard ?? undefined,
+          loop: transition.loop ?? undefined,
           noMatch: routeGroup.noMatch,
           priority: transition.priority,
           routeGroupId: transition.routeGroupId,
@@ -827,11 +833,11 @@ export function fromWorkflowDefinition(
           trigger: transition.trigger,
         },
         id: transition.id,
-        label: definition.presentation.edges[transition.id]?.label,
+        label: definition.presentation.edges[transition.id]?.label ?? undefined,
         source: transition.sourceNodeId,
-        sourceHandle: transition.sourcePort,
+        sourceHandle: transition.sourcePort ?? undefined,
         target: transition.targetNodeId,
-        targetHandle: transition.targetPort,
+        targetHandle: transition.targetPort ?? undefined,
       };
     },
   );
