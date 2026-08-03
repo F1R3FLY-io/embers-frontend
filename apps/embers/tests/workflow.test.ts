@@ -460,6 +460,55 @@ describe("WorkflowDefinition v2", () => {
     );
   });
 
+  test("requires a timedOut route when an approval declares a timeout", () => {
+    const definition = toWorkflowDefinition(
+      [
+        node("in", "input-node"),
+        node("gate", "approval"),
+        node("out", "output-node"),
+      ],
+      [edge("in", "gate"), edge("gate", "out")],
+    );
+    definition.nodes.gate.policy = {
+      authorities: [],
+      timeout: { afterMillis: 1000 },
+    };
+
+    expect(validateWorkflow(definition)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ code: "approval-timeout-unrouted" }),
+      ]),
+    );
+
+    definition.routeGroups["route:gate:timedOut"] = {
+      id: "route:gate:timedOut",
+      mode: "allMatches",
+      noMatch: "fail",
+    };
+    definition.transitions["gate-late"] = {
+      id: "gate-late",
+      priority: 0,
+      routeGroupId: "route:gate:timedOut",
+      sourceNodeId: "gate",
+      targetNodeId: "out",
+      trigger: "timedOut",
+    };
+    expect(
+      validateWorkflow(definition).some(
+        (diagnostic) => diagnostic.code === "approval-timeout-unrouted",
+      ),
+    ).toBe(false);
+
+    delete definition.transitions["gate-late"];
+    delete definition.routeGroups["route:gate:timedOut"];
+    definition.nodes.gate.policy = undefined;
+    expect(
+      validateWorkflow(definition).some(
+        (diagnostic) => diagnostic.code === "approval-timeout-unrouted",
+      ),
+    ).toBe(false);
+  });
+
   test("rejects conflicting policies for one preserved route group", () => {
     expect(() =>
       toWorkflowDefinition(
@@ -514,6 +563,16 @@ describe("WorkflowDefinition v2", () => {
       waitFor: "timer",
     };
     definition.scopes[definition.entryScopeId].entryActivities = ["in"];
+    definition.nodes.gate = {
+      approvers: ["alice"],
+      id: "gate",
+      kind: "approval",
+      label: "Gate",
+      policy: { authorities: [], timeout: { afterMillis: 1000 } },
+      policyId: "owner",
+      quorum: 1,
+      scopeId: definition.entryScopeId,
+    };
 
     expect(validateWorkflow(definition)).toEqual(
       expect.arrayContaining([
@@ -528,6 +587,7 @@ describe("WorkflowDefinition v2", () => {
         expect.objectContaining({ code: "empty-source-port" }),
         expect.objectContaining({ code: "invalid-transition-priority" }),
         expect.objectContaining({ code: "mismatched-rholang-guard-hash" }),
+        expect.objectContaining({ code: "approval-timeout-unrouted" }),
       ]),
     );
   });

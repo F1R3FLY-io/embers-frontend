@@ -469,6 +469,21 @@ export function validateWorkflow(
           severity: "error",
         });
       }
+      if (
+        node.policy?.timeout !== undefined &&
+        !Object.values(definition.transitions).some(
+          (transition) =>
+            transition.sourceNodeId === node.id &&
+            transition.trigger === "timedOut",
+        )
+      ) {
+        diagnostics.push({
+          code: "approval-timeout-unrouted",
+          id: node.id,
+          message: `Approval ${node.label} declares a timeout but no timedOut route; the deadline would expire into a run failure with no matching route group.`,
+          severity: "error",
+        });
+      }
     }
     if (node.kind === "wait") {
       if (node.waitFor === "timer") {
