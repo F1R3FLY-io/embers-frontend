@@ -48,9 +48,12 @@ export function ExecutionPolicyModal({
   const [retryOn, setRetryOn] = useState(
     textList(initial.retryOn, "failed, timedOut"),
   );
-  const [authorities, setAuthorities] = useState(
-    textList(initial.policyAuthorities, ""),
-  );
+  // The Authorities control is hidden from the dialog because the field is
+  // recorded-only today -- nothing in the runtime enforces it (see
+  // docs/agent-teams/design/authority-enforcement.md). The value is still
+  // read from the loaded definition and written back on save, so an existing
+  // node's authorities round-trip losslessly; only the editing input is gone.
+  const [authorities] = useState(textList(initial.policyAuthorities, ""));
   const [deterministicJitter, setDeterministicJitter] = useState(
     initial.deterministicJitter !== "false",
   );
@@ -141,15 +144,6 @@ export function ExecutionPolicyModal({
           onChange={(value) => setDeterministicJitter(value === "true")}
         />
       </div>
-      <label className={styles["nim-field"]}>
-        <Text bold color="secondary" type="small">
-          Authorities
-        </Text>
-        <Input
-          value={authorities}
-          onChange={(event) => setAuthorities(event.target.value)}
-        />
-      </label>
       <label className={styles["nim-field"]}>
         <Text bold color="secondary" type="small">
           Compensation activity (Workflow JSON, or null)

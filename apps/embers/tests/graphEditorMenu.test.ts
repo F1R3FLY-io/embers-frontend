@@ -4,6 +4,7 @@ import type { ContextMenuInput } from "@/lib/components/GraphEditor/menuItems";
 import type { Edge, Node } from "@/lib/components/GraphEditor/nodes";
 
 import { buildMenuItems } from "@/lib/components/GraphEditor/menuItems";
+import { NODE_REGISTRY } from "@/lib/components/GraphEditor/nodes/nodes.registry";
 
 // Guards the deletion path itself. graph.test.ts covers the persistence side --
 // that a dangling edge is neither written nor read back -- but those guards would
@@ -255,5 +256,27 @@ describe("the delete-node menu action", () => {
     ).find((candidate) => candidate.content === "Wrap in state scope");
 
     expect(item?.hidden).toBe(true);
+  });
+});
+
+describe("the empty-space add-node menu", () => {
+  it("does not offer palette-hidden kinds while keeping them in the registry", () => {
+    const { context } = harness();
+    const items = buildMenuItems(
+      { type: "emptySpace", x: 0, y: 0 },
+      context,
+    );
+    const labels = items.map((item) => item.content);
+
+    // The FIPS-gated foreign-language term is hidden from creation...
+    expect(labels).not.toContain("Add Foreign-language term");
+    // ...but stays in the registry so existing FLT nodes still render.
+    expect(NODE_REGISTRY["foreign-term"]).toBeDefined();
+    expect(NODE_REGISTRY["foreign-term"].paletteHidden).toBe(true);
+
+    // A normal kind is still offered, so the menu itself is intact.
+    expect(labels).toContain("Add Gateway");
+    // The generic agent kind is never offered here either.
+    expect(labels).not.toContain("Add Agent");
   });
 });

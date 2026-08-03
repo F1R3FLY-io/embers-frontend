@@ -101,6 +101,39 @@ describe("ExecutionPolicyModal", () => {
     const [data] = onSave.mock.calls[0];
     expect(data.deterministicJitter).toBe("false");
   });
+
+  it("hides the recorded-only Authorities control while keeping the enforced ones", () => {
+    render(
+      <Providers>
+        <ExecutionPolicyModal initial={{}} onSave={jest.fn()} />
+      </Providers>,
+    );
+
+    // The Authorities input is hidden (recorded-only, unenforced today)...
+    expect(screen.queryByText("Authorities")).toBeNull();
+    // ...while the fields the runtime actually enforces stay.
+    expect(screen.getByText("Activity timeout (ms, 0 disables)")).toBeTruthy();
+    expect(
+      screen.getByText("Maximum output bytes (0 uses default)"),
+    ).toBeTruthy();
+  });
+
+  it("round-trips an existing node's authorities losslessly despite the hidden field", () => {
+    const onSave = jest.fn<undefined, [Record<string, unknown>]>();
+    render(
+      <Providers>
+        <ExecutionPolicyModal
+          initial={{ policyAuthorities: "rho:ai:gpt4, rho:registry:lookup" }}
+          onSave={onSave}
+        />
+      </Providers>,
+    );
+
+    fireEvent.click(screen.getByText("Save"));
+
+    const [data] = onSave.mock.calls[0];
+    expect(data.policyAuthorities).toBe("rho:ai:gpt4, rho:registry:lookup");
+  });
 });
 
 describe("EditModal", () => {

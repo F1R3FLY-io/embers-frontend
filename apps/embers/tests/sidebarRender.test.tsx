@@ -108,6 +108,16 @@ describe("graph sidebar", () => {
     }
   });
 
+  it("does not offer the palette-hidden foreign-language term node", () => {
+    // The FLT node is FIPS-gated and hidden from authoring; it must not appear
+    // in the palette even though its registry entry still exists so existing
+    // FLT nodes render.
+    const markup = render(["Refine"]);
+
+    expect(markup).toContain("Compress"); // a curated node is still listed
+    expect(markup).not.toContain("Foreign-language term");
+  });
+
   it("says so plainly when the wallet has no agents", () => {
     expect(render([])).toContain("No agents yet");
   });

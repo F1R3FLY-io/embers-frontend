@@ -42,7 +42,7 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 | Simple and structured agent ABI      |    yes |            yes |       schema default | `simple-v1` sends one value; `structured-v1` carries output and disposition.            |
 | Rholang URI activity                 |    yes |            yes |                  yes | The URI is validated before lowering to a registry lookup.                              |
 | Nested workflow activity             |    yes |            yes |                  yes | Pinned child manifests, embedded continuations, qualified waits, and depth limit.       |
-| MeTTaIL Foreign Language Term        |    yes |             no |           draft only | Editor captures pinned ABI/source/resources; publication waits for Rholang 1.4/FIPS.    |
+| MeTTaIL Foreign Language Term        |    yes |             no |               hidden | The node is hidden from the editor palette until its governing FIPS is accepted (it compiles to a deterministic "unavailable" failure today); the registry entry and schema remain, so an existing definition containing one still renders and round-trips. |
 | Retry / timeout / compensation       |    yes |            yes |            policy UI | Deterministic backoff, effect deadlines, and reverse-order Saga compensation.           |
 | Authenticated run commands           |    API |            yes |        run inspector | Owner/service authority plus wait-specific delegate approval grants.                    |
 | Durable run metadata                 |    API |            yes |        run inspector | RSpace stores identities, hashes, revision, status, waits, grants, and event types.     |

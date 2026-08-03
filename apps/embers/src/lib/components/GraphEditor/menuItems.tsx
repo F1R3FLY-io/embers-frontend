@@ -396,8 +396,13 @@ export function buildMenuItems(
       return (
         (Object.keys(NODE_REGISTRY) as NodeKind[])
           // Agents are added from the sidebar, where each carries its identity;
-          // a bare "Add Agent" here would create an unusable node.
-          .filter((type) => type !== "agent")
+          // a bare "Add Agent" here would create an unusable node. Palette-
+          // hidden kinds (the FIPS-gated foreign-language term) are likewise
+          // not offered for creation, though they stay in the registry so
+          // existing nodes render.
+          .filter(
+            (type) => type !== "agent" && !NODE_REGISTRY[type].paletteHidden,
+          )
           .map((type) => ({
             content: `Add ${NODE_REGISTRY[type].displayName}`,
             onClick: () => {

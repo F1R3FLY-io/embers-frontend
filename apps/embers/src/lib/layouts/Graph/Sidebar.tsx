@@ -77,6 +77,9 @@ export const Sidebar: React.FC = () => {
     ([key, def]) =>
       // The generic agent kind is offered per agent below, never bare.
       key !== "agent" &&
+      // Palette-hidden kinds (e.g. the FIPS-gated foreign-language term) stay
+      // in the registry so existing nodes render, but are not offered here.
+      !def.paletteHidden &&
       def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 

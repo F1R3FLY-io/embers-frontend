@@ -20,6 +20,13 @@ interface NodeDefinition {
    */
   labelKey?: string;
   modalInputs: ModalInput<Record<string, string | number>>[];
+  /**
+   * When true, the kind is not offered on any creation surface (the sidebar
+   * palette and the add-node context menu). It stays in the registry so
+   * existing nodes of this kind still render and round-trip -- this hides a
+   * kind from authoring without removing it from the schema.
+   */
+  paletteHidden?: boolean;
   title: string;
 }
 
@@ -127,6 +134,12 @@ export const NODE_REGISTRY = {
       { name: "maxPhlo", type: "number" },
       { name: "activityAuthorities", type: "string" },
     ],
+    // Hidden from authoring until the governing FIPS is accepted: an FLT
+    // activity compiles to a deterministic "unavailable" failure today
+    // (workflow_rendering.rs), so offering it as a usable node would present
+    // a control that cannot work. The registry entry stays so any existing
+    // definition containing an FLT node still renders and round-trips.
+    paletteHidden: true,
     title: "Foreign-language term",
   }),
   gateway: defineNode({
