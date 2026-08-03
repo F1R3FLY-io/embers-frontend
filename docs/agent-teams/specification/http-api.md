@@ -156,3 +156,4 @@ To regenerate after a backend change: start the local stack, fetch the served sp
 - [Editor and operator guide](../usage/editor-and-operations.md) — the raw command example and local-stack instructions.
 - [Conformance and verification](../engineering/conformance-and-testing.md) — the evidence row for snapshot-versus-served drift.
 - [Threat model](../security/threat-model.md) — authorities, trust boundaries, and abuse cases.
+- [Object-capability model](../security/capability-model.md) — how these three authorities are classified by mechanism and why the JWT is an exchange binding rather than an authority token.

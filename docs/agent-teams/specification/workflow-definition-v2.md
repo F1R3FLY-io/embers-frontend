@@ -121,7 +121,7 @@ Workflow values are intentionally language-neutral so a future JavaScript, Pytho
 | `timestamp`  | instant                     | normalized string                                |
 | `duration`   | elapsed time                | normalized string                                |
 | `artifact`   | immutable content reference | adapter-defined record                           |
-| `capability` | authority-bearing reference | opaque value; never inspect as text              |
+| `capability` | authority-bearing reference | opaque value; never inspect as text (schema-reserved: the current runtime neither produces nor consumes it — [object-capability model](../security/capability-model.md#recorded-but-unenforced)) |
 | `error`      | structured failure          | portable record                                  |
 | `legacy`     | compatibility escape hatch  | any legacy JSON-compatible term                  |
 | `list`       | homogeneous sequence        | `{ "kind": "list", "value": T }`                 |
@@ -269,6 +269,8 @@ type NodeExecutionPolicy = {
   timeout?: { afterMillis: number };
 };
 ```
+
+The `maxOutputBytes`, `retry`, and `timeout` fields are enforced at runtime. The `authorities` field is validated for shape but **not yet enforced** — it is recorded on the effect request and read by no runtime path today; its current status and the proposal that would make it a real confinement control are the [object-capability model](../security/capability-model.md#recorded-but-unenforced) and the [authority-enforcement proposal](../design/authority-enforcement.md).
 
 The effect key is stable across crash/recovery for one run, nested execution, node, correlation epoch, and attempt. Retry increments the attempt and schedules a durable retry timer. A successful forward activity with `compensation` pushes a Saga record; cancellation invokes compensations in reverse completion order. Compensation is a new effect, not atomic rollback.
 

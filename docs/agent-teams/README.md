@@ -15,6 +15,7 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 - [SCXML correspondence](design/scxml-correspondence.md) maps every construct onto SCXML, analyzes the differences against the standard's interpretation algorithm, and works a schema-valid lossy projection example.
 - [Rholang realization](design/rholang-realization.md) catalogs how each statechart operation is composed in Rholang, with parser-validated generated-contract and template excerpts.
 - [Security model](security/threat-model.md) inventories authorities, trust boundaries, threats, and privacy constraints.
+- [Object-capability model](security/capability-model.md) classifies every authority by mechanism — unforgeable name, write-attenuated bundle, bearer link, keyed-derivation capability, signature identity, identity-list grant — specifies the publication protocol, and states plainly which policy fields are enforced and which are only recorded.
 - [Formal model](formal/README.md) maps the implementation to a small TLA+ transition system.
 - [Conformance and verification](engineering/conformance-and-testing.md) maps every implementation surface to reproducible unit, static, live-stack, and formal evidence.
 - [Durable and hierarchical execution](architecture/durable-execution.md) specifies F1r3drive storage, the on-chain ledger, recovery, authenticated commands, and nested teams.

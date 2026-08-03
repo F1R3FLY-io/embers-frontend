@@ -118,6 +118,20 @@ Sign the returned `response.contract`, then post the signed contract together wi
 
 Timer commands must repeat the ledger’s exact `dueAt` value and cannot be applied early. Approval commands require a unique `decisionId`; replay is rejected. Migration is intentionally not a casual run-page operation because it changes the pinned definition and requires a reviewed target URI, target hash, and state patch.
 
+## Control authority: approvers, links, and publication
+
+Every authority you set as an author or operator is a concrete control with concrete limits; the [capability model](../security/capability-model.md) specifies what each one is made of, and this section is the operator-facing view of the knobs.
+
+**Custody your keys, and know what each one is.** Your wallet key is deploy authority — it signs every mutation. A team's registry key is its *upgrade authority*: whoever holds it can replace the team behind its `rho:id:` URI with a higher version, and losing it freezes the version. Approver wallets are approval authority. These are distinct; sign only bytes you prepared (the two-phase protocol refuses a pre-signed contract), and treat the registry key with the same care as the wallet key.
+
+**Choose approvers deliberately — a grant is wait-scoped and irrevocable until the wait resolves.** A delegated grant names one exact wait and one exact wallet address; an approver cannot forward it, cannot attenuate it, and there is no revoke command. The only ways a grant ends are a decision, the declared deadline firing `timedOut`, or a run-level `cancel` or `migrate`. Always declare an approval timeout with a `timedOut` route (publish validation requires the route when a timeout is present) so an absent approver cannot stall the run indefinitely. One authorized `reject` resumes the run regardless of quorum; an empty approver list means owner-only approval in effect.
+
+**Share run links as public metadata.** A run URL is a bearer read capability — possession is the only check — and for F1r3sky-invoked runs Embers posts the link publicly on the terminal reply by design. So treat a run's status, wait IDs, grants, deadline, and event types as world-readable; a direct chain reader can even enumerate owner-scrubbed run records. The link never confers command authority (commands need a wallet), so the risk is disclosure of metadata, not control. Avoid F1r3sky invocation for teams whose metadata is sensitive; the browser-history and referrer cautions are in the [threat model](../security/threat-model.md#trust-boundaries).
+
+**Know what publishing exposes.** Publishing a team to F1r3sky makes its URI public, and because registry lookup is unauthenticated the team's entry capability and control heads become public-invocable: anyone with the URI can run the team — at their own cost and as their own run owner — and read the full definition and hash through the manifest head. Never embed a secret in a definition, prompt, or node/wait name you intend to publish. Republishing a higher version redirects future lookups but does not recall a URI someone already holds.
+
+**Which policy knobs are enforced today.** On an activity's execution policy, the timeout, maximum output bytes, retry caps, loop bounds, and the 32-deep nesting limit are enforced at runtime. The `authorities` field is recorded but not yet enforced, and the visibility field is a placeholder — the [capability model](../security/capability-model.md#recorded-but-unenforced) states their status and the [authority-enforcement proposal](../design/authority-enforcement.md) specifies how `authorities` would become a real confinement control. The editor hides the Authorities input and the Foreign-language term node for exactly this reason: neither controls anything today, so offering them would imply a capability that does not exist.
+
 ## Start the local stack safely
 
 From `../embers-local-stack/`:
@@ -164,6 +178,8 @@ One dashboard flow deserves its shape stated because it once deadlocked: deletin
 | Nested wait command cannot find a child                | The qualified path is stale or was copied without its prefixes      | Copy the exact current `waitId` from the run inspector.                                     |
 | A `yield:` wait stays suspended                        | The recovery scheduler is not polling, or the yield predates auto-resume (no `dueAt`) | Check scheduler health first — yields resume automatically at the poll cadence; a pre-fix parked yield can only be cancelled or migrated. |
 | An approval resumed `timedOut` without any decision    | Its declared deadline expired and the scheduler fired it            | Expected: the `timedOut` route ran; late decisions answer "wait ... is not pending".        |
+| A published team behaves differently without a redeploy you made | A higher `insertSigned` version was published behind the same URI   | Verify custody of the team's registry key; nested consumers are protected by the manifest-hash pin. |
+| A stranger ran your published team                     | Publication makes the URI publicly invocable — this is by design    | Expected: the stranger's run is theirs (they are its owner and pay its cost); it confers no authority over your runs. |
 
 ## Current boundary
 

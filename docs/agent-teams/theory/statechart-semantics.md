@@ -450,7 +450,7 @@ The deployed half of every operation above is a Rholang process, and the corresp
 - **Re-enterable states as replicated inputs.** A `contract` is a persistent, replicated input. This is precisely what makes cyclic revisits executable: a second send to `workflowNode3` finds the same contract, where a linear `for` would have been consumed by the first traversal.
 - **Fan-out as parallel composition.** All-match routing lowers to parallel sends — $`P \mid Q`$ — one per selected transition.
 - **Joins as joined inputs.** Fan-in lowers to the joined-receive form `for (a <- x & b <- y) { ... }`, the process-calculus face of the synchronization pseudostate.
-- **Publication as signed capability export.** A deployed team binds its channels behind the versioned `insertSigned` registry publication, exporting exactly one entry capability and three control heads.
+- **Publication as signed capability export.** A deployed team binds its channels behind the versioned `insertSigned` registry publication, exporting exactly one entry capability and three control heads. The write-only `bundle+` attenuation and the publication protocol are specified in the [object-capability model](../security/capability-model.md#the-single-bundle-write-only-attenuation).
 
 The per-feature lowering — with excerpts from the actual generator and templates, each parsed for validity — is cataloged in the [Rholang realization](../design/rholang-realization.md); each section of that document mirrors a section of this one.
 

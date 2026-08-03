@@ -30,7 +30,7 @@ Four rho-calculus primitives carry the whole construction ([statechart semantics
 
 | Primitive | Rholang form | What it realizes |
 | --------- | ------------ | ---------------- |
-| Name restriction | `new x in { ... }` | unforgeable per-node channels; capability discipline |
+| Name restriction | `new x in { ... }` | unforgeable per-node channels; [capability discipline](../security/capability-model.md#the-mechanism-taxonomy) |
 | Replicated input | `contract x(...) = { ... }` | re-enterable states — cycles revisit the same contract |
 | Parallel composition | `P \| Q` | fan-out; every all-match emission |
 | Joined input | `for (@a <- x & @b <- y) { ... }` | synchronization pseudostates; fan-in |

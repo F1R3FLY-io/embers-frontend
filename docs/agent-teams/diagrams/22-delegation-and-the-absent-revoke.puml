@@ -1,0 +1,49 @@
+@startuml
+title Agent Teams Workflow v2 — delegated approval: grant, claim, and the absent revoke
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+participant "Durable kernel\n(checkpoint)" as kernel #EAF5FF
+participant "RSpace run ledger\n(init.rho)" as ledger #CBE7CC
+actor "Approver wallet" as approver #FFD8C2
+actor "Third party" as other #E7DCF5
+
+kernel -> ledger : advanceRun writes wait_ids + grants\nwaitId|address, one per approver
+note over ledger #FFF6C9
+A grant is an ACL entry, not a capability:
+public string membership, checked against a
+chain-derived REV address.
+end note
+
+approver -> ledger : claimCommand(approve, waitId, revision)\n(two-phase signed)
+ledger -> ledger : re-derive REV address from rho:deploy:data\nmembership: grants.contains(waitId|address)
+
+alt authorized
+  ledger -> kernel : resume; kernel counts decisions
+  note over kernel #FAD8D8
+  Quorum is counted HERE, in the kernel — on
+  chain a single grantee can claim. One
+  authorized reject resumes regardless of quorum.
+  end note
+  kernel -> ledger : next advanceRun REPLACES grants wholesale
+else unauthorized
+  ledger -> approver : abort "command actor is unauthorized"
+end
+
+approver -x other : cannot re-delegate\n(the grant names one address)
+
+note over ledger, kernel #FAD8D8
+No revoke command exists. A grant ends only
+when its wait leaves the ledger at the next
+checkpoint — by decision, timeout, cancel, or
+migrate. There is no mid-wait revocation.
+end note
+@enduml

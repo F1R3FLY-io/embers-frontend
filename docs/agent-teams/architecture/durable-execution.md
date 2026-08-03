@@ -71,7 +71,7 @@ The registry schema version is `1`. Bootstrap uses signed registry replacement w
 
 One encrypted command envelope supports `signal`, `event`, `timerFired`, `approve`, `reject`, `cancel`, `retry`, and `migrate`. Preparation fixes the command ID, class, target wait, payload artifact hashes, expected revision, and protocol-second issuance time. The command claim is a compare-and-set against the expected revision.
 
-The owner and the configured Embers service may issue every command. A delegate may issue only `approve` or `reject`, only for the exact pending wait whose grant is encoded as `waitId|address`. The encrypted command remains authoritative for payload and semantics; the public class and wait ID exist only to narrow on-chain authority.
+The owner and the configured Embers service may issue every command. A delegate may issue only `approve` or `reject`, only for the exact pending wait whose grant is encoded as `waitId|address`. The encrypted command remains authoritative for payload and semantics; the public class and wait ID exist only to narrow on-chain authority. That delegate grant is an identity-list ACL entry rather than a possessed capability — with the consequences (no re-delegation, no attenuation, no mid-wait revocation) analyzed in the [object-capability model](../security/capability-model.md#the-run-ledger-identity-grants-and-the-acl-hybrid).
 
 Timers compare the expected absolute deadline with the stored deadline and reject early firing. Retry waits use deterministic bounded exponential backoff with optional deterministic jitter. Cancellation clears active tokens, waits, effects, and nested continuations, then executes the compensation stack in reverse completion order. A compensation is a new effect, not a rollback.
 
