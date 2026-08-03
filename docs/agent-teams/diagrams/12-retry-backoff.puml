@@ -26,7 +26,9 @@ FailureRoute --> [*] : routes like any trigger\n(retry budgets never mask outcom
 note right of RetryWait #EAF7EE
 Deterministic schedule, normative in the specification:
 <latex>d_a = \min\!\bigl(d_{\max},\; d_0 \cdot (m/1000)^{\,a-2}\bigr)</latex>
-<latex>j_a = \mathrm{SHA256}(k \,\Vert\, a) \bmod (d_a + 1)</latex>
+With deterministic jitter enabled the delay is REPLACED
+by a uniform deterministic sample from <latex>[0, d_a]</latex>:
+<latex>\mathrm{SHA256}(k \,\Vert\, \texttt{":"} \,\Vert\, a)[0..8] \bmod (d_a + 1)</latex>
 where <latex>k</latex> is the effect key, so replay and
 recovery compute identical deadlines.
 end note

@@ -95,6 +95,8 @@ Nesting is capped at 32 active workflow calls. This bounds memory and recursion 
 
 The recovery scheduler lists metadata records and acquires a non-blocking per-run mutex. It resumes `running` and `resuming` runs, recursively finds the earliest due root or path-qualified child timer, fires it through the same authenticated command path, and leaves terminal records immutable. The scheduler verifies that the encrypted timer deadline exactly equals the public ledger deadline before preparing the command.
 
+One asymmetry deserves emphasis: the timer search fires only timer and retry suspensions, while the ledger's published `dueAt` is the minimum deadline over *all* waits, approvals included. An expired approval deadline therefore produces no `timedOut` disposition and makes each recovery scan report "run due_at does not correspond to a pending timer" until the approval resolves — a tracked [known gap](../roadmap.md#known-gaps). The complete run status machine, with every ledger transition and event, is the [run lifecycle diagram](../diagrams/09-run-lifecycle.svg); the wait-level view is the [wait and approval lifecycle](../diagrams/10-wait-approval-lifecycle.svg).
+
 | Failure                                                   | Classification                          | Behavior                                                 |
 | --------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------- |
 | validator or observer timeout                             | transient                               | retain outbox/checkpoint and retry                       |
@@ -104,6 +106,7 @@ The recovery scheduler lists metadata records and acquires a non-blocking per-ru
 | kernel rejects restored state                             | deterministic terminal failure          | encrypt failed output and commit `runFailed`             |
 | missing/corrupt encrypted artifact or capability mismatch | integrity failure                       | stop recovery; never substitute another artifact         |
 | duplicate command or effect                               | idempotent retry                        | acknowledge only exact identity/postcondition            |
+| recovery scan repeats a `due_at` timer mismatch error     | expired approval deadline (unenforced)  | resolve the approval; deadline enforcement is a tracked known gap |
 
 The distinction between safety and liveness matters. The protocol guarantees that Embers does not execute an effect before the run registration is observed and does not claim an advancement before its exact readback. It cannot guarantee progress when validators, F1r3drive, an external provider, or an approver remain unavailable forever.
 

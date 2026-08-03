@@ -10,6 +10,9 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 - [Workflow Definition v2](specification/workflow-definition-v2.md) specifies the portable JSON syntax and validation rules.
 - [Runtime architecture](architecture/runtime-architecture.md) follows a definition from canvas to persistent Rholang contracts and durable run metadata.
 - [Operational semantics and theory](theory/operational-semantics.md) defines tokens, routing, joins, cycles, and the exact progress-boundary theorem.
+- [Statechart semantics](theory/statechart-semantics.md) formalizes the statechart half: configurations, entry closure, completion propagation, parallel-region token discipline, history, the fork-epoch algebra, and the run-to-completion relation, with the divergences from Harel/STATEMATE/UML/SCXML stated plainly.
+- [SCXML correspondence](design/scxml-correspondence.md) maps every construct onto SCXML, analyzes the differences against the standard's interpretation algorithm, and works a schema-valid lossy projection example.
+- [Rholang realization](design/rholang-realization.md) catalogs how each statechart operation is composed in Rholang, with parser-validated generated-contract and template excerpts.
 - [Security model](security/threat-model.md) inventories authorities, trust boundaries, threats, and privacy constraints.
 - [Formal model](formal/README.md) maps the implementation to a small TLA+ transition system.
 - [Conformance and verification](engineering/conformance-and-testing.md) maps every implementation surface to reproducible unit, static, live-stack, and formal evidence.
@@ -25,15 +28,15 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 | ------------------------------------ | -----: | -------------: | -------------------: | --------------------------------------------------------------------------------------- |
 | Cyclic transition                    |    yes |            yes |                  yes | Every possible hot cycle must cross a wait, a bound, or a durable yield.                |
 | Bounded loop                         |    yes |            yes |                  yes | Per-transition counters travel in the token context.                                    |
-| Durable-yield loop                   |    yes | durable resume |                  yes | Checkpoints to F1r3drive and resumes through an authenticated command.                  |
+| Durable-yield loop                   |    yes | suspends durably |                yes | Checkpoints to F1r3drive crash-safely; the resume command path is roadmap work (see known gaps). |
 | First-match branch                   |    yes |            yes |                  yes | Priorities are unique and deterministic within a route group.                           |
 | All-match branch                     |    yes |            yes |                  yes | Every true guard emits a token.                                                         |
 | No-match policy                      |    yes |            yes |                  yes | Complete, skip, or fail.                                                                |
 | Pure Rholang guard                   |    yes |            yes |                  yes | A deliberately restricted, effect-free expression subset.                               |
-| `all`, `each`, `quorum`, `race` join |    yes |            yes |                  yes | Fan-in values are keyed by producing-node label. Race is one-shot per invocation.       |
+| `all`, `each`, `quorum`, `race` join |    yes |            yes |                  yes | Fan-in values are keyed by producing-node label. Quorum/race close per correlation epoch and re-arm for the next. |
 | `reduce` join                        |    yes |            yes |                  yes | First, last, collect, sum, min, max, and conflict-detecting record merge.               |
 | Wait / approval                      |    yes | durable resume |                  yes | Signals, events, exact-deadline timers, quorum approval, rejection, and retry.          |
-| Compound / parallel scopes           |    yes |            yes |                  yes | Nested state containers, entry/exit activities, completion, and shallow/deep history.   |
+| Compound / parallel scopes           |    yes |            yes |                  yes | Nested state containers, entry/exit activities, completion, and shallow/deep history. Editing uses scope fields and wrap-in-state-scope; a dedicated hierarchy canvas remains product work. |
 | Pinned agent versions                |    yes |            yes | existing agent nodes | Publish validation rejects an unpinned agent.                                           |
 | Simple and structured agent ABI      |    yes |            yes |       schema default | `simple-v1` sends one value; `structured-v1` carries output and disposition.            |
 | Rholang URI activity                 |    yes |            yes |                  yes | The URI is validated before lowering to a registry lookup.                              |
@@ -48,7 +51,7 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 
 Workflow v2 is additive. Draft and team records retain the legacy GraphL projection so existing clients and previously deployed acyclic teams continue to work. A team with a `definition` deploys through Workflow v2; a team without one deploys through the legacy compiler. Saving a draft remains permissive, while deployment invokes strict validation.
 
-The TypeScript and Rust implementations share the same field names and invariants. Object keys are sorted recursively before backend persistence to give stable bytes across equivalent definitions. This is an implementation-specific canonical form, not a claim of complete [RFC 8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785.html) conformance; in particular, RFC 8785 also specifies number and string handling.
+The TypeScript and Rust implementations share the same field names and invariants. Object keys are sorted recursively before backend persistence to give stable bytes across equivalent definitions. This is an implementation-specific canonical form, not a claim of complete [RFC 8785 JSON Canonicalization Scheme](https://doi.org/10.17487/RFC8785) conformance; in particular, RFC 8785 also specifies number and string handling.
 
 When a pure Rholang guard supplies `sourceHash`, both validators require the exact lowercase SHA-256 digest of the original UTF-8 source bytes. The hash pins reviewed source; it is not a substitute for the purity validator. Custom dispositions use `custom:<name>`, where the name starts with an ASCII letter and contains at most 128 ASCII letters, digits, dots, underscores, or hyphens.
 

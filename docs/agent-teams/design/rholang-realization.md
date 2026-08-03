@@ -67,7 +67,7 @@ The rest of the document walks the map in the statechart semantics' section orde
 
 ## States and activities
 
-*Figure: [scope hierarchy semantics](../diagrams/13-scope-hierarchy-semantics.svg).*
+![Scope hierarchy semantics](../diagrams/13-scope-hierarchy-semantics.svg)
 
 Every node lowers to a persistent contract on a private channel, taking the token as three arguments — value, context, producing source label — and every node has a sibling router contract. An agent activity wraps the pinned agent code behind fresh `main`/`agentReturn` names, so each invocation is isolated by construction and the agent can only answer through the return name it was handed (**generated form**, `workflow_rendering.rs:360-394`; the stub `contract main(...) = { ret!(input) }` stands in for resolved agent code):
 
@@ -112,7 +112,7 @@ The consumed producer values are immediately re-published (`alpha!(alphaValue)`)
 
 ## Guarded routing and conflict resolution
 
-*Figure: [guarded routing](../diagrams/19-guarded-routing.svg).*
+![Guarded routing](../diagrams/19-guarded-routing.svg)
 
 A router contract filters by trigger disposition first, then dispatches its route groups. First-match lowers to a right-folded `if/else` chain in `(priority, id)` order, so the chain's textual order *is* the priority order; the innermost `else` is the group's no-match policy (**generated form**, `workflow_rendering.rs:597-698`; two-transition first-match group with a compare guard on `output.urgent` and no-match `fail`):
 
@@ -152,7 +152,7 @@ in {
 
 ## Cycles: bounded and durable
 
-*Figure: [cycles as statechart transitions](../diagrams/16-cycles-as-transitions.svg).*
+![Cycles as statechart transitions](../diagrams/16-cycles-as-transitions.svg)
 
 Because node and router contracts are persistent, a cyclic send is just another send. What makes the cycle *safe* is carried by the token itself: the bounded transition reads and increments its own counter inside the traveling `context.iterations` map, and exhaustion returns an `iterationLimit` record instead of traversing (**generated form**, `workflow_rendering.rs:709-716`; bound of 3 on transition `t-critique`):
 
@@ -187,7 +187,7 @@ Current behavior: the kernel records the wait crash-safely, but no command class
 
 ## Joins
 
-*Figure: [join synchronization](../diagrams/18-join-synchronization.svg).*
+![Join synchronization](../diagrams/18-join-synchronization.svg)
 
 Each join node owns a `workflowJoin{i}` state channel, initialized once inside the team body — `{}` for accumulating joins, `false` for race. The hot lowering of an **all** join folds arrivals into a source-labeled map and fires at the incoming count, resetting the accumulator so the join re-arms (**generated form**, `workflow_rendering.rs:224-240`; two incoming transitions):
 
@@ -243,7 +243,7 @@ in {
 
 ## Scopes and history on chain
 
-*Figure: [scope hierarchy semantics](../diagrams/13-scope-hierarchy-semantics.svg).*
+![Scope hierarchy semantics](../diagrams/13-scope-hierarchy-semantics.svg)
 
 The on-chain footprint of hierarchy is deliberately thin. A scope node lowers to parallel sends seeding the child scope's initial nodes (**generated form**, `workflow_rendering.rs:330-359`):
 
@@ -271,7 +271,7 @@ A history node lowers to a `completed` pass-through (`workflow_rendering.rs:329`
 
 ## Waits and approvals
 
-*Figure: [wait and approval lifecycle](../diagrams/10-wait-approval-lifecycle.svg).*
+![Wait and approval lifecycle](../diagrams/10-wait-approval-lifecycle.svg)
 
 Wait and approval nodes return suspension records — the compiled contract's way of saying "the durable layer owns this token now" (**generated forms**, `workflow_rendering.rs:315-328`):
 
@@ -297,7 +297,7 @@ The kernel turns these into pending waits with qualified identities and publishe
 
 ## Retry, compensation, and effect observation
 
-*Figure: [retry and backoff](../diagrams/12-retry-backoff.svg).*
+![Retry and backoff](../diagrams/12-retry-backoff.svg)
 
 Retry and Saga compensation are kernel-only ([statechart semantics, retry and cancellation](../theory/statechart-semantics.md#retry-and-structured-cancellation)); their on-chain footprint is the *observation deploy*. Every activity execution — first attempt, retry, or compensation — is one deploy of `invoke_activity.rho` against the team's control head, publishing the result at the deploy identity so the orchestrator can read it back exactly once (**template with example bindings**, `templates/agents_teams/invoke_activity.rho`):
 
@@ -319,7 +319,7 @@ in {
 
 ## The run ledger: claim, advance, clear
 
-*Figure: [run lifecycle](../diagrams/09-run-lifecycle.svg).*
+![Run lifecycle](../diagrams/09-run-lifecycle.svg)
 
 Durable commands are two-phase against the serialized run ledger in `init.rho`. The client-signed claim deploy is small — a registry lookup and one send (**template with example bindings**, `templates/agents_teams/claim_command.rho`):
 
@@ -466,7 +466,7 @@ A rejected recovery goes through `clearCommand` (`init.rho:510-563`), which appe
 
 ## The team envelope and registry composability
 
-*Figure: [definition lifecycle](../diagrams/11-definition-lifecycle.svg).*
+![Definition lifecycle](../diagrams/11-definition-lifecycle.svg)
 
 The compiled team ships inside the shared `insertSigned` envelope: a version-gated, signature-checked registry publication that exports exactly one bundled write capability. The team binds four contract heads on that name — the manifest (definition and hash under protocol `embers-agent-team-control-v1`), the guard head, the activity head, and the team entry itself, whose body composes the private channels, join initializers, node and router contracts, and entry sends (**template with example bindings**, `templates/agents_teams/deploy_workflow.rho` over `templates/common/insert_signed.rho`; minimal single-node team, illustrative key/signature literals):
 
@@ -541,7 +541,7 @@ The entry send carries the initial token context `{"input": input, "state": {}, 
 
 ## Nested workflows
 
-*Figure: [hierarchical continuations](../diagrams/08-hierarchical-continuations.svg).*
+![Hierarchical continuations](../diagrams/08-hierarchical-continuations.svg)
 
 A nested workflow activity composes teams through the registry: look up the child team, read its manifest, verify the **pinned definition hash**, and only then call its entry capability (**generated form**, `workflow_rendering.rs:571-584`):
 

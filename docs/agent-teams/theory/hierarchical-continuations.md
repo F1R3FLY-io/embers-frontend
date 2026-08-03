@@ -1,6 +1,6 @@
 # Hierarchical continuations, observations, and durable composition
 
-This note extends the [token and routing semantics](operational-semantics.md) with crash recovery, external observations, and nested Agent Teams. Its purpose is explanatory and falsifiable: it states which equivalences the implementation relies on and where nondeterminism remains.
+This note extends the [token and routing semantics](operational-semantics.md) with crash recovery, external observations, and nested Agent Teams. The kernel state `$`K_x`$` it checkpoints — scope instances, active configurations, history, and token scope stacks — is formalized in the [statechart semantics](statechart-semantics.md); this note treats that state as opaque durable content. Its purpose is explanatory and falsifiable: it states which equivalences the implementation relies on and where nondeterminism remains.
 
 ## Definitions
 

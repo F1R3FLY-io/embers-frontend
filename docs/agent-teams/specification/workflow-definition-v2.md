@@ -235,7 +235,7 @@ Correlation is represented as `root`, `routeGroup`, or a value-expression `key`.
 
 ## Scopes and hierarchy
 
-A scope is `root`, `compound`, or `parallel`, with optional parent, initial nodes, entry and exit activities, and `none`, `shallow`, or `deep` history. The entry scope is the unique parentless scope and the only scope with kind `root`. Every non-root scope has exactly one owning scope node. Publish validation requires every initial node to belong to the scope and every listed entry/exit node to be an activity in that scope; it also rejects missing or recursive parentage. The durable kernel executes entry activities, completion propagation, exit activities, and shallow/deep history. Parallel regions retain multiple active tokens; a compound region has one active child configuration.
+A scope is `root`, `compound`, or `parallel`, with optional parent, initial nodes, entry and exit activities, and `none`, `shallow`, or `deep` history. The entry scope is the unique parentless scope and the only scope with kind `root`. Every non-root scope has exactly one owning scope node. Publish validation requires every initial node to belong to the scope and every listed entry/exit node to be an activity in that scope; it also rejects missing or recursive parentage. The durable kernel executes entry activities, completion propagation, exit activities, and shallow/deep history. A parallel scope may declare several initial nodes and a compound scope exactly one; at runtime both kinds follow one uniform token discipline — parallelism is token multiplicity, and completion is live-token-count exhaustion. The full dynamic semantics — configurations, entry closure, completion propagation, history capture and restoration, and the run-to-completion relation — are normative in the [statechart semantics](../theory/statechart-semantics.md).
 
 ## Node execution policies
 
@@ -260,11 +260,35 @@ type NodeExecutionPolicy = {
 
 The effect key is stable across crash/recovery for one run, nested execution, node, correlation epoch, and attempt. Retry increments the attempt and schedules a durable retry timer. A successful forward activity with `compensation` pushes a Saga record; cancellation invokes compensations in reverse completion order. Compensation is a new effect, not atomic rollback.
 
+The retry schedule is fully deterministic. `backoffMultiplierMillis` is a multiplier in thousandths (`1000` means a factor of one; publish validation requires at least `1000`), and the delay before attempt `$`a \ge 2`$` with initial delay `$`d_0`$`, multiplier field `$`m`$`, and cap `$`d_{\max}`$` is:
+
+```math
+d_a = \min\!\Bigl(d_{\max},\; \Bigl\lfloor d_0 \cdot \bigl(\tfrac{m}{1000}\bigr)^{a-2} \Bigr\rfloor\Bigr).
+```
+
+When `deterministicJitter` is true and `$`d_a > 0`$`, the delay is **replaced** by a deterministic uniform sample over `$`[0, d_a]`$`, derived from the effect key `$`k`$` so that replay and recovery compute the identical deadline:
+
+```math
+\mathrm{delay}(a) = \mathrm{SHA256}\bigl(k \,\Vert\, \texttt{":"} \,\Vert\, a\bigr)[0..8]_{\mathrm{be}} \bmod (d_a + 1).
+```
+
+A disposition is retryable when it appears in `retryOn`, or, when `retryOn` is empty, when it is `failed`, `timedOut`, or `resourceExhausted`. The retry wait is named for the upcoming attempt (`retry:{token}:{a+1}`) and resumes in Enter phase — the node re-executes ([statechart semantics](../theory/statechart-semantics.md#retry-and-structured-cancellation)).
+
 ## Durable command syntax
 
 Commands are outside the portable definition because they are authenticated observations about one run revision. Every request contains `expectedRevision` and a `type` from `signal`, `event`, `timerFired`, `approve`, `reject`, `cancel`, `retry`, or `migrate`. Wait-directed commands carry the exact public `waitId`; a child wait is recursively qualified as `nested:<execution-id>:<wait-id>`. Migration additionally pins source/target hashes and supplies only typed `set`/`remove` state-patch operations.
 
-The model follows the hierarchy, concurrency, and communication motivations of Harel’s statecharts, while using explicit workflow tokens for joins and fan-out. See Harel, “Statecharts: A Visual Formalism for Complex Systems,” _Science of Computer Programming_ 8(3), 1987, [doi:10.1016/0167-6423(87)90035-9](<https://doi.org/10.1016/0167-6423(87)90035-9>), and the [W3C SCXML Recommendation](https://www.w3.org/TR/scxml/).
+An approval with quorum `$`q`$` and decision map `$`D`$` (actor to decision identifier) resumes with disposition `completed` exactly when
+
+```math
+|D| \ge q,
+```
+
+subject to: every decision identifier is globally unique within the run, each actor decides at most once, and an empty approver set admits any ledger-authorized actor. A `reject` from an authorized approver resumes the wait immediately with the standard disposition `rejected`, which routes like any other trigger. Every accepted decision emits `approvalRecorded`; the quorum-reaching decision emits `waitSatisfied`, then `approvalRecorded`, then `runResumed` ([statechart semantics](../theory/statechart-semantics.md#waits-approvals-and-dispositions-as-triggers)).
+
+The model follows the hierarchy, concurrency, and communication motivations of Harel’s statecharts, while using explicit workflow tokens for joins and fan-out. See Harel, “Statecharts: A Visual Formalism for Complex Systems,” _Science of Computer Programming_ 8(3), 1987, [doi:10.1016/0167-6423(87)90035-9](<https://doi.org/10.1016/0167-6423(87)90035-9>), and the [W3C SCXML Recommendation](https://www.w3.org/TR/scxml/); the construct-by-construct mapping onto SCXML, with the differences analyzed against its interpretation algorithm, is the [SCXML correspondence](../design/scxml-correspondence.md), and the per-construct Rholang lowering is the [Rholang realization](../design/rholang-realization.md).
+
+One current-behavior note belongs beside the loop policies: a `durableYield` transition suspends durably and crash-safely, but no command class currently resumes a durable-yield wait — only run-level `cancel` or `migrate` apply. The gap is tracked in the [roadmap](../roadmap.md) and stated precisely in the [statechart semantics](../theory/statechart-semantics.md#current-behavior-durable-yield-resumption).
 
 ## Validation phases
 

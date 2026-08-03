@@ -22,7 +22,9 @@ TLA+ model checking supplies finite-state design evidence. It does not prove a r
 | Durable artifacts     | F1r3drive unit, recovery, and live tests                  | Private artifacts are encrypted, content-addressed, capability-bound, flushed before publication, and recoverable.                        |
 | Public ledger/journal | Exact post-finality and inspector assertions              | The observer returns the complete ledger postcondition; verified F1r3drive hydration preserves approval, rejection, and checkpoint order. |
 | Social adapter        | F1r3sky integration tests                                 | A mention invokes the pinned team and a terminal reply retains its run link within 280 Unicode scalar values.                             |
-| Formal abstraction    | TLC exhaustive finite-state search                        | Configured safety and progress-boundary invariants hold in every reachable abstract state.                                                |
+| Formal abstraction    | TLC exhaustive finite-state search over three models (cyclic token, durable hierarchy, statechart scopes) | Configured safety and progress-boundary invariants hold in every reachable abstract state, including scope entry/exit ordering, token conservation, and history capture/restore soundness across all three history modes. |
+| Documentation Rholang excerpts | `rholang-parser` validation harness (read-only, pinned `nightly-2025-09-14`) | Every snippet embedded in the [Rholang realization](../design/rholang-realization.md) parses as valid Rholang: 19 snippets, 19 passes, zero failures.                              |
+| Known-gap visibility  | deliberate absence, recorded here                         | No test exercises durable-yield resumption (creation only) or approval-deadline firing; both are tracked [known gaps](../roadmap.md#known-gaps), not silent omissions.            |
 
 ## Finality and read visibility protocol
 

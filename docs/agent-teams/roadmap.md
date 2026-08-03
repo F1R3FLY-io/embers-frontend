@@ -54,6 +54,14 @@ Active runs are pinned by default. An explicit migration names old/new definitio
 
 Pinned workflow activities execute as embedded child continuations. Qualified wait IDs route commands through arbitrary depth, child effect identities are isolated, and root cancellation clears the hierarchy. The next authoring step is a collapsible statechart-style canvas with explicit child interfaces and budget delegation.
 
+## Known gaps
+
+Three verified gaps from the statechart documentation review, each stated as current behavior in the theory and usage documents:
+
+- **Durable-yield resumption.** A `durableYield` transition suspends durably and correctly, but no command class in `apply_command` accepts a durable-yield wait, so the run can only be cancelled or migrated. Tracked as work item `provide-a-resume-command-path-for-durable-yield-suspensions-b0684d` under the Workflow v2 epic; see the [current-behavior note](theory/statechart-semantics.md#current-behavior-durable-yield-resumption).
+- **History-node multi-target restoration accounting.** Restoring a remembered configuration of more than one node through a history *node* emits the restored tokens without adjusting the owning scope's live-token count, so the scope can complete prematurely. Single-target restoration — the test-pinned path — is exact. Until fixed, keep configurations that a history node may restore single-noded ([statechart semantics](theory/statechart-semantics.md#history-capture-and-restoration)).
+- **Approval-deadline enforcement.** An approval's timeout deadline is recorded on the wait and published as the run's `due_at`, but the timer-recovery scan fires only timer and retry waits: no `timedOut` disposition ever fires for an approval, and an expired approval deadline makes the recovery scan report an error on every poll until the approval resolves. Model approval timeouts today as an explicit race between an approval and a timer wait.
+
 ## P1 — observability and assurance
 
 ### Trace, replay, and time-travel inspector

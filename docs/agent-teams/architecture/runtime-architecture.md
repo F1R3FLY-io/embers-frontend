@@ -37,7 +37,7 @@ The backend parses `definition` into a closed Rust type and sorts object keys re
 
 Workflow v2 has two compatible execution surfaces. A deployed team exposes persistent Rholang activity and guard contracts, which remain useful for direct invocation and as the effect host. A team whose control manifest is discovered during run preparation uses the durable Rust kernel. The kernel treats Rholang agents, builtins, URI calls, and guards as explicit effects; it checkpoints between observations and uses the RSpace run register as its public revision authority.
 
-This split keeps portable workflow semantics independent of one implementation language while avoiding the false claim that an LLM or network effect is a consensus-deterministic reduction.
+This split keeps portable workflow semantics independent of one implementation language while avoiding the false claim that an LLM or network effect is a consensus-deterministic reduction. The kernel's statechart reading — configurations, entry and exit, completion, history, and the run-to-completion relation — is formalized in the [statechart semantics](../theory/statechart-semantics.md); the per-construct lowering, with parser-validated excerpts, is the [Rholang realization](../design/rholang-realization.md); the [kernel microstep diagram](../diagrams/14-kernel-microstep.svg) shows the macrostep boundaries this section's checkpoints attach to.
 
 ## Rholang compilation strategy
 
@@ -109,7 +109,7 @@ The channel-based lowering is grounded in the reflective higher-order calculus u
 
 ## Durable run ledger
 
-Run preparation allocates a UUIDv7 and includes it in the signed request envelope. It is both a correlation identifier and a bearer capability for the metadata inspector; possession grants read access to that run’s public metadata.
+Run preparation allocates a UUIDv7 ([RFC 9562](https://doi.org/10.17487/RFC9562)) and includes it in the signed request envelope. It is both a correlation identifier and a bearer capability for the metadata inspector; possession grants read access to that run’s public metadata.
 
 ![Causal run sequence](../diagrams/02-run-sequence.svg)
 
@@ -127,6 +127,39 @@ The durable RSpace register stores owner address internally and returns the run 
 Every encrypted continuation contains the complete ordered public kernel journal at its checkpoint. The inspector verifies the continuation content hash and capability hash, decrypts the exact `revision-N` object from F1r3drive, and validates its run ID, team URI, and definition hash before using any event. It then performs an order-preserving merge with the RSpace coordination sequence. Repeated event names align with their rightmost compatible ledger occurrence, so an earlier rejected command remains before the later claim that actually resumed the continuation. The inspector adds a missing terminal marker only when status proves the outcome, then assigns contiguous sequence numbers.
 
 This split gives RSpace an independently ordered record of public commands and checkpoint commits while retaining finer kernel events—approval decisions, retries, scope transitions, and compensation—in authenticated encrypted storage. A missing, tampered, or identity-mismatched continuation makes the inspector fail; it never silently substitutes the coarser ledger sequence.
+
+#### Canonical event vocabulary
+
+The complete event vocabulary, by emitting layer. Kernel events live in the encrypted journal; ledger events are the append-only public sequence of type names; the inspector's merge produces one canonical order from both. Names are exact and case-sensitive; anchors refer to the Embers backend at `d9a9e41`.
+
+| Event type | Layer | Emitted when |
+| ---------- | ----- | ------------ |
+| `runCreated`, `runKernelStarted` | kernel | envelope start seeds the entry tokens (`runtime.rs:105-106`) |
+| `nodeEntered` | kernel | every Enter-phase dispatch (`runtime.rs:756`) |
+| `transitionTaken` | kernel | every routed emission except durable yields (`runtime.rs:1367`) |
+| `effectRequested` | kernel | an activity or lifecycle effect is scheduled (`runtime.rs:962`) |
+| `effectObserved` | both | a signed observation is applied (`runtime.rs:256`); also the checkpoint type after an effect (`orchestration.rs:365`) |
+| `guardObserved` | both | an on-chain guard result is applied (`runtime.rs:215`); checkpoint type after a guard round (`orchestration.rs:399`) |
+| `retryScheduled` | kernel | a retryable disposition parks a retry wait (`runtime.rs:308`) |
+| `waitSatisfied` | kernel | any wait resumes (`runtime.rs:551`) |
+| `runSuspended` | both | a wait node parks its token (`runtime.rs:861`); checkpoint type for a suspension (`orchestration.rs:412`) |
+| `approvalRequired` | kernel | an approval node parks its token (`runtime.rs:892`) |
+| `approvalRecorded` | kernel | every accepted approval decision, quorum-reaching or not (`runtime.rs:452`) |
+| `runResumed` | kernel | a command successfully resumes the run (`runtime.rs:499`) |
+| `nestedRunResumed` | kernel | a qualified command was delegated into a child (`runtime.rs:376`) |
+| `durableYield` | kernel | a durable-yield transition parks its token (`runtime.rs:1353`) |
+| `outputProduced` | kernel | an output node emits (`runtime.rs:806`) |
+| `rootCompleted` | kernel | a root-level final node ends the run (`runtime.rs:815`) |
+| `cancellationRequested`, `effectCompensated`, `runCancelled` | kernel (`runCancelled` also a checkpoint type, `orchestration.rs:456`) | structured cancellation, each compensation step, and the drained stack (`runtime.rs:597`, `:343`, `:560`) |
+| `runMigrated` | kernel | a migrate command rebinds the definition (`runtime.rs:495`) |
+| `runStarted` | ledger | `beginRun`/`beginDurableRun` registration; the inspector normalizes it to `runCreated` (`get_run.rs:143`) |
+| `commandClaimed` | ledger | a claim passes revision CAS and authorization (`init.rho:408`) |
+| `commandRejected` | ledger | `clearCommand` rejects a claimed command (`init.rho:541`) |
+| `nestedRunSuspended` | ledger (checkpoint type) | a child suspension propagates upward (`orchestration.rs:330`) |
+| `runCompleted`, `runFailed` | ledger (checkpoint types) | terminal advancement (`orchestration.rs:436`, `:996`) |
+| `runReturned` | ledger, legacy | `finishRun` in the legacy `run.rho` path only (`init.rho:581`) |
+
+Ordering constraints the inspector guarantees: `runCreated` is always first; each checkpoint's public type is appended to the kernel journal exactly once (`record_public_event` dedupes consecutive repeats); repeated ledger names align to their rightmost compatible occurrence so a rejected claim sorts before the later successful claim; a terminal event is appended from the status only when absent from both sequences; and the final numbering is contiguous. The run status machine these events drive is the [run lifecycle diagram](../diagrams/09-run-lifecycle.svg).
 
 The terminal F1r3sky adapter recursively extracts the existing result representation, then reserves room for `Run: <url>`. It truncates by Unicode scalar values and appends an ellipsis when needed. The final post is at most 280 characters and still identifies its durable run.
 
