@@ -8,6 +8,7 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 
 - [Editor and operator guide](usage/editor-and-operations.md) explains how to build, validate, deploy, and invoke a team.
 - [Workflow Definition v2](specification/workflow-definition-v2.md) specifies the portable JSON syntax and validation rules.
+- [HTTP API and OpenAPI surface](specification/http-api.md) documents the served Swagger/OpenAPI endpoints, the universal two-phase prepare, sign, send protocol, the complete Agent Teams endpoint reference, and the pinned specification-to-SDK generation chain.
 - [Runtime architecture](architecture/runtime-architecture.md) follows a definition from canvas to persistent Rholang contracts and durable run metadata.
 - [Operational semantics and theory](theory/operational-semantics.md) defines tokens, routing, joins, cycles, and the exact progress-boundary theorem.
 - [Statechart semantics](theory/statechart-semantics.md) formalizes the statechart half: configurations, entry closure, completion propagation, parallel-region token discipline, history, the fork-epoch algebra, and the run-to-completion relation, with the divergences from Harel/STATEMATE/UML/SCXML stated plainly.
