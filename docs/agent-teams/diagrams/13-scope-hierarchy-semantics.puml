@@ -43,7 +43,7 @@ Root --> [*]
 note right of ReviewScope #EAF7EE
 Regions are a modeling view. The kernel realizes
 orthogonality as multiple tokens in one flat scope
-(ScopeInstance, runtime.rs:1499-1514); completion is
+(ScopeInstance, runtime.rs:1561-1576); completion is
 token-count exhaustion, not per-region final states.
 History captures the key set of the active configuration
 at completion: <latex>h(s) = \mathrm{keys}(\mathit{act}_{\sigma})</latex>.

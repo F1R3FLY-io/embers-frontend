@@ -11,19 +11,19 @@ One TLC run covers all three history modes: the scope's declared mode is
 chosen nondeterministically at Init.
 
 Traceability to the implementation:
-  EnterScope        -> enter_scope             runtime.rs:965-995
-  RunEntryActivity  -> advance_scope_lifecycle runtime.rs:601-633 (entry stage)
-  StartTokens       -> start_scope_initials    runtime.rs:635-667
+  EnterScope        -> enter_scope             runtime.rs:1020-1050
+  RunEntryActivity  -> advance_scope_lifecycle runtime.rs:624-656 (entry stage)
+  StartTokens       -> start_scope_initials    runtime.rs:658-690
                        (remembered history overrides initials, NO mode filter)
-  MoveToken         -> record_active_node      runtime.rs:1028-1052
-  FanOut            -> adjust_scope_fanout     runtime.rs:1386-1395
-  ConsumeToken      -> consume_scope_token     runtime.rs:1054-1086
+  MoveToken         -> record_active_node      runtime.rs:1084-1108
+  FanOut            -> adjust_scope_fanout     runtime.rs:1448-1457
+  ConsumeToken      -> consume_scope_token     runtime.rs:1110-1142
                        (last positions persist through consumption; history
                         snapshot happens exactly when the count reaches zero)
-  RunExitActivity   -> advance_scope_lifecycle runtime.rs:601-633 (exit stage)
-  FinishScope       -> finish_scope_instance   runtime.rs:669-686
-  RestoreHistoryNode -> restore_history        runtime.rs:997-1026
-                        + adjust_scope_fanout  runtime.rs:1386-1395
+  RunExitActivity   -> advance_scope_lifecycle runtime.rs:624-656 (exit stage)
+  FinishScope       -> finish_scope_instance   runtime.rs:692-709
+  RestoreHistoryNode -> restore_history        runtime.rs:1052-1082
+                        + adjust_scope_fanout  runtime.rs:1448-1457
                         (a history NODE re-seeds the remembered configuration
                          mid-run; the kernel adds |targets| - 1 to the stored
                          counter, which CounterFaithful checks. Replacing the
@@ -93,7 +93,7 @@ RunEntryActivity ==
                    seeded>>
 
 (* Remembered nonempty history replaces the declared initials with no mode
-   filter -- the implicit default-history rule of runtime.rs:645-650. *)
+   filter -- the implicit default-history rule of runtime.rs:668-673. *)
 StartTokens ==
     /\ phase = "entry"
     /\ entryIdx = 1

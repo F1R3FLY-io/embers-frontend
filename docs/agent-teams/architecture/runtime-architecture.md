@@ -130,28 +130,28 @@ This split gives RSpace an independently ordered record of public commands and c
 
 #### Canonical event vocabulary
 
-The complete event vocabulary, by emitting layer. Kernel events live in the encrypted journal; ledger events are the append-only public sequence of type names; the inspector's merge produces one canonical order from both. Names are exact and case-sensitive; anchors refer to the Embers backend at `d9a9e41`.
+The complete event vocabulary, by emitting layer. Kernel events live in the encrypted journal; ledger events are the append-only public sequence of type names; the inspector's merge produces one canonical order from both. Names are exact and case-sensitive; anchors refer to the Embers backend at `4427654`.
 
 | Event type | Layer | Emitted when |
 | ---------- | ----- | ------------ |
 | `runCreated`, `runKernelStarted` | kernel | envelope start seeds the entry tokens (`runtime.rs:105-106`) |
-| `nodeEntered` | kernel | every Enter-phase dispatch (`runtime.rs:756`) |
-| `transitionTaken` | kernel | every routed emission except durable yields (`runtime.rs:1367`) |
-| `effectRequested` | kernel | an activity or lifecycle effect is scheduled (`runtime.rs:962`) |
+| `nodeEntered` | kernel | every Enter-phase dispatch (`runtime.rs:779`) |
+| `transitionTaken` | kernel | every routed emission except durable yields (`runtime.rs:1429`) |
+| `effectRequested` | kernel | an activity or lifecycle effect is scheduled (`runtime.rs:1017`) |
 | `effectObserved` | both | a signed observation is applied (`runtime.rs:256`); also the checkpoint type after an effect (`orchestration.rs:365`) |
 | `guardObserved` | both | an on-chain guard result is applied (`runtime.rs:215`); checkpoint type after a guard round (`orchestration.rs:399`) |
 | `retryScheduled` | kernel | a retryable disposition parks a retry wait (`runtime.rs:308`) |
-| `waitSatisfied` | kernel | any wait resumes (`runtime.rs:551`) |
-| `runSuspended` | both | a wait node parks its token (`runtime.rs:861`); checkpoint type for a suspension (`orchestration.rs:412`) |
-| `approvalRequired` | kernel | an approval node parks its token (`runtime.rs:892`) |
-| `approvalRecorded` | kernel | every accepted approval decision, quorum-reaching or not (`runtime.rs:452`) |
-| `runResumed` | kernel | a command successfully resumes the run (`runtime.rs:499`) |
+| `waitSatisfied` | kernel | any wait resumes (`runtime.rs:574`) |
+| `runSuspended` | both | a wait node parks its token (`runtime.rs:916`); checkpoint type for a suspension (`orchestration.rs:412`) |
+| `approvalRequired` | kernel | an approval node parks its token (`runtime.rs:947`) |
+| `approvalRecorded` | kernel | every accepted approval decision, quorum-reaching or not (`runtime.rs:463`) |
+| `runResumed` | kernel | a command successfully resumes the run (`runtime.rs:510`) |
 | `nestedRunResumed` | kernel | a qualified command was delegated into a child (`runtime.rs:376`) |
-| `durableYield` | kernel | a durable-yield transition parks its token (`runtime.rs:1353`) |
-| `outputProduced` | kernel | an output node emits (`runtime.rs:806`) |
-| `rootCompleted` | kernel | a root-level final node ends the run (`runtime.rs:815`) |
-| `cancellationRequested`, `effectCompensated`, `runCancelled` | kernel (`runCancelled` also a checkpoint type, `orchestration.rs:456`) | structured cancellation, each compensation step, and the drained stack (`runtime.rs:597`, `:343`, `:560`) |
-| `runMigrated` | kernel | a migrate command rebinds the definition (`runtime.rs:495`) |
+| `durableYield` | kernel | a durable-yield transition parks its token (`runtime.rs:1415`) |
+| `outputProduced` | kernel | an output node emits (`runtime.rs:829`) |
+| `rootCompleted` | kernel | a root-level final node ends the run (`runtime.rs:838`) |
+| `cancellationRequested`, `effectCompensated`, `runCancelled` | kernel (`runCancelled` also a checkpoint type, `orchestration.rs:456`) | structured cancellation, each compensation step, and the drained stack (`runtime.rs:620`, `:343`, `:560`) |
+| `runMigrated` | kernel | a migrate command rebinds the definition (`runtime.rs:506`) |
 | `runStarted` | ledger | `beginRun`/`beginDurableRun` registration; the inspector normalizes it to `runCreated` (`get_run.rs:143`) |
 | `commandClaimed` | ledger | a claim passes revision CAS and authorization (`init.rho:408`) |
 | `commandRejected` | ledger | `clearCommand` rejects a claimed command (`init.rho:541`) |

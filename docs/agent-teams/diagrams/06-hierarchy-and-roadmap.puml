@@ -34,13 +34,13 @@ note right of ParallelReview #EAF7EE
 Implemented now: flat canvas projection, parallel
 tokens, typed joins, guarded routes, bounded cycles,
 scope entry/exit activities, completion propagation,
-shallow/deep history, durable resume, timer recovery,
-compensation, and encrypted snapshots.
+shallow/deep history, durable resume (scheduler-fired
+timers, retries, approval deadlines, and durable
+yields), compensation, and encrypted snapshots.
 end note
 note right of Approval #FFF3C9
 Reserved next: MeTTaIL Foreign Language Terms,
-run observability dashboards, a dedicated
-hierarchy-canvas editor, and the durable-yield
-resume command (see the roadmap's known gaps).
+run observability dashboards, and a dedicated
+hierarchy-canvas editor (see the roadmap).
 end note
 @enduml

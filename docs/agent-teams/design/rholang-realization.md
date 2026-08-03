@@ -8,7 +8,7 @@ Every embedded snippet in this document is **parser-validated**: it was parsed s
 - **template with example bindings** — a deploy template from `packages/embers/templates/`, shown with documented example values in place of its `{{ ... }}` bindings;
 - **verbatim template region** — a marker-free region of a template file, byte-identical to the source, wrapped only in the `new ... in` binders that its enclosing file provides.
 
-Line anchors refer to branch `dylon/embers-demo-fixes` (backend commit `d9a9e41`).
+Line anchors refer to branch `dylon/embers-demo-fixes` (backend commit `4427654`).
 
 ## Two execution layers, one semantics
 
@@ -48,15 +48,15 @@ Composition is uniform at every level: node contracts compose in parallel inside
 | No-match policy | 1 | `return!(value)` / `devNull!(Nil)` / failure record | `:650-658` | Guarded routing |
 | Guard expressions | 1 | `and`/`or`/`not`, comparisons over `getOrElse` paths; `$name` substitution longest-first | `:728-791`, `:443-466` | Guarded routing |
 | Bounded cycle | 1 | counter in the traveling `context.iterations` map, incremented on the transition | `:709-716` | Cycles |
-| Durable-yield cycle | 2 (via 1's record) | `durableYield` suspension record; kernel wait `yield:{token}:{transition}` | `:717-723`; `runtime.rs:1334-1358` | Cycles |
+| Durable-yield cycle | 2 (via 1's record) | `durableYield` suspension record; kernel wait `yield:{token}:{transition}` | `:717-723`; `runtime.rs:1395-1420` | Cycles |
 | Join all / quorum | 1 (hot) / 2 (normative) | `workflowJoin{i}` state channel, source-keyed map, size threshold | `:224-262` | Joins |
 | Join race + late policy | 1 (hot) / 2 (normative) | boolean won-flag channel; late action | `:263-284` | Joins |
 | Join each | 1 | plain contract, no state | `:219-223` | Joins |
-| Join reduce | 2 only | `durableReduce` suspension record; kernel fold | `:285-289`; `runtime.rs:1152-1157` | Joins |
+| Join reduce | 2 only | `durableReduce` suspension record; kernel fold | `:285-289`; `runtime.rs:1208-1213` | Joins |
 | Wait / timer | 2 (via 1's record) | `suspended` record; ledger `wait_ids` + `due_at` | `:315-323` | Waits and approvals |
 | Approval | 2 (via 1's record) | `approvalRequired` record; on-chain grant authorization | `:324-328`; `init.rho:379-395` | Waits and approvals |
-| Compound / parallel scope | 2 (lifecycle) / 1 (seeding) | parallel sends to child initials; entry/exit/completion/history kernel-only | `:330-359`; `runtime.rs:601-686` | Scopes and history |
-| History | 2 only | on-chain pass-through; kernel capture/restore | `:329`; `runtime.rs:997-1026` | Scopes and history |
+| Compound / parallel scope | 2 (lifecycle) / 1 (seeding) | parallel sends to child initials; entry/exit/completion/history kernel-only | `:330-359`; `runtime.rs:624-709` | Scopes and history |
+| History | 2 only | on-chain pass-through; kernel capture/restore | `:329`; `runtime.rs:1052-1082` | Scopes and history |
 | Retry / compensation | 2 only | kernel waits + effect re-deploys through `invoke_activity.rho` | `runtime.rs:282-311`, `:558-588` | Retry and compensation |
 | Run-ledger lifecycle | chain | serialized map with revision CAS | `init.rho:344-508` | The run ledger |
 | Registry composability | chain | version-gated `insertSigned` envelope + control heads | `deploy_workflow.rho`, `common/insert_signed.rho` | The team envelope |
@@ -183,7 +183,7 @@ in {
 }
 ```
 
-Current behavior: the kernel records the wait crash-safely, but no command class resumes a durable-yield suspension yet ([statechart semantics, current behavior](../theory/statechart-semantics.md#current-behavior-durable-yield-resumption)); the gap is tracked in the [roadmap](../roadmap.md).
+The kernel records the wait crash-safely with `dueAt` equal to the park instant, and the recovery scheduler resumes it automatically through the same self-signed `timerFired` claim pipeline as a due timer ([statechart semantics](../theory/statechart-semantics.md#durable-yield-as-a-scheduling-point)).
 
 ## Joins
 
@@ -264,10 +264,10 @@ A history node lowers to a `completed` pass-through (`workflow_rendering.rs:329`
 | Hierarchy feature | Compiled Rholang | Durable kernel |
 | ----------------- | ---------------- | -------------- |
 | Seeding child initials | yes (parallel sends) | yes (`start_scope_initials`) |
-| Entry / exit activities | no | yes (`advance_scope_lifecycle`, `runtime.rs:601-633`) |
-| Completion propagation | no | yes (`consume_scope_token` / `finish_scope_instance`, `runtime.rs:1054-1086`, `:669-686`) |
-| Active-configuration tracking | no | yes (`record_active_node`, `runtime.rs:1028-1052`) |
-| Shallow / deep history | pass-through only | yes (`restore_history`, `runtime.rs:997-1026`) |
+| Entry / exit activities | no | yes (`advance_scope_lifecycle`, `runtime.rs:624-656`) |
+| Completion propagation | no | yes (`consume_scope_token` / `finish_scope_instance`, `runtime.rs:1110-1142`, `:669-686`) |
+| Active-configuration tracking | no | yes (`record_active_node`, `runtime.rs:1084-1108`) |
+| Shallow / deep history | pass-through only | yes (`restore_history`, `runtime.rs:1052-1082`) |
 
 ## Waits and approvals
 

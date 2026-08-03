@@ -162,6 +162,18 @@ Every node has `id`, `label`, and `scopeId`; `join` is optional.
 - `workflow` requires a deployed `rho:id:` team URI in `teamId` and the child definition hash in `version`. The runtime revalidates the child manifest and embeds its continuation into the parent checkpoint.
 - `foreign-term` records `languageSpecification`, `artifactHash`, `entrypoint`, and `abiVersion`; it is reserved for MeTTaIL-backed Rholang 1.4.
 
+### Wait nodes and timers
+
+A `wait` node's `timer` object carries either `delayMillis` (a non-negative safe integer; the deadline is computed at suspension time) or `deadline` (a portable value expression evaluating to an RFC 3339 timestamp string).
+
+Two rules keep timer waits resumable. First, a **literal** `deadline` **must** parse with the exact timestamp parser the kernel uses (`chrono`'s RFC 3339 parser, which also accepts a space separator and lowercase `t`/`z`); publish validation rejects anything else on both sides (`invalid-timer-deadline-literal` in TypeScript; the matching `ensure!` in `workflow.rs`), with shared parity vectors pinning the accepted forms. Second, a **computed** deadline that fails at runtime — the expression errors, yields a non-string, or does not parse — never parks a wait: the token routes from the wait node with disposition `failed` and the structured value
+
+```json
+{ "error": "<reason>", "deadline": "<raw evaluated value or null>" }
+```
+
+readable through the `error` value root by a `failed`-triggered route; absent such a route, the run fails by the standard no-group rule. A wait therefore never exists without a resumable deadline.
+
 ## Transitions and route groups
 
 A transition contains source, target, trigger disposition, priority, route-group identity, and optional ports, guard, and loop policy. All transitions in one route group must have the same source and trigger.
@@ -260,13 +272,13 @@ type NodeExecutionPolicy = {
 
 The effect key is stable across crash/recovery for one run, nested execution, node, correlation epoch, and attempt. Retry increments the attempt and schedules a durable retry timer. A successful forward activity with `compensation` pushes a Saga record; cancellation invokes compensations in reverse completion order. Compensation is a new effect, not atomic rollback.
 
-The retry schedule is fully deterministic. `backoffMultiplierMillis` is a multiplier in thousandths (`1000` means a factor of one; publish validation requires at least `1000`), and the delay before attempt `$`a \ge 2`$` with initial delay `$`d_0`$`, multiplier field `$`m`$`, and cap `$`d_{\max}`$` is:
+The retry schedule is fully deterministic. `backoffMultiplierMillis` is a multiplier in thousandths (`1000` means a factor of one; publish validation requires at least `1000`), and the delay before attempt $`a \ge 2`$ with initial delay $`d_0`$, multiplier field $`m`$, and cap $`d_{\max}`$ is:
 
 ```math
 d_a = \min\!\Bigl(d_{\max},\; \Bigl\lfloor d_0 \cdot \bigl(\tfrac{m}{1000}\bigr)^{a-2} \Bigr\rfloor\Bigr).
 ```
 
-When `deterministicJitter` is true and `$`d_a > 0`$`, the delay is **replaced** by a deterministic uniform sample over `$`[0, d_a]`$`, derived from the effect key `$`k`$` so that replay and recovery compute the identical deadline:
+When `deterministicJitter` is true and $`d_a > 0`$, the delay is **replaced** by a deterministic uniform sample over $`[0, d_a]`$, derived from the effect key $`k`$ so that replay and recovery compute the identical deadline:
 
 ```math
 \mathrm{delay}(a) = \mathrm{SHA256}\bigl(k \,\Vert\, \texttt{":"} \,\Vert\, a\bigr)[0..8]_{\mathrm{be}} \bmod (d_a + 1).
@@ -278,7 +290,7 @@ A disposition is retryable when it appears in `retryOn`, or, when `retryOn` is e
 
 Commands are outside the portable definition because they are authenticated observations about one run revision. Every request contains `expectedRevision` and a `type` from `signal`, `event`, `timerFired`, `approve`, `reject`, `cancel`, `retry`, or `migrate`. Wait-directed commands carry the exact public `waitId`; a child wait is recursively qualified as `nested:<execution-id>:<wait-id>`. Migration additionally pins source/target hashes and supplies only typed `set`/`remove` state-patch operations.
 
-An approval with quorum `$`q`$` and decision map `$`D`$` (actor to decision identifier) resumes with disposition `completed` exactly when
+An approval with quorum $`q`$ and decision map $`D`$ (actor to decision identifier) resumes with disposition `completed` exactly when
 
 ```math
 |D| \ge q,
@@ -286,13 +298,15 @@ An approval with quorum `$`q`$` and decision map `$`D`$` (actor to decision iden
 
 subject to: every decision identifier is globally unique within the run, each actor decides at most once, and an empty approver set admits any ledger-authorized actor. A `reject` from an authorized approver resumes the wait immediately with the standard disposition `rejected`, which routes like any other trigger. Every accepted decision emits `approvalRecorded`; the quorum-reaching decision emits `waitSatisfied`, then `approvalRecorded`, then `runResumed` ([statechart semantics](../theory/statechart-semantics.md#waits-approvals-and-dispositions-as-triggers)).
 
+An approval node whose execution policy declares `timeout.afterMillis` acquires a deadline at suspension time; the deadline is recorded on the wait, published as the run ledger's minimum `dueAt`, and **enforced**: at expiry the recovery scheduler fires the wait through the standard `timerFired` path and it resumes with disposition `timedOut`, routing from the approval node like any other trigger. A timeout emits no `approvalRecorded`, and late `approve` or `reject` commands are rejected with "wait ... is not pending". Because a declared deadline always fires, publish validation **requires** every approval node that declares a timeout to have at least one outgoing transition triggered by `timedOut` (`approval-timeout-unrouted` in TypeScript; "approval node ... declares a timeout but no timedOut route" in `workflow.rs`); timeout-free approvals are unaffected. Migration note: approvals whose deadlines expired under a pre-enforcement kernel begin firing `timedOut` on the first recovery poll after upgrade.
+
 The model follows the hierarchy, concurrency, and communication motivations of Harel’s statecharts, while using explicit workflow tokens for joins and fan-out. See Harel, “Statecharts: A Visual Formalism for Complex Systems,” _Science of Computer Programming_ 8(3), 1987, [doi:10.1016/0167-6423(87)90035-9](<https://doi.org/10.1016/0167-6423(87)90035-9>), and the [W3C SCXML Recommendation](https://www.w3.org/TR/scxml/); the construct-by-construct mapping onto SCXML, with the differences analyzed against its interpretation algorithm, is the [SCXML correspondence](../design/scxml-correspondence.md), and the per-construct Rholang lowering is the [Rholang realization](../design/rholang-realization.md).
 
-One current-behavior note belongs beside the loop policies: a `durableYield` transition suspends durably and crash-safely, but no command class currently resumes a durable-yield wait — only run-level `cancel` or `migrate` apply. The gap is tracked in the [roadmap](../roadmap.md) and stated precisely in the [statechart semantics](../theory/statechart-semantics.md#current-behavior-durable-yield-resumption).
+One scheduling note belongs beside the loop policies: a `durableYield` transition suspends durably and crash-safely with its wait's `dueAt` set to the park instant, which makes it immediately scheduler-fireable — the recovery scheduler resumes it automatically through the same self-signed `timerFired` path as a due timer, one full ledger round-trip per iteration, re-entering the transition's target in Enter phase. No schema field or command class was added for this. Migration note: yields parked by a pre-fix kernel carry no `dueAt` and remain resumable only by run-level `cancel` or `migrate`; yields parked after the fix resume automatically. The full semantics are in the [statechart semantics](../theory/statechart-semantics.md#durable-yield-as-a-scheduling-point).
 
 ## Validation phases
 
-Draft validation checks schema version and identity-map integrity. Publish validation additionally checks all references, scope ownership, agent pins, activity authorities, timer shape, safe integer bounds, join cardinalities, route-group coherence, disposition and port syntax, guard purity and source hashes, and exact hot-cycle safety.
+Draft validation checks schema version and identity-map integrity. Publish validation additionally checks all references, scope ownership, agent pins, activity authorities, timer shape, safe integer bounds, join cardinalities, route-group coherence, disposition and port syntax, guard purity and source hashes, and exact hot-cycle safety. Three rules are called out because each closes a runtime failure mode with TypeScript/Rust parity: `invalid-timer-deadline-literal` (a literal timer deadline must parse with the kernel's exact parser), `approval-timeout-unrouted` (a declared approval timeout must have a `timedOut` route), and `invalid-lifecycle-route-target` (every transition sourced at a scope's entry or exit lifecycle activity must target an activity node, regardless of trigger — the kernel routes lifecycle failures with their purpose intact, and a non-activity target would be a hard kernel error).
 
 Canonical persistence recursively sorts JSON object keys after typed deserialization. Unknown fields are rejected by the Rust schema for closed record variants. Graph positions, dimensions, and edge labels live under `presentation`; execution never depends on canvas geometry.
 

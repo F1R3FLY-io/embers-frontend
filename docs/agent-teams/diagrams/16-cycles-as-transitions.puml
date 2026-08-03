@@ -26,8 +26,10 @@ state "Bounded self-loop" as Frag2 #DCEEFF {
 
 state "Durable-yield transition" as Frag3 #FFF0D9 {
   state "Analyze" as F3A #DCEEFF
-  state "Parked at target\nyield:{token}:{transition}" as F3B #F8DADA
+  state "Parked at target\nyield:{token}:{transition}\ndueAt = park instant" as F3B #F8DADA
   F3A --> F3B : loop.durableYield\n/ checkpoint and suspend (durableYield);\ntoken pre-positioned at the target,\nno transitionTaken emitted
+  state "Target (Enter phase)" as F3C #DCEEFF
+  F3B --> F3C : timerFired [exact deadline]\nby the recovery scheduler
 }
 
 state "Scope-node self-loop" as Frag4 #E7DCF5 {
@@ -35,10 +37,12 @@ state "Scope-node self-loop" as Frag4 #E7DCF5 {
   F4A --> F4A : rejected\n/ full exit: snapshot history, exit activities;\nfull re-entry: entry activities, restore
 }
 
-note right of Frag3 #FDECEA
-Current behavior: no command class resumes a
-durable-yield wait; only run-level cancel or migrate
-apply. Tracked as a known gap in the roadmap.
+note right of Frag3 #EAF7EE
+The yield parks already due, so the recovery
+scheduler resumes it automatically through the
+same self-signed timerFired path as a due timer:
+one ledger round-trip per iteration, Enter-phase
+re-entry at the target.
 end note
 note bottom of Frag2 #EAF7EE
 Counters live in token context, so concurrent branches

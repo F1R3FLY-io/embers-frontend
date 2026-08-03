@@ -29,7 +29,7 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 | ------------------------------------ | -----: | -------------: | -------------------: | --------------------------------------------------------------------------------------- |
 | Cyclic transition                    |    yes |            yes |                  yes | Every possible hot cycle must cross a wait, a bound, or a durable yield.                |
 | Bounded loop                         |    yes |            yes |                  yes | Per-transition counters travel in the token context.                                    |
-| Durable-yield loop                   |    yes | suspends durably |                yes | Checkpoints to F1r3drive crash-safely; the resume command path is roadmap work (see known gaps). |
+| Durable-yield loop                   |    yes | durable resume (scheduler) |          yes | Checkpoints to F1r3drive crash-safely; parks already due, so the recovery scheduler resumes it automatically. |
 | First-match branch                   |    yes |            yes |                  yes | Priorities are unique and deterministic within a route group.                           |
 | All-match branch                     |    yes |            yes |                  yes | Every true guard emits a token.                                                         |
 | No-match policy                      |    yes |            yes |                  yes | Complete, skip, or fail.                                                                |

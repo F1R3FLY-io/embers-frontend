@@ -43,7 +43,7 @@ The crash model is stuttering: a crash changes no durable variable. Recovery may
 
 ## Statechart scope model
 
-`StatechartScopes.tla` models the scope lifecycle of the [statechart semantics](../theory/statechart-semantics.md) over one compound scope with two inner nodes and up to two tokens: entry with a sequential entry activity, initial seeding with the implicit history override, position recording with the consumption asymmetry, fan-out, completion by count exhaustion, history capture at the completion instant, a sequential exit activity, and re-entry. One TLC run covers all three history modes — `Init` chooses the scope's declared mode nondeterministically from `none`, `shallow`, and `deep`.
+`StatechartScopes.tla` models the scope lifecycle of the [statechart semantics](../theory/statechart-semantics.md) over one compound scope with two inner nodes and up to two tokens: entry with a sequential entry activity, initial seeding with the implicit history override, position recording with the consumption asymmetry, fan-out, completion by count exhaustion, history capture at the completion instant, mid-run restoration through a history *node* with its fan-out accounting, a sequential exit activity, and re-entry. One TLC run covers all three history modes — `Init` chooses the scope's declared mode nondeterministically from `none`, `shallow`, and `deep`.
 
 | Symbol      | Meaning                                                            |
 | ----------- | ------------------------------------------------------------------ |
@@ -62,9 +62,10 @@ The model checks that:
 - a running scope is never empty — emptiness is exactly completion;
 - history exists only after a completion captured it, carries the declared mode, and is never captured by a `none`-mode scope;
 - a history-seeded re-entry starts exactly on the remembered configuration, and an initials-seeded run exactly on the declared initials;
+- a mid-run history-*node* restoration adjusts the stored counter by the restored population (`RestoreHistoryNode`), so `CounterFaithful` — the counter always equals the live population — holds through multi-target restore;
 - the entry budget is respected.
 
-Checked result: 231 distinct states, all invariants hold, across all three modes in one run. The model deliberately excludes the history-*node* restore path (only implicit re-entry restore is modeled): the multi-target history-node token-accounting hazard identified during the documentation review is a code-level finding, not a model target, and is listed in the [roadmap](../roadmap.md).
+Checked result: 552 states generated, 231 distinct, all invariants hold, across all three modes in one run. The `RestoreHistoryNode` action doubles as falsification evidence for the review's accounting finding: substituting the pre-fix semantics (`alpha' = alpha`, restoring without adjusting the counter) makes TLC report a `CounterFaithful` violation with a concrete trace, so the model demonstrably catches the defect the kernel fix closed ([roadmap](../roadmap.md#resolved-review-findings)).
 
 ## Run TLC
 
@@ -92,13 +93,14 @@ The expected result is that every configured invariant holds. Increase `MaxItera
 | `ObserveEffect`        | Signed, content-addressed `ActivityObservation`.                             |
 | `ClaimResume`          | Signed `claimCommand` compare-and-set against expected revision.             |
 | `QualifiedWait`        | Recursive `nested:<execution-id>:<wait-id>` routing.                         |
-| `EnterScope`           | `enter_scope` in `runtime.rs:965-995`.                                       |
-| `RunEntryActivity` / `RunExitActivity` | `advance_scope_lifecycle` in `runtime.rs:601-633`.           |
-| `StartTokens`          | `start_scope_initials` in `runtime.rs:635-667` (history overrides initials). |
-| `MoveToken`            | `record_active_node` in `runtime.rs:1028-1052`.                              |
-| `FanOut`               | `adjust_scope_fanout` in `runtime.rs:1386-1395`.                             |
-| `ConsumeToken`         | `consume_scope_token` in `runtime.rs:1054-1086` (snapshot at count zero).    |
-| `FinishScope`          | `finish_scope_instance` in `runtime.rs:669-686`.                             |
+| `EnterScope`           | `enter_scope` in `runtime.rs:1020-1050`.                                       |
+| `RunEntryActivity` / `RunExitActivity` | `advance_scope_lifecycle` in `runtime.rs:624-656`.           |
+| `StartTokens`          | `start_scope_initials` in `runtime.rs:658-690` (history overrides initials). |
+| `MoveToken`            | `record_active_node` in `runtime.rs:1084-1108`.                              |
+| `FanOut`               | `adjust_scope_fanout` in `runtime.rs:1448-1457`.                             |
+| `ConsumeToken`         | `consume_scope_token` in `runtime.rs:1110-1142` (snapshot at count zero).    |
+| `RestoreHistoryNode`   | `restore_history` in `runtime.rs:1052-1082` (fan-out accounting on restore). |
+| `FinishScope`          | `finish_scope_instance` in `runtime.rs:692-709`.                             |
 
 ## Scope and limitations
 
