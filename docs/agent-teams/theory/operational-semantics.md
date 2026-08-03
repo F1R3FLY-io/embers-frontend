@@ -22,6 +22,8 @@ A **workflow** is a finite directed multigraph augmented with scopes, routing gr
 | $`\kappa_c(e)`$ | current bounded-iteration count for $`e`$ in context $`c`$ |
 | $`d`$           | node disposition                                           |
 
+The scope-dependent structure over $`S`$ — the scope tree, hierarchical configurations, entry and exit, completion propagation, and history — is formalized in the [statechart semantics](statechart-semantics.md), which extends the configuration defined below conservatively.
+
 We write a token as $`\langle n, v, c, q \rangle`$, where $`n \in N`$ is its node and $`q`$ identifies its producing source for fan-in. A configuration is:
 
 ```math
@@ -34,7 +36,7 @@ where $`J`$ is join state, $`\eta`$ is the append-only event sequence, and $`\ph
 
 Harel’s statecharts add hierarchy, orthogonality (concurrent regions), and communication to conventional state machines. Those ideas are essential for comprehending large agent organizations. Pure statecharts, however, do not by themselves make arbitrary workflow fan-in policies or producer-keyed payload assembly obvious. Token semantics, associated with Petri-net and workflow-pattern traditions, make split and synchronization behavior explicit.
 
-Workflow v2 therefore uses scopes as the hierarchical authoring structure and tokens as the execution structure. This is a semantic combination rather than a visual imitation of any one editor. Foundational references are:
+Workflow v2 therefore uses scopes as the hierarchical authoring structure and tokens as the execution structure. This is a semantic combination rather than a visual imitation of any one editor. The statechart half of the hybrid is formalized in the [statechart semantics](statechart-semantics.md); the design layer records the [SCXML correspondence](../design/scxml-correspondence.md) and the [Rholang realization](../design/rholang-realization.md) of both halves. Foundational references are:
 
 - David Harel, “Statecharts: A Visual Formalism for Complex Systems,” _Science of Computer Programming_ 8(3), 1987, [doi:10.1016/0167-6423(87)90035-9](<https://doi.org/10.1016/0167-6423(87)90035-9>).
 - Wil M. P. van der Aalst, Arthur H. M. ter Hofstede, Bartek Kiepuszewski, and Alistair P. Barros, “Workflow Patterns,” _Distributed and Parallel Databases_ 14(1), 2003, [doi:10.1023/A:1022883727209](https://doi.org/10.1023/A:1022883727209).
@@ -122,17 +124,17 @@ When the bound is exhausted, the transition produces `iterationLimit` instead of
 
 ## Join semantics
 
-Let $`P_n`$ be the distinct producer keys expected by join node $`n`$, and let partial map $`j : P_n \rightharpoonup V`$ contain arrived values.
+Let $`P_n`$ be the identifiers of the transitions incoming to join node $`n`$ — the expected arrival set — and let partial map $`j : P_n \rightharpoonup V`$ contain the values that have arrived, keyed by the transition that delivered them. A second arrival on one transition within one open correlation epoch is an error, so $`j`$ is well defined.
 
 - **Each:** fire once for every arrival; no accumulation.
 - **All:** update $`j[q \mapsto v]`$ and fire when $`\operatorname{dom}(j)=P_n`$.
 - **Quorum $`k`$:** fire when $`|\operatorname{dom}(j)| \ge k`$.
 - **Race:** fire on the first arrival and apply the configured late policy thereafter.
-- **Reduce:** combine arrivals with first, last, sum, minimum, maximum, or conflict-detecting record merge until the declared completion condition holds.
+- **Reduce:** combine arrivals with collect, first, last, sum, minimum, maximum, or conflict-detecting record merge until the declared completion condition holds.
 
-The value delivered by `all` and `quorum` is the producer-keyed map. This preserves the existing Embers fan-in convention: an agent receives a mapping from producing agent label to output.
+The value delivered by `all` and `quorum` is keyed differently from the arrival tracking: it is a map from the *producing node's label* to that producer's output, with a duplicate producer label rejected at merge time. This preserves the existing Embers fan-in convention: an agent receives a mapping from producing agent label to output.
 
-The durable runtime carries a stack of fork epochs and correlation labels in every token. Join state is keyed by node and derived correlation, so overlapping loop generations remain distinct. Key correlation evaluates the declared portable value path; route-group correlation selects the corresponding fork epoch; root correlation selects the root epoch. Late arrivals follow the join's explicit ignore, fail, or next-epoch rule.
+The durable runtime carries a stack of fork epochs and correlation labels in every token. Join state is keyed by node and derived correlation, so overlapping loop generations remain distinct. Key correlation evaluates the declared portable value path; route-group correlation selects the corresponding fork epoch; root correlation selects the root epoch. Quorum and race joins close on firing, and a late arrival at a closed join follows that join's explicit late-arrival policy — cancel, discard, or error; all and reduce joins never close, so firing re-arms them for the next accumulation under the same correlation. The occupancy, closure, and epoch rules are given in the [statechart semantics](statechart-semantics.md).
 
 ## Progress-boundary theorem
 
@@ -174,7 +176,7 @@ PROVE-HOT-CYCLE-SAFETY(workflow):
   accept
 ```
 
-The complexity is $`O(|N|+|E|)`$.
+The complexity is $`O(|N|+|E|)`$, inherited from Tarjan's strongly-connected-components algorithm: Robert Tarjan, "Depth-First Search and Linear Graph Algorithms," _SIAM Journal on Computing_ 1(2), 1972, [doi:10.1137/0201010](https://doi.org/10.1137/0201010).
 
 ## Determinism envelope
 
