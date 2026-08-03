@@ -262,6 +262,13 @@ describe("WorkflowDefinition v2", () => {
           label: "Outer entry",
           scopeId: "scope:outer",
         },
+        prep: {
+          activity: { kind: "builtin", name: "compress" },
+          id: "prep",
+          kind: "activity",
+          label: "Lifecycle prep",
+          scopeId: "scope:inner",
+        },
         "outer-owner": {
           childScopeId: "scope:outer",
           id: "outer-owner",
@@ -302,6 +309,7 @@ describe("WorkflowDefinition v2", () => {
           "inner-owner": { height: 320, width: 720, x: 40, y: 40 },
           "outer-entry": { x: 10, y: 40 },
           "outer-owner": { height: 480, width: 960, x: 100, y: 120 },
+          prep: { x: 180, y: 160 },
           root: { x: 0, y: 0 },
           transform: { x: 340, y: 80 },
         },
@@ -325,8 +333,8 @@ describe("WorkflowDefinition v2", () => {
           label: "Customer support team",
         },
         "scope:inner": {
-          entryActivities: ["agent"],
-          exitActivities: ["agent"],
+          entryActivities: ["prep"],
+          exitActivities: ["prep"],
           history: "deep",
           id: "scope:inner",
           initialNodeIds: ["inner-entry"],
@@ -509,6 +517,79 @@ describe("WorkflowDefinition v2", () => {
     ).toBe(false);
   });
 
+  test("timer deadline literals must be RFC 3339 timestamps", () => {
+    const withLiteral = (value: unknown) => {
+      const definition = toWorkflowDefinition(
+        [node("in", "input-node"), node("out", "output-node")],
+        [edge("in", "out")],
+      );
+      definition.nodes.timer = {
+        id: "timer",
+        kind: "wait",
+        label: "Timer",
+        scopeId: definition.entryScopeId,
+        timer: { deadline: { kind: "literal", value } },
+        waitFor: "timer",
+      } as (typeof definition.nodes)[string];
+      return validateWorkflow(definition).some(
+        (diagnostic) => diagnostic.code === "invalid-timer-deadline-literal",
+      );
+    };
+
+    // Parity vectors pinned against the backend validator, whose truth is
+    // chrono's RFC 3339 parser (timer_deadline_literals_must_be_rfc3339).
+    for (const valid of [
+      "2026-01-01T00:00:00Z",
+      "2026-01-01T00:00:00+00:00",
+      "2026-01-01T00:00:00.123Z",
+      "2026-01-01t00:00:00z",
+      "2026-01-01 00:00:00Z",
+    ]) {
+      expect(withLiteral(valid)).toBe(false);
+    }
+    for (const invalid of [
+      "2026-01-01",
+      "not-a-date",
+      "2026-01-01T00:00:00",
+      42,
+    ]) {
+      expect(withLiteral(invalid)).toBe(true);
+    }
+  });
+
+  test("lifecycle activities may only route into activities", () => {
+    const definition = toWorkflowDefinition(
+      [
+        node("in", "input-node"),
+        node("prep", "compress"),
+        node("recover", "compress"),
+        node("gate", "gateway"),
+        node("out", "output-node"),
+      ],
+      [
+        edge("in", "prep"),
+        edge("prep", "gate"),
+        edge("prep", "recover"),
+        edge("gate", "out"),
+      ],
+    );
+    definition.scopes[definition.entryScopeId].entryActivities = ["prep"];
+
+    const diagnostics = validateWorkflow(definition).filter(
+      (diagnostic) => diagnostic.code === "invalid-lifecycle-route-target",
+    );
+    expect(diagnostics).toHaveLength(1);
+    expect(diagnostics[0]?.id).toBe("prep-gate");
+    expect(diagnostics[0]?.message).toContain("is not an activity");
+
+    delete definition.transitions["prep-gate"];
+    expect(
+      validateWorkflow(definition).some(
+        (diagnostic) => diagnostic.code === "invalid-lifecycle-route-target",
+      ),
+    ).toBe(false);
+  });
+
   test("rejects conflicting policies for one preserved route group", () => {
     expect(() =>
       toWorkflowDefinition(
@@ -557,7 +638,7 @@ describe("WorkflowDefinition v2", () => {
       scopeId: definition.entryScopeId,
       signal: "also-a-signal",
       timer: {
-        deadline: { kind: "literal", value: "2026-08-02T00:00:00Z" },
+        deadline: { kind: "literal", value: "not-a-timestamp" },
         delayMillis: 0,
       },
       waitFor: "timer",
@@ -588,6 +669,8 @@ describe("WorkflowDefinition v2", () => {
         expect.objectContaining({ code: "invalid-transition-priority" }),
         expect.objectContaining({ code: "mismatched-rholang-guard-hash" }),
         expect.objectContaining({ code: "approval-timeout-unrouted" }),
+        expect.objectContaining({ code: "invalid-timer-deadline-literal" }),
+        expect.objectContaining({ code: "invalid-lifecycle-route-target" }),
       ]),
     );
   });

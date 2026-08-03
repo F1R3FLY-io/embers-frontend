@@ -27,6 +27,13 @@ const standardDispositions = new Set([
   "timedOut",
 ]);
 
+// Mirrors the exact grammar chrono's RFC 3339 parser accepts in the durable
+// kernel (str::parse::<DateTime<Utc>>): 'T'/'t' or space separators,
+// fractional seconds, and a 'Z'/'z' or signed-offset suffix. Parity vectors
+// are pinned by the workflow test suites on both sides of the wire.
+const rfc3339Timestamp =
+  /^\d{4}-\d{2}-\d{2}[Tt ]\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/;
+
 function isNonNegativeSafeInteger(value: number): boolean {
   return Number.isSafeInteger(value) && value >= 0;
 }
@@ -508,6 +515,21 @@ export function validateWorkflow(
             severity: "error",
           });
         }
+        if (node.timer?.deadline?.kind === "literal") {
+          const literal = node.timer.deadline.value;
+          if (
+            typeof literal !== "string" ||
+            !rfc3339Timestamp.test(literal) ||
+            Number.isNaN(Date.parse(literal))
+          ) {
+            diagnostics.push({
+              code: "invalid-timer-deadline-literal",
+              id: node.id,
+              message: `Timer ${node.label} deadline literal must be an RFC 3339 timestamp.`,
+              severity: "error",
+            });
+          }
+        }
         if (node.signal !== undefined) {
           diagnostics.push({
             code: "timer-has-signal",
@@ -806,11 +828,33 @@ export function validateWorkflow(
     }
   }
 
+  const lifecycleNodeIds = new Set(
+    Object.values(definition.scopes).flatMap((scope) => [
+      ...scope.entryActivities,
+      ...scope.exitActivities,
+    ]),
+  );
   for (const transition of Object.values(definition.transitions)) {
     const loop = transition.loop as
       | { durableYield?: unknown; maxIterations?: unknown }
       | undefined;
     diagnostics.push(...triggerDiagnostics(transition.trigger, transition.id));
+    if (
+      lifecycleNodeIds.has(transition.sourceNodeId) &&
+      definition.nodes[transition.targetNodeId] !== undefined &&
+      definition.nodes[transition.targetNodeId].kind !== "activity"
+    ) {
+      const sourceLabel =
+        definition.nodes[transition.sourceNodeId]?.label ??
+        transition.sourceNodeId;
+      const targetLabel = definition.nodes[transition.targetNodeId].label;
+      diagnostics.push({
+        code: "invalid-lifecycle-route-target",
+        id: transition.id,
+        message: `Transition ${transition.id} routes lifecycle activity ${sourceLabel} to ${targetLabel}, which is not an activity; lifecycle-purpose tokens can only re-enter activity nodes.`,
+        severity: "error",
+      });
+    }
     if (!nodeIds.has(transition.sourceNodeId)) {
       diagnostics.push({
         code: "missing-transition-source",
