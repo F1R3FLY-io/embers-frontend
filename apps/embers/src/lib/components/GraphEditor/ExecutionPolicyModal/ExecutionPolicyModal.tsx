@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { activityReferenceFromJson } from "@/lib/workflow";
@@ -67,7 +68,9 @@ export function ExecutionPolicyModal({
     min: number,
   ) => (
     <label className={styles["nim-field"]}>
-      <Text className={styles["nim-label"]}>{label}</Text>
+      <Text bold color="secondary" type="small">
+        {label}
+      </Text>
       <Input
         min={min}
         type="number"
@@ -119,33 +122,36 @@ export function ExecutionPolicyModal({
         0,
       )}
       <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Retry dispositions</Text>
+        <Text bold color="secondary" type="small">
+          Retry dispositions
+        </Text>
         <Input
           value={retryOn}
           onChange={(event) => setRetryOn(event.target.value)}
         />
       </label>
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Deterministic retry jitter</Text>
-        <select
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Deterministic retry jitter"
+          options={[
+            { label: "Enabled", value: "true" },
+            { label: "Disabled", value: "false" },
+          ]}
           value={String(deterministicJitter)}
-          onChange={(event) =>
-            setDeterministicJitter(event.target.value === "true")
-          }
-        >
-          <option value="true">Enabled</option>
-          <option value="false">Disabled</option>
-        </select>
-      </label>
+          onChange={(value) => setDeterministicJitter(value === "true")}
+        />
+      </div>
       <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Authorities</Text>
+        <Text bold color="secondary" type="small">
+          Authorities
+        </Text>
         <Input
           value={authorities}
           onChange={(event) => setAuthorities(event.target.value)}
         />
       </label>
       <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>
+        <Text bold color="secondary" type="small">
           Compensation activity (Workflow JSON, or null)
         </Text>
         <Input
@@ -155,6 +161,9 @@ export function ExecutionPolicyModal({
         />
       </label>
       <div className={styles["nim-actions"]}>
+        <Button type="secondary" onClick={close}>
+          Cancel
+        </Button>
         <Button
           type="primary"
           onClick={() => {
@@ -189,9 +198,6 @@ export function ExecutionPolicyModal({
           }}
         >
           Save
-        </Button>
-        <Button type="subtle" onClick={close}>
-          Cancel
         </Button>
       </div>
     </div>

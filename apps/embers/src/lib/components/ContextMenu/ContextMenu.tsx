@@ -3,6 +3,8 @@ import "@szhsin/react-menu/dist/index.css";
 
 import { Text } from "@/lib/components/Text";
 
+import styles from "./ContextMenu.module.scss";
+
 export type MenuItem = {
   content: string;
   hidden?: boolean;
@@ -29,6 +31,7 @@ export function ContextMenu({
   return (
     <ControlledMenu
       anchorPoint={position}
+      className={styles.themed}
       direction="right"
       state={open ? "open" : "closed"}
       onClose={onClose}

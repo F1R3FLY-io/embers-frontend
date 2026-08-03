@@ -1,8 +1,8 @@
-import classNames from "classnames";
 import { useState } from "react";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 
@@ -17,6 +17,12 @@ type ModalInputKind<Value> = Value extends string
 export type ModalInput<T extends Record<string, string | number>> = {
   [K in keyof T]: {
     name: K;
+    /**
+     * Present for enumerated string fields: the dialog renders the shared
+     * Select over these choices instead of a free-text Input, so a value with
+     * a closed domain (a scope kind, a history mode) can never be mistyped.
+     */
+    options?: { label: string; value: string }[];
     type: ModalInputKind<T[K]>;
   };
 }[keyof T];
@@ -93,38 +99,44 @@ export function EditModal<T extends Record<string, string | number>>({
       </Text>
       {error && <Text className={styles["nim-error"]}>{error}</Text>}
 
-      {inputs.map(({ name, type }) => (
-        <label key={String(name)} className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>{humanize(String(name))}</Text>
-          <Input
-            className={styles["nim-input"]}
-            type={type === "number" ? "number" : "text"}
-            value={values[name]}
-            onChange={(event) =>
-              handleChange(
-                name,
-                type === "number" ? "number" : "string",
-                event.target.value,
-              )
-            }
-          />
-        </label>
-      ))}
+      {inputs.map(({ name, options, type }) =>
+        options ? (
+          <div key={String(name)} className={styles["nim-field"]}>
+            <Select
+              label={humanize(String(name))}
+              options={options}
+              value={String(values[name])}
+              onChange={(value) =>
+                setValues((old) => ({ ...old, [name]: value }))
+              }
+            />
+          </div>
+        ) : (
+          <label key={String(name)} className={styles["nim-field"]}>
+            <Text bold color="secondary" type="small">
+              {humanize(String(name))}
+            </Text>
+            <Input
+              type={type === "number" ? "number" : "text"}
+              value={values[name]}
+              onChange={(event) =>
+                handleChange(
+                  name,
+                  type === "number" ? "number" : "string",
+                  event.target.value,
+                )
+              }
+            />
+          </label>
+        ),
+      )}
 
       <div className={styles["nim-actions"]}>
-        <Button
-          className={classNames(styles["nim-btn"])}
-          type="primary"
-          onClick={handleSubmit}
-        >
-          {saving ? "Saving…" : "Save"}
-        </Button>
-        <Button
-          className={classNames(styles["nim-btn"], styles["nim-btn-cancel"])}
-          type="subtle"
-          onClick={handleCancel}
-        >
+        <Button type="secondary" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button type="primary" onClick={handleSubmit}>
+          {saving ? "Saving…" : "Save"}
         </Button>
       </div>
     </div>

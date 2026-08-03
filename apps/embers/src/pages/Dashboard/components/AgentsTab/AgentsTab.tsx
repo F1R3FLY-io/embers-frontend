@@ -48,7 +48,7 @@ export default function AgentsTab({ searchQuery, sortBy }: AgentsTabProps) {
   // wrapped delete mutation nests safely.
   const readReferencingTeams = useCallbackWithLoader(referencingTeams);
   const runCascadeWithLoader = useCallbackWithLoader(
-    (id: string, teams: Awaited<ReturnType<typeof referencingTeams>>) =>
+    async (id: string, teams: Awaited<ReturnType<typeof referencingTeams>>) =>
       // Each team stopped and removed, then the agent, halting at the first
       // failure: an interrupted cascade must never leave a team pointing at an
       // agent that no longer exists. Every mutation here reports its own

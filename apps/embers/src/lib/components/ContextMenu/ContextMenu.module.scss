@@ -1,0 +1,38 @@
+/* Themes @szhsin/react-menu's stock chrome with the app tokens. The library
+ * ships a light default stylesheet; without these overrides every menu (the
+ * canvas context menu and the header's split-button dropdown share this
+ * component) renders as a white box on the dark theme.
+ *
+ * The class lands on the .szh-menu element itself (the library's `className`
+ * prop; its containerProps deliberately rejects className), so the menu box is
+ * styled directly and the library's global item classes are overridden from
+ * here for specificity. */
+.themed {
+  min-width: 180px;
+  padding: 6px;
+  color: var(--text-color-primary);
+  background: var(--background-neutral-surface-primary);
+  border: 1px solid var(--background-neutral-surface-secondary);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+
+  :global(.szh-menu__item) {
+    padding: 10px 14px;
+    color: var(--text-color-primary);
+    border-radius: 6px;
+  }
+
+  :global(.szh-menu__item--hover) {
+    color: var(--text-color-primary);
+    background: var(--background-neutral-hover);
+  }
+
+  :global(.szh-menu__item--focusable):focus-visible {
+    outline: 2px solid var(--border-selected);
+    outline-offset: -2px;
+  }
+
+  :global(.szh-menu__divider) {
+    background: var(--background-neutral-surface-secondary);
+  }
+}

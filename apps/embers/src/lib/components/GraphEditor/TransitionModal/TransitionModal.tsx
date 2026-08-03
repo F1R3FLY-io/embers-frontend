@@ -9,6 +9,7 @@ import type {
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { conditionFromJson } from "@/lib/workflow";
@@ -257,21 +258,22 @@ export function TransitionModal({ initial, onSave }: Props) {
       </Text>
       {error && <Text className={styles["nim-error"]}>{error}</Text>}
 
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Trigger</Text>
-        <select
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Trigger"
+          options={[
+            ...dispositions.map((value) => ({ label: value, value })),
+            { label: "Custom disposition", value: "custom" },
+          ]}
           value={trigger}
-          onChange={(event) => setTrigger(event.target.value)}
-        >
-          {dispositions.map((value) => (
-            <option key={value}>{value}</option>
-          ))}
-          <option value="custom">Custom disposition</option>
-        </select>
-      </label>
+          onChange={setTrigger}
+        />
+      </div>
       {trigger === "custom" && (
         <label className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>Custom disposition</Text>
+          <Text bold color="secondary" type="small">
+            Custom disposition
+          </Text>
           <Input
             placeholder="reviewReady"
             value={customTrigger}
@@ -279,66 +281,72 @@ export function TransitionModal({ initial, onSave }: Props) {
           />
         </label>
       )}
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Routing</Text>
-        <select
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Routing"
+          options={[
+            { label: "All matching routes", value: "allMatches" as const },
+            { label: "First matching route", value: "firstMatch" as const },
+          ]}
           value={routeMode}
-          onChange={(event) =>
-            setRouteMode(event.target.value as typeof routeMode)
-          }
-        >
-          <option value="allMatches">All matching routes</option>
-          <option value="firstMatch">First matching route</option>
-        </select>
-      </label>
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>When none match</Text>
-        <select
+          onChange={setRouteMode}
+        />
+      </div>
+      <div className={styles["nim-field"]}>
+        <Select
+          label="When none match"
+          options={[
+            { label: "Fail", value: "fail" as const },
+            { label: "Complete with current value", value: "complete" as const },
+            { label: "Skip", value: "skip" as const },
+          ]}
           value={noMatch}
-          onChange={(event) => setNoMatch(event.target.value as typeof noMatch)}
-        >
-          <option value="fail">Fail</option>
-          <option value="complete">Complete with current value</option>
-          <option value="skip">Skip</option>
-        </select>
-      </label>
+          onChange={setNoMatch}
+        />
+      </div>
       <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Priority</Text>
+        <Text bold color="secondary" type="small">
+          Priority
+        </Text>
         <Input
           type="number"
           value={priority}
           onChange={(event) => setPriority(Number(event.target.value))}
         />
       </label>
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Condition</Text>
-        <select
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Condition"
+          options={[
+            { label: "Always", value: "always" as const },
+            { label: "Compare a value", value: "compare" as const },
+            { label: "Value exists", value: "exists" as const },
+            { label: "Pure Rholang expression", value: "rholang" as const },
+            { label: "Compound condition", value: "json" as const },
+          ]}
           value={guardKind}
-          onChange={(event) => setGuardKind(event.target.value as GuardKind)}
-        >
-          <option value="always">Always</option>
-          <option value="compare">Compare a value</option>
-          <option value="exists">Value exists</option>
-          <option value="rholang">Pure Rholang expression</option>
-          <option value="json">Compound condition</option>
-        </select>
-      </label>
+          onChange={setGuardKind}
+        />
+      </div>
       {(guardKind === "compare" || guardKind === "exists") && (
         <>
-          <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>Value root</Text>
-            <select
+          <div className={styles["nim-field"]}>
+            <Select
+              label="Value root"
+              options={[
+                { label: "Current output", value: "output" as const },
+                { label: "Run input", value: "input" as const },
+                { label: "Run state", value: "state" as const },
+                { label: "Error", value: "error" as const },
+              ]}
               value={root}
-              onChange={(event) => setRoot(event.target.value as typeof root)}
-            >
-              <option value="output">Current output</option>
-              <option value="input">Run input</option>
-              <option value="state">Run state</option>
-              <option value="error">Error</option>
-            </select>
-          </label>
+              onChange={setRoot}
+            />
+          </div>
           <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>Path</Text>
+            <Text bold color="secondary" type="small">
+              Path
+            </Text>
             <Input
               placeholder="status.approved"
               value={path}
@@ -349,21 +357,20 @@ export function TransitionModal({ initial, onSave }: Props) {
       )}
       {guardKind === "compare" && (
         <>
-          <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>Comparison</Text>
-            <select
+          <div className={styles["nim-field"]}>
+            <Select
+              label="Comparison"
+              options={(["eq", "ne", "gt", "ge", "lt", "le"] as const).map(
+                (value) => ({ label: value, value }),
+              )}
               value={operator}
-              onChange={(event) =>
-                setOperator(event.target.value as typeof operator)
-              }
-            >
-              {(["eq", "ne", "gt", "ge", "lt", "le"] as const).map((value) => (
-                <option key={value}>{value}</option>
-              ))}
-            </select>
-          </label>
+              onChange={setOperator}
+            />
+          </div>
           <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>Literal (JSON or text)</Text>
+            <Text bold color="secondary" type="small">
+              Literal (JSON or text)
+            </Text>
             <Input
               value={compareValue}
               onChange={(event) => setCompareValue(event.target.value)}
@@ -374,7 +381,9 @@ export function TransitionModal({ initial, onSave }: Props) {
       {guardKind === "rholang" && (
         <>
           <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>Pure expression</Text>
+            <Text bold color="secondary" type="small">
+              Pure expression
+            </Text>
             <Input
               textarea
               value={rhoSource}
@@ -382,7 +391,7 @@ export function TransitionModal({ initial, onSave }: Props) {
             />
           </label>
           <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>
+            <Text bold color="secondary" type="small">
               Input bindings (Workflow JSON)
             </Text>
             <Input
@@ -395,7 +404,7 @@ export function TransitionModal({ initial, onSave }: Props) {
       )}
       {guardKind === "json" && (
         <label className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>
+          <Text bold color="secondary" type="small">
             Condition tree (Workflow JSON)
           </Text>
           <Input
@@ -405,20 +414,23 @@ export function TransitionModal({ initial, onSave }: Props) {
           />
         </label>
       )}
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Cycle progress</Text>
-        <select
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Cycle progress"
+          options={[
+            { label: "Not a cycle edge", value: "none" as const },
+            { label: "Bounded iterations", value: "bounded" as const },
+            { label: "Durable yield", value: "durable" as const },
+          ]}
           value={loopKind}
-          onChange={(event) => setLoopKind(event.target.value as LoopKind)}
-        >
-          <option value="none">Not a cycle edge</option>
-          <option value="bounded">Bounded iterations</option>
-          <option value="durable">Durable yield</option>
-        </select>
-      </label>
+          onChange={setLoopKind}
+        />
+      </div>
       {loopKind === "bounded" && (
         <label className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>Maximum iterations</Text>
+          <Text bold color="secondary" type="small">
+            Maximum iterations
+          </Text>
           <Input
             type="number"
             value={maxIterations}
@@ -429,11 +441,11 @@ export function TransitionModal({ initial, onSave }: Props) {
         </label>
       )}
       <div className={styles["nim-actions"]}>
+        <Button type="secondary" onClick={close}>
+          Cancel
+        </Button>
         <Button type="primary" onClick={save}>
           Save
-        </Button>
-        <Button type="subtle" onClick={close}>
-          Cancel
         </Button>
       </div>
     </div>

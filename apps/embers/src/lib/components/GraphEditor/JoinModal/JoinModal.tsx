@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { conditionFromJson } from "@/lib/workflow";
@@ -73,35 +74,35 @@ export function JoinModal({
         state is correlated to one root workflow invocation.
       </Text>
       {error && <Text className={styles["nim-error"]}>{error}</Text>}
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Join policy</Text>
-        <select
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Join policy"
+          options={[
+            { label: "Wait for every source", value: "all" as const },
+            { label: "Run for each arrival", value: "each" as const },
+            { label: "Run at quorum", value: "quorum" as const },
+            { label: "Run for the first arrival", value: "race" as const },
+            { label: "Reduce arrivals", value: "reduce" as const },
+          ]}
           value={joinMode}
-          onChange={(event) => setJoinMode(event.target.value as JoinMode)}
-        >
-          <option value="all">Wait for every source</option>
-          <option value="each">Run for each arrival</option>
-          <option value="quorum">Run at quorum</option>
-          <option value="race">Run for the first arrival</option>
-          <option value="reduce">Reduce arrivals</option>
-        </select>
-      </label>
-      <label className={styles["nim-field"]}>
-        <Text className={styles["nim-label"]}>Correlation</Text>
-        <select
+          onChange={setJoinMode}
+        />
+      </div>
+      <div className={styles["nim-field"]}>
+        <Select
+          label="Correlation"
+          options={[
+            { label: "Root invocation", value: "root" as const },
+            { label: "Route-group fork epoch", value: "routeGroup" as const },
+            { label: "Value-path key", value: "key" as const },
+          ]}
           value={correlationMode}
-          onChange={(event) =>
-            setCorrelationMode(event.target.value as CorrelationMode)
-          }
-        >
-          <option value="root">Root invocation</option>
-          <option value="routeGroup">Route-group fork epoch</option>
-          <option value="key">Value-path key</option>
-        </select>
-      </label>
+          onChange={setCorrelationMode}
+        />
+      </div>
       {correlationMode !== "root" && (
         <label className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>
+          <Text bold color="secondary" type="small">
             {correlationMode === "routeGroup"
               ? "Route-group id"
               : "Key path (for example state.orderId)"}
@@ -114,7 +115,9 @@ export function JoinModal({
       )}
       {joinMode === "quorum" && (
         <label className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>Quorum</Text>
+          <Text bold color="secondary" type="small">
+            Quorum
+          </Text>
           <Input
             max={Math.max(1, incomingCount)}
             min={1}
@@ -132,37 +135,39 @@ export function JoinModal({
         </label>
       )}
       {(joinMode === "quorum" || joinMode === "race") && (
-        <label className={styles["nim-field"]}>
-          <Text className={styles["nim-label"]}>Late arrivals</Text>
-          <select
+        <div className={styles["nim-field"]}>
+          <Select
+            label="Late arrivals"
+            options={[
+              { label: "Discard", value: "discard" as const },
+              { label: "Cancel the run", value: "cancel" as const },
+              { label: "Fail the run", value: "error" as const },
+            ]}
             value={late}
-            onChange={(event) => setLate(event.target.value as LateMode)}
-          >
-            <option value="discard">Discard</option>
-            <option value="cancel">Cancel the run</option>
-            <option value="error">Fail the run</option>
-          </select>
-        </label>
+            onChange={setLate}
+          />
+        </div>
       )}
       {joinMode === "reduce" && (
         <>
-          <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>Reduce operation</Text>
-            <select
+          <div className={styles["nim-field"]}>
+            <Select
+              label="Reduce operation"
+              options={[
+                { label: "Collect", value: "collect" },
+                { label: "First", value: "first" },
+                { label: "Last", value: "last" },
+                { label: "Sum", value: "sum" },
+                { label: "Minimum", value: "min" },
+                { label: "Maximum", value: "max" },
+                { label: "Merge records", value: "mergeRecords" },
+              ]}
               value={reduceOperation}
-              onChange={(event) => setReduceOperation(event.target.value)}
-            >
-              <option value="collect">Collect</option>
-              <option value="first">First</option>
-              <option value="last">Last</option>
-              <option value="sum">Sum</option>
-              <option value="min">Minimum</option>
-              <option value="max">Maximum</option>
-              <option value="mergeRecords">Merge records</option>
-            </select>
-          </label>
+              onChange={setReduceOperation}
+            />
+          </div>
           <label className={styles["nim-field"]}>
-            <Text className={styles["nim-label"]}>
+            <Text bold color="secondary" type="small">
               Until condition (Workflow JSON)
             </Text>
             <Input
@@ -173,6 +178,9 @@ export function JoinModal({
         </>
       )}
       <div className={styles["nim-actions"]}>
+        <Button type="secondary" onClick={close}>
+          Cancel
+        </Button>
         <Button
           type="primary"
           onClick={() => {
@@ -201,9 +209,6 @@ export function JoinModal({
           }}
         >
           Save
-        </Button>
-        <Button type="subtle" onClick={close}>
-          Cancel
         </Button>
       </div>
     </div>

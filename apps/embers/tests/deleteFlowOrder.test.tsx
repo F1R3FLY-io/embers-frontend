@@ -12,14 +12,16 @@ const loaderCalls = { hides: 0, shows: 0 };
 const loaderIdle = () => loaderCalls.shows === loaderCalls.hides;
 
 const mockConfirm = jest.fn<Promise<boolean>, [unknown]>();
-const mockAlert = jest.fn<Promise<void>, [unknown]>();
-const confirmSeenLoaderIdle = jest.fn<void, [boolean]>();
-const alertSeenLoaderIdle = jest.fn<void, [boolean]>();
+const mockAlert = jest.fn<Promise<undefined>, [unknown]>();
+const confirmSeenLoaderIdle = jest.fn<undefined, [boolean]>();
+const alertSeenLoaderIdle = jest.fn<undefined, [boolean]>();
 
 let mockReferencingTeams: (id: string) => Promise<{ id: string }[]>;
-const mockDeleteAgent = jest.fn(async (id: string) => ({ id }));
-const mockDeleteTeam = jest.fn(async (id: unknown) => ({ id }));
-const mockUnpublishTeam = jest.fn(async (id: unknown) => ({ id }));
+const mockDeleteAgent = jest.fn(async (id: string) => Promise.resolve({ id }));
+const mockDeleteTeam = jest.fn(async (id: unknown) => Promise.resolve({ id }));
+const mockUnpublishTeam = jest.fn(async (id: unknown) =>
+  Promise.resolve({ id }),
+);
 
 jest.mock("@/lib/providers/loader/useLoader", () => ({
   useLoader: () => ({
@@ -51,7 +53,8 @@ jest.mock("@/lib/queries", () => ({
   useAgents: () => ({ data: { agents: [] } }),
   useDeleteAgentMutation: () => ({ mutateAsync: mockDeleteAgent }),
   useDeleteAgentsTeamMutation: () => ({ mutateAsync: mockDeleteTeam }),
-  useReferencingTeamsReader: () => (id: string) => mockReferencingTeams(id),
+  useReferencingTeamsReader: () => async (id: string) =>
+    mockReferencingTeams(id),
   useUnpublishAgentsTeamMutation: () => ({ mutateAsync: mockUnpublishTeam }),
 }));
 
@@ -64,7 +67,7 @@ type GridProps = { onDelete: (id: string, name: string) => void };
 const captured: { onDelete: GridProps["onDelete"] | null } = { onDelete: null };
 jest.mock("@/pages/Dashboard/components/Grid", () => ({
   Grid: (props: GridProps) => {
-    // eslint-disable-next-line react-hooks/immutability
+     
     captured.onDelete = props.onDelete;
     return null;
   },
@@ -80,14 +83,18 @@ function mountOnDelete() {
   return captured.onDelete;
 }
 
-const flush = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+const flush = async () =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
 
 beforeEach(() => {
   loaderCalls.shows = 0;
   loaderCalls.hides = 0;
   captured.onDelete = null;
   jest.clearAllMocks();
-  mockReferencingTeams = async (id: string) => [{ id: `team-of-${id}` }];
+  mockReferencingTeams = async (id: string) =>
+    Promise.resolve([{ id: `team-of-${id}` }]);
   mockConfirm.mockResolvedValue(true);
   mockAlert.mockResolvedValue(undefined);
 });
@@ -122,9 +129,8 @@ it("a declined confirmation runs no cascade and leaves the loader idle", async (
 });
 
 it("a failed referencing read alerts while the loader is idle and deletes nothing", async () => {
-  mockReferencingTeams = async () => {
-    throw new Error("node unresponsive");
-  };
+  mockReferencingTeams = async () =>
+    Promise.reject(new Error("node unresponsive"));
   const onDelete = mountOnDelete();
 
   onDelete("agent-1", "Refine");

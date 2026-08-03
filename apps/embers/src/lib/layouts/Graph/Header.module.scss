@@ -10,6 +10,15 @@
   align-items: stretch;
 }
 
+/* The caret Button sits inside an intermediate anchor div (the menu needs a
+ * stable ref). The div stretches with the row, but the button inside it kept
+ * its own min-height and rendered a couple of pixels shorter than the text
+ * half, whose height is driven by its label margins. Making the anchor a flex
+ * container lets its default stretch alignment size the button to the row. */
+.split > div {
+  display: flex;
+}
+
 .split .split-main {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;

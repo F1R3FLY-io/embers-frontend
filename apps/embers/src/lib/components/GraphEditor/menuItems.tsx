@@ -54,8 +54,23 @@ function editInputs(node: Node) {
     ? [
         { name: "containerId", type: "string" as const },
         { name: "childScopeId", type: "string" as const },
-        { name: "scopeKind", type: "string" as const },
-        { name: "history", type: "string" as const },
+        {
+          name: "scopeKind",
+          options: [
+            { label: "Compound (one initial region)", value: "compound" },
+            { label: "Parallel (several initial regions)", value: "parallel" },
+          ],
+          type: "string" as const,
+        },
+        {
+          name: "history",
+          options: [
+            { label: "No history", value: "none" },
+            { label: "Shallow history", value: "shallow" },
+            { label: "Deep history", value: "deep" },
+          ],
+          type: "string" as const,
+        },
         { name: "initialNodeIds", type: "string" as const },
         { name: "entryActivities", type: "string" as const },
         { name: "exitActivities", type: "string" as const },

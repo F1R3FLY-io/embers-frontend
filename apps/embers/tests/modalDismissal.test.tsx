@@ -20,7 +20,10 @@ jest.mock("@/lib/components/Spinner", () => ({
     isOpen ? <div data-testid="spinner" /> : null,
 }));
 
-const TICK = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+const TICK = async () =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, 0);
+  });
 
 function Providers({ children }: { children: React.ReactNode }) {
   return (
