@@ -22,13 +22,19 @@ Traceability to the implementation:
                         snapshot happens exactly when the count reaches zero)
   RunExitActivity   -> advance_scope_lifecycle runtime.rs:601-633 (exit stage)
   FinishScope       -> finish_scope_instance   runtime.rs:669-686
+  RestoreHistoryNode -> restore_history        runtime.rs:997-1026
+                        + adjust_scope_fanout  runtime.rs:1386-1395
+                        (a history NODE re-seeds the remembered configuration
+                         mid-run; the kernel adds |targets| - 1 to the stored
+                         counter, which CounterFaithful checks. Replacing the
+                         action's alpha update with alpha' = alpha reproduces
+                         the pre-fix under-count and TLC reports the
+                         CounterFaithful violation.)
 
 Deliberate abstractions: portable values, dispositions (every activity
 completes), effects are atomic (crash/recovery is DurableHierarchy's model),
-joins and correlation epochs, guards, cancellation, nested scopes (depth one,
-so lazy deep composition is not exercised), and the history-NODE restore path
-(only the implicit re-entry restore is modeled; the multi-target history-node
-token-accounting hazard is a code-level finding, not a model target).
+joins and correlation epochs, guards, cancellation, and nested scopes (depth
+one, so lazy deep composition is not exercised).
 *)
 EXTENDS Naturals, FiniteSets
 
@@ -163,6 +169,26 @@ FinishScope ==
     /\ justSeeded' = FALSE
     /\ UNCHANGED <<mode, entryIdx, exitIdx, alpha, live, hist, seeded>>
 
+(* A token inside the running scope reaches a history NODE: the remembered
+   configuration is re-seeded mid-run. The router token becomes the first
+   restored token and the kernel adjusts the stored counter by the fan-out
+   rule (restore_history + adjust_scope_fanout). Enabled only when exactly
+   one token is live, mirroring the single surviving branch that consults
+   the history node after its siblings were consumed. *)
+RestoreHistoryNode ==
+    /\ phase = "running"
+    /\ hist # NoHistory
+    /\ hist.nodes # {}
+    /\ live = {"t1"}
+    /\ live' = IF Cardinality(hist.nodes) = 2 THEN {"t1", "t2"} ELSE {"t1"}
+    /\ alpha' = alpha + Cardinality(hist.nodes) - 1
+    /\ lastPos' = IF Cardinality(hist.nodes) = 2
+                  THEN [t \in Tokens |-> IF t = "t1" THEN "A" ELSE "B"]
+                  ELSE [lastPos EXCEPT !["t1"] = CHOOSE n \in hist.nodes : TRUE]
+    /\ justSeeded' = FALSE
+    /\ UNCHANGED <<mode, entryIdx, exitIdx, hist, entries, seeded>>
+    /\ UNCHANGED phase
+
 (* The scope has consumed its entry budget; the model terminates by
    stuttering, which keeps TLC's deadlock check meaningful for every
    non-terminal state. *)
@@ -178,6 +204,7 @@ Next ==
     \/ \E t \in Tokens : MoveToken(t)
     \/ FanOut
     \/ \E t \in Tokens : ConsumeToken(t)
+    \/ RestoreHistoryNode
     \/ RunExitActivity
     \/ FinishScope
     \/ Terminating
