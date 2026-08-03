@@ -12,6 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 
 import styles from "./AgentTeamRun.module.scss";
@@ -34,6 +35,10 @@ async function getRun(runId: string, signal: AbortSignal): Promise<RunState> {
   return RunStateFromJSON(await response.json());
 }
 
+// Ordered by how routinely an operator reaches for them: the resume commands
+// first, then cancellation, then the two deliberate operator tools -- the
+// timer escape hatch (the scheduler normally fires timers itself) and the
+// definition migration (a rebind that deserves its own confirmation step).
 const interactiveCommands = [
   RunCommandKind.Signal,
   RunCommandKind.Event,
@@ -41,6 +46,8 @@ const interactiveCommands = [
   RunCommandKind.Reject,
   RunCommandKind.Retry,
   RunCommandKind.Cancel,
+  RunCommandKind.TimerFired,
+  RunCommandKind.Migrate,
 ] as const;
 
 function commandName(command: RunCommandKindType) {
@@ -66,9 +73,37 @@ function eventName(eventType: string) {
     .replace(/^./, (first) => first.toUpperCase());
 }
 
+function parseStatePatch(source: string): unknown[] {
+  let value: unknown;
+  try {
+    value = JSON.parse(source) as unknown;
+  } catch (error) {
+    throw new Error(
+      `State patch is not valid JSON: ${error instanceof Error ? error.message : "unknown parse error"}`,
+    );
+  }
+  if (!Array.isArray(value)) {
+    throw new Error(
+      'State patch must be a JSON array of patch operations, e.g. [{"operation":"set","path":["cursor"],"value":0}].',
+    );
+  }
+  return value;
+}
+
+function parseDeadline(source: string): Date {
+  const parsed = new Date(source.trim());
+  if (source.trim() === "" || Number.isNaN(parsed.getTime())) {
+    throw new Error(
+      "Expected deadline must be a valid timestamp; keep the value prefilled from the run's next deadline.",
+    );
+  }
+  return parsed;
+}
+
 export default function AgentTeamRun() {
   const { runId = "" } = useParams();
   const wallet = useWalletState();
+  const confirm = useConfirm();
   const [commandType, setCommandType] = useState<RunCommandKindType>(
     RunCommandKind.Signal,
   );
@@ -76,6 +111,11 @@ export default function AgentTeamRun() {
   const [name, setName] = useState("");
   const [payload, setPayload] = useState("null");
   const [reason, setReason] = useState("Cancelled by the run owner");
+  const [expectedDeadline, setExpectedDeadline] = useState("");
+  const [fromDefinitionHash, setFromDefinitionHash] = useState("");
+  const [toDefinitionHash, setToDefinitionHash] = useState("");
+  const [targetTeamUri, setTargetTeamUri] = useState("");
+  const [statePatch, setStatePatch] = useState("[]");
   const run = useQuery({
     enabled: runId.length > 0,
     queryFn: async ({ signal }) => getRun(runId, signal),
@@ -93,7 +133,9 @@ export default function AgentTeamRun() {
       if (!run.data) {
         throw new Error("The run state is unavailable.");
       }
-      const needsWait = commandType !== RunCommandKind.Cancel;
+      const needsWait =
+        commandType !== RunCommandKind.Cancel &&
+        commandType !== RunCommandKind.Migrate;
       if (needsWait && waitId === "") {
         throw new Error("Select the exact wait this command should resume.");
       }
@@ -136,9 +178,34 @@ export default function AgentTeamRun() {
           }
           request = { ...base, reason: reason.trim() };
           break;
-        case RunCommandKind.Migrate:
         case RunCommandKind.TimerFired:
-          throw new Error("This command is not exposed by the run inspector.");
+          // The kernel only accepts a fire that names the wait's recorded
+          // deadline exactly and is not early, so a wrong manual value is a
+          // clean rejection rather than a premature resume.
+          request = {
+            ...base,
+            expectedDeadline: parseDeadline(expectedDeadline),
+            waitId,
+          };
+          break;
+        case RunCommandKind.Migrate:
+          if (
+            fromDefinitionHash.trim() === "" ||
+            toDefinitionHash.trim() === "" ||
+            targetTeamUri.trim() === ""
+          ) {
+            throw new Error(
+              "Migration requires the current definition hash, the target definition hash, and the target team URI.",
+            );
+          }
+          request = {
+            ...base,
+            fromDefinitionHash: fromDefinitionHash.trim(),
+            statePatch: parseStatePatch(statePatch),
+            targetTeamUri: targetTeamUri.trim(),
+            toDefinitionHash: toDefinitionHash.trim(),
+          };
+          break;
       }
 
       return wallet.embers.agentsTeams.command(runId, request);
@@ -148,7 +215,9 @@ export default function AgentTeamRun() {
     },
   });
 
-  const needsWait = commandType !== RunCommandKind.Cancel;
+  const needsWait =
+    commandType !== RunCommandKind.Cancel &&
+    commandType !== RunCommandKind.Migrate;
   const needsName = [RunCommandKind.Event, RunCommandKind.Signal].includes(
     commandType as "event" | "signal",
   );
@@ -255,7 +324,22 @@ export default function AgentTeamRun() {
                     onSubmit={(event) => {
                       event.preventDefault();
                       command.reset();
-                      command.mutate();
+                      if (commandType === RunCommandKind.Migrate) {
+                        // A migration rebinds the run to another definition;
+                        // it deserves an explicit second look before signing.
+                        void (async () => {
+                          if (
+                            await confirm({
+                              message: `Rebind this run from definition ${fromDefinitionHash.trim() || "(unset)"} to ${toDefinitionHash.trim() || "(unset)"} on team ${targetTeamUri.trim() || "(unset)"}. The kernel verifies the current hash and applies the state patch atomically; a mismatch rejects the command without changing the run.`,
+                              title: "Confirm migration",
+                            })
+                          ) {
+                            command.mutate();
+                          }
+                        })();
+                      } else {
+                        command.mutate();
+                      }
                     }}
                   >
                     <label>
@@ -263,9 +347,26 @@ export default function AgentTeamRun() {
                       <select
                         value={commandType}
                         onChange={(event) => {
-                          setCommandType(
-                            event.currentTarget.value as RunCommandKindType,
-                          );
+                          const nextType = event.currentTarget
+                            .value as RunCommandKindType;
+                          setCommandType(nextType);
+                          // Prefill from the run so the operator edits a
+                          // correct value instead of typing one from scratch;
+                          // an already-edited field is never overwritten.
+                          if (nextType === RunCommandKind.TimerFired) {
+                            setExpectedDeadline((current) =>
+                              current === ""
+                                ? (run.data.dueAt?.toISOString() ?? "")
+                                : current,
+                            );
+                          }
+                          if (nextType === RunCommandKind.Migrate) {
+                            setFromDefinitionHash((current) =>
+                              current === ""
+                                ? (run.data.definitionHash ?? "")
+                                : current,
+                            );
+                          }
                         }}
                       >
                         {interactiveCommands.map((candidate) => (
@@ -335,6 +436,74 @@ export default function AgentTeamRun() {
                           }}
                         />
                       </label>
+                    ) : null}
+
+                    {commandType === RunCommandKind.TimerFired ? (
+                      <>
+                        <label>
+                          Expected deadline
+                          <input
+                            required
+                            value={expectedDeadline}
+                            onChange={(event) => {
+                              setExpectedDeadline(event.currentTarget.value);
+                            }}
+                          />
+                        </label>
+                        <p className={styles.notice}>
+                          The scheduler fires due timers automatically; manual
+                          firing exists for degraded-scheduler operation. The
+                          value must equal the selected wait&apos;s recorded
+                          deadline exactly -- the kernel rejects mismatched or
+                          early fires.
+                        </p>
+                      </>
+                    ) : null}
+
+                    {commandType === RunCommandKind.Migrate ? (
+                      <>
+                        <label>
+                          From definition hash
+                          <input
+                            required
+                            value={fromDefinitionHash}
+                            onChange={(event) => {
+                              setFromDefinitionHash(event.currentTarget.value);
+                            }}
+                          />
+                        </label>
+                        <label>
+                          To definition hash
+                          <input
+                            required
+                            value={toDefinitionHash}
+                            onChange={(event) => {
+                              setToDefinitionHash(event.currentTarget.value);
+                            }}
+                          />
+                        </label>
+                        <label>
+                          Target team URI
+                          <input
+                            required
+                            value={targetTeamUri}
+                            onChange={(event) => {
+                              setTargetTeamUri(event.currentTarget.value);
+                            }}
+                          />
+                        </label>
+                        <label>
+                          State patch (JSON array)
+                          <textarea
+                            rows={5}
+                            spellCheck={false}
+                            value={statePatch}
+                            onChange={(event) => {
+                              setStatePatch(event.currentTarget.value);
+                            }}
+                          />
+                        </label>
+                      </>
                     ) : null}
 
                     <button disabled={command.isPending} type="submit">

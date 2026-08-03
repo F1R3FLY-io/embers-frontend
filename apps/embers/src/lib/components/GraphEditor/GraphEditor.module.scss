@@ -12,8 +12,20 @@
   fill: #3e4043 !important;
 }
 
-.edge > path {
-  stroke: #208bfe !important;
+/* Color only the visible stroke: the selector must never catch the edge's
+ * invisible interaction path, and the selected state has to outrank the
+ * library's own .react-flow__edge.selected rule, hence the element-qualified
+ * selectors instead of the previous blanket `> path` with !important (which
+ * also made selection invisible by overriding it). */
+.edge {
+  :global(path.react-flow__edge-path) {
+    stroke: #208bfe;
+  }
+
+  &:global(.selected) :global(path.react-flow__edge-path) {
+    stroke: var(--border-selected);
+    stroke-width: 2.5px;
+  }
 }
 
 .no-node-style {

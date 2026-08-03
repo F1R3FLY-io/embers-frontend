@@ -28,6 +28,13 @@ import styles from "./GraphEditor.module.scss";
 import { buildMenuItems, createNodeChange } from "./menuItems";
 import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
+import { WorkflowEdge } from "./WorkflowEdge";
+
+// Registered once at module scope: React Flow warns when the type map's
+// identity changes between renders. Together with defaultEdgeOptions.type
+// below, every edge -- loaded or newly connected -- renders through
+// WorkflowEdge (the wrapper merges the defaults into each edge).
+const edgeTypes = { workflow: WorkflowEdge };
 
 type GraphEditorProps = {
   baseDefinition?: WorkflowDefinitionV2;
@@ -108,6 +115,8 @@ export function GraphEditor({
       setEdges((edgesSnapshot) => {
         queueMicrotask(onGraphChange);
         const transitionId = crypto.randomUUID();
+        // No label on purpose: a fully default transition renders silent, and
+        // stamping a descriptive string here would annotate every fresh edge.
         return addEdge(
           {
             ...connection,
@@ -119,7 +128,6 @@ export function GraphEditor({
               trigger: "completed",
             },
             id: transitionId,
-            label: "completed: always",
           },
           edgesSnapshot,
         );
@@ -196,9 +204,11 @@ export function GraphEditor({
           animated: true,
           className: styles.edge,
           selectable: true,
+          type: "workflow",
         }}
         deleteKeyCode={["Delete", "Backspace"]}
         edges={edges}
+        edgeTypes={edgeTypes}
         nodes={nodes}
         nodeTypes={nodeTypes}
         onConnect={onConnect}

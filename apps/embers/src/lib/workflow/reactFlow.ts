@@ -490,9 +490,11 @@ export function toWorkflowDefinition(
       targetPort: edge.targetHandle ?? undefined,
       trigger: data.trigger ?? "completed",
     };
-    presentationEdges[transitionId] = {
-      label: typeof edge.label === "string" ? edge.label : undefined,
-    };
+    // A label-less edge is the default state now; serializing {label:
+    // undefined} would be indistinguishable in JSON but noisy for every
+    // in-memory consumer, so the entry stays present and empty instead.
+    presentationEdges[transitionId] =
+      typeof edge.label === "string" ? { label: edge.label } : {};
   }
 
   return {
