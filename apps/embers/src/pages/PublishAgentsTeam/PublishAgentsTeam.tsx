@@ -18,6 +18,7 @@ import {
   useUnpublishAgentsTeamMutation,
 } from "@/lib/queries";
 import { SuccessModal } from "@/pages/PublishAgentsTeam/SuccessModal";
+import { teamHandleSlug } from "@/pages/PublishAgentsTeam/teamHandleSlug";
 import publishImage from "@/public/publish.png";
 
 import styles from "./PublishAgentsTeam.module.scss";
@@ -105,7 +106,7 @@ export default function PublishAgentsTeam() {
   const form = useForm({
     defaultValues: {
       email: "",
-      handle: "",
+      handle: teamHandleSlug(agentsTeam.name),
       password: "",
       pdsUrl: "",
     },

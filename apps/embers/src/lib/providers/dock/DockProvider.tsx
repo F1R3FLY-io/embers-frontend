@@ -5,9 +5,11 @@ import { useEffect, useMemo, useReducer } from "react";
 import { ActionType, DockContext } from "./useDock";
 
 export type LogLevel = "info" | "error";
+export type LogLink = { href: string; label: string };
 export type LogEntry = {
   id: string;
   level: LogLevel;
+  link?: LogLink;
   text: string;
   time: Date;
 };
@@ -113,7 +115,7 @@ function loadOpenedFromStorage(): OpenedState {
 
 export type DockAPI = {
   appendDeploy: (success: boolean) => void;
-  appendLog: (text: string, level?: LogLevel) => void;
+  appendLog: (text: string, level?: LogLevel, link?: LogLink) => void;
 
   clearDeploys: () => void;
   clearLogs: () => void;
@@ -160,9 +162,15 @@ export function DockProvider({
           entry: { id: crypto.randomUUID(), success, time: new Date() },
           type: ActionType.ADD_DEPLOY,
         }),
-      appendLog: (text, level = "info") =>
+      appendLog: (text, level, link) =>
         dispatch({
-          entry: { id: crypto.randomUUID(), level, text, time: new Date() },
+          entry: {
+            id: crypto.randomUUID(),
+            level: level ?? "info",
+            link,
+            text,
+            time: new Date(),
+          },
           type: ActionType.ADD_LOG,
         }),
       clearDeploys: () => dispatch({ type: ActionType.CLEAR_DEPLOYS }),

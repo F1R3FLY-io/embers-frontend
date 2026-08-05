@@ -1,0 +1,77 @@
+// Research Desk demo: Critic agent (ABI structured-v1).
+//
+// Input: the Researcher's output record {question, answer}. Two grading paths:
+//
+// 1. Mechanical short-circuit, no model involved: when retrieval found no
+//    grounding, the Researcher replies with the fixed sentinel INSUFFICIENT
+//    CONTEXT, and the Critic scores it 5 directly in Rholang. Ungrounded
+//    output can never be accepted, deterministically.
+//
+// 2. Substantive drafts go to gpt4 with a refusal-first decision procedure
+//    (the model must not reward an honest refusal as a good answer) and the
+//    fixed-token verdict protocol: the first four characters map to integer
+//    scores EXCELLENT 95, GOOD 85, WEAK 50, POOR (and any garbled reply) 10.
+//
+// A fixed-token protocol is used because this Rholang has no string-to-int
+// method, and the fallback branch guarantees the score field exists on every
+// path: a missing compare-guard path (output.score) is a hard run failure in
+// the kernel. Scores are integers because floats are not portable.
+//
+// Output: {question, answer, feedback, score} with disposition completed. The
+// decide gateway accepts at score >= 80, so EXCELLENT and GOOD pass while
+// WEAK, POOR, garbled verdicts, and sentinel refusals loop back for revision
+// until the bounded cycle escalates to the human gate.
+contract main(@invocation, return) = {
+  new gpt4(`rho:ai:gpt4`),
+      verdictCh in {
+    match invocation.getOrElse("input", {}) {
+      draft => {
+        match (draft.getOrElse("question", ""), draft.getOrElse("answer", "")) {
+          (question, answer) => {
+            if (answer.length() >= 20 and answer.slice(0, 20) == "INSUFFICIENT CONTEXT") {
+              return!({
+                "output": {"question": question, "answer": answer, "feedback": "POOR - retrieval found no grounding for this question; escalating for human review", "score": 5},
+                "disposition": "completed"
+              })
+            } else {
+              gpt4!(
+                "You are a strict answer-quality reviewer for a retrieval-grounded system about the F1r3fly and Embers platform. Follow this decision procedure in order. Step 1: if the DRAFT states or implies that the needed information is missing, unavailable, or not in the context, reply POOR - an honest refusal is still a failed answer for the end user. Step 2: if the DRAFT asserts facts that could not have come from platform documentation, reply POOR. Step 3: otherwise grade how directly and completely the DRAFT answers the QUESTION: EXCELLENT or GOOD only for a direct, specific, grounded answer; WEAK for a partial one. Reply with EXACTLY one line that starts with one of these words: EXCELLENT, GOOD, WEAK, POOR, followed by a dash and one concrete sentence of feedback.\n\nQUESTION: "
+                  ++ question
+                  ++ "\n\nDRAFT: "
+                  ++ answer,
+                *verdictCh
+              ) |
+              for (@verdict <- verdictCh) {
+                if (verdict.slice(0, 4) == "EXCE") {
+                  return!({
+                    "output": {"question": question, "answer": answer, "feedback": verdict, "score": 95},
+                    "disposition": "completed"
+                  })
+                } else {
+                  if (verdict.slice(0, 4) == "GOOD") {
+                    return!({
+                      "output": {"question": question, "answer": answer, "feedback": verdict, "score": 85},
+                      "disposition": "completed"
+                    })
+                  } else {
+                    if (verdict.slice(0, 4) == "WEAK") {
+                      return!({
+                        "output": {"question": question, "answer": answer, "feedback": verdict, "score": 50},
+                        "disposition": "completed"
+                      })
+                    } else {
+                      return!({
+                        "output": {"question": question, "answer": answer, "feedback": verdict, "score": 10},
+                        "disposition": "completed"
+                      })
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

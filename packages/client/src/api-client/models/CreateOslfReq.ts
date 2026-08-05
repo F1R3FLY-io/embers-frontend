@@ -18,19 +18,19 @@
  */
 export interface CreateOslfReq {
   /**
-   *
+   * Document description.
    * @type {string}
    * @memberof CreateOslfReq
    */
   description?: string;
   /**
-   *
+   * Document name.
    * @type {string}
    * @memberof CreateOslfReq
    */
   name: string;
   /**
-   *
+   * The OSLF expression body (from the OSLF editor).
    * @type {string}
    * @memberof CreateOslfReq
    */

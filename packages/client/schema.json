@@ -33,7 +33,8 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "operationId": "service_ready"
       }
     },
     "/api/testnet/wallet": {
@@ -50,7 +51,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "testnet_create_wallet"
       }
     },
     "/api/testnet/deploy/prepare": {
@@ -77,7 +79,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "testnet_prepare_deploy"
       }
     },
     "/api/testnet/deploy/send": {
@@ -104,7 +107,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "testnet_send_deploy"
       }
     },
     "/api/wallets/{address}/state": {
@@ -134,7 +138,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "wallets_state_and_history"
       }
     },
     "/api/wallets/transfer/prepare": {
@@ -161,7 +166,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "wallets_prepare_transfer"
       }
     },
     "/api/wallets/transfer/send": {
@@ -188,7 +194,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "wallets_send_transfer"
       }
     },
     "/api/wallets/boost/prepare": {
@@ -215,7 +222,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "wallets_prepare_boost"
       }
     },
     "/api/wallets/boost/send": {
@@ -242,7 +250,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "wallets_send_boost"
       }
     },
     "/api/wallets/{address}/deploys": {
@@ -265,7 +274,8 @@
           "101": {
             "description": "A websocket response"
           }
-        }
+        },
+        "operationId": "wallets_subscribe_deploys"
       }
     },
     "/api/ai-agents/{address}": {
@@ -295,7 +305,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_list"
       }
     },
     "/api/ai-agents/{address}/{id}/versions": {
@@ -348,7 +359,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_list_versions"
       }
     },
     "/api/ai-agents/{address}/{id}/versions/{version}": {
@@ -411,7 +423,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_get_version"
       }
     },
     "/api/ai-agents/create/prepare": {
@@ -438,7 +451,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_prepare_create"
       }
     },
     "/api/ai-agents/create/send": {
@@ -465,7 +479,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_send_create"
       }
     },
     "/api/ai-agents/deploy/prepare": {
@@ -492,7 +507,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_prepare_deploy"
       }
     },
     "/api/ai-agents/deploy/send": {
@@ -519,7 +535,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_send_deploy"
       }
     },
     "/api/ai-agents/{id}/save/prepare": {
@@ -558,7 +575,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_prepare_save"
       }
     },
     "/api/ai-agents/{id}/save/send": {
@@ -597,7 +615,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_send_save"
       }
     },
     "/api/ai-agents/{id}/delete/prepare": {
@@ -626,7 +645,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_prepare_delete"
       }
     },
     "/api/ai-agents/{id}/delete/send": {
@@ -665,7 +685,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_send_delete"
       }
     },
     "/api/ai-agents-teams/{address}": {
@@ -695,7 +716,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_list"
       }
     },
     "/api/ai-agents-teams/{address}/{id}/versions": {
@@ -748,7 +770,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_list_versions"
       }
     },
     "/api/ai-agents-teams/{address}/{id}/versions/{version}": {
@@ -811,7 +834,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_get_version"
       }
     },
     "/api/ai-agents-teams/create/prepare": {
@@ -838,7 +862,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_create"
       }
     },
     "/api/ai-agents-teams/create/send": {
@@ -865,7 +890,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_create"
       }
     },
     "/api/ai-agents-teams/deploy/prepare": {
@@ -892,7 +918,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_deploy"
       }
     },
     "/api/ai-agents-teams/deploy/send": {
@@ -919,7 +946,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_deploy"
       }
     },
     "/api/ai-agents-teams/run/prepare": {
@@ -946,7 +974,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_run"
       }
     },
     "/api/ai-agents-teams/run/send": {
@@ -971,7 +1000,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_run"
       }
     },
     "/api/ai-agents-teams/run-on-firesky/prepare": {
@@ -998,7 +1028,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_run_on_firesky"
       }
     },
     "/api/ai-agents-teams/run-on-firesky/send": {
@@ -1018,7 +1049,8 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "operationId": "agents_teams_send_run_on_firesky"
       }
     },
     "/api/ai-agents-teams/runs/{run_id}": {
@@ -1060,7 +1092,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_get_run"
       }
     },
     "/api/ai-agents-teams/runs/{run_id}/commands/prepare": {
@@ -1099,7 +1132,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_run_command"
       }
     },
     "/api/ai-agents-teams/runs/{run_id}/commands/send": {
@@ -1136,7 +1170,121 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_run_command"
+      }
+    },
+    "/api/ai-agents-teams/runs/{run_id}/output/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_RevealOutputResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": "The run exists but has no recorded output artifact yet."
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_reveal_output"
+      }
+    },
+    "/api/ai-agents-teams/runs/{run_id}/output/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_string_RevealOutputResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The run's final output value, released only over this authenticated\nresponse channel; the public ledger records the occurrence\n(`outputRevealed`) but never the value.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The signer is not the run's on-chain owner."
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": "The run has no recorded output, or the send envelope was already\nconsumed (a replayed envelope produces no new reveal event); prepare a\nfresh reveal."
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_reveal_output"
       }
     },
     "/api/ai-agents-teams/{id}/save/prepare": {
@@ -1175,7 +1323,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_save"
       }
     },
     "/api/ai-agents-teams/{id}/save/send": {
@@ -1214,7 +1363,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_save"
       }
     },
     "/api/ai-agents-teams/{id}/delete/prepare": {
@@ -1243,7 +1393,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_delete"
       }
     },
     "/api/ai-agents-teams/{id}/delete/send": {
@@ -1282,7 +1433,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_delete"
       }
     },
     "/api/ai-agents-teams/{address}/referencing/{agent_id}": {
@@ -1326,7 +1478,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_referencing_teams"
       }
     },
     "/api/ai-agents-teams/{address}/{id}/unpublish": {
@@ -1360,7 +1513,8 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "operationId": "agents_teams_unpublish"
       }
     },
     "/api/ai-agents-teams/{address}/{id}/published": {
@@ -1414,7 +1568,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_published_state"
       }
     },
     "/api/ai-agents-teams/{address}/{id}/publish-to-firesky/prepare": {
@@ -1464,7 +1619,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_prepare_publish_to_firesky"
       }
     },
     "/api/ai-agents-teams/{address}/{id}/publish-to-firesky/send": {
@@ -1514,7 +1670,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "agents_teams_send_publish_to_firesky"
       }
     },
     "/api/oslfs/{address}": {
@@ -1544,7 +1701,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_list"
       }
     },
     "/api/oslfs/{address}/{id}/versions": {
@@ -1597,7 +1755,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_list_versions"
       }
     },
     "/api/oslfs/{address}/{id}/versions/{version}": {
@@ -1660,7 +1819,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_get_version"
       }
     },
     "/api/oslfs/create/prepare": {
@@ -1687,7 +1847,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_prepare_create"
       }
     },
     "/api/oslfs/create/send": {
@@ -1714,7 +1875,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_send_create"
       }
     },
     "/api/oslfs/{id}/save/prepare": {
@@ -1753,7 +1915,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_prepare_save"
       }
     },
     "/api/oslfs/{id}/save/send": {
@@ -1792,7 +1955,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_send_save"
       }
     },
     "/api/oslfs/{id}/delete/prepare": {
@@ -1821,7 +1985,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_prepare_delete"
       }
     },
     "/api/oslfs/{id}/delete/send": {
@@ -1860,7 +2025,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "oslfs_send_delete"
       }
     }
   },
@@ -1872,33 +2038,42 @@
         "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent identity (`UUIDv4`), stable across versions."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "This version's identifier (`UUIDv7`)."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was prepared."
           },
           "last_deploy": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was last deployed standalone; absent if never."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent description."
           },
           "shard": {
-            "type": "string"
+            "type": "string",
+            "description": "Declared shard label recorded with the agent."
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Logo reference recorded with the agent."
           },
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "The agent's Rholang source; absent when the version was written\nwithout one."
           }
         }
       },
@@ -1908,30 +2083,38 @@
         "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent identity (`UUIDv4`), stable across versions."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "Latest version identifier (`UUIDv7`)."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was prepared."
           },
           "last_deploy": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was last deployed standalone; absent if never."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent description."
           },
           "shard": {
-            "type": "string"
+            "type": "string",
+            "description": "Declared shard label recorded with the agent."
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Logo reference recorded with the agent."
           }
         }
       },
@@ -1942,6 +2125,7 @@
         "properties": {
           "agents": {
             "type": "array",
+            "description": "The wallet's agents, latest version each.",
             "items": {
               "$ref": "#/components/schemas/AgentHeader"
             }
@@ -1954,40 +2138,52 @@
         "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Team identity (`UUIDv4`), stable across versions."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "This version's identifier (`UUIDv7`)."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was prepared."
           },
           "last_deploy": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was last deployed; absent if never."
           },
           "uri": {
             "type": "string",
-            "format": "blockchain-uri"
+            "format": "blockchain-uri",
+            "description": "Registry URI of the last deployment; the value run invocations\nconsume."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Team name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Team description."
           },
           "shard": {
-            "type": "string"
+            "type": "string",
+            "description": "Declared shard label."
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Logo reference."
           },
           "graph": {
             "type": "string",
-            "format": "graphl"
+            "format": "graphl",
+            "description": "The graphl serialization of the canvas."
           },
-          "definition": {}
+          "definition": {
+            "description": "The Workflow v2 definition document."
+          }
         }
       },
       "AgentsTeamHeader": {
@@ -1996,34 +2192,43 @@
         "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Team identity (`UUIDv4`), stable across versions."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "Latest version identifier (`UUIDv7`)."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was prepared."
           },
           "last_deploy": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was last deployed; absent if never."
           },
           "uri": {
             "type": "string",
-            "format": "blockchain-uri"
+            "format": "blockchain-uri",
+            "description": "Registry URI of the last deployment; the value run invocations\nconsume."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Team name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Team description."
           },
           "shard": {
-            "type": "string"
+            "type": "string",
+            "description": "Declared shard label."
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Logo reference."
           }
         }
       },
@@ -2034,6 +2239,7 @@
         "properties": {
           "agents_teams": {
             "type": "array",
+            "description": "The wallet's teams, latest version each.",
             "items": {
               "$ref": "#/components/schemas/AgentsTeamHeader"
             }
@@ -2053,32 +2259,40 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Deploy identifier of the boost."
           },
           "timestamp": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When the boost contract was prepared."
           },
           "from": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Sender address."
           },
           "to": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Recipient address (the post author's wallet)."
           },
           "amount": {
             "type": "string",
-            "format": "int64"
+            "format": "int64",
+            "description": "Transferred amount in base units."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Free-text memo carried by the boost."
           },
           "post_author_did": {
-            "type": "string"
+            "type": "string",
+            "description": "DID of the boosted post's author."
           },
           "post_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Identifier of the boosted post."
           }
         }
       },
@@ -2089,24 +2303,30 @@
         "properties": {
           "from": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Sender address; must be the signing wallet's address."
           },
           "to": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Recipient address (the post author's wallet)."
           },
           "amount": {
             "type": "string",
-            "format": "int64"
+            "format": "int64",
+            "description": "Amount in base units; must be positive."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Free-text memo."
           },
           "post_author_did": {
-            "type": "string"
+            "type": "string",
+            "description": "DID of the boosted post's author."
           },
           "post_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Identifier of the boosted post."
           }
         }
       },
@@ -2117,7 +2337,8 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned boost contract bytes to sign."
           }
         }
       },
@@ -2127,19 +2348,24 @@
         "required": ["name"],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Agent description."
           },
           "shard": {
-            "type": "string"
+            "type": "string",
+            "description": "Declared shard label recorded with the agent."
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Logo reference recorded with the agent."
           },
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "The agent's Rholang source."
           }
         }
       },
@@ -2149,14 +2375,17 @@
         "required": ["id", "version", "contract"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The minted agent identity (`UUIDv4`)."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The first version's identifier (`UUIDv7`)."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned creation contract bytes to sign."
           }
         }
       },
@@ -2166,22 +2395,29 @@
         "required": ["name"],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Team name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Team description."
           },
           "shard": {
-            "type": "string"
+            "type": "string",
+            "description": "Declared shard label."
           },
           "logo": {
-            "type": "string"
+            "type": "string",
+            "description": "Logo reference."
           },
           "graph": {
             "type": "string",
-            "format": "graphl"
+            "format": "graphl",
+            "description": "The graphl serialization of the canvas."
           },
-          "definition": {}
+          "definition": {
+            "description": "The Workflow v2 definition document; validated permissively at save\ntime, strictly at deploy."
+          }
         }
       },
       "CreateAgentsTeamResp": {
@@ -2190,14 +2426,17 @@
         "required": ["id", "version", "contract"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The minted team identity (`UUIDv4`)."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The first version's identifier (`UUIDv7`)."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned creation contract bytes to sign."
           }
         }
       },
@@ -2207,13 +2446,16 @@
         "required": ["name"],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Document name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Document description."
           },
           "query": {
-            "type": "string"
+            "type": "string",
+            "description": "The OSLF expression body (from the OSLF editor)."
           }
         }
       },
@@ -2223,14 +2465,17 @@
         "required": ["id", "version", "contract"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The minted document identity (`UUIDv4`)."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The first version's identifier (`UUIDv7`)."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned creation contract bytes to sign."
           }
         }
       },
@@ -2240,7 +2485,8 @@
         "required": ["key"],
         "properties": {
           "key": {
-            "type": "string"
+            "type": "string",
+            "description": "The new wallet's secp256k1 private key, hex-encoded."
           }
         }
       },
@@ -2251,7 +2497,8 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned deletion contract bytes to sign."
           }
         }
       },
@@ -2262,7 +2509,8 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned deletion contract bytes to sign."
           }
         }
       },
@@ -2273,24 +2521,29 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned deletion contract bytes to sign."
           }
         }
       },
       "DeployAgent": {
         "type": "object",
         "title": "DeployAgent",
+        "description": "Deploy a stored agent version, read from the owning wallet's record.",
         "required": ["id", "version", "address"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Stored agent identity (`UUIDv4`)."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "Exact version to deploy (`UUIDv7`)."
           },
           "address": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "The owning wallet address, where the record is read from."
           }
         }
       },
@@ -2355,31 +2608,45 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned main contract bytes to sign."
           },
           "system": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned system contract bytes; present only when the deployment\nneeds one."
           }
         }
       },
       "DeployAgentsTeam": {
         "type": "object",
         "title": "DeployAgentsTeam",
+        "description": "Deploy a stored team version, read from the owning wallet's record.",
         "required": ["id", "version", "address", "deploy"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Stored team identity (`UUIDv4`)."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "Exact version to deploy (`UUIDv7`)."
           },
           "address": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Owning wallet address; record and agent reads resolve against it."
           },
           "deploy": {
-            "$ref": "#/components/schemas/RegistryDeploy"
+            "description": "The registry claim authorizing publication under the target URI.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RegistryDeploy"
+              },
+              {
+                "description": "The registry claim authorizing publication under the target URI."
+              }
+            ]
           }
         }
       },
@@ -2444,35 +2711,49 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned compiled team contract bytes to sign."
           },
           "system": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned record-update contract bytes; present only when the\ndeployment needs one."
           }
         }
       },
       "DeployCode": {
         "type": "object",
         "title": "DeployCode",
+        "description": "Deploy raw Rholang source verbatim.",
         "required": ["code"],
         "properties": {
           "code": {
-            "type": "string"
+            "type": "string",
+            "description": "Raw Rholang source to deploy verbatim."
           }
         }
       },
       "DeployGraph": {
         "type": "object",
         "title": "DeployGraph",
+        "description": "Compile and deploy a raw graphl term.",
         "required": ["graph", "deploy"],
         "properties": {
           "graph": {
             "type": "string",
-            "format": "graphl"
+            "format": "graphl",
+            "description": "Raw graphl term to compile."
           },
           "deploy": {
-            "$ref": "#/components/schemas/RegistryDeploy"
+            "description": "The registry claim authorizing publication under the target URI.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RegistryDeploy"
+              },
+              {
+                "description": "The registry claim authorizing publication under the target URI."
+              }
+            ]
           }
         }
       },
@@ -2482,10 +2763,26 @@
         "required": ["contract"],
         "properties": {
           "contract": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed main contract.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed main contract."
+              }
+            ]
           },
           "system": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed system contract; present exactly when prepare returned one.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed system contract; present exactly when prepare returned one."
+              }
+            ]
           }
         }
       },
@@ -2495,10 +2792,26 @@
         "required": ["contract"],
         "properties": {
           "contract": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed compiled team contract.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed compiled team contract."
+              }
+            ]
           },
           "system": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed record-update contract; present exactly when prepare\nreturned one.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed record-update contract; present exactly when prepare\nreturned one."
+              }
+            ]
           }
         }
       },
@@ -2508,10 +2821,26 @@
         "required": ["contract"],
         "properties": {
           "contract": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed invocation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed invocation."
+              }
+            ]
           },
           "reply_to": {
-            "$ref": "#/components/schemas/FireskyReply"
+            "description": "Threads the answer under an existing post.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FireskyReply"
+              },
+              {
+                "description": "Threads the answer under an existing post."
+              }
+            ]
           }
         }
       },
@@ -2521,10 +2850,26 @@
         "required": ["test"],
         "properties": {
           "env": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed environment contract; present exactly when prepare\nreturned `env_contract`.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed environment contract; present exactly when prepare\nreturned `env_contract`."
+              }
+            ]
           },
           "test": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed test contract.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed test contract."
+              }
+            ]
           }
         }
       },
@@ -2610,10 +2955,12 @@
         "required": ["test"],
         "properties": {
           "env": {
-            "type": "string"
+            "type": "string",
+            "description": "Rholang source of the environment (code under test)."
           },
           "test": {
-            "type": "string"
+            "type": "string",
+            "description": "Rholang source of the test contract."
           }
         }
       },
@@ -2624,27 +2971,32 @@
         "properties": {
           "env_contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "Unsigned environment contract bytes; present only when `env` was\nsupplied."
           },
           "test_contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "Unsigned test contract bytes to sign."
           }
         }
       },
       "EnvDeployFailed": {
         "type": "object",
         "title": "EnvDeployFailed",
+        "description": "The environment deploy was rejected; the test was never deployed.",
         "required": ["error"],
         "properties": {
           "error": {
-            "type": "string"
+            "type": "string",
+            "description": "The rejection reported for the environment deploy."
           }
         }
       },
       "Exchange": {
         "type": "object",
-        "title": "Exchange"
+        "title": "Exchange",
+        "description": "Reserved for the exchange history; the wallet state reports none yet."
       },
       "FireskyReply": {
         "type": "object",
@@ -2652,10 +3004,26 @@
         "required": ["parent", "root"],
         "properties": {
           "parent": {
-            "$ref": "#/components/schemas/PostRef"
+            "description": "The post the reply answers directly.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostRef"
+              },
+              {
+                "description": "The post the reply answers directly."
+              }
+            ]
           },
           "root": {
-            "$ref": "#/components/schemas/PostRef"
+            "description": "The thread's root post.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PostRef"
+              },
+              {
+                "description": "The thread's root post."
+              }
+            ]
           }
         }
       },
@@ -2665,7 +3033,8 @@
         "required": ["description"],
         "properties": {
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable failure description."
           }
         }
       },
@@ -2675,15 +3044,25 @@
         "required": ["level", "message"],
         "properties": {
           "level": {
-            "$ref": "#/components/schemas/LogLevel"
+            "description": "Severity recorded by the test.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LogLevel"
+              },
+              {
+                "description": "Severity recorded by the test."
+              }
+            ]
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "The log line."
           }
         }
       },
       "LogLevel": {
         "type": "string",
+        "description": "Severity a test records on the on-chain log contract.",
         "enum": ["debug", "info", "error"]
       },
       "Oslf": {
@@ -2692,23 +3071,29 @@
         "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Document identity (`UUIDv4`), stable across versions."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "This version's identifier (`UUIDv7`)."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was prepared."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Document name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Document description."
           },
           "query": {
-            "type": "string"
+            "type": "string",
+            "description": "The OSLF expression body; absent when the version was written without\none."
           }
         }
       },
@@ -2718,20 +3103,25 @@
         "required": ["id", "version", "created_at", "name"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Document identity (`UUIDv4`), stable across versions."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "Latest version identifier (`UUIDv7`); creation-ordered by construction."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When this version was prepared."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Document name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Document description."
           }
         }
       },
@@ -2742,6 +3132,7 @@
         "properties": {
           "oslfs": {
             "type": "array",
+            "description": "The wallet's OSLF documents, latest version each.",
             "items": {
               "$ref": "#/components/schemas/OslfHeader"
             }
@@ -2754,10 +3145,12 @@
         "required": ["cid", "uri"],
         "properties": {
           "cid": {
-            "type": "string"
+            "type": "string",
+            "description": "The post record's content identifier."
           },
           "uri": {
-            "type": "string"
+            "type": "string",
+            "description": "The post record's AT URI."
           }
         }
       },
@@ -2767,10 +3160,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/BoostResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BoostResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2780,10 +3182,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/CreateAgentResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2793,10 +3204,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/CreateAgentsTeamResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentsTeamResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2806,10 +3226,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/CreateOslfResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateOslfResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2819,10 +3248,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/DeployAgentResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployAgentResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2832,10 +3270,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/DeployAgentsTeamResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployAgentsTeamResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2845,10 +3292,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/DeployTestResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployTestResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2858,10 +3314,41 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/PublishToFireskyResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishToFireskyResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
+      "PrepareResponse_RevealOutputResp": {
+        "type": "object",
+        "title": "PrepareResponse_RevealOutputResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RevealOutputResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2871,10 +3358,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/RunCommandResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunCommandResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2884,10 +3380,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/RunResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2897,10 +3402,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/SaveAgentResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SaveAgentResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2910,10 +3424,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/SaveAgentsTeamResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SaveAgentsTeamResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2923,10 +3446,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/SaveOslfResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SaveOslfResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2936,10 +3468,19 @@
         "required": ["response", "token"],
         "properties": {
           "response": {
-            "$ref": "#/components/schemas/TransferResp"
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
           }
         }
       },
@@ -2949,19 +3490,24 @@
         "required": ["pds_url", "email", "handle", "password"],
         "properties": {
           "pds_url": {
-            "type": "string"
+            "type": "string",
+            "description": "The PDS to host the account."
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "Account email."
           },
           "handle": {
-            "type": "string"
+            "type": "string",
+            "description": "The handle the team will answer as."
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "description": "Account password."
           },
           "invite_code": {
-            "type": "string"
+            "type": "string",
+            "description": "Invitation code, where the PDS requires invitations."
           }
         }
       },
@@ -2972,7 +3518,8 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned publication contract bytes to sign."
           }
         }
       },
@@ -2983,26 +3530,33 @@
         "required": ["uri", "published_version", "is_latest_deployment"],
         "properties": {
           "handle": {
-            "type": "string"
+            "type": "string",
+            "description": "The account's handle, when recorded."
           },
           "did": {
-            "type": "string"
+            "type": "string",
+            "description": "The account's DID, when recorded."
           },
           "account_exists": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Three-valued PDS reconciliation: true when the account answers, false\nwhen the chain records a publication whose account is gone, null when\nthe question could not be answered."
           },
           "active": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the config record is present — the team answers mentions."
           },
           "uri": {
             "type": "string",
-            "format": "blockchain-uri"
+            "format": "blockchain-uri",
+            "description": "The published deployment's registry URI."
           },
           "published_version": {
-            "type": "string"
+            "type": "string",
+            "description": "The team version (`UUIDv7`) that deployment was built from."
           },
           "is_latest_deployment": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the published deployment is still the team's newest."
           }
         }
       },
@@ -3013,72 +3567,131 @@
         "required": ["id", "name", "version", "published"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "The referencing team's identity (`UUIDv4`)."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Its name."
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The latest version (`UUIDv7`) — the one that references the agent."
           },
           "published": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the team is currently published."
           },
           "published_handle": {
-            "type": "string"
+            "type": "string",
+            "description": "The handle that would stop working meaningfully."
           }
         }
       },
       "RegistryDeploy": {
         "type": "object",
         "title": "RegistryDeploy",
+        "description": "The signed registry claim that authorizes publishing a deployment under a\n`rho:id:` URI.",
         "required": ["timestamp", "version", "uri_pub_key", "signature"],
         "properties": {
           "timestamp": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "Client-chosen instant the registry signature covers; also becomes the\ncontract's `DeployData` timestamp."
           },
           "version": {
             "type": "string",
-            "format": "int64"
+            "format": "int64",
+            "description": "Registry entry version; bump to re-deploy at the same URI."
           },
           "uri_pub_key": {
             "type": "string",
-            "format": "public-key"
+            "format": "public-key",
+            "description": "The registry key's public key; the URI derives from it."
           },
           "signature": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The `insertSignedSignature` over `(timestamp, wallet public key,\nversion)`."
           }
         }
       },
       "Request": {
         "type": "object",
         "title": "Request",
+        "description": "Reserved for the request history; the wallet state reports none yet.",
         "required": ["id", "timestamp", "amount", "status"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Deploy identifier of the request."
           },
           "timestamp": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When the request was prepared."
           },
           "amount": {
             "type": "string",
-            "format": "int64"
+            "format": "int64",
+            "description": "Requested amount in base units."
           },
           "status": {
-            "$ref": "#/components/schemas/RequestStatus"
+            "description": "Current request status.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RequestStatus"
+              },
+              {
+                "description": "Current request status."
+              }
+            ]
           }
         }
       },
       "RequestStatus": {
         "type": "string",
+        "description": "Status of a reserved wallet-request entry.",
         "enum": ["done", "ongoing", "cancelled"]
+      },
+      "RevealOutputResp": {
+        "type": "object",
+        "title": "RevealOutputResp",
+        "required": [
+          "reveal_id",
+          "contract",
+          "issued_at",
+          "output_content_hash",
+          "output_capability_hash"
+        ],
+        "properties": {
+          "reveal_id": {
+            "type": "string",
+            "description": "Fresh `UUIDv7` identity minted at prepare; echoed by the on-chain\nacknowledgment."
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes",
+            "description": "The unsigned `claimOutputReveal` contract bytes to sign."
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "timestamp-millis",
+            "description": "Prepare instant."
+          },
+          "output_content_hash": {
+            "type": "string",
+            "description": "Content commitment over the encrypted output artifact, echoed so the\nsend can verify nothing moved between prepare and claim."
+          },
+          "output_capability_hash": {
+            "type": "string",
+            "description": "Capability commitment over the encrypted output artifact, echoed so\nthe send can verify nothing moved between prepare and claim."
+          }
+        }
       },
       "RunCommandKind": {
         "type": "string",
+        "description": "The authenticated run-command kinds the ledger adjudicates.",
         "enum": [
           "approve",
           "cancel",
@@ -3097,38 +3710,59 @@
         "properties": {
           "expected_revision": {
             "type": "string",
-            "format": "uint64"
+            "format": "uint64",
+            "description": "The revision the command fences on; read it from the run state. A\nstale value is not an HTTP error: the command deploys but does not\napply."
           },
           "type": {
-            "$ref": "#/components/schemas/RunCommandKind"
+            "description": "The command kind being issued.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunCommandKind"
+              },
+              {
+                "description": "The command kind being issued."
+              }
+            ]
           },
           "wait_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The exact qualified wait addressed; required for signals, events,\ndecisions, timer fires, and retries."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Event or signal name; required where the kind carries one."
           },
-          "payload": {},
+          "payload": {
+            "description": "Signal, event, or decision payload."
+          },
           "decision_id": {
-            "type": "string"
+            "type": "string",
+            "description": "Per-actor decision identity for approvals; blocks decision replay."
           },
           "expected_deadline": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "Required for `timerFired`; must equal the wait's recorded deadline\nexactly, or the kernel rejects the fire in the readback."
           },
           "reason": {
-            "type": "string"
+            "type": "string",
+            "description": "Reject or cancel reason."
           },
           "from_definition_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Required for `migrate`: the hash-checked current definition."
           },
           "to_definition_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Required for `migrate`: the hash-checked target definition."
           },
           "target_team_uri": {
-            "type": "string"
+            "type": "string",
+            "description": "Required for `migrate`: the target deployment's registry URI."
           },
-          "state_patch": {}
+          "state_patch": {
+            "description": "Required for `migrate`: `set`/`remove` patch applied to portable\nstate."
+          }
         }
       },
       "RunCommandResp": {
@@ -3144,27 +3778,34 @@
         ],
         "properties": {
           "command_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The minted command identity."
           },
           "command_class": {
-            "type": "string"
+            "type": "string",
+            "description": "The authorization class the ledger adjudicates."
           },
           "target_wait_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The wait the command addresses."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned claim contract bytes to sign."
           },
           "issued_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "Prepare instant."
           },
           "command_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Content commitment over the encrypted command artifact."
           },
           "command_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Capability commitment over the encrypted command artifact."
           }
         }
       },
@@ -3175,10 +3816,12 @@
         "properties": {
           "sequence": {
             "type": "string",
-            "format": "uint64"
+            "format": "uint64",
+            "description": "Position in the merged audit order."
           },
           "event_type": {
-            "type": "string"
+            "type": "string",
+            "description": "The event's type label; contents never appear here."
           }
         }
       },
@@ -3188,11 +3831,13 @@
         "required": ["prompt", "agents_team"],
         "properties": {
           "prompt": {
-            "type": "string"
+            "type": "string",
+            "description": "The invocation input."
           },
           "agents_team": {
             "type": "string",
-            "format": "blockchain-uri"
+            "format": "blockchain-uri",
+            "description": "The deployed team's registry URI."
           }
         }
       },
@@ -3209,33 +3854,42 @@
         ],
         "properties": {
           "run_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The run capability (`UUIDv7`), minted at prepare."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned invocation contract bytes to sign."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "Prepare instant."
           },
           "durable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the run uses the durable ledger."
           },
           "definition_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Hash pinning the executed definition."
           },
           "request_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Content commitment over the invocation artifact."
           },
           "request_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Capability commitment over the invocation artifact."
           },
           "continuation_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Content commitment over the durable continuation."
           },
           "continuation_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Capability commitment over the durable continuation."
           }
         }
       },
@@ -3254,83 +3908,105 @@
         ],
         "properties": {
           "run_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The run capability (`UUIDv7`)."
           },
           "agents_team": {
             "type": "string",
-            "format": "blockchain-uri"
+            "format": "blockchain-uri",
+            "description": "The invoked team's registry URI."
           },
           "created_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "Run creation instant."
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "Ledger status: running, suspended, resuming, completed, failed, or\ncancelled."
           },
           "events": {
             "type": "array",
+            "description": "The merged, ordered audit history — event types only.",
             "items": {
               "$ref": "#/components/schemas/RunEvent"
             }
           },
           "definition_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Pin of the executed definition."
           },
           "revision": {
             "type": "string",
-            "format": "uint64"
+            "format": "uint64",
+            "description": "The optimistic-concurrency revision commands fence on."
           },
           "request_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Content commitment over the invocation artifact."
           },
           "request_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Capability commitment over the invocation artifact."
           },
           "continuation_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Content commitment over the durable continuation."
           },
           "continuation_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Capability commitment over the durable continuation."
           },
           "command_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The last applied command's public claim: its identity."
           },
           "command_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "The last applied command's public claim: content commitment."
           },
           "command_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "The last applied command's public claim: capability commitment."
           },
           "command_actor": {
-            "type": "string"
+            "type": "string",
+            "description": "The last applied command's public claim: the commanding actor."
           },
           "command_class": {
-            "type": "string"
+            "type": "string",
+            "description": "The last applied command's public claim: its authorization class."
           },
           "command_wait_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The last applied command's public claim: the wait it addressed."
           },
           "approval_authority_grants": {
             "type": "array",
+            "description": "Grant entries (`waitId|address`) naming delegated approvers.",
             "items": {
               "type": "string"
             }
           },
           "wait_ids": {
             "type": "array",
+            "description": "Public qualified wait identifiers currently pending.",
             "items": {
               "type": "string"
             }
           },
           "due_at": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "Next scheduled resume instant (parked durable yield or timer)."
           },
           "output_content_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Content commitment over the terminal output artifact."
           },
           "output_capability_hash": {
-            "type": "string"
+            "type": "string",
+            "description": "Capability commitment over the terminal output artifact."
           }
         }
       },
@@ -3340,11 +4016,13 @@
         "required": ["version", "contract"],
         "properties": {
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The appended version's identifier (`UUIDv7`)."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned save contract bytes to sign."
           }
         }
       },
@@ -3354,11 +4032,13 @@
         "required": ["version", "contract"],
         "properties": {
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The appended version's identifier (`UUIDv7`)."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned save contract bytes to sign."
           }
         }
       },
@@ -3368,11 +4048,13 @@
         "required": ["version", "contract"],
         "properties": {
           "version": {
-            "type": "string"
+            "type": "string",
+            "description": "The appended version's identifier (`UUIDv7`)."
           },
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned save contract bytes to sign."
           }
         }
       },
@@ -3382,16 +4064,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/DeployAgentReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployAgentReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/DeployAgentResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployAgentResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/DeploySignedAgentReq"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeploySignedAgentReq"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3401,16 +4108,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/DeployAgentsTeamReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployAgentsTeamReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/DeployAgentsTeamResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployAgentsTeamResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/DeploySignedAgentsTeamReq"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeploySignedAgentsTeamReq"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3420,16 +4152,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/RunReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/RunResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/DeploySignedRunOnFireskyReq"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeploySignedRunOnFireskyReq"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3439,16 +4196,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/DeployTestReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployTestReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/DeployTestResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeployTestResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/DeploySignedTestReq"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeploySignedTestReq"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3458,16 +4240,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/BoostReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BoostReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/BoostResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BoostResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3477,16 +4284,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateAgentReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/CreateAgentResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3496,16 +4328,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateAgentReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/SaveAgentResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SaveAgentResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3515,16 +4372,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateAgentsTeamReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentsTeamReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/CreateAgentsTeamResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentsTeamResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3534,16 +4416,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateAgentsTeamReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateAgentsTeamReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/SaveAgentsTeamResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SaveAgentsTeamResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3553,16 +4460,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateOslfReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateOslfReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/CreateOslfResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateOslfResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3572,16 +4504,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/CreateOslfReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateOslfReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/SaveOslfResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SaveOslfResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3591,16 +4548,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/PublishToFireskyReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishToFireskyReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/PublishToFireskyResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishToFireskyResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3610,16 +4592,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/RunCommandReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunCommandReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/RunCommandResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunCommandResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3629,16 +4636,41 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/RunReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/RunResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3648,16 +4680,78 @@
         "required": ["prepare_request", "prepare_response", "request", "token"],
         "properties": {
           "prepare_request": {
-            "$ref": "#/components/schemas/TransferReq"
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
           },
           "prepare_response": {
-            "$ref": "#/components/schemas/TransferResp"
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
           },
           "request": {
-            "$ref": "#/components/schemas/SignedContract"
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_string_RevealOutputResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_string_RevealOutputResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "type": "string",
+            "description": "Byte-identical echo of the prepare request."
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RevealOutputResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
           }
         }
       },
@@ -3667,39 +4761,47 @@
         "required": ["deploy_id"],
         "properties": {
           "deploy_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The accepted deploy's identifier (lowercase hex of its signature);\nfinalization is still pending when this returns."
           }
         }
       },
       "SignedContract": {
         "type": "object",
         "title": "SignedContract",
+        "description": "A client-signed contract, ready to deploy: the send phase of the two-phase\nprotocol carries it, and the chain is the verifier of record.",
         "required": ["contract", "sig", "sig_algorithm", "deployer"],
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The exact prepared contract bytes that were signed."
           },
           "sig": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "Signature over the contract's blake2b digest, per `sig_algorithm`."
           },
           "sig_algorithm": {
-            "type": "string"
+            "type": "string",
+            "description": "The signature algorithm; the platform signs with `secp256k1`."
           },
           "deployer": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The signing wallet's public key."
           }
         }
       },
       "SignedTestDeployLogs": {
         "type": "object",
         "title": "SignedTestDeployLogs",
+        "description": "Both deploys landed, the test finalized, and its logs were read back.",
         "required": ["logs"],
         "properties": {
           "logs": {
             "type": "array",
+            "description": "The messages the test sent to the on-chain log contract, in order.",
             "items": {
               "$ref": "#/components/schemas/Log"
             }
@@ -3709,10 +4811,12 @@
       "TestDeployFailed": {
         "type": "object",
         "title": "TestDeployFailed",
+        "description": "The environment (if any) deployed, but the test deploy was rejected.",
         "required": ["error"],
         "properties": {
           "error": {
-            "type": "string"
+            "type": "string",
+            "description": "The rejection reported for the test deploy."
           }
         }
       },
@@ -3722,26 +4826,32 @@
         "required": ["id", "timestamp", "from", "to", "amount"],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Deploy identifier of the transfer."
           },
           "timestamp": {
             "type": "string",
-            "format": "timestamp-millis"
+            "format": "timestamp-millis",
+            "description": "When the transfer contract was prepared."
           },
           "from": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Sender address."
           },
           "to": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Recipient address."
           },
           "amount": {
             "type": "string",
-            "format": "int64"
+            "format": "int64",
+            "description": "Transferred amount in base units."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Free-text memo carried by the transfer."
           }
         }
       },
@@ -3752,18 +4862,22 @@
         "properties": {
           "from": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Sender address; must be the signing wallet's address."
           },
           "to": {
             "type": "string",
-            "format": "blockchain-address"
+            "format": "blockchain-address",
+            "description": "Recipient address."
           },
           "amount": {
             "type": "string",
-            "format": "int64"
+            "format": "int64",
+            "description": "Amount in base units; must be positive."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Free-text memo, recorded on chain in the transfer history."
           }
         }
       },
@@ -3774,7 +4888,8 @@
         "properties": {
           "contract": {
             "type": "string",
-            "format": "bytes"
+            "format": "bytes",
+            "description": "The unsigned transfer contract bytes to sign."
           }
         }
       },
@@ -3785,28 +4900,33 @@
         "properties": {
           "balance": {
             "type": "string",
-            "format": "uint64"
+            "format": "uint64",
+            "description": "Current balance in base units."
           },
           "requests": {
             "type": "array",
+            "description": "Reserved; always `[]`.",
             "items": {
               "$ref": "#/components/schemas/Request"
             }
           },
           "exchanges": {
             "type": "array",
+            "description": "Reserved; always `[]`.",
             "items": {
               "$ref": "#/components/schemas/Exchange"
             }
           },
           "boosts": {
             "type": "array",
+            "description": "Boost history (both directions).",
             "items": {
               "$ref": "#/components/schemas/Boost"
             }
           },
           "transfers": {
             "type": "array",
+            "description": "Transfer history (both directions).",
             "items": {
               "$ref": "#/components/schemas/Transfer"
             }

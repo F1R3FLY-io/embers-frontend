@@ -22,13 +22,13 @@ import { PostRefFromJSON, PostRefToJSON } from "./PostRef";
  */
 export interface FireskyReply {
   /**
-   *
+   * The post the reply answers directly.
    * @type {PostRef}
    * @memberof FireskyReply
    */
   parent: PostRef;
   /**
-   *
+   * The thread's root post.
    * @type {PostRef}
    * @memberof FireskyReply
    */

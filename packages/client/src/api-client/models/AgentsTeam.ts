@@ -29,67 +29,68 @@ import { UriFromJSON, UriToJSON } from "./Uri";
  */
 export interface AgentsTeam {
   /**
-   *
+   * When this version was prepared.
    * @type {TimestampMillis}
    * @memberof AgentsTeam
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * The Workflow v2 definition document.
    * @type {any}
    * @memberof AgentsTeam
    */
   definition?: any | null;
   /**
-   *
+   * Team description.
    * @type {string}
    * @memberof AgentsTeam
    */
   description?: string;
   /**
-   *
+   * The graphl serialization of the canvas.
    * @type {Graph}
    * @memberof AgentsTeam
    */
   graph?: Graph;
   /**
-   *
+   * Team identity (`UUIDv4`), stable across versions.
    * @type {string}
    * @memberof AgentsTeam
    */
   id: string;
   /**
-   *
+   * When this version was last deployed; absent if never.
    * @type {TimestampMillis}
    * @memberof AgentsTeam
    */
   lastDeploy?: TimestampMillis;
   /**
-   *
+   * Logo reference.
    * @type {string}
    * @memberof AgentsTeam
    */
   logo?: string;
   /**
-   *
+   * Team name.
    * @type {string}
    * @memberof AgentsTeam
    */
   name: string;
   /**
-   *
+   * Declared shard label.
    * @type {string}
    * @memberof AgentsTeam
    */
   shard?: string;
   /**
-   *
+   * Registry URI of the last deployment; the value run invocations
+   * consume.
    * @type {Uri}
    * @memberof AgentsTeam
    */
   uri?: Uri;
   /**
-   *
+   * This version's identifier (`UUIDv7`).
    * @type {string}
    * @memberof AgentsTeam
    */

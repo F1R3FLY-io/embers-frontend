@@ -25,37 +25,38 @@ import {
  */
 export interface Oslf {
   /**
-   *
+   * When this version was prepared.
    * @type {TimestampMillis}
    * @memberof Oslf
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Document description.
    * @type {string}
    * @memberof Oslf
    */
   description?: string;
   /**
-   *
+   * Document identity (`UUIDv4`), stable across versions.
    * @type {string}
    * @memberof Oslf
    */
   id: string;
   /**
-   *
+   * Document name.
    * @type {string}
    * @memberof Oslf
    */
   name: string;
   /**
-   *
+   * The OSLF expression body; absent when the version was written without
+   * one.
    * @type {string}
    * @memberof Oslf
    */
   query?: string;
   /**
-   *
+   * This version's identifier (`UUIDv7`).
    * @type {string}
    * @memberof Oslf
    */

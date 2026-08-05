@@ -22,13 +22,13 @@ import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
  */
 export interface RunEvent {
   /**
-   *
+   * The event's type label; contents never appear here.
    * @type {string}
    * @memberof RunEvent
    */
   eventType: string;
   /**
-   *
+   * Position in the merged audit order.
    * @type {UInt64}
    * @memberof RunEvent
    */

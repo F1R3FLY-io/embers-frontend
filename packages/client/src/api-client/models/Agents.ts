@@ -22,7 +22,7 @@ import { AgentHeaderFromJSON, AgentHeaderToJSON } from "./AgentHeader";
  */
 export interface Agents {
   /**
-   *
+   * The wallet's agents, latest version each.
    * @type {Array<AgentHeader>}
    * @memberof Agents
    */

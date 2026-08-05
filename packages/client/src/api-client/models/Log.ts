@@ -22,13 +22,13 @@ import { LogLevelFromJSON, LogLevelToJSON } from "./LogLevel";
  */
 export interface Log {
   /**
-   *
+   * Severity recorded by the test.
    * @type {LogLevel}
    * @memberof Log
    */
   level: LogLevel;
   /**
-   *
+   * The log line.
    * @type {string}
    * @memberof Log
    */

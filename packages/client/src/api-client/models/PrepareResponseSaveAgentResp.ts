@@ -22,13 +22,15 @@ import { SaveAgentRespFromJSON, SaveAgentRespToJSON } from "./SaveAgentResp";
  */
 export interface PrepareResponseSaveAgentResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {SaveAgentResp}
    * @memberof PrepareResponseSaveAgentResp
    */
   response: SaveAgentResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponseSaveAgentResp
    */

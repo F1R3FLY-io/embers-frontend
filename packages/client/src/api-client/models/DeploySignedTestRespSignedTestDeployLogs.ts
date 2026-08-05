@@ -22,7 +22,7 @@ import { LogFromJSON, LogToJSON } from "./Log";
  */
 export interface DeploySignedTestRespSignedTestDeployLogs {
   /**
-   *
+   * The messages the test sent to the on-chain log contract, in order.
    * @type {Array<Log>}
    * @memberof DeploySignedTestRespSignedTestDeployLogs
    */

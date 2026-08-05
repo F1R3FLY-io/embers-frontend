@@ -12,13 +12,13 @@
  */
 
 /**
- *
+ * The environment deploy was rejected; the test was never deployed.
  * @export
  * @interface EnvDeployFailed
  */
 export interface EnvDeployFailed {
   /**
-   *
+   * The rejection reported for the environment deploy.
    * @type {string}
    * @memberof EnvDeployFailed
    */

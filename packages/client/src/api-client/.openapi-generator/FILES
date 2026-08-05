@@ -66,6 +66,7 @@ docs/PrepareResponseDeployAgentResp.md
 docs/PrepareResponseDeployAgentsTeamResp.md
 docs/PrepareResponseDeployTestResp.md
 docs/PrepareResponsePublishToFireskyResp.md
+docs/PrepareResponseRevealOutputResp.md
 docs/PrepareResponseRunCommandResp.md
 docs/PrepareResponseRunResp.md
 docs/PrepareResponseSaveAgentResp.md
@@ -79,6 +80,7 @@ docs/ReferencingTeam.md
 docs/RegistryDeploy.md
 docs/Request.md
 docs/RequestStatus.md
+docs/RevealOutputResp.md
 docs/RunCommandKind.md
 docs/RunCommandReq.md
 docs/RunCommandResp.md
@@ -103,6 +105,7 @@ docs/SendRequestBodySignedContractCreateOslfReqSaveOslfResp.md
 docs/SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp.md
 docs/SendRequestBodySignedContractRunCommandReqRunCommandResp.md
 docs/SendRequestBodySignedContractRunReqRunResp.md
+docs/SendRequestBodySignedContractStringRevealOutputResp.md
 docs/SendRequestBodySignedContractTransferReqTransferResp.md
 docs/SendResp.md
 docs/ServiceApi.md
@@ -174,6 +177,7 @@ models/PrepareResponseDeployAgentResp.ts
 models/PrepareResponseDeployAgentsTeamResp.ts
 models/PrepareResponseDeployTestResp.ts
 models/PrepareResponsePublishToFireskyResp.ts
+models/PrepareResponseRevealOutputResp.ts
 models/PrepareResponseRunCommandResp.ts
 models/PrepareResponseRunResp.ts
 models/PrepareResponseSaveAgentResp.ts
@@ -187,6 +191,7 @@ models/ReferencingTeam.ts
 models/RegistryDeploy.ts
 models/Request.ts
 models/RequestStatus.ts
+models/RevealOutputResp.ts
 models/RunCommandKind.ts
 models/RunCommandReq.ts
 models/RunCommandResp.ts
@@ -211,6 +216,7 @@ models/SendRequestBodySignedContractCreateOslfReqSaveOslfResp.ts
 models/SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp.ts
 models/SendRequestBodySignedContractRunCommandReqRunCommandResp.ts
 models/SendRequestBodySignedContractRunReqRunResp.ts
+models/SendRequestBodySignedContractStringRevealOutputResp.ts
 models/SendRequestBodySignedContractTransferReqTransferResp.ts
 models/SendResp.ts
 models/SignedContract.ts

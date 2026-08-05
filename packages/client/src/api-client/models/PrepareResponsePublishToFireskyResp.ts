@@ -25,13 +25,15 @@ import {
  */
 export interface PrepareResponsePublishToFireskyResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {PublishToFireskyResp}
    * @memberof PrepareResponsePublishToFireskyResp
    */
   response: PublishToFireskyResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponsePublishToFireskyResp
    */

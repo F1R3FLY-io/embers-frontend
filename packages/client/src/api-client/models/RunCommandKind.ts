@@ -12,7 +12,7 @@
  */
 
 /**
- *
+ * The authenticated run-command kinds the ledger adjudicates.
  * @export
  */
 export const RunCommandKind = {

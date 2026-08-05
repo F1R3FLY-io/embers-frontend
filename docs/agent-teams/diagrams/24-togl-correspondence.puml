@@ -1,0 +1,65 @@
+@startuml
+title One drawing, three readings — Workflow v2, statecharts, and TOGL
+skinparam backgroundColor #FFFAF8
+skinparam shadowing false
+skinparam ArrowColor #54413A
+skinparam componentStyle rectangle
+skinparam component {
+  BorderColor #A55B30
+}
+skinparam package {
+  BorderColor #8A6D5C
+}
+
+package "The canvas — one drawing" as Canvas #FFF1DD {
+  component "nodes, edges,\ncontainers" as Drawing #FFE0B2
+}
+
+package "Structural reading — TOGL (graphl term)" as TOGL #D7EAF8 {
+  component "Nominate\n<latex>\mathsf{let}\;x=v\;\mathsf{in}\;g</latex>" as Nom #EAF5FF
+  component "Connection\n<latex>\langle\mathsf{let}\ldots,\mathsf{let}\ldots\rangle</latex>" as Conn #EAF5FF
+  component "Juxtaposition\n<latex>g\otimes h</latex> (Tensor)" as Tens #EAF5FF
+  component "Cut / Subgraph\n<latex>\mathsf{let}\;A=g_1\;\mathsf{in}\;g_2</latex>" as Cut #EAF5FF
+  component "Well-formedness\n<latex>\mathsf{G}[X,V];\Gamma\vdash g</latex>" as WF #BEE5CF
+}
+
+package "Executable reading — statechart (v2 definition)" as SC #E3D8F5 {
+  component "States and\ntransitions\n(triggers, guards,\npriorities, bounds)" as Trans #F0E8FA
+  component "Scopes, regions,\nhistory" as Scopes #F0E8FA
+  component "Joins and\nfork epochs" as Joins #F0E8FA
+  component "Publish validation\n(progress boundaries,\nreference safety)" as Valid #BEE5CF
+}
+
+Drawing --> Nom : node admission\n(Context payload = kind/config)
+Drawing --> Conn : edge
+Drawing --> Tens : side-by-side structure
+Drawing --> Cut : deploy-container\n(one level today)
+Drawing --> Trans : Configure transition
+Drawing --> Scopes : scope fields
+Drawing --> Joins : Configure fan-in
+
+WF ..> Valid : same predicate, two strategies:\nderived during construction vs.\nchecked at publish
+
+note bottom of TOGL #EAF7EE
+Structure only: edges are unlabeled
+reference pairs. graphl implements this
+column constructor-for-constructor
+(F1R3FLY-io/graphl-parser).
+end note
+
+note bottom of SC #EAF7EE
+Dynamics only: dispositions, routing,
+counters <latex>\kappa_c(e) < b_e</latex>, joins, history.
+Normative in the statechart semantics
+and operational semantics documents.
+end note
+
+note right of Canvas #FFF6C9
+Saved as BOTH serializations in one
+record (queries.ts): the TOGL term for
+structure, the v2 definition for
+dynamics. Nothing yet checks their
+coherence — proposal 1 of the
+correspondence document.
+end note
+@enduml

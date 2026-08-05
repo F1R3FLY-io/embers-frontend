@@ -29,49 +29,49 @@ import {
  */
 export interface Boost {
   /**
-   *
+   * Transferred amount in base units.
    * @type {Int64}
    * @memberof Boost
    */
   amount: Int64;
   /**
-   *
+   * Free-text memo carried by the boost.
    * @type {string}
    * @memberof Boost
    */
   description?: string;
   /**
-   *
+   * Sender address.
    * @type {Address}
    * @memberof Boost
    */
   from: Address;
   /**
-   *
+   * Deploy identifier of the boost.
    * @type {string}
    * @memberof Boost
    */
   id: string;
   /**
-   *
+   * DID of the boosted post's author.
    * @type {string}
    * @memberof Boost
    */
   postAuthorDid: string;
   /**
-   *
+   * Identifier of the boosted post.
    * @type {string}
    * @memberof Boost
    */
   postId?: string;
   /**
-   *
+   * When the boost contract was prepared.
    * @type {TimestampMillis}
    * @memberof Boost
    */
   timestamp: TimestampMillis;
   /**
-   *
+   * Recipient address (the post author's wallet).
    * @type {Address}
    * @memberof Boost
    */

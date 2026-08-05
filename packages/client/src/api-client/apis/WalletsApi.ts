@@ -35,28 +35,28 @@ import {
 } from "../models/index";
 import * as runtime from "../runtime";
 
-export interface ApiWalletsAddressDeploysGetRequest {
-  address: Address;
-}
-
-export interface ApiWalletsAddressStateGetRequest {
-  address: Address;
-}
-
-export interface ApiWalletsBoostPreparePostRequest {
+export interface WalletsPrepareBoostRequest {
   boostReq: BoostReq;
 }
 
-export interface ApiWalletsBoostSendPostRequest {
-  sendRequestBodySignedContractBoostReqBoostResp: SendRequestBodySignedContractBoostReqBoostResp;
-}
-
-export interface ApiWalletsTransferPreparePostRequest {
+export interface WalletsPrepareTransferRequest {
   transferReq: TransferReq;
 }
 
-export interface ApiWalletsTransferSendPostRequest {
+export interface WalletsSendBoostRequest {
+  sendRequestBodySignedContractBoostReqBoostResp: SendRequestBodySignedContractBoostReqBoostResp;
+}
+
+export interface WalletsSendTransferRequest {
   sendRequestBodySignedContractTransferReqTransferResp: SendRequestBodySignedContractTransferReqTransferResp;
+}
+
+export interface WalletsStateAndHistoryRequest {
+  address: Address;
+}
+
+export interface WalletsSubscribeDeploysRequest {
+  address: Address;
 }
 
 /**
@@ -64,127 +64,15 @@ export interface ApiWalletsTransferSendPostRequest {
  */
 export class WalletsApi extends runtime.BaseAPI {
   /**
-   * Creates request options for apiWalletsAddressDeploysGet without sending the request
+   * Creates request options for walletsPrepareBoost without sending the request
    */
-  async apiWalletsAddressDeploysGetRequestOpts(
-    requestParameters: ApiWalletsAddressDeploysGetRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiWalletsAddressDeploysGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/wallets/{address}/deploys`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "GET",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiWalletsAddressDeploysGetRaw(
-    requestParameters: ApiWalletsAddressDeploysGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
-    const requestOptions =
-      await this.apiWalletsAddressDeploysGetRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   */
-  async apiWalletsAddressDeploysGet(
-    requestParameters: ApiWalletsAddressDeploysGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiWalletsAddressDeploysGetRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   * Creates request options for apiWalletsAddressStateGet without sending the request
-   */
-  async apiWalletsAddressStateGetRequestOpts(
-    requestParameters: ApiWalletsAddressStateGetRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiWalletsAddressStateGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/wallets/{address}/state`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "GET",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiWalletsAddressStateGetRaw(
-    requestParameters: ApiWalletsAddressStateGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<WalletStateAndHistory>> {
-    const requestOptions =
-      await this.apiWalletsAddressStateGetRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      WalletStateAndHistoryFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiWalletsAddressStateGet(
-    requestParameters: ApiWalletsAddressStateGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<WalletStateAndHistory> {
-    const response = await this.apiWalletsAddressStateGetRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiWalletsBoostPreparePost without sending the request
-   */
-  async apiWalletsBoostPreparePostRequestOpts(
-    requestParameters: ApiWalletsBoostPreparePostRequest,
+  async walletsPrepareBoostRequestOpts(
+    requestParameters: WalletsPrepareBoostRequest,
   ): Promise<runtime.RequestOpts> {
     if (requestParameters.boostReq == null) {
       throw new runtime.RequiredError(
         "boostReq",
-        'Required parameter "boostReq" was null or undefined when calling apiWalletsBoostPreparePost().',
+        'Required parameter "boostReq" was null or undefined when calling walletsPrepareBoost().',
       );
     }
 
@@ -207,12 +95,12 @@ export class WalletsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiWalletsBoostPreparePostRaw(
-    requestParameters: ApiWalletsBoostPreparePostRequest,
+  async walletsPrepareBoostRaw(
+    requestParameters: WalletsPrepareBoostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<PrepareResponseBoostResp>> {
     const requestOptions =
-      await this.apiWalletsBoostPreparePostRequestOpts(requestParameters);
+      await this.walletsPrepareBoostRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
@@ -222,11 +110,11 @@ export class WalletsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiWalletsBoostPreparePost(
-    requestParameters: ApiWalletsBoostPreparePostRequest,
+  async walletsPrepareBoost(
+    requestParameters: WalletsPrepareBoostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PrepareResponseBoostResp> {
-    const response = await this.apiWalletsBoostPreparePostRaw(
+    const response = await this.walletsPrepareBoostRaw(
       requestParameters,
       initOverrides,
     );
@@ -234,17 +122,75 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiWalletsBoostSendPost without sending the request
+   * Creates request options for walletsPrepareTransfer without sending the request
    */
-  async apiWalletsBoostSendPostRequestOpts(
-    requestParameters: ApiWalletsBoostSendPostRequest,
+  async walletsPrepareTransferRequestOpts(
+    requestParameters: WalletsPrepareTransferRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.transferReq == null) {
+      throw new runtime.RequiredError(
+        "transferReq",
+        'Required parameter "transferReq" was null or undefined when calling walletsPrepareTransfer().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/wallets/transfer/prepare`;
+
+    return {
+      body: TransferReqToJSON(requestParameters.transferReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async walletsPrepareTransferRaw(
+    requestParameters: WalletsPrepareTransferRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseTransferResp>> {
+    const requestOptions =
+      await this.walletsPrepareTransferRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseTransferRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async walletsPrepareTransfer(
+    requestParameters: WalletsPrepareTransferRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseTransferResp> {
+    const response = await this.walletsPrepareTransferRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for walletsSendBoost without sending the request
+   */
+  async walletsSendBoostRequestOpts(
+    requestParameters: WalletsSendBoostRequest,
   ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractBoostReqBoostResp == null
     ) {
       throw new runtime.RequiredError(
         "sendRequestBodySignedContractBoostReqBoostResp",
-        'Required parameter "sendRequestBodySignedContractBoostReqBoostResp" was null or undefined when calling apiWalletsBoostSendPost().',
+        'Required parameter "sendRequestBodySignedContractBoostReqBoostResp" was null or undefined when calling walletsSendBoost().',
       );
     }
 
@@ -269,12 +215,12 @@ export class WalletsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiWalletsBoostSendPostRaw(
-    requestParameters: ApiWalletsBoostSendPostRequest,
+  async walletsSendBoostRaw(
+    requestParameters: WalletsSendBoostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
     const requestOptions =
-      await this.apiWalletsBoostSendPostRequestOpts(requestParameters);
+      await this.walletsSendBoostRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
@@ -284,11 +230,11 @@ export class WalletsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiWalletsBoostSendPost(
-    requestParameters: ApiWalletsBoostSendPostRequest,
+  async walletsSendBoost(
+    requestParameters: WalletsSendBoostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SendResp> {
-    const response = await this.apiWalletsBoostSendPostRaw(
+    const response = await this.walletsSendBoostRaw(
       requestParameters,
       initOverrides,
     );
@@ -296,68 +242,10 @@ export class WalletsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiWalletsTransferPreparePost without sending the request
+   * Creates request options for walletsSendTransfer without sending the request
    */
-  async apiWalletsTransferPreparePostRequestOpts(
-    requestParameters: ApiWalletsTransferPreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.transferReq == null) {
-      throw new runtime.RequiredError(
-        "transferReq",
-        'Required parameter "transferReq" was null or undefined when calling apiWalletsTransferPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/wallets/transfer/prepare`;
-
-    return {
-      body: TransferReqToJSON(requestParameters.transferReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiWalletsTransferPreparePostRaw(
-    requestParameters: ApiWalletsTransferPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseTransferResp>> {
-    const requestOptions =
-      await this.apiWalletsTransferPreparePostRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseTransferRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiWalletsTransferPreparePost(
-    requestParameters: ApiWalletsTransferPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseTransferResp> {
-    const response = await this.apiWalletsTransferPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiWalletsTransferSendPost without sending the request
-   */
-  async apiWalletsTransferSendPostRequestOpts(
-    requestParameters: ApiWalletsTransferSendPostRequest,
+  async walletsSendTransferRequestOpts(
+    requestParameters: WalletsSendTransferRequest,
   ): Promise<runtime.RequestOpts> {
     if (
       requestParameters.sendRequestBodySignedContractTransferReqTransferResp ==
@@ -365,7 +253,7 @@ export class WalletsApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "sendRequestBodySignedContractTransferReqTransferResp",
-        'Required parameter "sendRequestBodySignedContractTransferReqTransferResp" was null or undefined when calling apiWalletsTransferSendPost().',
+        'Required parameter "sendRequestBodySignedContractTransferReqTransferResp" was null or undefined when calling walletsSendTransfer().',
       );
     }
 
@@ -390,12 +278,12 @@ export class WalletsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiWalletsTransferSendPostRaw(
-    requestParameters: ApiWalletsTransferSendPostRequest,
+  async walletsSendTransferRaw(
+    requestParameters: WalletsSendTransferRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
     const requestOptions =
-      await this.apiWalletsTransferSendPostRequestOpts(requestParameters);
+      await this.walletsSendTransferRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
@@ -405,14 +293,126 @@ export class WalletsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiWalletsTransferSendPost(
-    requestParameters: ApiWalletsTransferSendPostRequest,
+  async walletsSendTransfer(
+    requestParameters: WalletsSendTransferRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SendResp> {
-    const response = await this.apiWalletsTransferSendPostRaw(
+    const response = await this.walletsSendTransferRaw(
       requestParameters,
       initOverrides,
     );
     return response.value();
+  }
+
+  /**
+   * Creates request options for walletsStateAndHistory without sending the request
+   */
+  async walletsStateAndHistoryRequestOpts(
+    requestParameters: WalletsStateAndHistoryRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling walletsStateAndHistory().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/wallets/{address}/state`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async walletsStateAndHistoryRaw(
+    requestParameters: WalletsStateAndHistoryRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<WalletStateAndHistory>> {
+    const requestOptions =
+      await this.walletsStateAndHistoryRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      WalletStateAndHistoryFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async walletsStateAndHistory(
+    requestParameters: WalletsStateAndHistoryRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<WalletStateAndHistory> {
+    const response = await this.walletsStateAndHistoryRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for walletsSubscribeDeploys without sending the request
+   */
+  async walletsSubscribeDeploysRequestOpts(
+    requestParameters: WalletsSubscribeDeploysRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling walletsSubscribeDeploys().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/wallets/{address}/deploys`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async walletsSubscribeDeploysRaw(
+    requestParameters: WalletsSubscribeDeploysRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    const requestOptions =
+      await this.walletsSubscribeDeploysRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async walletsSubscribeDeploys(
+    requestParameters: WalletsSubscribeDeploysRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.walletsSubscribeDeploysRaw(requestParameters, initOverrides);
   }
 }

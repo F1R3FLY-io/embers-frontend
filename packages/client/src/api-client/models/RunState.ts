@@ -31,133 +31,134 @@ import { UriFromJSON, UriToJSON } from "./Uri";
  */
 export interface RunState {
   /**
-   *
+   * The invoked team's registry URI.
    * @type {Uri}
    * @memberof RunState
    */
   agentsTeam: Uri;
   /**
-   *
+   * Grant entries (`waitId|address`) naming delegated approvers.
    * @type {Array<string>}
    * @memberof RunState
    */
   approvalAuthorityGrants: Array<string>;
   /**
-   *
+   * The last applied command's public claim: the commanding actor.
    * @type {string}
    * @memberof RunState
    */
   commandActor?: string;
   /**
-   *
+   * The last applied command's public claim: capability commitment.
    * @type {string}
    * @memberof RunState
    */
   commandCapabilityHash?: string;
   /**
-   *
+   * The last applied command's public claim: its authorization class.
    * @type {string}
    * @memberof RunState
    */
   commandClass?: string;
   /**
-   *
+   * The last applied command's public claim: content commitment.
    * @type {string}
    * @memberof RunState
    */
   commandContentHash?: string;
   /**
-   *
+   * The last applied command's public claim: its identity.
    * @type {string}
    * @memberof RunState
    */
   commandId?: string;
   /**
-   *
+   * The last applied command's public claim: the wait it addressed.
    * @type {string}
    * @memberof RunState
    */
   commandWaitId?: string;
   /**
-   *
+   * Capability commitment over the durable continuation.
    * @type {string}
    * @memberof RunState
    */
   continuationCapabilityHash?: string;
   /**
-   *
+   * Content commitment over the durable continuation.
    * @type {string}
    * @memberof RunState
    */
   continuationContentHash?: string;
   /**
-   *
+   * Run creation instant.
    * @type {TimestampMillis}
    * @memberof RunState
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Pin of the executed definition.
    * @type {string}
    * @memberof RunState
    */
   definitionHash?: string;
   /**
-   *
+   * Next scheduled resume instant (parked durable yield or timer).
    * @type {TimestampMillis}
    * @memberof RunState
    */
   dueAt?: TimestampMillis;
   /**
-   *
+   * The merged, ordered audit history — event types only.
    * @type {Array<RunEvent>}
    * @memberof RunState
    */
   events: Array<RunEvent>;
   /**
-   *
+   * Capability commitment over the terminal output artifact.
    * @type {string}
    * @memberof RunState
    */
   outputCapabilityHash?: string;
   /**
-   *
+   * Content commitment over the terminal output artifact.
    * @type {string}
    * @memberof RunState
    */
   outputContentHash?: string;
   /**
-   *
+   * Capability commitment over the invocation artifact.
    * @type {string}
    * @memberof RunState
    */
   requestCapabilityHash?: string;
   /**
-   *
+   * Content commitment over the invocation artifact.
    * @type {string}
    * @memberof RunState
    */
   requestContentHash?: string;
   /**
-   *
+   * The optimistic-concurrency revision commands fence on.
    * @type {UInt64}
    * @memberof RunState
    */
   revision: UInt64;
   /**
-   *
+   * The run capability (`UUIDv7`).
    * @type {string}
    * @memberof RunState
    */
   runId: string;
   /**
-   *
+   * Ledger status: running, suspended, resuming, completed, failed, or
+   * cancelled.
    * @type {string}
    * @memberof RunState
    */
   status: string;
   /**
-   *
+   * Public qualified wait identifiers currently pending.
    * @type {Array<string>}
    * @memberof RunState
    */

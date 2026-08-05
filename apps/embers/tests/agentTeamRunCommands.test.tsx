@@ -26,6 +26,7 @@ jest.mock("@/lib/providers/wallet/useApi", () => ({
 }));
 
 jest.mock("react-router-dom", () => ({
+  useLocation: () => ({ pathname: "/runs/run-77" }),
   useParams: () => ({ runId: "run-77" }),
 }));
 

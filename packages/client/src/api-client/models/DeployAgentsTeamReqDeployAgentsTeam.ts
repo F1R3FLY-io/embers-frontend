@@ -24,19 +24,19 @@ import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
  */
 export interface DeployAgentsTeamReqDeployAgentsTeam {
   /**
-   *
+   * Owning wallet address; record and agent reads resolve against it.
    * @type {Address}
    * @memberof DeployAgentsTeamReqDeployAgentsTeam
    */
   address: Address;
   /**
-   *
+   * The registry claim authorizing publication under the target URI.
    * @type {RegistryDeploy}
    * @memberof DeployAgentsTeamReqDeployAgentsTeam
    */
   deploy: RegistryDeploy;
   /**
-   *
+   * Stored team identity (`UUIDv4`).
    * @type {string}
    * @memberof DeployAgentsTeamReqDeployAgentsTeam
    */
@@ -48,7 +48,7 @@ export interface DeployAgentsTeamReqDeployAgentsTeam {
    */
   type: DeployAgentsTeamReqDeployAgentsTeamTypeEnum;
   /**
-   *
+   * Exact version to deploy (`UUIDv7`).
    * @type {string}
    * @memberof DeployAgentsTeamReqDeployAgentsTeam
    */

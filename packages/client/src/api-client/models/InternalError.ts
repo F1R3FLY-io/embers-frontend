@@ -18,7 +18,7 @@
  */
 export interface InternalError {
   /**
-   *
+   * Human-readable failure description.
    * @type {string}
    * @memberof InternalError
    */

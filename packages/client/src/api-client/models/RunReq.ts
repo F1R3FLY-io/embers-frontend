@@ -22,13 +22,13 @@ import { UriFromJSON, UriToJSON } from "./Uri";
  */
 export interface RunReq {
   /**
-   *
+   * The deployed team's registry URI.
    * @type {Uri}
    * @memberof RunReq
    */
   agentsTeam: Uri;
   /**
-   *
+   * The invocation input.
    * @type {string}
    * @memberof RunReq
    */

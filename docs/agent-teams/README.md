@@ -8,11 +8,12 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 
 - [Editor and operator guide](usage/editor-and-operations.md) explains how to build, validate, deploy, and invoke a team.
 - [Workflow Definition v2](specification/workflow-definition-v2.md) specifies the portable JSON syntax and validation rules.
-- [HTTP API and OpenAPI surface](specification/http-api.md) documents the served Swagger/OpenAPI endpoints, the universal two-phase prepare, sign, send protocol, the complete Agent Teams endpoint reference, and the pinned specification-to-SDK generation chain.
+- [HTTP API and OpenAPI surface](../../../embers/docs/api/http-api.md) documents the served Swagger/OpenAPI endpoints, the universal two-phase prepare, sign, send protocol, the complete Agent Teams endpoint reference, and the pinned specification-to-SDK generation chain.
 - [Runtime architecture](architecture/runtime-architecture.md) follows a definition from canvas to persistent Rholang contracts and durable run metadata.
 - [Operational semantics and theory](theory/operational-semantics.md) defines tokens, routing, joins, cycles, and the exact progress-boundary theorem.
 - [Statechart semantics](theory/statechart-semantics.md) formalizes the statechart half: configurations, entry closure, completion propagation, parallel-region token discipline, history, the fork-epoch algebra, and the run-to-completion relation, with the divergences from Harel/STATEMATE/UML/SCXML stated plainly.
 - [SCXML correspondence](design/scxml-correspondence.md) maps every construct onto SCXML, analyzes the differences against the standard's interpretation algorithm, and works a schema-valid lossy projection example.
+- [TOGL correspondence](design/togl-correspondence.md) states Meredith's Theory of Graphs Language precisely, shows that the graphl serialization is its concrete syntax in production, maps every construct three ways (v2, statechart, TOGL), works the same example into a graphl term, and proposes the design changes the unused algebra enables.
 - [Rholang realization](design/rholang-realization.md) catalogs how each statechart operation is composed in Rholang, with parser-validated generated-contract and template excerpts.
 - [Security model](security/threat-model.md) inventories authorities, trust boundaries, threats, and privacy constraints.
 - [Object-capability model](security/capability-model.md) classifies every authority by mechanism — unforgeable name, write-attenuated bundle, bearer link, keyed-derivation capability, signature identity, identity-list grant — specifies the publication protocol, and states plainly which policy fields are enforced and which are only recorded.
@@ -20,6 +21,7 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 - [Conformance and verification](engineering/conformance-and-testing.md) maps every implementation surface to reproducible unit, static, live-stack, and formal evidence.
 - [Durable and hierarchical execution](architecture/durable-execution.md) specifies F1r3drive storage, the on-chain ledger, recovery, authenticated commands, and nested teams.
 - [Hierarchical continuation theory](theory/hierarchical-continuations.md) gives the composition, idempotence, and qualified-wait semantics.
+- [rho-life correspondence](theory/rho-life-correspondence.md) maps the conserved-token learning-ecology corpus (the Mortal Scientist line) onto platform surfaces — OSLF documents, guards, budgets, composition, and the F1r3sky ecology — with an implemented/roadmap/absent status for every construct.
 - [Feature roadmap](roadmap.md) separates implemented capabilities from the next product and research opportunities.
 
 ## Capability matrix

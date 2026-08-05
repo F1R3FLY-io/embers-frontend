@@ -27,55 +27,56 @@ import { UriFromJSON, UriToJSON } from "./Uri";
  */
 export interface AgentsTeamHeader {
   /**
-   *
+   * When this version was prepared.
    * @type {TimestampMillis}
    * @memberof AgentsTeamHeader
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Team description.
    * @type {string}
    * @memberof AgentsTeamHeader
    */
   description?: string;
   /**
-   *
+   * Team identity (`UUIDv4`), stable across versions.
    * @type {string}
    * @memberof AgentsTeamHeader
    */
   id: string;
   /**
-   *
+   * When this version was last deployed; absent if never.
    * @type {TimestampMillis}
    * @memberof AgentsTeamHeader
    */
   lastDeploy?: TimestampMillis;
   /**
-   *
+   * Logo reference.
    * @type {string}
    * @memberof AgentsTeamHeader
    */
   logo?: string;
   /**
-   *
+   * Team name.
    * @type {string}
    * @memberof AgentsTeamHeader
    */
   name: string;
   /**
-   *
+   * Declared shard label.
    * @type {string}
    * @memberof AgentsTeamHeader
    */
   shard?: string;
   /**
-   *
+   * Registry URI of the last deployment; the value run invocations
+   * consume.
    * @type {Uri}
    * @memberof AgentsTeamHeader
    */
   uri?: Uri;
   /**
-   *
+   * Latest version identifier (`UUIDv7`).
    * @type {string}
    * @memberof AgentsTeamHeader
    */

@@ -22,19 +22,19 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  */
 export interface CreateAgentsTeamResp {
   /**
-   *
+   * The unsigned creation contract bytes to sign.
    * @type {Base64}
    * @memberof CreateAgentsTeamResp
    */
   contract: Base64;
   /**
-   *
+   * The minted team identity (`UUIDv4`).
    * @type {string}
    * @memberof CreateAgentsTeamResp
    */
   id: string;
   /**
-   *
+   * The first version's identifier (`UUIDv7`).
    * @type {string}
    * @memberof CreateAgentsTeamResp
    */

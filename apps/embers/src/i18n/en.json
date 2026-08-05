@@ -87,6 +87,8 @@
     "create": "Create AI Agent"
   },
   "deploy": {
+    "openRunInspector": "Open run inspector",
+    "runLogged": "Run {{runId}}",
     "iconUrl": "Icon URL",
     "iconLoadFailed": "Could not load the image from this URL.",
     "deployAgent": "Deploy {{agentName}} Agent",

@@ -69,10 +69,12 @@ export const Header: React.FC = () => {
     if (!caret) {
       return;
     }
-    // Hang the menu from the caret's own bottom-left corner so it tracks the
+    // Hang the menu from the caret's bottom-right corner so it tracks the
     // button rather than the pointer -- this opens from a click, not a
-    // right-click, so there is no cursor position to anchor to.
-    setMenuPosition({ x: caret.left, y: caret.bottom + 4 });
+    // right-click, so there is no cursor position to anchor to. Paired with
+    // align="end", the menu's right edge lines up with the split button's
+    // right edge instead of the Run/caret divider.
+    setMenuPosition({ x: caret.right, y: caret.bottom + 4 });
   }, []);
 
   const closeMenu = useCallback(() => setMenuPosition(undefined), []);
@@ -227,6 +229,11 @@ export const Header: React.FC = () => {
                   ),
                   "info",
                 );
+                const { runId } = result.prepareResponse.response;
+                dock.appendLog(t("deploy.runLogged", { runId }), "info", {
+                  href: `/runs/${runId}`,
+                  label: t("deploy.openRunInspector"),
+                });
               })
               .catch(logError);
           }
@@ -268,6 +275,8 @@ export const Header: React.FC = () => {
         )}
       </div>
       <ContextMenu
+        align="end"
+        direction="bottom"
         items={menuItems}
         open={menuPosition !== undefined}
         position={menuPosition ?? { x: 0, y: 0 }}

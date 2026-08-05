@@ -25,31 +25,34 @@ import {
 } from "./TimestampMillis";
 
 /**
- *
+ * The signed registry claim that authorizes publishing a deployment under a
+ * `rho:id:` URI.
  * @export
  * @interface RegistryDeploy
  */
 export interface RegistryDeploy {
   /**
-   *
+   * The `insertSignedSignature` over `(timestamp, wallet public key,
+   * version)`.
    * @type {Base64}
    * @memberof RegistryDeploy
    */
   signature: Base64;
   /**
-   *
+   * Client-chosen instant the registry signature covers; also becomes the
+   * contract's `DeployData` timestamp.
    * @type {TimestampMillis}
    * @memberof RegistryDeploy
    */
   timestamp: TimestampMillis;
   /**
-   *
+   * The registry key's public key; the URI derives from it.
    * @type {PublicKey}
    * @memberof RegistryDeploy
    */
   uriPubKey: PublicKey;
   /**
-   *
+   * Registry entry version; bump to re-deploy at the same URI.
    * @type {Int64}
    * @memberof RegistryDeploy
    */

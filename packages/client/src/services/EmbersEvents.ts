@@ -7,15 +7,24 @@ export type EmbersEventsConfig = {
   basePath: string;
 };
 
+/** The node kinds that report finalization. */
 export const NodeType = z.enum(["Validator", "Observer"]);
 export type NodeType = z.infer<typeof NodeType>;
 
 export const WalletEvent = z.discriminatedUnion("type", [
   z.object({
+    /** Execution cost charged to the deployer; coerced from the wire's string. */
     cost: z.coerce.bigint(),
+    /** The finalized deploy — equal to the `deploy_id` send returned. */
     deploy_id: z.string(),
+    /**
+     * True when the deploy finalized but its execution failed on chain (for
+     * example, insufficient funds at execution).
+     */
     errored: z.boolean(),
+    /** Which node reports; the SDK acts only on `Observer`. */
     node_type: NodeType,
+    /** Discriminator. */
     type: z.literal("Finalized"),
   }),
 ]);

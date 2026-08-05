@@ -22,7 +22,7 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  */
 export interface TransferResp {
   /**
-   *
+   * The unsigned transfer contract bytes to sign.
    * @type {Base64}
    * @memberof TransferResp
    */

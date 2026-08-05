@@ -51,7 +51,7 @@ export class AgentsTeamsApiSdk {
     createAgentsTeamReq: CreateAgentsTeamReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsTeamsCreatePreparePost(
+    const prepareResponse = await this.client.agentsTeamsPrepareCreate(
       {
         createAgentsTeamReq,
       },
@@ -67,7 +67,7 @@ export class AgentsTeamsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsTeamsCreateSendPost(
+    const sendResponse = await this.client.agentsTeamsSendCreate(
       {
         sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: {
           prepareRequest: createAgentsTeamReq,
@@ -83,7 +83,7 @@ export class AgentsTeamsApiSdk {
   }
 
   public async get(config?: QueryCallConfig) {
-    return this.client.apiAiAgentsTeamsAddressGet(
+    return this.client.agentsTeamsList(
       {
         address: this.address,
       },
@@ -96,7 +96,7 @@ export class AgentsTeamsApiSdk {
     version: string,
     config?: QueryCallConfig,
   ) {
-    return this.client.apiAiAgentsTeamsAddressIdVersionsVersionGet(
+    return this.client.agentsTeamsGetVersion(
       {
         address: this.address,
         id,
@@ -107,7 +107,7 @@ export class AgentsTeamsApiSdk {
   }
 
   public async getVersions(id: string, config?: QueryCallConfig) {
-    return this.client.apiAiAgentsTeamsAddressIdVersionsGet(
+    return this.client.agentsTeamsListVersions(
       {
         address: this.address,
         id,
@@ -139,7 +139,7 @@ export class AgentsTeamsApiSdk {
       type: "Graph" as const,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsTeamsDeployPreparePost(
+    const prepareResponse = await this.client.agentsTeamsPrepareDeploy(
       {
         deployAgentsTeamReq: prepareRequest,
       },
@@ -158,7 +158,7 @@ export class AgentsTeamsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
+    const sendResponse = await this.client.agentsTeamsSendDeploy(
       {
         sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
           {
@@ -200,7 +200,7 @@ export class AgentsTeamsApiSdk {
       version,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsTeamsDeployPreparePost(
+    const prepareResponse = await this.client.agentsTeamsPrepareDeploy(
       {
         deployAgentsTeamReq: prepareRequest,
       },
@@ -219,7 +219,7 @@ export class AgentsTeamsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsTeamsDeploySendPost(
+    const sendResponse = await this.client.agentsTeamsSendDeploy(
       {
         sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp:
           {
@@ -245,7 +245,7 @@ export class AgentsTeamsApiSdk {
       prompt,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsTeamsRunPreparePost(
+    const prepareResponse = await this.client.agentsTeamsPrepareRun(
       {
         runReq: prepareRequest,
       },
@@ -257,7 +257,7 @@ export class AgentsTeamsApiSdk {
       this.privateKey,
     );
 
-    const sendResponse: unknown = await this.client.apiAiAgentsTeamsRunSendPost(
+    const sendResponse: unknown = await this.client.agentsTeamsSendRun(
       {
         sendRequestBodySignedContractRunReqRunResp: {
           prepareRequest,
@@ -273,7 +273,7 @@ export class AgentsTeamsApiSdk {
   }
 
   public async getRun(runId: string, config?: QueryCallConfig) {
-    return this.client.apiAiAgentsTeamsRunsRunIdGet(
+    return this.client.agentsTeamsGetRun(
       { runId },
       { signal: config?.signal },
     );
@@ -291,7 +291,7 @@ export class AgentsTeamsApiSdk {
     config?: ContractCallConfig,
   ) {
     const prepareResponse =
-      await this.client.apiAiAgentsTeamsRunsRunIdCommandsPreparePost(
+      await this.client.agentsTeamsPrepareRunCommand(
         { runCommandReq, runId },
         { signal: config?.signal },
       );
@@ -300,11 +300,44 @@ export class AgentsTeamsApiSdk {
       this.privateKey,
     );
     const sendResponse: unknown =
-      await this.client.apiAiAgentsTeamsRunsRunIdCommandsSendPost(
+      await this.client.agentsTeamsSendRunCommand(
         {
           runId,
           sendRequestBodySignedContractRunCommandReqRunCommandResp: {
             prepareRequest: runCommandReq,
+            prepareResponse: prepareResponse.response,
+            request: signedContract,
+            token: prepareResponse.token,
+          },
+        },
+        { signal: config?.signal },
+      );
+
+    return { prepareResponse, sendResponse };
+  }
+
+  /**
+   * Owner-authenticated read of a completed run's final output value. The
+   * on-chain claimOutputReveal clause adjudicates ownership (the ledger
+   * scrubs the owner from every public read), records an actor-less
+   * outputRevealed event, and the decrypted value returns only over this
+   * signed exchange -- the public run ledger stays metadata-only.
+   */
+  public async revealOutput(runId: string, config?: ContractCallConfig) {
+    const prepareResponse = await this.client.agentsTeamsPrepareRevealOutput(
+      { runId },
+      { signal: config?.signal },
+    );
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+    const sendResponse: unknown =
+      await this.client.agentsTeamsSendRevealOutput(
+        {
+          runId,
+          sendRequestBodySignedContractStringRevealOutputResp: {
+            prepareRequest: runId,
             prepareResponse: prepareResponse.response,
             request: signedContract,
             token: prepareResponse.token,
@@ -321,7 +354,7 @@ export class AgentsTeamsApiSdk {
     createAgentsTeamReq: CreateAgentsTeamReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsTeamsIdSavePreparePost(
+    const prepareResponse = await this.client.agentsTeamsPrepareSave(
       {
         createAgentsTeamReq,
         id,
@@ -338,7 +371,7 @@ export class AgentsTeamsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsTeamsIdSaveSendPost(
+    const sendResponse = await this.client.agentsTeamsSendSave(
       {
         id,
         sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: {
@@ -356,7 +389,7 @@ export class AgentsTeamsApiSdk {
 
   public async delete(id: string, config?: ContractCallConfig) {
     const prepareResponse =
-      await this.client.apiAiAgentsTeamsIdDeletePreparePost(
+      await this.client.agentsTeamsPrepareDelete(
         {
           id,
         },
@@ -372,7 +405,7 @@ export class AgentsTeamsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsTeamsIdDeleteSendPost(
+    const sendResponse = await this.client.agentsTeamsSendDelete(
       {
         id,
         signedContract,
@@ -389,7 +422,7 @@ export class AgentsTeamsApiSdk {
     config?: ContractCallConfig,
   ) {
     const prepareResponse =
-      await this.client.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
+      await this.client.agentsTeamsPreparePublishToFiresky(
         {
           address: this.address,
           id,
@@ -408,7 +441,7 @@ export class AgentsTeamsApiSdk {
     );
 
     const sendResponse =
-      await this.client.apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
+      await this.client.agentsTeamsSendPublishToFiresky(
         {
           address: this.address,
           id,
@@ -438,7 +471,7 @@ export class AgentsTeamsApiSdk {
     };
 
     const prepareResponse =
-      await this.client.apiAiAgentsTeamsRunOnFireskyPreparePost(
+      await this.client.agentsTeamsPrepareRunOnFiresky(
         {
           runReq: prepareRequest,
         },
@@ -450,7 +483,7 @@ export class AgentsTeamsApiSdk {
       this.privateKey,
     );
 
-    await this.client.apiAiAgentsTeamsRunOnFireskySendPost(
+    await this.client.agentsTeamsSendRunOnFiresky(
       {
         sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp: {
           prepareRequest,

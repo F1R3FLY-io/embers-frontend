@@ -25,13 +25,15 @@ import {
  */
 export interface PrepareResponseCreateAgentResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {CreateAgentResp}
    * @memberof PrepareResponseCreateAgentResp
    */
   response: CreateAgentResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponseCreateAgentResp
    */

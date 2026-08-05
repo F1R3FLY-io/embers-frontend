@@ -21,6 +21,7 @@ import type {
   PrepareResponseCreateAgentsTeamResp,
   PrepareResponseDeployAgentsTeamResp,
   PrepareResponsePublishToFireskyResp,
+  PrepareResponseRevealOutputResp,
   PrepareResponseRunCommandResp,
   PrepareResponseRunResp,
   PrepareResponseSaveAgentsTeamResp,
@@ -37,6 +38,7 @@ import type {
   SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp,
   SendRequestBodySignedContractRunCommandReqRunCommandResp,
   SendRequestBodySignedContractRunReqRunResp,
+  SendRequestBodySignedContractStringRevealOutputResp,
   SendResp,
   SignedContract,
 } from "../models/index";
@@ -50,6 +52,7 @@ import {
   PrepareResponseCreateAgentsTeamRespFromJSON,
   PrepareResponseDeployAgentsTeamRespFromJSON,
   PrepareResponsePublishToFireskyRespFromJSON,
+  PrepareResponseRevealOutputRespFromJSON,
   PrepareResponseRunCommandRespFromJSON,
   PrepareResponseRunRespFromJSON,
   PrepareResponseSaveAgentsTeamRespFromJSON,
@@ -66,116 +69,126 @@ import {
   SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyRespToJSON,
   SendRequestBodySignedContractRunCommandReqRunCommandRespToJSON,
   SendRequestBodySignedContractRunReqRunRespToJSON,
+  SendRequestBodySignedContractStringRevealOutputRespToJSON,
   SendRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
 
-export interface ApiAiAgentsTeamsAddressGetRequest {
-  address: Address;
+export interface AgentsTeamsGetRunRequest {
+  runId: string;
 }
 
-export interface ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest {
-  address: Address;
-  id: string;
-  publishToFireskyReq: PublishToFireskyReq;
-}
-
-export interface ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest {
-  address: Address;
-  id: string;
-  sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp: SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp;
-}
-
-export interface ApiAiAgentsTeamsAddressIdPublishedGetRequest {
-  address: Address;
-  id: string;
-}
-
-export interface ApiAiAgentsTeamsAddressIdUnpublishPostRequest {
-  address: Address;
-  id: string;
-}
-
-export interface ApiAiAgentsTeamsAddressIdVersionsGetRequest {
-  address: Address;
-  id: string;
-}
-
-export interface ApiAiAgentsTeamsAddressIdVersionsVersionGetRequest {
+export interface AgentsTeamsGetVersionRequest {
   address: Address;
   id: string;
   version: string;
 }
 
-export interface ApiAiAgentsTeamsAddressReferencingAgentIdGetRequest {
+export interface AgentsTeamsListRequest {
   address: Address;
-  agentId: string;
 }
 
-export interface ApiAiAgentsTeamsCreatePreparePostRequest {
+export interface AgentsTeamsListVersionsRequest {
+  address: Address;
+  id: string;
+}
+
+export interface AgentsTeamsPrepareCreateRequest {
   createAgentsTeamReq: CreateAgentsTeamReq;
 }
 
-export interface ApiAiAgentsTeamsCreateSendPostRequest {
-  sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp;
+export interface AgentsTeamsPrepareDeleteRequest {
+  id: string;
 }
 
-export interface ApiAiAgentsTeamsDeployPreparePostRequest {
+export interface AgentsTeamsPrepareDeployRequest {
   deployAgentsTeamReq: DeployAgentsTeamReq;
 }
 
-export interface ApiAiAgentsTeamsDeploySendPostRequest {
-  sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp: SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp;
-}
-
-export interface ApiAiAgentsTeamsIdDeletePreparePostRequest {
+export interface AgentsTeamsPreparePublishToFireskyRequest {
+  address: Address;
   id: string;
+  publishToFireskyReq: PublishToFireskyReq;
 }
 
-export interface ApiAiAgentsTeamsIdDeleteSendPostRequest {
-  id: string;
-  signedContract: SignedContract;
+export interface AgentsTeamsPrepareRevealOutputRequest {
+  runId: string;
 }
 
-export interface ApiAiAgentsTeamsIdSavePreparePostRequest {
-  createAgentsTeamReq: CreateAgentsTeamReq;
-  id: string;
-}
-
-export interface ApiAiAgentsTeamsIdSaveSendPostRequest {
-  id: string;
-  sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp;
-}
-
-export interface ApiAiAgentsTeamsRunOnFireskyPreparePostRequest {
+export interface AgentsTeamsPrepareRunRequest {
   runReq: RunReq;
 }
 
-export interface ApiAiAgentsTeamsRunOnFireskySendPostRequest {
-  sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp;
-}
-
-export interface ApiAiAgentsTeamsRunPreparePostRequest {
-  runReq: RunReq;
-}
-
-export interface ApiAiAgentsTeamsRunSendPostRequest {
-  sendRequestBodySignedContractRunReqRunResp: SendRequestBodySignedContractRunReqRunResp;
-}
-
-export interface ApiAiAgentsTeamsRunsRunIdCommandsPreparePostRequest {
+export interface AgentsTeamsPrepareRunCommandRequest {
   runCommandReq: RunCommandReq;
   runId: string;
 }
 
-export interface ApiAiAgentsTeamsRunsRunIdCommandsSendPostRequest {
+export interface AgentsTeamsPrepareRunOnFireskyRequest {
+  runReq: RunReq;
+}
+
+export interface AgentsTeamsPrepareSaveRequest {
+  createAgentsTeamReq: CreateAgentsTeamReq;
+  id: string;
+}
+
+export interface AgentsTeamsPublishedStateRequest {
+  address: Address;
+  id: string;
+}
+
+export interface AgentsTeamsReferencingTeamsRequest {
+  address: Address;
+  agentId: string;
+}
+
+export interface AgentsTeamsSendCreateRequest {
+  sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp;
+}
+
+export interface AgentsTeamsSendDeleteRequest {
+  id: string;
+  signedContract: SignedContract;
+}
+
+export interface AgentsTeamsSendDeployRequest {
+  sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp: SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp;
+}
+
+export interface AgentsTeamsSendPublishToFireskyRequest {
+  address: Address;
+  id: string;
+  sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp: SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp;
+}
+
+export interface AgentsTeamsSendRevealOutputRequest {
+  runId: string;
+  sendRequestBodySignedContractStringRevealOutputResp: SendRequestBodySignedContractStringRevealOutputResp;
+}
+
+export interface AgentsTeamsSendRunRequest {
+  sendRequestBodySignedContractRunReqRunResp: SendRequestBodySignedContractRunReqRunResp;
+}
+
+export interface AgentsTeamsSendRunCommandRequest {
   runId: string;
   sendRequestBodySignedContractRunCommandReqRunCommandResp: SendRequestBodySignedContractRunCommandReqRunCommandResp;
 }
 
-export interface ApiAiAgentsTeamsRunsRunIdGetRequest {
-  runId: string;
+export interface AgentsTeamsSendRunOnFireskyRequest {
+  sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp;
+}
+
+export interface AgentsTeamsSendSaveRequest {
+  id: string;
+  sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp;
+}
+
+export interface AgentsTeamsUnpublishRequest {
+  address: Address;
+  id: string;
 }
 
 /**
@@ -183,15 +196,155 @@ export interface ApiAiAgentsTeamsRunsRunIdGetRequest {
  */
 export class AIAgentsTeamsApi extends runtime.BaseAPI {
   /**
-   * Creates request options for apiAiAgentsTeamsAddressGet without sending the request
+   * Creates request options for agentsTeamsGetRun without sending the request
    */
-  async apiAiAgentsTeamsAddressGetRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressGetRequest,
+  async agentsTeamsGetRunRequestOpts(
+    requestParameters: AgentsTeamsGetRunRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runId == null) {
+      throw new runtime.RequiredError(
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsGetRun().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsGetRunRaw(
+    requestParameters: AgentsTeamsGetRunRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<RunState>> {
+    const requestOptions =
+      await this.agentsTeamsGetRunRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      RunStateFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsGetRun(
+    requestParameters: AgentsTeamsGetRunRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<RunState> {
+    const response = await this.agentsTeamsGetRunRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsGetVersion without sending the request
+   */
+  async agentsTeamsGetVersionRequestOpts(
+    requestParameters: AgentsTeamsGetVersionRequest,
   ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressGet().',
+        'Required parameter "address" was null or undefined when calling agentsTeamsGetVersion().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsGetVersion().',
+      );
+    }
+
+    if (requestParameters.version == null) {
+      throw new runtime.RequiredError(
+        "version",
+        'Required parameter "version" was null or undefined when calling agentsTeamsGetVersion().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/versions/{version}`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+    urlPath = urlPath.replace(
+      `{version}`,
+      encodeURIComponent(String(requestParameters.version)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsGetVersionRaw(
+    requestParameters: AgentsTeamsGetVersionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<AgentsTeam>> {
+    const requestOptions =
+      await this.agentsTeamsGetVersionRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      AgentsTeamFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsGetVersion(
+    requestParameters: AgentsTeamsGetVersionRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<AgentsTeam> {
+    const response = await this.agentsTeamsGetVersionRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsList without sending the request
+   */
+  async agentsTeamsListRequestOpts(
+    requestParameters: AgentsTeamsListRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsList().',
       );
     }
 
@@ -215,12 +368,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsAddressGetRaw(
-    requestParameters: ApiAiAgentsTeamsAddressGetRequest,
+  async agentsTeamsListRaw(
+    requestParameters: AgentsTeamsListRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<AgentsTeams>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsAddressGetRequestOpts(requestParameters);
+      await this.agentsTeamsListRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
@@ -230,11 +383,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsAddressGet(
-    requestParameters: ApiAiAgentsTeamsAddressGetRequest,
+  async agentsTeamsList(
+    requestParameters: AgentsTeamsListRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<AgentsTeams> {
-    const response = await this.apiAiAgentsTeamsAddressGetRaw(
+    const response = await this.agentsTeamsListRaw(
       requestParameters,
       initOverrides,
     );
@@ -242,29 +395,274 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost without sending the request
+   * Creates request options for agentsTeamsListVersions without sending the request
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
+  async agentsTeamsListVersionsRequestOpts(
+    requestParameters: AgentsTeamsListVersionsRequest,
   ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost().',
+        'Required parameter "address" was null or undefined when calling agentsTeamsListVersions().',
       );
     }
 
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost().',
+        'Required parameter "id" was null or undefined when calling agentsTeamsListVersions().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/versions`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsListVersionsRaw(
+    requestParameters: AgentsTeamsListVersionsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<AgentsTeams>> {
+    const requestOptions =
+      await this.agentsTeamsListVersionsRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      AgentsTeamsFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsListVersions(
+    requestParameters: AgentsTeamsListVersionsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<AgentsTeams> {
+    const response = await this.agentsTeamsListVersionsRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareCreate without sending the request
+   */
+  async agentsTeamsPrepareCreateRequestOpts(
+    requestParameters: AgentsTeamsPrepareCreateRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.createAgentsTeamReq == null) {
+      throw new runtime.RequiredError(
+        "createAgentsTeamReq",
+        'Required parameter "createAgentsTeamReq" was null or undefined when calling agentsTeamsPrepareCreate().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/create/prepare`;
+
+    return {
+      body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareCreateRaw(
+    requestParameters: AgentsTeamsPrepareCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentsTeamResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareCreateRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseCreateAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareCreate(
+    requestParameters: AgentsTeamsPrepareCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseCreateAgentsTeamResp> {
+    const response = await this.agentsTeamsPrepareCreateRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareDelete without sending the request
+   */
+  async agentsTeamsPrepareDeleteRequestOpts(
+    requestParameters: AgentsTeamsPrepareDeleteRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsPrepareDelete().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{id}/delete/prepare`;
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareDeleteRaw(
+    requestParameters: AgentsTeamsPrepareDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<DeleteAgentsTeamResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareDeleteRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      DeleteAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareDelete(
+    requestParameters: AgentsTeamsPrepareDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<DeleteAgentsTeamResp> {
+    const response = await this.agentsTeamsPrepareDeleteRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareDeploy without sending the request
+   */
+  async agentsTeamsPrepareDeployRequestOpts(
+    requestParameters: AgentsTeamsPrepareDeployRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.deployAgentsTeamReq == null) {
+      throw new runtime.RequiredError(
+        "deployAgentsTeamReq",
+        'Required parameter "deployAgentsTeamReq" was null or undefined when calling agentsTeamsPrepareDeploy().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/deploy/prepare`;
+
+    return {
+      body: DeployAgentsTeamReqToJSON(requestParameters.deployAgentsTeamReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareDeployRaw(
+    requestParameters: AgentsTeamsPrepareDeployRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentsTeamResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareDeployRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseDeployAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareDeploy(
+    requestParameters: AgentsTeamsPrepareDeployRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseDeployAgentsTeamResp> {
+    const response = await this.agentsTeamsPrepareDeployRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPreparePublishToFiresky without sending the request
+   */
+  async agentsTeamsPreparePublishToFireskyRequestOpts(
+    requestParameters: AgentsTeamsPreparePublishToFireskyRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsPreparePublishToFiresky().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsPreparePublishToFiresky().',
       );
     }
 
     if (requestParameters.publishToFireskyReq == null) {
       throw new runtime.RequiredError(
         "publishToFireskyReq",
-        'Required parameter "publishToFireskyReq" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost().',
+        'Required parameter "publishToFireskyReq" was null or undefined when calling agentsTeamsPreparePublishToFiresky().',
       );
     }
 
@@ -295,12 +693,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
+  async agentsTeamsPreparePublishToFireskyRaw(
+    requestParameters: AgentsTeamsPreparePublishToFireskyRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<PrepareResponsePublishToFireskyResp>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequestOpts(
+      await this.agentsTeamsPreparePublishToFireskyRequestOpts(
         requestParameters,
       );
     const response = await this.request(requestOptions, initOverrides);
@@ -312,35 +710,686 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskyPreparePost(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRequest,
+  async agentsTeamsPreparePublishToFiresky(
+    requestParameters: AgentsTeamsPreparePublishToFireskyRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PrepareResponsePublishToFireskyResp> {
-    const response =
-      await this.apiAiAgentsTeamsAddressIdPublishToFireskyPreparePostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.agentsTeamsPreparePublishToFireskyRaw(
+      requestParameters,
+      initOverrides,
+    );
     return response.value();
   }
 
   /**
-   * Creates request options for apiAiAgentsTeamsAddressIdPublishToFireskySendPost without sending the request
+   * Creates request options for agentsTeamsPrepareRevealOutput without sending the request
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskySendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest,
+  async agentsTeamsPrepareRevealOutputRequestOpts(
+    requestParameters: AgentsTeamsPrepareRevealOutputRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runId == null) {
+      throw new runtime.RequiredError(
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsPrepareRevealOutput().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}/output/prepare`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRevealOutputRaw(
+    requestParameters: AgentsTeamsPrepareRevealOutputRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRevealOutputResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareRevealOutputRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseRevealOutputRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRevealOutput(
+    requestParameters: AgentsTeamsPrepareRevealOutputRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseRevealOutputResp> {
+    const response = await this.agentsTeamsPrepareRevealOutputRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareRun without sending the request
+   */
+  async agentsTeamsPrepareRunRequestOpts(
+    requestParameters: AgentsTeamsPrepareRunRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runReq == null) {
+      throw new runtime.RequiredError(
+        "runReq",
+        'Required parameter "runReq" was null or undefined when calling agentsTeamsPrepareRun().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run/prepare`;
+
+    return {
+      body: RunReqToJSON(requestParameters.runReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRunRaw(
+    requestParameters: AgentsTeamsPrepareRunRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareRunRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseRunRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRun(
+    requestParameters: AgentsTeamsPrepareRunRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseRunResp> {
+    const response = await this.agentsTeamsPrepareRunRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareRunCommand without sending the request
+   */
+  async agentsTeamsPrepareRunCommandRequestOpts(
+    requestParameters: AgentsTeamsPrepareRunCommandRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runId == null) {
+      throw new runtime.RequiredError(
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsPrepareRunCommand().',
+      );
+    }
+
+    if (requestParameters.runCommandReq == null) {
+      throw new runtime.RequiredError(
+        "runCommandReq",
+        'Required parameter "runCommandReq" was null or undefined when calling agentsTeamsPrepareRunCommand().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}/commands/prepare`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
+
+    return {
+      body: RunCommandReqToJSON(requestParameters.runCommandReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRunCommandRaw(
+    requestParameters: AgentsTeamsPrepareRunCommandRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRunCommandResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareRunCommandRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseRunCommandRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRunCommand(
+    requestParameters: AgentsTeamsPrepareRunCommandRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseRunCommandResp> {
+    const response = await this.agentsTeamsPrepareRunCommandRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareRunOnFiresky without sending the request
+   */
+  async agentsTeamsPrepareRunOnFireskyRequestOpts(
+    requestParameters: AgentsTeamsPrepareRunOnFireskyRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runReq == null) {
+      throw new runtime.RequiredError(
+        "runReq",
+        'Required parameter "runReq" was null or undefined when calling agentsTeamsPrepareRunOnFiresky().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run-on-firesky/prepare`;
+
+    return {
+      body: RunReqToJSON(requestParameters.runReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRunOnFireskyRaw(
+    requestParameters: AgentsTeamsPrepareRunOnFireskyRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareRunOnFireskyRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseRunRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareRunOnFiresky(
+    requestParameters: AgentsTeamsPrepareRunOnFireskyRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseRunResp> {
+    const response = await this.agentsTeamsPrepareRunOnFireskyRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareSave without sending the request
+   */
+  async agentsTeamsPrepareSaveRequestOpts(
+    requestParameters: AgentsTeamsPrepareSaveRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsPrepareSave().',
+      );
+    }
+
+    if (requestParameters.createAgentsTeamReq == null) {
+      throw new runtime.RequiredError(
+        "createAgentsTeamReq",
+        'Required parameter "createAgentsTeamReq" was null or undefined when calling agentsTeamsPrepareSave().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{id}/save/prepare`;
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareSaveRaw(
+    requestParameters: AgentsTeamsPrepareSaveRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentsTeamResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareSaveRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseSaveAgentsTeamRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareSave(
+    requestParameters: AgentsTeamsPrepareSaveRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseSaveAgentsTeamResp> {
+    const response = await this.agentsTeamsPrepareSaveRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPublishedState without sending the request
+   */
+  async agentsTeamsPublishedStateRequestOpts(
+    requestParameters: AgentsTeamsPublishedStateRequest,
   ): Promise<runtime.RequestOpts> {
     if (requestParameters.address == null) {
       throw new runtime.RequiredError(
         "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskySendPost().',
+        'Required parameter "address" was null or undefined when calling agentsTeamsPublishedState().',
       );
     }
 
     if (requestParameters.id == null) {
       throw new runtime.RequiredError(
         "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskySendPost().',
+        'Required parameter "id" was null or undefined when calling agentsTeamsPublishedState().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/published`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Reports a team\'s publication as the chain records it, reconciled against the PDS. Nothing previously compared the two, so a destroyed account left the interface presenting a team as published with no way to notice.
+   */
+  async agentsTeamsPublishedStateRaw(
+    requestParameters: AgentsTeamsPublishedStateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PublishedState>> {
+    const requestOptions =
+      await this.agentsTeamsPublishedStateRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PublishedStateFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Reports a team\'s publication as the chain records it, reconciled against the PDS. Nothing previously compared the two, so a destroyed account left the interface presenting a team as published with no way to notice.
+   */
+  async agentsTeamsPublishedState(
+    requestParameters: AgentsTeamsPublishedStateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PublishedState> {
+    const response = await this.agentsTeamsPublishedStateRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsReferencingTeams without sending the request
+   */
+  async agentsTeamsReferencingTeamsRequestOpts(
+    requestParameters: AgentsTeamsReferencingTeamsRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsReferencingTeams().',
+      );
+    }
+
+    if (requestParameters.agentId == null) {
+      throw new runtime.RequiredError(
+        "agentId",
+        'Required parameter "agentId" was null or undefined when calling agentsTeamsReferencingTeams().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/referencing/{agent_id}`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{agent_id}`,
+      encodeURIComponent(String(requestParameters.agentId)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Every team whose latest version uses the given agent, so deleting that agent can name what it would break before doing it. See `referencing_teams`.
+   */
+  async agentsTeamsReferencingTeamsRaw(
+    requestParameters: AgentsTeamsReferencingTeamsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<ReferencingTeam>>> {
+    const requestOptions =
+      await this.agentsTeamsReferencingTeamsRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(ReferencingTeamFromJSON),
+    );
+  }
+
+  /**
+   * Every team whose latest version uses the given agent, so deleting that agent can name what it would break before doing it. See `referencing_teams`.
+   */
+  async agentsTeamsReferencingTeams(
+    requestParameters: AgentsTeamsReferencingTeamsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<ReferencingTeam>> {
+    const response = await this.agentsTeamsReferencingTeamsRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendCreate without sending the request
+   */
+  async agentsTeamsSendCreateRequestOpts(
+    requestParameters: AgentsTeamsSendCreateRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (
+      requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp",
+        'Required parameter "sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp" was null or undefined when calling agentsTeamsSendCreate().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/create/send`;
+
+    return {
+      body: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendCreateRaw(
+    requestParameters: AgentsTeamsSendCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendCreateRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendCreate(
+    requestParameters: AgentsTeamsSendCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendCreateRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendDelete without sending the request
+   */
+  async agentsTeamsSendDeleteRequestOpts(
+    requestParameters: AgentsTeamsSendDeleteRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsSendDelete().',
+      );
+    }
+
+    if (requestParameters.signedContract == null) {
+      throw new runtime.RequiredError(
+        "signedContract",
+        'Required parameter "signedContract" was null or undefined when calling agentsTeamsSendDelete().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{id}/delete/send`;
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      body: SignedContractToJSON(requestParameters.signedContract),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendDeleteRaw(
+    requestParameters: AgentsTeamsSendDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendDeleteRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendDelete(
+    requestParameters: AgentsTeamsSendDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendDeleteRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendDeploy without sending the request
+   */
+  async agentsTeamsSendDeployRequestOpts(
+    requestParameters: AgentsTeamsSendDeployRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (
+      requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp",
+        'Required parameter "sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp" was null or undefined when calling agentsTeamsSendDeploy().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/deploy/send`;
+
+    return {
+      body: SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON(
+        requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendDeployRaw(
+    requestParameters: AgentsTeamsSendDeployRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendDeployRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendDeploy(
+    requestParameters: AgentsTeamsSendDeployRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendDeployRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendPublishToFiresky without sending the request
+   */
+  async agentsTeamsSendPublishToFireskyRequestOpts(
+    requestParameters: AgentsTeamsSendPublishToFireskyRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsSendPublishToFiresky().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsSendPublishToFiresky().',
       );
     }
 
@@ -350,7 +1399,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp",
-        'Required parameter "sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishToFireskySendPost().',
+        'Required parameter "sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp" was null or undefined when calling agentsTeamsSendPublishToFiresky().',
       );
     }
 
@@ -383,14 +1432,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskySendPostRaw(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest,
+  async agentsTeamsSendPublishToFireskyRaw(
+    requestParameters: AgentsTeamsSendPublishToFireskyRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<SendResp>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsAddressIdPublishToFireskySendPostRequestOpts(
-        requestParameters,
-      );
+      await this.agentsTeamsSendPublishToFireskyRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
@@ -400,86 +1447,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsAddressIdPublishToFireskySendPost(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishToFireskySendPostRequest,
+  async agentsTeamsSendPublishToFiresky(
+    requestParameters: AgentsTeamsSendPublishToFireskyRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SendResp> {
-    const response =
-      await this.apiAiAgentsTeamsAddressIdPublishToFireskySendPostRaw(
-        requestParameters,
-        initOverrides,
-      );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsAddressIdPublishedGet without sending the request
-   */
-  async apiAiAgentsTeamsAddressIdPublishedGetRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishedGetRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishedGet().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsAddressIdPublishedGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents-teams/{address}/{id}/published`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "GET",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   * Reports a team\'s publication as the chain records it, reconciled against the PDS. Nothing previously compared the two, so a destroyed account left the interface presenting a team as published with no way to notice.
-   */
-  async apiAiAgentsTeamsAddressIdPublishedGetRaw(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishedGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PublishedState>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsAddressIdPublishedGetRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PublishedStateFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   * Reports a team\'s publication as the chain records it, reconciled against the PDS. Nothing previously compared the two, so a destroyed account left the interface presenting a team as published with no way to notice.
-   */
-  async apiAiAgentsTeamsAddressIdPublishedGet(
-    requestParameters: ApiAiAgentsTeamsAddressIdPublishedGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PublishedState> {
-    const response = await this.apiAiAgentsTeamsAddressIdPublishedGetRaw(
+    const response = await this.agentsTeamsSendPublishToFireskyRaw(
       requestParameters,
       initOverrides,
     );
@@ -487,378 +1459,25 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiAiAgentsTeamsAddressIdUnpublishPost without sending the request
+   * Creates request options for agentsTeamsSendRevealOutput without sending the request
    */
-  async apiAiAgentsTeamsAddressIdUnpublishPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressIdUnpublishPostRequest,
+  async agentsTeamsSendRevealOutputRequestOpts(
+    requestParameters: AgentsTeamsSendRevealOutputRequest,
   ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
+    if (requestParameters.runId == null) {
       throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressIdUnpublishPost().',
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsSendRevealOutput().',
       );
     }
 
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsAddressIdUnpublishPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents-teams/{address}/{id}/unpublish`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   * Stops a published team answering mentions, by removing the record that marks its account as a team. The account and handle are kept, so it is reversible by publishing again.
-   */
-  async apiAiAgentsTeamsAddressIdUnpublishPostRaw(
-    requestParameters: ApiAiAgentsTeamsAddressIdUnpublishPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsAddressIdUnpublishPostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   * Stops a published team answering mentions, by removing the record that marks its account as a team. The account and handle are kept, so it is reversible by publishing again.
-   */
-  async apiAiAgentsTeamsAddressIdUnpublishPost(
-    requestParameters: ApiAiAgentsTeamsAddressIdUnpublishPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsTeamsAddressIdUnpublishPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsAddressIdVersionsGet without sending the request
-   */
-  async apiAiAgentsTeamsAddressIdVersionsGetRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressIdVersionsGetRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressIdVersionsGet().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsAddressIdVersionsGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents-teams/{address}/{id}/versions`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "GET",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsAddressIdVersionsGetRaw(
-    requestParameters: ApiAiAgentsTeamsAddressIdVersionsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AgentsTeams>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsAddressIdVersionsGetRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsTeamsFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsAddressIdVersionsGet(
-    requestParameters: ApiAiAgentsTeamsAddressIdVersionsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<AgentsTeams> {
-    const response = await this.apiAiAgentsTeamsAddressIdVersionsGetRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsAddressIdVersionsVersionGet without sending the request
-   */
-  async apiAiAgentsTeamsAddressIdVersionsVersionGetRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressIdVersionsVersionGetRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressIdVersionsVersionGet().',
-      );
-    }
-
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsAddressIdVersionsVersionGet().',
-      );
-    }
-
-    if (requestParameters.version == null) {
-      throw new runtime.RequiredError(
-        "version",
-        'Required parameter "version" was null or undefined when calling apiAiAgentsTeamsAddressIdVersionsVersionGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents-teams/{address}/{id}/versions/{version}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-    urlPath = urlPath.replace(
-      `{version}`,
-      encodeURIComponent(String(requestParameters.version)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "GET",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsAddressIdVersionsVersionGetRaw(
-    requestParameters: ApiAiAgentsTeamsAddressIdVersionsVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<AgentsTeam>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsAddressIdVersionsVersionGetRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AgentsTeamFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsAddressIdVersionsVersionGet(
-    requestParameters: ApiAiAgentsTeamsAddressIdVersionsVersionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<AgentsTeam> {
-    const response = await this.apiAiAgentsTeamsAddressIdVersionsVersionGetRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsAddressReferencingAgentIdGet without sending the request
-   */
-  async apiAiAgentsTeamsAddressReferencingAgentIdGetRequestOpts(
-    requestParameters: ApiAiAgentsTeamsAddressReferencingAgentIdGetRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.address == null) {
-      throw new runtime.RequiredError(
-        "address",
-        'Required parameter "address" was null or undefined when calling apiAiAgentsTeamsAddressReferencingAgentIdGet().',
-      );
-    }
-
-    if (requestParameters.agentId == null) {
-      throw new runtime.RequiredError(
-        "agentId",
-        'Required parameter "agentId" was null or undefined when calling apiAiAgentsTeamsAddressReferencingAgentIdGet().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents-teams/{address}/referencing/{agent_id}`;
-    urlPath = urlPath.replace(
-      `{address}`,
-      encodeURIComponent(String(requestParameters.address)),
-    );
-    urlPath = urlPath.replace(
-      `{agent_id}`,
-      encodeURIComponent(String(requestParameters.agentId)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "GET",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   * Every team whose latest version uses the given agent, so deleting that agent can name what it would break before doing it. See `referencing_teams`.
-   */
-  async apiAiAgentsTeamsAddressReferencingAgentIdGetRaw(
-    requestParameters: ApiAiAgentsTeamsAddressReferencingAgentIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Array<ReferencingTeam>>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsAddressReferencingAgentIdGetRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(ReferencingTeamFromJSON),
-    );
-  }
-
-  /**
-   * Every team whose latest version uses the given agent, so deleting that agent can name what it would break before doing it. See `referencing_teams`.
-   */
-  async apiAiAgentsTeamsAddressReferencingAgentIdGet(
-    requestParameters: ApiAiAgentsTeamsAddressReferencingAgentIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Array<ReferencingTeam>> {
-    const response = await this.apiAiAgentsTeamsAddressReferencingAgentIdGetRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsCreatePreparePost without sending the request
-   */
-  async apiAiAgentsTeamsCreatePreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.createAgentsTeamReq == null) {
-      throw new runtime.RequiredError(
-        "createAgentsTeamReq",
-        'Required parameter "createAgentsTeamReq" was null or undefined when calling apiAiAgentsTeamsCreatePreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents-teams/create/prepare`;
-
-    return {
-      body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsCreatePreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseCreateAgentsTeamResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsCreatePreparePostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseCreateAgentsTeamRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsCreatePreparePost(
-    requestParameters: ApiAiAgentsTeamsCreatePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseCreateAgentsTeamResp> {
-    const response = await this.apiAiAgentsTeamsCreatePreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsCreateSendPost without sending the request
-   */
-  async apiAiAgentsTeamsCreateSendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
-  ): Promise<runtime.RequestOpts> {
     if (
-      requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp ==
+      requestParameters.sendRequestBodySignedContractStringRevealOutputResp ==
       null
     ) {
       throw new runtime.RequiredError(
-        "sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp",
-        'Required parameter "sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsCreateSendPost().',
+        "sendRequestBodySignedContractStringRevealOutputResp",
+        'Required parameter "sendRequestBodySignedContractStringRevealOutputResp" was null or undefined when calling agentsTeamsSendRevealOutput().',
       );
     }
 
@@ -868,11 +1487,15 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     headerParameters["Content-Type"] = "application/json; charset=utf-8";
 
-    const urlPath = `/api/ai-agents-teams/create/send`;
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}/output/send`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
 
     return {
-      body: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON(
-        requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
+      body: SendRequestBodySignedContractStringRevealOutputRespToJSON(
+        requestParameters.sendRequestBodySignedContractStringRevealOutputResp,
       ),
       headers: headerParameters,
       method: "POST",
@@ -883,26 +1506,27 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsCreateSendPostRaw(
-    requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
+  async agentsTeamsSendRevealOutputRaw(
+    requestParameters: AgentsTeamsSendRevealOutputRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
+  ): Promise<runtime.ApiResponse<any>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsCreateSendPostRequestOpts(requestParameters);
+      await this.agentsTeamsSendRevealOutputRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SendRespFromJSON(jsonValue),
-    );
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<any>(response);
+    }
+    return new runtime.TextApiResponse(response) as any;
   }
 
   /**
    */
-  async apiAiAgentsTeamsCreateSendPost(
-    requestParameters: ApiAiAgentsTeamsCreateSendPostRequest,
+  async agentsTeamsSendRevealOutput(
+    requestParameters: AgentsTeamsSendRevealOutputRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<SendResp> {
-    const response = await this.apiAiAgentsTeamsCreateSendPostRaw(
+  ): Promise<any> {
+    const response = await this.agentsTeamsSendRevealOutputRaw(
       requestParameters,
       initOverrides,
     );
@@ -910,593 +1534,15 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiAiAgentsTeamsDeployPreparePost without sending the request
+   * Creates request options for agentsTeamsSendRun without sending the request
    */
-  async apiAiAgentsTeamsDeployPreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.deployAgentsTeamReq == null) {
-      throw new runtime.RequiredError(
-        "deployAgentsTeamReq",
-        'Required parameter "deployAgentsTeamReq" was null or undefined when calling apiAiAgentsTeamsDeployPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents-teams/deploy/prepare`;
-
-    return {
-      body: DeployAgentsTeamReqToJSON(requestParameters.deployAgentsTeamReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsDeployPreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseDeployAgentsTeamResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsDeployPreparePostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseDeployAgentsTeamRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsDeployPreparePost(
-    requestParameters: ApiAiAgentsTeamsDeployPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseDeployAgentsTeamResp> {
-    const response = await this.apiAiAgentsTeamsDeployPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsDeploySendPost without sending the request
-   */
-  async apiAiAgentsTeamsDeploySendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (
-      requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp ==
-      null
-    ) {
-      throw new runtime.RequiredError(
-        "sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp",
-        'Required parameter "sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsDeploySendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents-teams/deploy/send`;
-
-    return {
-      body: SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON(
-        requestParameters.sendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp,
-      ),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsDeploySendPostRaw(
-    requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsDeploySendPostRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SendRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsDeploySendPost(
-    requestParameters: ApiAiAgentsTeamsDeploySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<SendResp> {
-    const response = await this.apiAiAgentsTeamsDeploySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsIdDeletePreparePost without sending the request
-   */
-  async apiAiAgentsTeamsIdDeletePreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsIdDeletePreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    let urlPath = `/api/ai-agents-teams/{id}/delete/prepare`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdDeletePreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<DeleteAgentsTeamResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsIdDeletePreparePostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      DeleteAgentsTeamRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdDeletePreparePost(
-    requestParameters: ApiAiAgentsTeamsIdDeletePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<DeleteAgentsTeamResp> {
-    const response = await this.apiAiAgentsTeamsIdDeletePreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsIdDeleteSendPost without sending the request
-   */
-  async apiAiAgentsTeamsIdDeleteSendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsIdDeleteSendPost().',
-      );
-    }
-
-    if (requestParameters.signedContract == null) {
-      throw new runtime.RequiredError(
-        "signedContract",
-        'Required parameter "signedContract" was null or undefined when calling apiAiAgentsTeamsIdDeleteSendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    let urlPath = `/api/ai-agents-teams/{id}/delete/send`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      body: SignedContractToJSON(requestParameters.signedContract),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdDeleteSendPostRaw(
-    requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsIdDeleteSendPostRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SendRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdDeleteSendPost(
-    requestParameters: ApiAiAgentsTeamsIdDeleteSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<SendResp> {
-    const response = await this.apiAiAgentsTeamsIdDeleteSendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsIdSavePreparePost without sending the request
-   */
-  async apiAiAgentsTeamsIdSavePreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsIdSavePreparePost().',
-      );
-    }
-
-    if (requestParameters.createAgentsTeamReq == null) {
-      throw new runtime.RequiredError(
-        "createAgentsTeamReq",
-        'Required parameter "createAgentsTeamReq" was null or undefined when calling apiAiAgentsTeamsIdSavePreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    let urlPath = `/api/ai-agents-teams/{id}/save/prepare`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      body: CreateAgentsTeamReqToJSON(requestParameters.createAgentsTeamReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdSavePreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseSaveAgentsTeamResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsIdSavePreparePostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseSaveAgentsTeamRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdSavePreparePost(
-    requestParameters: ApiAiAgentsTeamsIdSavePreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseSaveAgentsTeamResp> {
-    const response = await this.apiAiAgentsTeamsIdSavePreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsIdSaveSendPost without sending the request
-   */
-  async apiAiAgentsTeamsIdSaveSendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.id == null) {
-      throw new runtime.RequiredError(
-        "id",
-        'Required parameter "id" was null or undefined when calling apiAiAgentsTeamsIdSaveSendPost().',
-      );
-    }
-
-    if (
-      requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp ==
-      null
-    ) {
-      throw new runtime.RequiredError(
-        "sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp",
-        'Required parameter "sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp" was null or undefined when calling apiAiAgentsTeamsIdSaveSendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    let urlPath = `/api/ai-agents-teams/{id}/save/send`;
-    urlPath = urlPath.replace(
-      `{id}`,
-      encodeURIComponent(String(requestParameters.id)),
-    );
-
-    return {
-      body: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON(
-        requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
-      ),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdSaveSendPostRaw(
-    requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<SendResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsIdSaveSendPostRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SendRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsIdSaveSendPost(
-    requestParameters: ApiAiAgentsTeamsIdSaveSendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<SendResp> {
-    const response = await this.apiAiAgentsTeamsIdSaveSendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsRunOnFireskyPreparePost without sending the request
-   */
-  async apiAiAgentsTeamsRunOnFireskyPreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.runReq == null) {
-      throw new runtime.RequiredError(
-        "runReq",
-        'Required parameter "runReq" was null or undefined when calling apiAiAgentsTeamsRunOnFireskyPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents-teams/run-on-firesky/prepare`;
-
-    return {
-      body: RunReqToJSON(requestParameters.runReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsRunOnFireskyPreparePostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseRunRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunOnFireskyPreparePost(
-    requestParameters: ApiAiAgentsTeamsRunOnFireskyPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseRunResp> {
-    const response = await this.apiAiAgentsTeamsRunOnFireskyPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsRunOnFireskySendPost without sending the request
-   */
-  async apiAiAgentsTeamsRunOnFireskySendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (
-      requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp ==
-      null
-    ) {
-      throw new runtime.RequiredError(
-        "sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp",
-        'Required parameter "sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp" was null or undefined when calling apiAiAgentsTeamsRunOnFireskySendPost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents-teams/run-on-firesky/send`;
-
-    return {
-      body: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunRespToJSON(
-        requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp,
-      ),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunOnFireskySendPostRaw(
-    requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<void>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsRunOnFireskySendPostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunOnFireskySendPost(
-    requestParameters: ApiAiAgentsTeamsRunOnFireskySendPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<void> {
-    await this.apiAiAgentsTeamsRunOnFireskySendPostRaw(
-      requestParameters,
-      initOverrides,
-    );
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsRunPreparePost without sending the request
-   */
-  async apiAiAgentsTeamsRunPreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.runReq == null) {
-      throw new runtime.RequiredError(
-        "runReq",
-        'Required parameter "runReq" was null or undefined when calling apiAiAgentsTeamsRunPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    const urlPath = `/api/ai-agents-teams/run/prepare`;
-
-    return {
-      body: RunReqToJSON(requestParameters.runReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunPreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseRunResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsRunPreparePostRequestOpts(requestParameters);
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseRunRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunPreparePost(
-    requestParameters: ApiAiAgentsTeamsRunPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseRunResp> {
-    const response = await this.apiAiAgentsTeamsRunPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsRunSendPost without sending the request
-   */
-  async apiAiAgentsTeamsRunSendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
+  async agentsTeamsSendRunRequestOpts(
+    requestParameters: AgentsTeamsSendRunRequest,
   ): Promise<runtime.RequestOpts> {
     if (requestParameters.sendRequestBodySignedContractRunReqRunResp == null) {
       throw new runtime.RequiredError(
         "sendRequestBodySignedContractRunReqRunResp",
-        'Required parameter "sendRequestBodySignedContractRunReqRunResp" was null or undefined when calling apiAiAgentsTeamsRunSendPost().',
+        'Required parameter "sendRequestBodySignedContractRunReqRunResp" was null or undefined when calling agentsTeamsSendRun().',
       );
     }
 
@@ -1521,12 +1567,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunSendPostRaw(
-    requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
+  async agentsTeamsSendRunRaw(
+    requestParameters: AgentsTeamsSendRunRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<any>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsRunSendPostRequestOpts(requestParameters);
+      await this.agentsTeamsSendRunRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1537,11 +1583,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunSendPost(
-    requestParameters: ApiAiAgentsTeamsRunSendPostRequest,
+  async agentsTeamsSendRun(
+    requestParameters: AgentsTeamsSendRunRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<any> {
-    const response = await this.apiAiAgentsTeamsRunSendPostRaw(
+    const response = await this.agentsTeamsSendRunRaw(
       requestParameters,
       initOverrides,
     );
@@ -1549,86 +1595,15 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiAiAgentsTeamsRunsRunIdCommandsPreparePost without sending the request
+   * Creates request options for agentsTeamsSendRunCommand without sending the request
    */
-  async apiAiAgentsTeamsRunsRunIdCommandsPreparePostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdCommandsPreparePostRequest,
+  async agentsTeamsSendRunCommandRequestOpts(
+    requestParameters: AgentsTeamsSendRunCommandRequest,
   ): Promise<runtime.RequestOpts> {
     if (requestParameters.runId == null) {
       throw new runtime.RequiredError(
         "runId",
-        'Required parameter "runId" was null or undefined when calling apiAiAgentsTeamsRunsRunIdCommandsPreparePost().',
-      );
-    }
-
-    if (requestParameters.runCommandReq == null) {
-      throw new runtime.RequiredError(
-        "runCommandReq",
-        'Required parameter "runCommandReq" was null or undefined when calling apiAiAgentsTeamsRunsRunIdCommandsPreparePost().',
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json; charset=utf-8";
-
-    let urlPath = `/api/ai-agents-teams/runs/{run_id}/commands/prepare`;
-    urlPath = urlPath.replace(
-      `{run_id}`,
-      encodeURIComponent(String(requestParameters.runId)),
-    );
-
-    return {
-      body: RunCommandReqToJSON(requestParameters.runCommandReq),
-      headers: headerParameters,
-      method: "POST",
-      path: urlPath,
-      query: queryParameters,
-    };
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunsRunIdCommandsPreparePostRaw(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdCommandsPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PrepareResponseRunCommandResp>> {
-    const requestOptions =
-      await this.apiAiAgentsTeamsRunsRunIdCommandsPreparePostRequestOpts(
-        requestParameters,
-      );
-    const response = await this.request(requestOptions, initOverrides);
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PrepareResponseRunCommandRespFromJSON(jsonValue),
-    );
-  }
-
-  /**
-   */
-  async apiAiAgentsTeamsRunsRunIdCommandsPreparePost(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdCommandsPreparePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PrepareResponseRunCommandResp> {
-    const response = await this.apiAiAgentsTeamsRunsRunIdCommandsPreparePostRaw(
-      requestParameters,
-      initOverrides,
-    );
-    return response.value();
-  }
-
-  /**
-   * Creates request options for apiAiAgentsTeamsRunsRunIdCommandsSendPost without sending the request
-   */
-  async apiAiAgentsTeamsRunsRunIdCommandsSendPostRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdCommandsSendPostRequest,
-  ): Promise<runtime.RequestOpts> {
-    if (requestParameters.runId == null) {
-      throw new runtime.RequiredError(
-        "runId",
-        'Required parameter "runId" was null or undefined when calling apiAiAgentsTeamsRunsRunIdCommandsSendPost().',
+        'Required parameter "runId" was null or undefined when calling agentsTeamsSendRunCommand().',
       );
     }
 
@@ -1638,7 +1613,7 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "sendRequestBodySignedContractRunCommandReqRunCommandResp",
-        'Required parameter "sendRequestBodySignedContractRunCommandReqRunCommandResp" was null or undefined when calling apiAiAgentsTeamsRunsRunIdCommandsSendPost().',
+        'Required parameter "sendRequestBodySignedContractRunCommandReqRunCommandResp" was null or undefined when calling agentsTeamsSendRunCommand().',
       );
     }
 
@@ -1667,14 +1642,12 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunsRunIdCommandsSendPostRaw(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdCommandsSendPostRequest,
+  async agentsTeamsSendRunCommandRaw(
+    requestParameters: AgentsTeamsSendRunCommandRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<any>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsRunsRunIdCommandsSendPostRequestOpts(
-        requestParameters,
-      );
+      await this.agentsTeamsSendRunCommandRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1685,11 +1658,11 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunsRunIdCommandsSendPost(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdCommandsSendPostRequest,
+  async agentsTeamsSendRunCommand(
+    requestParameters: AgentsTeamsSendRunCommandRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<any> {
-    const response = await this.apiAiAgentsTeamsRunsRunIdCommandsSendPostRaw(
+    const response = await this.agentsTeamsSendRunCommandRaw(
       requestParameters,
       initOverrides,
     );
@@ -1697,15 +1670,18 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
-   * Creates request options for apiAiAgentsTeamsRunsRunIdGet without sending the request
+   * Creates request options for agentsTeamsSendRunOnFiresky without sending the request
    */
-  async apiAiAgentsTeamsRunsRunIdGetRequestOpts(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdGetRequest,
+  async agentsTeamsSendRunOnFireskyRequestOpts(
+    requestParameters: AgentsTeamsSendRunOnFireskyRequest,
   ): Promise<runtime.RequestOpts> {
-    if (requestParameters.runId == null) {
+    if (
+      requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp ==
+      null
+    ) {
       throw new runtime.RequiredError(
-        "runId",
-        'Required parameter "runId" was null or undefined when calling apiAiAgentsTeamsRunsRunIdGet().',
+        "sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp",
+        'Required parameter "sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp" was null or undefined when calling agentsTeamsSendRunOnFiresky().',
       );
     }
 
@@ -1713,15 +1689,16 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    let urlPath = `/api/ai-agents-teams/runs/{run_id}`;
-    urlPath = urlPath.replace(
-      `{run_id}`,
-      encodeURIComponent(String(requestParameters.runId)),
-    );
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run-on-firesky/send`;
 
     return {
+      body: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunRespToJSON(
+        requestParameters.sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp,
+      ),
       headers: headerParameters,
-      method: "GET",
+      method: "POST",
       path: urlPath,
       query: queryParameters,
     };
@@ -1729,29 +1706,163 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiAiAgentsTeamsRunsRunIdGetRaw(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdGetRequest,
+  async agentsTeamsSendRunOnFireskyRaw(
+    requestParameters: AgentsTeamsSendRunOnFireskyRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<RunState>> {
+  ): Promise<runtime.ApiResponse<void>> {
     const requestOptions =
-      await this.apiAiAgentsTeamsRunsRunIdGetRequestOpts(requestParameters);
+      await this.agentsTeamsSendRunOnFireskyRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async agentsTeamsSendRunOnFiresky(
+    requestParameters: AgentsTeamsSendRunOnFireskyRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.agentsTeamsSendRunOnFireskyRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendSave without sending the request
+   */
+  async agentsTeamsSendSaveRequestOpts(
+    requestParameters: AgentsTeamsSendSaveRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsSendSave().',
+      );
+    }
+
+    if (
+      requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp",
+        'Required parameter "sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp" was null or undefined when calling agentsTeamsSendSave().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{id}/save/send`;
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      body: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendSaveRaw(
+    requestParameters: AgentsTeamsSendSaveRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendSaveRequestOpts(requestParameters);
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RunStateFromJSON(jsonValue),
+      SendRespFromJSON(jsonValue),
     );
   }
 
   /**
    */
-  async apiAiAgentsTeamsRunsRunIdGet(
-    requestParameters: ApiAiAgentsTeamsRunsRunIdGetRequest,
+  async agentsTeamsSendSave(
+    requestParameters: AgentsTeamsSendSaveRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<RunState> {
-    const response = await this.apiAiAgentsTeamsRunsRunIdGetRaw(
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendSaveRaw(
       requestParameters,
       initOverrides,
     );
     return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsUnpublish without sending the request
+   */
+  async agentsTeamsUnpublishRequestOpts(
+    requestParameters: AgentsTeamsUnpublishRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsUnpublish().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsUnpublish().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/unpublish`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Stops a published team answering mentions, by removing the record that marks its account as a team. The account and handle are kept, so it is reversible by publishing again.
+   */
+  async agentsTeamsUnpublishRaw(
+    requestParameters: AgentsTeamsUnpublishRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<void>> {
+    const requestOptions =
+      await this.agentsTeamsUnpublishRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Stops a published team answering mentions, by removing the record that marks its account as a team. The account and handle are kept, so it is reversible by publishing again.
+   */
+  async agentsTeamsUnpublish(
+    requestParameters: AgentsTeamsUnpublishRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<void> {
+    await this.agentsTeamsUnpublishRaw(requestParameters, initOverrides);
   }
 }

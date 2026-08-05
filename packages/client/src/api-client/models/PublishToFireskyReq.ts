@@ -18,31 +18,31 @@
  */
 export interface PublishToFireskyReq {
   /**
-   *
+   * Account email.
    * @type {string}
    * @memberof PublishToFireskyReq
    */
   email: string;
   /**
-   *
+   * The handle the team will answer as.
    * @type {string}
    * @memberof PublishToFireskyReq
    */
   handle: string;
   /**
-   *
+   * Invitation code, where the PDS requires invitations.
    * @type {string}
    * @memberof PublishToFireskyReq
    */
   inviteCode?: string;
   /**
-   *
+   * Account password.
    * @type {string}
    * @memberof PublishToFireskyReq
    */
   password: string;
   /**
-   *
+   * The PDS to host the account.
    * @type {string}
    * @memberof PublishToFireskyReq
    */

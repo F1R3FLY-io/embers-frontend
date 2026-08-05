@@ -22,13 +22,13 @@ import { AddressFromJSON, AddressToJSON } from "./Address";
  */
 export interface DeployAgentReqDeployAgent {
   /**
-   *
+   * The owning wallet address, where the record is read from.
    * @type {Address}
    * @memberof DeployAgentReqDeployAgent
    */
   address: Address;
   /**
-   *
+   * Stored agent identity (`UUIDv4`).
    * @type {string}
    * @memberof DeployAgentReqDeployAgent
    */
@@ -40,7 +40,7 @@ export interface DeployAgentReqDeployAgent {
    */
   type: DeployAgentReqDeployAgentTypeEnum;
   /**
-   *
+   * Exact version to deploy (`UUIDv7`).
    * @type {string}
    * @memberof DeployAgentReqDeployAgent
    */

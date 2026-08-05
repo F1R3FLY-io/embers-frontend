@@ -32,25 +32,25 @@ import {
  */
 export interface SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp {
   /**
-   *
+   * Byte-identical echo of the prepare request.
    * @type {DeployAgentReq}
    * @memberof SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp
    */
   prepareRequest: DeployAgentReq;
   /**
-   *
+   * Byte-identical echo of the prepare response body.
    * @type {DeployAgentResp}
    * @memberof SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp
    */
   prepareResponse: DeployAgentResp;
   /**
-   *
+   * The signed contract(s) for this operation.
    * @type {DeploySignedAgentReq}
    * @memberof SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp
    */
   request: DeploySignedAgentReq;
   /**
-   *
+   * The JWT issued by prepare; binds this send to that exchange.
    * @type {string}
    * @memberof SendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp
    */

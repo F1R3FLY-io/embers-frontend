@@ -1,6 +1,6 @@
 # Operational semantics and theoretical basis
 
-This document gives Agent Teams Workflow v2 a mathematical reading. It is not a claim that arbitrary agents are deterministic. It isolates the deterministic control kernel from nondeterministic activities so that each can be specified honestly.
+This document gives Agent Teams Workflow v2 a mathematical reading. It is not a claim that arbitrary agents are deterministic. It isolates the deterministic control kernel from nondeterministic activities so that each can be specified honestly. The tokens defined here are control markers, not conserved value; the [rho-life correspondence](rho-life-correspondence.md) maps the conserved-token learning theory onto the platform and states where the two token notions meet.
 
 ## Vocabulary and symbols
 

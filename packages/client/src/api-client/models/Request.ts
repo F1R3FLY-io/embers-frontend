@@ -23,31 +23,31 @@ import {
 } from "./TimestampMillis";
 
 /**
- *
+ * Reserved for the request history; the wallet state reports none yet.
  * @export
  * @interface Request
  */
 export interface Request {
   /**
-   *
+   * Requested amount in base units.
    * @type {Int64}
    * @memberof Request
    */
   amount: Int64;
   /**
-   *
+   * Deploy identifier of the request.
    * @type {string}
    * @memberof Request
    */
   id: string;
   /**
-   *
+   * Current request status.
    * @type {RequestStatus}
    * @memberof Request
    */
   status: RequestStatus;
   /**
-   *
+   * When the request was prepared.
    * @type {TimestampMillis}
    * @memberof Request
    */

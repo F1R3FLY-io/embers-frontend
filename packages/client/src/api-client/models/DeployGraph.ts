@@ -18,19 +18,19 @@ import { GraphFromJSON, GraphToJSON } from "./Graph";
 import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
 
 /**
- *
+ * Compile and deploy a raw graphl term.
  * @export
  * @interface DeployGraph
  */
 export interface DeployGraph {
   /**
-   *
+   * The registry claim authorizing publication under the target URI.
    * @type {RegistryDeploy}
    * @memberof DeployGraph
    */
   deploy: RegistryDeploy;
   /**
-   *
+   * Raw graphl term to compile.
    * @type {Graph}
    * @memberof DeployGraph
    */

@@ -29,25 +29,25 @@ import { RunRespFromJSON, RunRespToJSON } from "./RunResp";
  */
 export interface SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp {
   /**
-   *
+   * Byte-identical echo of the prepare request.
    * @type {RunReq}
    * @memberof SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp
    */
   prepareRequest: RunReq;
   /**
-   *
+   * Byte-identical echo of the prepare response body.
    * @type {RunResp}
    * @memberof SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp
    */
   prepareResponse: RunResp;
   /**
-   *
+   * The signed contract(s) for this operation.
    * @type {DeploySignedRunOnFireskyReq}
    * @memberof SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp
    */
   request: DeploySignedRunOnFireskyReq;
   /**
-   *
+   * The JWT issued by prepare; binds this send to that exchange.
    * @type {string}
    * @memberof SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp
    */

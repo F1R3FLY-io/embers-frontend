@@ -18,31 +18,31 @@ import { AddressFromJSON, AddressToJSON } from "./Address";
 import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
 
 /**
- *
+ * Deploy a stored team version, read from the owning wallet's record.
  * @export
  * @interface DeployAgentsTeam
  */
 export interface DeployAgentsTeam {
   /**
-   *
+   * Owning wallet address; record and agent reads resolve against it.
    * @type {Address}
    * @memberof DeployAgentsTeam
    */
   address: Address;
   /**
-   *
+   * The registry claim authorizing publication under the target URI.
    * @type {RegistryDeploy}
    * @memberof DeployAgentsTeam
    */
   deploy: RegistryDeploy;
   /**
-   *
+   * Stored team identity (`UUIDv4`).
    * @type {string}
    * @memberof DeployAgentsTeam
    */
   id: string;
   /**
-   *
+   * Exact version to deploy (`UUIDv7`).
    * @type {string}
    * @memberof DeployAgentsTeam
    */

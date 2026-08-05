@@ -18,7 +18,7 @@
  */
 export interface DeploySignedTestRespEnvDeployFailed {
   /**
-   *
+   * The rejection reported for the environment deploy.
    * @type {string}
    * @memberof DeploySignedTestRespEnvDeployFailed
    */

@@ -18,13 +18,13 @@
  */
 export interface PostRef {
   /**
-   *
+   * The post record's content identifier.
    * @type {string}
    * @memberof PostRef
    */
   cid: string;
   /**
-   *
+   * The post record's AT URI.
    * @type {string}
    * @memberof PostRef
    */

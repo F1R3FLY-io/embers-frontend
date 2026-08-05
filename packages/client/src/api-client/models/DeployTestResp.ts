@@ -22,13 +22,14 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  */
 export interface DeployTestResp {
   /**
-   *
+   * Unsigned environment contract bytes; present only when `env` was
+   * supplied.
    * @type {Base64}
    * @memberof DeployTestResp
    */
   envContract?: Base64;
   /**
-   *
+   * Unsigned test contract bytes to sign.
    * @type {Base64}
    * @memberof DeployTestResp
    */

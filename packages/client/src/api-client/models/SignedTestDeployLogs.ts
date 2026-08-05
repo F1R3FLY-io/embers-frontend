@@ -16,13 +16,13 @@ import type { Log } from "./Log";
 import { LogFromJSON, LogToJSON } from "./Log";
 
 /**
- *
+ * Both deploys landed, the test finalized, and its logs were read back.
  * @export
  * @interface SignedTestDeployLogs
  */
 export interface SignedTestDeployLogs {
   /**
-   *
+   * The messages the test sent to the on-chain log contract, in order.
    * @type {Array<Log>}
    * @memberof SignedTestDeployLogs
    */

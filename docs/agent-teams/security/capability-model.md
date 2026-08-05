@@ -13,7 +13,7 @@ Ownership is split across the corpus so no rule is stated twice. The [threat
 model](threat-model.md) owns assets, trust boundaries, threats, and the redaction policies. The
 [statechart semantics](../theory/statechart-semantics.md#statechart-operations-as-rho-calculus-processes)
 own the reading of nu-restriction as capability creation. The [HTTP
-API](../specification/http-api.md#authentication-and-authorization) owns the three-authority
+API](../../../../embers/docs/api/http-api.md#authentication-and-authorization) owns the three-authority
 endpoint composition. [Durable and hierarchical
 execution](../architecture/durable-execution.md#commands-and-authorization) owns the command
 envelope and its authorization. The [Rholang
@@ -24,9 +24,9 @@ document owns the mechanism classification, the capability lifecycle, the ACL-hy
 service-key concentration analysis, and the ledger of controls that are declared but not
 enforced.** It cites those siblings rather than restating them.
 
-Line anchors refer to branch `dylon/embers-demo-fixes` (backend commit `4a8b791`); backend paths
-are into the `embers` repository, frontend paths into this one. Where a formula appears it is
-written in GitHub math delimiters.
+Line anchors refer to branch `dylon/embers-demo-fixes` with the output-reveal change applied on
+top of backend commit `4a8b791`; backend paths are into the `embers` repository, frontend paths
+into this one. Where a formula appears it is written in GitHub math delimiters.
 
 ## Terms
 
@@ -100,6 +100,7 @@ restates the threat model; each refines one of its rows.
 | Wallet private key | Signature / chain identity | No | Authorizes by identity, not possession of a resource reference. |
 | Embers service key | Signature / chain identity, multi-role | No | Identity-based and heavily concentrated — see below. |
 | Approval grant | Identity-list ACL entry | No | Public `waitId|address` membership against a chain-derived address. |
+| Output reveal claim | Signature / chain identity | No | Owner-identity check adjudicated by `claimOutputReveal` (`init.rho:432-470`); the decrypted value returns only over the claimant's authenticated channel. |
 
 Two non-authority artifacts recur and are classified here so the table is exhaustive: the two-phase
 **JWT** is an *exchange binding*, deliberately carrying no authority (analyzed below), and the
@@ -200,10 +201,16 @@ identity), and the service address is captured once at env init from the init de
   **and** `approval_authority_grants` contains the string `waitId ++ "|" ++ address` (`:386-389`);
   anything else aborts as unauthorized (`:413`).
 
-`advanceRun` is service-only with its own compare-and-set (`:432-508`) and `finishRun` is owner-only
-(`:565-595`). Grants are computed by the service at each checkpoint — one `format!("{}|{}", wait.id,
-address)` string per approver of each pending approval wait (`orchestration.rs:1022-1070`, formatted
-at `:1044-1056`) — and republished wholesale on every advancement.
+`advanceRun` is service-only with its own compare-and-set (`:472-548`), `finishRun` is owner-only
+(`:605-635`), and `claimOutputReveal` is owner-only (`:432-470`): it releases a terminal run's
+output hashes to the backend — and thereby the decrypted value to the claimant's channel — exactly
+when the deployer's derived address equals the recorded owner, appending an actor-less
+`outputRevealed` event. Delegates deliberately cannot reveal: grants are wait-scoped and the
+terminal advancement republishes them empty, so the ledger itself declares delegated authority
+ended with the waits. Grants are computed by the service at each checkpoint — one
+`format!("{}|{}", wait.id, address)` string per approver of each pending approval wait
+(`orchestration.rs:1022-1070`, formatted at `:1044-1056`) — and republished wholesale on every
+advancement.
 
 **The delegated grant is an ACL entry, not a capability.** It is public-ledger string membership
 tested against a chain-derived identity — Lampson's column, not his row. Three consequences follow
@@ -224,21 +231,30 @@ theory](../theory/hierarchical-continuations.md).
 ## The run link: a bearer read capability
 
 The run identifier is a UUIDv7 minted at run prepare (`run_agents_team.rs:88`). `GET /runs/{run_id}`
-takes only the path id — no wallet, session, or signature (`endpoints.rs:213-220`) — so the run URL
+takes only the path id — no wallet, session, or signature (`endpoints.rs:256-266`) — so the run URL
 is a pure bearer capability: whoever holds it may read. The read is deliberately narrow: the on-chain
-`getRun` scrubs the owner (`init.rho:600`) and returns status, revision, wait IDs, grants, deadline,
+`getRun` scrubs the owner (`init.rho:640`) and returns status, revision, wait IDs, grants, deadline,
 and hashes plus event *types* only; prompts, outputs, command bodies, and continuations exist solely
 as encrypted artifacts. The link is a public metadata page with an unguessable name, not a secret —
 and it is treated that way: F1r3sky terminal replies **post the run link publicly** by design
 (`run_on_firesky.rs:137-151`).
 
+The bearer link stays metadata-only even now that a content read exists. The full-response read
+(`POST /runs/{run_id}/output/prepare` + `/send`, [reveal
+output](../../../../embers/docs/api/methods/ai-agents-teams/reveal-output.md)) is a **signed, non-bearer, owner-only**
+read adjudicated by the `claimOutputReveal` clause: holding the link still reveals nothing, a
+stranger's signature is refused on chain, and the value travels only over the owner's authenticated
+channel. Its *occurrence* is publicly evidenced — each reveal appends an `outputRevealed` event the
+bearer page shows — while the revealer's identity and the value itself stay off the ledger:
+publishing the actor would de-anonymize the very owner `getRun` scrubs.
+
 One asymmetry the [threat model's run-enumeration
 row](threat-model.md#threat-analysis) now records: the HTTP surface exposes no global list, but the
-ledger's `listRuns` clause (`init.rho:607-619`) returns owner-scrubbed records to any process that
+ledger's `listRuns` clause (`init.rho:647-659`) returns owner-scrubbed records to any process that
 can read the chain directly. Bearer unguessability protects the HTTP path; it does not hide the
 existence of runs from a chain reader. As a capability the run link is real — possession-based and
 unforgeable — but degenerate: read-only, non-attenuable, and non-revocable. The [HTTP
-API](../specification/http-api.md#authentication-and-authorization) owns the endpoint composition;
+API](../../../../embers/docs/api/http-api.md#authentication-and-authorization) owns the endpoint composition;
 the [threat model](threat-model.md#trust-boundaries) owns the link-confidentiality threat.
 
 ## Artifact capabilities: derived, sealed, and committed
@@ -275,8 +291,8 @@ The token is worth classifying precisely because it looks like an authority and 
 **exchange binding**. Possessing it authorizes nothing — it only proves the send half matches the
 prepare half. The sole mutation authority remains the wallet signature over the contract bytes, and
 the chain, not the HTTP layer, is the verifier of record. The [two-phase
-protocol](../specification/http-api.md#the-two-phase-prepare-sign-send-protocol) and [diagram
-20](../diagrams/20-api-two-phase.svg) own the mechanics.
+protocol](../../../../embers/docs/api/http-api.md#the-two-phase-prepare-sign-send-protocol) and [diagram
+20](../../../../embers/docs/api/diagrams/20-api-two-phase.svg) own the mechanics.
 
 ## Service-key concentration and the confused deputy
 

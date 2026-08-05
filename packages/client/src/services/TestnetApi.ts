@@ -39,7 +39,7 @@ export class TestnetApiSdk {
       test,
     };
 
-    const prepareResponse = await this.client.apiTestnetDeployPreparePost(
+    const prepareResponse = await this.client.testnetPrepareDeploy(
       {
         deployTestReq: prepareRequest,
       },
@@ -54,7 +54,7 @@ export class TestnetApiSdk {
       prepareResponse.response.envContract &&
       signContract(prepareResponse.response.envContract, testKey);
 
-    return this.client.apiTestnetDeploySendPost(
+    return this.client.testnetSendDeploy(
       {
         sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp: {
           prepareRequest,
@@ -75,7 +75,7 @@ export class TestnetApiSdk {
    * @returns Wallet key
    */
   public async getWallet(config?: QueryCallConfig) {
-    const { key } = await this.client.apiTestnetWalletPost({
+    const { key } = await this.client.testnetCreateWallet({
       signal: config?.signal,
     });
     return PrivateKey.tryFromHex(key);

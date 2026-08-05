@@ -12,13 +12,13 @@
  */
 
 /**
- *
+ * Deploy raw Rholang source verbatim.
  * @export
  * @interface DeployCode
  */
 export interface DeployCode {
   /**
-   *
+   * Raw Rholang source to deploy verbatim.
    * @type {string}
    * @memberof DeployCode
    */

@@ -51,7 +51,7 @@ export class AgentsApiSdk {
     createAgentReq: CreateAgentReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsCreatePreparePost(
+    const prepareResponse = await this.client.agentsPrepareCreate(
       {
         createAgentReq,
       },
@@ -67,7 +67,7 @@ export class AgentsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsCreateSendPost(
+    const sendResponse = await this.client.agentsSendCreate(
       {
         sendRequestBodySignedContractCreateAgentReqCreateAgentResp: {
           prepareRequest: createAgentReq,
@@ -88,7 +88,7 @@ export class AgentsApiSdk {
       type: "Code" as const,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsDeployPreparePost(
+    const prepareResponse = await this.client.agentsPrepareDeploy(
       {
         deployAgentReq: prepareRequest,
       },
@@ -107,7 +107,7 @@ export class AgentsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsDeploySendPost(
+    const sendResponse = await this.client.agentsSendDeploy(
       {
         sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: {
           prepareRequest,
@@ -139,7 +139,7 @@ export class AgentsApiSdk {
       version,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsDeployPreparePost(
+    const prepareResponse = await this.client.agentsPrepareDeploy(
       {
         deployAgentReq: prepareRequest,
       },
@@ -158,7 +158,7 @@ export class AgentsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsDeploySendPost(
+    const sendResponse = await this.client.agentsSendDeploy(
       {
         sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: {
           prepareRequest,
@@ -177,7 +177,7 @@ export class AgentsApiSdk {
    * Gets all agents owned by the current address.
    */
   public async get(config?: QueryCallConfig) {
-    return this.client.apiAiAgentsAddressGet(
+    return this.client.agentsList(
       {
         address: this.address,
       },
@@ -195,7 +195,7 @@ export class AgentsApiSdk {
     version: string,
     config?: QueryCallConfig,
   ) {
-    return this.client.apiAiAgentsAddressIdVersionsVersionGet(
+    return this.client.agentsGetVersion(
       {
         address: this.address,
         id,
@@ -210,7 +210,7 @@ export class AgentsApiSdk {
    * @param id The ID of the agent
    */
   public async getVersions(id: string, config?: QueryCallConfig) {
-    return this.client.apiAiAgentsAddressIdVersionsGet(
+    return this.client.agentsListVersions(
       {
         address: this.address,
         id,
@@ -230,7 +230,7 @@ export class AgentsApiSdk {
     agentReq: CreateAgentReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsIdSavePreparePost(
+    const prepareResponse = await this.client.agentsPrepareSave(
       {
         createAgentReq: agentReq,
         id,
@@ -247,7 +247,7 @@ export class AgentsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsIdSaveSendPost(
+    const sendResponse = await this.client.agentsSendSave(
       {
         id,
         sendRequestBodySignedContractCreateAgentReqSaveAgentResp: {
@@ -264,7 +264,7 @@ export class AgentsApiSdk {
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareResponse = await this.client.apiAiAgentsIdDeletePreparePost(
+    const prepareResponse = await this.client.agentsPrepareDelete(
       {
         id,
       },
@@ -280,7 +280,7 @@ export class AgentsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsIdDeleteSendPost(
+    const sendResponse = await this.client.agentsSendDelete(
       {
         id,
         signedContract,

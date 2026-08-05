@@ -22,13 +22,14 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface DeploySignedTestReq {
   /**
-   *
+   * The signed environment contract; present exactly when prepare
+   * returned `env_contract`.
    * @type {SignedContract}
    * @memberof DeploySignedTestReq
    */
   env?: SignedContract;
   /**
-   *
+   * The signed test contract.
    * @type {SignedContract}
    * @memberof DeploySignedTestReq
    */

@@ -22,37 +22,38 @@ import { GraphFromJSON, GraphToJSON } from "./Graph";
  */
 export interface CreateAgentsTeamReq {
   /**
-   *
+   * The Workflow v2 definition document; validated permissively at save
+   * time, strictly at deploy.
    * @type {any}
    * @memberof CreateAgentsTeamReq
    */
   definition?: any | null;
   /**
-   *
+   * Team description.
    * @type {string}
    * @memberof CreateAgentsTeamReq
    */
   description?: string;
   /**
-   *
+   * The graphl serialization of the canvas.
    * @type {Graph}
    * @memberof CreateAgentsTeamReq
    */
   graph?: Graph;
   /**
-   *
+   * Logo reference.
    * @type {string}
    * @memberof CreateAgentsTeamReq
    */
   logo?: string;
   /**
-   *
+   * Team name.
    * @type {string}
    * @memberof CreateAgentsTeamReq
    */
   name: string;
   /**
-   *
+   * Declared shard label.
    * @type {string}
    * @memberof CreateAgentsTeamReq
    */

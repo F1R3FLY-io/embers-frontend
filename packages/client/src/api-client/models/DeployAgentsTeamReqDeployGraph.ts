@@ -24,13 +24,13 @@ import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
  */
 export interface DeployAgentsTeamReqDeployGraph {
   /**
-   *
+   * The registry claim authorizing publication under the target URI.
    * @type {RegistryDeploy}
    * @memberof DeployAgentsTeamReqDeployGraph
    */
   deploy: RegistryDeploy;
   /**
-   *
+   * Raw graphl term to compile.
    * @type {Graph}
    * @memberof DeployAgentsTeamReqDeployGraph
    */

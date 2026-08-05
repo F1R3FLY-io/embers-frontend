@@ -22,19 +22,19 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  */
 export interface CreateOslfResp {
   /**
-   *
+   * The unsigned creation contract bytes to sign.
    * @type {Base64}
    * @memberof CreateOslfResp
    */
   contract: Base64;
   /**
-   *
+   * The minted document identity (`UUIDv4`).
    * @type {string}
    * @memberof CreateOslfResp
    */
   id: string;
   /**
-   *
+   * The first version's identifier (`UUIDv7`).
    * @type {string}
    * @memberof CreateOslfResp
    */

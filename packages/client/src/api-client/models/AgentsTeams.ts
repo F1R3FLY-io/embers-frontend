@@ -25,7 +25,7 @@ import {
  */
 export interface AgentsTeams {
   /**
-   *
+   * The wallet's teams, latest version each.
    * @type {Array<AgentsTeamHeader>}
    * @memberof AgentsTeams
    */

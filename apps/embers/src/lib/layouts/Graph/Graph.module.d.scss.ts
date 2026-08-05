@@ -9,5 +9,6 @@ declare const classNames: {
   readonly input: "input";
   readonly footer: "footer";
   readonly "sidebar-controls": "sidebar-controls";
+  readonly "log-link": "log-link";
 };
 export default classNames;

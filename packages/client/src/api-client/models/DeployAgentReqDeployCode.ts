@@ -18,7 +18,7 @@
  */
 export interface DeployAgentReqDeployCode {
   /**
-   *
+   * Raw Rholang source to deploy verbatim.
    * @type {string}
    * @memberof DeployAgentReqDeployCode
    */

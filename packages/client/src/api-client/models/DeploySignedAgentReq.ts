@@ -22,13 +22,13 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface DeploySignedAgentReq {
   /**
-   *
+   * The signed main contract.
    * @type {SignedContract}
    * @memberof DeploySignedAgentReq
    */
   contract: SignedContract;
   /**
-   *
+   * The signed system contract; present exactly when prepare returned one.
    * @type {SignedContract}
    * @memberof DeploySignedAgentReq
    */

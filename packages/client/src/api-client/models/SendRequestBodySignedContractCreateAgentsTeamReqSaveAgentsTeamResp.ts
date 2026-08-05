@@ -32,25 +32,25 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp {
   /**
-   *
+   * Byte-identical echo of the prepare request.
    * @type {CreateAgentsTeamReq}
    * @memberof SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp
    */
   prepareRequest: CreateAgentsTeamReq;
   /**
-   *
+   * Byte-identical echo of the prepare response body.
    * @type {SaveAgentsTeamResp}
    * @memberof SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp
    */
   prepareResponse: SaveAgentsTeamResp;
   /**
-   *
+   * The signed contract(s) for this operation.
    * @type {SignedContract}
    * @memberof SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp
    */
   request: SignedContract;
   /**
-   *
+   * The JWT issued by prepare; binds this send to that exchange.
    * @type {string}
    * @memberof SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp
    */

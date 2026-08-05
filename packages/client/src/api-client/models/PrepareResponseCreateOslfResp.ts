@@ -22,13 +22,15 @@ import { CreateOslfRespFromJSON, CreateOslfRespToJSON } from "./CreateOslfResp";
  */
 export interface PrepareResponseCreateOslfResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {CreateOslfResp}
    * @memberof PrepareResponseCreateOslfResp
    */
   response: CreateOslfResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponseCreateOslfResp
    */

@@ -18,7 +18,7 @@
  */
 export interface CreateTestwalletResp {
   /**
-   *
+   * The new wallet's secp256k1 private key, hex-encoded.
    * @type {string}
    * @memberof CreateTestwalletResp
    */

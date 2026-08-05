@@ -25,49 +25,49 @@ import {
  */
 export interface AgentHeader {
   /**
-   *
+   * When this version was prepared.
    * @type {TimestampMillis}
    * @memberof AgentHeader
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Agent description.
    * @type {string}
    * @memberof AgentHeader
    */
   description?: string;
   /**
-   *
+   * Agent identity (`UUIDv4`), stable across versions.
    * @type {string}
    * @memberof AgentHeader
    */
   id: string;
   /**
-   *
+   * When this version was last deployed standalone; absent if never.
    * @type {TimestampMillis}
    * @memberof AgentHeader
    */
   lastDeploy?: TimestampMillis;
   /**
-   *
+   * Logo reference recorded with the agent.
    * @type {string}
    * @memberof AgentHeader
    */
   logo?: string;
   /**
-   *
+   * Agent name.
    * @type {string}
    * @memberof AgentHeader
    */
   name: string;
   /**
-   *
+   * Declared shard label recorded with the agent.
    * @type {string}
    * @memberof AgentHeader
    */
   shard?: string;
   /**
-   *
+   * Latest version identifier (`UUIDv7`).
    * @type {string}
    * @memberof AgentHeader
    */

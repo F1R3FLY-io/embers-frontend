@@ -22,7 +22,7 @@ import { OslfHeaderFromJSON, OslfHeaderToJSON } from "./OslfHeader";
  */
 export interface Oslfs {
   /**
-   *
+   * The wallet's OSLF documents, latest version each.
    * @type {Array<OslfHeader>}
    * @memberof Oslfs
    */

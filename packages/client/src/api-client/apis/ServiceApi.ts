@@ -18,9 +18,9 @@ import * as runtime from "../runtime";
  */
 export class ServiceApi extends runtime.BaseAPI {
   /**
-   * Creates request options for apiServiceReadyGet without sending the request
+   * Creates request options for serviceReady without sending the request
    */
-  async apiServiceReadyGetRequestOpts(): Promise<runtime.RequestOpts> {
+  async serviceReadyRequestOpts(): Promise<runtime.RequestOpts> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
@@ -37,10 +37,10 @@ export class ServiceApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiServiceReadyGetRaw(
+  async serviceReadyRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<void>> {
-    const requestOptions = await this.apiServiceReadyGetRequestOpts();
+    const requestOptions = await this.serviceReadyRequestOpts();
     const response = await this.request(requestOptions, initOverrides);
 
     return new runtime.VoidApiResponse(response);
@@ -48,9 +48,9 @@ export class ServiceApi extends runtime.BaseAPI {
 
   /**
    */
-  async apiServiceReadyGet(
+  async serviceReady(
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<void> {
-    await this.apiServiceReadyGetRaw(initOverrides);
+    await this.serviceReadyRaw(initOverrides);
   }
 }

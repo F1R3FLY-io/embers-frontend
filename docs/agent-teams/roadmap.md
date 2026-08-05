@@ -72,7 +72,7 @@ Expand the run page into a hierarchical timeline showing node activation, route 
 
 ### Cost, token, and authority budgets
 
-Add policies for maximum cost-accounted communication, wall-clock deadline, model tokens, monetary spend, active workflow tokens, artifact bytes, retries, and effect count. Treat budget exhaustion as a disposition so a team can degrade, request approval, or terminate cleanly.
+Add policies for maximum cost-accounted communication, wall-clock deadline, model tokens, monetary spend, active workflow tokens, artifact bytes, retries, and effect count. Treat budget exhaustion as a disposition so a team can degrade, request approval, or terminate cleanly. The design basis is the conserved-token learning economy of the rho-life corpus — budgets as conserved quantities carried in token context, probes priced per access grade, exhaustion as a routable outcome — as mapped in the [rho-life correspondence](theory/rho-life-correspondence.md).
 
 ### Static analysis and model checking
 

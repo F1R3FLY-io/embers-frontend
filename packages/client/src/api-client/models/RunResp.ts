@@ -27,55 +27,55 @@ import {
  */
 export interface RunResp {
   /**
-   *
+   * Capability commitment over the durable continuation.
    * @type {string}
    * @memberof RunResp
    */
   continuationCapabilityHash?: string;
   /**
-   *
+   * Content commitment over the durable continuation.
    * @type {string}
    * @memberof RunResp
    */
   continuationContentHash?: string;
   /**
-   *
+   * The unsigned invocation contract bytes to sign.
    * @type {Base64}
    * @memberof RunResp
    */
   contract: Base64;
   /**
-   *
+   * Prepare instant.
    * @type {TimestampMillis}
    * @memberof RunResp
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Hash pinning the executed definition.
    * @type {string}
    * @memberof RunResp
    */
   definitionHash?: string;
   /**
-   *
+   * Whether the run uses the durable ledger.
    * @type {boolean}
    * @memberof RunResp
    */
   durable: boolean;
   /**
-   *
+   * Capability commitment over the invocation artifact.
    * @type {string}
    * @memberof RunResp
    */
   requestCapabilityHash: string;
   /**
-   *
+   * Content commitment over the invocation artifact.
    * @type {string}
    * @memberof RunResp
    */
   requestContentHash: string;
   /**
-   *
+   * The run capability (`UUIDv7`), minted at prepare.
    * @type {string}
    * @memberof RunResp
    */

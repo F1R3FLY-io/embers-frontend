@@ -30,43 +30,45 @@ import { UriFromJSON, UriToJSON } from "./Uri";
  */
 export interface PublishedState {
   /**
-   *
+   * Three-valued PDS reconciliation: true when the account answers, false
+   * when the chain records a publication whose account is gone, null when
+   * the question could not be answered.
    * @type {boolean}
    * @memberof PublishedState
    */
   accountExists?: boolean;
   /**
-   *
+   * Whether the config record is present — the team answers mentions.
    * @type {boolean}
    * @memberof PublishedState
    */
   active?: boolean;
   /**
-   *
+   * The account's DID, when recorded.
    * @type {string}
    * @memberof PublishedState
    */
   did?: string;
   /**
-   *
+   * The account's handle, when recorded.
    * @type {string}
    * @memberof PublishedState
    */
   handle?: string;
   /**
-   *
+   * Whether the published deployment is still the team's newest.
    * @type {boolean}
    * @memberof PublishedState
    */
   isLatestDeployment: boolean;
   /**
-   *
+   * The team version (`UUIDv7`) that deployment was built from.
    * @type {string}
    * @memberof PublishedState
    */
   publishedVersion: string;
   /**
-   *
+   * The published deployment's registry URI.
    * @type {Uri}
    * @memberof PublishedState
    */

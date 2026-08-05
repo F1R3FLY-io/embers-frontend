@@ -10,7 +10,7 @@ import {
 } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
@@ -102,6 +102,7 @@ function parseDeadline(source: string): Date {
 
 export default function AgentTeamRun() {
   const { runId = "" } = useParams();
+  const location = useLocation();
   const wallet = useWalletState();
   const confirm = useConfirm();
   const [commandType, setCommandType] = useState<RunCommandKindType>(
@@ -214,6 +215,19 @@ export default function AgentTeamRun() {
       await run.refetch();
     },
   });
+  const reveal = useMutation({
+    mutationFn: async () => {
+      if (!wallet.ready) {
+        throw new Error("Sign in with the wallet that started this run first.");
+      }
+      return wallet.embers.agentsTeams.revealOutput(runId);
+    },
+    onSuccess: async () => {
+      // The signed claim appends an outputRevealed event to the public
+      // timeline; refetch so the trail below shows it.
+      await run.refetch();
+    },
+  });
 
   const needsWait =
     commandType !== RunCommandKind.Cancel &&
@@ -315,8 +329,11 @@ export default function AgentTeamRun() {
                 <h2>Send an authenticated command</h2>
                 {!wallet.ready ? (
                   <p className={styles.notice}>
-                    <a href="/login">Sign in</a> with the run owner or a
-                    delegated approver wallet to resume this run.
+                    <Link state={{ from: location }} to="/login">
+                      Sign in
+                    </Link>{" "}
+                    with the run owner or a delegated approver wallet to
+                    resume this run.
                   </p>
                 ) : (
                   <form
@@ -517,11 +534,81 @@ export default function AgentTeamRun() {
                       </p>
                     ) : null}
                     {command.isSuccess ? (
-                      <p className={styles.success} role="status">
-                        Command applied. The ledger has been refreshed.
-                      </p>
+                      <>
+                        <p className={styles.success} role="status">
+                          Command applied. The ledger has been refreshed.
+                        </p>
+                        <section className={styles["command-result"]}>
+                          <h3>Command result (visible only to you)</h3>
+                          <p>
+                            This value returned over your authenticated
+                            channel; the public ledger records only hashes.
+                          </p>
+                          <pre data-testid="command-result-json">
+                            {JSON.stringify(
+                              command.data.sendResponse,
+                              null,
+                              2,
+                            )}
+                          </pre>
+                        </section>
+                      </>
                     ) : null}
                   </form>
+                )}
+              </section>
+            ) : null}
+
+            {run.data.status === "completed" ? (
+              <section className={styles.section}>
+                <h2>Reveal the full response</h2>
+                {!wallet.ready ? (
+                  <p className={styles.notice}>
+                    <Link state={{ from: location }} to="/login">
+                      Sign in
+                    </Link>{" "}
+                    with the wallet that started this run to reveal its full
+                    response.
+                  </p>
+                ) : (
+                  <>
+                    <p className={styles.notice}>
+                      The output value is sealed in an encrypted artifact whose
+                      hashes are committed on this record; only the run
+                      owner&apos;s signature can release it, and the public
+                      ledger records the reveal without the value.
+                    </p>
+                    <button
+                      disabled={reveal.isPending}
+                      type="button"
+                      onClick={() => {
+                        reveal.reset();
+                        reveal.mutate();
+                      }}
+                    >
+                      {reveal.isPending
+                        ? "Signing and revealing…"
+                        : "Reveal full response"}
+                    </button>
+                    {reveal.error ? (
+                      <p className={styles.error} role="alert">
+                        {reveal.error.message}
+                      </p>
+                    ) : null}
+                    {reveal.isSuccess ? (
+                      <section className={styles["command-result"]}>
+                        <h3>Full response (visible only to you)</h3>
+                        <p>
+                          This value returned over your authenticated channel;
+                          the public ledger records only the reveal event and
+                          hashes.
+                        </p>
+                        <pre data-testid="reveal-result-json">
+                          {JSON.stringify(reveal.data.sendResponse, null, 2)}
+                        </pre>
+                      </section>
+                    ) : null}
+                  </>
                 )}
               </section>
             ) : null}
@@ -541,7 +628,9 @@ export default function AgentTeamRun() {
             <p className={styles.privacy}>
               This capability-scoped view contains execution metadata only.
               Inputs, outputs, credentials, and artifacts are deliberately
-              excluded from the public ledger.
+              excluded from the public ledger; a completed run&apos;s output is
+              released only through the owner-signed reveal, over the
+              signer&apos;s own channel.
             </p>
           </>
         ) : null}

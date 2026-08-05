@@ -114,7 +114,7 @@ Content-Type: application/json
 }
 ```
 
-Sign the returned `response.contract`, then post the signed contract together with the unchanged prepare request, prepare response, and token to `/commands/send`. Client applications should use `AgentsTeamsApiSdk.command`, which performs this protocol and preserves all hashes and timestamps. The protocol's exact binding rules, the complete endpoint reference, and the served Swagger/OpenAPI surface are specified in [HTTP API and OpenAPI surface](../specification/http-api.md).
+Sign the returned `response.contract`, then post the signed contract together with the unchanged prepare request, prepare response, and token to `/commands/send`. Client applications should use `AgentsTeamsApiSdk.command`, which performs this protocol and preserves all hashes and timestamps. The protocol's exact binding rules, the complete endpoint reference, and the served Swagger/OpenAPI surface are specified in [HTTP API and OpenAPI surface](../../../../embers/docs/api/http-api.md).
 
 Timer commands must repeat the ledger’s exact `dueAt` value and cannot be applied early. Approval commands require a unique `decisionId`; replay is rejected. Migration is intentionally not a casual run-page operation because it changes the pinned definition and requires a reviewed target URI, target hash, and state patch.
 

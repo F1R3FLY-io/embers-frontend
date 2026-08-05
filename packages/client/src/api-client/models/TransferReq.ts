@@ -24,25 +24,25 @@ import { Int64FromJSON, Int64ToJSON } from "./Int64";
  */
 export interface TransferReq {
   /**
-   *
+   * Amount in base units; must be positive.
    * @type {Int64}
    * @memberof TransferReq
    */
   amount: Int64;
   /**
-   *
+   * Free-text memo, recorded on chain in the transfer history.
    * @type {string}
    * @memberof TransferReq
    */
   description?: string;
   /**
-   *
+   * Sender address; must be the signing wallet's address.
    * @type {Address}
    * @memberof TransferReq
    */
   from: Address;
   /**
-   *
+   * Recipient address.
    * @type {Address}
    * @memberof TransferReq
    */

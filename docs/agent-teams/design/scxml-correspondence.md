@@ -4,7 +4,7 @@ This design document records the relationship between Agent Teams Workflow v2 an
 
 **This is a documented relationship, not a conformance claim.** Embers does not implement SCXML, does not aim to, and several load-bearing v2 constructs have no SCXML representation at all. The value of the correspondence is orientation: readers who know SCXML (or UML state machines) can locate every v2 concept relative to ground they already know, and see exactly where the durable, deterministic design departs from the standard.
 
-Companions: the [statechart semantics](../theory/statechart-semantics.md) owns the formal rules referenced throughout; the [Rholang realization](rholang-realization.md) owns how the same operations execute; the [specification](../specification/workflow-definition-v2.md) owns the v2 syntax. SCXML citations use the recommendation's section numbers (verified against the 1 September 2015 Recommendation).
+Companions: the [statechart semantics](../theory/statechart-semantics.md) owns the formal rules referenced throughout; the [Rholang realization](rholang-realization.md) owns how the same operations execute; the [specification](../specification/workflow-definition-v2.md) owns the v2 syntax; the [TOGL correspondence](togl-correspondence.md) maps the same constructs onto the structural graph algebra behind the graphl serialization. SCXML citations use the recommendation's section numbers (verified against the 1 September 2015 Recommendation).
 
 ## Reading guide: SCXML in five sentences
 

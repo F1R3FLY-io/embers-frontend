@@ -25,55 +25,56 @@ import {
  */
 export interface Agent {
   /**
-   *
+   * The agent's Rholang source; absent when the version was written
+   * without one.
    * @type {string}
    * @memberof Agent
    */
   code?: string;
   /**
-   *
+   * When this version was prepared.
    * @type {TimestampMillis}
    * @memberof Agent
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Agent description.
    * @type {string}
    * @memberof Agent
    */
   description?: string;
   /**
-   *
+   * Agent identity (`UUIDv4`), stable across versions.
    * @type {string}
    * @memberof Agent
    */
   id: string;
   /**
-   *
+   * When this version was last deployed standalone; absent if never.
    * @type {TimestampMillis}
    * @memberof Agent
    */
   lastDeploy?: TimestampMillis;
   /**
-   *
+   * Logo reference recorded with the agent.
    * @type {string}
    * @memberof Agent
    */
   logo?: string;
   /**
-   *
+   * Agent name.
    * @type {string}
    * @memberof Agent
    */
   name: string;
   /**
-   *
+   * Declared shard label recorded with the agent.
    * @type {string}
    * @memberof Agent
    */
   shard?: string;
   /**
-   *
+   * This version's identifier (`UUIDv7`).
    * @type {string}
    * @memberof Agent
    */

@@ -16,25 +16,25 @@ import type { Address } from "./Address";
 import { AddressFromJSON, AddressToJSON } from "./Address";
 
 /**
- *
+ * Deploy a stored agent version, read from the owning wallet's record.
  * @export
  * @interface DeployAgent
  */
 export interface DeployAgent {
   /**
-   *
+   * The owning wallet address, where the record is read from.
    * @type {Address}
    * @memberof DeployAgent
    */
   address: Address;
   /**
-   *
+   * Stored agent identity (`UUIDv4`).
    * @type {string}
    * @memberof DeployAgent
    */
   id: string;
   /**
-   *
+   * Exact version to deploy (`UUIDv7`).
    * @type {string}
    * @memberof DeployAgent
    */

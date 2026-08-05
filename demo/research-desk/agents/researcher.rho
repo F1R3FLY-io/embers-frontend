@@ -1,0 +1,96 @@
+// Research Desk demo: Researcher agent (ABI structured-v1).
+//
+// First pass: the invocation input is the run prompt (a String). The agent
+// retrieves context from the embers-demo-docs ChromaDB collection and drafts
+// a grounded answer with the gpt4 system channel.
+//
+// Revise pass: the invocation input is the Critic's output record
+// {question, answer, feedback, score} routed back over the revise back-edge.
+// The agent re-retrieves context and redrafts against the feedback.
+//
+// The chroma query result is List[Map[id -> (text, meta)]]. This Rholang has
+// no general toString (it exists only for deploy-id unforgeables), so the
+// context prompt is built by buildContext: a recursive fold over map.toList()
+// collecting the document texts.
+//
+// The output is always {question, answer} with disposition completed; scores
+// are added by the Critic. Scores stay integers because floats are not
+// portable across the activity boundary.
+contract main(@invocation, return) = {
+  new chromaQuery(`rho:chroma:collection:entries:query`),
+      gpt4(`rho:ai:gpt4`),
+      buildContext, retrieve, rawCh, contextCh, draftCh in {
+    contract buildContext(@entries, @index, @acc, ret) = {
+      if (index < entries.length()) {
+        match entries.nth(index) {
+          (_, (text, _)) => {
+            buildContext!(entries, index + 1, acc ++ "\n- " ++ text, *ret)
+          }
+          _ => {
+            buildContext!(entries, index + 1, acc, *ret)
+          }
+        }
+      } else {
+        ret!(acc)
+      }
+    } |
+    contract retrieve(@question, ret) = {
+      new resultsCh in {
+        chromaQuery!("embers-demo-docs", [question], *resultsCh) |
+        for (@results <- resultsCh) {
+          match results.nth(0) {
+            resultMap => {
+              buildContext!(resultMap.toList(), 0, "", *ret)
+            }
+          }
+        }
+      }
+    } |
+    match invocation.getOrElse("input", Nil) {
+      question /\ String => {
+        retrieve!(question, *contextCh) |
+        for (@context <- contextCh) {
+          gpt4!(
+            "You are the F1r3fly research desk. Answer the question using ONLY the context below. Never use outside knowledge, even when you know the answer. If the context does not contain the needed information, reply with EXACTLY the two words: INSUFFICIENT CONTEXT. Otherwise be precise and complete. Maximum two short paragraphs.\n\nCONTEXT:"
+              ++ context
+              ++ "\n\nQUESTION: "
+              ++ question,
+            *draftCh
+          ) |
+          for (@draft <- draftCh) {
+            return!({
+              "output": {"question": question, "answer": draft},
+              "disposition": "completed"
+            })
+          }
+        }
+      }
+      revision => {
+        match (revision.getOrElse("question", ""), revision.getOrElse("answer", ""), revision.getOrElse("feedback", "")) {
+          (question, previous, feedback) => {
+            retrieve!(question, *contextCh) |
+            for (@context <- contextCh) {
+              gpt4!(
+                "You are the F1r3fly research desk. Revise the previous draft so it fully addresses the reviewer feedback, using ONLY the context below. Never use outside knowledge, even when you know the answer. If the context does not contain the needed information, reply with EXACTLY the two words: INSUFFICIENT CONTEXT. Maximum two short paragraphs.\n\nCONTEXT:"
+                  ++ context
+                  ++ "\n\nQUESTION: "
+                  ++ question
+                  ++ "\n\nPREVIOUS DRAFT: "
+                  ++ previous
+                  ++ "\n\nREVIEWER FEEDBACK: "
+                  ++ feedback,
+                *draftCh
+              ) |
+              for (@draft <- draftCh) {
+                return!({
+                  "output": {"question": question, "answer": draft},
+                  "disposition": "completed"
+                })
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -43,7 +43,7 @@ export class OslfsApiSdk {
     createOslfReq: CreateOslfReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiOslfsCreatePreparePost(
+    const prepareResponse = await this.client.oslfsPrepareCreate(
       {
         createOslfReq,
       },
@@ -59,7 +59,7 @@ export class OslfsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiOslfsCreateSendPost(
+    const sendResponse = await this.client.oslfsSendCreate(
       {
         sendRequestBodySignedContractCreateOslfReqCreateOslfResp: {
           prepareRequest: createOslfReq,
@@ -75,7 +75,7 @@ export class OslfsApiSdk {
   }
 
   public async get(config?: QueryCallConfig) {
-    return this.client.apiOslfsAddressGet(
+    return this.client.oslfsList(
       {
         address: this.address,
       },
@@ -88,7 +88,7 @@ export class OslfsApiSdk {
     version: string,
     config?: QueryCallConfig,
   ) {
-    return this.client.apiOslfsAddressIdVersionsVersionGet(
+    return this.client.oslfsGetVersion(
       {
         address: this.address,
         id,
@@ -99,7 +99,7 @@ export class OslfsApiSdk {
   }
 
   public async getVersions(id: string, config?: QueryCallConfig) {
-    return this.client.apiOslfsAddressIdVersionsGet(
+    return this.client.oslfsListVersions(
       {
         address: this.address,
         id,
@@ -113,7 +113,7 @@ export class OslfsApiSdk {
     oslfReq: CreateOslfReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiOslfsIdSavePreparePost(
+    const prepareResponse = await this.client.oslfsPrepareSave(
       {
         createOslfReq: oslfReq,
         id,
@@ -130,7 +130,7 @@ export class OslfsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiOslfsIdSaveSendPost(
+    const sendResponse = await this.client.oslfsSendSave(
       {
         id,
         sendRequestBodySignedContractCreateOslfReqSaveOslfResp: {
@@ -147,7 +147,7 @@ export class OslfsApiSdk {
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareResponse = await this.client.apiOslfsIdDeletePreparePost(
+    const prepareResponse = await this.client.oslfsPrepareDelete(
       {
         id,
       },
@@ -163,7 +163,7 @@ export class OslfsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiOslfsIdDeleteSendPost(
+    const sendResponse = await this.client.oslfsSendDelete(
       {
         id,
         signedContract,

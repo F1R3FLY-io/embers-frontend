@@ -22,13 +22,15 @@ import { BoostRespFromJSON, BoostRespToJSON } from "./BoostResp";
  */
 export interface PrepareResponseBoostResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {BoostResp}
    * @memberof PrepareResponseBoostResp
    */
   response: BoostResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponseBoostResp
    */

@@ -26,25 +26,25 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface SendRequestBodySignedContractCreateOslfReqCreateOslfResp {
   /**
-   *
+   * Byte-identical echo of the prepare request.
    * @type {CreateOslfReq}
    * @memberof SendRequestBodySignedContractCreateOslfReqCreateOslfResp
    */
   prepareRequest: CreateOslfReq;
   /**
-   *
+   * Byte-identical echo of the prepare response body.
    * @type {CreateOslfResp}
    * @memberof SendRequestBodySignedContractCreateOslfReqCreateOslfResp
    */
   prepareResponse: CreateOslfResp;
   /**
-   *
+   * The signed contract(s) for this operation.
    * @type {SignedContract}
    * @memberof SendRequestBodySignedContractCreateOslfReqCreateOslfResp
    */
   request: SignedContract;
   /**
-   *
+   * The JWT issued by prepare; binds this send to that exchange.
    * @type {string}
    * @memberof SendRequestBodySignedContractCreateOslfReqCreateOslfResp
    */

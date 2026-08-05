@@ -14,5 +14,6 @@ declare const classNames: {
   readonly success: "success";
   readonly privacy: "privacy";
   readonly error: "error";
+  readonly "command-result": "command-result";
 };
 export default classNames;

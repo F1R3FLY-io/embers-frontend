@@ -18,7 +18,8 @@
  */
 export interface SendResp {
   /**
-   *
+   * The accepted deploy's identifier (lowercase hex of its signature);
+   * finalization is still pending when this returns.
    * @type {string}
    * @memberof SendResp
    */

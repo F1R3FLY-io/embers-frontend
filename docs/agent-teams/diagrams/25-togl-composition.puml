@@ -1,0 +1,57 @@
+@startuml
+title Building the bounded critique loop as a TOGL term — admission, nomination, connection
+skinparam backgroundColor #FFFAF8
+skinparam shadowing false
+skinparam ArrowColor #54413A
+skinparam componentStyle rectangle
+skinparam component {
+  BorderColor #A55B30
+}
+skinparam package {
+  BorderColor #8A6D5C
+}
+
+package "Step 1 — admit and nominate every node" as S1 #FFF1DD {
+  component "<latex>\mathsf{let}\;a_1 = \mathrm{input}\;\mathsf{in}\;[a_1]</latex>\ncontext: input-node" as N1 #CDEACC
+  component "<latex>\mathsf{let}\;a_2 = \mathrm{classify}\;\mathsf{in}\;[a_2]</latex>\ncontext: agent" as N2 #D7EAF8
+  component "<latex>\mathsf{let}\;a_3 = \mathrm{draft}\;\mathsf{in}\;[a_3]</latex>\ncontext: agent" as N3 #D7EAF8
+  component "<latex>\mathsf{let}\;a_4 = \mathrm{critique}\;\mathsf{in}\;[a_4]</latex>\ncontext: agent" as N4 #E3D8F5
+  component "<latex>\mathsf{let}\;a_5 = \mathrm{reviewers}\;\mathsf{in}\;[a_5]</latex>\ncontext: fan-in-map" as N5 #FFE0B2
+  component "<latex>\mathsf{let}\;a_6 = \mathrm{publish}\;\mathsf{in}\;[a_6]</latex>\ncontext: output-node" as N6 #BEE5CF
+}
+
+package "Step 2 — connect nominated forms (disjoint contexts)" as S2 #FFF1DD {
+  component "<latex>\langle a_1, a_2\rangle</latex>\ninput to classify" as E1 #EAF5FF
+  component "<latex>\langle a_2, a_3\rangle</latex>\nclassify to draft" as E2 #EAF5FF
+  component "<latex>\langle a_3, a_4\rangle</latex>\ndraft to critique" as E3 #EAF5FF
+  component "<latex>\langle a_4, a_3\rangle</latex>\ncritique BACK to draft\n(the loop is just an edge)" as E4 #FFD0B5
+  component "<latex>\langle a_3, a_5\rangle</latex>\ndraft to reviewers" as E5 #EAF5FF
+  component "<latex>\langle a_5, a_6\rangle</latex>\nreviewers to publish" as E6 #EAF5FF
+}
+
+package "Step 3 — juxtapose everything" as S3 #FFF1DD {
+  component "<latex>g \;=\; \mathrm{nodes} \;\otimes\; e_1 \otimes e_2 \otimes e_3 \otimes e_4 \otimes e_5 \otimes e_6</latex>\nclosed, well formed: <latex>\mathsf{G}[X,V];();()\vdash g</latex>" as G #BEE5CF
+}
+
+S1 -down-> S2 : references from nomination
+S2 -down-> S3 : <latex>\otimes</latex>
+
+note right of E4 #FFF6C9
+TOGL does not care that the graph is
+cyclic: well-formedness is structural.
+What makes the loop BOUNDED — the
+revise route's maxIterations 3, the
+accept guard, the 2-of-3 quorum —
+lives in the v2 definition beside
+this term (see the projection loss
+table).
+end note
+
+note bottom of S3 #EAF7EE
+This is the same workflow the SCXML
+correspondence projects into SCXML.
+Three documents, one drawing: a lossy
+SCXML skeleton, an executable v2
+definition, and a well-formed TOGL term.
+end note
+@enduml

@@ -22,13 +22,14 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  */
 export interface DeployAgentResp {
   /**
-   *
+   * The unsigned main contract bytes to sign.
    * @type {Base64}
    * @memberof DeployAgentResp
    */
   contract: Base64;
   /**
-   *
+   * The unsigned system contract bytes; present only when the deployment
+   * needs one.
    * @type {Base64}
    * @memberof DeployAgentResp
    */

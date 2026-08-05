@@ -3,7 +3,7 @@ import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 import { useForm } from "@tanstack/react-form";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import z from "zod";
 
 import { Button } from "@/lib/components/Button";
@@ -19,6 +19,24 @@ const formModel = z.object({
   key: z.custom<PrivateKey | undefined>((v) => !!v),
 });
 
+// The auth return-path contract: ProtectedRoute and the run inspector send
+// the location they bounced from as `state.from`; after a successful sign-in
+// the user lands back there. The pathname must be an app-internal path (a
+// protocol-relative "//host" escape is rejected), and zod strips unknown
+// keys, so the parsed value is a clean partial path `navigate` accepts.
+const locationStateModel = z.object({
+  from: z.object({
+    hash: z.string(),
+    pathname: z.string().regex(/^\/(?!\/)/),
+    search: z.string(),
+  }),
+});
+
+function returnTarget(state: unknown) {
+  const parsed = locationStateModel.safeParse(state);
+  return parsed.success ? parsed.data.from : undefined;
+}
+
 type PageState = "init" | "signin";
 
 export default function Login() {
@@ -29,6 +47,7 @@ export default function Login() {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { setKey } = useWalletState();
 
   const form = useForm({
@@ -37,7 +56,9 @@ export default function Login() {
     } as z.infer<typeof formModel>,
     onSubmit: async ({ value }) => {
       setKey(value.key);
-      return navigate("/dashboard");
+      return navigate(returnTarget(location.state) ?? "/dashboard", {
+        replace: true,
+      });
     },
     validators: {
       onChange: formModel,

@@ -22,13 +22,15 @@ import { RunCommandRespFromJSON, RunCommandRespToJSON } from "./RunCommandResp";
  */
 export interface PrepareResponseRunCommandResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {RunCommandResp}
    * @memberof PrepareResponseRunCommandResp
    */
   response: RunCommandResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponseRunCommandResp
    */

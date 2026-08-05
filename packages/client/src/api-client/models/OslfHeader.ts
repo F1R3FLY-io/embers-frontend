@@ -25,31 +25,31 @@ import {
  */
 export interface OslfHeader {
   /**
-   *
+   * When this version was prepared.
    * @type {TimestampMillis}
    * @memberof OslfHeader
    */
   createdAt: TimestampMillis;
   /**
-   *
+   * Document description.
    * @type {string}
    * @memberof OslfHeader
    */
   description?: string;
   /**
-   *
+   * Document identity (`UUIDv4`), stable across versions.
    * @type {string}
    * @memberof OslfHeader
    */
   id: string;
   /**
-   *
+   * Document name.
    * @type {string}
    * @memberof OslfHeader
    */
   name: string;
   /**
-   *
+   * Latest version identifier (`UUIDv7`); creation-ordered by construction.
    * @type {string}
    * @memberof OslfHeader
    */

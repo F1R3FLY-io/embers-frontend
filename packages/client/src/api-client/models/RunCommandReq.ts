@@ -29,73 +29,78 @@ import { UInt64FromJSON, UInt64ToJSON } from "./UInt64";
  */
 export interface RunCommandReq {
   /**
-   *
+   * Per-actor decision identity for approvals; blocks decision replay.
    * @type {string}
    * @memberof RunCommandReq
    */
   decisionId?: string;
   /**
-   *
+   * Required for `timerFired`; must equal the wait's recorded deadline
+   * exactly, or the kernel rejects the fire in the readback.
    * @type {TimestampMillis}
    * @memberof RunCommandReq
    */
   expectedDeadline?: TimestampMillis;
   /**
-   *
+   * The revision the command fences on; read it from the run state. A
+   * stale value is not an HTTP error: the command deploys but does not
+   * apply.
    * @type {UInt64}
    * @memberof RunCommandReq
    */
   expectedRevision: UInt64;
   /**
-   *
+   * Required for `migrate`: the hash-checked current definition.
    * @type {string}
    * @memberof RunCommandReq
    */
   fromDefinitionHash?: string;
   /**
-   *
+   * Event or signal name; required where the kind carries one.
    * @type {string}
    * @memberof RunCommandReq
    */
   name?: string;
   /**
-   *
+   * Signal, event, or decision payload.
    * @type {any}
    * @memberof RunCommandReq
    */
   payload?: any | null;
   /**
-   *
+   * Reject or cancel reason.
    * @type {string}
    * @memberof RunCommandReq
    */
   reason?: string;
   /**
-   *
+   * Required for `migrate`: `set`/`remove` patch applied to portable
+   * state.
    * @type {any}
    * @memberof RunCommandReq
    */
   statePatch?: any | null;
   /**
-   *
+   * Required for `migrate`: the target deployment's registry URI.
    * @type {string}
    * @memberof RunCommandReq
    */
   targetTeamUri?: string;
   /**
-   *
+   * Required for `migrate`: the hash-checked target definition.
    * @type {string}
    * @memberof RunCommandReq
    */
   toDefinitionHash?: string;
   /**
-   *
+   * The command kind being issued.
    * @type {RunCommandKind}
    * @memberof RunCommandReq
    */
   type: RunCommandKind;
   /**
-   *
+   * The exact qualified wait addressed; required for signals, events,
+   * decisions, timer fires, and retries.
    * @type {string}
    * @memberof RunCommandReq
    */

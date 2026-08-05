@@ -22,13 +22,13 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  */
 export interface SaveAgentResp {
   /**
-   *
+   * The unsigned save contract bytes to sign.
    * @type {Base64}
    * @memberof SaveAgentResp
    */
   contract: Base64;
   /**
-   *
+   * The appended version's identifier (`UUIDv7`).
    * @type {string}
    * @memberof SaveAgentResp
    */

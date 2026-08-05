@@ -27,43 +27,43 @@ import {
  */
 export interface RunCommandResp {
   /**
-   *
+   * Capability commitment over the encrypted command artifact.
    * @type {string}
    * @memberof RunCommandResp
    */
   commandCapabilityHash: string;
   /**
-   *
+   * The authorization class the ledger adjudicates.
    * @type {string}
    * @memberof RunCommandResp
    */
   commandClass: string;
   /**
-   *
+   * Content commitment over the encrypted command artifact.
    * @type {string}
    * @memberof RunCommandResp
    */
   commandContentHash: string;
   /**
-   *
+   * The minted command identity.
    * @type {string}
    * @memberof RunCommandResp
    */
   commandId: string;
   /**
-   *
+   * The unsigned claim contract bytes to sign.
    * @type {Base64}
    * @memberof RunCommandResp
    */
   contract: Base64;
   /**
-   *
+   * Prepare instant.
    * @type {TimestampMillis}
    * @memberof RunCommandResp
    */
   issuedAt: TimestampMillis;
   /**
-   *
+   * The wait the command addresses.
    * @type {string}
    * @memberof RunCommandResp
    */

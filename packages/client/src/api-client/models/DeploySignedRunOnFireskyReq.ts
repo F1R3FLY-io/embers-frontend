@@ -24,13 +24,13 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface DeploySignedRunOnFireskyReq {
   /**
-   *
+   * The signed invocation.
    * @type {SignedContract}
    * @memberof DeploySignedRunOnFireskyReq
    */
   contract: SignedContract;
   /**
-   *
+   * Threads the answer under an existing post.
    * @type {FireskyReply}
    * @memberof DeploySignedRunOnFireskyReq
    */

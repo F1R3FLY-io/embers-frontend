@@ -14,35 +14,45 @@ skinparam activity {
 
 start
 :Input token\n(value, context); <<#CDEACC>>
-:Planner agent; <<#FFE0B2>>
-if (firstMatch routes) then (priority 0)
-  :Research branch; <<#D7EAF8>>
-elseif (priority 1)
-  :Critique branch; <<#E3D8F5>>
-else (no match)
-  :Fail / skip / complete; <<#F7C7C7>>
-  stop
-endif
-
-fork
-  :Text model; <<#D7EAF8>>
-fork again
-  :Policy check; <<#E3D8F5>>
-end fork
-:all / quorum / race join; <<#FFE0B2>>
-:Synthesize output; <<#CDEACC>>
-if (quality sufficient?) then (yes)
-  :Terminal response; <<#BEE5CF>>
-  stop
-else (no)
-  :Increment transition counter; <<#FFF0A8>>
-  if (counter below bound?) then (yes)
-    :Route back to Planner; <<#FFD0B5>>
-  else (no)
-    :iterationLimit disposition; <<#F7C7C7>>
+repeat
+  :Planner agent; <<#FFE0B2>>
+  if (firstMatch routes) then (priority 0)
+    :Research branch; <<#D7EAF8>>
+  elseif (priority 1)
+    :Critique branch; <<#E3D8F5>>
+  else (no match)
+    :noMatch policy:\nfail / skip / complete; <<#F7C7C7>>
     stop
   endif
-endif
+
+  fork
+    :Text model; <<#D7EAF8>>
+  fork again
+    :Policy check; <<#E3D8F5>>
+  end fork
+  :fan-in: all / each / quorum /\nrace / reduce join; <<#FFE0B2>>
+  note right #EAF7EE
+    The fork above is an allMatches fan-out:
+    one token per true route. Join firing
+    predicates are normative in diagram 18.
+  end note
+  :Synthesize output; <<#CDEACC>>
+  if (quality sufficient?) then (yes)
+    :Terminal response; <<#BEE5CF>>
+    stop
+  else (no)
+  endif
+backward :Route back to Planner\ntraversal increments <latex>\kappa_c(e)</latex>; <<#FFD0B5>>
+repeat while (counter below bound?\n<latex>\kappa_c(e) < b_e</latex>) is (yes) not (no)
+:iterationLimit disposition; <<#F7C7C7>>
+note right #FFF6C9
+  iterationLimit is one of the nine standard
+  dispositions and routes like any trigger,
+  rewritten at the source node after exactly
+  <latex>b_e</latex> traversals; this example
+  defines no route for it, so the token stops.
+end note
+stop
 
 legend right
   Every token carries the original input,

@@ -18,7 +18,7 @@
  */
 export interface DeploySignedTestRespTestDeployFailed {
   /**
-   *
+   * The rejection reported for the test deploy.
    * @type {string}
    * @memberof DeploySignedTestRespTestDeployFailed
    */

@@ -60,7 +60,7 @@ export class WalletsApiSdk {
       to,
     };
 
-    const prepareResponse = await this.client.apiWalletsTransferPreparePost(
+    const prepareResponse = await this.client.walletsPrepareTransfer(
       {
         transferReq: prepareRequest,
       },
@@ -76,7 +76,7 @@ export class WalletsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiWalletsTransferSendPost(
+    const sendResponse = await this.client.walletsSendTransfer(
       {
         sendRequestBodySignedContractTransferReqTransferResp: {
           prepareRequest,
@@ -108,7 +108,7 @@ export class WalletsApiSdk {
       to,
     };
 
-    const prepareResponse = await this.client.apiWalletsBoostPreparePost(
+    const prepareResponse = await this.client.walletsPrepareBoost(
       {
         boostReq: prepareRequest,
       },
@@ -124,7 +124,7 @@ export class WalletsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiWalletsBoostSendPost(
+    const sendResponse = await this.client.walletsSendBoost(
       {
         sendRequestBodySignedContractBoostReqBoostResp: {
           prepareRequest,
@@ -144,7 +144,7 @@ export class WalletsApiSdk {
    * @returns A promise that resolves with the wallet state.
    */
   public async getState(config?: QueryCallConfig) {
-    return this.client.apiWalletsAddressStateGet(
+    return this.client.walletsStateAndHistory(
       {
         address: this.address,
       },

@@ -26,25 +26,25 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface SendRequestBodySignedContractRunReqRunResp {
   /**
-   *
+   * Byte-identical echo of the prepare request.
    * @type {RunReq}
    * @memberof SendRequestBodySignedContractRunReqRunResp
    */
   prepareRequest: RunReq;
   /**
-   *
+   * Byte-identical echo of the prepare response body.
    * @type {RunResp}
    * @memberof SendRequestBodySignedContractRunReqRunResp
    */
   prepareResponse: RunResp;
   /**
-   *
+   * The signed contract(s) for this operation.
    * @type {SignedContract}
    * @memberof SendRequestBodySignedContractRunReqRunResp
    */
   request: SignedContract;
   /**
-   *
+   * The JWT issued by prepare; binds this send to that exchange.
    * @type {string}
    * @memberof SendRequestBodySignedContractRunReqRunResp
    */

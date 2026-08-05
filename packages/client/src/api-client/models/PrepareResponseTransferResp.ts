@@ -22,13 +22,15 @@ import { TransferRespFromJSON, TransferRespToJSON } from "./TransferResp";
  */
 export interface PrepareResponseTransferResp {
   /**
-   *
+   * The operation-specific prepare payload, carrying the unsigned
+   * contract(s) to sign.
    * @type {TransferResp}
    * @memberof PrepareResponseTransferResp
    */
   response: TransferResp;
   /**
-   *
+   * JWT binding the send to exactly this prepare exchange; expires after
+   * one day.
    * @type {string}
    * @memberof PrepareResponseTransferResp
    */

@@ -223,3 +223,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+.command-result {
+  margin-top: 12px;
+
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}

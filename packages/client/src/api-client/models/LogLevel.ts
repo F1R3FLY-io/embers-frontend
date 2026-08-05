@@ -12,7 +12,7 @@
  */
 
 /**
- *
+ * Severity a test records on the on-chain log contract.
  * @export
  */
 export const LogLevel = {

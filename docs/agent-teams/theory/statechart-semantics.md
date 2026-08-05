@@ -7,7 +7,7 @@ Ownership is split across the theory and design layers so that no rule is stated
 - [Operational semantics](operational-semantics.md) owns tokens and markings, activity reduction, route-group selection (first match and all matches), the bounded-transition counter rule, join firing predicates, the progress-boundary theorem, the determinism envelope, and the soundness boundary.
 - [Hierarchical continuation theory](hierarchical-continuations.md) owns crash equivalence, effect and guard key hashing, qualified waits, and journal composition.
 - **This document** owns the scope tree, configurations, entry closure, completion propagation, parallel-region discipline, history, the fork-epoch algebra, the run-to-completion relation, and the statechart readings of cycles, guarded routing, joins, waits, approvals, retry, and cancellation.
-- [Rholang realization](../design/rholang-realization.md) and [SCXML correspondence](../design/scxml-correspondence.md) are the design-layer companions: the first catalogs how each operation formalized here is composed in Rholang, the second maps each operation onto SCXML and analyzes the differences.
+- [Rholang realization](../design/rholang-realization.md), [SCXML correspondence](../design/scxml-correspondence.md), and [TOGL correspondence](../design/togl-correspondence.md) are the design-layer companions: the first catalogs how each operation formalized here is composed in Rholang, the second maps each operation onto SCXML and analyzes the differences, and the third relates the structural graph algebra (graphl) to this statechart reading.
 
 Every rule below cites the kernel region that implements it. Line anchors refer to the branch current at the time of writing (`dylon/embers-demo-fixes`, backend commit `4427654`).
 

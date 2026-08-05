@@ -26,25 +26,25 @@ import { TransferRespFromJSON, TransferRespToJSON } from "./TransferResp";
  */
 export interface SendRequestBodySignedContractTransferReqTransferResp {
   /**
-   *
+   * Byte-identical echo of the prepare request.
    * @type {TransferReq}
    * @memberof SendRequestBodySignedContractTransferReqTransferResp
    */
   prepareRequest: TransferReq;
   /**
-   *
+   * Byte-identical echo of the prepare response body.
    * @type {TransferResp}
    * @memberof SendRequestBodySignedContractTransferReqTransferResp
    */
   prepareResponse: TransferResp;
   /**
-   *
+   * The signed contract(s) for this operation.
    * @type {SignedContract}
    * @memberof SendRequestBodySignedContractTransferReqTransferResp
    */
   request: SignedContract;
   /**
-   *
+   * The JWT issued by prepare; binds this send to that exchange.
    * @type {string}
    * @memberof SendRequestBodySignedContractTransferReqTransferResp
    */

@@ -81,6 +81,8 @@
     "language": ""
   },
   "deploy": {
+    "openRunInspector": "",
+    "runLogged": "",
     "deployAgent": "",
     "reviewDetails": "",
     "agentDetails": "",

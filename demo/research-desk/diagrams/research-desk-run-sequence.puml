@@ -1,0 +1,118 @@
+@startuml
+title Research Desk — end-to-end processing of one question
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+actor "Wallet holder" as Holder #FFD8C2
+participant "Client SDK\n(AgentsTeamsApiSdk)" as SDK #D5EAF7
+participant "Embers API" as API #FFC9A8
+participant "Run kernel\n(durable, deterministic)" as Kernel #CDEACC
+participant "F1r3node validator" as Chain #FFE4A6
+participant "ChromaDB\nembers-demo-docs" as Chroma #E8DDF5
+participant "OpenAI\nrho:ai:gpt4" as GPT #E8DDF5
+
+group Run — prepare, sign locally, send
+Holder -> SDK : run(teamUri, question)
+SDK -> API : POST /api/ai-agents-teams/run/prepare\n{ agents_team: uri, prompt: question }
+API --> SDK : PrepareResponse { contract, token }
+SDK -> SDK : sign the contract locally (secp256k1)
+SDK -> API : POST /api/ai-agents-teams/run/send\n{ prepare echo, signed contract, token }
+API -> Kernel : start run — token minted at Question
+end
+
+note over SDK, API #FFF0C7
+Two-phase signing: the wallet key never leaves the
+client, and the token binds send to one prepare.
+run/send returns only when the run completes or suspends.
+end note
+
+group Draft — retrieval-grounded generation on chain
+Kernel -> Chain : signed deploy of invoke_activity.rho\nregistry lookup of the team's rho:id URI,\nthen ("control", "activity", "draft", input, ack)
+Chain -> Chroma : similarity query [question], top-10\n(embeddings: node-side SBERT all-MiniLM-L6-v2)
+Chroma --> Chain : nearest documents, most relevant first
+Chain -> GPT : grounded draft prompt\n(recursive context fold + question)
+GPT --> Chain : draft, or exactly the sentinel\nINSUFFICIENT CONTEXT when ungrounded
+Chain --> Kernel : observation { output: { question, answer },\ndisposition: completed } — normalized, hash-bound
+end
+
+group Critique — sentinel short-circuit or refusal-first rubric
+Kernel -> Chain : signed deploy of invoke_activity.rho\n("control", "activity", "critique", draft record, ack)
+alt answer starts with the 20-char sentinel
+Chain -> Chain : mechanical short-circuit in Rholang:\nscore 5, no model call
+else substantive draft
+Chain -> GPT : refusal-first rubric — one verdict line
+GPT --> Chain : EXCELLENT | GOOD | WEAK | POOR — feedback
+Chain -> Chain : slice(0, 4) maps the verdict to an\ninteger score 95 | 85 | 50 | 10 (garbled: 10)
+end
+Chain --> Kernel : observation { output: { question, answer,\nfeedback, score }, disposition: completed }
+end
+
+Kernel -> Kernel : Decide (firstMatch): evaluate the guard\n<latex>output.score \geq 80</latex> in the kernel, over JSON
+
+note over Chain, GPT #FFF0C7
+Chroma and gpt4 are replay-cached non-deterministic
+system processes: the first execution records the
+result on chain and replay returns the recording.
+Effect keys include the loop-iteration counters, so
+every revise pass is a distinct cached effect.
+end note
+
+loop up to 3 revisions — kappa in the token's execution context
+Kernel -> Kernel : score below threshold: revise back-edge\nfires / <latex>\kappa{+}{+}</latex>; token returns to Draft
+Kernel -> Chain : Draft (revise pass: input is the Critic's\nrecord) then Critique, as above
+Chain --> Kernel : fresh observations; Decide re-evaluates
+end
+
+alt accept — score at or above the threshold
+Kernel --> API : run completed — final output value
+API --> SDK : run/send returns the raw final value
+SDK --> Holder : { question, answer, feedback, score }
+else revise bound exhausted — disposition rewritten to iterationLimit at Decide
+Kernel -> Kernel : route to the Escalation gate;\ncheckpoint the encrypted continuation (F1r3drive)
+Kernel --> API : run suspended (runSuspended, exactly once)
+API --> SDK : { "disposition": "suspended", "runId",\n"revision", "waits": [ { "id", ... } ] }
+SDK --> Holder : awaiting a decision at the Escalation gate
+alt operator approves — null payload preserves, a non-null payload replaces
+Holder -> SDK : command(runId, { type: approve,\nexpected_revision, wait_id, decision_id,\npayload: null | replacement record })
+SDK -> API : POST /api/ai-agents-teams/runs/{run_id}/commands/prepare
+API --> SDK : PrepareResponse { contract, token }
+SDK -> API : POST .../runs/{run_id}/commands/send (signed)
+API -> Kernel : deliver the approve\n(commandClaimed, approvalRecorded;\nquorum 1 met — the gate completes)
+group Archive — the knowledge loop on the gate's completed route
+Kernel -> Chain : signed deploy of invoke_activity.rho\n("control", "activity", "archive", released value, ack)
+alt a human replaced the value — non-sentinel { question, answer, ... }
+Chain -> Chroma : idempotent create, then upsert\nid "qa: " ++ question, text "Q: ...\\nA: ..."\nrho:chroma:collection:entries:new
+Chroma --> Chain : ack — the document joins embers-demo-docs
+else null payload preserved the sentinel record
+Chain -> Chain : no upsert — the desk must not\nlearn its own refusal
+end
+Chain --> Kernel : observation { output: record + archived flag,\ndisposition: completed }
+end
+Kernel --> API : run completed — the Archivist's output\n(the released record, archived: true | false)
+API --> SDK : { question, answer, feedback, score, archived }\nover the signer's authenticated channel
+SDK --> Holder : best-effort or human answer; archived: true\niff it entered the retrieval corpus
+else operator rejects
+Holder -> SDK : command(runId, { type: reject, ... })
+SDK -> API : commands prepare + send (same two-phase shape)
+API -> Kernel : gate rejected — token routes to Refused (final)
+Kernel --> API : run completed in refusal
+API --> SDK : run state (refused)
+SDK --> Holder : the question is refused
+end
+end
+
+note over API #FFF0C7
+The public run ledger is metadata-only: statuses, event
+types, and content hashes — never the question, drafts,
+or feedback. Contents stay sealed in encrypted artifacts;
+released values return only over the signer's channel.
+end note
+@enduml

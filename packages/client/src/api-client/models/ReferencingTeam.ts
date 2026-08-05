@@ -18,31 +18,31 @@
  */
 export interface ReferencingTeam {
   /**
-   *
+   * The referencing team's identity (`UUIDv4`).
    * @type {string}
    * @memberof ReferencingTeam
    */
   id: string;
   /**
-   *
+   * Its name.
    * @type {string}
    * @memberof ReferencingTeam
    */
   name: string;
   /**
-   *
+   * Whether the team is currently published.
    * @type {boolean}
    * @memberof ReferencingTeam
    */
   published: boolean;
   /**
-   *
+   * The handle that would stop working meaningfully.
    * @type {string}
    * @memberof ReferencingTeam
    */
   publishedHandle?: string;
   /**
-   *
+   * The latest version (`UUIDv7`) — the one that references the agent.
    * @type {string}
    * @memberof ReferencingTeam
    */

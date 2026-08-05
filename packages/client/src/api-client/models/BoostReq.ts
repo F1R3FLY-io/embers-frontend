@@ -24,37 +24,37 @@ import { Int64FromJSON, Int64ToJSON } from "./Int64";
  */
 export interface BoostReq {
   /**
-   *
+   * Amount in base units; must be positive.
    * @type {Int64}
    * @memberof BoostReq
    */
   amount: Int64;
   /**
-   *
+   * Free-text memo.
    * @type {string}
    * @memberof BoostReq
    */
   description?: string;
   /**
-   *
+   * Sender address; must be the signing wallet's address.
    * @type {Address}
    * @memberof BoostReq
    */
   from: Address;
   /**
-   *
+   * DID of the boosted post's author.
    * @type {string}
    * @memberof BoostReq
    */
   postAuthorDid: string;
   /**
-   *
+   * Identifier of the boosted post.
    * @type {string}
    * @memberof BoostReq
    */
   postId?: string;
   /**
-   *
+   * Recipient address (the post author's wallet).
    * @type {Address}
    * @memberof BoostReq
    */

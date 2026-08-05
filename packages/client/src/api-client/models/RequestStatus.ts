@@ -12,7 +12,7 @@
  */
 
 /**
- *
+ * Status of a reserved wallet-request entry.
  * @export
  */
 export const RequestStatus = {
