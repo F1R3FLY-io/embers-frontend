@@ -1,0 +1,29 @@
+{
+  "name": "@f1r3fly-io/embers-e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "e2e": "playwright test --project=mock-desktop --project=mock-mobile",
+    "e2e:ui": "playwright test --project=mock-desktop --ui",
+    "e2e:report": "playwright show-report",
+    "mock:serve": "tsx mock-backend/bin/serve.ts",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "eslint --fix .",
+    "ci:lint": "eslint .",
+    "format:code": "prettier --write '**/*.{ts,tsx,json}'",
+    "ci:check:code": "prettier --check '**/*.{ts,tsx,json}'",
+    "capture:media": "playwright test --project=capture && node scripts/make-gifs.mjs",
+    "capture:gifs": "node scripts/make-gifs.mjs",
+    "e2e:stack": "playwright test --project=stack"
+  },
+  "devDependencies": {
+    "@f1r3fly-io/embers-client-sdk": "workspace:*",
+    "@playwright/test": "^1.57.0",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "ws": "^8.21.2",
+    "zod": "^4.3.6"
+  }
+}

@@ -1,0 +1,7 @@
+# Playwright's own output: run artifacts, not source.
+/playwright-report/
+/test-results/
+
+# Intermediate recordings from the capture run. The committed artefacts are the
+# GIFs under docs/usage/media/journeys/, not the WebM they were rendered from.
+/video/
