@@ -49,6 +49,14 @@ export const NodeItem: React.FC<NodeItemProps> = ({
     <div
       draggable
       className={styles["node-item"]}
+      // Addressable from a browser test. Agent entries are the same component
+      // repeated per agent, so they are identified by the agent rather than by
+      // the kind, which is what every entry would otherwise share.
+      data-testid={
+        typeof data?.agentId === "string"
+          ? `sidebar-agent-${data.agentId}`
+          : `sidebar-node-${type ?? ""}`
+      }
       onDragStart={handleDragStart}
     >
       <img alt="" src={iconSrc} />

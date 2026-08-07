@@ -839,14 +839,19 @@ export function validateWorkflow(
       | { durableYield?: unknown; maxIterations?: unknown }
       | undefined;
     diagnostics.push(...triggerDiagnostics(transition.trigger, transition.id));
+    // Presence is asked of `nodeIds`, the same set the checks below use, and
+    // not of the record itself: indexing a record is typed as always finding
+    // something, which is untrue of a definition that arrived over the wire.
+    // A transition naming a node that is not there is reported a few lines
+    // down; this rule must simply not crash on the way to that report.
     if (
       lifecycleNodeIds.has(transition.sourceNodeId) &&
-      definition.nodes[transition.targetNodeId] !== undefined &&
+      nodeIds.has(transition.targetNodeId) &&
       definition.nodes[transition.targetNodeId].kind !== "activity"
     ) {
-      const sourceLabel =
-        definition.nodes[transition.sourceNodeId]?.label ??
-        transition.sourceNodeId;
+      const sourceLabel = nodeIds.has(transition.sourceNodeId)
+        ? definition.nodes[transition.sourceNodeId].label
+        : transition.sourceNodeId;
       const targetLabel = definition.nodes[transition.targetNodeId].label;
       diagnostics.push({
         code: "invalid-lifecycle-route-target",
