@@ -1,20 +1,21 @@
 packages:
   - apps/*
+  - e2e
   - packages/*
 
 overrides:
-  '@bufbuild/protobuf': 2.13.0
+  "@bufbuild/protobuf": 2.13.0
 
 # pnpm 11 gates dependency build scripts on `allowBuilds` (a package -> boolean
-# map). These three are the only installed dependencies with install-time hooks
-# (esbuild: postinstall, unrs-resolver: postinstall, @parcel/watcher: install);
-# without them approved, `pnpm install` hard-fails with ERR_PNPM_IGNORED_BUILDS
-# and `pnpm dev` cannot start.
+# map). Every installed dependency with an install-time hook must appear here;
+# without an entry, `pnpm install` hard-fails with ERR_PNPM_IGNORED_BUILDS and
+# `pnpm dev` cannot start. Approved: esbuild (postinstall), unrs-resolver
+# (postinstall), @parcel/watcher (install).
 #
 # The older `onlyBuiltDependencies` list was removed: pnpm 11 recognizes the key
 # but never consults it for build approval, so it was dead config that merely
 # looked authoritative.
 allowBuilds:
-  '@parcel/watcher': true
+  "@parcel/watcher": true
   esbuild: true
   unrs-resolver: true

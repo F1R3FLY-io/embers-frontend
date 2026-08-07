@@ -38,5 +38,9 @@
   "dependencies": {
     "@blockly/plugin-cross-tab-copy-paste": "^8.0.7",
     "blockly": "^12.3.1"
+  },
+  "devDependencies": {
+    "fast-check": "^4.9.0",
+    "jest-environment-jsdom": "^30.4.1"
   }
 }
