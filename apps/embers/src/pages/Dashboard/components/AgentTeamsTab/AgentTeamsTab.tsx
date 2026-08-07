@@ -53,33 +53,50 @@ export default function AgentTeamsTab({
   const confirm = useConfirm();
   const alert = useAlert();
 
-  const runDelete = useCallbackWithLoader(async (id: string, name: string) => {
-    let publication;
-    try {
-      publication = await teamPublication(id);
-    } catch {
-      // Refusing rather than guessing. Deleting a team whose publication could not
-      // be read is how a handle is left answering mentions for a team that no
-      // longer exists -- with the credentials needed to stop it gone with the team.
-      await alert({
-        message:
-          "Could not determine whether this team is published, so it was not deleted. Try again once the node is responsive.",
-        title: "Delete failed",
-      });
-      return;
-    }
+  // The loader wraps only the work, never the dialogs: the spinner overlay
+  // renders above every modal, so a confirm awaited under it is unreachable
+  // and its promise can never settle -- the exact deadlock this structure
+  // prevents. Each loader-wrapped step is refcounted, so the independently
+  // wrapped delete mutation nests safely.
+  const readPublication = useCallbackWithLoader(teamPublication);
+  const runRemoveWithLoader = useCallbackWithLoader(
+    async (
+      id: string,
+      publication: Awaited<ReturnType<typeof teamPublication>>,
+    ) =>
+      // Stop the mentions, then remove the team. Every mutation reports its own
+      // failure, so this only has to halt.
+      removeTeam(id, needsUnpublishing(publication), {
+        deleteTeam: deleteAgentsTeam.mutateAsync,
+        unpublishTeam: unpublishTeam.mutateAsync,
+      }).catch(() => undefined),
+  );
 
-    if (!(await confirm({ message: deleteTeamMessage(name, publication) }))) {
-      return;
-    }
+  const runDelete = useCallback(
+    async (id: string, name: string) => {
+      let publication;
+      try {
+        publication = await readPublication(id);
+      } catch {
+        // Refusing rather than guessing. Deleting a team whose publication could not
+        // be read is how a handle is left answering mentions for a team that no
+        // longer exists -- with the credentials needed to stop it gone with the team.
+        await alert({
+          message:
+            "Could not determine whether this team is published, so it was not deleted. Try again once the node is responsive.",
+          title: "Delete failed",
+        });
+        return;
+      }
 
-    // Stop the mentions, then remove the team. Every mutation reports its own
-    // failure, so this only has to halt.
-    await removeTeam(id, needsUnpublishing(publication), {
-      deleteTeam: deleteAgentsTeam.mutateAsync,
-      unpublishTeam: unpublishTeam.mutateAsync,
-    }).catch(() => undefined);
-  });
+      if (!(await confirm({ message: deleteTeamMessage(name, publication) }))) {
+        return;
+      }
+
+      await runRemoveWithLoader(id, publication);
+    },
+    [alert, confirm, readPublication, runRemoveWithLoader],
+  );
 
   const onDelete = useCallback(
     (id: string, name: string) => void runDelete(id, name),

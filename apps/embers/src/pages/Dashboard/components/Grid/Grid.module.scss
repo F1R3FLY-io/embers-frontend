@@ -126,9 +126,22 @@
 }
 
 .delete-icon {
+  flex-shrink: 0;
   stroke: var(--text-danger);
   fill: transparent;
   cursor: pointer;
   margin-left: 12px;
   align-self: center;
+
+  /* `flex-shrink: 0` is what keeps this control clickable at all.
+   *
+   * It is a flex item of `.agent-actions`, sharing the row with the button
+   * group. An SVG with a width attribute but no shrink rule is compressible,
+   * so once the row runs out of space -- which it does on a team card, whose
+   * button group carries an extra Publish action -- this collapsed to ZERO
+   * pixels wide. It was still `visibility: visible` and still in the document,
+   * so nothing looked wrong; it simply could not be seen or clicked, and teams
+   * could not be deleted from the dashboard.
+   *
+   * Measured before the fix: 24x24 on an agent card, 0x24 on a team card. */
 }
