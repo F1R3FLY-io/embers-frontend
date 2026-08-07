@@ -1,0 +1,61 @@
+@startuml
+title Embers frontend — test tiers and what each one can observe
+skinparam backgroundColor #FFF8F2
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam ArrowColor #5B3A29
+skinparam defaultFontColor #2B1D17
+skinparam component {
+  BackgroundColor #FFFDFB
+  BorderColor #A85C32
+}
+skinparam note {
+  BackgroundColor #FFFDF5
+  BorderColor #A85C32
+}
+
+rectangle "Tier 1 — unit and integration (jest)" as t1 #FFE1A8 {
+  component "example-based\napps/embers, packages/*" as unit #FFFDFB
+  component "property-based\nfast-check" as props #FFFDFB
+  component "query-layer integration\nreal SDK, injected transport" as integ #FFFDFB
+}
+
+rectangle "Tier 2 — browser (Playwright)" as t2 #B9DCF7 {
+  component "mock backend\nin-process, per test" as mock #FFFDFB
+  component "journeys\nauth, dashboard, deletion" as journeys #FFFDFB
+  component "media capture\nscreenshots for docs" as media #FFFDFB
+}
+
+rectangle "Tier 3 — live stack (opt-in)" as t3 #C8E6C9 {
+  component "API conformance\n55 operations" as conf #FFFDFB
+  component "smoke journeys\nreal chain" as smoke #FFFDFB
+}
+
+note right of t1
+  Observes: logic, protocol,
+  state transitions, invariants.
+  BLIND TO: geometry and colour.
+  jsdom performs no layout and
+  resolves no custom properties,
+  so every box measures zero and
+  every computed colour is empty.
+end note
+
+note right of t2
+  Observes: everything tier 1 does,
+  plus what the user actually sees.
+  Found the zero-width delete icon
+  and the invisible Cancel label —
+  neither reachable from jsdom.
+end note
+
+note right of t3
+  Observes: the real contract.
+  Needs a running node, so it is
+  never what CI runs.
+end note
+
+t1 -[#5B3A29]-> t2 : fast feedback first
+t2 -[#5B3A29]-> t3 : contract confirmed last
+
+@enduml
