@@ -18,6 +18,18 @@
   cursor: pointer;
 }
 
+/* An icon that is a button rather than a decorated div: keyboard-reachable and
+   named for a screen reader, while drawing exactly as the icon alone did. */
+.icon-button {
+  display: inline-flex;
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  align-items: center;
+}
+
 .header-right {
   display: flex;
   gap: 16px;
