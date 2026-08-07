@@ -1,2 +1,6 @@
 dist
 **/*.d.ts
+
+# Jest's HTML coverage report: thousands of generated files that no one edits,
+# and formatting them is both slow and meaningless.
+coverage
