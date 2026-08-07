@@ -1,4 +1,4 @@
-import type { HTTPHeaders } from "../api-client";
+import type { FetchAPI, HTTPHeaders, Middleware } from "../api-client";
 import type { QueryCallConfig } from "../entities/HttpCallConfigs";
 
 import { Configuration, TestnetApi } from "../api-client";
@@ -7,7 +7,9 @@ import { signContract } from "../functions";
 
 export type TestnetConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
 };
 
 export class TestnetApiSdk {
@@ -16,7 +18,9 @@ export class TestnetApiSdk {
   public constructor(config: TestnetConfig) {
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: config.middleware,
     });
 
     this.client = new TestnetApi(configuration);

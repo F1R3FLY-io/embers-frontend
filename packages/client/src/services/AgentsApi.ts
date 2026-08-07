@@ -1,6 +1,11 @@
 import { base16 } from "@scure/base";
 
-import type { CreateAgentReq, HTTPHeaders } from "../api-client";
+import type {
+  CreateAgentReq,
+  FetchAPI,
+  HTTPHeaders,
+  Middleware,
+} from "../api-client";
 import type { Address } from "../entities/Address";
 import type {
   ContractCallConfig,
@@ -15,7 +20,9 @@ import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
 export type AiAgentConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
   privateKey: PrivateKey;
 };
 
@@ -37,7 +44,9 @@ export class AgentsApiSdk {
 
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: config.middleware,
     });
     this.client = new AIAgentsApi(configuration);
   }

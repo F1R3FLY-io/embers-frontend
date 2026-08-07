@@ -4,8 +4,10 @@ import { base16 } from "@scure/base";
 
 import type {
   CreateAgentsTeamReq,
+  FetchAPI,
   FireskyReply,
   HTTPHeaders,
+  Middleware,
   PublishToFireskyReq,
   RunCommandReq,
 } from "../api-client";
@@ -24,7 +26,9 @@ import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
 export type AgentsTeamsConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
   privateKey: PrivateKey;
 };
 
@@ -42,7 +46,9 @@ export class AgentsTeamsApiSdk {
 
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: config.middleware,
     });
     this.client = new AIAgentsTeamsApi(configuration);
   }
@@ -273,10 +279,7 @@ export class AgentsTeamsApiSdk {
   }
 
   public async getRun(runId: string, config?: QueryCallConfig) {
-    return this.client.agentsTeamsGetRun(
-      { runId },
-      { signal: config?.signal },
-    );
+    return this.client.agentsTeamsGetRun({ runId }, { signal: config?.signal });
   }
 
   /**
@@ -290,28 +293,26 @@ export class AgentsTeamsApiSdk {
     runCommandReq: RunCommandReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse =
-      await this.client.agentsTeamsPrepareRunCommand(
-        { runCommandReq, runId },
-        { signal: config?.signal },
-      );
+    const prepareResponse = await this.client.agentsTeamsPrepareRunCommand(
+      { runCommandReq, runId },
+      { signal: config?.signal },
+    );
     const signedContract = signContract(
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const sendResponse: unknown =
-      await this.client.agentsTeamsSendRunCommand(
-        {
-          runId,
-          sendRequestBodySignedContractRunCommandReqRunCommandResp: {
-            prepareRequest: runCommandReq,
-            prepareResponse: prepareResponse.response,
-            request: signedContract,
-            token: prepareResponse.token,
-          },
+    const sendResponse: unknown = await this.client.agentsTeamsSendRunCommand(
+      {
+        runId,
+        sendRequestBodySignedContractRunCommandReqRunCommandResp: {
+          prepareRequest: runCommandReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
         },
-        { signal: config?.signal },
-      );
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareResponse, sendResponse };
   }
@@ -332,19 +333,18 @@ export class AgentsTeamsApiSdk {
       prepareResponse.response.contract,
       this.privateKey,
     );
-    const sendResponse: unknown =
-      await this.client.agentsTeamsSendRevealOutput(
-        {
-          runId,
-          sendRequestBodySignedContractStringRevealOutputResp: {
-            prepareRequest: runId,
-            prepareResponse: prepareResponse.response,
-            request: signedContract,
-            token: prepareResponse.token,
-          },
+    const sendResponse: unknown = await this.client.agentsTeamsSendRevealOutput(
+      {
+        runId,
+        sendRequestBodySignedContractStringRevealOutputResp: {
+          prepareRequest: runId,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
         },
-        { signal: config?.signal },
-      );
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareResponse, sendResponse };
   }
@@ -388,13 +388,12 @@ export class AgentsTeamsApiSdk {
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareResponse =
-      await this.client.agentsTeamsPrepareDelete(
-        {
-          id,
-        },
-        { signal: config?.signal },
-      );
+    const prepareResponse = await this.client.agentsTeamsPrepareDelete(
+      {
+        id,
+      },
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(
       prepareResponse.contract,
@@ -440,21 +439,19 @@ export class AgentsTeamsApiSdk {
       config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse =
-      await this.client.agentsTeamsSendPublishToFiresky(
-        {
-          address: this.address,
-          id,
-          sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp:
-            {
-              prepareRequest: publishToFireskyReq,
-              prepareResponse: prepareResponse.response,
-              request: signedContract,
-              token: prepareResponse.token,
-            },
+    const sendResponse = await this.client.agentsTeamsSendPublishToFiresky(
+      {
+        address: this.address,
+        id,
+        sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp: {
+          prepareRequest: publishToFireskyReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
         },
-        { signal: config?.signal },
-      );
+      },
+      { signal: config?.signal },
+    );
 
     return { prepareResponse, sendResponse, waitForFinalization };
   }
@@ -470,13 +467,12 @@ export class AgentsTeamsApiSdk {
       prompt,
     };
 
-    const prepareResponse =
-      await this.client.agentsTeamsPrepareRunOnFiresky(
-        {
-          runReq: prepareRequest,
-        },
-        { signal: config?.signal },
-      );
+    const prepareResponse = await this.client.agentsTeamsPrepareRunOnFiresky(
+      {
+        runReq: prepareRequest,
+      },
+      { signal: config?.signal },
+    );
 
     const signedContract = signContract(
       prepareResponse.response.contract,
