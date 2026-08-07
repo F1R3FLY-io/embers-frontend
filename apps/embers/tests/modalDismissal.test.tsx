@@ -149,7 +149,9 @@ describe("dismissed dialogs settle their promises", () => {
       return (
         <button
           data-testid="warn"
-          onClick={() => void alert({ message: "It broke." }).then(acknowledged)}
+          onClick={() =>
+            void alert({ message: "It broke." }).then(acknowledged)
+          }
         >
           warn
         </button>

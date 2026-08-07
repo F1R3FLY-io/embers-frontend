@@ -297,7 +297,10 @@ export function TransitionModal({ initial, onSave }: Props) {
           label="When none match"
           options={[
             { label: "Fail", value: "fail" as const },
-            { label: "Complete with current value", value: "complete" as const },
+            {
+              label: "Complete with current value",
+              value: "complete" as const,
+            },
             { label: "Skip", value: "skip" as const },
           ]}
           value={noMatch}

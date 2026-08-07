@@ -67,7 +67,6 @@ type GridProps = { onDelete: (id: string, name: string) => void };
 const captured: { onDelete: GridProps["onDelete"] | null } = { onDelete: null };
 jest.mock("@/pages/Dashboard/components/Grid", () => ({
   Grid: (props: GridProps) => {
-     
     captured.onDelete = props.onDelete;
     return null;
   },

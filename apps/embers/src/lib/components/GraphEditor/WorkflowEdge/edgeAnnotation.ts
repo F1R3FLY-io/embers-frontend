@@ -71,9 +71,7 @@ export function edgeAnnotation(
   const trigger = data.trigger ?? "completed";
   if (trigger !== "completed") {
     parts.push(
-      trigger.startsWith("custom:")
-        ? trigger.slice("custom:".length)
-        : trigger,
+      trigger.startsWith("custom:") ? trigger.slice("custom:".length) : trigger,
     );
   }
 

@@ -109,9 +109,9 @@ describe("guards compress to mathematical notation", () => {
         },
       }),
     ).toBe("∃ state.flag");
-    expect(
-      edgeAnnotation({ guard: { kind: "not", operand: score } }),
-    ).toBe("¬(output.score ≥ 0.8)");
+    expect(edgeAnnotation({ guard: { kind: "not", operand: score } })).toBe(
+      "¬(output.score ≥ 0.8)",
+    );
     expect(edgeAnnotation({ guard: { kind: "literal", value: false } })).toBe(
       "⊥",
     );

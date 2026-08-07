@@ -99,7 +99,10 @@ describe("the caret menu's anchor geometry", () => {
     const props = lastCall?.[0] ?? {};
     expect(props.open).toBe(true);
     // Right corner, not the divider between Run and the caret.
-    expect(props.position).toEqual({ x: CARET_RECT.right, y: CARET_RECT.bottom + 4 });
+    expect(props.position).toEqual({
+      x: CARET_RECT.right,
+      y: CARET_RECT.bottom + 4,
+    });
     expect(props.align).toBe("end");
     expect(props.direction).toBe("bottom");
   });

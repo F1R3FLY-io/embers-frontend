@@ -332,8 +332,8 @@ export default function AgentTeamRun() {
                     <Link state={{ from: location }} to="/login">
                       Sign in
                     </Link>{" "}
-                    with the run owner or a delegated approver wallet to
-                    resume this run.
+                    with the run owner or a delegated approver wallet to resume
+                    this run.
                   </p>
                 ) : (
                   <form
@@ -541,15 +541,11 @@ export default function AgentTeamRun() {
                         <section className={styles["command-result"]}>
                           <h3>Command result (visible only to you)</h3>
                           <p>
-                            This value returned over your authenticated
-                            channel; the public ledger records only hashes.
+                            This value returned over your authenticated channel;
+                            the public ledger records only hashes.
                           </p>
                           <pre data-testid="command-result-json">
-                            {JSON.stringify(
-                              command.data.sendResponse,
-                              null,
-                              2,
-                            )}
+                            {JSON.stringify(command.data.sendResponse, null, 2)}
                           </pre>
                         </section>
                       </>

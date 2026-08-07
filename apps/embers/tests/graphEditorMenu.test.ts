@@ -262,10 +262,7 @@ describe("the delete-node menu action", () => {
 describe("the empty-space add-node menu", () => {
   it("does not offer palette-hidden kinds while keeping them in the registry", () => {
     const { context } = harness();
-    const items = buildMenuItems(
-      { type: "emptySpace", x: 0, y: 0 },
-      context,
-    );
+    const items = buildMenuItems({ type: "emptySpace", x: 0, y: 0 }, context);
     const labels = items.map((item) => item.content);
 
     // The FIPS-gated foreign-language term is hidden from creation...

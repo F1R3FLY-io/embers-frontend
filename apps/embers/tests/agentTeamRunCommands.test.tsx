@@ -103,9 +103,8 @@ describe("timerFired escape hatch", () => {
       target: { value: "timerFired" },
     });
 
-    const deadline = screen.getByLabelText<HTMLInputElement>(
-      "Expected deadline",
-    );
+    const deadline =
+      screen.getByLabelText<HTMLInputElement>("Expected deadline");
     expect(deadline.value).toBe(DUE_AT.toISOString());
 
     fireEvent.change(screen.getByLabelText("Exact wait"), {
@@ -136,9 +135,7 @@ describe("timerFired escape hatch", () => {
     });
     fireEvent.click(screen.getByText("Sign and send"));
 
-    expect(
-      await screen.findByText(/deadline mismatch/),
-    ).toBeTruthy();
+    expect(await screen.findByText(/deadline mismatch/)).toBeTruthy();
   });
 });
 

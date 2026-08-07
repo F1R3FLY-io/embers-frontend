@@ -111,9 +111,7 @@ describe("the signed-out inspector's sign-in prompt", () => {
   it("keeps the supporting copy and hides the command form", async () => {
     renderInspector();
 
-    expect(
-      await screen.findByText(/delegated approver wallet/),
-    ).toBeTruthy();
+    expect(await screen.findByText(/delegated approver wallet/)).toBeTruthy();
     expect(screen.queryByText("Sign and send")).toBeNull();
   });
 });

@@ -139,7 +139,9 @@ describe("the owner-signed full-response reveal", () => {
     mockRunState = runState("suspended");
     renderInspector();
 
-    expect(await screen.findByText("Send an authenticated command")).toBeTruthy();
+    expect(
+      await screen.findByText("Send an authenticated command"),
+    ).toBeTruthy();
     expect(screen.queryByText("Reveal full response")).toBeNull();
   });
 

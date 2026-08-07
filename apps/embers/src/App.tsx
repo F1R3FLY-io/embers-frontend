@@ -51,81 +51,84 @@ export default function App() {
                           with no message. */}
                       <ErrorBoundary>
                         <Suspense fallback={null}>
-                        <Routes>
-                          <Route element={<Home />} path="/" />
-                          <Route element={<Login />} path="/login" />
-                          <Route
-                            element={<AgentTeamRun />}
-                            path="/runs/:runId"
-                          />
-                          <Route element={<ProtectedRoute />}>
-                            <Route element={<Dashboard />} path="/dashboard" />
+                          <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<Login />} path="/login" />
                             <Route
-                              element={
-                                <CurrentAgentProvider>
-                                  <Routes>
-                                    <Route
-                                      element={<CreateAgent />}
-                                      path="create"
-                                    />
-                                    <Route
-                                      element={<EditAgent />}
-                                      path="edit"
-                                    />
-                                    <Route
-                                      element={<DeployAgent />}
-                                      path="deploy"
-                                    />
-                                  </Routes>
-                                </CurrentAgentProvider>
-                              }
-                              path="/agent/*"
+                              element={<AgentTeamRun />}
+                              path="/runs/:runId"
                             />
-                            <Route
-                              element={
-                                <CurrentAgentsTeamProvider>
-                                  <Routes>
-                                    <Route
-                                      element={<CreateAgentsTeam />}
-                                      path="create"
-                                    />
-                                    <Route
-                                      element={<EditAgentsTeam />}
-                                      path="edit"
-                                    />
-                                    <Route
-                                      element={<DeployAgentsTeam />}
-                                      path="deploy"
-                                    />
-                                    <Route
-                                      element={<PublishAgentsTeam />}
-                                      path="publish"
-                                    />
-                                  </Routes>
-                                </CurrentAgentsTeamProvider>
-                              }
-                              path="/agents-team/*"
-                            />
-                            <Route
-                              element={
-                                <OSLFEditorStepperProvider>
-                                  <Routes>
-                                    <Route
-                                      element={<CreateOSLF />}
-                                      path="create"
-                                    />
-                                    <Route element={<GraphOSLF />} path="" />
-                                    <Route
-                                      element={<DeployOSLF />}
-                                      path="deploy"
-                                    />
-                                  </Routes>
-                                </OSLFEditorStepperProvider>
-                              }
-                              path="/oslf/*"
-                            />
-                          </Route>
-                        </Routes>
+                            <Route element={<ProtectedRoute />}>
+                              <Route
+                                element={<Dashboard />}
+                                path="/dashboard"
+                              />
+                              <Route
+                                element={
+                                  <CurrentAgentProvider>
+                                    <Routes>
+                                      <Route
+                                        element={<CreateAgent />}
+                                        path="create"
+                                      />
+                                      <Route
+                                        element={<EditAgent />}
+                                        path="edit"
+                                      />
+                                      <Route
+                                        element={<DeployAgent />}
+                                        path="deploy"
+                                      />
+                                    </Routes>
+                                  </CurrentAgentProvider>
+                                }
+                                path="/agent/*"
+                              />
+                              <Route
+                                element={
+                                  <CurrentAgentsTeamProvider>
+                                    <Routes>
+                                      <Route
+                                        element={<CreateAgentsTeam />}
+                                        path="create"
+                                      />
+                                      <Route
+                                        element={<EditAgentsTeam />}
+                                        path="edit"
+                                      />
+                                      <Route
+                                        element={<DeployAgentsTeam />}
+                                        path="deploy"
+                                      />
+                                      <Route
+                                        element={<PublishAgentsTeam />}
+                                        path="publish"
+                                      />
+                                    </Routes>
+                                  </CurrentAgentsTeamProvider>
+                                }
+                                path="/agents-team/*"
+                              />
+                              <Route
+                                element={
+                                  <OSLFEditorStepperProvider>
+                                    <Routes>
+                                      <Route
+                                        element={<CreateOSLF />}
+                                        path="create"
+                                      />
+                                      <Route element={<GraphOSLF />} path="" />
+                                      <Route
+                                        element={<DeployOSLF />}
+                                        path="deploy"
+                                      />
+                                    </Routes>
+                                  </OSLFEditorStepperProvider>
+                                }
+                                path="/oslf/*"
+                              />
+                            </Route>
+                          </Routes>
                         </Suspense>
                       </ErrorBoundary>
                     </div>
