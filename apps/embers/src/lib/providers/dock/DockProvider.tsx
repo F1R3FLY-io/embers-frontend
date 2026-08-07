@@ -48,8 +48,18 @@ type Action =
     }
   | { type: typeof ActionType.MARK_DEPLOYS_READ };
 
+/**
+ * Keeps the newest `max` entries.
+ *
+ * Entries are PREPENDED, so the newest sits at index 0 and the tail is the
+ * oldest. Slicing from the end -- which this did -- kept the oldest instead:
+ * once the dock reached its cap it discarded every new entry and went on
+ * showing the same stale list. The dock is the only place a deploy failure or
+ * a run link is reported inside the editors, so the effect was that a long
+ * session silently stopped reporting exactly when there was most to report.
+ */
 function clamp<T>(arr: T[], max: number) {
-  return arr.length > max ? arr.slice(arr.length - max) : arr;
+  return arr.length > max ? arr.slice(0, max) : arr;
 }
 
 function reducer(state: State, action: Action): State {
