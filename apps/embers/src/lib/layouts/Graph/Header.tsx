@@ -80,23 +80,27 @@ export const Header: React.FC = () => {
   const closeMenu = useCallback(() => setMenuPosition(undefined), []);
 
   const saveOrCreate = useCallback(async () => {
+    // An empty canvas is an ordinary state, not a missing one: a new team has
+    // no `nodes` until the first drop and no `edges` until the first
+    // connection. Asserting them non-null turned "drop one node and save into
+    // a draft" -- the state every team passes through -- into a TypeError
+    // raised inside the projection, before any request was sent, surfaced only
+    // as an internal message in the dock with nothing saved.
+    const nodes = agentsTeam.nodes ?? [];
+    const edges = agentsTeam.edges ?? [];
     const payload = {
       definition: agentsTeam.definition,
       description: agentsTeam.description,
-      edges: agentsTeam.edges!,
+      edges,
       logo: agentsTeam.logo,
       name: agentsTeam.name!,
-      nodes: agentsTeam.nodes!,
+      nodes,
     };
     if (id) {
       const res = await saveMutation.mutateAsync(payload);
       await res.waitForFinalization;
       return {
-        definition: toWorkflowDefinition(
-          agentsTeam.nodes!,
-          agentsTeam.edges!,
-          agentsTeam.definition,
-        ),
+        definition: toWorkflowDefinition(nodes, edges, agentsTeam.definition),
         id,
         version: res.prepareResponse.response.version,
       };
@@ -104,11 +108,7 @@ export const Header: React.FC = () => {
     const res = await createMutation.mutateAsync(payload);
     await res.waitForFinalization;
     return {
-      definition: toWorkflowDefinition(
-        agentsTeam.nodes!,
-        agentsTeam.edges!,
-        agentsTeam.definition,
-      ),
+      definition: toWorkflowDefinition(nodes, edges, agentsTeam.definition),
       id: res.prepareResponse.response.id,
       version: res.prepareResponse.response.version,
     };
