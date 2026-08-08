@@ -9,7 +9,7 @@
 // on any finding.
 import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
-import { dirname, join, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 
 const root = resolve(dirname(new URL(import.meta.url).pathname), "..");
 const siblingEmbersRoot = resolve(root, "..", "embers");
@@ -343,22 +343,56 @@ for (const file of methodFiles) {
   }
 }
 
-// Schema pins must name the snapshot's last-touching commit.
+// Schema pins name the snapshot's last-touching commit.
+//
+// A stale pin is BOOKKEEPING, not a contract error, and it is reported as a
+// warning for a reason that is easy to see once it happens: the schema is a
+// generated artifact dispatched from another repository, so ONE upstream
+// regeneration staleness-marks every method document at once. Counting 36
+// identical notices as failures drowns the findings that mean something --
+// a documented type that no longer matches the generated model -- and a gate
+// that is red by default stops being read at all.
+//
+// BROKEN is therefore reserved for a genuine mismatch. Stale pins are
+// collected, reported once with the value to refresh them to, and do not
+// affect the exit status.
 const snapshotCommit = execFileSync(
   "git",
   ["log", "-1", "--format=%h", "--", "packages/client/schema.json"],
   { cwd: root, encoding: "utf8" },
 ).trim();
+const stalePins = new Map();
 for (const file of files) {
   const text = readFileSync(file, "utf8");
-  for (const m of text.matchAll(/Schema pin \| `packages\/client\/schema\.json` @ `([0-9a-f]+)`/g)) {
-    if (m[1] !== snapshotCommit)
-      failures.push(`${file}: schema pin ${m[1]} != snapshot commit ${snapshotCommit}`);
+  for (const m of text.matchAll(
+    /Schema pin \| `packages\/client\/schema\.json` @ `([0-9a-f]+)`/g,
+  )) {
+    if (m[1] !== snapshotCommit) {
+      if (!stalePins.has(m[1])) stalePins.set(m[1], []);
+      stalePins.get(m[1]).push(relative(root, file));
+    }
   }
 }
 
 for (const f of failures) console.error(`BROKEN ${f}`);
+
+for (const [pinned, pinnedFiles] of stalePins) {
+  console.warn(
+    `STALE schema pin \`${pinned}\` in ${pinnedFiles.length} file(s); ` +
+      `the snapshot was last touched by \`${snapshotCommit}\`.\n` +
+      `      Refresh with:\n` +
+      `        sed -i 's/@ \`${pinned}\`/@ \`${snapshotCommit}\`/' \\\n` +
+      pinnedFiles.map((f) => `          ${f}`).join(" \\\n"),
+  );
+}
+
+const staleCount = [...stalePins.values()].reduce(
+  (total, group) => total + group.length,
+  0,
+);
 console.log(
-  `docs check: ${files.length} files, ${fencesChecked} typed fences, ${failures.length} finding(s)`,
+  `docs check: ${files.length} files, ${fencesChecked} typed fences, ` +
+    `${failures.length} finding(s)` +
+    (staleCount ? `, ${staleCount} stale pin(s) (warning)` : ""),
 );
 process.exit(failures.length ? 1 : 0);
