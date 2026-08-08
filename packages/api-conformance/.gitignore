@@ -1,0 +1,4 @@
+# Evidence from a live run: large, machine-written, and specific to one run.
+/artifacts/
+/coverage/
+/.tmp/
