@@ -178,10 +178,22 @@ describe("contract gaps the document itself has", () => {
   // silently changing a number nobody looks at.
 
   it("names the three responses declared with an empty schema", () => {
-    // The harmful kind. Tooling reports these as described and generates no
-    // type, which is the direct cause of `sendResponse: unknown` in the SDK's
-    // run, command, and reveal methods -- all three of which do return
-    // structured state. Reported upstream as EMB-0007.
+    // PINNED, NOT A DEFECT -- and this entry is a correction.
+    //
+    // These were reported upstream as a contract gap, on the reasoning that an
+    // empty schema is worse than an absent one because tooling reports the
+    // response as described and generates no type. The backend agent traced
+    // them to the domain and the reasoning does not survive: all three return
+    // `anyhow::Result<serde_json::Value>`, a genuinely polymorphic run outcome
+    // (suspended with waits, versus completed with output). poem-openapi's
+    // `Any` emits an empty schema because there IS no accurate concrete type
+    // for "any JSON value", so `unknown` is the honest SDK type rather than a
+    // symptom.
+    //
+    // The assertion stays because it is a useful pin: it names which responses
+    // are dynamic by design, and it will notice if that set ever changes.
+    // Giving them concrete types would be a wire-contract change across the
+    // run domain, which is a product decision and not a fix.
     expect(
       emptySchemaResponses(catalogue).map(({ operationId }) => operationId),
     ).toEqual([
@@ -192,10 +204,12 @@ describe("contract gaps the document itself has", () => {
   });
 
   it("names the four responses that declare no content at all", () => {
-    // The benign-looking kind, kept separate because the fix differs and two
-    // of these are legitimate: a readiness probe really has no body, and the
-    // deploys subscription is a WebSocket upgrade rather than a JSON response.
-    // The other two return state the caller cannot see typed.
+    // All four are honest, confirmed against the handlers upstream: a
+    // readiness probe has no body, the deploys subscription is a WebSocket
+    // upgrade rather than a JSON response, and run-on-firesky and unpublish
+    // both return `()`. Kept separate from the empty-schema set above because
+    // "declares nothing" and "declares an empty schema" are different facts,
+    // even though neither turned out to be a defect.
     expect(
       absentContentResponses(catalogue).map(({ operationId }) => operationId),
     ).toEqual([

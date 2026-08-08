@@ -34,14 +34,16 @@ notification — rather than silently changing a number nobody reads:
 - **44 of the 55 operations declare only a success code.** A generated client
   cannot type any failure, which is why every error in the SDK arrives as a
   bare `ResponseError` carrying only a status.
-- **Three responses declare `content` whose schema is the empty object.** That
-  is worse than declaring none: tooling reports the response as described and
-  generates no type for it, which is the direct cause of
-  `sendResponse: unknown` in the SDK's run, command, and reveal methods — all
-  three of which do return structured state. A further four declare no content
-  at all, of which two are legitimate (a readiness probe has no body, and the
-  deploys subscription is a WebSocket upgrade). The two kinds are reported
-  separately because the fix differs.
+- **Three responses declare `content` whose schema is the empty object, and
+  four declare no content at all.** Both sets are pinned rather than reported.
+  The empty-schema three were originally raised as a contract gap — an empty
+  schema being worse than an absent one, since tooling reports the response as
+  described and generates no type. That reasoning did not survive contact with
+  the handlers: all three return a genuinely polymorphic run outcome, poem's
+  `Any` emits an empty schema because there is no accurate concrete type for
+  "any JSON value", and `unknown` is therefore the honest SDK type rather than
+  a symptom. The pins stay because they name which responses are dynamic by
+  design and will notice if that set changes.
 
 ### Live — opt-in, never in CI
 
