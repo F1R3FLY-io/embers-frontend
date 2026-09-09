@@ -31,7 +31,7 @@ for (const theme of ["light", "dark"]) {
     await page.getByRole("link", { name: "Sign in to view response" }).focus();
     await page.keyboard.press("Enter");
     await page.getByRole("button", { name: /sign in with/i }).click();
-    await page.getByRole("textbox").first().fill(TEST_KEY_HEX);
+    await page.getByLabel("Private key", { exact: true }).fill(TEST_KEY_HEX);
     await page.getByRole("button", { name: /^sign in$/i }).click();
     await page
       .getByRole("button", { exact: true, name: "Reveal full response" })
@@ -81,11 +81,13 @@ for (const theme of ["light", "dark"]) {
         () => document.documentElement.scrollWidth <= innerWidth + 1,
       ),
     ).toBe(true);
-    await page.getByText("Execution details", { exact: true }).click();
+    await page.getByText("Technical details", { exact: true }).click();
     await expect(
       page.getByText("Event history (81)", { exact: true }),
     ).toBeVisible();
-    await page.getByRole("heading", { name: "Your response is ready" }).scrollIntoViewIfNeeded();
+    await page
+      .getByRole("heading", { name: "Your response is ready" })
+      .scrollIntoViewIfNeeded();
     await page.screenshot({
       fullPage: false,
       path: testInfo.outputPath(`run-${theme}.png`),
@@ -93,47 +95,91 @@ for (const theme of ["light", "dark"]) {
   });
 }
 
-test("reveal failure stays on page and retry renders structured output", async ({ backend, page }) => {
+test("reveal failure stays on page and retry renders structured output", async ({
+  backend,
+  page,
+}) => {
   backend.store.runs.set("run-retry", {
-    createdAt: Date.now(), events: [], id: "run-retry",
-    output: JSON.stringify({ answer: "## Decision\n\nA useful answer after retry.", approved: false }),
-    revision: 1, script: [], status: "completed",
-    teamUri: "rho:id:hjkekxordj8i6aasfqdyzr3s67ep3dnsbf7q96wft3rn6hy5x5xb9i", waitIds: [],
+    createdAt: Date.now(),
+    events: [],
+    id: "run-retry",
+    output: JSON.stringify({
+      answer: "## Decision\n\nA useful answer after retry.",
+      approved: false,
+    }),
+    revision: 1,
+    script: [],
+    status: "completed",
+    teamUri: "rho:id:hjkekxordj8i6aasfqdyzr3s67ep3dnsbf7q96wft3rn6hy5x5xb9i",
+    waitIds: [],
   });
   let fail = true;
   await page.route("**/runs/run-retry/output/send", async (route) => {
     if (fail) {
       fail = false;
-      await route.fulfill({ body: JSON.stringify({ description: "Unauthorized wallet" }), contentType: "application/json", status: 403 });
-    } else {await route.continue();}
+      await route.fulfill({
+        body: JSON.stringify({ description: "Unauthorized wallet" }),
+        contentType: "application/json",
+        status: 403,
+      });
+    } else {
+      await route.continue();
+    }
   });
   await page.goto("/runs/run-retry");
   await page.getByRole("link", { name: "Sign in to view response" }).focus();
-    await page.keyboard.press("Enter");
+  await page.keyboard.press("Enter");
   await page.getByRole("button", { name: /sign in with/i }).click();
-  await page.getByRole("textbox").first().fill(TEST_KEY_HEX);
+  await page.getByLabel("Private key", { exact: true }).fill(TEST_KEY_HEX);
   await page.getByRole("button", { name: /^sign in$/i }).click();
-  await page.getByRole("button", { exact: true, name: "Reveal full response" }).click();
+  await page
+    .getByRole("button", { exact: true, name: "Reveal full response" })
+    .click();
   await expect(page.getByRole("alert")).toBeVisible();
   await expect(page.getByTestId("formatted-response")).toHaveCount(0);
-  await page.getByRole("button", { exact: true, name: "Reveal full response" }).click();
-  await expect(page.getByRole("heading", { exact: true, name: "Decision" })).toBeVisible();
+  await page
+    .getByRole("button", { exact: true, name: "Reveal full response" })
+    .click();
+  await expect(
+    page.getByRole("heading", { exact: true, name: "Decision" }),
+  ).toBeVisible();
   await page.getByText("Supporting data", { exact: true }).click();
-  await expect(page.locator("details[open] > pre").filter({ hasText: '"approved": false' })).toBeVisible();
+  await expect(
+    page
+      .locator("details[open] > pre")
+      .filter({ hasText: '"approved": false' }),
+  ).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("link", { name: "Sign in to view response" })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Sign in to view response" }),
+  ).toBeVisible();
   await expect(page.getByTestId("formatted-response")).toHaveCount(0);
 });
 
-test("an unavailable run can be retried without leaving the page", async ({ backend, page }) => {
+test("an unavailable run can be retried without leaving the page", async ({
+  backend,
+  page,
+}) => {
   await page.goto("/runs/run-later");
-  await expect(page.getByRole("heading", { name: "Run unavailable" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Run unavailable" }),
+  ).toBeVisible();
   backend.store.runs.set("run-later", {
-    createdAt: Date.now(), events: [], id: "run-later", output: JSON.stringify("Recovered response"),
-    revision: 1, script: [], status: "completed",
-    teamUri: "rho:id:hjkekxordj8i6aasfqdyzr3s67ep3dnsbf7q96wft3rn6hy5x5xb9i", waitIds: [],
+    createdAt: Date.now(),
+    events: [],
+    id: "run-later",
+    output: JSON.stringify("Recovered response"),
+    revision: 1,
+    script: [],
+    status: "completed",
+    teamUri: "rho:id:hjkekxordj8i6aasfqdyzr3s67ep3dnsbf7q96wft3rn6hy5x5xb9i",
+    waitIds: [],
   });
   await page.getByRole("button", { name: "Retry loading run" }).click();
-  await expect(page.getByRole("heading", { name: "Your response is ready" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Sign in to view response" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Your response is ready" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Sign in to view response" }),
+  ).toBeVisible();
 });

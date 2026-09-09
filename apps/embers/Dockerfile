@@ -13,6 +13,7 @@ WORKDIR /app/apps/embers
 RUN pnpm run build
 
 FROM nginx:stable-alpine
+RUN apk add --no-cache jq
 COPY apps/embers/nginx.conf /etc/nginx/conf.d/default.conf
 COPY apps/embers/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

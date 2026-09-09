@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
@@ -8,6 +7,8 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 import { useOSLFEditorStepper } from "@/lib/providers/stepper/flows/OSLFEditor";
 
 import styles from "./CreateOSLF.module.scss";
@@ -77,11 +78,11 @@ export default function CreateOSLF() {
                   {t("oslf.queryName")}
                 </Text>
                 <Input
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
+                  errorMessage={fieldError(field.state.meta)}
+                  name={field.name}
                   placeholder={t("oslf.queryName")}
                   value={field.state.value}
+                  onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
               </div>
@@ -96,11 +97,11 @@ export default function CreateOSLF() {
                 </Text>
                 <Input
                   textarea
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
+                  errorMessage={fieldError(field.state.meta)}
+                  name={field.name}
                   placeholder={t("oslf.purpose")}
                   value={field.state.value}
+                  onBlur={field.handleBlur}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
               </div>
@@ -125,6 +126,9 @@ export default function CreateOSLF() {
           </form.Subscribe>
 
           <LanguageFooter />
+          <form.Subscribe selector={(state) => state.errorMap.onServer}>
+            {(error) => <FormError error={error} />}
+          </form.Subscribe>
         </form>
       </div>
     </div>

@@ -6,3 +6,9 @@ window.API_URL = "http://[::1]:8080";
 // than offered and doing nothing.
 // eslint-disable-next-line no-undef
 window.FIRESKY_URL = "http://localhost:19006";
+
+// Explicit development-only account defaults for this PDS.
+// eslint-disable-next-line no-undef
+window.FIRESKY_PDS_URL = "http://localhost:2583";
+// eslint-disable-next-line no-undef
+window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";

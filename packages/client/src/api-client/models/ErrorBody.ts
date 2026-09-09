@@ -31,6 +31,12 @@ export interface ErrorBody {
    * @memberof ErrorBody
    */
   description: string;
+  /**
+   * Field names use the API's snake_case request names.
+   * @type {{ [key: string]: Array<string>; }}
+   * @memberof ErrorBody
+   */
+  fieldErrors?: { [key: string]: Array<string> };
 }
 
 /**
@@ -60,6 +66,7 @@ export function ErrorBodyFromJSONTyped(
   return {
     code: json.code,
     description: json.description,
+    fieldErrors: json.field_errors == null ? undefined : json.field_errors,
   };
 }
 
@@ -78,5 +85,6 @@ export function ErrorBodyToJSONTyped(
   return {
     code: value.code,
     description: value.description,
+    field_errors: value.fieldErrors,
   };
 }

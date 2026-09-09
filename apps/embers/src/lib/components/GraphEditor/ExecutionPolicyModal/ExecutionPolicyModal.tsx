@@ -4,6 +4,10 @@ import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import {
+  integerError,
+  useFieldValidation,
+} from "@/lib/forms/useFieldValidation";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { activityReferenceFromJson } from "@/lib/workflow";
 
@@ -64,6 +68,24 @@ export function ExecutionPolicyModal({
   );
   const [error, setError] = useState<string>();
 
+  const validation = useFieldValidation({
+    "Activity timeout (ms, 0 disables)": () => integerError(timeoutMillis, 0),
+    "Backoff multiplier (thousandths)": () =>
+      integerError(backoffMultiplierMillis, 1000),
+    compensationJson: () => {
+      if (compensationJson.trim() && compensationJson.trim() !== "null") {
+        activityReferenceFromJson(compensationJson);
+      }
+      return undefined;
+    },
+    "Initial retry delay (ms)": () => integerError(initialDelayMillis, 0),
+    "Maximum attempts": () => integerError(maxAttempts, 1),
+    "Maximum output bytes (0 uses default)": () =>
+      integerError(maxOutputBytes, 0),
+    "Maximum retry delay (ms)": () =>
+      integerError(maxDelayMillis, initialDelayMillis),
+  });
+
   const numberField = (
     label: string,
     value: number,
@@ -75,10 +97,11 @@ export function ExecutionPolicyModal({
         {label}
       </Text>
       <Input
+        {...validation.props(label)}
         min={min}
         type="number"
         value={value}
-        onChange={(event) => update(Math.max(min, Number(event.target.value)))}
+        onChange={(event) => update(Number(event.target.value))}
       />
     </label>
   );
@@ -92,7 +115,11 @@ export function ExecutionPolicyModal({
         Retries use deterministic exponential backoff. A value of 1000 means a
         1× multiplier; 2000 means 2×.
       </Text>
-      {error && <Text className={styles["nim-error"]}>{error}</Text>}
+      {error && (
+        <Text className={styles["nim-error"]} role="alert">
+          {error}
+        </Text>
+      )}
       {numberField("Maximum attempts", maxAttempts, setMaxAttempts, 1)}
       {numberField(
         "Initial retry delay (ms)",
@@ -150,6 +177,7 @@ export function ExecutionPolicyModal({
         </Text>
         <Input
           textarea
+          {...validation.props("compensationJson")}
           value={compensationJson}
           onChange={(event) => setCompensationJson(event.target.value)}
         />
@@ -161,6 +189,9 @@ export function ExecutionPolicyModal({
         <Button
           type="primary"
           onClick={() => {
+            if (!validation.validate()) {
+              return;
+            }
             try {
               if (
                 compensationJson.trim() !== "" &&

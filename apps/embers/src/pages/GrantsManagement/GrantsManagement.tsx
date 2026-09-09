@@ -5,6 +5,7 @@ import {
   GrantChannel,
   GrantCommandClass,
   MinAuthLevel,
+  normalizeApiError,
 } from "@f1r3fly-io/embers-client-sdk";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,7 @@ import { Select } from "@/lib/components/Select";
 import { Tag } from "@/lib/components/Tag";
 import { Text } from "@/lib/components/Text";
 import { ToggleSwitch } from "@/lib/components/ToggleSwitch";
+import { useFieldValidation } from "@/lib/forms/useFieldValidation";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useAlert, useConfirm } from "@/lib/providers/modal/useConfirm";
 import {
@@ -51,9 +53,7 @@ export default function GrantsManagement() {
 
   const deployedTeams = useMemo(
     () =>
-      (teams.data?.agentsTeams ?? []).filter(
-        (team) => team.uri !== undefined,
-      ),
+      (teams.data?.agentsTeams ?? []).filter((team) => team.uri !== undefined),
     [teams.data],
   );
 
@@ -94,6 +94,21 @@ export default function GrantsManagement() {
     granteeAddress !== undefined &&
     !capInvalid;
 
+  const validation = useFieldValidation({
+    grantee: () =>
+      granteeAddress === undefined
+        ? "Enter a valid wallet address."
+        : undefined,
+    maxRunsPerDay: () =>
+      capInvalid
+        ? "Enter a whole number between 1 and 100000, or leave empty."
+        : undefined,
+    principal: () =>
+      !principal.trim() ? "Enter the channel principal." : undefined,
+    teamUri: () =>
+      selectedTeam === undefined ? "Select a deployed team." : undefined,
+  });
+  const [submissionError, setSubmissionError] = useState("");
   const createUnderLoader = useCallbackWithLoader(
     async (request: CreateGrantReq) => createGrant.mutateAsync(request),
   );
@@ -102,6 +117,9 @@ export default function GrantsManagement() {
   // the loader renders behind its overlay and can never be dismissed. The
   // loader covers exactly the mutation; the token alert follows it.
   const onCreate = async () => {
+    if (!validation.validate()) {
+      return;
+    }
     if (selectedTeam?.uri === undefined || granteeAddress === undefined) {
       return;
     }
@@ -117,7 +135,14 @@ export default function GrantsManagement() {
       minAuth,
       requireToken,
     };
-    const result = await createUnderLoader(request);
+    setSubmissionError("");
+    let result;
+    try {
+      result = await createUnderLoader(request);
+    } catch (error) {
+      setSubmissionError((await normalizeApiError(error)).message);
+      return;
+    }
     const token = result.prepareResponse.response.requireToken;
     if (token !== undefined) {
       // The token's only appearance, by design: nothing stores it and no
@@ -147,7 +172,12 @@ export default function GrantsManagement() {
       title: t("grants.revokeTitle"),
     });
     if (proceed) {
-      await revokeUnderLoader(grant.grantId);
+      setSubmissionError("");
+      try {
+        await revokeUnderLoader(grant.grantId);
+      } catch (error) {
+        setSubmissionError((await normalizeApiError(error)).message);
+      }
     }
   };
 
@@ -192,6 +222,7 @@ export default function GrantsManagement() {
                 value: String(team.uri),
               }))}
               placeholder={t("grants.teamPlaceholder")}
+              {...validation.props("teamUri")}
               value={teamUri}
               onChange={setTeamUri}
             />
@@ -217,6 +248,7 @@ export default function GrantsManagement() {
                   ? t("grants.principalChatPlaceholder")
                   : t("grants.principalMailPlaceholder")
               }
+              {...validation.props("principal")}
               value={principal}
               onChange={(e) => {
                 setPrincipal(e.target.value);
@@ -236,6 +268,7 @@ export default function GrantsManagement() {
             <Input
               data-testid="grant-grantee"
               placeholder={t("grants.granteePlaceholder")}
+              {...validation.props("grantee")}
               value={grantee}
               onChange={(e) => {
                 setGrantee(e.target.value);
@@ -254,6 +287,7 @@ export default function GrantsManagement() {
               data-testid="grant-cap"
               error={capInvalid}
               placeholder={t("grants.capPlaceholder")}
+              {...validation.props("maxRunsPerDay")}
               value={maxRunsPerDay}
               onChange={(e) => {
                 setMaxRunsPerDay(e.target.value);
@@ -302,6 +336,7 @@ export default function GrantsManagement() {
             </div>
           )}
 
+          {submissionError && <p role="alert">{submissionError}</p>}
           <div className={styles.actions} data-testid="grant-create">
             <Button
               disabled={!submittable}
@@ -347,10 +382,7 @@ export default function GrantsManagement() {
                 </span>
               ) : (
                 <span data-testid={`grant-revoke-${grant.grantId}`}>
-                  <Button
-                    type="secondary"
-                    onClick={() => void onRevoke(grant)}
-                  >
+                  <Button type="secondary" onClick={() => void onRevoke(grant)}>
                     {t("grants.revoke")}
                   </Button>
                 </span>

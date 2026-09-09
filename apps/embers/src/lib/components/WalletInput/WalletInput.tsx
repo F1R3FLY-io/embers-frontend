@@ -12,10 +12,16 @@ import UploadIcon from "@/public/icons/download-icon.svg?react";
 import styles from "./WalletInput.module.scss";
 
 type WalletInputProps = {
+  errorMessage?: string;
+  onBlur?: () => void;
   onChange: (key?: PrivateKey) => void;
 };
 
-export function WalletInput({ onChange }: WalletInputProps) {
+export function WalletInput({
+  errorMessage,
+  onBlur,
+  onChange,
+}: WalletInputProps) {
   const [content, setContent] = useState("");
   const [errorState, setErrorState] = useState(false);
 
@@ -48,6 +54,7 @@ export function WalletInput({ onChange }: WalletInputProps) {
           setContent(base16.encode(privateKey.value));
           setErrorState(false);
         } catch {
+          onChange(undefined);
           setErrorState(true);
         }
       };
@@ -63,7 +70,12 @@ export function WalletInput({ onChange }: WalletInputProps) {
         Private Key
       </Text>
       <Input
-        error={errorState}
+        aria-label="Private key"
+        errorMessage={
+          errorState
+            ? "Enter a valid wallet private key or upload a valid wallet JSON file."
+            : errorMessage
+        }
         rightIcon={
           <FilePicker
             accept={{ "application/json": [".json"] }}
@@ -74,6 +86,7 @@ export function WalletInput({ onChange }: WalletInputProps) {
         }
         type="password"
         value={content}
+        onBlur={onBlur}
         onChange={setWalletFromInput}
       />
     </div>

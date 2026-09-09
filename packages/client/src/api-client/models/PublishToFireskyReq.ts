@@ -18,6 +18,12 @@
  */
 export interface PublishToFireskyReq {
   /**
+   * `create` or `existing`; omitted preserves legacy create-or-login behavior.
+   * @type {string}
+   * @memberof PublishToFireskyReq
+   */
+  accountMode?: string;
+  /**
    * Account email.
    * @type {string}
    * @memberof PublishToFireskyReq
@@ -82,6 +88,7 @@ export function PublishToFireskyReqFromJSONTyped(
     return json;
   }
   return {
+    accountMode: json.account_mode == null ? undefined : json.account_mode,
     email: json.email,
     handle: json.handle,
     inviteCode: json.invite_code == null ? undefined : json.invite_code,
@@ -103,6 +110,7 @@ export function PublishToFireskyReqToJSONTyped(
   }
 
   return {
+    account_mode: value.accountMode,
     email: value.email,
     handle: value.handle,
     invite_code: value.inviteCode,

@@ -7,20 +7,24 @@ import { Button } from "@/lib/components/Button";
 import styles from "./AgentTeamRun.module.scss";
 
 export function RunResponse({
+  autoFocus = true,
   revealed,
+  title = "Full response (visible only to you)",
   value,
 }: {
+  autoFocus?: boolean;
   revealed: boolean;
+  title?: string;
   value: unknown;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
   const [copyStatus, setCopyStatus] = useState("");
   useEffect(() => {
-    if (revealed) {
+    if (revealed && autoFocus) {
       heading.current?.focus({ preventScroll: true });
       heading.current?.scrollIntoView({ block: "nearest" });
     }
-  }, [revealed]);
+  }, [revealed, autoFocus]);
   if (!revealed) {
     return null;
   }
@@ -46,9 +50,16 @@ export function RunResponse({
     value === undefined ||
     (answer !== undefined && answer.trim() === "");
   return (
-    <section aria-label="Full response" className={styles.response}>
+    <section
+      aria-label={
+        title === "Full response (visible only to you)"
+          ? "Full response"
+          : title
+      }
+      className={styles.response}
+    >
       <h3 ref={heading} tabIndex={-1}>
-        Full response (visible only to you)
+        {title}
       </h3>
       <div className={styles.actions}>
         <Button

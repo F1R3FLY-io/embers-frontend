@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const openModal = jest.fn();
@@ -68,6 +68,17 @@ import PublishAgentsTeam from "@/pages/PublishAgentsTeam/PublishAgentsTeam";
 
 beforeEach(() => {
   jest.clearAllMocks();
+  window.API_URL = "http://localhost:8080";
+  delete window.FIRESKY_PDS_URL;
+  delete window.FIRESKY_DEMO_PDS_URL;
+  global.fetch = jest.fn().mockResolvedValue({
+    json: async () =>
+      Promise.resolve({
+        availableUserDomains: [".test", ".example"],
+        inviteCodeRequired: false,
+      }),
+    ok: true,
+  });
   // Stands in for react-query's mutateAsync, which invokes the caller's
   // onSuccess. Resolving without calling it would mean no test ever exercised
   // the success path.
@@ -102,6 +113,9 @@ async function fillAndSubmit(
   await user.clear(screen.getByPlaceholderText("Enter password"));
   await user.type(screen.getByPlaceholderText("Enter password"), password);
 
+  if (/^https?:/.test(pdsUrl)) {
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+  }
   await user.click(screen.getByRole("button", { name: "publish.button" }));
   return user;
 }
@@ -161,18 +175,12 @@ describe("publishing", () => {
   });
 
   it("shows the reason when publishing fails", async () => {
-    publishMutate.mockImplementation(
-      // eslint-disable-next-line @typescript-eslint/require-await -- see above.
-      async (_value: unknown, options: { onError: (error: Error) => void }) => {
-        options.onError(new Error("handle already taken"));
-      },
-    );
-
+    publishMutate.mockRejectedValue(new Error("handle already taken"));
     await fillAndSubmit();
-
-    expect(openModal).toHaveBeenCalledTimes(1);
-    const [, options] = openModal.mock.calls[0] as [unknown, unknown];
-    expect(options).toMatchObject({ ariaLabel: "Warning" });
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "handle already taken",
+    );
+    expect(openModal).not.toHaveBeenCalled();
   });
 });
 
@@ -229,5 +237,70 @@ describe("unpublishing from the success dialog", () => {
     // The mutation surfaces its own failure. A second dialog here would read
     // as a second, separate failure rather than one thing going wrong.
     expect(alert).not.toHaveBeenCalled();
+  });
+});
+
+describe("publication defaults and field feedback", () => {
+  it("appends a discovered suffix once and publishes the complete handle", async () => {
+    await fillAndSubmit();
+    expect(
+      (publishMutate.mock.calls[0] as [{ handle: string }])[0].handle,
+    ).toBe("research-desk.test");
+  });
+  it("keeps production credentials empty", () => {
+    window.FIRESKY_PDS_URL = "https://pds.example.org";
+    render(<PublishAgentsTeam />);
+    expect(screen.getByPlaceholderText("you@example.com")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Enter password")).toHaveValue("");
+  });
+  it("prefills only the configured demo and clears generated credentials when leaving it", async () => {
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText("you@example.com")).toHaveValue(
+        "research-desk@example.com",
+      ),
+    );
+    expect(screen.getByPlaceholderText("Enter password")).toHaveValue(
+      "password123",
+    );
+    await user.clear(screen.getByPlaceholderText("https://"));
+    await user.type(
+      screen.getByPlaceholderText("https://"),
+      "https://pds.example.org",
+    );
+    expect(screen.getByPlaceholderText("you@example.com")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Enter password")).toHaveValue("");
+  });
+  it("existing-account mode does not ask for email", async () => {
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Team social account" }),
+      "existing",
+    );
+    expect(
+      screen.queryByPlaceholderText("you@example.com"),
+    ).not.toBeInTheDocument();
+  });
+  it("places server validation beside the handle and focuses it", async () => {
+    const { ApiError } = await import("@f1r3fly-io/embers-client-sdk");
+    publishMutate.mockRejectedValue(
+      new ApiError("Handle needs a supported suffix.", 422, {
+        handle: ["Add .test or .example."],
+      }),
+    );
+    await fillAndSubmit();
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText("Username")).toHaveAttribute(
+        "aria-invalid",
+        "true",
+      ),
+    );
+    expect(screen.getByPlaceholderText("Username")).toHaveAccessibleDescription(
+      "Add .test or .example.",
+    );
   });
 });

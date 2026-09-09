@@ -11,6 +11,7 @@ import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
 import { Configuration, WalletsApi } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
 import { signContract } from "../functions";
 import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
@@ -38,7 +39,7 @@ export class WalletsApiSdk {
       basePath: config.basePath,
       fetchApi: config.fetchApi,
       headers: config.headers,
-      middleware: config.middleware,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
 
     this.client = new WalletsApi(configuration);

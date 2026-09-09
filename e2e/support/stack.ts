@@ -93,8 +93,7 @@ export const test = base.extend<StackFixtures>({
       await page.goto("/login");
       await page.getByRole("button", { name: /sign in with/i }).click();
       await page
-        .getByRole("textbox")
-        .first()
+        .getByLabel("Private key", { exact: true })
         .fill(process.env.EMBERS_E2E_STACK_KEY ?? "");
       await page.getByRole("button", { name: /^sign in$/i }).click();
       await page.waitForURL("**/dashboard");

@@ -15,8 +15,7 @@ test("reveals a completed run and keeps its response inside the viewport", async
   await page.getByRole("link", { name: "Sign in to view response" }).click();
   await page.getByRole("button", { name: /sign in with/i }).click();
   await page
-    .getByRole("textbox")
-    .first()
+    .getByLabel("Private key", { exact: true })
     .fill(process.env.EMBERS_E2E_STACK_KEY!);
   await page.getByRole("button", { name: /^sign in$/i }).click();
   await page

@@ -11,6 +11,10 @@ import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import {
+  integerError,
+  useFieldValidation,
+} from "@/lib/forms/useFieldValidation";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { conditionFromJson } from "@/lib/workflow";
 
@@ -171,7 +175,42 @@ export function TransitionModal({ initial, onSave }: Props) {
       : 10,
   );
 
+  const validation = useFieldValidation({
+    conditionJson: () => {
+      if (guardKind === "json") {
+        conditionFromJson(conditionJson);
+      }
+      return undefined;
+    },
+    customTrigger: () =>
+      trigger === "custom" &&
+      !/^[A-Za-z][A-Za-z0-9._-]{0,127}$/.test(customTrigger.trim())
+        ? "A custom disposition must start with a letter and contain at most 128 letters, numbers, dots, underscores, or hyphens."
+        : undefined,
+    maxIterations: () =>
+      loopKind === "bounded" ? integerError(maxIterations, 1) : undefined,
+    priority: () => integerError(priority, 0),
+    rhoInputsJson: () => {
+      if (guardKind === "rholang") {
+        conditionFromJson(
+          JSON.stringify({
+            inputs: JSON.parse(rhoInputsJson) as unknown,
+            kind: "rholang",
+            source: rhoSource,
+          }),
+        );
+      }
+      return undefined;
+    },
+    rhoSource: () =>
+      guardKind === "rholang" && !rhoSource.trim()
+        ? "Enter the Rholang guard source."
+        : undefined,
+  });
   const save = () => {
+    if (!validation.validate()) {
+      return;
+    }
     setError(undefined);
     try {
       const normalizedTrigger =
@@ -256,7 +295,11 @@ export function TransitionModal({ initial, onSave }: Props) {
       <Text className={styles["nim-title"]} type="H2">
         Configure transition
       </Text>
-      {error && <Text className={styles["nim-error"]}>{error}</Text>}
+      {error && (
+        <Text className={styles["nim-error"]} role="alert">
+          {error}
+        </Text>
+      )}
 
       <div className={styles["nim-field"]}>
         <Select
@@ -276,6 +319,7 @@ export function TransitionModal({ initial, onSave }: Props) {
           </Text>
           <Input
             placeholder="reviewReady"
+            {...validation.props("customTrigger")}
             value={customTrigger}
             onChange={(event) => setCustomTrigger(event.target.value)}
           />
@@ -313,6 +357,7 @@ export function TransitionModal({ initial, onSave }: Props) {
         </Text>
         <Input
           type="number"
+          {...validation.props("priority")}
           value={priority}
           onChange={(event) => setPriority(Number(event.target.value))}
         />
@@ -389,6 +434,7 @@ export function TransitionModal({ initial, onSave }: Props) {
             </Text>
             <Input
               textarea
+              {...validation.props("rhoSource")}
               value={rhoSource}
               onChange={(event) => setRhoSource(event.target.value)}
             />
@@ -399,6 +445,7 @@ export function TransitionModal({ initial, onSave }: Props) {
             </Text>
             <Input
               textarea
+              {...validation.props("rhoInputsJson")}
               value={rhoInputsJson}
               onChange={(event) => setRhoInputsJson(event.target.value)}
             />
@@ -412,6 +459,7 @@ export function TransitionModal({ initial, onSave }: Props) {
           </Text>
           <Input
             textarea
+            {...validation.props("conditionJson")}
             value={conditionJson}
             onChange={(event) => setConditionJson(event.target.value)}
           />
@@ -436,6 +484,7 @@ export function TransitionModal({ initial, onSave }: Props) {
           </Text>
           <Input
             type="number"
+            {...validation.props("maxIterations")}
             value={maxIterations}
             onChange={(event) =>
               setMaxIterations(Math.max(1, Number(event.target.value)))

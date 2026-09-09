@@ -33,6 +33,7 @@ import type {
   PrepareResponseRunResp,
   PrepareResponseRunUnderGrantResp,
   PrepareResponseSaveAgentsTeamResp,
+  PrepareResponseTracePrepareResponse,
   PrepareResponseUnpublishMailResp,
   PublishedChannels,
   PublishedState,
@@ -55,6 +56,7 @@ import type {
   SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp,
   SendRequestBodySignedContractStringRevealOutputResp,
   SendRequestBodySignedContractStringRevokeGrantResp,
+  SendRequestBodySignedContractStringTracePrepareResponse,
   SendRequestBodySignedContractStringUnpublishMailResp,
   SendResp,
   SignedContract,
@@ -80,6 +82,7 @@ import {
   PrepareResponseRunRespFromJSON,
   PrepareResponseRunUnderGrantRespFromJSON,
   PrepareResponseSaveAgentsTeamRespFromJSON,
+  PrepareResponseTracePrepareResponseFromJSON,
   PrepareResponseUnpublishMailRespFromJSON,
   PublishedChannelsFromJSON,
   PublishedStateFromJSON,
@@ -102,6 +105,7 @@ import {
   SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantRespToJSON,
   SendRequestBodySignedContractStringRevealOutputRespToJSON,
   SendRequestBodySignedContractStringRevokeGrantRespToJSON,
+  SendRequestBodySignedContractStringTracePrepareResponseToJSON,
   SendRequestBodySignedContractStringUnpublishMailRespToJSON,
   SendRespFromJSON,
   SignedContractToJSON,
@@ -110,6 +114,10 @@ import * as runtime from "../runtime";
 
 export interface AgentsTeamsBindingsByChannelRequest {
   channel: GrantChannel;
+}
+
+export interface AgentsTeamsDescribePdsRequest {
+  pdsUrl: string;
 }
 
 export interface AgentsTeamsGetRunRequest {
@@ -197,6 +205,10 @@ export interface AgentsTeamsPrepareSaveRequest {
   id: string;
 }
 
+export interface AgentsTeamsPrepareTraceRequest {
+  runId: string;
+}
+
 export interface AgentsTeamsPrepareUnpublishMailRequest {
   address: Address;
   id: string;
@@ -210,6 +222,12 @@ export interface AgentsTeamsPublishedChannelsRequest {
 export interface AgentsTeamsPublishedStateRequest {
   address: Address;
   id: string;
+}
+
+export interface AgentsTeamsReadTraceRequest {
+  authorization?: string;
+  offset?: number;
+  runId: string;
 }
 
 export interface AgentsTeamsReferencingTeamsRequest {
@@ -276,6 +294,11 @@ export interface AgentsTeamsSendRunUnderGrantRequest {
 export interface AgentsTeamsSendSaveRequest {
   id: string;
   sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp;
+}
+
+export interface AgentsTeamsSendTraceRequest {
+  runId: string;
+  sendRequestBodySignedContractStringTracePrepareResponse: SendRequestBodySignedContractStringTracePrepareResponse;
 }
 
 export interface AgentsTeamsSendUnpublishMailRequest {
@@ -348,6 +371,66 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Array<ChannelBinding>> {
     const response = await this.agentsTeamsBindingsByChannelRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsDescribePds without sending the request
+   */
+  async agentsTeamsDescribePdsRequestOpts(
+    requestParameters: AgentsTeamsDescribePdsRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.pdsUrl == null) {
+      throw new runtime.RequiredError(
+        "pdsUrl",
+        'Required parameter "pdsUrl" was null or undefined when calling agentsTeamsDescribePds().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.pdsUrl != null) {
+      queryParameters.pds_url = requestParameters.pdsUrl;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const urlPath = `/api/ai-agents-teams/publication/pds`;
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsDescribePdsRaw(
+    requestParameters: AgentsTeamsDescribePdsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<any>> {
+    const requestOptions =
+      await this.agentsTeamsDescribePdsRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<any>(response);
+    }
+    return new runtime.TextApiResponse(response) as any;
+  }
+
+  /**
+   */
+  async agentsTeamsDescribePds(
+    requestParameters: AgentsTeamsDescribePdsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<any> {
+    const response = await this.agentsTeamsDescribePdsRaw(
       requestParameters,
       initOverrides,
     );
@@ -1579,6 +1662,65 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for agentsTeamsPrepareTrace without sending the request
+   */
+  async agentsTeamsPrepareTraceRequestOpts(
+    requestParameters: AgentsTeamsPrepareTraceRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runId == null) {
+      throw new runtime.RequiredError(
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsPrepareTrace().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}/trace/prepare`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareTraceRaw(
+    requestParameters: AgentsTeamsPrepareTraceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseTracePrepareResponse>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareTraceRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseTracePrepareResponseFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsPrepareTrace(
+    requestParameters: AgentsTeamsPrepareTraceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseTracePrepareResponse> {
+    const response = await this.agentsTeamsPrepareTraceRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
    * Creates request options for agentsTeamsPrepareUnpublishMail without sending the request
    */
   async agentsTeamsPrepareUnpublishMailRequestOpts(
@@ -1788,6 +1930,74 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PublishedState> {
     const response = await this.agentsTeamsPublishedStateRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsReadTrace without sending the request
+   */
+  async agentsTeamsReadTraceRequestOpts(
+    requestParameters: AgentsTeamsReadTraceRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runId == null) {
+      throw new runtime.RequiredError(
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsReadTrace().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.offset != null) {
+      queryParameters.offset = requestParameters.offset;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (requestParameters.authorization != null) {
+      headerParameters.authorization = String(requestParameters.authorization);
+    }
+
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}/trace`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsReadTraceRaw(
+    requestParameters: AgentsTeamsReadTraceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<any>> {
+    const requestOptions =
+      await this.agentsTeamsReadTraceRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<any>(response);
+    }
+    return new runtime.TextApiResponse(response) as any;
+  }
+
+  /**
+   */
+  async agentsTeamsReadTrace(
+    requestParameters: AgentsTeamsReadTraceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<any> {
+    const response = await this.agentsTeamsReadTraceRaw(
       requestParameters,
       initOverrides,
     );
@@ -2768,6 +2978,81 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SendResp> {
     const response = await this.agentsTeamsSendSaveRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendTrace without sending the request
+   */
+  async agentsTeamsSendTraceRequestOpts(
+    requestParameters: AgentsTeamsSendTraceRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runId == null) {
+      throw new runtime.RequiredError(
+        "runId",
+        'Required parameter "runId" was null or undefined when calling agentsTeamsSendTrace().',
+      );
+    }
+
+    if (
+      requestParameters.sendRequestBodySignedContractStringTracePrepareResponse ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractStringTracePrepareResponse",
+        'Required parameter "sendRequestBodySignedContractStringTracePrepareResponse" was null or undefined when calling agentsTeamsSendTrace().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/runs/{run_id}/trace/send`;
+    urlPath = urlPath.replace(
+      `{run_id}`,
+      encodeURIComponent(String(requestParameters.runId)),
+    );
+
+    return {
+      body: SendRequestBodySignedContractStringTracePrepareResponseToJSON(
+        requestParameters.sendRequestBodySignedContractStringTracePrepareResponse,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendTraceRaw(
+    requestParameters: AgentsTeamsSendTraceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<any>> {
+    const requestOptions =
+      await this.agentsTeamsSendTraceRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<any>(response);
+    }
+    return new runtime.TextApiResponse(response) as any;
+  }
+
+  /**
+   */
+  async agentsTeamsSendTrace(
+    requestParameters: AgentsTeamsSendTraceRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<any> {
+    const response = await this.agentsTeamsSendTraceRaw(
       requestParameters,
       initOverrides,
     );

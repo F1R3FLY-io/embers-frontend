@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import z from "zod";
 
@@ -7,7 +6,9 @@ import { IconPreview } from "@/lib/components/IconPreview";
 import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
 import { nameField } from "@/lib/forms/nameField";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 
 import styles from "./AgentGeneralInfoFrom.module.scss";
 
@@ -61,9 +62,11 @@ export function AgentGeneralInfoFrom({
                 {t("deploy.iconUrl")}
               </Text>
               <Input
-                error={field.state.meta.isTouched && !field.state.meta.isValid}
+                errorMessage={fieldError(field.state.meta)}
+                name={field.name}
                 placeholder="https://example.com/icon.png"
                 value={field.state.value}
+                onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             </div>
@@ -78,9 +81,11 @@ export function AgentGeneralInfoFrom({
               {t("deploy.agentName")}
             </Text>
             <Input
-              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              errorMessage={fieldError(field.state.meta)}
+              name={field.name}
               placeholder={t("deploy.agentName")}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
             />
           </div>
@@ -95,9 +100,11 @@ export function AgentGeneralInfoFrom({
             </Text>
             <Input
               textarea
-              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              errorMessage={fieldError(field.state.meta)}
+              name={field.name}
               placeholder={t("deploy.agentDescription")}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
             />
           </div>
@@ -118,6 +125,9 @@ export function AgentGeneralInfoFrom({
       </form.Subscribe>
 
       <LanguageFooter />
+      <form.Subscribe selector={(state) => state.errorMap.onServer}>
+        {(error) => <FormError error={error} />}
+      </form.Subscribe>
     </form>
   );
 }

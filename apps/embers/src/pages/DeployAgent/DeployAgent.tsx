@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,8 @@ import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Select } from "@/lib/components/Select";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
@@ -56,7 +57,13 @@ export default function DeployAgent() {
   );
 
   const onSubmit = useCallbackWithLoader(
-    async ({ value }: { value: z.infer<typeof formModel> }) => {
+    async ({
+      formApi,
+      value,
+    }: {
+      formApi: { handleSubmit: () => Promise<void> };
+      value: z.infer<typeof formModel>;
+    }) => {
       update({
         environment: value.environment,
       });
@@ -80,7 +87,9 @@ export default function DeployAgent() {
               <WarningModal
                 error={e.message}
                 reviewSettings={redirectToEdit}
-                tryAgain={() => {}}
+                tryAgain={() => {
+                  void formApi.handleSubmit();
+                }}
               />,
               {
                 ariaLabel: "Warning",
@@ -219,13 +228,13 @@ export default function DeployAgent() {
             {(field) => (
               <div className={styles["form-section"]}>
                 <Select
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
+                  errorMessage={fieldError(field.state.meta)}
                   label={t("deploy.blockchainShard")}
+                  name={field.name}
                   options={envOptions}
                   placeholder={t("agents.selectEnvironment")}
                   value={field.state.value}
+                  onBlur={field.handleBlur}
                   onChange={field.handleChange}
                 />
                 {field.state.value && (
@@ -257,6 +266,9 @@ export default function DeployAgent() {
           </form.Subscribe>
 
           <LanguageFooter />
+          <form.Subscribe selector={(state) => state.errorMap.onServer}>
+            {(error) => <FormError error={error} />}
+          </form.Subscribe>
         </form>
       </div>
     </div>

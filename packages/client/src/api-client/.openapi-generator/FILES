@@ -91,6 +91,7 @@ docs/PrepareResponseRunUnderGrantResp.md
 docs/PrepareResponseSaveAgentResp.md
 docs/PrepareResponseSaveAgentsTeamResp.md
 docs/PrepareResponseSaveOslfResp.md
+docs/PrepareResponseTracePrepareResponse.md
 docs/PrepareResponseTransferResp.md
 docs/PrepareResponseUnpublishMailResp.md
 docs/PublishToFireskyReq.md
@@ -136,6 +137,7 @@ docs/SendRequestBodySignedContractRunReqRunResp.md
 docs/SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp.md
 docs/SendRequestBodySignedContractStringRevealOutputResp.md
 docs/SendRequestBodySignedContractStringRevokeGrantResp.md
+docs/SendRequestBodySignedContractStringTracePrepareResponse.md
 docs/SendRequestBodySignedContractStringUnpublishMailResp.md
 docs/SendRequestBodySignedContractTransferReqTransferResp.md
 docs/SendResp.md
@@ -144,6 +146,7 @@ docs/SignedContract.md
 docs/SignedTestDeployLogs.md
 docs/TestDeployFailed.md
 docs/TestnetApi.md
+docs/TracePrepareResponse.md
 docs/Transfer.md
 docs/TransferReq.md
 docs/TransferResp.md
@@ -234,6 +237,7 @@ models/PrepareResponseRunUnderGrantResp.ts
 models/PrepareResponseSaveAgentResp.ts
 models/PrepareResponseSaveAgentsTeamResp.ts
 models/PrepareResponseSaveOslfResp.ts
+models/PrepareResponseTracePrepareResponse.ts
 models/PrepareResponseTransferResp.ts
 models/PrepareResponseUnpublishMailResp.ts
 models/PublishToFireskyReq.ts
@@ -279,12 +283,14 @@ models/SendRequestBodySignedContractRunReqRunResp.ts
 models/SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp.ts
 models/SendRequestBodySignedContractStringRevealOutputResp.ts
 models/SendRequestBodySignedContractStringRevokeGrantResp.ts
+models/SendRequestBodySignedContractStringTracePrepareResponse.ts
 models/SendRequestBodySignedContractStringUnpublishMailResp.ts
 models/SendRequestBodySignedContractTransferReqTransferResp.ts
 models/SendResp.ts
 models/SignedContract.ts
 models/SignedTestDeployLogs.ts
 models/TestDeployFailed.ts
+models/TracePrepareResponse.ts
 models/Transfer.ts
 models/TransferReq.ts
 models/TransferResp.ts

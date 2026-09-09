@@ -23,8 +23,10 @@ import type {
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { Uri } from "../entities/Uri";
 import type { EmbersEvents } from "./EmbersEvents";
+import type { AgentTracePage, TraceSession } from "./Trace";
 
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
 import { insertSignedSignature, signContract } from "../functions";
 import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
@@ -52,9 +54,44 @@ export class AgentsTeamsApiSdk {
       basePath: config.basePath,
       fetchApi: config.fetchApi,
       headers: config.headers,
-      middleware: config.middleware,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
     this.client = new AIAgentsTeamsApi(configuration);
+  }
+
+  public async unlockTrace(
+    runId: string,
+    config?: ContractCallConfig,
+  ): Promise<TraceSession> {
+    const prepared = await this.client.agentsTeamsPrepareTrace(
+      { runId },
+      { signal: config?.signal },
+    );
+    const request = signContract(prepared.response.contract, this.privateKey);
+    return this.client.agentsTeamsSendTrace(
+      {
+        runId,
+        sendRequestBodySignedContractStringTracePrepareResponse: {
+          prepareRequest: runId,
+          prepareResponse: prepared.response,
+          request,
+          token: prepared.token,
+        },
+      },
+      { signal: config?.signal },
+    ) as Promise<TraceSession>;
+  }
+
+  public async readTrace(
+    runId: string,
+    accessToken: string,
+    offset = 0,
+    config?: QueryCallConfig,
+  ): Promise<AgentTracePage> {
+    return this.client.agentsTeamsReadTrace(
+      { authorization: `Bearer ${accessToken}`, offset, runId },
+      { signal: config?.signal },
+    ) as Promise<AgentTracePage>;
   }
 
   public async create(
@@ -588,17 +625,18 @@ export class AgentsTeamsApiSdk {
       this.privateKey,
     );
 
-    const sendResponse: unknown = await this.client.agentsTeamsSendRunUnderGrant(
-      {
-        sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp: {
-          prepareRequest,
-          prepareResponse: prepareResponse.response,
-          request: signedContract,
-          token: prepareResponse.token,
+    const sendResponse: unknown =
+      await this.client.agentsTeamsSendRunUnderGrant(
+        {
+          sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp: {
+            prepareRequest,
+            prepareResponse: prepareResponse.response,
+            request: signedContract,
+            token: prepareResponse.token,
+          },
         },
-      },
-      { signal: config?.signal },
-    );
+        { signal: config?.signal },
+      );
 
     return { prepareResponse, sendResponse };
   }

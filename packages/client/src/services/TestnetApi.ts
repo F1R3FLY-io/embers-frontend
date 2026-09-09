@@ -2,6 +2,7 @@ import type { FetchAPI, HTTPHeaders, Middleware } from "../api-client";
 import type { QueryCallConfig } from "../entities/HttpCallConfigs";
 
 import { Configuration, TestnetApi } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
 import { PrivateKey } from "../entities/PrivateKey";
 import { signContract } from "../functions";
 
@@ -20,7 +21,7 @@ export class TestnetApiSdk {
       basePath: config.basePath,
       fetchApi: config.fetchApi,
       headers: config.headers,
-      middleware: config.middleware,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
 
     this.client = new TestnetApi(configuration);

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { Text } from "@/lib/components/Text";
 
@@ -14,8 +14,11 @@ interface BaseProps<T extends string> {
   className?: string;
   disabled?: boolean;
   error?: boolean;
+  errorMessage?: string;
   helperText?: string;
   label?: string;
+  name?: string;
+  onBlur?: () => void;
   options: Option<T>[];
   placeholder?: string;
   placement?: "auto" | "top" | "bottom";
@@ -40,9 +43,12 @@ export function Select<T extends string>({
   className,
   disabled,
   error,
+  errorMessage,
   helperText,
   label,
   multiple,
+  name,
+  onBlur,
   onChange,
   options,
   placeholder = "Select value",
@@ -50,6 +56,7 @@ export function Select<T extends string>({
   value,
   variant = "default",
 }: SelectProps<T>) {
+  const errorId = useId();
   const [open, setOpen] = useState(false);
   const [dropUp, setDropUp] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -124,15 +131,50 @@ export function Select<T extends string>({
 
       <div
         ref={triggerRef}
+        aria-describedby={errorMessage ? errorId : undefined}
+        aria-expanded={open}
+        aria-invalid={error || !!errorMessage || undefined}
+        aria-label={label ?? placeholder}
         className={classNames(styles.select, {
           [styles.disabled]: disabled,
-          [styles.error]: error,
+          [styles.error]: error || !!errorMessage,
           [styles.open]: open,
           [styles["select-compact"]]: variant === "compact",
         })}
-        tabIndex={0}
-        onBlur={() => setOpen(false)}
+        data-field={name}
+        role="combobox"
+        tabIndex={disabled ? -1 : 0}
+        onBlur={() => {
+          setOpen(false);
+          onBlur?.();
+        }}
         onClick={() => !disabled && setOpen((prev) => !prev)}
+        onKeyDown={(event) => {
+          if (disabled) {
+            return;
+          }
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setOpen(!open);
+          }
+          if (event.key === "Escape") {
+            setOpen(false);
+          }
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            const current = options.findIndex(
+              (option) => option.value === value,
+            );
+            const next =
+              (current +
+                (event.key === "ArrowDown" ? 1 : -1) +
+                options.length) %
+              options.length;
+            if (options[next]) {
+              handleSelect(options[next].value);
+            }
+          }
+        }}
       >
         <div className={styles.value}>
           {multiple ? (
@@ -178,6 +220,11 @@ export function Select<T extends string>({
         </div>
       )}
 
+      {errorMessage && (
+        <p id={errorId} role="alert">
+          {errorMessage}
+        </p>
+      )}
       {helperText && (
         <Text
           className={classNames({ [styles.error]: error })}

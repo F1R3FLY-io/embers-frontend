@@ -4,6 +4,7 @@ import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import { useFieldValidation } from "@/lib/forms/useFieldValidation";
 import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./EditModal.module.scss";
@@ -57,6 +58,25 @@ export function EditModal<T extends Record<string, string | number>>({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const validation = useFieldValidation(
+    Object.fromEntries(
+      inputs.map(({ name, options, type }) => [
+        String(name),
+        () => {
+          if (
+            options &&
+            !options.some((option) => option.value === String(values[name]))
+          ) {
+            return "Choose a value from the list.";
+          }
+          if (type === "number" && !Number.isFinite(Number(values[name]))) {
+            return "Enter a valid number.";
+          }
+          return undefined;
+        },
+      ]),
+    ),
+  );
   const handleChange = (
     name: keyof T,
     type: "number" | "string",
@@ -75,6 +95,9 @@ export function EditModal<T extends Record<string, string | number>>({
     }));
 
   const handleSubmit = () => {
+    if (!validation.validate()) {
+      return;
+    }
     setError(null);
     setSaving(true);
     try {
@@ -97,12 +120,17 @@ export function EditModal<T extends Record<string, string | number>>({
       <Text className={styles["nim-title"]} type="H2">
         {title}
       </Text>
-      {error && <Text className={styles["nim-error"]}>{error}</Text>}
+      {error && (
+        <Text className={styles["nim-error"]} role="alert">
+          {error}
+        </Text>
+      )}
 
       {inputs.map(({ name, options, type }) =>
         options ? (
           <div key={String(name)} className={styles["nim-field"]}>
             <Select
+              {...validation.props(String(name))}
               label={humanize(String(name))}
               options={options}
               value={String(values[name])}
@@ -117,6 +145,7 @@ export function EditModal<T extends Record<string, string | number>>({
               {humanize(String(name))}
             </Text>
             <Input
+              {...validation.props(String(name))}
               type={type === "number" ? "number" : "text"}
               value={values[name]}
               onChange={(event) =>

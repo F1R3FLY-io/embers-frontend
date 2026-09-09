@@ -51,6 +51,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -89,6 +99,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -123,6 +143,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeploySignedTestResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -168,6 +198,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -202,6 +242,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/PrepareResponse_TransferResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -244,6 +294,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -282,6 +342,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -316,6 +386,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -381,6 +461,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/Agents"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -541,6 +631,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -575,6 +675,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -617,6 +727,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -651,6 +771,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -705,6 +835,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -755,6 +895,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -791,6 +941,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteAgentResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -845,6 +1005,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -857,6 +1027,291 @@
           }
         },
         "operationId": "agents_send_delete"
+      }
+    },
+    "/api/ai-agents-teams/runs/{run_id}/trace/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_TracePrepareResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_trace"
+      }
+    },
+    "/api/ai-agents-teams/runs/{run_id}/trace/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_string_TracePrepareResponse"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_trace"
+      }
+    },
+    "/api/ai-agents-teams/runs/{run_id}/trace": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "run_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "authorization",
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "format": "uint64"
+            },
+            "in": "query",
+            "required": false,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_read_trace"
+      }
+    },
+    "/api/ai-agents-teams/publication/pds": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "pds_url",
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_describe_pds"
       }
     },
     "/api/ai-agents-teams/{address}": {
@@ -882,6 +1337,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/AgentsTeams"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1042,6 +1507,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -1076,6 +1551,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1118,6 +1603,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -1152,6 +1647,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1194,6 +1699,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -1227,6 +1742,16 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
               }
             }
           },
@@ -1264,6 +1789,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/PrepareResponse_RunResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1392,6 +1927,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -1437,6 +1982,16 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
               }
             }
           },
@@ -1603,6 +2158,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -1653,6 +2218,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -1689,6 +2264,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteAgentsTeamResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1739,6 +2324,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1794,6 +2389,16 @@
                   "items": {
                     "$ref": "#/components/schemas/ReferencingTeam"
                   }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -1959,6 +2564,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -2016,6 +2631,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -2293,6 +2918,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -2334,6 +2969,16 @@
                   "items": {
                     "$ref": "#/components/schemas/Grant"
                   }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -2891,6 +3536,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -2935,6 +3590,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -2972,6 +3637,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/Oslfs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -3132,6 +3807,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -3166,6 +3851,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -3220,6 +3915,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -3270,6 +3975,16 @@
               }
             }
           },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
           "500": {
             "description": "",
             "content": {
@@ -3306,6 +4021,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteOslfResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -3356,6 +4081,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -4551,6 +5286,16 @@
           "description": {
             "type": "string",
             "description": "Human-readable failure description."
+          },
+          "field_errors": {
+            "type": "object",
+            "description": "Field names use the API's snake_case request names.",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         }
       },
@@ -5304,6 +6049,28 @@
           }
         }
       },
+      "PrepareResponse_TracePrepareResponse": {
+        "type": "object",
+        "title": "PrepareResponse_TracePrepareResponse",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TracePrepareResponse"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
       "PrepareResponse_TransferResp": {
         "type": "object",
         "title": "PrepareResponse_TransferResp",
@@ -5353,6 +6120,10 @@
         "title": "PublishToFireskyReq",
         "required": ["pds_url", "email", "handle", "password"],
         "properties": {
+          "account_mode": {
+            "type": "string",
+            "description": "`create` or `existing`; omitted preserves legacy create-or-login behavior."
+          },
           "pds_url": {
             "type": "string",
             "description": "The PDS to host the account."
@@ -6925,6 +7696,43 @@
           }
         }
       },
+      "SendRequestBody_SignedContract_string_TracePrepareResponse": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_string_TracePrepareResponse",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "type": "string",
+            "description": "Byte-identical echo of the prepare request."
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TracePrepareResponse"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
       "SendRequestBody_SignedContract_string_UnpublishMailResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_string_UnpublishMailResp",
@@ -7024,6 +7832,24 @@
           "error": {
             "type": "string",
             "description": "The rejection reported for the test deploy."
+          }
+        }
+      },
+      "TracePrepareResponse": {
+        "type": "object",
+        "title": "TracePrepareResponse",
+        "required": ["contract", "nonce", "expires_at"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes"
+          },
+          "nonce": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

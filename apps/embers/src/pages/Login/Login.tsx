@@ -1,6 +1,5 @@
 import type { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
 
-import { useForm } from "@tanstack/react-form";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -10,6 +9,8 @@ import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
 import { TextLink } from "@/lib/components/TextLink";
 import { WalletInput } from "@/lib/components/WalletInput";
+import { FormError } from "@/lib/forms/FormError";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 import logo from "@/public/icons/firefly-io.png";
 
@@ -116,7 +117,13 @@ export default function Login() {
               </Text>
             </div>
             <form.Field name="key">
-              {(field) => <WalletInput onChange={field.handleChange} />}
+              {(field) => (
+                <WalletInput
+                  errorMessage={fieldError(field.state.meta)}
+                  onBlur={field.handleBlur}
+                  onChange={field.handleChange}
+                />
+              )}
             </form.Field>
           </div>
           <form.Subscribe selector={(state) => [state.isSubmitting]}>
@@ -135,6 +142,9 @@ export default function Login() {
                 </div>
               </div>
             )}
+          </form.Subscribe>
+          <form.Subscribe selector={(state) => state.errorMap.onServer}>
+            {(error) => <FormError error={error} />}
           </form.Subscribe>
         </form>
       );

@@ -87,7 +87,9 @@ export const Input = forwardRef<
               ref={ref as Ref<HTMLTextAreaElement>}
               aria-describedby={ariaDescribedBy}
               aria-invalid={ariaInvalid}
+              aria-label={nativeProps["aria-label"] ?? nativeProps.placeholder}
               className={styles.textarea}
+              id={inputId}
               {...(nativeProps as TextareaHTMLAttributes<HTMLTextAreaElement>)}
             />
           ) : (
@@ -95,7 +97,9 @@ export const Input = forwardRef<
               ref={ref as Ref<HTMLInputElement>}
               aria-describedby={ariaDescribedBy}
               aria-invalid={ariaInvalid}
+              aria-label={nativeProps["aria-label"] ?? nativeProps.placeholder}
               className={styles.input}
+              id={inputId}
               {...(nativeProps as InputHTMLAttributes<HTMLInputElement>)}
             />
           )}

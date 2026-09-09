@@ -1,5 +1,7 @@
 # Red-team query demo
 
+Publication defaults, account credentials, and per-agent inputs/outputs are covered in [Publishing a team and inspecting its agents](publication-and-agent-history.md).
+
 The team proposes an answer, sends it to three critics, revises it, and returns a concise response.
 The six agents are Hypothesize, LogicCritic, EvidenceCritic, FeasibilityCritic, Refine, and Condense.
 Each critic receives the original query and the hypothesis. Refine receives all three critiques, the hypothesis, and the query.
@@ -68,12 +70,12 @@ The saved team URI remains in the profile's `red-team-demo.json`.
 
 ## Troubleshooting
 
-| Symptom | Action |
-|---|---|
-| Deploy requires a 32-byte DeployId | Use the legacy-compatible node revision and build patch in the shared runbook. |
-| Agents or the saved URI are missing after changing profiles | Seed the team in the selected profile. |
-| Empty model response | Check the configured model key and run the shared `PONG` smoke check. |
-| Deploy finalization stalls | Check both nodes and restart Embers after node recovery, as described in the shared runbook. |
+| Symptom                                                     | Action                                                                                       |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Deploy requires a 32-byte DeployId                          | Use the legacy-compatible node revision and build patch in the shared runbook.               |
+| Agents or the saved URI are missing after changing profiles | Seed the team in the selected profile.                                                       |
+| Empty model response                                        | Check the configured model key and run the shared `PONG` smoke check.                        |
+| Deploy finalization stalls                                  | Check both nodes and restart Embers after node recovery, as described in the shared runbook. |
 
 The [earlier editor incident report](../../post-mortems/AGENT_TEAM_EDITOR_GRAPH_CORRUPTION.md) records the original red-team presentation and its graph-editing failures.
 The live assets here recreate its six-agent topology. They are not an export of the earlier on-chain prompts.

@@ -4,6 +4,10 @@ import { Button } from "@/lib/components/Button";
 import { Input } from "@/lib/components/Input";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import {
+  integerError,
+  useFieldValidation,
+} from "@/lib/forms/useFieldValidation";
 import { useModal } from "@/lib/providers/modal/useModal";
 import { conditionFromJson } from "@/lib/workflow";
 
@@ -64,6 +68,22 @@ export function JoinModal({
   );
   const [error, setError] = useState<string>();
 
+  const validation = useFieldValidation({
+    correlationValue: () =>
+      correlationMode !== "root" && !correlationValue.trim()
+        ? "Enter the correlation route group or key path."
+        : undefined,
+    quorum: () =>
+      joinMode === "quorum"
+        ? integerError(quorum, 1, Math.max(1, incomingCount))
+        : undefined,
+    reduceUntil: () => {
+      if (joinMode === "reduce") {
+        conditionFromJson(reduceUntil);
+      }
+      return undefined;
+    },
+  });
   return (
     <div className={styles["nim-modal"]}>
       <Text className={styles["nim-title"]} type="H2">
@@ -73,7 +93,11 @@ export function JoinModal({
         This node currently has {incomingCount} incoming transition(s). Join
         state is correlated to one root workflow invocation.
       </Text>
-      {error && <Text className={styles["nim-error"]}>{error}</Text>}
+      {error && (
+        <Text className={styles["nim-error"]} role="alert">
+          {error}
+        </Text>
+      )}
       <div className={styles["nim-field"]}>
         <Select
           label="Join policy"
@@ -108,6 +132,7 @@ export function JoinModal({
               : "Key path (for example state.orderId)"}
           </Text>
           <Input
+            {...validation.props("correlationValue")}
             value={correlationValue}
             onChange={(event) => setCorrelationValue(event.target.value)}
           />
@@ -122,6 +147,7 @@ export function JoinModal({
             max={Math.max(1, incomingCount)}
             min={1}
             type="number"
+            {...validation.props("quorum")}
             value={quorum}
             onChange={(event) =>
               setQuorum(
@@ -171,6 +197,7 @@ export function JoinModal({
               Until condition (Workflow JSON)
             </Text>
             <Input
+              {...validation.props("reduceUntil")}
               value={reduceUntil}
               onChange={(event) => setReduceUntil(event.target.value)}
             />
@@ -184,6 +211,9 @@ export function JoinModal({
         <Button
           type="primary"
           onClick={() => {
+            if (!validation.validate()) {
+              return;
+            }
             try {
               if (joinMode === "reduce") {
                 conditionFromJson(reduceUntil);

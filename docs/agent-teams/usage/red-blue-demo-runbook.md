@@ -1,5 +1,7 @@
 # Red/blue engineering decision demo
 
+Publication defaults, account credentials, and per-agent inputs/outputs are covered in [Publishing a team and inspecting its agents](publication-and-agent-history.md).
+
 Build **RedBlueDecisionReview** live in 25–30 minutes. Blue proposes and revises a plan. Three red reviewers challenge it. The decision writer produces a useful brief.
 
 The demo uses six agents, one review round, and a final answer. The UI and fallback seeder both deploy a durable Workflow v2 team, with a separate finalized activity for each agent. It does not execute the proposed plan. The original RedTeam and Research Desk demos remain separate.
@@ -81,14 +83,14 @@ Repeat these steps for each agent in the table:
 
 The individual agents need to be saved, but do not need separate deployments. Team deployment incorporates their saved code.
 
-| Exact name | Presenter explanation |
-|---|---|
-| BluePlanner | “Propose a plan within our real constraints.” |
-| RedLogic | “Find contradictions. What fails if this assumption is wrong?” |
-| RedEvidence | “Separate known facts from claims we have not measured.” |
-| RedOperations | “Can our staffing and emergency process support this?” |
-| BlueResponder | “Change the plan or explain why we accept each risk.” |
-| DecisionWriter | “Give us a brief we can use, preserving unresolved concerns.” |
+| Exact name     | Presenter explanation                                          |
+| -------------- | -------------------------------------------------------------- |
+| BluePlanner    | “Propose a plan within our real constraints.”                  |
+| RedLogic       | “Find contradictions. What fails if this assumption is wrong?” |
+| RedEvidence    | “Separate known facts from claims we have not measured.”       |
+| RedOperations  | “Can our staffing and emergency process support this?”         |
+| BlueResponder  | “Change the plan or explain why we accept each risk.”          |
+| DecisionWriter | “Give us a brief we can use, preserving unresolved concerns.”  |
 
 **Checkpoint:** all six new agents appear in the dashboard. Each saved body starts with `contract main(@input, return)`.
 
@@ -97,20 +99,20 @@ The individual agents need to be saved, but do not need separate deployments. Te
 1. Choose **Agent teams**, then **Create new agent team**.
 2. Name it **RedBlueDecisionReview-live** and choose **Continue**.
 3. Drag one **Input** node, all six newly saved agents, and one **Output** node onto the canvas.
-For each agent drop, the **Configure Agent** dialog opens. Keep **protocol** set to `simple-v1` and choose **Save**.
+   For each agent drop, the **Configure Agent** dialog opens. Keep **protocol** set to `simple-v1` and choose **Save**.
 
 4. Arrange Input, BluePlanner, the three critics, BlueResponder, DecisionWriter, and Output from left to right. Stack the critics vertically.
 5. Click a right-side output handle, then the target’s left-side input handle. Repeat for this table.
 
-| Source | Targets | Connections |
-|---|---|---:|
-| Input | BluePlanner, RedLogic, RedEvidence, RedOperations, BlueResponder, DecisionWriter | 6 |
-| BluePlanner | RedLogic, RedEvidence, RedOperations, BlueResponder | 4 |
-| RedLogic | BlueResponder | 1 |
-| RedEvidence | BlueResponder | 1 |
-| RedOperations | BlueResponder | 1 |
-| BlueResponder | DecisionWriter | 1 |
-| DecisionWriter | Output | 1 |
+| Source         | Targets                                                                          | Connections |
+| -------------- | -------------------------------------------------------------------------------- | ----------: |
+| Input          | BluePlanner, RedLogic, RedEvidence, RedOperations, BlueResponder, DecisionWriter |           6 |
+| BluePlanner    | RedLogic, RedEvidence, RedOperations, BlueResponder                              |           4 |
+| RedLogic       | BlueResponder                                                                    |           1 |
+| RedEvidence    | BlueResponder                                                                    |           1 |
+| RedOperations  | BlueResponder                                                                    |           1 |
+| BlueResponder  | DecisionWriter                                                                   |           1 |
+| DecisionWriter | Output                                                                           |           1 |
 
 Keep the default successful routes and wait-for-all joins. Do not add a back-edge or an approval node. The shared [graph definition](../../../demo/red-blue/graph.json) lists these same 15 connections.
 
@@ -144,12 +146,12 @@ Unknowns: We have not measured review turnaround time or emergency-fix frequency
 
 **Checkpoint:** the result is a non-empty brief with four sections:
 
-| Section | What to show the audience |
-|---|---|
-| Recommendation | A practical review policy within the five-person team's constraints. |
+| Section              | What to show the audience                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| Recommendation       | A practical review policy within the five-person team's constraints.                      |
 | Changes after review | Finding labels such as L1, E1, F1 and a change, mitigation, or accepted-risk explanation. |
-| Remaining risks | Missing baseline measurements and unresolved concerns, without invented evidence. |
-| Rollout checklist | Responsible roles, a pilot, success measures, and conditions for rollback. |
+| Remaining risks      | Missing baseline measurements and unresolved concerns, without invented evidence.         |
+| Rollout checklist    | Responsible roles, a pilot, success measures, and conditions for rollback.                |
 
 Ask: “What did red change?” Point to a concrete policy adjustment, such as an audited emergency bypass or a lighter approval requirement. Wording and recommendations can vary between model runs. The integration tests verify data flow; the rehearsal assesses the usefulness of the model's answer.
 
@@ -159,17 +161,17 @@ The node inspector shows execution metadata, not intermediate model text. Do not
 
 Explain that the next human decision is whether to adopt the recommendation. The workflow has not changed repositories, deployment settings, or team policy.
 
-| Symptom | Recovery |
-|---|---|
-| Wrong or missing agent | Return to the dashboard, verify the save, then select the newly saved version. Preserve exact names. |
-| Missing input or run error | Check all 15 connections, especially Input to downstream agents and all three critics to BlueResponder. |
-| Validation failure | Repair the incomplete graph before deploying. The shared graph and connection counts are the reference. |
-| Empty model answer | Use the preflight rehearsal to verify the configured model service. Use a previously captured rehearsal result if the service is unavailable. |
-| Finalization delay | Check `stack.sh status`. Follow node/Embers recovery in the shared runbook; do not reset the chain during the demo. |
-| Agent `timedOut` | Let other tests or runs finish, then run the query again without `--seed`. The successful UI rehearsal is saved in `embers-local-stack/run/profiles/research-desk/red-blue-live-answer.txt`. |
-| Refresh loses the Run button | Re-deploy the saved live team, or use the prepared CLI fallback below. |
-| Backup agents in the palette | Use exact names without `RedBlueBackup-` for the live build. The fallback seeder records its IDs in `red-blue-demo.json`. |
-| Log truncates a long answer | Use the CLI fallback to print the complete model response. |
+| Symptom                      | Recovery                                                                                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wrong or missing agent       | Return to the dashboard, verify the save, then select the newly saved version. Preserve exact names.                                                                                         |
+| Missing input or run error   | Check all 15 connections, especially Input to downstream agents and all three critics to BlueResponder.                                                                                      |
+| Validation failure           | Repair the incomplete graph before deploying. The shared graph and connection counts are the reference.                                                                                      |
+| Empty model answer           | Use the preflight rehearsal to verify the configured model service. Use a previously captured rehearsal result if the service is unavailable.                                                |
+| Finalization delay           | Check `stack.sh status`. Follow node/Embers recovery in the shared runbook; do not reset the chain during the demo.                                                                          |
+| Agent `timedOut`             | Let other tests or runs finish, then run the query again without `--seed`. The successful UI rehearsal is saved in `embers-local-stack/run/profiles/research-desk/red-blue-live-answer.txt`. |
+| Refresh loses the Run button | Re-deploy the saved live team, or use the prepared CLI fallback below.                                                                                                                       |
+| Backup agents in the palette | Use exact names without `RedBlueBackup-` for the live build. The fallback seeder records its IDs in `red-blue-demo.json`.                                                                    |
+| Log truncates a long answer  | Use the CLI fallback to print the complete model response.                                                                                                                                   |
 
 CLI fallback, using the preflight deployment:
 
@@ -280,7 +282,7 @@ contract main(@input, return) = {
 
 ### Reading a published run’s full answer
 
-Open the run link in the F1r3sky reply. The Embers run page shows status first, then the response panel. Use **Sign in to view response** with the wallet that submitted the query, then **Reveal full response**. The answer is formatted with headings, lists, tables, and code. **Copy response** copies its original text; **Raw response** exposes the complete returned value. **Execution details** and **Event history** are expandable and preserve chronological events, including repeated executions from cycles. Intermediate inputs and outputs are not exposed by the current public history API. Reloading or changing wallets requires revealing the answer again.
+Open the run link in the F1r3sky reply. The Embers run page shows status first, then the response panel. Use **Sign in to view response** with the wallet that submitted the query, then **Reveal full response**. The answer is formatted with headings, lists, tables, and code. **Copy response** copies its original text; **Raw response** exposes the complete returned value. **Agent activity → Unlock agent history** authorizes access to each agent’s retained inputs and outputs. Repeated executions and nested agents remain distinct. **Technical details → Event history** preserves the lower-level runtime events. Reloading or changing wallets requires revealing the answer again.
 
 To verify an existing completed run against the real stack, privately supply its submitting wallet key in `EMBERS_E2E_STACK_KEY`, set `EMBERS_E2E_REVEAL_RUN_ID` to the run ID, and run from `embers-frontend`:
 

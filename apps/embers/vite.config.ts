@@ -58,4 +58,10 @@ export default defineConfig(({ command }) => ({
         ? ["f1r3fly-source", ...defaultClientConditions]
         : [...defaultClientConditions],
   },
+  // SDK regeneration rewrites workspace source files in place. Wait for a
+  // complete write before transforming them; an empty intermediate file can
+  // otherwise be cached as a module with no exports by the running dev server.
+  server: {
+    watch: { awaitWriteFinish: { pollInterval: 50, stabilityThreshold: 200 } },
+  },
 }));

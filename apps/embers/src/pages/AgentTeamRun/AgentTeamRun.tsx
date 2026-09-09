@@ -15,9 +15,11 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/lib/components/Button";
 import { Header } from "@/lib/components/Header";
 import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
+import { useFieldValidation } from "@/lib/forms/useFieldValidation";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 
+import { AgentActivity } from "./AgentActivity";
 import styles from "./AgentTeamRun.module.scss";
 import { RunResponse } from "./RunResponse";
 
@@ -141,8 +143,58 @@ function RunView() {
         : false,
     retry: false,
   });
+  const validation = useFieldValidation({
+    expectedDeadline: () => {
+      if (commandType === "timerFired") {
+        parseDeadline(expectedDeadline);
+      }
+      return undefined;
+    },
+    fromDefinitionHash: () =>
+      commandType === "migrate" && !fromDefinitionHash.trim()
+        ? "Enter the current definition hash."
+        : undefined,
+    name: () =>
+      ["event", "signal"].includes(commandType) && !name.trim()
+        ? "Enter a signal or event name."
+        : undefined,
+    payload: () => {
+      if (["approve", "event", "reject", "signal"].includes(commandType)) {
+        parsePayload(payload);
+      }
+      return undefined;
+    },
+    reason: () =>
+      commandType === "cancel" && !reason.trim()
+        ? "Enter an audit reason."
+        : undefined,
+    statePatch: () => {
+      if (commandType === "migrate") {
+        parseStatePatch(statePatch);
+      }
+      return undefined;
+    },
+    targetTeamUri: () =>
+      commandType === "migrate" && !targetTeamUri.startsWith("rho:id:")
+        ? "Enter the target team's rho:id URI."
+        : undefined,
+    toDefinitionHash: () =>
+      commandType === "migrate" && !toDefinitionHash.trim()
+        ? "Enter the target definition hash."
+        : undefined,
+    waitId: () =>
+      ![RunCommandKind.Cancel, RunCommandKind.Migrate].includes(
+        commandType as "cancel" | "migrate",
+      ) && !waitId
+        ? "Select the exact wait to resume."
+        : undefined,
+  });
+
   const command = useMutation({
     mutationFn: async () => {
+      if (!validation.validate()) {
+        throw new Error("Correct the highlighted fields.");
+      }
       if (!wallet.ready) {
         throw new Error("Sign in with the command-authority wallet first.");
       }
@@ -359,8 +411,14 @@ function RunView() {
               </p>
             )}
 
+            <AgentActivity
+              active={["resuming", "running", "suspended"].includes(
+                run.data.status,
+              )}
+              runId={runId}
+            />
             <details className={styles.section}>
-              <summary>Execution details</summary>
+              <summary>Technical details</summary>
               <dl className={styles.metadata}>
                 <div>
                   <dt>Run capability</dt>
@@ -531,6 +589,7 @@ function RunView() {
                         Exact wait
                         <select
                           required
+                          {...validation.nativeProps("waitId")}
                           value={waitId}
                           onChange={(event) => {
                             setWaitId(event.currentTarget.value);
@@ -543,6 +602,11 @@ function RunView() {
                             </option>
                           ))}
                         </select>
+                        {validation.visible("waitId") && (
+                          <span id="waitId-error" role="alert">
+                            {validation.visible("waitId")}
+                          </span>
+                        )}
                       </label>
                     ) : null}
 
@@ -551,11 +615,17 @@ function RunView() {
                         Signal or event name
                         <input
                           required
+                          {...validation.nativeProps("name")}
                           value={name}
                           onChange={(event) => {
                             setName(event.currentTarget.value);
                           }}
                         />
+                        {validation.visible("name") && (
+                          <span id="name-error" role="alert">
+                            {validation.visible("name")}
+                          </span>
+                        )}
                       </label>
                     ) : null}
 
@@ -565,11 +635,17 @@ function RunView() {
                         <textarea
                           rows={5}
                           spellCheck={false}
+                          {...validation.nativeProps("payload")}
                           value={payload}
                           onChange={(event) => {
                             setPayload(event.currentTarget.value);
                           }}
                         />
+                        {validation.visible("payload") && (
+                          <span id="payload-error" role="alert">
+                            {validation.visible("payload")}
+                          </span>
+                        )}
                       </label>
                     ) : null}
 
@@ -579,11 +655,17 @@ function RunView() {
                         <textarea
                           required
                           rows={3}
+                          {...validation.nativeProps("reason")}
                           value={reason}
                           onChange={(event) => {
                             setReason(event.currentTarget.value);
                           }}
                         />
+                        {validation.visible("reason") && (
+                          <span id="reason-error" role="alert">
+                            {validation.visible("reason")}
+                          </span>
+                        )}
                       </label>
                     ) : null}
 
@@ -593,11 +675,17 @@ function RunView() {
                           Expected deadline
                           <input
                             required
+                            {...validation.nativeProps("expectedDeadline")}
                             value={expectedDeadline}
                             onChange={(event) => {
                               setExpectedDeadline(event.currentTarget.value);
                             }}
                           />
+                          {validation.visible("expectedDeadline") && (
+                            <span id="expectedDeadline-error" role="alert">
+                              {validation.visible("expectedDeadline")}
+                            </span>
+                          )}
                         </label>
                         <p className={styles.notice}>
                           The scheduler fires due timers automatically; manual
@@ -615,42 +703,66 @@ function RunView() {
                           From definition hash
                           <input
                             required
+                            {...validation.nativeProps("fromDefinitionHash")}
                             value={fromDefinitionHash}
                             onChange={(event) => {
                               setFromDefinitionHash(event.currentTarget.value);
                             }}
                           />
+                          {validation.visible("fromDefinitionHash") && (
+                            <span id="fromDefinitionHash-error" role="alert">
+                              {validation.visible("fromDefinitionHash")}
+                            </span>
+                          )}
                         </label>
                         <label>
                           To definition hash
                           <input
                             required
+                            {...validation.nativeProps("toDefinitionHash")}
                             value={toDefinitionHash}
                             onChange={(event) => {
                               setToDefinitionHash(event.currentTarget.value);
                             }}
                           />
+                          {validation.visible("toDefinitionHash") && (
+                            <span id="toDefinitionHash-error" role="alert">
+                              {validation.visible("toDefinitionHash")}
+                            </span>
+                          )}
                         </label>
                         <label>
                           Target team URI
                           <input
                             required
+                            {...validation.nativeProps("targetTeamUri")}
                             value={targetTeamUri}
                             onChange={(event) => {
                               setTargetTeamUri(event.currentTarget.value);
                             }}
                           />
+                          {validation.visible("targetTeamUri") && (
+                            <span id="targetTeamUri-error" role="alert">
+                              {validation.visible("targetTeamUri")}
+                            </span>
+                          )}
                         </label>
                         <label>
                           State patch (JSON array)
                           <textarea
                             rows={5}
                             spellCheck={false}
+                            {...validation.nativeProps("statePatch")}
                             value={statePatch}
                             onChange={(event) => {
                               setStatePatch(event.currentTarget.value);
                             }}
                           />
+                          {validation.visible("statePatch") && (
+                            <span id="statePatch-error" role="alert">
+                              {validation.visible("statePatch")}
+                            </span>
+                          )}
                         </label>
                       </>
                     ) : null}

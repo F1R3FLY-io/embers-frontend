@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import z from "zod";
@@ -11,7 +10,9 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
 import { nameField } from "@/lib/forms/nameField";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 
 import styles from "./AgentsTeamGeneralInfoFrom.module.scss";
 
@@ -78,9 +79,11 @@ export function AgentsTeamGeneralInfoFrom({
                 {t("deploy.iconUrl")}
               </Text>
               <Input
-                error={field.state.meta.isTouched && !field.state.meta.isValid}
+                errorMessage={fieldError(field.state.meta)}
+                name={field.name}
                 placeholder="https://example.com/icon.png"
                 value={field.state.value}
+                onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
             </div>
@@ -95,9 +98,11 @@ export function AgentsTeamGeneralInfoFrom({
               {t("aiTeam.teamName")}
             </Text>
             <Input
-              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              errorMessage={fieldError(field.state.meta)}
+              name={field.name}
               placeholder={t("aiTeam.teamName")}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
             />
           </div>
@@ -136,10 +141,12 @@ export function AgentsTeamGeneralInfoFrom({
             </Text>
 
             <Select
-              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              errorMessage={fieldError(field.state.meta)}
               label={t("aiTeam.executionType")}
+              name={field.name}
               options={execTypeOptions}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={field.handleChange}
             />
           </div>
@@ -150,10 +157,12 @@ export function AgentsTeamGeneralInfoFrom({
         {(field) => (
           <div className={styles["form-section"]}>
             <Select
-              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              errorMessage={fieldError(field.state.meta)}
               label={t("basic.language")}
+              name={field.name}
               options={[{ label: "English", value: "en" }]}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={field.handleChange}
             />
           </div>
@@ -176,10 +185,12 @@ export function AgentsTeamGeneralInfoFrom({
             </Text>
 
             <Select
-              error={field.state.meta.isTouched && !field.state.meta.isValid}
+              errorMessage={fieldError(field.state.meta)}
               label={t("aiTeam.flowType")}
+              name={field.name}
               options={flowTypeOptions}
               value={field.state.value}
+              onBlur={field.handleBlur}
               onChange={field.handleChange}
             />
           </div>
@@ -200,6 +211,9 @@ export function AgentsTeamGeneralInfoFrom({
       </form.Subscribe>
 
       <LanguageFooter />
+      <form.Subscribe selector={(state) => state.errorMap.onServer}>
+        {(error) => <FormError error={error} />}
+      </form.Subscribe>
     </form>
   );
 }

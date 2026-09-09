@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import z from "zod";
 
@@ -7,6 +6,8 @@ import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
 import { Tag } from "@/lib/components/Tag";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
 import { useAlert } from "@/lib/providers/modal/useConfirm";
@@ -61,11 +62,7 @@ export default function PublishToMail() {
   // Dialogs stay OUTSIDE the loader-wrapped region: a dialog awaited under
   // the loader renders behind its overlay and can never be dismissed. The
   // loader covers exactly the mutation; the confirmation follows it.
-  const onSubmit = async ({
-    value,
-  }: {
-    value: z.infer<typeof formModel>;
-  }) => {
+  const onSubmit = async ({ value }: { value: z.infer<typeof formModel> }) => {
     const result = await publishUnderLoader(value);
     await alert({
       message: t("publishMail.successMessage", {
@@ -143,11 +140,11 @@ export default function PublishToMail() {
                 </Text>
                 <Input
                   data-testid="mail-local-part"
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
+                  errorMessage={fieldError(field.state.meta)}
+                  name={field.name}
                   placeholder={t("publishMail.localPartPlaceholder")}
                   value={field.state.value}
+                  onBlur={field.handleBlur}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
                   }}
@@ -164,11 +161,11 @@ export default function PublishToMail() {
                 </Text>
                 <Input
                   data-testid="mail-domain"
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
+                  errorMessage={fieldError(field.state.meta)}
+                  name={field.name}
                   placeholder={t("publishMail.domainPlaceholder")}
                   value={field.state.value}
+                  onBlur={field.handleBlur}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
                   }}
@@ -203,6 +200,9 @@ export default function PublishToMail() {
         <div className={styles.footer}>
           <LanguageFooter />
         </div>
+        <form.Subscribe selector={(state) => state.errorMap.onServer}>
+          {(error) => <FormError error={error} />}
+        </form.Subscribe>
       </form>
     </div>
   );

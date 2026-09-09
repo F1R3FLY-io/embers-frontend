@@ -1,4 +1,6 @@
-/** @jest-environment jsdom */
+/**
+ * @jest-environment jsdom
+ */
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { RunResponse } from "@/pages/AgentTeamRun/RunResponse";

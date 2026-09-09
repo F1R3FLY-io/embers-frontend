@@ -20,5 +20,6 @@ declare const classNames: {
   readonly raw: "raw";
   readonly prose: "prose";
   readonly "table-scroll": "table-scroll";
+  readonly activity: "activity";
 };
 export default classNames;
