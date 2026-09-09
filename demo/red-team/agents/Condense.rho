@@ -1,0 +1,5 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Give the user a concise final answer to the query from the refined analysis. Preserve key caveats. Maximum 120 words." ++ "\nQuery: " ++ input.get("input") ++ "\nRefined analysis: " ++ input.get("refine"), *return)
+  }
+}

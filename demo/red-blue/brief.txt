@@ -1,0 +1,5 @@
+Decision: Introduce mandatory code review for a team of five engineers.
+Constraints: One engineer is on call at a time. No new tooling budget. Urgent production fixes must retain an emergency path. Use existing pull requests and CI.
+Initial proposal to challenge: Require two approvals before every merge, including emergencies. Assume this never delays recovery.
+Deliverable: Recommend a practical policy, explain changes after red-team review, preserve unresolved risks, and give a short rollout checklist with responsible roles, success measures and rollback.
+Unknowns: We have not measured review turnaround time or emergency-fix frequency. Do not invent these measurements.

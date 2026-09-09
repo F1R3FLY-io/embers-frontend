@@ -20,13 +20,17 @@ const mockCommand = jest.fn(async (..._args: unknown[]) =>
 
 jest.mock("@/lib/providers/wallet/useApi", () => ({
   useWalletState: () => ({
-    embers: { agentsTeams: { command: mockCommand } },
+    embers: {
+      agentsTeams: { command: mockCommand },
+      wallets: { address: { toString: () => "test-wallet" } },
+    },
     ready: true,
   }),
 }));
 
 jest.mock("react-router-dom", () => ({
   useLocation: () => ({ pathname: "/runs/run-77" }),
+  useNavigate: () => jest.fn(),
   useParams: () => ({ runId: "run-77" }),
 }));
 
@@ -99,6 +103,9 @@ describe("timerFired escape hatch", () => {
   it("prefills the deadline from the run and issues the exact command", async () => {
     renderInspector();
 
+    fireEvent.click(
+      await screen.findByLabelText("Show migration and manual timer commands"),
+    );
     fireEvent.change(await screen.findByLabelText("Command"), {
       target: { value: "timerFired" },
     });
@@ -127,6 +134,9 @@ describe("timerFired escape hatch", () => {
     );
     renderInspector();
 
+    fireEvent.click(
+      await screen.findByLabelText("Show migration and manual timer commands"),
+    );
     fireEvent.change(await screen.findByLabelText("Command"), {
       target: { value: "timerFired" },
     });
@@ -157,6 +167,9 @@ describe("migrate behind an explicit confirmation", () => {
   it("prefills the source hash, summarizes the rebind, and sends on confirm", async () => {
     renderInspector();
 
+    fireEvent.click(
+      await screen.findByLabelText("Show migration and manual timer commands"),
+    );
     fireEvent.change(await screen.findByLabelText("Command"), {
       target: { value: "migrate" },
     });
@@ -186,6 +199,9 @@ describe("migrate behind an explicit confirmation", () => {
   it("a declined confirmation sends nothing", async () => {
     renderInspector();
 
+    fireEvent.click(
+      await screen.findByLabelText("Show migration and manual timer commands"),
+    );
     fireEvent.change(await screen.findByLabelText("Command"), {
       target: { value: "migrate" },
     });
@@ -202,6 +218,9 @@ describe("migrate behind an explicit confirmation", () => {
   it("rejects a state patch that is not a JSON array before signing", async () => {
     renderInspector();
 
+    fireEvent.click(
+      await screen.findByLabelText("Show migration and manual timer commands"),
+    );
     fireEvent.change(await screen.findByLabelText("Command"), {
       target: { value: "migrate" },
     });

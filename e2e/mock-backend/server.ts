@@ -7,6 +7,7 @@ import { WebSocketServer } from "ws";
 import type { HttpResult, RouteContext } from "./wire";
 
 import { agentRoutes } from "./routes/agents";
+import { grantRoutes } from "./routes/grants";
 import { teamRoutes } from "./routes/teams";
 import { Store } from "./store";
 import { deployIdFrom, json } from "./wire";
@@ -173,10 +174,12 @@ function handle(context: RouteContext): HttpResult {
     return json({});
   }
 
-  // Order matters only in that the team prefix is a superset of neither: the
-  // routes discriminate on their own exact prefixes, so a request reaches at
-  // most one of them.
-  const result = agentRoutes(context) ?? teamRoutes(context);
+  // Order matters only for the two team-prefix modules: the grant routes
+  // match their own exact paths (grants, runs, bindings, mail publications,
+  // published-channels) and return undefined otherwise, so trying them before
+  // the general team routes keeps each request reaching exactly one handler.
+  const result =
+    agentRoutes(context) ?? grantRoutes(context) ?? teamRoutes(context);
   if (result !== undefined) {
     return result;
   }

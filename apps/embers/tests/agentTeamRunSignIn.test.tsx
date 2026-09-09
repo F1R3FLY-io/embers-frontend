@@ -32,6 +32,7 @@ jest.mock("react-router-dom", () => ({
     return <a href={props.to}>{children}</a>;
   },
   useLocation: () => mockLocation,
+  useNavigate: () => jest.fn(),
   useParams: () => ({ runId: "run-99" }),
 }));
 

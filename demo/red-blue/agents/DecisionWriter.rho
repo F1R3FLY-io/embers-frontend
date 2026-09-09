@@ -1,0 +1,7 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Write a decision brief with exactly these four headings: Recommendation; Changes after review; Remaining risks; Rollout checklist. Preserve all finding labels and their dispositions, unresolved concerns, missing evidence, responsible roles, success measures and rollback. Do not turn accepted risk into a resolved issue. Maximum 240 words and 1900 characters total."
+      ++ "\nBrief: " ++ input.getOrElse("input", input.getOrElse("Input", input.getOrElse("input-node", Nil)))
+      ++ "\nReviewed plan: " ++ input.getOrElse("blueResponder", input.getOrElse("BlueResponder", Nil)), *return)
+  }
+}

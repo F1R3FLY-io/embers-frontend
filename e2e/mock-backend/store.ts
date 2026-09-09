@@ -62,6 +62,8 @@ export interface PublicationRecord {
 export interface RunRecord {
   createdAt: number;
   events: { event_type: string; sequence: number }[];
+  /** The grant a channel service initiated this run under, when there was one. */
+  grantId?: string;
   id: string;
   output?: string;
   revision: number;
@@ -78,6 +80,38 @@ export interface RunRecord {
   waitIds: string[];
 }
 
+/**
+ * A grant as the chain records it: a public authorization fact. Held in
+ * natural types; routes stringify at the wire boundary exactly as the server
+ * does.
+ */
+export interface GrantRecord {
+  agentsTeam: string;
+  authority: { commands: string[]; reveal: boolean };
+  caps: { maxRunsPerDay: number | null };
+  channel: string;
+  channelPrincipal: string;
+  createdAt: number;
+  grantee: string;
+  grantId: string;
+  grantor: string;
+  minAuth: string;
+  requireTokenHash: string | null;
+  revoked: boolean;
+  runsToday: { count: number; day: number };
+}
+
+/** A team-to-channel address binding; carries no key material by design. */
+export interface BindingRecord {
+  active: boolean;
+  address: string;
+  agentsTeam: string;
+  channel: string;
+  createdAt: number;
+  owner: string;
+  teamId: string;
+}
+
 export interface Failure {
   description: string;
   /** How many further calls fail; undefined means every call. */
@@ -91,6 +125,9 @@ export class Store {
   /** The latest version of every team that exists. */
   public teams: TeamRecord[] = [];
   public runs = new Map<string, RunRecord>();
+  public grants = new Map<string, GrantRecord>();
+  /** Keyed `channel|address`, exactly as the chain keys bindings. */
+  public bindings = new Map<string, BindingRecord>();
 
   /** Every version ever written, oldest first, keyed by record id. */
   public agentHistory = new Map<string, AgentRecord[]>();
@@ -111,11 +148,49 @@ export class Store {
     this.agents = [];
     this.teams = [];
     this.runs.clear();
+    this.grants.clear();
+    this.bindings.clear();
     this.agentHistory.clear();
     this.teamHistory.clear();
     this.failures.clear();
     this.staleReads.clear();
     this.snapshots.clear();
+  }
+
+  public addGrant(partial: Partial<GrantRecord> = {}): GrantRecord {
+    const grant: GrantRecord = {
+      agentsTeam: "rho:id:team",
+      authority: { commands: ["approve", "reject", "cancel"], reveal: true },
+      caps: { maxRunsPerDay: null },
+      channel: "chat",
+      channelPrincipal: "principal",
+      createdAt: Date.now(),
+      grantee: "1111grantee",
+      grantId: randomUUID(),
+      grantor: "1111grantor",
+      minAuth: "none",
+      requireTokenHash: null,
+      revoked: false,
+      runsToday: { count: 0, day: 0 },
+    };
+    const merged = { ...grant, ...partial };
+    this.grants.set(merged.grantId, merged);
+    return merged;
+  }
+
+  public addBinding(partial: Partial<BindingRecord> = {}): BindingRecord {
+    const binding: BindingRecord = {
+      active: true,
+      address: "team@agents.test",
+      agentsTeam: "rho:id:team",
+      channel: "mail",
+      createdAt: Date.now(),
+      owner: "1111owner",
+      teamId: randomUUID(),
+    };
+    const merged = { ...binding, ...partial };
+    this.bindings.set(`${merged.channel}|${merged.address}`, merged);
+    return merged;
   }
 
   public addAgent(partial: Partial<AgentRecord> = {}): AgentRecord {

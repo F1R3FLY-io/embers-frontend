@@ -50,6 +50,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "testnet_create_wallet"
@@ -78,6 +88,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "testnet_prepare_deploy"
@@ -103,6 +123,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeploySignedTestResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -137,6 +167,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "wallets_state_and_history"
@@ -162,6 +202,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/PrepareResponse_TransferResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -193,6 +243,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "wallets_send_transfer"
@@ -221,6 +281,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "wallets_prepare_boost"
@@ -246,6 +316,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -301,6 +381,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/Agents"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -450,6 +540,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_prepare_create"
@@ -475,6 +575,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -506,6 +616,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_prepare_deploy"
@@ -531,6 +651,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -574,6 +704,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_prepare_save"
@@ -614,6 +754,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_send_save"
@@ -641,6 +791,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteAgentResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -684,6 +844,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_send_delete"
@@ -712,6 +882,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/AgentsTeams"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -861,6 +1041,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_create"
@@ -886,6 +1076,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -917,6 +1117,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_deploy"
@@ -942,6 +1152,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -973,6 +1193,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_run"
@@ -997,6 +1227,16 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {}
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
               }
             }
           }
@@ -1027,6 +1267,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_run_on_firesky"
@@ -1048,6 +1298,16 @@
         "responses": {
           "200": {
             "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_send_run_on_firesky"
@@ -1131,6 +1391,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_run_command"
@@ -1167,6 +1437,16 @@
             "content": {
               "application/json; charset=utf-8": {
                 "schema": {}
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
               }
             }
           }
@@ -1322,6 +1602,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_save"
@@ -1362,6 +1652,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_send_save"
@@ -1389,6 +1689,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteAgentsTeamResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -1429,6 +1739,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -1477,6 +1797,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_referencing_teams"
@@ -1512,6 +1842,16 @@
         "responses": {
           "200": {
             "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_unpublish"
@@ -1618,6 +1958,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_prepare_publish_to_firesky"
@@ -1669,9 +2019,934 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "agents_teams_send_publish_to_firesky"
+      }
+    },
+    "/api/ai-agents-teams/grants/create/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Prepares a standing channel grant: \"channel identity C may initiate\nruns of team T owned by me, within caps, with the delegated\nauthority\". The grantor signs in the environment where their key\nlives; the chain derives the grantor from the deploy's signer.",
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGrantReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_CreateGrantResp"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The request named a channel, authority class, or cap outside the legal\nvocabulary (`grant_invalid_request`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_create_grant"
+      }
+    },
+    "/api/ai-agents-teams/grants/create/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_CreateGrantReq_CreateGrantResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The grant does not exist (`grant_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The signer does not hold grant authority (`grant_unauthorized`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_create_grant"
+      }
+    },
+    "/api/ai-agents-teams/grants/{grant_id}/revoke/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Prepares a grant revocation. Revocation is delivery-only for in-flight\nruns: they complete for their owner, while the grantee's reveal and\ncommand claims fail from the moment of revocation. The grantor keeps\n`cancel` through the ordinary command envelope.",
+        "parameters": [
+          {
+            "name": "grant_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_RevokeGrantResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The grant does not exist (`grant_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_revoke_grant"
+      }
+    },
+    "/api/ai-agents-teams/grants/{grant_id}/revoke/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "grant_id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_string_RevokeGrantResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The grant does not exist (`grant_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The signer does not hold grant authority (`grant_unauthorized`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_revoke_grant"
+      }
+    },
+    "/api/ai-agents-teams/grants/by-grantor/{address}": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Grants created by a wallet, for the grant-management interface.\nRevoked grants are included, flagged.",
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Grant"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_grants_by_grantor"
+      }
+    },
+    "/api/ai-agents-teams/grants/by-grantee/{address}": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Grants naming a channel wallet as grantee. An operations cross-check:\nchannel services consume the observer-readable chain clause directly\nand use this mirror only for diagnostics.",
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Grant"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_grants_by_grantee"
+      }
+    },
+    "/api/ai-agents-teams/run-under-grant/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Prepares a run under a grant: the channel wallet signs and pays the\ndeploy, the grantor owns the run, and the chain adjudicates the grant\natomically with run registration. Durable teams only.",
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/RunUnderGrantReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_RunUnderGrantResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The grant does not exist (`grant_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The grant is revoked (`grant_revoked`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The channel context does not match the grant\n(`grant_principal_mismatch`), or the granted team has no durable\ndeployment (`team_not_durable`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The grant's daily run cap is exhausted (`grant_caps_exceeded`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_run_under_grant"
+      }
+    },
+    "/api/ai-agents-teams/run-under-grant/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_RunUnderGrantReq_RunUnderGrantResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The run-state JSON read back from the observer after chain finality,\nexactly as the plain run send returns it.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "The grant does not exist (`grant_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The grant is revoked (`grant_revoked`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The grant's daily run cap is exhausted (`grant_caps_exceeded`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "The channel wallet could not fund the deploy (`deploy_unfunded`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "The deploy was accepted but finality was not observed in time\n(`deploy_not_finalized`); the run may still complete -- poll the run\nstate.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_run_under_grant"
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/publish-to-mail/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Prepares a mail binding: `local@domain` recognized by the mail\nchannel, bound on chain to the team's deployed registry URI. The\nprepare is side-effect light -- a pure render plus a uniqueness read\n-- and the binding carries no key material.",
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/PublishToMailReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_PublishToMailResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The team does not exist under the address (`team_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The address is already actively bound to a different team\n(`binding_duplicate`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The address fails the grammar (`invalid_mail_address`), or the team\nhas no deployment to bind (`team_not_deployed`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_publish_to_mail"
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/publish-to-mail/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_PublishToMailReq_PublishToMailResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The address is already actively bound to a different team\n(`binding_duplicate`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The signer does not own the team (`binding_unauthorized`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No active binding exists (`binding_not_found`); unpublish only.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_publish_to_mail"
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/unpublish-mail/prepare": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Prepares deactivation of the team's mail binding. Reversible: the\nbinding record is kept and publishing again reactivates the address.",
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrepareResponse_UnpublishMailResp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No active mail binding exists for the team (`binding_not_found`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_prepare_unpublish_mail"
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/unpublish-mail/send": {
+      "post": {
+        "tags": ["AIAgentsTeams"],
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequestBody_SignedContract_string_UnpublishMailResp"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The address is already actively bound to a different team\n(`binding_duplicate`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The signer does not own the team (`binding_unauthorized`).",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No active binding exists (`binding_not_found`); unpublish only.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_send_unpublish_mail"
+      }
+    },
+    "/api/ai-agents-teams/{address}/{id}/published-channels": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Where the team is reachable, per channel, with honestly three-valued\nreachability. Mail reachability is never asserted (embers does not\nprobe SMTP); chat reachability is derived from grant presence.",
+        "parameters": [
+          {
+            "name": "address",
+            "schema": {
+              "type": "string",
+              "format": "blockchain-address"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          },
+          {
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishedChannels"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_published_channels"
+      }
+    },
+    "/api/ai-agents-teams/bindings/by-channel/{channel}": {
+      "get": {
+        "tags": ["AIAgentsTeams"],
+        "summary": "Every binding for a channel, an HTTP mirror of the observer-readable\nchain clause for UI and operations.",
+        "parameters": [
+          {
+            "name": "channel",
+            "schema": {
+              "$ref": "#/components/schemas/GrantChannel"
+            },
+            "in": "path",
+            "required": true,
+            "deprecated": false,
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChannelBinding"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "agents_teams_bindings_by_channel"
       }
     },
     "/api/oslfs/{address}": {
@@ -1697,6 +2972,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/Oslfs"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -1846,6 +3131,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "oslfs_prepare_create"
@@ -1871,6 +3166,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -1914,6 +3219,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "oslfs_prepare_save"
@@ -1954,6 +3269,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
+                }
+              }
+            }
           }
         },
         "operationId": "oslfs_send_save"
@@ -1981,6 +3306,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteOslfResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -2021,6 +3356,16 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/SendResp"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalError"
                 }
               }
             }
@@ -2342,6 +3687,103 @@
           }
         }
       },
+      "ChannelBinding": {
+        "type": "object",
+        "title": "ChannelBinding",
+        "description": "A team's public reachability record for one channel. Carries no key\nmaterial: channel-side secrets are minted and custodied by the channel\nservice, never by embers.",
+        "required": [
+          "channel",
+          "address",
+          "agents_team",
+          "team_id",
+          "owner",
+          "active",
+          "created_at"
+        ],
+        "properties": {
+          "channel": {
+            "type": "string",
+            "description": "The channel the binding serves."
+          },
+          "address": {
+            "type": "string",
+            "description": "The channel-native address (for mail, `local@domain`)."
+          },
+          "agents_team": {
+            "type": "string",
+            "format": "blockchain-uri",
+            "description": "The bound team deployment's registry URI."
+          },
+          "team_id": {
+            "type": "string",
+            "description": "The bound team's identity (`UUIDv4`)."
+          },
+          "owner": {
+            "type": "string",
+            "description": "The team owner's wallet address."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the binding is in force; unpublishing flips this off,\nreversibly."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "timestamp-millis",
+            "description": "Binding creation instant."
+          }
+        }
+      },
+      "ChannelContext": {
+        "type": "object",
+        "title": "ChannelContext",
+        "description": "Channel-supplied provenance for a grant-initiated run. Stored only inside\nthe encrypted durable run-request artifact; the public ledger records only\nthe grant id.",
+        "required": ["channel", "principal", "message_fingerprint"],
+        "properties": {
+          "channel": {
+            "description": "The channel issuing the run; must equal the grant's channel.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantChannel"
+              },
+              {
+                "description": "The channel issuing the run; must equal the grant's channel."
+              }
+            ]
+          },
+          "principal": {
+            "type": "string",
+            "description": "The channel-native principal; must equal the grant's principal."
+          },
+          "message_fingerprint": {
+            "type": "string",
+            "description": "The channel's content-derived idempotency handle for the triggering\nmessage. Recorded for audit; channels own their dedup discipline."
+          },
+          "subject": {
+            "type": "string",
+            "description": "Mail subject line, when the channel has one."
+          }
+        }
+      },
+      "ChatChannelState": {
+        "type": "object",
+        "title": "ChatChannelState",
+        "description": "Chat reachability derived from grant presence: a team with active chat\ngrants is connectable by exactly those principals. The gateway dials out\nand exposes no status surface, so this is the honest maximum embers can\nreport.",
+        "required": ["active_grant_count", "principals"],
+        "properties": {
+          "active_grant_count": {
+            "type": "string",
+            "format": "uint64",
+            "description": "Active (unrevoked) chat grants across all of the team's deployments."
+          },
+          "principals": {
+            "type": "array",
+            "description": "The distinct principals those grants name.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "CreateAgentReq": {
         "type": "object",
         "title": "CreateAgentReq",
@@ -2437,6 +3879,109 @@
             "type": "string",
             "format": "bytes",
             "description": "The unsigned creation contract bytes to sign."
+          }
+        }
+      },
+      "CreateGrantReq": {
+        "type": "object",
+        "title": "CreateGrantReq",
+        "required": [
+          "grantee",
+          "channel",
+          "channel_principal",
+          "agents_team",
+          "caps",
+          "authority",
+          "require_token",
+          "min_auth"
+        ],
+        "properties": {
+          "grantee": {
+            "type": "string",
+            "format": "blockchain-address",
+            "description": "The channel service's wallet address (the grantee, who signs and pays\nrun deploys under this grant)."
+          },
+          "channel": {
+            "description": "The channel the grant serves.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantChannel"
+              },
+              {
+                "description": "The channel the grant serves."
+              }
+            ]
+          },
+          "channel_principal": {
+            "type": "string",
+            "description": "The channel-native principal this grant answers for: the chat\ngateway's opaque author hash, or a mail sender address. Embers\nstring-matches it and never interprets it."
+          },
+          "agents_team": {
+            "type": "string",
+            "format": "blockchain-uri",
+            "description": "The deployed team's registry URI the grant covers."
+          },
+          "caps": {
+            "description": "Frequency ceilings.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantCaps"
+              },
+              {
+                "description": "Frequency ceilings."
+              }
+            ]
+          },
+          "authority": {
+            "description": "The authority delegated to the grantee.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantAuthority"
+              },
+              {
+                "description": "The authority delegated to the grantee."
+              }
+            ]
+          },
+          "require_token": {
+            "type": "boolean",
+            "description": "When true, a random subject bearer token is minted; its plaintext is\nreturned exactly once in the prepare response and only its blake2b-256\nhex digest is stored on chain."
+          },
+          "min_auth": {
+            "description": "Sender-authentication floor for mail-channel grants.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MinAuthLevel"
+              },
+              {
+                "description": "Sender-authentication floor for mail-channel grants."
+              }
+            ]
+          }
+        }
+      },
+      "CreateGrantResp": {
+        "type": "object",
+        "title": "CreateGrantResp",
+        "required": ["grant_id", "contract", "issued_at"],
+        "properties": {
+          "grant_id": {
+            "type": "string",
+            "description": "The minted grant identity (`UUIDv7`)."
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes",
+            "description": "The unsigned grant-creation contract bytes to sign (grantor-signed)."
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "timestamp-millis",
+            "description": "Prepare instant."
+          },
+          "require_token": {
+            "type": "string",
+            "description": "The minted subject bearer token, present exactly once when requested;\nit is never stored and cannot be recovered later."
           }
         }
       },
@@ -2993,6 +4538,22 @@
           }
         }
       },
+      "ErrorBody": {
+        "type": "object",
+        "title": "ErrorBody",
+        "description": "A machine-readable failure body for the channel-connector surface: `code`\nis a stable identifier a channel service branches on, `description` is for\nhumans and logs. Codes are documented per operation in the API reference.",
+        "required": ["code", "description"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Stable machine-readable failure code."
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable failure description."
+          }
+        }
+      },
       "Exchange": {
         "type": "object",
         "title": "Exchange",
@@ -3024,6 +4585,175 @@
                 "description": "The thread's root post."
               }
             ]
+          }
+        }
+      },
+      "Grant": {
+        "type": "object",
+        "title": "Grant",
+        "description": "A grant record as the chain holds it: a public authorization fact. The\nHTTP surface mirrors the observer-readable chain clauses for UI and\noperations; channel services consume the chain clauses directly.",
+        "required": [
+          "grant_id",
+          "grantor",
+          "grantee",
+          "channel",
+          "channel_principal",
+          "agents_team",
+          "caps",
+          "authority",
+          "min_auth",
+          "created_at",
+          "revoked",
+          "runs_today"
+        ],
+        "properties": {
+          "grant_id": {
+            "type": "string",
+            "description": "Grant identity (`UUIDv7`)."
+          },
+          "grantor": {
+            "type": "string",
+            "description": "The granting wallet address; derived on chain from the creating\ndeploy's signer."
+          },
+          "grantee": {
+            "type": "string",
+            "description": "The channel service's wallet address."
+          },
+          "channel": {
+            "type": "string",
+            "description": "The channel the grant serves."
+          },
+          "channel_principal": {
+            "type": "string",
+            "description": "The channel-native principal, opaque to embers."
+          },
+          "agents_team": {
+            "type": "string",
+            "format": "blockchain-uri",
+            "description": "The covered team deployment's registry URI."
+          },
+          "caps": {
+            "description": "Frequency ceilings.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantCaps"
+              },
+              {
+                "description": "Frequency ceilings."
+              }
+            ]
+          },
+          "authority": {
+            "description": "The delegated authority, as recorded.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantAuthorityView"
+              },
+              {
+                "description": "The delegated authority, as recorded."
+              }
+            ]
+          },
+          "require_token_hash": {
+            "type": "string",
+            "description": "blake2b-256 hex digest of the subject bearer token, when one is\nrequired. The token itself is never stored."
+          },
+          "min_auth": {
+            "type": "string",
+            "description": "Sender-authentication floor for mail-channel grants."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "timestamp-millis",
+            "description": "Creation instant."
+          },
+          "revoked": {
+            "type": "boolean",
+            "description": "Whether the grant has been revoked. Revocation is delivery-only for\nin-flight runs: they complete for their owner, while grantee reveal\nand command claims fail from the moment of revocation."
+          },
+          "runs_today": {
+            "description": "The chain-maintained day counter.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GrantRunsToday"
+              },
+              {
+                "description": "The chain-maintained day counter."
+              }
+            ]
+          }
+        }
+      },
+      "GrantAuthority": {
+        "type": "object",
+        "title": "GrantAuthority",
+        "required": ["reveal", "commands"],
+        "properties": {
+          "reveal": {
+            "type": "boolean",
+            "description": "Whether the grantee may reveal outputs of runs initiated under this\ngrant, for delivery over the channel."
+          },
+          "commands": {
+            "type": "array",
+            "description": "The command classes the grantee may issue on runs initiated under this\ngrant.",
+            "items": {
+              "$ref": "#/components/schemas/GrantCommandClass"
+            }
+          }
+        }
+      },
+      "GrantAuthorityView": {
+        "type": "object",
+        "title": "GrantAuthorityView",
+        "description": "Recorded authority, with classes as strings so future recorded values\nsurvive the read path unmodified.",
+        "required": ["reveal", "commands"],
+        "properties": {
+          "reveal": {
+            "type": "boolean"
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GrantCaps": {
+        "type": "object",
+        "title": "GrantCaps",
+        "properties": {
+          "max_runs_per_day": {
+            "type": "string",
+            "format": "int64",
+            "description": "UTC-epoch-day run ceiling; absent means uncapped. Up to twice the cap\ncan land across one midnight boundary; the cap is an abuse throttle."
+          }
+        }
+      },
+      "GrantChannel": {
+        "type": "string",
+        "description": "The channels a grant may name. Chat platform disambiguation lives inside\nthe opaque principal (already platform- and workspace-scoped), not here.",
+        "enum": ["chat", "mail"]
+      },
+      "GrantCommandClass": {
+        "type": "string",
+        "description": "The command classes a grantor may delegate. `timerFired` belongs to the\nservice scheduler and `migrate` is administrative; neither is delegable.",
+        "enum": ["approve", "cancel", "event", "reject", "retry", "signal"]
+      },
+      "GrantRunsToday": {
+        "type": "object",
+        "title": "GrantRunsToday",
+        "required": ["day", "count"],
+        "properties": {
+          "day": {
+            "type": "string",
+            "format": "int64",
+            "description": "The UTC epoch-day the counter covers."
+          },
+          "count": {
+            "type": "string",
+            "format": "int64",
+            "description": "Runs admitted within that day."
           }
         }
       },
@@ -3064,6 +4794,30 @@
         "type": "string",
         "description": "Severity a test records on the on-chain log contract.",
         "enum": ["debug", "info", "error"]
+      },
+      "MailChannelState": {
+        "type": "object",
+        "title": "MailChannelState",
+        "required": ["address", "active"],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "The bound mail address."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the binding is in force."
+          },
+          "reachable": {
+            "type": "boolean",
+            "description": "Always absent today: embers deliberately does not probe SMTP, so mail\nreachability is unknown by design rather than falsely asserted."
+          }
+        }
+      },
+      "MinAuthLevel": {
+        "type": "string",
+        "description": "Sender-authentication floor a mail grant requires; enforced by the mail\nbridge against chain-recorded authentication results, never by embers.",
+        "enum": ["none", "spf", "dkim", "dmarc"]
       },
       "Oslf": {
         "type": "object",
@@ -3220,6 +4974,28 @@
           }
         }
       },
+      "PrepareResponse_CreateGrantResp": {
+        "type": "object",
+        "title": "PrepareResponse_CreateGrantResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateGrantResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
       "PrepareResponse_CreateOslfResp": {
         "type": "object",
         "title": "PrepareResponse_CreateOslfResp",
@@ -3330,6 +5106,28 @@
           }
         }
       },
+      "PrepareResponse_PublishToMailResp": {
+        "type": "object",
+        "title": "PrepareResponse_PublishToMailResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishToMailResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
       "PrepareResponse_RevealOutputResp": {
         "type": "object",
         "title": "PrepareResponse_RevealOutputResp",
@@ -3340,6 +5138,28 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/RevealOutputResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
+      "PrepareResponse_RevokeGrantResp": {
+        "type": "object",
+        "title": "PrepareResponse_RevokeGrantResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RevokeGrantResp"
               },
               {
                 "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
@@ -3384,6 +5204,28 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/RunResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
+      "PrepareResponse_RunUnderGrantResp": {
+        "type": "object",
+        "title": "PrepareResponse_RunUnderGrantResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunUnderGrantResp"
               },
               {
                 "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
@@ -3484,6 +5326,28 @@
           }
         }
       },
+      "PrepareResponse_UnpublishMailResp": {
+        "type": "object",
+        "title": "PrepareResponse_UnpublishMailResp",
+        "required": ["response", "token"],
+        "properties": {
+          "response": {
+            "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnpublishMailResp"
+              },
+              {
+                "description": "The operation-specific prepare payload, carrying the unsigned\ncontract(s) to sign."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
       "PublishToFireskyReq": {
         "type": "object",
         "title": "PublishToFireskyReq",
@@ -3520,6 +5384,74 @@
             "type": "string",
             "format": "bytes",
             "description": "The unsigned publication contract bytes to sign."
+          }
+        }
+      },
+      "PublishToMailReq": {
+        "type": "object",
+        "title": "PublishToMailReq",
+        "required": ["local_part", "mail_domain"],
+        "properties": {
+          "local_part": {
+            "type": "string",
+            "description": "The local part of the team's mail address (before the `@`)."
+          },
+          "mail_domain": {
+            "type": "string",
+            "description": "The mail domain the address lives under."
+          }
+        }
+      },
+      "PublishToMailResp": {
+        "type": "object",
+        "title": "PublishToMailResp",
+        "required": ["address", "contract"],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "The canonical (lowercased) address the team will be reachable at."
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes",
+            "description": "The unsigned binding contract bytes to sign (team-owner-signed)."
+          }
+        }
+      },
+      "PublishedChannels": {
+        "type": "object",
+        "title": "PublishedChannels",
+        "description": "Where a team is reachable, per channel, with honestly three-valued\nreachability: `true` verified reachable, `false` verified unreachable,\nabsent when the question could not be answered -- which must never be\nrendered as \"missing\".",
+        "required": ["mail", "chat"],
+        "properties": {
+          "firesky": {
+            "description": "F1R3SKY publication state, when the team was ever published there.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishedState"
+              },
+              {
+                "description": "F1R3SKY publication state, when the team was ever published there."
+              }
+            ]
+          },
+          "mail": {
+            "type": "array",
+            "description": "Mail bindings for the team.",
+            "items": {
+              "$ref": "#/components/schemas/MailChannelState"
+            }
+          },
+          "chat": {
+            "description": "Chat reachability, derived from grant presence.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatChannelState"
+              },
+              {
+                "description": "Chat reachability, derived from grant presence."
+              }
+            ]
           }
         }
       },
@@ -3686,6 +5618,18 @@
           "output_capability_hash": {
             "type": "string",
             "description": "Capability commitment over the encrypted output artifact, echoed so\nthe send can verify nothing moved between prepare and claim."
+          }
+        }
+      },
+      "RevokeGrantResp": {
+        "type": "object",
+        "title": "RevokeGrantResp",
+        "required": ["contract"],
+        "properties": {
+          "contract": {
+            "type": "string",
+            "format": "bytes",
+            "description": "The unsigned revocation contract bytes to sign (grantor-signed)."
           }
         }
       },
@@ -3916,6 +5860,10 @@
             "format": "blockchain-uri",
             "description": "The invoked team's registry URI."
           },
+          "grant_id": {
+            "type": "string",
+            "description": "The grant a channel service initiated this run under, when there was\none. Present on this capability-gated read; the public run enumeration\nscrubs it, because grant records are public and name their grantor."
+          },
           "created_at": {
             "type": "string",
             "format": "timestamp-millis",
@@ -4007,6 +5955,59 @@
           "output_capability_hash": {
             "type": "string",
             "description": "Capability commitment over the terminal output artifact."
+          }
+        }
+      },
+      "RunUnderGrantReq": {
+        "type": "object",
+        "title": "RunUnderGrantReq",
+        "required": ["grant_id", "prompt", "channel_context"],
+        "properties": {
+          "grant_id": {
+            "type": "string",
+            "description": "The grant authorizing this run; the target team comes from it."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "The invocation input."
+          },
+          "channel_context": {
+            "description": "Provenance of the triggering channel message.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChannelContext"
+              },
+              {
+                "description": "Provenance of the triggering channel message."
+              }
+            ]
+          }
+        }
+      },
+      "RunUnderGrantResp": {
+        "type": "object",
+        "title": "RunUnderGrantResp",
+        "required": ["run", "grant_id", "agents_team"],
+        "properties": {
+          "run": {
+            "description": "The prepared run, identical in shape to a plain run prepare. The\ndeploy is signed and paid by the grantee; the run is owned by the\ngrantor per the on-chain grant.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunResp"
+              },
+              {
+                "description": "The prepared run, identical in shape to a plain run prepare. The\ndeploy is signed and paid by the grantee; the run is owned by the\ngrantor per the on-chain grant."
+              }
+            ]
+          },
+          "grant_id": {
+            "type": "string",
+            "description": "The authorizing grant, echoed."
+          },
+          "agents_team": {
+            "type": "string",
+            "format": "blockchain-uri",
+            "description": "The team the grant names; the request never carries a team, so the\ncaller learns the resolved target here."
           }
         }
       },
@@ -4454,6 +6455,50 @@
           }
         }
       },
+      "SendRequestBody_SignedContract_CreateGrantReq_CreateGrantResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_CreateGrantReq_CreateGrantResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateGrantReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CreateGrantResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
       "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_CreateOslfReq_CreateOslfResp",
@@ -4586,6 +6631,50 @@
           }
         }
       },
+      "SendRequestBody_SignedContract_PublishToMailReq_PublishToMailResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_PublishToMailReq_PublishToMailResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishToMailReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishToMailResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
       "SendRequestBody_SignedContract_RunCommandReq_RunCommandResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_RunCommandReq_RunCommandResp",
@@ -4674,6 +6763,50 @@
           }
         }
       },
+      "SendRequestBody_SignedContract_RunUnderGrantReq_RunUnderGrantResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_RunUnderGrantReq_RunUnderGrantResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "description": "Byte-identical echo of the prepare request.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunUnderGrantReq"
+              },
+              {
+                "description": "Byte-identical echo of the prepare request."
+              }
+            ]
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RunUnderGrantResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
       "SendRequestBody_SignedContract_TransferReq_TransferResp": {
         "type": "object",
         "title": "SendRequestBody_SignedContract_TransferReq_TransferResp",
@@ -4732,6 +6865,80 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/RevealOutputResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_string_RevokeGrantResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_string_RevokeGrantResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "type": "string",
+            "description": "Byte-identical echo of the prepare request."
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RevokeGrantResp"
+              },
+              {
+                "description": "Byte-identical echo of the prepare response body."
+              }
+            ]
+          },
+          "request": {
+            "description": "The signed contract(s) for this operation.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedContract"
+              },
+              {
+                "description": "The signed contract(s) for this operation."
+              }
+            ]
+          },
+          "token": {
+            "type": "string",
+            "description": "The JWT issued by prepare; binds this send to that exchange."
+          }
+        }
+      },
+      "SendRequestBody_SignedContract_string_UnpublishMailResp": {
+        "type": "object",
+        "title": "SendRequestBody_SignedContract_string_UnpublishMailResp",
+        "required": ["prepare_request", "prepare_response", "request", "token"],
+        "properties": {
+          "prepare_request": {
+            "type": "string",
+            "description": "Byte-identical echo of the prepare request."
+          },
+          "prepare_response": {
+            "description": "Byte-identical echo of the prepare response body.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UnpublishMailResp"
               },
               {
                 "description": "Byte-identical echo of the prepare response body."
@@ -4890,6 +7097,22 @@
             "type": "string",
             "format": "bytes",
             "description": "The unsigned transfer contract bytes to sign."
+          }
+        }
+      },
+      "UnpublishMailResp": {
+        "type": "object",
+        "title": "UnpublishMailResp",
+        "required": ["address", "contract"],
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "The address whose binding is being deactivated."
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes",
+            "description": "The unsigned deactivation contract bytes to sign (team-owner-signed)."
           }
         }
       },

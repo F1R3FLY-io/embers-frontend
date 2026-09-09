@@ -1,0 +1,77 @@
+@startuml
+title Mail inbound to team reply — SMTP accept, sealed enqueue, grant-authorized run, sealed reply
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+actor "Sender\n(grantor's mail principal)" as Sender #F8CECC
+participant "f1r3mta-smtpd\nDirectoryPolicy" as SMTPD #F7D9E3
+participant "MailQueue contract\n(on chain)" as MQ #FFE4A6
+participant "teams-bridge\n(lease consumer)" as Bridge #F7D9E3
+participant "TeamsBridgeEnv\n(keystore + run ledger)" as Env #FFE4A6
+participant "Embers API" as API #FFC9A8
+participant "Agent-Teams env v3" as Chain #FFE4A6
+
+group Accept and seal (SMTP session)
+Sender -> SMTPD : MAIL FROM / RCPT TO crew@agents.example / DATA
+SMTPD -> SMTPD : DirectoryPolicy: bound-address set from\nobserver reads of embers bindings
+alt address Ready
+SMTPD --> Sender : 250 accepted
+else binding seen, DEK not yet minted
+SMTPD --> Sender : 450 provisioning -- SMTP retry absorbs it
+else unknown address
+SMTPD --> Sender : 550 no such team
+end
+SMTPD -> SMTPD : seal body: AES-256-GCM under the\nmailbox DEK (keystore-minted, KEK-wrapped)
+SMTPD -> MQ : enqueue(fingerprint, sender, recipient,\nbodyCommit, authResults) -- idempotent\non the content fingerprint
+end
+
+group Consume under lease
+Bridge -> MQ : claimable(limit, now); lease(qid, worker, ttl 15 min)
+MQ --> Bridge : ("leased", qid, expiry) or\n("leased-ambiguous" -- prior outcome unknown:\nconsult the run ledger before acting)
+Bridge -> Bridge : fetch + decrypt body; parse RFC 5322;\nloop guards: null sender, Auto-Submitted,\nX-F1R3-Hops ceiling, plain text only
+end
+
+group Authorize (chain-read-first)
+Bridge -> Chain : listGrantsByGrantee(bridge wallet)\n(observer exploratory read)
+alt sender holds a live mail grant for this team
+Bridge -> Bridge : sender policy (local-only default),\nbridge MAC when self-addressed
+else no grant
+Bridge -> MQ : delivered (consume) after an onboarding\nnotice reply -- a third failure class:\nnot a bounce, never backscatter
+end
+end
+
+group Run under the grant (exactly one run per fingerprint)
+Bridge -> Env : claimRun(fingerprint, ...) CAS\n(crash + lease-takeover recovery: a loser\npolls the winner's run instead)
+Bridge -> API : run-under-grant prepare; sign with the\n**bridge wallet** (grantee and payer); send
+API -> Chain : beginDurableRunUnderGrant\n(atomic adjudication, owner = grantor)
+Chain --> API : registered; kernel resumes
+loop poll within the run budget
+Bridge -> API : GET /runs/{run_id}
+end
+Bridge -> API : reveal prepare + send (grantee authority)
+API --> Bridge : 200 output JSON
+end
+
+group Reply, sealed and recorded
+Bridge -> Bridge : render text reply (size-capped),\n"Run: <url>" backlink, RFC 3834\nAuto-Submitted + threading headers,\nX-F1R3-Hops incremented
+Bridge -> Env : recordReply(run_id, reply fingerprint) CAS\n(exactly one reply per run)
+Bridge -> SMTPD : seal reply for the sender's mailbox;\nenqueue -- closed federation: enqueue IS delivery
+Bridge -> MQ : delivered(qid, worker)
+end
+
+note over Bridge, Chain #FFF0C7
+Revoked mid-run: the reveal answers a bare 403; the bridge
+sends an "output withheld; reveal with your wallet at
+Run: <url>" notice and marks the original delivered. The
+run still completes for its owner -- revocation cuts
+disclosure, never compute.
+end note
+@enduml

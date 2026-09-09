@@ -9,6 +9,7 @@ import type { CurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCur
 
 import { Button } from "@/lib/components/Button";
 import { ContextMenu } from "@/lib/components/ContextMenu";
+import { InterfacesPanel } from "@/lib/components/InterfacesPanel";
 import { PromptModal } from "@/lib/components/Modal/PromptModal";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useDock } from "@/lib/providers/dock/useDock";
@@ -180,7 +181,8 @@ export const Header: React.FC = () => {
     return t("deploy.republishToFiresky");
   })();
 
-  // Ordered as the workflow runs: deploy, then publish.
+  // Ordered as the workflow runs: deploy, then the publication surfaces,
+  // then the read-only views.
   const menuItems = useMemo<MenuItem[]>(
     () => [
       {
@@ -199,8 +201,31 @@ export const Header: React.FC = () => {
           }),
         type: "text",
       },
+      {
+        content: t("deploy.publishToMail"),
+        onClick: () =>
+          void navigate("/agents-team/publish-mail", {
+            state: { id, version: "latest" } satisfies CurrentAgentsTeam,
+          }),
+        type: "text",
+      },
+      {
+        content: t("deploy.manageGrants"),
+        onClick: () => void navigate("/grants"),
+        type: "text",
+      },
+      {
+        content: t("deploy.interfaces"),
+        onClick: () => {
+          open(<InterfacesPanel teamId={id} />, {
+            ariaLabel: t("interfaces.title"),
+            maxWidth: 480,
+          });
+        },
+        type: "text",
+      },
     ],
-    [handleDeploy, id, navigate, publishLabel, t],
+    [handleDeploy, id, navigate, open, publishLabel, t],
   );
 
   const onRun = () => {

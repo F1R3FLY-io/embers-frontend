@@ -126,7 +126,10 @@
       "subtitle": "",
       "tryAgain": "",
       "reviewSettings": ""
-    }
+    },
+    "publishToMail": "Publier par e-mail",
+    "manageGrants": "Gérer les délégations",
+    "interfaces": "Interfaces"
   },
   "graphEditor": {
     "addCustomComponent": ""
@@ -208,5 +211,80 @@
         "lenient": ""
       }
     }
+  },
+  "grants": {
+    "titleSmall": "Délégations",
+    "header": "Délégations de canal",
+    "subtitle": "Autorisez un service de canal à lancer des exécutions qui vous appartiennent, dans les limites et avec l'autorité que vous choisissez. Les délégations sont inscrites sur la chaîne et révocables à tout moment.",
+    "team": "Équipe",
+    "teamPlaceholder": "Choisir une équipe déployée",
+    "channel": "Canal",
+    "channelChat": "Chat (passerelle de bots)",
+    "channelMail": "Courriel",
+    "principal": "Principal du canal",
+    "principalChatPlaceholder": "Empreinte d'auteur donnée par « team whoami »",
+    "principalMailPlaceholder": "expediteur@exemple.com",
+    "principalChatHelp": "Collez le principal affiché par la commande « team whoami » du bot.",
+    "principalMailHelp": "L'adresse exacte de l'expéditeur dont le courriel peut lancer des exécutions.",
+    "grantee": "Adresse du portefeuille du canal",
+    "granteePlaceholder": "Portefeuille de la passerelle ou du pont courriel",
+    "granteeHelp": "Le portefeuille du service de canal : il signe et paie les exécutions, vous en êtes propriétaire.",
+    "cap": "Exécutions max par jour (vide = illimité)",
+    "capPlaceholder": "p. ex. 20",
+    "authority": "Autorité déléguée",
+    "reveal": "Peut révéler les résultats pour livraison",
+    "commandApprove": "Peut approuver les attentes",
+    "commandReject": "Peut rejeter les attentes",
+    "commandCancel": "Peut annuler les exécutions",
+    "commandSignal": "Peut envoyer des signaux",
+    "commandEvent": "Peut envoyer des événements",
+    "commandRetry": "Peut relancer les attentes",
+    "requireToken": "Exiger un jeton porteur",
+    "minAuth": "Authentification minimale de l'expéditeur",
+    "minAuthNone": "Aucune",
+    "create": "Créer la délégation",
+    "createdTitle": "Délégation créée",
+    "created": "Le canal peut maintenant lancer des exécutions sous cette délégation.",
+    "tokenTitle": "Jeton (affiché une seule fois)",
+    "tokenOnce": "Remettez ce jeton à l'expéditeur ; il doit figurer dans chaque message déclencheur. Il n'est jamais stocké et ne peut pas être récupéré : {{token}}",
+    "existing": "Vos délégations",
+    "none": "Aucune délégation pour l'instant.",
+    "uncapped": "Illimité",
+    "cappedAt": "Jusqu'à {{cap}} exécutions par jour",
+    "revoked": "Révoquée",
+    "revoke": "Révoquer",
+    "revokeTitle": "Révoquer la délégation",
+    "revokeConfirm": "Révoquer la délégation de {{principal}} ? Les exécutions en cours se terminent pour vous, mais le canal perd immédiatement la livraison et l'autorité de commande."
+  },
+  "publishMail": {
+    "titleSmall": "Publier",
+    "header": "Donner une adresse e-mail à l'équipe",
+    "subtitle": "Liez une adresse reconnue par le canal courriel ; le courrier entrant peut lancer des exécutions sous délégation.",
+    "current": "Adresse actuelle",
+    "active": "Active",
+    "unpublish": "Retirer l'adresse",
+    "localPart": "Partie locale",
+    "localPartPlaceholder": "equipe-recherche",
+    "domain": "Domaine de courriel",
+    "domainPlaceholder": "agents.exemple",
+    "addressHelp": "L'adresse est enregistrée en minuscules sous la forme local@domaine. La liaison ne contient aucune clé ; les clés de boîte restent au pont courriel.",
+    "cancel": "Annuler",
+    "button": "Lier l'adresse",
+    "successTitle": "Adresse liée",
+    "successMessage": "L'équipe est joignable à {{address}}. Les expéditeurs ont encore besoin d'une délégation pour lancer des exécutions.",
+    "unpublishedTitle": "Adresse retirée",
+    "unpublishedMessage": "La liaison est désactivée. Publier à nouveau réactive la même adresse."
+  },
+  "interfaces": {
+    "title": "Interfaces",
+    "loadFailed": "L'accessibilité n'a pas pu être chargée.",
+    "notPublished": "Non publié",
+    "mail": "Courriel",
+    "chat": "Chat",
+    "chatGrants": "{{count}} délégation(s) active(s)",
+    "noGrants": "Aucune délégation active",
+    "reachable": "Joignable",
+    "unreachable": "Injoignable",
+    "unknown": "Inconnu"
   }
 }

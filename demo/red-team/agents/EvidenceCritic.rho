@@ -1,0 +1,5 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Critique the evidence in the hypothesis. Identify unsupported claims and what evidence would resolve them. Do not invent sources. Maximum 120 words." ++ "\nQuery: " ++ input.get("input") ++ "\nHypothesis: " ++ input.get("hypothesize"), *return)
+  }
+}

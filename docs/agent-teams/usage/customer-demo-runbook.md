@@ -26,13 +26,23 @@ unzip -q libtorch.zip -d libtorch-extract && mv libtorch-extract/libtorch libtor
 rmdir libtorch-extract && rm libtorch.zip
 ```
 
-### 1.2 Feature build of the node
+### 1.2 Pin and build the compatible node
+
+Use node revision `43692191ce388d3068bcd3ab722fd1ca4c0beed7` in a separate checkout. It retains the legacy deploy protocol and pins its published parser dependency. The older models revision in `embers/packages/firefly-client/Cargo.toml` needs an unpublished parser overlay to build the full node. The current protocol-v6 node requires deploy fields that this demo's Embers and F1r3drive clients do not supply. It also rejects legacy chain databases. A fresh protocol-v6 genesis alone does not resolve client compatibility.
+
+This pinned revision uses libtorch as described above. Newer node revisions use FastEmbed/ONNX, but that does not make them compatible with these clients.
 
 ```sh
 cd ~/Workspace/f1r3fly.io/f1r3node-rust
+# Run once. Reuse this checkout on subsequent builds.
+git worktree add --detach ../embers-local-stack/run/node-demo-source \
+  43692191ce388d3068bcd3ab722fd1ca4c0beed7
+cd ../embers-local-stack/run/node-demo-source
+# Apply once: remove a duplicate RhoList import in the Chroma feature build.
+git apply ../../../embers-frontend/demo/research-desk/node-chromadb-build.patch
 LIBTORCH=$HOME/Workspace/f1r3fly.io/embers-local-stack/run/libtorch-2.4.0-cpu \
 BZIP2_NO_PKG_CONFIG=1 \
-cargo build --release -p node --features rholang/chromadb
+cargo build --release -p node --features rholang/chromadb --locked
 ```
 
 Both environment variables are load-bearing:
@@ -51,6 +61,8 @@ strings target/release/node | grep -c 'rho:chroma:collection'
 Append to `embers-local-stack/secrets.env` (untracked; it already holds the OpenAI key the stack exports to the node). It is re-sourced by every `stack.sh` invocation, including inside the systemd units, so no `stack.sh` changes are needed:
 
 ```sh
+export F1R3NODE_BIN="${F1R3NODE_BIN:-$HOME/Workspace/f1r3fly.io/embers-local-stack/run/node-demo-source/target/release/node}"
+export EMBERS_STACK_RUN_DIR="${EMBERS_STACK_RUN_DIR:-$HOME/Workspace/f1r3fly.io/embers-local-stack/run/profiles/research-desk}"
 export CHROMA_ENDPOINT="http://localhost:8000"
 export LD_LIBRARY_PATH="$HOME/Workspace/f1r3fly.io/embers-local-stack/run/libtorch-2.4.0-cpu/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export OMP_NUM_THREADS=1
@@ -78,9 +90,18 @@ Ordering rule: **Chroma must be up before the validator starts.** The node build
 
 ## 2. Stack profiles: the one operational trap
 
-`stack.sh` names its systemd units by a hash of the run directory (`sha256(run dir) → embers-local-stack-<hash>-*`). The stable customer-demo profile runs with `EMBERS_STACK_RUN_DIR=/tmp/embers-agent-teams-stable-run`. Two consequences:
+`stack.sh` names its systemd units by a hash of the run directory (`sha256(run dir) → embers-local-stack-<hash>-*`). The demo profile is now persistent:
 
-1. **Always launch or restart with that env set** (or restart the existing units by name). Invoking `stack.sh` without it computes a different run dir, mints a second profile, and the new units crash-loop on ports the real stack still holds while `stop` misses the real units entirely.
+```sh
+export EMBERS_STACK_RUN_DIR="$HOME/Workspace/f1r3fly.io/embers-local-stack/run/profiles/research-desk"
+cd "$HOME/Workspace/f1r3fly.io/embers-local-stack"
+./stack.sh status
+./stack.sh up
+```
+
+The `secrets.env` defaults above select this profile even in a new shell. The older `/tmp/embers-agent-teams-stable-run` profile can disappear after a reboot. Existing data under `embers-local-stack/run/val` and `run/read` is preserved separately. Two consequences:
+
+1. **Use the same profile for startup, status, tests, and seeding.** Export `EMBERS_STACK_RUN_DIR` when invoking the seeder because it does not source `secrets.env`. Different profiles still compete for the same ports.
 2. If a stray profile does get created: stop its timer first, then its units, then `systemctl --user reset-failed` (the watchdog revives node units if it fires between your stops):
 
 ```sh
@@ -88,6 +109,8 @@ systemctl --user stop 'embers-local-stack-<strayhash>-node-watchdog.timer'
 systemctl --user stop 'embers-local-stack-<strayhash>-*.service'
 systemctl --user reset-failed
 ```
+
+After a reboot, start Chroma using section 1.4, resume the existing F1r3sky dev-env using the `systemd-run` command in section 3, then run `./stack.sh up` and start the Embers frontend with `pnpm dev`. Do not reset the saved chain to recover services. The F1r3drive mount is `$EMBERS_STACK_RUN_DIR/f1r3drive`; Java's temporary file cache is `$EMBERS_STACK_RUN_DIR/f1r3drive-tmp`, on the workspace filesystem rather than `/tmp` tmpfs. Override the latter with `F1R3DRIVE_TEMP_DIR` if needed. Keep the profile's `f1r3drive-cipher.key` with its chain data.
 
 To move the running nodes onto a rebuilt binary without touching the rest of the stack (backend, F1r3drive, F1r3sky stay up; the units re-source `secrets.env` on every start):
 
@@ -112,12 +135,12 @@ node demo/research-desk/seed/seed.mjs --all
 Additional checks:
 
 ```sh
-grep -i 'ChromaDB service could not be started' /tmp/embers-agent-teams-stable-run/val.log   # must be empty for the current run
+grep -i 'ChromaDB service could not be started' "$EMBERS_STACK_RUN_DIR/val.log"   # must be empty for the current run
 ```
 
-Frontend: `pnpm dev` (http://localhost:5173). Sign in with the wallet key from `/tmp/embers-agent-teams-stable-run/wallet/*.json` (the `value` field; the stack also prints a browser-importable JSON at `stack.sh up`).
+Frontend: `pnpm dev` (http://localhost:5173). Sign in with the wallet file named by `stack.sh status`, under `$EMBERS_STACK_RUN_DIR/wallet/`. Keep its `value` field private.
 
-For the optional F1r3sky act, confirm the dev network is serving: `curl -sf http://localhost:2583/xrpc/_health`. If it is down, `EMBERS_STACK_RUN_DIR=/tmp/embers-agent-teams-stable-run ./stack.sh backend` starts it and seeds the `user1.test` account. One nuance the guard does not cover: if the dev-env crashed after migrating its own fresh database (the `nohup`-spawned process also dies with the terminal session that ran `reset`, so this is common right after a bootstrap), `backend` refuses with "dev database contains state" even though the state is its own -- in that one case relaunch `dist/bin.js` directly with `cmd_backend`'s env; it resumes its schema cleanly. As a unit that survives terminal teardown:
+For the optional F1r3sky act, confirm the dev network is serving: `curl -sf http://localhost:2583/xrpc/_health`. If it is down, `./stack.sh backend` starts it and seeds the `user1.test` account. One nuance the guard does not cover: if the dev-env crashed after migrating its own fresh database (the `nohup`-spawned process also dies with the terminal session that ran `reset`, so this is common right after a bootstrap), `backend` refuses with "dev database contains state" even though the state is its own -- in that one case relaunch `dist/bin.js` directly with `cmd_backend`'s env; it resumes its schema cleanly. As a unit that survives terminal teardown:
 
 ```sh
 NODE22="$HOME/.local/share/node-v22.23.1-linux-x64/bin"
@@ -143,8 +166,10 @@ The machine-checked verification is the backend integration suite, which never t
 
 ```sh
 cd ~/Workspace/f1r3fly.io/embers/packages/embers
-uv run pytest tests/api/agents_teams/test_research_desk_demo.py -v
+uv run pytest tests/api/agents_teams/test_research_desk_demo.py -v --strict-services
 ```
+
+`--strict-services` fails verification when a required service is unavailable instead of skipping its test. The RAG test uses a unique Chroma collection. Test answers must not enter `embers-demo-docs`: similarity retrieval can expose fictional test answers to the live model and bypass the approval gate.
 
 Model-touching rehearsal with the real gpt4-backed agents is a deliberate operator action (run the two prepared questions through the seeded team from the frontend, roughly six to ten gpt-4o-mini calls) — reserve it for the T-1-day rehearsal; it is never a pytest.
 
@@ -154,7 +179,7 @@ Finally, pre-stage the fallbacks in section 6: a completed happy-path run and a 
 
 - Agents, teams, and the Chroma collection persist on chain and in Chroma; re-running `seed.mjs --all` is idempotent (agents are reused by name, the team is saved as a new version and re-deployed to a fresh URI, corpus upserts overwrite by id).
 - Do not refresh the editor tab after deploying live: the registry key and URI live in memory, and a refresh downgrades the Run button to Deploy (recovery: re-deploy, which mints a new URI).
-- Full nuke only if the chain itself must be reset: `EMBERS_STACK_RUN_DIR=/tmp/embers-agent-teams-stable-run ./stack.sh reset` (interactive, destructive), then Chroma data still holds the corpus; re-run `seed.mjs --all` (about 15 minutes including genesis).
+- Full nuke only if the chain itself must be reset: `./stack.sh reset` (interactive, destructive), then Chroma data still holds the corpus; re-run `seed.mjs --all` (about 15 minutes including genesis).
 
 ## 5. The 25-minute script
 
@@ -179,9 +204,9 @@ Two prepared questions:
 | Failure | Detection | Response |
 |---|---|---|
 | Node lacks the chromadb feature | `strings` check; smoke 00 deploy fails outright | Rebuild per 1.2; restart nodes per section 2 |
-| Validator goes silent for minutes: log stops mid-heartbeat, one worker spins ~50-60% CPU, deploy-service gRPC times out while HTTP `/status` still answers | Backend errors `show_main_chain failed ... Timeout expired`; no new val.log lines. perf-record of the spinning thread shows `imbl::HamtNode::get` under `block_dag_key_value_storage::is_in_main_chain`: the node's DAG main-chain walk is effectively unbounded on a long chain (~30k heartbeat blocks) and re-triggers after restarts recompute it | This is an algorithmic stall, not a deadlock -- it usually completes on its own in a few minutes, and the watchdog restarts the node if health checks fail. THE DEMO-DAY MITIGATION IS A SHORT CHAIN: run `EMBERS_STACK_RUN_DIR=/tmp/embers-agent-teams-stable-run ./stack.sh reset` the morning of the demo and reseed with `seed.mjs --all` (~15 minutes total); a fresh chain keeps the walk trivial for the whole session. File upstream against f1r3node-rust block_storage. (The libtorch thread-pinning in section 1.3 remains correct hygiene for the embedder but was not this stall's cause) |
+| Validator goes silent for minutes: log stops mid-heartbeat, one worker spins ~50-60% CPU, deploy-service gRPC times out while HTTP `/status` still answers | Backend errors `show_main_chain failed ... Timeout expired`; no new val.log lines. perf-record of the spinning thread shows `imbl::HamtNode::get` under `block_dag_key_value_storage::is_in_main_chain`: the node's DAG main-chain walk is effectively unbounded on a long chain (~30k heartbeat blocks) and re-triggers after restarts recompute it | This is an algorithmic stall, not a deadlock -- it usually completes on its own in a few minutes, and the watchdog restarts the node if health checks fail. THE DEMO-DAY MITIGATION IS A SHORT CHAIN: run `./stack.sh reset` the morning of the demo and reseed with `seed.mjs --all` (~15 minutes total); a fresh chain keeps the walk trivial for the whole session. File upstream against f1r3node-rust block_storage. (The libtorch thread-pinning in section 1.3 remains correct hygiene for the embedder but was not this stall's cause) |
 | Zombie backend after node restarts: HTTP accepts requests but every deploy/transfer blocks until client timeout | Validator log is fresh and finalizing while `embers.log` has gone silent (the node-events stream died and did not resubscribe) | Restart the embers unit; verify `embers.log` resumes `block finalised` lines. After any validator or read-node restart, treat a backend restart as part of the procedure |
-| Backend unkillable (survives SIGKILL) and its port stays bound; unit restart times out into failed mode | A thread in state `D` on wchan `request_wait_answer` (`ps -L -o pid,tid,stat,wchan= -p <pid>`): an orphaned FUSE request whose F1r3drive daemon died | Abort the dead FUSE connection: find the f1r3drive mount's device minor (`stat -c %Ld <mountpoint>`), check `/sys/fs/fuse/connections/<minor>/waiting` is nonzero, then `echo 1 > /sys/fs/fuse/connections/<minor>/abort`. The pending requests error out, the process reaps, the port frees. Then `EMBERS_STACK_RUN_DIR=/tmp/embers-agent-teams-stable-run ./stack.sh up` recreates the f1r3drive and embers units |
+| Backend unkillable (survives SIGKILL) and its port stays bound; unit restart times out into failed mode | A thread in state `D` on wchan `request_wait_answer` (`ps -L -o pid,tid,stat,wchan= -p <pid>`): an orphaned FUSE request whose F1r3drive daemon died | Abort the dead FUSE connection: find the f1r3drive mount's device minor (`stat -c %Ld <mountpoint>`), check `/sys/fs/fuse/connections/<minor>/waiting` is nonzero, then `echo 1 > /sys/fs/fuse/connections/<minor>/abort`. The pending requests error out, the process reaps, the port frees. Then `./stack.sh up` recreates the f1r3drive and embers units |
 | The full stall cascade (understand it before treating symptoms) | Head of chain: the OBSERVER'S FINALIZER. The read node can be receiving and validating every block (fresh "processing finished" lines) while running no finalizer at all (zero `finalizer-run-finished` lines in `read.log`). Everything that checks finalization through the observer then stalls at once: F1r3drive polls `isFinalized` against the observer and loops `false` forever even though the validator finalized its deploy within a second (verify in val.log: "Removed 1 deploys ... as we finalized"), so it withholds FUSE replies (`timeout 5 ls <mountpoint>` hangs) and backend threads block in `request_wait_answer`; separately the backend's own finalization events ride `ws://localhost:40413`, so its node-events stream goes silent (frozen `embers.log`) and every deploy/transfer send hangs to client timeout | RESOLVED for the demo stack: `stack.sh serve-drive` now points the drive's finalization channel at the validator (`--observer-port 40401`), whose finalization is proven sub-second, so the drive no longer depends on the observer's finalizer at all. The observer behavior remains a node bug worth filing: a mid-chain-restarted observer validates blocks but never resumes finalization (zero `finalizer-run-finished` lines), solo or paired restart alike. If the backend still freezes, restart it after the drive |
 | Chroma down or NoOp downgrade | Heartbeat curl; smoke 00 returns no document; val.log info line | Start Chroma, then restart the validator (client is built at node start) |
 | Chroma dies mid-session; the approve's archive step fails | The approve's command result shows a suspended run holding a `retry:...` wait; `retryScheduled` in the inspector event trail | Restart Chroma only — no validator restart needed (the NoOp downgrade happens only when Chroma is down at node START). The kernel auto-retries at 10 s then 30 s; to expedite, send a signed `retry` command naming the `retry:` wait. If all 3 attempts exhaust, the run fails — re-run the question and answer through the gate again |

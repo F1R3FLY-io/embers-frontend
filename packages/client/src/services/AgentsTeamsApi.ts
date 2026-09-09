@@ -3,12 +3,16 @@ import type { Graph } from "@f1r3fly-io/graphl-parser";
 import { base16 } from "@scure/base";
 
 import type {
+  ChannelContext,
   CreateAgentsTeamReq,
+  CreateGrantReq,
   FetchAPI,
   FireskyReply,
+  GrantChannel,
   HTTPHeaders,
   Middleware,
   PublishToFireskyReq,
+  PublishToMailReq,
   RunCommandReq,
 } from "../api-client";
 import type { Address } from "../entities/Address";
@@ -454,6 +458,256 @@ export class AgentsTeamsApiSdk {
     );
 
     return { prepareResponse, sendResponse, waitForFinalization };
+  }
+
+  /**
+   * Creates a standing channel grant: "channel identity `grantee` may
+   * initiate runs of `agentsTeam` owned by me, within caps, with the
+   * delegated authority". Signed here, where the grantor's key lives; the
+   * chain derives the grantor from the deploy's signer.
+   *
+   * When `requireToken` was requested, the minted subject bearer token is
+   * present exactly once at `prepareResponse.response.requireToken`; it is
+   * never stored and cannot be recovered later, so the caller must surface it
+   * immediately.
+   */
+  public async createGrant(
+    createGrantReq: CreateGrantReq,
+    config?: ContractCallConfig,
+  ) {
+    const prepareResponse = await this.client.agentsTeamsPrepareCreateGrant(
+      { createGrantReq },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
+    );
+
+    const sendResponse = await this.client.agentsTeamsSendCreateGrant(
+      {
+        sendRequestBodySignedContractCreateGrantReqCreateGrantResp: {
+          prepareRequest: createGrantReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    return { prepareResponse, sendResponse, waitForFinalization };
+  }
+
+  /**
+   * Revokes a grant. Delivery-only for in-flight runs: they complete for
+   * their owner, while the grantee's reveal and command claims fail from the
+   * moment of revocation.
+   */
+  public async revokeGrant(grantId: string, config?: ContractCallConfig) {
+    const prepareResponse = await this.client.agentsTeamsPrepareRevokeGrant(
+      { grantId },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
+    );
+
+    const sendResponse = await this.client.agentsTeamsSendRevokeGrant(
+      {
+        grantId,
+        sendRequestBodySignedContractStringRevokeGrantResp: {
+          prepareRequest: grantId,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    return { prepareResponse, sendResponse, waitForFinalization };
+  }
+
+  /** Grants this wallet has created, revoked ones included and flagged. */
+  public async grantsByGrantor(config?: QueryCallConfig) {
+    return this.client.agentsTeamsGrantsByGrantor(
+      { address: this.address },
+      { signal: config?.signal },
+    );
+  }
+
+  /**
+   * Grants naming a channel wallet as grantee: an operations cross-check;
+   * channel services consume the observer-readable chain clause directly.
+   */
+  public async grantsByGrantee(grantee: Address, config?: QueryCallConfig) {
+    return this.client.agentsTeamsGrantsByGrantee(
+      { address: grantee },
+      { signal: config?.signal },
+    );
+  }
+
+  /**
+   * Runs the granted team with this wallet signing and paying the deploy
+   * while the grantor owns the run. The target team comes from the grant;
+   * the response names it. Mirrors `run`: the send blocks until chain
+   * finality and returns the untyped run-state JSON, and the run state stays
+   * pollable through `getRun` regardless of how the send call ends.
+   */
+  public async runUnderGrant(
+    grantId: string,
+    prompt: string,
+    channelContext: ChannelContext,
+    config?: ContractCallConfig,
+  ) {
+    const prepareRequest = {
+      channelContext,
+      grantId,
+      prompt,
+    };
+
+    const prepareResponse = await this.client.agentsTeamsPrepareRunUnderGrant(
+      { runUnderGrantReq: prepareRequest },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(
+      prepareResponse.response.run.contract,
+      this.privateKey,
+    );
+
+    const sendResponse: unknown = await this.client.agentsTeamsSendRunUnderGrant(
+      {
+        sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp: {
+          prepareRequest,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    return { prepareResponse, sendResponse };
+  }
+
+  /**
+   * Binds `localPart@mailDomain` to the team on chain. The prepare is
+   * side-effect light (a render plus a uniqueness read), the binding carries
+   * no key material, and unpublishing is reversible.
+   */
+  public async publishToMail(
+    id: string,
+    publishToMailReq: PublishToMailReq,
+    config?: ContractCallConfig,
+  ) {
+    const prepareResponse = await this.client.agentsTeamsPreparePublishToMail(
+      {
+        address: this.address,
+        id,
+        publishToMailReq,
+      },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
+    );
+
+    const sendResponse = await this.client.agentsTeamsSendPublishToMail(
+      {
+        address: this.address,
+        id,
+        sendRequestBodySignedContractPublishToMailReqPublishToMailResp: {
+          prepareRequest: publishToMailReq,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    return { prepareResponse, sendResponse, waitForFinalization };
+  }
+
+  /** Deactivates the team's mail binding; publishing again reactivates it. */
+  public async unpublishMail(id: string, config?: ContractCallConfig) {
+    const prepareResponse = await this.client.agentsTeamsPrepareUnpublishMail(
+      {
+        address: this.address,
+        id,
+      },
+      { signal: config?.signal },
+    );
+
+    const signedContract = signContract(
+      prepareResponse.response.contract,
+      this.privateKey,
+    );
+    const waitForFinalization = this.events.subscribeForDeploy(
+      base16.encode(signedContract.sig).toLowerCase(),
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
+    );
+
+    const sendResponse = await this.client.agentsTeamsSendUnpublishMail(
+      {
+        address: this.address,
+        id,
+        sendRequestBodySignedContractStringUnpublishMailResp: {
+          prepareRequest: id,
+          prepareResponse: prepareResponse.response,
+          request: signedContract,
+          token: prepareResponse.token,
+        },
+      },
+      { signal: config?.signal },
+    );
+
+    return { prepareResponse, sendResponse, waitForFinalization };
+  }
+
+  /**
+   * Where the team is reachable, per channel, with honestly three-valued
+   * reachability: `null` means "could not be determined" and must never be
+   * rendered as missing.
+   */
+  public async publishedChannels(id: string, config?: QueryCallConfig) {
+    return this.client.agentsTeamsPublishedChannels(
+      {
+        address: this.address,
+        id,
+      },
+      { signal: config?.signal },
+    );
+  }
+
+  /** Every binding for a channel; an HTTP mirror of the chain clause. */
+  public async bindingsByChannel(
+    channel: GrantChannel,
+    config?: QueryCallConfig,
+  ) {
+    return this.client.agentsTeamsBindingsByChannel(
+      { channel },
+      { signal: config?.signal },
+    );
   }
 
   public async runOnFiresky(

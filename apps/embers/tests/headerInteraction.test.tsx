@@ -98,13 +98,21 @@ describe("the editor header's split button", () => {
     ).toBe("true");
   });
 
-  it("offers deploy and publish, in the order the workflow runs", () => {
+  it("offers deploy first, then the publication surfaces, then the read-only views", () => {
     render(<Header />);
     openMenu();
 
     const items = screen.getAllByRole("menuitem").map((el) => el.textContent);
 
-    expect(items).toEqual(["deploy.deploy", "deploy.publishToFiresky"]);
+    // Ordered as the workflow runs: deploy, the two publish flows, then the
+    // grants and reachability views the channel-connector layer added.
+    expect(items).toEqual([
+      "deploy.deploy",
+      "deploy.publishToFiresky",
+      "deploy.publishToMail",
+      "deploy.manageGrants",
+      "deploy.interfaces",
+    ]);
   });
 
   it("routes to the publish page, carrying the team it is editing", () => {
@@ -166,6 +174,6 @@ describe("the editor header's split button", () => {
     openMenu();
 
     const menu = screen.getByRole("menu");
-    expect(within(menu).getAllByRole("menuitem")).toHaveLength(2);
+    expect(within(menu).getAllByRole("menuitem")).toHaveLength(5);
   });
 });

@@ -27,10 +27,14 @@ const mockReveal = jest.fn(async (..._args: unknown[]) =>
 );
 
 let mockWalletReady = true;
+let mockWalletAddress = "test-wallet";
 
 jest.mock("@/lib/providers/wallet/useApi", () => ({
   useWalletState: () => ({
-    embers: { agentsTeams: { command: jest.fn(), revealOutput: mockReveal } },
+    embers: {
+      agentsTeams: { command: jest.fn(), revealOutput: mockReveal },
+      wallets: { address: { toString: () => mockWalletAddress } },
+    },
     ready: mockWalletReady,
   }),
 }));
@@ -47,6 +51,7 @@ jest.mock("react-router-dom", () => ({
     return <a href={props.to}>{children}</a>;
   },
   useLocation: () => mockLocation,
+  useNavigate: () => jest.fn(),
   useParams: () => ({ runId: "run-55" }),
 }));
 
@@ -84,8 +89,10 @@ function runState(status: string): RunState {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  HTMLElement.prototype.scrollIntoView = jest.fn();
   mockLinkProps = {};
   mockWalletReady = true;
+  mockWalletAddress = "test-wallet";
   window.API_URL = "http://api.test";
   mockRunState = runState("completed");
 
@@ -109,16 +116,28 @@ function renderInspector() {
       queries: { retry: false },
     },
   });
-  return render(
+  const content = () => (
     <QueryClientProvider client={client}>
       <ModalProvider>
         <AgentTeamRun />
       </ModalProvider>
-    </QueryClientProvider>,
+    </QueryClientProvider>
   );
+  const view = render(content());
+  return { ...view, refresh: () => view.rerender(content()) };
 }
 
 describe("the owner-signed full-response reveal", () => {
+  it("clears revealed content immediately when the wallet changes", async () => {
+    const view = renderInspector();
+    fireEvent.click(await screen.findByText("Reveal full response"));
+    await screen.findByTestId("reveal-result-json");
+    mockWalletAddress = "another-wallet";
+    view.refresh();
+    expect(screen.queryByTestId("reveal-result-json")).toBeNull();
+    expect(await screen.findByText("Reveal full response")).toBeTruthy();
+  });
+
   it("reveals the value for the signed-in owner of a completed run", async () => {
     renderInspector();
 
@@ -139,9 +158,7 @@ describe("the owner-signed full-response reveal", () => {
     mockRunState = runState("suspended");
     renderInspector();
 
-    expect(
-      await screen.findByText("Send an authenticated command"),
-    ).toBeTruthy();
+    expect(await screen.findByText("Run controls")).toBeTruthy();
     expect(screen.queryByText("Reveal full response")).toBeNull();
   });
 

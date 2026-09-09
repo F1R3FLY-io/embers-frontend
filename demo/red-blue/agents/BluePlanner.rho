@@ -1,0 +1,6 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Propose a practical engineering decision in at most 180 words. Include staffing, an emergency-fix path, rollout, success measures and rollback. Honor constraints and identify unresolved tradeoffs."
+      ++ "\nBrief: " ++ input, *return)
+  }
+}

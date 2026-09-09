@@ -1,0 +1,10 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Revise the proposal using all three reviews. Address EVERY finding by its label with CHANGE, MITIGATE, or ACCEPT RISK and a reason. Do not silently drop unresolved concerns. Preserve missing information. Include responsible roles, success measures and rollback. Maximum 300 words."
+      ++ "\nBrief: " ++ input.getOrElse("input", input.getOrElse("Input", input.getOrElse("input-node", Nil)))
+      ++ "\nOriginal proposal: " ++ input.getOrElse("bluePlanner", input.getOrElse("BluePlanner", Nil))
+      ++ "\nLogic review: " ++ input.getOrElse("redLogic", input.getOrElse("RedLogic", Nil))
+      ++ "\nEvidence review: " ++ input.getOrElse("redEvidence", input.getOrElse("RedEvidence", Nil))
+      ++ "\nOperations review: " ++ input.getOrElse("redOperations", input.getOrElse("RedOperations", Nil)), *return)
+  }
+}

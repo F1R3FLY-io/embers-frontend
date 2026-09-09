@@ -45,6 +45,7 @@ Every term is defined before it is used elsewhere in this document.
 | Bundle | A Rholang wrapper that attenuates a name. `bundle+{x}` yields a send-only (write-only) view: the holder may send on `$`x`$` but not receive on it, and cannot deconstruct the name. |
 | Registry URI | A `rho:id:` string that resolves, through an unauthenticated registry lookup, to a published value. A public designator. |
 | Grant | A `waitId|address` string on the run ledger recording that one address may decide one approval wait. |
+| Channel grant | A public record in the agents-teams env delegating run initiation, output reveal, and listed command classes for one team to one channel service wallet, revocable by its grantor ([channel grants](../architecture/channel-grants.md)). |
 | Exchange binding | A token that ties two halves of a protocol exchange together without itself conveying any authority. |
 | Keyed derivation | Computing a capability as the output of a keyed hash over public inputs, so it is unguessable without the key. |
 
@@ -78,8 +79,10 @@ properties an object capability must have:
 The thesis this document defends, stated once so the rest can be read against it: **the chain layer
 is a genuine object-capability system; the run-command layer is a deliberate hybrid that authorizes
 by signature identity and a public identity-list grant; the read layer is a bearer capability; and
-nothing in the system is revocable mid-flight.** This is neither an accident nor a flaw to hide —
-it is a set of engineering choices, and naming each one is what lets an operator reason about it.
+nothing in the system is revocable mid-flight — with one designed exception, the channel grant,
+whose revocation cuts a channel service's delivery authority at claim time.** This is neither an
+accident nor a flaw to hide — it is a set of engineering choices, and naming each one is what lets
+an operator reason about it.
 
 ![Authority by mechanism: grant versus invocation](../diagrams/21-capability-grant-vs-invoke.svg)
 
@@ -100,7 +103,8 @@ restates the threat model; each refines one of its rows.
 | Wallet private key | Signature / chain identity | No | Authorizes by identity, not possession of a resource reference. |
 | Embers service key | Signature / chain identity, multi-role | No | Identity-based and heavily concentrated — see below. |
 | Approval grant | Identity-list ACL entry | No | Public `waitId|address` membership against a chain-derived address. |
-| Output reveal claim | Signature / chain identity | No | Owner-identity check adjudicated by `claimOutputReveal` (`init.rho:432-470`); the decrypted value returns only over the claimant's authenticated channel. |
+| Output reveal claim | Signature / chain identity | No | Owner-identity check adjudicated by `claimOutputReveal` (`init.rho:432-470`); the decrypted value returns only over the claimant's authenticated channel. The clause's grantee branch extends the identity list to a live channel grant's grantee with `authority.reveal`. |
+| Channel grant | Identity-list ACL entry, **revocable** | No | A public record naming grantor and grantee, adjudicated against the deploy signer at claim time inside one atomic join (`beginDurableRunUnderGrant`); the channel service is an authority holder only while the record stands unrevoked. The system's first mid-flight revoke — delivery-only, specified in [channel grants](../architecture/channel-grants.md). |
 
 Two non-authority artifacts recur and are classified here so the table is exhaustive: the two-phase
 **JWT** is an *exchange binding*, deliberately carrying no authority (analyzed below), and the
@@ -324,7 +328,8 @@ the subject of the [authority-enforcement proposal](../design/authority-enforcem
 ## Lifecycle: minting, transfer, attenuation, and the absent revoke
 
 Placing every mechanism's lifecycle in one table makes the system-wide gap visible: the Revoke
-column is empty in every row.
+column is empty in every row except the channel grant's — the one authority designed after the
+gap was named, and the first to close it.
 
 | Capability | Mint | Designate / transfer | Attenuate | Revoke |
 | --- | --- | --- | --- | --- |
@@ -332,15 +337,19 @@ column is empty in every row.
 | Run link | UUIDv7 at prepare | URL sharing; public Firesky reply | owner-scrub on read | none |
 | Artifact capability | HMAC derivation at write | sealed; never transferred | pointer proves-without-revealing | none — rotation is a re-encryption migration |
 | Approval grant | service computes at checkpoint | wholesale republication each advancement | class + wait narrowing | none mid-wait — dies only when the wait leaves the ledger |
+| Channel grant | grantor-signed `createGrant`; grantor derived from the deploy signer | public record; grantee discovers it by chain read | caps, listed command classes, reveal flag, one team | `revokeGrant`, grantor-only, idempotent — delivery-only: checked at every subsequent claim, while in-flight runs complete for their owner ([channel grants](../architecture/channel-grants.md#revocation-is-delivery-only)) |
 
-The one quasi-revoke in the system is registry version replacement, and it is not a revoke: a higher
-version behind a URI changes what future lookups resolve to, but any process that already holds the
-prior bundled name keeps it. Ocap systems achieve revocation through interposed proxies
-(caretaker/membrane patterns); the absence here is a design gap to close, not a paradigm
+Among the original four rows, the one quasi-revoke is registry version replacement, and it is not a
+revoke: a higher version behind a URI changes what future lookups resolve to, but any process that
+already holds the prior bundled name keeps it. Ocap systems achieve revocation through interposed
+proxies (caretaker/membrane patterns); the absence here is a design gap to close, not a paradigm
 consequence — Miller, Yee, and Shapiro demolish the myth that capabilities cannot be revoked
-("Capability Myths Demolished," 2003). The revocation direction — bounded, revocable delegation of
-artifact-read and subteam capabilities — is the roadmap's supervisor-delegation item and is a
-consumer of the [authority-enforcement proposal](../design/authority-enforcement.md).
+("Capability Myths Demolished," 2003). The channel grant is the first authority built with that gap
+in view: identity-adjudicated rather than proxy-interposed, but genuinely revocable, with the
+revocation checked at every subsequent claim. The remaining revocation direction — bounded,
+revocable delegation of artifact-read and subteam capabilities — is the roadmap's
+supervisor-delegation item and is a consumer of the
+[authority-enforcement proposal](../design/authority-enforcement.md).
 
 ## Recorded but unenforced
 

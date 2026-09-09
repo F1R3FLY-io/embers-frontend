@@ -1,0 +1,7 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Review the proposal for unsupported claims and missing evidence. Give at most two findings labeled E1 and E2. Each must include a concrete failure scenario and a suggested change or verification. If no material issue exists, say so. Maximum 120 words."
+      ++ "\nBrief: " ++ input.getOrElse("input", input.getOrElse("Input", input.getOrElse("input-node", Nil)))
+      ++ "\nProposal: " ++ input.getOrElse("bluePlanner", input.getOrElse("BluePlanner", Nil)), *return)
+  }
+}

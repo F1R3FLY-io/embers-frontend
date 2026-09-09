@@ -177,54 +177,64 @@ describe("contract gaps the document itself has", () => {
   // expectation to be updated -- which is the notification -- rather than
   // silently changing a number nobody looks at.
 
-  it("names the three responses declared with an empty schema", () => {
+  it("names the four responses declared with an empty schema", () => {
     // PINNED, NOT A DEFECT -- and this entry is a correction.
     //
     // These were reported upstream as a contract gap, on the reasoning that an
     // empty schema is worse than an absent one because tooling reports the
     // response as described and generates no type. The backend agent traced
-    // them to the domain and the reasoning does not survive: all three return
-    // `anyhow::Result<serde_json::Value>`, a genuinely polymorphic run outcome
-    // (suspended with waits, versus completed with output). poem-openapi's
-    // `Any` emits an empty schema because there IS no accurate concrete type
-    // for "any JSON value", so `unknown` is the honest SDK type rather than a
-    // symptom.
+    // them to the domain and the reasoning does not survive: all of them
+    // return `anyhow::Result<serde_json::Value>`, a genuinely polymorphic run
+    // outcome (suspended with waits, versus completed with output).
+    // poem-openapi's `Any` emits an empty schema because there IS no accurate
+    // concrete type for "any JSON value", so `unknown` is the honest SDK type
+    // rather than a symptom.
     //
     // The assertion stays because it is a useful pin: it names which responses
-    // are dynamic by design, and it will notice if that set ever changes.
-    // Giving them concrete types would be a wire-contract change across the
-    // run domain, which is a product decision and not a fix.
+    // are dynamic by design, and it will notice if that set ever changes. It
+    // changed once, deliberately: run-under-grant joined when the
+    // channel-connector layer landed, returning the same untyped run-state
+    // JSON as the plain run send. Giving them concrete types would be a
+    // wire-contract change across the run domain, which is a product decision
+    // and not a fix.
     expect(
       emptySchemaResponses(catalogue).map(({ operationId }) => operationId),
     ).toEqual([
       "agents_teams_send_reveal_output",
       "agents_teams_send_run",
       "agents_teams_send_run_command",
+      "agents_teams_send_run_under_grant",
     ]);
   });
 
-  it("names the four responses that declare no content at all", () => {
-    // All four are honest, confirmed against the handlers upstream: a
-    // readiness probe has no body, the deploys subscription is a WebSocket
-    // upgrade rather than a JSON response, and run-on-firesky and unpublish
-    // both return `()`. Kept separate from the empty-schema set above because
-    // "declares nothing" and "declares an empty schema" are different facts,
-    // even though neither turned out to be a defect.
+  it("names the two responses that declare no content at all", () => {
+    // Both are honest, confirmed against the handlers upstream: a readiness
+    // probe has no body, and the deploys subscription is a WebSocket upgrade
+    // rather than a JSON response. Kept separate from the empty-schema set
+    // above because "declares nothing" and "declares an empty schema" are
+    // different facts, even though neither turned out to be a defect.
+    //
+    // run-on-firesky and unpublish used to sit here: their handlers return
+    // `()`. They left when the backend's VoidResult change landed in the
+    // regenerated pin -- their 200 stays empty, but each now also declares a
+    // typed 500, so the operation as a whole describes content and this
+    // detector (which looks for operations with NO described response) rightly
+    // stopped naming them.
     expect(
       absentContentResponses(catalogue).map(({ operationId }) => operationId),
-    ).toEqual([
-      "agents_teams_send_run_on_firesky",
-      "agents_teams_unpublish",
-      "service_ready",
-      "wallets_subscribe_deploys",
-    ]);
+    ).toEqual(["service_ready", "wallets_subscribe_deploys"]);
   });
 
   it("counts the operations that declare only a success", () => {
     // An operation declaring only 200 gives a generated client no way to type
-    // its failures, which is why every error in the SDK arrives as a bare
-    // ResponseError carrying only a status. Reported upstream as EMB-0006.
-    expect(successOnlyOperations(catalogue)).toHaveLength(44);
-    expect(catalogue.operations).toHaveLength(55);
+    // its failures, which is why every error in the SDK used to arrive as a
+    // bare ResponseError carrying only a status. Reported upstream as
+    // EMB-0006 when 44 of 55 operations had the gap; the backend closed it
+    // with ApiResult/VoidResult (every fallible operation now declares a
+    // typed 500), and the regenerated pin confirms it. The readiness probe is
+    // the one deliberate holdout: it either answers or it does not, and a
+    // declared failure body would describe a state it cannot be in.
+    expect(successOnlyOperations(catalogue)).toHaveLength(1);
+    expect(catalogue.operations).toHaveLength(69);
   });
 });

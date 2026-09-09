@@ -15,30 +15,47 @@ import type {
   Address,
   AgentsTeam,
   AgentsTeams,
+  ChannelBinding,
   CreateAgentsTeamReq,
+  CreateGrantReq,
   DeleteAgentsTeamResp,
   DeployAgentsTeamReq,
+  Grant,
+  GrantChannel,
   PrepareResponseCreateAgentsTeamResp,
+  PrepareResponseCreateGrantResp,
   PrepareResponseDeployAgentsTeamResp,
   PrepareResponsePublishToFireskyResp,
+  PrepareResponsePublishToMailResp,
   PrepareResponseRevealOutputResp,
+  PrepareResponseRevokeGrantResp,
   PrepareResponseRunCommandResp,
   PrepareResponseRunResp,
+  PrepareResponseRunUnderGrantResp,
   PrepareResponseSaveAgentsTeamResp,
+  PrepareResponseUnpublishMailResp,
+  PublishedChannels,
   PublishedState,
   PublishToFireskyReq,
+  PublishToMailReq,
   ReferencingTeam,
   RunCommandReq,
   RunReq,
   RunState,
+  RunUnderGrantReq,
   SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamResp,
   SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp,
   SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp,
   SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp,
+  SendRequestBodySignedContractCreateGrantReqCreateGrantResp,
   SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp,
+  SendRequestBodySignedContractPublishToMailReqPublishToMailResp,
   SendRequestBodySignedContractRunCommandReqRunCommandResp,
   SendRequestBodySignedContractRunReqRunResp,
+  SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp,
   SendRequestBodySignedContractStringRevealOutputResp,
+  SendRequestBodySignedContractStringRevokeGrantResp,
+  SendRequestBodySignedContractStringUnpublishMailResp,
   SendResp,
   SignedContract,
 } from "../models/index";
@@ -46,34 +63,54 @@ import type {
 import {
   AgentsTeamFromJSON,
   AgentsTeamsFromJSON,
+  ChannelBindingFromJSON,
   CreateAgentsTeamReqToJSON,
+  CreateGrantReqToJSON,
   DeleteAgentsTeamRespFromJSON,
   DeployAgentsTeamReqToJSON,
+  GrantFromJSON,
   PrepareResponseCreateAgentsTeamRespFromJSON,
+  PrepareResponseCreateGrantRespFromJSON,
   PrepareResponseDeployAgentsTeamRespFromJSON,
   PrepareResponsePublishToFireskyRespFromJSON,
+  PrepareResponsePublishToMailRespFromJSON,
   PrepareResponseRevealOutputRespFromJSON,
+  PrepareResponseRevokeGrantRespFromJSON,
   PrepareResponseRunCommandRespFromJSON,
   PrepareResponseRunRespFromJSON,
+  PrepareResponseRunUnderGrantRespFromJSON,
   PrepareResponseSaveAgentsTeamRespFromJSON,
+  PrepareResponseUnpublishMailRespFromJSON,
+  PublishedChannelsFromJSON,
   PublishedStateFromJSON,
   PublishToFireskyReqToJSON,
+  PublishToMailReqToJSON,
   ReferencingTeamFromJSON,
   RunCommandReqToJSON,
   RunReqToJSON,
   RunStateFromJSON,
+  RunUnderGrantReqToJSON,
   SendRequestBodyDeploySignedAgentsTeamReqDeployAgentsTeamReqDeployAgentsTeamRespToJSON,
   SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunRespToJSON,
   SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamRespToJSON,
   SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamRespToJSON,
+  SendRequestBodySignedContractCreateGrantReqCreateGrantRespToJSON,
   SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyRespToJSON,
+  SendRequestBodySignedContractPublishToMailReqPublishToMailRespToJSON,
   SendRequestBodySignedContractRunCommandReqRunCommandRespToJSON,
   SendRequestBodySignedContractRunReqRunRespToJSON,
+  SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantRespToJSON,
   SendRequestBodySignedContractStringRevealOutputRespToJSON,
+  SendRequestBodySignedContractStringRevokeGrantRespToJSON,
+  SendRequestBodySignedContractStringUnpublishMailRespToJSON,
   SendRespFromJSON,
   SignedContractToJSON,
 } from "../models/index";
 import * as runtime from "../runtime";
+
+export interface AgentsTeamsBindingsByChannelRequest {
+  channel: GrantChannel;
+}
 
 export interface AgentsTeamsGetRunRequest {
   runId: string;
@@ -83,6 +120,14 @@ export interface AgentsTeamsGetVersionRequest {
   address: Address;
   id: string;
   version: string;
+}
+
+export interface AgentsTeamsGrantsByGranteeRequest {
+  address: Address;
+}
+
+export interface AgentsTeamsGrantsByGrantorRequest {
+  address: Address;
 }
 
 export interface AgentsTeamsListRequest {
@@ -96,6 +141,10 @@ export interface AgentsTeamsListVersionsRequest {
 
 export interface AgentsTeamsPrepareCreateRequest {
   createAgentsTeamReq: CreateAgentsTeamReq;
+}
+
+export interface AgentsTeamsPrepareCreateGrantRequest {
+  createGrantReq: CreateGrantReq;
 }
 
 export interface AgentsTeamsPrepareDeleteRequest {
@@ -112,8 +161,18 @@ export interface AgentsTeamsPreparePublishToFireskyRequest {
   publishToFireskyReq: PublishToFireskyReq;
 }
 
+export interface AgentsTeamsPreparePublishToMailRequest {
+  address: Address;
+  id: string;
+  publishToMailReq: PublishToMailReq;
+}
+
 export interface AgentsTeamsPrepareRevealOutputRequest {
   runId: string;
+}
+
+export interface AgentsTeamsPrepareRevokeGrantRequest {
+  grantId: string;
 }
 
 export interface AgentsTeamsPrepareRunRequest {
@@ -129,8 +188,22 @@ export interface AgentsTeamsPrepareRunOnFireskyRequest {
   runReq: RunReq;
 }
 
+export interface AgentsTeamsPrepareRunUnderGrantRequest {
+  runUnderGrantReq: RunUnderGrantReq;
+}
+
 export interface AgentsTeamsPrepareSaveRequest {
   createAgentsTeamReq: CreateAgentsTeamReq;
+  id: string;
+}
+
+export interface AgentsTeamsPrepareUnpublishMailRequest {
+  address: Address;
+  id: string;
+}
+
+export interface AgentsTeamsPublishedChannelsRequest {
+  address: Address;
   id: string;
 }
 
@@ -148,6 +221,10 @@ export interface AgentsTeamsSendCreateRequest {
   sendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqCreateAgentsTeamResp;
 }
 
+export interface AgentsTeamsSendCreateGrantRequest {
+  sendRequestBodySignedContractCreateGrantReqCreateGrantResp: SendRequestBodySignedContractCreateGrantReqCreateGrantResp;
+}
+
 export interface AgentsTeamsSendDeleteRequest {
   id: string;
   signedContract: SignedContract;
@@ -163,9 +240,20 @@ export interface AgentsTeamsSendPublishToFireskyRequest {
   sendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp: SendRequestBodySignedContractPublishToFireskyReqPublishToFireskyResp;
 }
 
+export interface AgentsTeamsSendPublishToMailRequest {
+  address: Address;
+  id: string;
+  sendRequestBodySignedContractPublishToMailReqPublishToMailResp: SendRequestBodySignedContractPublishToMailReqPublishToMailResp;
+}
+
 export interface AgentsTeamsSendRevealOutputRequest {
   runId: string;
   sendRequestBodySignedContractStringRevealOutputResp: SendRequestBodySignedContractStringRevealOutputResp;
+}
+
+export interface AgentsTeamsSendRevokeGrantRequest {
+  grantId: string;
+  sendRequestBodySignedContractStringRevokeGrantResp: SendRequestBodySignedContractStringRevokeGrantResp;
 }
 
 export interface AgentsTeamsSendRunRequest {
@@ -181,9 +269,19 @@ export interface AgentsTeamsSendRunOnFireskyRequest {
   sendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp: SendRequestBodyDeploySignedRunOnFireskyReqRunReqRunResp;
 }
 
+export interface AgentsTeamsSendRunUnderGrantRequest {
+  sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp: SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp;
+}
+
 export interface AgentsTeamsSendSaveRequest {
   id: string;
   sendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp: SendRequestBodySignedContractCreateAgentsTeamReqSaveAgentsTeamResp;
+}
+
+export interface AgentsTeamsSendUnpublishMailRequest {
+  address: Address;
+  id: string;
+  sendRequestBodySignedContractStringUnpublishMailResp: SendRequestBodySignedContractStringUnpublishMailResp;
 }
 
 export interface AgentsTeamsUnpublishRequest {
@@ -195,6 +293,67 @@ export interface AgentsTeamsUnpublishRequest {
  *
  */
 export class AIAgentsTeamsApi extends runtime.BaseAPI {
+  /**
+   * Creates request options for agentsTeamsBindingsByChannel without sending the request
+   */
+  async agentsTeamsBindingsByChannelRequestOpts(
+    requestParameters: AgentsTeamsBindingsByChannelRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.channel == null) {
+      throw new runtime.RequiredError(
+        "channel",
+        'Required parameter "channel" was null or undefined when calling agentsTeamsBindingsByChannel().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/bindings/by-channel/{channel}`;
+    urlPath = urlPath.replace(
+      `{channel}`,
+      encodeURIComponent(String(requestParameters.channel)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Every binding for a channel, an HTTP mirror of the observer-readable chain clause for UI and operations.
+   */
+  async agentsTeamsBindingsByChannelRaw(
+    requestParameters: AgentsTeamsBindingsByChannelRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<ChannelBinding>>> {
+    const requestOptions =
+      await this.agentsTeamsBindingsByChannelRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(ChannelBindingFromJSON),
+    );
+  }
+
+  /**
+   * Every binding for a channel, an HTTP mirror of the observer-readable chain clause for UI and operations.
+   */
+  async agentsTeamsBindingsByChannel(
+    requestParameters: AgentsTeamsBindingsByChannelRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<ChannelBinding>> {
+    const response = await this.agentsTeamsBindingsByChannelRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
   /**
    * Creates request options for agentsTeamsGetRun without sending the request
    */
@@ -329,6 +488,128 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<AgentsTeam> {
     const response = await this.agentsTeamsGetVersionRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsGrantsByGrantee without sending the request
+   */
+  async agentsTeamsGrantsByGranteeRequestOpts(
+    requestParameters: AgentsTeamsGrantsByGranteeRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsGrantsByGrantee().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/grants/by-grantee/{address}`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Grants naming a channel wallet as grantee. An operations cross-check: channel services consume the observer-readable chain clause directly and use this mirror only for diagnostics.
+   */
+  async agentsTeamsGrantsByGranteeRaw(
+    requestParameters: AgentsTeamsGrantsByGranteeRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<Grant>>> {
+    const requestOptions =
+      await this.agentsTeamsGrantsByGranteeRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(GrantFromJSON),
+    );
+  }
+
+  /**
+   * Grants naming a channel wallet as grantee. An operations cross-check: channel services consume the observer-readable chain clause directly and use this mirror only for diagnostics.
+   */
+  async agentsTeamsGrantsByGrantee(
+    requestParameters: AgentsTeamsGrantsByGranteeRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<Grant>> {
+    const response = await this.agentsTeamsGrantsByGranteeRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsGrantsByGrantor without sending the request
+   */
+  async agentsTeamsGrantsByGrantorRequestOpts(
+    requestParameters: AgentsTeamsGrantsByGrantorRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsGrantsByGrantor().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/grants/by-grantor/{address}`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Grants created by a wallet, for the grant-management interface. Revoked grants are included, flagged.
+   */
+  async agentsTeamsGrantsByGrantorRaw(
+    requestParameters: AgentsTeamsGrantsByGrantorRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Array<Grant>>> {
+    const requestOptions =
+      await this.agentsTeamsGrantsByGrantorRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(GrantFromJSON),
+    );
+  }
+
+  /**
+   * Grants created by a wallet, for the grant-management interface. Revoked grants are included, flagged.
+   */
+  async agentsTeamsGrantsByGrantor(
+    requestParameters: AgentsTeamsGrantsByGrantorRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Array<Grant>> {
+    const response = await this.agentsTeamsGrantsByGrantorRaw(
       requestParameters,
       initOverrides,
     );
@@ -516,6 +797,66 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PrepareResponseCreateAgentsTeamResp> {
     const response = await this.agentsTeamsPrepareCreateRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareCreateGrant without sending the request
+   */
+  async agentsTeamsPrepareCreateGrantRequestOpts(
+    requestParameters: AgentsTeamsPrepareCreateGrantRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.createGrantReq == null) {
+      throw new runtime.RequiredError(
+        "createGrantReq",
+        'Required parameter "createGrantReq" was null or undefined when calling agentsTeamsPrepareCreateGrant().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/grants/create/prepare`;
+
+    return {
+      body: CreateGrantReqToJSON(requestParameters.createGrantReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Prepares a standing channel grant: \"channel identity C may initiate runs of team T owned by me, within caps, with the delegated authority\". The grantor signs in the environment where their key lives; the chain derives the grantor from the deploy\'s signer.
+   */
+  async agentsTeamsPrepareCreateGrantRaw(
+    requestParameters: AgentsTeamsPrepareCreateGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseCreateGrantResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareCreateGrantRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseCreateGrantRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Prepares a standing channel grant: \"channel identity C may initiate runs of team T owned by me, within caps, with the delegated authority\". The grantor signs in the environment where their key lives; the chain derives the grantor from the deploy\'s signer.
+   */
+  async agentsTeamsPrepareCreateGrant(
+    requestParameters: AgentsTeamsPrepareCreateGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseCreateGrantResp> {
+    const response = await this.agentsTeamsPrepareCreateGrantRaw(
       requestParameters,
       initOverrides,
     );
@@ -722,6 +1063,88 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for agentsTeamsPreparePublishToMail without sending the request
+   */
+  async agentsTeamsPreparePublishToMailRequestOpts(
+    requestParameters: AgentsTeamsPreparePublishToMailRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsPreparePublishToMail().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsPreparePublishToMail().',
+      );
+    }
+
+    if (requestParameters.publishToMailReq == null) {
+      throw new runtime.RequiredError(
+        "publishToMailReq",
+        'Required parameter "publishToMailReq" was null or undefined when calling agentsTeamsPreparePublishToMail().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/publish-to-mail/prepare`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      body: PublishToMailReqToJSON(requestParameters.publishToMailReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Prepares a mail binding: `local@domain` recognized by the mail channel, bound on chain to the team\'s deployed registry URI. The prepare is side-effect light -- a pure render plus a uniqueness read -- and the binding carries no key material.
+   */
+  async agentsTeamsPreparePublishToMailRaw(
+    requestParameters: AgentsTeamsPreparePublishToMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponsePublishToMailResp>> {
+    const requestOptions =
+      await this.agentsTeamsPreparePublishToMailRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponsePublishToMailRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Prepares a mail binding: `local@domain` recognized by the mail channel, bound on chain to the team\'s deployed registry URI. The prepare is side-effect light -- a pure render plus a uniqueness read -- and the binding carries no key material.
+   */
+  async agentsTeamsPreparePublishToMail(
+    requestParameters: AgentsTeamsPreparePublishToMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponsePublishToMailResp> {
+    const response = await this.agentsTeamsPreparePublishToMailRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
    * Creates request options for agentsTeamsPrepareRevealOutput without sending the request
    */
   async agentsTeamsPrepareRevealOutputRequestOpts(
@@ -774,6 +1197,67 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PrepareResponseRevealOutputResp> {
     const response = await this.agentsTeamsPrepareRevealOutputRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareRevokeGrant without sending the request
+   */
+  async agentsTeamsPrepareRevokeGrantRequestOpts(
+    requestParameters: AgentsTeamsPrepareRevokeGrantRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.grantId == null) {
+      throw new runtime.RequiredError(
+        "grantId",
+        'Required parameter "grantId" was null or undefined when calling agentsTeamsPrepareRevokeGrant().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/grants/{grant_id}/revoke/prepare`;
+    urlPath = urlPath.replace(
+      `{grant_id}`,
+      encodeURIComponent(String(requestParameters.grantId)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Prepares a grant revocation. Revocation is delivery-only for in-flight runs: they complete for their owner, while the grantee\'s reveal and command claims fail from the moment of revocation. The grantor keeps `cancel` through the ordinary command envelope.
+   */
+  async agentsTeamsPrepareRevokeGrantRaw(
+    requestParameters: AgentsTeamsPrepareRevokeGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRevokeGrantResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareRevokeGrantRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseRevokeGrantRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Prepares a grant revocation. Revocation is delivery-only for in-flight runs: they complete for their owner, while the grantee\'s reveal and command claims fail from the moment of revocation. The grantor keeps `cancel` through the ordinary command envelope.
+   */
+  async agentsTeamsPrepareRevokeGrant(
+    requestParameters: AgentsTeamsPrepareRevokeGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseRevokeGrantResp> {
+    const response = await this.agentsTeamsPrepareRevokeGrantRaw(
       requestParameters,
       initOverrides,
     );
@@ -966,6 +1450,66 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for agentsTeamsPrepareRunUnderGrant without sending the request
+   */
+  async agentsTeamsPrepareRunUnderGrantRequestOpts(
+    requestParameters: AgentsTeamsPrepareRunUnderGrantRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.runUnderGrantReq == null) {
+      throw new runtime.RequiredError(
+        "runUnderGrantReq",
+        'Required parameter "runUnderGrantReq" was null or undefined when calling agentsTeamsPrepareRunUnderGrant().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run-under-grant/prepare`;
+
+    return {
+      body: RunUnderGrantReqToJSON(requestParameters.runUnderGrantReq),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Prepares a run under a grant: the channel wallet signs and pays the deploy, the grantor owns the run, and the chain adjudicates the grant atomically with run registration. Durable teams only.
+   */
+  async agentsTeamsPrepareRunUnderGrantRaw(
+    requestParameters: AgentsTeamsPrepareRunUnderGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseRunUnderGrantResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareRunUnderGrantRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseRunUnderGrantRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Prepares a run under a grant: the channel wallet signs and pays the deploy, the grantor owns the run, and the chain adjudicates the grant atomically with run registration. Durable teams only.
+   */
+  async agentsTeamsPrepareRunUnderGrant(
+    requestParameters: AgentsTeamsPrepareRunUnderGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseRunUnderGrantResp> {
+    const response = await this.agentsTeamsPrepareRunUnderGrantRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
    * Creates request options for agentsTeamsPrepareSave without sending the request
    */
   async agentsTeamsPrepareSaveRequestOpts(
@@ -1028,6 +1572,150 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PrepareResponseSaveAgentsTeamResp> {
     const response = await this.agentsTeamsPrepareSaveRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPrepareUnpublishMail without sending the request
+   */
+  async agentsTeamsPrepareUnpublishMailRequestOpts(
+    requestParameters: AgentsTeamsPrepareUnpublishMailRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsPrepareUnpublishMail().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsPrepareUnpublishMail().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/unpublish-mail/prepare`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Prepares deactivation of the team\'s mail binding. Reversible: the binding record is kept and publishing again reactivates the address.
+   */
+  async agentsTeamsPrepareUnpublishMailRaw(
+    requestParameters: AgentsTeamsPrepareUnpublishMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PrepareResponseUnpublishMailResp>> {
+    const requestOptions =
+      await this.agentsTeamsPrepareUnpublishMailRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PrepareResponseUnpublishMailRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Prepares deactivation of the team\'s mail binding. Reversible: the binding record is kept and publishing again reactivates the address.
+   */
+  async agentsTeamsPrepareUnpublishMail(
+    requestParameters: AgentsTeamsPrepareUnpublishMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PrepareResponseUnpublishMailResp> {
+    const response = await this.agentsTeamsPrepareUnpublishMailRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsPublishedChannels without sending the request
+   */
+  async agentsTeamsPublishedChannelsRequestOpts(
+    requestParameters: AgentsTeamsPublishedChannelsRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsPublishedChannels().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsPublishedChannels().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/published-channels`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      headers: headerParameters,
+      method: "GET",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   * Where the team is reachable, per channel, with honestly three-valued reachability. Mail reachability is never asserted (embers does not probe SMTP); chat reachability is derived from grant presence.
+   */
+  async agentsTeamsPublishedChannelsRaw(
+    requestParameters: AgentsTeamsPublishedChannelsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<PublishedChannels>> {
+    const requestOptions =
+      await this.agentsTeamsPublishedChannelsRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      PublishedChannelsFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   * Where the team is reachable, per channel, with honestly three-valued reachability. Mail reachability is never asserted (embers does not probe SMTP); chat reachability is derived from grant presence.
+   */
+  async agentsTeamsPublishedChannels(
+    requestParameters: AgentsTeamsPublishedChannelsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<PublishedChannels> {
+    const response = await this.agentsTeamsPublishedChannelsRaw(
       requestParameters,
       initOverrides,
     );
@@ -1235,6 +1923,69 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SendResp> {
     const response = await this.agentsTeamsSendCreateRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendCreateGrant without sending the request
+   */
+  async agentsTeamsSendCreateGrantRequestOpts(
+    requestParameters: AgentsTeamsSendCreateGrantRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (
+      requestParameters.sendRequestBodySignedContractCreateGrantReqCreateGrantResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractCreateGrantReqCreateGrantResp",
+        'Required parameter "sendRequestBodySignedContractCreateGrantReqCreateGrantResp" was null or undefined when calling agentsTeamsSendCreateGrant().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/grants/create/send`;
+
+    return {
+      body: SendRequestBodySignedContractCreateGrantReqCreateGrantRespToJSON(
+        requestParameters.sendRequestBodySignedContractCreateGrantReqCreateGrantResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendCreateGrantRaw(
+    requestParameters: AgentsTeamsSendCreateGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendCreateGrantRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendCreateGrant(
+    requestParameters: AgentsTeamsSendCreateGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendCreateGrantRaw(
       requestParameters,
       initOverrides,
     );
@@ -1459,6 +2210,91 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for agentsTeamsSendPublishToMail without sending the request
+   */
+  async agentsTeamsSendPublishToMailRequestOpts(
+    requestParameters: AgentsTeamsSendPublishToMailRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsSendPublishToMail().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsSendPublishToMail().',
+      );
+    }
+
+    if (
+      requestParameters.sendRequestBodySignedContractPublishToMailReqPublishToMailResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractPublishToMailReqPublishToMailResp",
+        'Required parameter "sendRequestBodySignedContractPublishToMailReqPublishToMailResp" was null or undefined when calling agentsTeamsSendPublishToMail().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/publish-to-mail/send`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      body: SendRequestBodySignedContractPublishToMailReqPublishToMailRespToJSON(
+        requestParameters.sendRequestBodySignedContractPublishToMailReqPublishToMailResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendPublishToMailRaw(
+    requestParameters: AgentsTeamsSendPublishToMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendPublishToMailRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendPublishToMail(
+    requestParameters: AgentsTeamsSendPublishToMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendPublishToMailRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
    * Creates request options for agentsTeamsSendRevealOutput without sending the request
    */
   async agentsTeamsSendRevealOutputRequestOpts(
@@ -1527,6 +2363,80 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<any> {
     const response = await this.agentsTeamsSendRevealOutputRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendRevokeGrant without sending the request
+   */
+  async agentsTeamsSendRevokeGrantRequestOpts(
+    requestParameters: AgentsTeamsSendRevokeGrantRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.grantId == null) {
+      throw new runtime.RequiredError(
+        "grantId",
+        'Required parameter "grantId" was null or undefined when calling agentsTeamsSendRevokeGrant().',
+      );
+    }
+
+    if (
+      requestParameters.sendRequestBodySignedContractStringRevokeGrantResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractStringRevokeGrantResp",
+        'Required parameter "sendRequestBodySignedContractStringRevokeGrantResp" was null or undefined when calling agentsTeamsSendRevokeGrant().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/grants/{grant_id}/revoke/send`;
+    urlPath = urlPath.replace(
+      `{grant_id}`,
+      encodeURIComponent(String(requestParameters.grantId)),
+    );
+
+    return {
+      body: SendRequestBodySignedContractStringRevokeGrantRespToJSON(
+        requestParameters.sendRequestBodySignedContractStringRevokeGrantResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendRevokeGrantRaw(
+    requestParameters: AgentsTeamsSendRevokeGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendRevokeGrantRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendRevokeGrant(
+    requestParameters: AgentsTeamsSendRevokeGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendRevokeGrantRaw(
       requestParameters,
       initOverrides,
     );
@@ -1727,6 +2637,70 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
   }
 
   /**
+   * Creates request options for agentsTeamsSendRunUnderGrant without sending the request
+   */
+  async agentsTeamsSendRunUnderGrantRequestOpts(
+    requestParameters: AgentsTeamsSendRunUnderGrantRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (
+      requestParameters.sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp",
+        'Required parameter "sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp" was null or undefined when calling agentsTeamsSendRunUnderGrant().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    const urlPath = `/api/ai-agents-teams/run-under-grant/send`;
+
+    return {
+      body: SendRequestBodySignedContractRunUnderGrantReqRunUnderGrantRespToJSON(
+        requestParameters.sendRequestBodySignedContractRunUnderGrantReqRunUnderGrantResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendRunUnderGrantRaw(
+    requestParameters: AgentsTeamsSendRunUnderGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<any>> {
+    const requestOptions =
+      await this.agentsTeamsSendRunUnderGrantRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<any>(response);
+    }
+    return new runtime.TextApiResponse(response) as any;
+  }
+
+  /**
+   */
+  async agentsTeamsSendRunUnderGrant(
+    requestParameters: AgentsTeamsSendRunUnderGrantRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<any> {
+    const response = await this.agentsTeamsSendRunUnderGrantRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
    * Creates request options for agentsTeamsSendSave without sending the request
    */
   async agentsTeamsSendSaveRequestOpts(
@@ -1794,6 +2768,91 @@ export class AIAgentsTeamsApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<SendResp> {
     const response = await this.agentsTeamsSendSaveRaw(
+      requestParameters,
+      initOverrides,
+    );
+    return response.value();
+  }
+
+  /**
+   * Creates request options for agentsTeamsSendUnpublishMail without sending the request
+   */
+  async agentsTeamsSendUnpublishMailRequestOpts(
+    requestParameters: AgentsTeamsSendUnpublishMailRequest,
+  ): Promise<runtime.RequestOpts> {
+    if (requestParameters.address == null) {
+      throw new runtime.RequiredError(
+        "address",
+        'Required parameter "address" was null or undefined when calling agentsTeamsSendUnpublishMail().',
+      );
+    }
+
+    if (requestParameters.id == null) {
+      throw new runtime.RequiredError(
+        "id",
+        'Required parameter "id" was null or undefined when calling agentsTeamsSendUnpublishMail().',
+      );
+    }
+
+    if (
+      requestParameters.sendRequestBodySignedContractStringUnpublishMailResp ==
+      null
+    ) {
+      throw new runtime.RequiredError(
+        "sendRequestBodySignedContractStringUnpublishMailResp",
+        'Required parameter "sendRequestBodySignedContractStringUnpublishMailResp" was null or undefined when calling agentsTeamsSendUnpublishMail().',
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json; charset=utf-8";
+
+    let urlPath = `/api/ai-agents-teams/{address}/{id}/unpublish-mail/send`;
+    urlPath = urlPath.replace(
+      `{address}`,
+      encodeURIComponent(String(requestParameters.address)),
+    );
+    urlPath = urlPath.replace(
+      `{id}`,
+      encodeURIComponent(String(requestParameters.id)),
+    );
+
+    return {
+      body: SendRequestBodySignedContractStringUnpublishMailRespToJSON(
+        requestParameters.sendRequestBodySignedContractStringUnpublishMailResp,
+      ),
+      headers: headerParameters,
+      method: "POST",
+      path: urlPath,
+      query: queryParameters,
+    };
+  }
+
+  /**
+   */
+  async agentsTeamsSendUnpublishMailRaw(
+    requestParameters: AgentsTeamsSendUnpublishMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<SendResp>> {
+    const requestOptions =
+      await this.agentsTeamsSendUnpublishMailRequestOpts(requestParameters);
+    const response = await this.request(requestOptions, initOverrides);
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      SendRespFromJSON(jsonValue),
+    );
+  }
+
+  /**
+   */
+  async agentsTeamsSendUnpublishMail(
+    requestParameters: AgentsTeamsSendUnpublishMailRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<SendResp> {
+    const response = await this.agentsTeamsSendUnpublishMailRaw(
       requestParameters,
       initOverrides,
     );

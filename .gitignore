@@ -40,3 +40,7 @@ coverage/
 
 /apps/embers/public/*
 demo/research-desk/seed/.last-deploy.json
+
+# Python demo integration caches
+__pycache__/
+*.py[cod]

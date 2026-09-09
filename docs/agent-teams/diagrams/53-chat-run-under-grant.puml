@@ -1,0 +1,69 @@
+@startuml
+title Chat run under a grant — happy path (Ack before HTTP; the grantor owns the run)
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+actor "Chat user\n(grantor's principal)" as User #FFD8C2
+participant "Platform\n(Discord/Slack/...)" as Platform #F8CECC
+participant "Gateway TeamsRuntime\n(teams.rs)" as GW #C8E6DC
+participant "Embers API\n(run-under-grant)" as API #FFC9A8
+participant "Agent-Teams env v3\n(validator)" as Chain #FFE4A6
+participant "Observer" as Obs #FFF1CC
+
+User -> Platform : team run <alias> <prompt>
+Platform -> GW : message delivered
+GW -> GW : durable dedup (message idempotency key);\nalias -> team URI; channel concurrency cap;\nprincipal = author_hash(identity key);\ngrant cache lookup (on-miss refresh, rate-limited);\nspend admit (phlo estimate)
+
+GW --> Platform : **Ack <= 3 s, BEFORE any embers HTTP**\n"Starting team <alias> under your grant..."
+
+group Prepare (deploys nothing)
+GW -> API : POST run-under-grant/prepare\n{grant_id, prompt, channel_context}
+API -> API : fetch grant; fail-fast: revoked? principal match?\ncap already spent today? durable manifest?\nmint run_id (UUIDv7); write encrypted request v3\n(channel_context inside) + continuation revision-0
+API --> GW : {run: {run_id, contract, hashes}, grant_id,\nagents_team} + token
+end
+GW --> Platform : progress: TeamRunStarted #N (run_id)
+GW -> GW : sign contract with the **gateway wallet**\n(grantee and payer; never the grantor's key)
+
+group Send (bounded, 130 s -- an optimization, never the correctness path)
+GW -> API : POST run-under-grant/send {echo, signed, token}
+API -> Chain : deploy beginDurableRunUnderGrant
+note right of Chain #FFF0C7
+One atomic join over runsCh + grantsCh:
+signer == grantee, not revoked, team matches,
+UTC-day counter increments, run registers with
+owner = grantor and grant_id — no revocation
+or cap race can interleave (diagram 59).
+end note
+Chain --> API : finalized
+API -> Obs : verify registration: run_id, grant_id,\nteam, hashes, revision 0, "running"
+API -> API : resume durable kernel (same pipeline\nas a plain run)
+API --> GW : 200 run-state JSON
+end
+
+group Poll and deliver (the sweeper path; also the recovery loop)
+GW -> API : GET /runs/{run_id}
+API --> GW : status: completed; output hashes present
+GW -> API : POST runs/{run_id}/output/prepare
+GW -> GW : sign reveal with the gateway wallet
+GW -> API : POST runs/{run_id}/output/send
+API -> Chain : deploy claimOutputReveal
+note right of Chain #FFF0C7
+Grantee branch: grant.grantee == signer
+AND not revoked AND authority.reveal.
+The owner path is untouched.
+end note
+Chain --> API : ack {revealId, output hashes}
+API --> GW : 200 output JSON (the one content read)
+GW -> GW : render_team_output: strings concatenate,\nelse pretty-print fence; platform cap\n(1900/3900/16000/4000); truncation stated
+GW --> Platform : **Final**: output + "Run: <url>" backlink
+Platform --> User : team answer in the channel
+end
+@enduml

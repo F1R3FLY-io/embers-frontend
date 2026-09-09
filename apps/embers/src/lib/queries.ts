@@ -3,10 +3,13 @@ import type {
   AgentsTeams,
   CreateAgentReq,
   CreateAgentsTeamReq,
+  CreateGrantReq,
   CreateOslfReq,
+  Grant,
   Oslfs,
   PrivateKey,
   PublishToFireskyReq,
+  PublishToMailReq,
   Uri,
 } from "@f1r3fly-io/embers-client-sdk";
 import type { QueryClient } from "@tanstack/react-query";
@@ -847,6 +850,167 @@ export function useDeleteOslfMutation() {
               ?.oslfs.some((entry) => entry.id === id) ?? false
           ),
       );
+    },
+  });
+}
+
+/** Grants this wallet has created, revoked ones included and flagged. */
+export function useGrantsQuery() {
+  const api = useApi();
+
+  return useQuery({
+    queryFn: async ({ signal }) => api.agentsTeams.grantsByGrantor({ signal }),
+    queryKey: ["agents-teams-grants", String(api.wallets.address)],
+  });
+}
+
+/**
+ * Creates a standing channel grant, signed here where the grantor's key
+ * lives. The one-time subject bearer token (when requested) is at
+ * `prepareResponse.response.requireToken` on the returned value: the caller
+ * must surface it immediately, because it is never stored and cannot be
+ * recovered.
+ */
+export function useCreateGrantMutation() {
+  const api = useApi();
+  const reportFailure = useFailureReporter();
+
+  return useMutation({
+    mutationFn: async (createGrantReq: CreateGrantReq, { client }) =>
+      api.agentsTeams.createGrant(createGrantReq).then((r) => {
+        const grantId = r.prepareResponse.response.grantId;
+        void r.waitForFinalization.finally(() => {
+          const listKey = [
+            "agents-teams-grants",
+            String(api.wallets.address),
+          ] as const;
+          void refetchUntilPresent(
+            client,
+            listKey,
+            () =>
+              client
+                .getQueryData<Grant[]>(listKey)
+                ?.some((grant) => grant.grantId === grantId) ?? false,
+          );
+        });
+        return r;
+      }),
+    onError: (err) => {
+      reportFailure("Grant creation failed", err);
+    },
+  });
+}
+
+/**
+ * Revokes a grant. Delivery-only for in-flight runs: they complete for their
+ * owner, while the grantee's reveal and command claims fail from the moment
+ * of revocation.
+ */
+export function useRevokeGrantMutation() {
+  const api = useApi();
+  const reportFailure = useFailureReporter();
+
+  return useMutation({
+    mutationFn: async (grantId: string, { client }) =>
+      api.agentsTeams.revokeGrant(grantId).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          const listKey = [
+            "agents-teams-grants",
+            String(api.wallets.address),
+          ] as const;
+          void refetchUntil(
+            client,
+            listKey,
+            () =>
+              client
+                .getQueryData<Grant[]>(listKey)
+                ?.some((grant) => grant.grantId === grantId && grant.revoked) ??
+              false,
+          );
+        });
+        return r;
+      }),
+    onError: (err) => {
+      reportFailure("Grant revocation failed", err);
+    },
+  });
+}
+
+/**
+ * Where a team is reachable, per channel. `null` reachability means "could
+ * not be determined" and the interface renders it as unknown -- see
+ * `lib/interfaces.ts` for the collapsing rules.
+ */
+export function usePublishedChannels(id?: string) {
+  const api = useApi();
+
+  return useQuery({
+    enabled: !!id,
+    queryFn: async ({ signal }) =>
+      api.agentsTeams.publishedChannels(id!, { signal }),
+    queryKey: [
+      "agents-teams",
+      String(api.wallets.address),
+      id,
+      "published-channels",
+    ],
+  });
+}
+
+/**
+ * Binds `localPart@mailDomain` to the team on chain. The address is the
+ * canonical (lowercased) form the backend echoes; the binding carries no key
+ * material and unpublishing is reversible.
+ */
+export function usePublishToMailMutation(id: string) {
+  const api = useApi();
+  const reportFailure = useFailureReporter();
+
+  return useMutation({
+    mutationFn: async (publishToMailReq: PublishToMailReq, { client }) =>
+      api.agentsTeams.publishToMail(id, publishToMailReq).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: [
+              "agents-teams",
+              String(api.wallets.address),
+              id,
+              "published-channels",
+            ],
+          });
+        });
+        return r;
+      }),
+    onError: (err) => {
+      reportFailure("Mail publication failed", err);
+    },
+  });
+}
+
+/** Deactivates the team's mail binding; publishing again reactivates it. */
+export function useUnpublishMailMutation() {
+  const api = useApi();
+  const reportFailure = useFailureReporter();
+
+  return useMutation({
+    mutationFn: async (id: string, { client }) =>
+      api.agentsTeams.unpublishMail(id).then((r) => {
+        void r.waitForFinalization.finally(() => {
+          void client.invalidateQueries({
+            exact: true,
+            queryKey: [
+              "agents-teams",
+              String(api.wallets.address),
+              id,
+              "published-channels",
+            ],
+          });
+        });
+        return r;
+      }),
+    onError: (err) => {
+      reportFailure("Mail unpublication failed", err);
     },
   });
 }

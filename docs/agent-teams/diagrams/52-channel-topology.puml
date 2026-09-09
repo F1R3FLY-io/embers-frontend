@@ -1,0 +1,91 @@
+@startuml
+title Channel-connector topology — grant-based external interfaces around the Agent-Teams env v3
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam componentStyle rectangle
+skinparam rectangle {
+  BorderColor #294C60
+}
+
+legend right
+  |= Fill |= Trust domain |
+  | <#FFD8C2> | Grantor (human, browser wallet) |
+  | <#FFC9A8> | Embers backend |
+  | <#FFE4A6> | Chain: validator (deploy authority) |
+  | <#FFF1CC> | Chain: observer (read-only) |
+  | <#C8E6DC> | F1R3BotGateway (chat grantee wallet) |
+  | <#F7D9E3> | F1R3Mail (mail grantee wallet) |
+  | <#F8CECC> | External, untrusted |
+  | <#F4CCCC> | Key material (never leaves its domain) |
+endlegend
+
+package "Grantor's browser" as browser #FFD8C2 {
+  component "Grants management\n(/grants)" as grantsui #FFD8C2
+  component "Publish to mail\n(PublishToMail page)" as mailui #FFD8C2
+  component "Interfaces panel\n(three-valued reachability)" as panel #FFD8C2
+  component "Wallet key\n(signs grants + bindings)" as walletkey #F4CCCC
+}
+
+package "Embers backend" as embers #FFC9A8 {
+  component "AgentsTeamsApi\n14 connector operations\n(api/agents_teams/endpoints.rs)" as api #FFC9A8
+  component "Grants + run-under-grant +\npublish-to-mail + channels\n(domain/agents_teams/*)" as domain #FFC9A8
+  component "Continuation store\n(encrypted run-request v3\nwith channel_context)" as store #E8DACB
+}
+
+package "F1r3node chain" as chain {
+  component "Agent-Teams env v3 (init.rho)\ngrantsCh | bindingsCh | runsCh\ncreateGrant / revokeGrant\nbeginDurableRunUnderGrant\nclaimOutputReveal / claimCommand\nsaveChannelBinding / list*" as env #FFE4A6
+  component "Observer\n(exploratory reads:\nlistGrantsByGrantee,\nlistChannelBindings)" as observer #FFF1CC
+}
+
+package "F1R3BotGateway" as gateway #C8E6DC {
+  component "botd + adapters\n(discord, slack, mattermost,\ntelegram, local loopback)" as adapters #C8E6DC
+  component "TeamsRuntime (teams.rs)\ngrant cache (routing only)\nsweeper: poll + reveal" as engine #C8E6DC
+  component "SQLite (0600)\nteam_aliases, team_runs\n(indexed message idem keys)" as sqlite #C8E6DC
+  component "Gateway wallet key\n(grantee AND payer)" as gwkey #F4CCCC
+}
+
+package "F1R3Mail" as mail #F7D9E3 {
+  component "f1r3mta-smtpd\nDirectoryPolicy + TeamDirectory\n(RCPT: Ready / 450 / 550)" as smtpd #F7D9E3
+  component "teams-bridge\nprompt + authorize + claimRun CAS\nreply render + recordReply CAS" as bridge #F7D9E3
+  component "Keystore: per-mailbox DEKs\nwrapped under operator KEK\n(TeamsBridgeEnv, never in embers)" as keystore #F4CCCC
+  component "MailQueue contract\n(fingerprint-idempotent enqueue,\nlease / defer / bounce / delivered)" as mailqueue #FFE4A6
+  component "Bridge wallet key\n(grantee AND payer)" as bridgekey #F4CCCC
+}
+
+actor "Chat platforms\n(Discord, Slack, ...)" as platforms #F8CECC
+actor "Remote MTA / sender" as mta #F8CECC
+
+grantsui --> api : grants create/revoke\nprepare + send
+mailui --> api : publish-to-mail /\nunpublish-mail
+panel --> api : GET published-channels
+walletkey .. grantsui
+api --> domain
+domain --> store : encrypted artifacts
+domain --> env : signed deploys
+domain --> observer : readbacks
+
+platforms --> adapters : messages ("team run ...")
+adapters --> engine
+engine --> sqlite
+gwkey .. engine
+engine --> api : run-under-grant, GET runs,\nreveal, commands (HTTP)
+engine --> observer : grants by grantee\n(chain-read-first)
+
+mta --> smtpd : SMTP (MAIL FROM / RCPT TO / DATA)
+smtpd --> mailqueue : enqueue sealed message
+bridge --> mailqueue : lease / delivered /\ndefer / bounce
+bridge --> keystore : unwrap DEK\n(process memory only)
+smtpd ..> keystore : seal via BodyCipher
+bridge --> api : run-under-grant, poll, reveal
+bridge --> observer : grants + mail bindings\n(chain-read-first)
+bridgekey .. bridge
+
+note bottom of env #FFF0C7
+  One env, one atomicity domain: grants, bindings, and runs
+  share the insertSigned env so beginDurableRunUnderGrant can
+  adjudicate the grant, count the day cap, and register the
+  run in a single Rholang join. Channel caches are routing
+  artifacts; the chain is the verifier of record.
+end note
+@enduml

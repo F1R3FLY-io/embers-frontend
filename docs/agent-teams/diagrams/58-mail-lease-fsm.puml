@@ -1,0 +1,51 @@
+@startuml
+title MailQueue entry FSM — lease-based exactly-one-sender-at-a-time (mail_queue.rho)
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "queued\n(claimable when\nnextAttempt <= now)" as queued #E9F5EA
+state "leased\n{worker, expiresAt}" as leased #FFF0D9
+state "leased, lease expired\n(claimable; outcome of the\nprior attempt UNKNOWN)" as ambiguous #FFE0C8
+state "delivered\n(terminal)" as delivered #D9EFDF
+state "bounced\n(terminal; DSN recorded)" as bounced #F8DADA
+
+[*] --> queued : enqueue -- idempotent on the content\nfingerprint: a duplicate answers\n("duplicate", original qid), creates nothing
+queued --> leased : lease(qid, worker, ttl, now)\n-> ("leased", qid, expiry)
+leased --> leased : lease while unexpired\n-> ("busy", holder) -- refused
+leased --> ambiguous : now > expiresAt\n(no transition on chain;\na queryable fact, not a guess)
+ambiguous --> leased : lease by a new worker\n-> ("leased-ambiguous", qid, expiry):\nthe caller is TOLD the prior outcome\nis unknown -- consult the run ledger\n(claimRun/lookupRun) before re-acting
+leased --> delivered : delivered(qid, worker, response, now)\n-- lease holder only
+leased --> queued : defer(qid, worker, code, nextAttemptAt)\n-- attempts + 1, lease cleared
+leased --> bounced : bounce(qid, worker, code, dsnRef, now)
+delivered --> [*]
+bounced --> [*]
+
+note right of ambiguous #FFF6C9
+The known unknown Postfix cannot name: the
+prior worker may or may not have completed
+its SMTP transaction before dying. Here the
+ambiguity is queryable, so the retry decision
+is policy rather than a guess -- the teams
+bridge resolves it against its own
+fingerprint-keyed run ledger.
+end note
+
+note bottom of delivered #FFF0C7
+Outcome writes are fenced to the lease holder:
+a stale worker back from the dead cannot
+overwrite the attempt that replaced it.
+Mutations forward their acknowledgment to the
+deploy id, so outcomes are readable after
+finality; reads answer on a ret channel for
+observer exploratory readback
+(MAIL_QUEUE_ARITIES pins both against the
+contract source).
+end note
+@enduml

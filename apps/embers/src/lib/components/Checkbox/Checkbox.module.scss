@@ -17,22 +17,14 @@
   pointer-events: none;
 }
 
-.box .sm {
-  width: 14px;
-  height: 14px;
-}
-
-.box .md {
+.box {
+  // The size modifier is set on this same element, so the size rules are
+  // compound (`.box.md`), not descendant (`.box .md`) — the latter matched
+  // no element, leaving the box unsized and its viewBox-only SVG child to
+  // balloon to the browser's default replaced-element size.
   width: 16px;
   height: 16px;
-}
-
-.box .lg {
-  width: 20px;
-  height: 20px;
-}
-
-.box {
+  flex: none;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background: var(--background-color);
@@ -42,6 +34,21 @@
   transition:
     background 120ms ease,
     border-color 120ms ease;
+}
+
+.box.sm {
+  width: 14px;
+  height: 14px;
+}
+
+.box.md {
+  width: 16px;
+  height: 16px;
+}
+
+.box.lg {
+  width: 20px;
+  height: 20px;
 }
 
 .error .box {

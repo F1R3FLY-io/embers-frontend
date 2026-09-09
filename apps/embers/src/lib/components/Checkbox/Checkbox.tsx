@@ -118,6 +118,7 @@ export function Checkbox({
         aria-hidden
         className={classNames(
           styles.box,
+          styles[size],
           isMixed && styles["indeterminate-box"],
           isChecked && styles["checked-box"],
         )}

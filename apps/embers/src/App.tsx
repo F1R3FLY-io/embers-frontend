@@ -30,6 +30,8 @@ const Login = lazy(async () => import("@/pages/Login"));
 const EditAgentsTeam = lazy(async () => import("@/pages/EditAgentsTeam"));
 const EditAgent = lazy(async () => import("@/pages/EditAgent"));
 const PublishAgentsTeam = lazy(async () => import("@/pages/PublishAgentsTeam"));
+const PublishToMail = lazy(async () => import("@/pages/PublishToMail"));
+const GrantsManagement = lazy(async () => import("@/pages/GrantsManagement"));
 const AgentTeamRun = lazy(async () => import("@/pages/AgentTeamRun"));
 
 const queryClient = new QueryClient();
@@ -62,6 +64,10 @@ export default function App() {
                               <Route
                                 element={<Dashboard />}
                                 path="/dashboard"
+                              />
+                              <Route
+                                element={<GrantsManagement />}
+                                path="/grants"
                               />
                               <Route
                                 element={
@@ -103,6 +109,10 @@ export default function App() {
                                       <Route
                                         element={<PublishAgentsTeam />}
                                         path="publish"
+                                      />
+                                      <Route
+                                        element={<PublishToMail />}
+                                        path="publish-mail"
                                       />
                                     </Routes>
                                   </CurrentAgentsTeamProvider>

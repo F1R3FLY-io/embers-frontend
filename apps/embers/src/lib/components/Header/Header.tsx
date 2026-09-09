@@ -11,7 +11,7 @@ import styles from "./Header.module.scss";
 interface HeaderProps {
   actions?: React.ReactNode;
   onBackClick: () => void;
-  onSettingsClick: () => void;
+  onSettingsClick?: () => void;
   title: string;
 }
 
@@ -47,14 +47,16 @@ export const Header: React.FC<HeaderProps> = ({
           <Text color="primary" type="H4">
             {title}
           </Text>
-          <button
-            aria-label={t("agents.generalSettings")}
-            className={styles["icon-button"]}
-            type="button"
-            onClick={onSettingsClick}
-          >
-            <SettingsIcon className={styles["settings-icon"]} />
-          </button>
+          {onSettingsClick ? (
+            <button
+              aria-label={t("agents.generalSettings")}
+              className={styles["icon-button"]}
+              type="button"
+              onClick={onSettingsClick}
+            >
+              <SettingsIcon className={styles["settings-icon"]} />
+            </button>
+          ) : null}
         </div>
         <div className={styles["header-right"]}>
           <div className={styles.actions}>{actions}</div>

@@ -6,6 +6,11 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 
 ## Start here
 
+- [Red/blue live-build runbook](usage/red-blue-demo-runbook.md) walks through creating six agents, connecting their team, and presenting an engineering decision brief.
+
+- [Research Desk demo runbook](usage/customer-demo-runbook.md) covers retrieval, bounded revisions, and human approval.
+- [Red-team demo runbook](usage/red-team-demo-runbook.md) covers the six-agent critic committee, seeding, rehearsal, and integration tests.
+
 - [Editor and operator guide](usage/editor-and-operations.md) explains how to build, validate, deploy, and invoke a team.
 - [Workflow Definition v2](specification/workflow-definition-v2.md) specifies the portable JSON syntax and validation rules.
 - [HTTP API and OpenAPI surface](../../../embers/docs/api/http-api.md) documents the served Swagger/OpenAPI endpoints, the universal two-phase prepare, sign, send protocol, the complete Agent Teams endpoint reference, and the pinned specification-to-SDK generation chain.
@@ -17,6 +22,9 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 - [Rholang realization](design/rholang-realization.md) catalogs how each statechart operation is composed in Rholang, with parser-validated generated-contract and template excerpts.
 - [Security model](security/threat-model.md) inventories authorities, trust boundaries, threats, and privacy constraints.
 - [Object-capability model](security/capability-model.md) classifies every authority by mechanism — unforgeable name, write-attenuated bundle, bearer link, keyed-derivation capability, signature identity, identity-list grant — specifies the publication protocol, and states plainly which policy fields are enforced and which are only recorded.
+- [External interfaces](architecture/external-interfaces.md) is the canonical three-channel connector architecture — F1r3sky, chat (F1R3BotGateway), and mail (F1R3Mail) — covering bindings, the chain-read-first rule, delivery transforms, and disconnect/resend semantics over the unchanged run/poll/reveal transport.
+- [Channel grants](architecture/channel-grants.md) specifies the delegation model behind the connector layer: the grant record, the enforced-versus-recorded split, the UTC-epoch-day cap, the atomic adjudication clause in literate form, and delivery-only revocation.
+- [Channel-grant trust model](security/channel-grant-trust.md) is the adversarial companion: grantor-owned runs, channel compromise radii, principal spoofing, and the mail channel's pre-authentication hardening.
 - [Formal model](formal/README.md) maps the implementation to a small TLA+ transition system.
 - [Conformance and verification](engineering/conformance-and-testing.md) maps every implementation surface to reproducible unit, static, live-stack, and formal evidence.
 - [Durable and hierarchical execution](architecture/durable-execution.md) specifies F1r3drive storage, the on-chain ledger, recovery, authenticated commands, and nested teams.

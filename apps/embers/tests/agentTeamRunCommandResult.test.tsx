@@ -31,13 +31,17 @@ const mockCommand = jest.fn(async (..._args: unknown[]) =>
 
 jest.mock("@/lib/providers/wallet/useApi", () => ({
   useWalletState: () => ({
-    embers: { agentsTeams: { command: mockCommand } },
+    embers: {
+      agentsTeams: { command: mockCommand },
+      wallets: { address: { toString: () => "test-wallet" } },
+    },
     ready: true,
   }),
 }));
 
 jest.mock("react-router-dom", () => ({
   useLocation: () => ({ pathname: "/runs/run-88" }),
+  useNavigate: () => jest.fn(),
   useParams: () => ({ runId: "run-88" }),
 }));
 

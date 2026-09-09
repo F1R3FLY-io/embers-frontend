@@ -122,6 +122,8 @@ An authorized supervisor can instantiate a pinned subteam, delegate a bounded ca
 
 Start teams from cron-like schedules, F1r3sky feed events, webhooks, blockchain events, or artifact changes. Normalize all triggers into authenticated command envelopes so interactive and background runs share one execution model.
 
+The **authorization half of this item is delivered**: on-chain channel grants now normalize external triggers from chat (F1R3BotGateway) and mail (F1R3Mail) into the standard run/poll/reveal transport, with the triggering human's wallet owning every run while the channel wallet signs and pays under explicit, capped, revocable authority ([ADR-004](../architecture/decisions/004-grant-based-channel-connectors.md), [channel grants](architecture/channel-grants.md)). Webhooks, push delivery, and schedules deliberately remain future work — the connector layer ships poll-based on purpose (correctness never depends on a delivery call surviving), and a push surface would add its own callback authentication and retry semantics on top of, not instead of, the grant model.
+
 ### Process mining and optimization
 
 Use privacy-preserving event metadata to discover bottlenecks, common failure routes, excess retries, and effective agent combinations. Proposed graph optimizations remain versioned diffs with simulation evidence, never self-modifying deployed code.

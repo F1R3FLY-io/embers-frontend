@@ -10,12 +10,16 @@ import {
 } from "@f1r3fly-io/embers-client-sdk";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
+import { Button } from "@/lib/components/Button";
+import { Header } from "@/lib/components/Header";
+import { ThemeSwitch } from "@/lib/components/ThemeSwitch";
 import { useConfirm } from "@/lib/providers/modal/useConfirm";
 import { useWalletState } from "@/lib/providers/wallet/useApi";
 
 import styles from "./AgentTeamRun.module.scss";
+import { RunResponse } from "./RunResponse";
 
 async function getRun(runId: string, signal: AbortSignal): Promise<RunState> {
   const response = await fetch(
@@ -101,6 +105,15 @@ function parseDeadline(source: string): Date {
 }
 
 export default function AgentTeamRun() {
+  const wallet = useWalletState();
+  const { runId } = useParams();
+  const identity = wallet.ready
+    ? wallet.embers.wallets.address.toString()
+    : "signed-out";
+  return <RunView key={`${runId}:${identity}`} />;
+}
+
+function RunView() {
   const { runId = "" } = useParams();
   const location = useLocation();
   const wallet = useWalletState();
@@ -108,6 +121,7 @@ export default function AgentTeamRun() {
   const [commandType, setCommandType] = useState<RunCommandKindType>(
     RunCommandKind.Signal,
   );
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [waitId, setWaitId] = useState("");
   const [name, setName] = useState("");
   const [payload, setPayload] = useState("null");
@@ -125,6 +139,7 @@ export default function AgentTeamRun() {
       ["resuming", "running", "suspended"].includes(state.data?.status ?? "")
         ? 3_000
         : false,
+    retry: false,
   });
   const command = useMutation({
     mutationFn: async () => {
@@ -216,6 +231,7 @@ export default function AgentTeamRun() {
     },
   });
   const reveal = useMutation({
+    gcTime: 0,
     mutationFn: async () => {
       if (!wallet.ready) {
         throw new Error("Sign in with the wallet that started this run first.");
@@ -229,6 +245,7 @@ export default function AgentTeamRun() {
     },
   });
 
+  const navigate = useNavigate();
   const needsWait =
     commandType !== RunCommandKind.Cancel &&
     commandType !== RunCommandKind.Migrate;
@@ -244,60 +261,148 @@ export default function AgentTeamRun() {
   const commandable = ["running", "suspended"].includes(run.data?.status ?? "");
 
   return (
-    <main className={styles.page}>
-      <section className={styles.card}>
-        <a className={styles.home} href="/">
-          Embers
-        </a>
-        <p className={styles.eyebrow}>Agent Team run</p>
+    <div className={styles.page}>
+      <Header
+        actions={
+          <span aria-label="Color theme">
+            <ThemeSwitch />
+          </span>
+        }
+        title="Agent team run"
+        onBackClick={() => {
+          void navigate(wallet.ready ? "/dashboard" : "/");
+        }}
+      />
+      <main className={styles.card}>
+        <p className={styles.eyebrow}>Embers · Agent team run</p>
 
-        {run.isPending ? <p>Reading the durable run ledger…</p> : null}
+        {run.isPending ? <p role="status">Loading run…</p> : null}
         {run.error ? (
           <div className={styles.error} role="alert">
             <h1>Run unavailable</h1>
             <p>{run.error.message}</p>
+            <Button
+              disabled={run.isFetching}
+              type="secondary"
+              onClick={async () => {
+                await run.refetch();
+              }}
+            >
+              Retry loading run
+            </Button>
           </div>
         ) : null}
 
         {run.data ? (
           <>
             <div className={styles["title-row"]}>
-              <h1>Execution {run.data.status}</h1>
+              <h1>
+                {run.data.status === "completed"
+                  ? "Your response is ready"
+                  : `Run ${run.data.status}`}
+              </h1>
               <span className={styles.status} data-status={run.data.status}>
                 {run.data.status}
               </span>
             </div>
+            <p className={styles.started}>
+              Started {run.data.createdAt.toLocaleString()}
+            </p>
 
-            <dl className={styles.metadata}>
-              <div>
-                <dt>Run capability</dt>
-                <dd>{run.data.runId}</dd>
-              </div>
-              <div>
-                <dt>Agent Team</dt>
-                <dd>{String(run.data.agentsTeam)}</dd>
-              </div>
-              <div>
-                <dt>Started</dt>
-                <dd>{run.data.createdAt.toLocaleString()}</dd>
-              </div>
-              <div>
-                <dt>Revision</dt>
-                <dd>{run.data.revision.toString()}</dd>
-              </div>
-              {run.data.definitionHash ? (
+            {run.data.status === "completed" ? (
+              <section aria-label="Response" className={styles.section}>
+                <h2>Response</h2>
+                {!wallet.ready ? (
+                  <p className={styles.notice}>
+                    <Link state={{ from: location }} to="/login">
+                      Sign in to view response
+                    </Link>{" "}
+                    with the wallet that started this run.
+                  </p>
+                ) : (
+                  <>
+                    <p className={styles.notice}>
+                      {reveal.isSuccess
+                        ? "Response revealed for this wallet."
+                        : "Reveal the full response using your wallet. It remains private to this session."}
+                    </p>
+                    {!reveal.isSuccess ? (
+                      <Button
+                        disabled={reveal.isPending}
+                        type="primary"
+                        onClick={() => reveal.mutate()}
+                      >
+                        {reveal.isPending
+                          ? "Revealing response…"
+                          : "Reveal full response"}
+                      </Button>
+                    ) : null}
+                    {reveal.error ? (
+                      <p className={styles.error} role="alert">
+                        {reveal.error.message} Try again using the wallet that
+                        started this run.
+                      </p>
+                    ) : null}
+                    <RunResponse
+                      key={runId}
+                      revealed={reveal.isSuccess && wallet.ready}
+                      value={reveal.data?.sendResponse}
+                    />
+                  </>
+                )}
+              </section>
+            ) : (
+              <p className={styles.notice} role="status">
+                {run.data.status === "failed" || run.data.status === "cancelled"
+                  ? "This run ended without a completed response. Open execution details to inspect its history."
+                  : "The response will be available when this run completes."}
+              </p>
+            )}
+
+            <details className={styles.section}>
+              <summary>Execution details</summary>
+              <dl className={styles.metadata}>
                 <div>
-                  <dt>Definition</dt>
-                  <dd>{run.data.definitionHash}</dd>
+                  <dt>Run capability</dt>
+                  <dd>{run.data.runId}</dd>
                 </div>
-              ) : null}
-              {run.data.dueAt ? (
                 <div>
-                  <dt>Next deadline</dt>
-                  <dd>{run.data.dueAt.toLocaleString()}</dd>
+                  <dt>Agent Team</dt>
+                  <dd>{String(run.data.agentsTeam)}</dd>
                 </div>
-              ) : null}
-            </dl>
+                <div>
+                  <dt>Started</dt>
+                  <dd>{run.data.createdAt.toLocaleString()}</dd>
+                </div>
+                <div>
+                  <dt>Revision</dt>
+                  <dd>{run.data.revision.toString()}</dd>
+                </div>
+                {run.data.definitionHash ? (
+                  <div>
+                    <dt>Definition</dt>
+                    <dd>{run.data.definitionHash}</dd>
+                  </div>
+                ) : null}
+                {run.data.dueAt ? (
+                  <div>
+                    <dt>Next deadline</dt>
+                    <dd>{run.data.dueAt.toLocaleString()}</dd>
+                  </div>
+                ) : null}
+              </dl>
+              <details className={styles.section}>
+                <summary>Event history ({run.data.events.length})</summary>
+                <ol className={styles.timeline}>
+                  {run.data.events.map((event) => (
+                    <li key={`${event.sequence.toString()}-${event.eventType}`}>
+                      <span>{event.sequence.toString()}</span>
+                      <strong>{eventName(event.eventType)}</strong>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            </details>
 
             {run.data.waitIds.length > 0 ? (
               <section className={styles.section}>
@@ -325,8 +430,8 @@ export default function AgentTeamRun() {
             ) : null}
 
             {commandable ? (
-              <section className={styles.section}>
-                <h2>Send an authenticated command</h2>
+              <details className={styles.section}>
+                <summary>Run controls</summary>
                 {!wallet.ready ? (
                   <p className={styles.notice}>
                     <Link state={{ from: location }} to="/login">
@@ -359,6 +464,26 @@ export default function AgentTeamRun() {
                       }
                     }}
                   >
+                    <details>
+                      <summary>Advanced controls</summary>
+                      <label>
+                        <input
+                          checked={showAdvanced}
+                          type="checkbox"
+                          onChange={(event) => {
+                            setShowAdvanced(event.currentTarget.checked);
+                            if (
+                              !event.currentTarget.checked &&
+                              (commandType === RunCommandKind.Migrate ||
+                                commandType === RunCommandKind.TimerFired)
+                            ) {
+                              setCommandType(RunCommandKind.Signal);
+                            }
+                          }}
+                        />
+                        Show migration and manual timer commands
+                      </label>
+                    </details>
                     <label>
                       Command
                       <select
@@ -386,11 +511,18 @@ export default function AgentTeamRun() {
                           }
                         }}
                       >
-                        {interactiveCommands.map((candidate) => (
-                          <option key={candidate} value={candidate}>
-                            {commandName(candidate)}
-                          </option>
-                        ))}
+                        {interactiveCommands
+                          .filter(
+                            (candidate) =>
+                              showAdvanced ||
+                              (candidate !== RunCommandKind.Migrate &&
+                                candidate !== RunCommandKind.TimerFired),
+                          )
+                          .map((candidate) => (
+                            <option key={candidate} value={candidate}>
+                              {commandName(candidate)}
+                            </option>
+                          ))}
                       </select>
                     </label>
 
@@ -552,74 +684,8 @@ export default function AgentTeamRun() {
                     ) : null}
                   </form>
                 )}
-              </section>
+              </details>
             ) : null}
-
-            {run.data.status === "completed" ? (
-              <section className={styles.section}>
-                <h2>Reveal the full response</h2>
-                {!wallet.ready ? (
-                  <p className={styles.notice}>
-                    <Link state={{ from: location }} to="/login">
-                      Sign in
-                    </Link>{" "}
-                    with the wallet that started this run to reveal its full
-                    response.
-                  </p>
-                ) : (
-                  <>
-                    <p className={styles.notice}>
-                      The output value is sealed in an encrypted artifact whose
-                      hashes are committed on this record; only the run
-                      owner&apos;s signature can release it, and the public
-                      ledger records the reveal without the value.
-                    </p>
-                    <button
-                      disabled={reveal.isPending}
-                      type="button"
-                      onClick={() => {
-                        reveal.reset();
-                        reveal.mutate();
-                      }}
-                    >
-                      {reveal.isPending
-                        ? "Signing and revealing…"
-                        : "Reveal full response"}
-                    </button>
-                    {reveal.error ? (
-                      <p className={styles.error} role="alert">
-                        {reveal.error.message}
-                      </p>
-                    ) : null}
-                    {reveal.isSuccess ? (
-                      <section className={styles["command-result"]}>
-                        <h3>Full response (visible only to you)</h3>
-                        <p>
-                          This value returned over your authenticated channel;
-                          the public ledger records only the reveal event and
-                          hashes.
-                        </p>
-                        <pre data-testid="reveal-result-json">
-                          {JSON.stringify(reveal.data.sendResponse, null, 2)}
-                        </pre>
-                      </section>
-                    ) : null}
-                  </>
-                )}
-              </section>
-            ) : null}
-
-            <section className={styles.section}>
-              <h2>Durable events</h2>
-              <ol className={styles.timeline}>
-                {run.data.events.map((event) => (
-                  <li key={`${event.sequence.toString()}-${event.eventType}`}>
-                    <span>{event.sequence.toString()}</span>
-                    <strong>{eventName(event.eventType)}</strong>
-                  </li>
-                ))}
-              </ol>
-            </section>
 
             <p className={styles.privacy}>
               This capability-scoped view contains execution metadata only.
@@ -630,7 +696,7 @@ export default function AgentTeamRun() {
             </p>
           </>
         ) : null}
-      </section>
-    </main>
+      </main>
+    </div>
   );
 }

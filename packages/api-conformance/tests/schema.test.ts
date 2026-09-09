@@ -21,8 +21,11 @@ describe("the pinned document", () => {
   it("describes the operations the client was generated from", () => {
     // A specific number rather than "more than zero": this is the figure every
     // coverage claim about the API is measured against, and it moving is
-    // itself news.
-    expect(catalogue.operations).toHaveLength(55);
+    // itself news. It moved from 55 to 69 when the channel-connector layer
+    // landed: grant lifecycle (4), grant reads (2), run-under-grant (2), mail
+    // bindings (6, counting both publish and unpublish phases and the two
+    // read mirrors).
+    expect(catalogue.operations).toHaveLength(69);
     expect(catalogue.schemaNames.length).toBeGreaterThan(100);
   });
 

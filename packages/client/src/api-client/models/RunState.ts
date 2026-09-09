@@ -115,6 +115,14 @@ export interface RunState {
    */
   events: Array<RunEvent>;
   /**
+   * The grant a channel service initiated this run under, when there was
+   * one. Present on this capability-gated read; the public run enumeration
+   * scrubs it, because grant records are public and name their grantor.
+   * @type {string}
+   * @memberof RunState
+   */
+  grantId?: string;
+  /**
    * Capability commitment over the terminal output artifact.
    * @type {string}
    * @memberof RunState
@@ -238,6 +246,7 @@ export function RunStateFromJSONTyped(
     dueAt:
       json.due_at == null ? undefined : TimestampMillisFromJSON(json.due_at),
     events: (json.events as Array<any>).map(RunEventFromJSON),
+    grantId: json.grant_id == null ? undefined : json.grant_id,
     outputCapabilityHash:
       json.output_capability_hash == null
         ? undefined
@@ -284,6 +293,7 @@ export function RunStateToJSONTyped(
     definition_hash: value.definitionHash,
     due_at: TimestampMillisToJSON(value.dueAt),
     events: (value.events as Array<any>).map(RunEventToJSON),
+    grant_id: value.grantId,
     output_capability_hash: value.outputCapabilityHash,
     output_content_hash: value.outputContentHash,
     request_capability_hash: value.requestCapabilityHash,

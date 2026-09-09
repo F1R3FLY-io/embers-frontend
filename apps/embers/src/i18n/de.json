@@ -126,7 +126,10 @@
       "subtitle": "",
       "tryAgain": "",
       "reviewSettings": ""
-    }
+    },
+    "publishToMail": "Per E-Mail veröffentlichen",
+    "manageGrants": "Freigaben verwalten",
+    "interfaces": "Schnittstellen"
   },
   "graphEditor": {
     "addCustomComponent": ""
@@ -208,5 +211,80 @@
         "lenient": ""
       }
     }
+  },
+  "grants": {
+    "titleSmall": "Freigaben",
+    "header": "Kanal-Freigaben",
+    "subtitle": "Erlauben Sie einem Kanaldienst, Läufe in Ihrem Namen zu starten, mit den von Ihnen gewählten Limits und Befugnissen. Freigaben werden auf der Chain gespeichert und sind jederzeit widerrufbar.",
+    "team": "Team",
+    "teamPlaceholder": "Bereitgestelltes Team wählen",
+    "channel": "Kanal",
+    "channelChat": "Chat (Bot-Gateway)",
+    "channelMail": "E-Mail",
+    "principal": "Kanal-Principal",
+    "principalChatPlaceholder": "Autoren-Hash aus „team whoami“",
+    "principalMailPlaceholder": "absender@beispiel.de",
+    "principalChatHelp": "Fügen Sie den Principal aus dem Bot-Befehl „team whoami“ ein.",
+    "principalMailHelp": "Die genaue Absenderadresse, deren E-Mails Läufe starten dürfen.",
+    "grantee": "Wallet-Adresse des Kanals",
+    "granteePlaceholder": "Wallet des Gateways oder der Mail-Brücke",
+    "granteeHelp": "Das Wallet des Kanaldienstes: Es signiert und bezahlt die Läufe, Sie besitzen sie.",
+    "cap": "Max. Läufe pro Tag (leer = unbegrenzt)",
+    "capPlaceholder": "z. B. 20",
+    "authority": "Übertragene Befugnisse",
+    "reveal": "Darf Ergebnisse zur Zustellung offenlegen",
+    "commandApprove": "Darf Freigaben erteilen",
+    "commandReject": "Darf ablehnen",
+    "commandCancel": "Darf Läufe abbrechen",
+    "commandSignal": "Darf Signale senden",
+    "commandEvent": "Darf Ereignisse senden",
+    "commandRetry": "Darf Wartepunkte wiederholen",
+    "requireToken": "Betreff-Token verlangen",
+    "minAuth": "Mindest-Absenderauthentifizierung",
+    "minAuthNone": "Keine",
+    "create": "Freigabe erstellen",
+    "createdTitle": "Freigabe erstellt",
+    "created": "Der Kanal kann nun Läufe unter dieser Freigabe starten.",
+    "tokenTitle": "Token (einmalige Anzeige)",
+    "tokenOnce": "Geben Sie dieses Token an den Absender weiter; es muss in jeder auslösenden Nachricht stehen. Es wird nie gespeichert und ist nicht wiederherstellbar: {{token}}",
+    "existing": "Ihre Freigaben",
+    "none": "Noch keine Freigaben.",
+    "uncapped": "Unbegrenzt",
+    "cappedAt": "Bis zu {{cap}} Läufe pro Tag",
+    "revoked": "Widerrufen",
+    "revoke": "Widerrufen",
+    "revokeTitle": "Freigabe widerrufen",
+    "revokeConfirm": "Freigabe für {{principal}} widerrufen? Laufende Ausführungen werden für Sie beendet, aber der Kanal verliert sofort Zustellung und Befehlsgewalt."
+  },
+  "publishMail": {
+    "titleSmall": "Veröffentlichen",
+    "header": "Dem Team eine E-Mail-Adresse geben",
+    "subtitle": "Binden Sie eine Adresse, die der E-Mail-Kanal erkennt; eingehende Mails können unter einer Freigabe Läufe starten.",
+    "current": "Aktuelle Adresse",
+    "active": "Aktiv",
+    "unpublish": "Adresse zurückziehen",
+    "localPart": "Lokalteil",
+    "localPartPlaceholder": "forschungs-team",
+    "domain": "Mail-Domain",
+    "domainPlaceholder": "agents.beispiel",
+    "addressHelp": "Die Adresse wird kleingeschrieben als lokal@domain gespeichert. Die Bindung enthält keine Schlüssel; Postfachschlüssel bleiben bei der Mail-Brücke.",
+    "cancel": "Abbrechen",
+    "button": "Adresse binden",
+    "successTitle": "Adresse gebunden",
+    "successMessage": "Das Team ist nun unter {{address}} erreichbar. Absender benötigen weiterhin eine Freigabe, damit ihre Mails Läufe starten.",
+    "unpublishedTitle": "Adresse zurückgezogen",
+    "unpublishedMessage": "Die Bindung ist deaktiviert. Erneutes Veröffentlichen reaktiviert dieselbe Adresse."
+  },
+  "interfaces": {
+    "title": "Schnittstellen",
+    "loadFailed": "Erreichbarkeit konnte nicht geladen werden.",
+    "notPublished": "Nicht veröffentlicht",
+    "mail": "E-Mail",
+    "chat": "Chat",
+    "chatGrants": "{{count}} aktive Freigabe(n)",
+    "noGrants": "Keine aktiven Freigaben",
+    "reachable": "Erreichbar",
+    "unreachable": "Nicht erreichbar",
+    "unknown": "Unbekannt"
   }
 }
