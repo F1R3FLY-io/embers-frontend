@@ -725,8 +725,11 @@ export function usePublishAgentsTeamToFireskyMutation(id: string) {
   const api = useApi();
 
   return useMutation({
-    mutationFn: async (params: PublishToFireskyReq) =>
-      api.agentsTeams.publishToFiresky(id, params),
+    mutationFn: async (params: PublishToFireskyReq) => {
+      const result = await api.agentsTeams.publishToFiresky(id, params);
+      await result.waitForFinalization;
+      return result;
+    },
   });
 }
 

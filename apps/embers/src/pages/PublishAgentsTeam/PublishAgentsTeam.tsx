@@ -1,5 +1,5 @@
 import { ApiError, responseError } from "@f1r3fly-io/embers-client-sdk";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
 import z from "zod";
 
@@ -7,6 +7,7 @@ import { Button } from "@/lib/components/Button";
 import { IconPreview } from "@/lib/components/IconPreview";
 import { Input } from "@/lib/components/Input";
 import LanguageFooter from "@/lib/components/LanguageFooter";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { FormError } from "@/lib/forms/FormError";
 import { fieldError, useForm } from "@/lib/forms/useForm";
@@ -63,6 +64,9 @@ export default function PublishAgentsTeam() {
   const [discoveryError, setDiscoveryError] = useState("");
   const [pdsUrl, setPdsUrl] = useState(window.FIRESKY_PDS_URL ?? "");
   const [suffix, setSuffix] = useState("");
+  const emailEdited = useRef(false);
+  const handleEdited = useRef(false);
+  const [published, setPublished] = useState(false);
   const generated = useRef({ email: "", password: "" });
 
   const { agentsTeam } = useCurrentAgentsTeam();
@@ -124,6 +128,7 @@ export default function PublishAgentsTeam() {
         },
         {
           onSuccess: () => {
+            setPublished(true);
             open(
               <SuccessModal
                 agentName={agentsTeam.name!}
@@ -176,6 +181,36 @@ export default function PublishAgentsTeam() {
   });
 
   useEffect(() => {
+    if (!handleEdited.current && agentsTeam.name) {
+      const handle = teamHandleSlug(agentsTeam.name);
+      form.setFieldValue("handle", `${handle}${suffix}`);
+    }
+  }, [agentsTeam.name, form, suffix]);
+
+  const currentHandle = useSyncExternalStore(
+    (listener) => form.store.subscribe(listener),
+    () => form.getFieldValue("handle"),
+  );
+  useEffect(() => {
+    if (
+      emailEdited.current ||
+      window.FIRESKY_DEMO_PDS_URL?.replace(/\/$/, "") !==
+        pdsUrl.replace(/\/$/, "")
+    )
+      return;
+    const localPart = currentHandle
+      .trim()
+      .replace(/^@/, "")
+      .split(".")[0]
+      .toLowerCase();
+    const email = localPart ? `${localPart}@example.com` : "";
+    if (form.getFieldValue("email") !== email) {
+      generated.current.email = email;
+      form.setFieldValue("email", email);
+    }
+  }, [currentHandle, form, pdsUrl]);
+
+  useEffect(() => {
     const controller = new AbortController();
     setDiscovery(null);
     setDiscoveryError("");
@@ -214,10 +249,7 @@ export default function PublishAgentsTeam() {
           const demo = window.FIRESKY_DEMO_PDS_URL?.replace(/\/$/, "") === url;
           if (demo) {
             const email = `${form.getFieldValue("handle").split(".")[0]}@example.com`;
-            if (
-              !form.getFieldValue("email") ||
-              form.getFieldValue("email") === generated.current.email
-            ) {
+            if (!emailEdited.current) {
               form.setFieldValue("email", email);
               generated.current.email = email;
             }
@@ -278,21 +310,18 @@ export default function PublishAgentsTeam() {
         <div className={styles["form-fields"]}>
           <form.Field name="accountMode">
             {(field) => (
-              <label>
-                Team social account
-                <select
-                  aria-label="Team social account"
-                  value={field.state.value}
-                  onChange={(event) =>
-                    field.handleChange(
-                      event.target.value as "create" | "existing",
-                    )
-                  }
-                >
-                  <option value="create">Create account</option>
-                  <option value="existing">Use existing account</option>
-                </select>
-              </label>
+              <Select
+                label="Team social account"
+                name={field.name}
+                value={field.state.value}
+                options={[
+                  { label: "Create account", value: "create" },
+                  { label: "Use existing account", value: "existing" },
+                ]}
+                errorMessage={fieldError(field.state.meta)}
+                onBlur={field.handleBlur}
+                onChange={field.handleChange}
+              />
             )}
           </form.Field>
           <p>
@@ -335,16 +364,8 @@ export default function PublishAgentsTeam() {
                     field.handleBlur();
                   }}
                   onChange={(e) => {
+                    handleEdited.current = true;
                     field.handleChange(e.target.value);
-                    if (
-                      window.FIRESKY_DEMO_PDS_URL?.replace(/\/$/, "") ===
-                        pdsUrl.replace(/\/$/, "") &&
-                      form.getFieldValue("email") === generated.current.email
-                    ) {
-                      const email = `${e.target.value.split(".")[0]}@example.com`;
-                      generated.current.email = email;
-                      form.setFieldValue("email", email);
-                    }
                   }}
                 />
               </div>
@@ -352,32 +373,26 @@ export default function PublishAgentsTeam() {
           </form.Field>
 
           {discovery && discovery.domains.length > 0 && (
-            <label>
-              Handle suffix
-              <select
-                aria-label="Handle suffix"
-                value={suffix}
-                onChange={(event) => {
-                  const next = event.target.value;
-                  const handle = form.getFieldValue("handle");
-                  if (!handle.includes(".")) {
-                    form.setFieldValue("handle", `${handle}${next}`);
-                  } else if (suffix && handle.endsWith(suffix)) {
-                    form.setFieldValue(
-                      "handle",
-                      `${handle.slice(0, -suffix.length)}${next}`,
-                    );
-                  }
-                  setSuffix(next);
-                }}
-              >
-                {discovery.domains.map((domain) => (
-                  <option key={domain} value={domain}>
-                    {domain}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <Select
+              label="Handle suffix"
+              value={suffix}
+              options={discovery.domains.map((domain) => ({
+                label: domain,
+                value: domain,
+              }))}
+              onChange={(next) => {
+                const handle = form.getFieldValue("handle");
+                if (!handle.includes(".")) {
+                  form.setFieldValue("handle", `${handle}${next}`);
+                } else if (suffix && handle.endsWith(suffix)) {
+                  form.setFieldValue(
+                    "handle",
+                    `${handle.slice(0, -suffix.length)}${next}`,
+                  );
+                }
+                setSuffix(next);
+              }}
+            />
           )}
           <form.Field name="pdsUrl">
             {(field) => (
@@ -398,9 +413,7 @@ export default function PublishAgentsTeam() {
                       e.target.value.replace(/\/$/, "") !==
                       window.FIRESKY_DEMO_PDS_URL?.replace(/\/$/, "")
                     ) {
-                      if (
-                        form.getFieldValue("email") === generated.current.email
-                      ) {
+                      if (!emailEdited.current) {
                         form.setFieldValue("email", "");
                       }
                       if (
@@ -431,7 +444,10 @@ export default function PublishAgentsTeam() {
                         placeholder="you@example.com"
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
+                        onChange={(e) => {
+                          emailEdited.current = true;
+                          field.handleChange(e.target.value);
+                        }}
                       />
                     </div>
                   )}
@@ -489,7 +505,7 @@ export default function PublishAgentsTeam() {
                 type="secondary"
                 onClick={() => window.history.back()}
               >
-                {t("publish.cancel")}
+                {published ? t("basic.close") : t("publish.cancel")}
               </Button>
 
               <Button submit disabled={isSubmitting} type="primary">

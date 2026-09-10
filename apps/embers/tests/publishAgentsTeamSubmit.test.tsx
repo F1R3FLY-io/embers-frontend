@@ -68,6 +68,7 @@ import PublishAgentsTeam from "@/pages/PublishAgentsTeam/PublishAgentsTeam";
 
 beforeEach(() => {
   jest.clearAllMocks();
+  agentsTeam.name = "Research Desk";
   window.API_URL = "http://localhost:8080";
   delete window.FIRESKY_PDS_URL;
   delete window.FIRESKY_DEMO_PDS_URL;
@@ -263,8 +264,10 @@ describe("publication defaults and field feedback", () => {
         "research-desk@example.com",
       ),
     );
-    expect(screen.getByPlaceholderText("Enter password")).toHaveValue(
-      "password123",
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText("Enter password")).toHaveValue(
+        "password123",
+      ),
     );
     await user.clear(screen.getByPlaceholderText("https://"));
     await user.type(
@@ -277,14 +280,69 @@ describe("publication defaults and field feedback", () => {
   it("existing-account mode does not ask for email", async () => {
     const user = userEvent.setup();
     render(<PublishAgentsTeam />);
-    await user.selectOptions(
+    await user.click(
       screen.getByRole("combobox", { name: "Team social account" }),
-      "existing",
     );
+    await user.click(screen.getByText("Use existing account"));
     expect(
       screen.queryByPlaceholderText("you@example.com"),
     ).not.toBeInTheDocument();
   });
+  it("uses a late-loaded team name and preserves a manually chosen handle", async () => {
+    agentsTeam.name = "";
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    const view = render(<PublishAgentsTeam />);
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+    agentsTeam.name = "Engineering Decisions";
+    view.rerender(<PublishAgentsTeam />);
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText("Username")).toHaveValue(
+        "engineering-decisions.test",
+      ),
+    );
+    await user.clear(screen.getByPlaceholderText("Username"));
+    await user.type(screen.getByPlaceholderText("Username"), "my-team.test");
+    agentsTeam.name = "Another Name";
+    view.rerender(<PublishAgentsTeam />);
+    expect(screen.getByPlaceholderText("Username")).toHaveValue("my-team.test");
+  });
+
+  it("tracks the handle in generated email until the email is explicitly changed or cleared", async () => {
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+    const handle = screen.getByPlaceholderText("Username");
+    const email = screen.getByPlaceholderText("you@example.com");
+    await user.clear(handle);
+    await user.type(handle, "redblue.test");
+    await waitFor(() => expect(email).toHaveValue("redblue@example.com"));
+    await user.clear(email);
+    await user.type(email, "custom@example.org");
+    await user.clear(handle);
+    await user.type(handle, "renamed.test");
+    expect(email).toHaveValue("custom@example.org");
+    await user.clear(email);
+    await user.clear(handle);
+    await user.type(handle, "again.test");
+    expect(email).toHaveValue("");
+  });
+
+  it("replaces Cancel with Close after successful publication", async () => {
+    await fillAndSubmit();
+    expect(
+      screen.getByRole("button", { name: "basic.close" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "publish.cancel" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "publish.button" }),
+    ).toBeInTheDocument();
+  });
+
   it("places server validation beside the handle and focuses it", async () => {
     const { ApiError } = await import("@f1r3fly-io/embers-client-sdk");
     publishMutate.mockRejectedValue(
