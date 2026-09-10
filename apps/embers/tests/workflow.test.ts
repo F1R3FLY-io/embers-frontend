@@ -19,6 +19,52 @@ function edge(source: string, target: string, data = {}): Edge {
 }
 
 describe("WorkflowDefinition v2", () => {
+  test("keeps deploy placement separate from nested state ownership and bounded cycles", () => {
+    const nodes = [
+      node("input", "input-node", { outputKey: "input" }),
+      {
+        ...node("outer", "deploy-container", { containerId: "Outer" }),
+        style: { height: 600, width: 900 },
+      },
+      {
+        ...node("scope", "state-scope", {
+          childScopeId: "review",
+          containerId: "Review",
+          initialNodeIds: "agent",
+        }),
+        parentId: "outer",
+      },
+      {
+        ...node("inner", "deploy-container", { containerId: "Inner" }),
+        parentId: "scope",
+      },
+      {
+        ...node("agent", "compress", { outputKey: "reviewResult" }),
+        parentId: "inner",
+      },
+      node("output", "output-node"),
+    ] as Node[];
+    const edges = [
+      edge("input", "scope"),
+      edge("agent", "agent", { loop: { maxIterations: 2 } }),
+      edge("agent", "output"),
+    ];
+    const definition = toWorkflowDefinition(nodes, edges);
+    expect(definition.nodes.agent.scopeId).toBe("review");
+    expect(definition.nodes.agent.outputKey).toBe("reviewResult");
+    expect(definition.nodes.outer).toBeUndefined();
+    expect(definition.deploymentContainers).toMatchObject({
+      inner: { nodeIds: ["agent"], parentId: "scope" },
+      outer: { nodeIds: ["scope"] },
+    });
+    const [restored, restoredEdges] = fromWorkflowDefinition(definition);
+    expect(restored.find(({ id }) => id === "agent")?.parentId).toBe("inner");
+    expect(restored.find(({ id }) => id === "scope")?.parentId).toBe("outer");
+    expect(toWorkflowDefinition(restored, restoredEdges, definition)).toEqual(
+      definition,
+    );
+  });
+
   test("keeps stable edge semantics and typed branching", () => {
     const definition = toWorkflowDefinition(
       [
@@ -430,7 +476,7 @@ describe("WorkflowDefinition v2", () => {
 
     expect(
       canvasNodes
-        .filter(({ type }) => type === "deploy-container")
+        .filter(({ type }) => type === "state-scope")
         .map(({ id }) => id),
     ).toEqual(["outer-owner", "inner-owner"]);
     expect(canvasNodes.find(({ id }) => id === "final")?.type).toBe(
@@ -481,7 +527,7 @@ describe("WorkflowDefinition v2", () => {
 
   test("diagnoses duplicate ownership and cycles in the scope tree", () => {
     const definition = toWorkflowDefinition(
-      [node("in", "input-node"), node("scope-node", "deploy-container")],
+      [node("in", "input-node"), node("scope-node", "state-scope")],
       [],
     );
     const childScopeId = (

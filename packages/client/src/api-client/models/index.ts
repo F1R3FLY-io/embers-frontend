@@ -68,6 +68,7 @@ export * from "./Oslf";
 export * from "./OslfHeader";
 export * from "./Oslfs";
 export * from "./PostRef";
+export * from "./PreparedContainer";
 export * from "./PrepareResponseBoostResp";
 export * from "./PrepareResponseCreateAgentResp";
 export * from "./PrepareResponseCreateAgentsTeamResp";

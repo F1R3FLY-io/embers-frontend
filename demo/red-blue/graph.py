@@ -8,11 +8,11 @@ DEFINITION = json.loads(Path(__file__).with_name("graph.json").read_text())
 
 def build_definition(agents: dict[str, tuple[str, str]]) -> dict:
     nodes = {
-        "Input": {"id": "Input", "label": "input-node", "kind": "input", "scopeId": "root"},
+        "Input": {"id": "Input", "label": "Input", "outputKey": "input", "kind": "input", "scopeId": "root"},
         "Output": {"id": "Output", "label": "Output", "kind": "output", "scopeId": "root"},
     }
     for name in DEFINITION["agents"]:
-        node = {"id": name, "label": name, "kind": "activity", "scopeId": "root",
+        node = {"id": name, "label": name, "outputKey": name[0].lower() + name[1:], "kind": "activity", "scopeId": "root",
                 "activity": {"kind": "agent", "agentId": agents[name][0], "agentVersion": agents[name][1], "protocol": "simple-v1"}}
         if sum(target == name for _, target in DEFINITION["edges"]) > 1:
             node["join"] = {"mode": "all", "correlation": {"kind": "root"}}
@@ -26,4 +26,5 @@ def build_definition(agents: dict[str, tuple[str, str]]) -> dict:
             "kind": "root", "initialNodeIds": ["Input"], "entryActivities": [], "exitActivities": [], "history": "none"}},
             "interface": {"inputs": {"input": {"kind": "string"}}, "outputs": {"output": {"kind": "legacy"}}},
             "types": {}, "policies": {"defaultExecution": "bounded", "visibility": "private"},
+            "deploymentContainers": {"ReviewDeployment": {"id": "ReviewDeployment", "label": "Engineering decision review", "target": "current", "nodeIds": list(DEFINITION["agents"])}},
             "presentation": {"nodes": {}, "edges": {}}}

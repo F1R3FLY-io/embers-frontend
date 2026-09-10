@@ -1,5 +1,9 @@
-# Red/blue engineering decision review
+# Red/blue engineering decision demo
 
-Follow the [presenter runbook](../../docs/agent-teams/usage/red-blue-demo-runbook.md) to create all six agents and the team live.
+Eight agents: six model reviewers and two local Rholang calculators. The team has 10 functional nodes, 25 edges, and a deploy container containing all eight agents on the current stack.
 
-`agents/` contains the live model-backed code. `graph.json` defines the connections shared by the seeder and tests. `brief.txt` is the prepared scenario. `fixtures/deterministic.json` supplies model-free acceptance cases. The seeder runs from the Embers Python environment and saves deployment metadata in the selected stack profile.
+Follow the [live creation runbook](../../docs/agent-teams/usage/red-blue-demo-runbook.md) for source code, canonical output keys, wiring, editable calculator assumptions, deployment, publication, and rehearsal commands.
+
+`agents/` is authoritative. `graph.json` lists the members and edges; `graph.py` builds the Workflow v2 definition with stable output keys and deployment membership. The deterministic integration fixture replaces model agents only; both calculators execute their actual Rholang source.
+
+Run `seed.py --seed --brief-file brief.txt` with the Embers integration environment from the runbook for a real model rehearsal. The model may use general engineering knowledge but has no live browsing tool. Scenario assumptions are not measurements inferred from a query.

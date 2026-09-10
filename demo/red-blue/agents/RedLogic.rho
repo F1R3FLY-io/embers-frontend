@@ -1,7 +1,7 @@
 contract main(@input, return) = {
   new gpt4(`rho:ai:gpt4`) in {
-    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Review the proposal for contradictions and missing assumptions. Give at most two findings labeled L1 and L2. Each must include a concrete failure scenario and a suggested change or verification. If no material issue exists, say so without manufacturing an objection. Maximum 120 words."
-      ++ "\nBrief: " ++ input.getOrElse("input", input.getOrElse("Input", input.getOrElse("input-node", Nil)))
-      ++ "\nProposal: " ++ input.getOrElse("bluePlanner", input.getOrElse("BluePlanner", Nil)), *return)
+    gpt4!("Use the brief and calculator results for scenario facts. You may apply general engineering knowledge, clearly distinguishing it from supplied facts and editable scenario assumptions. No live browsing is available: do not claim current web verification or fabricate citations. Label missing information. Do not invent evidence or claim to execute actions. Review the proposal for contradictions and missing assumptions. Give at most two findings labeled L1 and L2. Each must include a concrete failure scenario and a suggested change or verification. If no material issue exists, say so without manufacturing an objection. Maximum 120 words."
+      ++ "\nBrief: " ++ input.getOrElse("input", Nil)
+      ++ "\nProposal: " ++ input.getOrElse("bluePlanner", Nil), *return)
   }
 }

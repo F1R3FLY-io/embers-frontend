@@ -1,10 +1,12 @@
 contract main(@input, return) = {
   new gpt4(`rho:ai:gpt4`) in {
-    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Revise the proposal using all three reviews. Address EVERY finding by its label with CHANGE, MITIGATE, or ACCEPT RISK and a reason. Do not silently drop unresolved concerns. Preserve missing information. Include responsible roles, success measures and rollback. Maximum 300 words."
-      ++ "\nBrief: " ++ input.getOrElse("input", input.getOrElse("Input", input.getOrElse("input-node", Nil)))
-      ++ "\nOriginal proposal: " ++ input.getOrElse("bluePlanner", input.getOrElse("BluePlanner", Nil))
-      ++ "\nLogic review: " ++ input.getOrElse("redLogic", input.getOrElse("RedLogic", Nil))
-      ++ "\nEvidence review: " ++ input.getOrElse("redEvidence", input.getOrElse("RedEvidence", Nil))
-      ++ "\nOperations review: " ++ input.getOrElse("redOperations", input.getOrElse("RedOperations", Nil)), *return)
+    gpt4!("Use the brief and calculator results for scenario facts. You may apply general engineering knowledge, clearly distinguishing it from supplied facts and editable scenario assumptions. No live browsing is available: do not claim current web verification or fabricate citations. Label missing information. Do not invent evidence or claim to execute actions. Revise the proposal using all three reviews. Address EVERY finding by its label with CHANGE, MITIGATE, or ACCEPT RISK and a reason. Do not silently drop unresolved concerns. Preserve missing information. Include responsible roles, success measures and rollback. Maximum 300 words."
+      ++ "\nBrief: " ++ input.getOrElse("input", Nil)
+      ++ "\nOriginal proposal: " ++ input.getOrElse("bluePlanner", Nil)
+      ++ "\nLogic review: " ++ input.getOrElse("redLogic", Nil)
+      ++ "\nEvidence review: " ++ input.getOrElse("redEvidence", Nil)
+      ++ "\nOperations review: " ++ input.getOrElse("redOperations", Nil)
+      ++ "\nCapacity calculation: " ++ input.get("reviewCapacity").get("summary")
+      ++ "\nEmergency calculation: " ++ input.get("emergencyReviewPolicy").get("summary"), *return)
   }
 }

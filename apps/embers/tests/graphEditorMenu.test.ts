@@ -199,8 +199,35 @@ describe("the delete-node menu action", () => {
     expect(recorded.deleted).toEqual([]);
   });
 
+  it("offers distinct deploy and state-scope wrappers for the same selection", () => {
+    const member = {
+      ...makeNode("member", "compress"),
+      measured: { height: 50, width: 100 },
+    } as Node;
+    const { context, recorded } = harness({ nodes: [member] });
+    const menu = buildMenuItems(
+      { nodes: [member], type: "nodesSelected", x: 0, y: 0 },
+      context,
+    );
+    const deploy = menu.find(
+      ({ content }) => content === "Add to deploy container",
+    );
+    const scope = menu.find(({ content }) => content === "Wrap in state scope");
+    expect(deploy?.hidden).toBe(false);
+    expect(scope?.hidden).toBe(false);
+    deploy?.onClick();
+    const changes = recorded.nodeChanges[0] as { item: Node; type: string }[];
+    const wrapper = changes.find(({ type }) => type === "add")!.item;
+    expect(wrapper.type).toBe("deploy-container");
+    expect(wrapper.data).not.toHaveProperty("childScopeId");
+    expect(changes.find(({ type }) => type === "replace")!.item.parentId).toBe(
+      wrapper.id,
+    );
+    expect(recorded.edgeChanges).toEqual([]);
+  });
+
   it("wraps siblings inside an existing scope without flattening hierarchy", () => {
-    const parent = makeNode("parent", "deploy-container");
+    const parent = makeNode("parent", "state-scope");
     const first = {
       ...makeNode("first", "compress"),
       measured: { height: 40, width: 80 },
@@ -236,9 +263,11 @@ describe("the delete-node menu action", () => {
     expect(addition?.item).toMatchObject({
       extent: "parent",
       parentId: "parent",
-      type: "deploy-container",
+      type: "state-scope",
     });
-    expect(addition?.item.data.childScopeId).not.toBe(addition?.item.id);
+    expect(
+      (addition?.item.data as Record<string, unknown>).childScopeId,
+    ).not.toBe(addition?.item.id);
     expect(
       changes
         .filter(({ type }) => type === "replace")

@@ -1,6 +1,8 @@
 contract main(@input, return) = {
   new gpt4(`rho:ai:gpt4`) in {
-    gpt4!("Use the supplied brief as the only factual source. Label assumptions and missing information. Do not invent evidence or claim to execute actions. Propose a practical engineering decision in at most 180 words. Include staffing, an emergency-fix path, rollout, success measures and rollback. Honor constraints and identify unresolved tradeoffs."
-      ++ "\nBrief: " ++ input, *return)
+    gpt4!("Use the brief and calculator results for scenario facts. You may apply general engineering knowledge, clearly distinguishing it from supplied facts and editable scenario assumptions. No live browsing is available: do not claim current web verification or fabricate citations. Label missing information. Do not invent evidence or claim to execute actions. Propose a practical engineering decision in at most 180 words. Include staffing, an emergency-fix path, rollout, success measures and rollback. Honor constraints and identify unresolved tradeoffs."
+      ++ "\nBrief: " ++ input.getOrElse("input", Nil)
+      ++ "\nCapacity calculation: " ++ input.get("reviewCapacity").get("summary")
+      ++ "\nEmergency calculation: " ++ input.get("emergencyReviewPolicy").get("summary"), *return)
   }
 }

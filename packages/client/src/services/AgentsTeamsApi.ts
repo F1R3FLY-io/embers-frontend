@@ -6,11 +6,13 @@ import type {
   ChannelContext,
   CreateAgentsTeamReq,
   CreateGrantReq,
+  DeployAgentsTeamReq,
   FetchAPI,
   FireskyReply,
   GrantChannel,
   HTTPHeaders,
   Middleware,
+  PrepareResponseDeployAgentsTeamResp,
   PublishToFireskyReq,
   PublishToMailReq,
   RunCommandReq,
@@ -20,13 +22,13 @@ import type {
   ContractCallConfig,
   QueryCallConfig,
 } from "../entities/HttpCallConfigs";
-import type { PrivateKey } from "../entities/PrivateKey";
 import type { Uri } from "../entities/Uri";
 import type { EmbersEvents } from "./EmbersEvents";
 import type { AgentTracePage, TraceSession } from "./Trace";
 
 import { AIAgentsTeamsApi, Configuration } from "../api-client";
 import { apiErrorMiddleware } from "../apiErrors";
+import { PrivateKey } from "../entities/PrivateKey";
 import { insertSignedSignature, signContract } from "../functions";
 import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
 
@@ -38,8 +40,45 @@ export type AgentsTeamsConfig = {
   privateKey: PrivateKey;
 };
 
+/** Read actual GraphL deployment groups without treating them as state scopes. */
+export function legacyDeploymentContainerIds(graph?: Graph | null): string[] {
+  const pending: unknown[] = [graph];
+  const seen = new WeakSet();
+  const ids = new Set<string>();
+  while (pending.length) {
+    const value = pending.pop();
+    if (typeof value !== "object" || value === null || seen.has(value)) {
+      continue;
+    }
+    seen.add(value);
+    const node = value as Record<string, unknown>;
+    if (node.type === "Context" && typeof node.string === "string") {
+      const context: unknown = JSON.parse(node.string);
+      const name = node.name as { type?: string; value?: string } | undefined;
+      if (
+        typeof context === "object" &&
+        context !== null &&
+        (context as { type?: string }).type === "deploy-container" &&
+        name?.type === "GVar" &&
+        typeof name.value === "string"
+      ) {
+        ids.add(name.value);
+      }
+    }
+    pending.push(...Object.values(node));
+  }
+  return [...ids].sort();
+}
+
 export class AgentsTeamsApiSdk {
   private client: AIAgentsTeamsApi;
+  private pendingDeploys = new Map<
+    string,
+    {
+      request: DeployAgentsTeamReq;
+      response: PrepareResponseDeployAgentsTeamResp;
+    }
+  >();
   private privateKey: PrivateKey;
   public readonly address: Address;
 
@@ -171,6 +210,26 @@ export class AgentsTeamsApiSdk {
   ) {
     const timestamp = new Date();
     const prepareRequest = {
+      containerDeploys: Object.fromEntries(
+        legacyDeploymentContainerIds(graph).map((id, index) => {
+          const key = PrivateKey.new();
+          const containerTimestamp = new Date(timestamp.getTime() + index + 1);
+          return [
+            id,
+            {
+              signature: insertSignedSignature(
+                key,
+                containerTimestamp,
+                this.privateKey.getPublicKey(),
+                0n,
+              ),
+              timestamp: containerTimestamp,
+              uriPubKey: key.getPublicKey(),
+              version: 0n,
+            },
+          ];
+        }),
+      ),
       deploy: {
         signature: insertSignedSignature(
           registryKey,
@@ -200,10 +259,15 @@ export class AgentsTeamsApiSdk {
     const system =
       prepareResponse.response.system &&
       signContract(prepareResponse.response.system, this.privateKey);
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
-    );
+    // Container sends return only after the observer confirms all stages.
+    // No websocket replay is required when retrying after a server restart.
+    const waitForFinalization =
+      prepareResponse.response.containers.length > 0
+        ? Promise.resolve()
+        : this.events.subscribeForDeploy(
+            base16.encode(contract.sig).toLowerCase(),
+            config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
+          );
 
     const sendResponse = await this.client.agentsTeamsSendDeploy(
       {
@@ -211,7 +275,13 @@ export class AgentsTeamsApiSdk {
           {
             prepareRequest,
             prepareResponse: prepareResponse.response,
-            request: { contract, system },
+            request: {
+              containers: prepareResponse.response.containers.map((container) =>
+                signContract(container.contract, this.privateKey),
+              ),
+              contract,
+              system,
+            },
             token: prepareResponse.token,
           },
       },
@@ -228,32 +298,74 @@ export class AgentsTeamsApiSdk {
     registryKey: PrivateKey,
     config?: ContractCallConfig,
   ) {
-    const timestamp = new Date();
-    const prepareRequest = {
-      address: this.address,
-      deploy: {
-        signature: insertSignedSignature(
-          registryKey,
+    const attemptId = `${id}:${version}:${registryKey.getPublicKey().getUri().toString()}:${registryVersion}`;
+    let attempt = this.pendingDeploys.get(attemptId);
+    if (!attempt) {
+      const timestamp = new Date();
+      const team = await this.getVersion(id, version, config);
+      const definition: unknown = team.definition;
+      const containers: unknown =
+        definition &&
+        typeof definition === "object" &&
+        "deploymentContainers" in definition
+          ? definition.deploymentContainers
+          : undefined;
+      const containerIds =
+        containers &&
+        typeof containers === "object" &&
+        !Array.isArray(containers)
+          ? Object.keys(containers)
+          : legacyDeploymentContainerIds(team.graph);
+      const containerDeploys = Object.fromEntries(
+        containerIds.map((containerId, index) => {
+          const key = PrivateKey.new();
+          const containerTimestamp = new Date(timestamp.getTime() + index + 1);
+          return [
+            containerId,
+            {
+              signature: insertSignedSignature(
+                key,
+                containerTimestamp,
+                this.privateKey.getPublicKey(),
+                0n,
+              ),
+              timestamp: containerTimestamp,
+              uriPubKey: key.getPublicKey(),
+              version: 0n,
+            },
+          ];
+        }),
+      );
+      const prepareRequest = {
+        address: this.address,
+        containerDeploys,
+        deploy: {
+          signature: insertSignedSignature(
+            registryKey,
+            timestamp,
+            this.privateKey.getPublicKey(),
+            registryVersion,
+          ),
           timestamp,
-          this.privateKey.getPublicKey(),
-          registryVersion,
-        ),
-        timestamp,
-        uriPubKey: registryKey.getPublicKey(),
-        version: registryVersion,
-      },
-      id,
-      type: "AgentsTeam" as const,
-      version,
-    };
+          uriPubKey: registryKey.getPublicKey(),
+          version: registryVersion,
+        },
+        id,
+        type: "AgentsTeam" as const,
+        version,
+      };
 
-    const prepareResponse = await this.client.agentsTeamsPrepareDeploy(
-      {
-        deployAgentsTeamReq: prepareRequest,
-      },
-      { signal: config?.signal },
-    );
+      const prepareResponse = await this.client.agentsTeamsPrepareDeploy(
+        {
+          deployAgentsTeamReq: prepareRequest,
+        },
+        { signal: config?.signal },
+      );
 
+      attempt = { request: prepareRequest, response: prepareResponse };
+      this.pendingDeploys.set(attemptId, attempt);
+    }
+    const { request: prepareRequest, response: prepareResponse } = attempt;
     const contract = signContract(
       prepareResponse.response.contract,
       this.privateKey,
@@ -261,10 +373,18 @@ export class AgentsTeamsApiSdk {
     const system =
       prepareResponse.response.system &&
       signContract(prepareResponse.response.system, this.privateKey);
-    const waitForFinalization = this.events.subscribeForDeploy(
-      base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
-    );
+    // Subscribe to the final metadata write as the deployment barrier.
+    // Container sends return only after the observer confirms all stages.
+    // No websocket replay is required when retrying after a server restart.
+    const waitForFinalization =
+      prepareResponse.response.containers.length > 0
+        ? Promise.resolve()
+        : this.events.subscribeForDeploy(
+            base16.encode((system ?? contract).sig).toLowerCase(),
+            config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
+          );
+    // Sending may fail before a stage is submitted; retain the same signed plan for retry.
+    void waitForFinalization.catch(() => undefined);
 
     const sendResponse = await this.client.agentsTeamsSendDeploy(
       {
@@ -272,13 +392,23 @@ export class AgentsTeamsApiSdk {
           {
             prepareRequest,
             prepareResponse: prepareResponse.response,
-            request: { contract, system },
+            request: {
+              containers: prepareResponse.response.containers.map((container) =>
+                signContract(container.contract, this.privateKey),
+              ),
+              contract,
+              system,
+            },
             token: prepareResponse.token,
           },
       },
       { signal: config?.signal },
     );
 
+    void waitForFinalization.then(
+      () => this.pendingDeploys.delete(attemptId),
+      () => undefined,
+    );
     return { prepareResponse, sendResponse, waitForFinalization };
   }
 

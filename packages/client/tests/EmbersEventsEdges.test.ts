@@ -145,29 +145,46 @@ describe("failed deploys", () => {
 });
 
 describe("duplicate subscriptions", () => {
-  it("abandons the first wait when the same deploy id is subscribed twice", async () => {
-    // PINNED, NOT ENDORSED. The map is keyed by deploy id, so a second
-    // subscription REPLACES the first. The first promise is then unreachable:
-    // it can only settle via its own timeout, minutes later. Deploy ids are
-    // signature-derived and so collide only if the same contract is signed
-    // twice, which makes this rare rather than impossible.
+  it("settles every subscriber to the same deployment", async () => {
     const first = events.subscribeForDeploy("deploy-1", 5_000);
     const second = events.subscribeForDeploy("deploy-1", 5_000);
-
     latestWebSocket().onmessage?.({ data: observerEvent("deploy-1") });
+    await expect(Promise.all([first, second])).resolves.toEqual([
+      undefined,
+      undefined,
+    ]);
+    expect(jest.getTimerCount()).toBe(0);
+  });
 
-    await expect(second).resolves.toBeUndefined();
+  it("keeps a retry subscription when the original wait expires", async () => {
+    const first = events.subscribeForDeploy("deploy-1", 1_000);
+    const expired = first.catch((error: unknown) => error);
+    const retry = events.subscribeForDeploy("deploy-1", 5_000);
+    jest.advanceTimersByTime(1_000);
+    const failure = await expired;
+    expect(failure).toBeInstanceOf(Error);
+    expect((failure as Error).message).toMatch(/timed out/);
+    latestWebSocket().onmessage?.({ data: observerEvent("deploy-1") });
+    await expect(retry).resolves.toBeUndefined();
+  });
 
-    // The first is still outstanding, and only its own timeout will end it.
-    let firstSettled = false;
-    void first.catch(() => {
-      firstSettled = true;
-    });
-    await Promise.resolve();
-    expect(firstSettled).toBe(false);
+  it("replays recent observer results to retries, including failures", async () => {
+    latestWebSocket().onmessage?.({ data: observerEvent("done") });
+    latestWebSocket().onmessage?.({ data: observerEvent("failed", "1", true) });
+    await expect(
+      events.subscribeForDeploy("done", 5_000),
+    ).resolves.toBeUndefined();
+    await expect(events.subscribeForDeploy("failed", 5_000)).rejects.toThrow(
+      /failed on chain/,
+    );
+    expect(jest.getTimerCount()).toBe(0);
+  });
 
-    jest.advanceTimersByTime(5_000);
-    await expect(first).rejects.toThrow(/timed out/);
+  it("does not accept new subscriptions after closing", async () => {
+    events.close();
+    await expect(events.subscribeForDeploy("deploy-1", 5_000)).rejects.toThrow(
+      /closed event stream/,
+    );
   });
 });
 

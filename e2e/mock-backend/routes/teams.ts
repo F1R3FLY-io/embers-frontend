@@ -174,7 +174,7 @@ export const teamRoutes: Route = ({ body, finalize, method, path, store }) => {
   }
 
   if (path === "/api/ai-agents-teams/deploy/prepare") {
-    return prepared({});
+    return prepared({ containers: [] });
   }
 
   if (path === "/api/ai-agents-teams/deploy/send") {

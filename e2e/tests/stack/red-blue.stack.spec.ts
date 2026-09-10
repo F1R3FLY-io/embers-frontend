@@ -12,7 +12,7 @@ import {
 import { expect, test, uniqueName } from "../../support/stack";
 
 test.use({ viewport: { height: 1500, width: 3400 } });
-test("creates all six red/blue agents, connects, deploys and runs the team", async ({
+test("creates eight red/blue agents, wraps them in a deploy container, deploys and runs the team", async ({
   apiUrl,
   page,
   signIn,

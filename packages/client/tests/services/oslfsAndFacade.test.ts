@@ -135,7 +135,14 @@ describe("EmbersApiSdk facade", () => {
       })
       .on("/create/send", { body: { deploy_id: "d1" } });
 
-    await sdk.agents.create({ code: "x", name: "N" } as never);
+    const result = await sdk.agents.create({ code: "x", name: "N" } as never);
+    const envelope = parseSendEnvelope(transport.only("/create/send").body);
+    latestWebSocket().onmessage?.({
+      data: observerEvent(
+        expectedDeployId(signedContractSchema.parse(envelope.request)),
+      ),
+    });
+    await result.waitForFinalization;
 
     // Still one socket after a mutation subscribed through it.
     expect(MockWebSocket.instances).toHaveLength(1);

@@ -94,6 +94,7 @@ docs/PrepareResponseSaveOslfResp.md
 docs/PrepareResponseTracePrepareResponse.md
 docs/PrepareResponseTransferResp.md
 docs/PrepareResponseUnpublishMailResp.md
+docs/PreparedContainer.md
 docs/PublishToFireskyReq.md
 docs/PublishToFireskyResp.md
 docs/PublishToMailReq.md
@@ -240,6 +241,7 @@ models/PrepareResponseSaveOslfResp.ts
 models/PrepareResponseTracePrepareResponse.ts
 models/PrepareResponseTransferResp.ts
 models/PrepareResponseUnpublishMailResp.ts
+models/PreparedContainer.ts
 models/PublishToFireskyReq.ts
 models/PublishToFireskyResp.ts
 models/PublishToMailReq.ts

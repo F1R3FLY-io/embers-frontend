@@ -12,8 +12,13 @@
  */
 
 import type { Base64 } from "./Base64";
+import type { PreparedContainer } from "./PreparedContainer";
 
 import { Base64FromJSON, Base64ToJSON } from "./Base64";
+import {
+  PreparedContainerFromJSON,
+  PreparedContainerToJSON,
+} from "./PreparedContainer";
 
 /**
  *
@@ -21,6 +26,12 @@ import { Base64FromJSON, Base64ToJSON } from "./Base64";
  * @interface DeployAgentsTeamResp
  */
 export interface DeployAgentsTeamResp {
+  /**
+   *
+   * @type {Array<PreparedContainer>}
+   * @memberof DeployAgentsTeamResp
+   */
+  containers: Array<PreparedContainer>;
   /**
    * The unsigned compiled team contract bytes to sign.
    * @type {Base64}
@@ -42,6 +53,9 @@ export interface DeployAgentsTeamResp {
 export function instanceOfDeployAgentsTeamResp(
   value: object,
 ): value is DeployAgentsTeamResp {
+  if (!("containers" in value) || value.containers === undefined) {
+    return false;
+  }
   if (!("contract" in value) || value.contract === undefined) {
     return false;
   }
@@ -60,6 +74,7 @@ export function DeployAgentsTeamRespFromJSONTyped(
     return json;
   }
   return {
+    containers: (json.containers as Array<any>).map(PreparedContainerFromJSON),
     contract: Base64FromJSON(json.contract),
     system: json.system == null ? undefined : Base64FromJSON(json.system),
   };
@@ -78,6 +93,7 @@ export function DeployAgentsTeamRespToJSONTyped(
   }
 
   return {
+    containers: (value.containers as Array<any>).map(PreparedContainerToJSON),
     contract: Base64ToJSON(value.contract),
     system: Base64ToJSON(value.system),
   };

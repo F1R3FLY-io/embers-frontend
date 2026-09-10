@@ -129,6 +129,7 @@ export type WorkflowNode = {
   id: Id;
   join?: JoinPolicy;
   label: string;
+  outputKey?: string;
   policy?: NodeExecutionPolicy;
   scopeId: Id;
 } & (
@@ -204,6 +205,16 @@ export type WorkflowPresentation = {
 };
 
 export type WorkflowDefinitionV2 = {
+  deploymentContainers?: Record<
+    string,
+    {
+      id: string;
+      label: string;
+      nodeIds: string[];
+      parentId?: string;
+      target: "current";
+    }
+  >;
   entryScopeId: Id;
   interface: {
     inputs: Record<string, PortableType>;

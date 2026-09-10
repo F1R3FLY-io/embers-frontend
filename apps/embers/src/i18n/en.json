@@ -128,7 +128,8 @@
       "agentId": "Agent ID",
       "environment": "Environment",
       "status": "Status",
-      "note": "Note"
+      "note": "Note",
+      "container": "Deploy container"
     },
     "failure": {
       "title": "Deployment Failed",
@@ -141,7 +142,10 @@
     "publishStale": "Re-publish to F1R3SKY (mentions run an older build)",
     "publishToMail": "Publish to Mail",
     "manageGrants": "Manage Grants",
-    "interfaces": "Interfaces"
+    "interfaces": "Interfaces",
+    "containersTitle": "Deployment containers",
+    "containerTarget": "Target: Current stack",
+    "containerMembers": "Members: {{members}}"
   },
   "publish": {
     "titleSmall": "Publish",

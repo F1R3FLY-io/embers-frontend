@@ -19,7 +19,7 @@ from tests.key import SECP256k1
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--seed", action="store_true", help="Create six agents and a new RedBlueDecisionReview deployment")
+    parser.add_argument("--seed", action="store_true", help="Create eight agents and a new RedBlueDecisionReview deployment")
     query = parser.add_mutually_exclusive_group()
     query.add_argument("--query", help="Run a query through the saved team (calls the configured model)")
     query.add_argument("--brief-file", type=Path, help="Read the complete query from a text file")

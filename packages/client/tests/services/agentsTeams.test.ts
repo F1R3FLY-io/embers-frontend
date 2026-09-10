@@ -26,7 +26,14 @@ const TOKEN = "prepare-token";
 const TEAM_URI = "rho:id:research-desk" as unknown as Uri;
 
 function makeSdk() {
-  const transport = scriptedTransport();
+  const transport = scriptedTransport().on("/version-1", {
+    body: {
+      definition: {},
+      id: "team-1",
+      name: "Test team",
+      version: "version-1",
+    },
+  });
   const events = new FakeEmbersEvents();
   const teams = new AgentsTeamsApiSdk(
     {
@@ -146,7 +153,10 @@ describe("registry deploys", () => {
     const { teams, transport } = makeSdk();
     transport
       .on("/deploy/prepare", {
-        body: { response: { contract: CONTRACT }, token: TOKEN },
+        body: {
+          response: { containers: [], contract: CONTRACT },
+          token: TOKEN,
+        },
       })
       .on("/deploy/send", { body: { deploy_id: "d1" } });
 
@@ -170,7 +180,10 @@ describe("registry deploys", () => {
     const { events, teams, transport } = makeSdk();
     transport
       .on("/deploy/prepare", {
-        body: { response: { contract: CONTRACT }, token: TOKEN },
+        body: {
+          response: { containers: [], contract: CONTRACT },
+          token: TOKEN,
+        },
       })
       .on("/deploy/send", { body: { deploy_id: "d1" } });
 
@@ -186,7 +199,10 @@ describe("registry deploys", () => {
     const { teams, transport } = makeSdk();
     transport
       .on("/deploy/prepare", {
-        body: { response: { contract: CONTRACT }, token: TOKEN },
+        body: {
+          response: { containers: [], contract: CONTRACT },
+          token: TOKEN,
+        },
       })
       .on("/deploy/send", { body: { deploy_id: "d1" } });
 
@@ -198,6 +214,91 @@ describe("registry deploys", () => {
     // Serialized as a string because it is a uint64 on the wire; a silent
     // narrowing to a JS number would corrupt large versions.
     expect(prepare.deploy.version).toBe("7");
+  });
+  it("assigns unique timestamps and keys to containers and signs every stage", async () => {
+    const { events, teams, transport } = makeSdk();
+    transport.on("/version-1", {
+      body: {
+        definition: { deploymentContainers: { first: {}, second: {} } },
+        id: "team-1",
+        version: "version-1",
+      },
+    });
+    const system = contractBytes(9, 9, 9);
+    transport
+      .on("/deploy/prepare", {
+        body: {
+          response: {
+            containers: [
+              {
+                contract: contractBytes(1, 2, 3),
+                id: "first",
+                uri: privateKey.getPublicKey().getUri().toString(),
+              },
+              {
+                contract: contractBytes(4, 5, 6),
+                id: "second",
+                uri: registryKey.getPublicKey().getUri().toString(),
+              },
+            ],
+            contract: CONTRACT,
+            system,
+          },
+          token: TOKEN,
+        },
+      })
+      .on("/deploy/send", { body: { deploy_id: "record" } });
+    const result = await teams.deploy("team-1", "version-1", 1n, registryKey);
+    const request = transport.only("/deploy/prepare").body as {
+      container_deploys: Record<
+        string,
+        { timestamp: string; uri_pub_key: string }
+      >;
+      deploy: { timestamp: string; uri_pub_key: string };
+    };
+    const claims = [
+      request.deploy,
+      ...Object.values(request.container_deploys),
+    ];
+    expect(new Set(claims.map((claim) => claim.timestamp)).size).toBe(3);
+    expect(new Set(claims.map((claim) => claim.uri_pub_key)).size).toBe(3);
+    const envelope = parseSendEnvelope(transport.only("/deploy/send").body);
+    const signed = envelope.request as {
+      containers: unknown[];
+      contract: unknown;
+      system: unknown;
+    };
+    for (const stage of [
+      signed.contract,
+      signed.system,
+      ...signed.containers,
+    ]) {
+      expect(verifyWireSignature(signedContractSchema.parse(stage))).toBe(true);
+    }
+    // Successful container sends already include the server's observer barrier.
+    expect(events.subscriptions).toHaveLength(0);
+    await result.waitForFinalization;
+  });
+
+  it("reuses the prepared signed plan after a failed send", async () => {
+    const { events, teams, transport } = makeSdk();
+    transport.on("/deploy/prepare", {
+      body: { response: { containers: [], contract: CONTRACT }, token: TOKEN },
+    });
+    transport.on("/deploy/send", {
+      body: { description: "transient failure" },
+      status: 500,
+    });
+    await expect(
+      teams.deploy("team-1", "version-1", 1n, registryKey),
+    ).rejects.toThrow();
+    transport.on("/deploy/send", { body: { deploy_id: "main" } });
+    const result = await teams.deploy("team-1", "version-1", 1n, registryKey);
+    expect(transport.matching("/deploy/prepare")).toHaveLength(1);
+    const sends = transport.matching("/deploy/send");
+    expect(sends[0].body).toEqual(sends[1].body);
+    events.finalize(events.lastSubscription().deployId);
+    await result.waitForFinalization;
   });
 });
 

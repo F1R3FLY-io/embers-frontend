@@ -5,68 +5,35 @@
     "RedEvidence",
     "RedOperations",
     "BlueResponder",
-    "DecisionWriter"
+    "DecisionWriter",
+    "ReviewCapacity",
+    "EmergencyReviewPolicy"
   ],
   "edges": [
-    [
-      "Input",
-      "BluePlanner"
-    ],
-    [
-      "Input",
-      "RedLogic"
-    ],
-    [
-      "Input",
-      "RedEvidence"
-    ],
-    [
-      "Input",
-      "RedOperations"
-    ],
-    [
-      "Input",
-      "BlueResponder"
-    ],
-    [
-      "Input",
-      "DecisionWriter"
-    ],
-    [
-      "BluePlanner",
-      "RedLogic"
-    ],
-    [
-      "BluePlanner",
-      "RedEvidence"
-    ],
-    [
-      "BluePlanner",
-      "RedOperations"
-    ],
-    [
-      "BluePlanner",
-      "BlueResponder"
-    ],
-    [
-      "RedLogic",
-      "BlueResponder"
-    ],
-    [
-      "RedEvidence",
-      "BlueResponder"
-    ],
-    [
-      "RedOperations",
-      "BlueResponder"
-    ],
-    [
-      "BlueResponder",
-      "DecisionWriter"
-    ],
-    [
-      "DecisionWriter",
-      "Output"
-    ]
+    ["Input", "BluePlanner"],
+    ["Input", "RedLogic"],
+    ["Input", "RedEvidence"],
+    ["Input", "RedOperations"],
+    ["Input", "BlueResponder"],
+    ["Input", "DecisionWriter"],
+    ["BluePlanner", "RedLogic"],
+    ["BluePlanner", "RedEvidence"],
+    ["BluePlanner", "RedOperations"],
+    ["BluePlanner", "BlueResponder"],
+    ["RedLogic", "BlueResponder"],
+    ["RedEvidence", "BlueResponder"],
+    ["RedOperations", "BlueResponder"],
+    ["BlueResponder", "DecisionWriter"],
+    ["DecisionWriter", "Output"],
+    ["Input", "ReviewCapacity"],
+    ["ReviewCapacity", "BluePlanner"],
+    ["ReviewCapacity", "RedOperations"],
+    ["ReviewCapacity", "BlueResponder"],
+    ["ReviewCapacity", "DecisionWriter"],
+    ["Input", "EmergencyReviewPolicy"],
+    ["EmergencyReviewPolicy", "BluePlanner"],
+    ["EmergencyReviewPolicy", "RedOperations"],
+    ["EmergencyReviewPolicy", "BlueResponder"],
+    ["EmergencyReviewPolicy", "DecisionWriter"]
   ]
 }

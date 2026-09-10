@@ -14,6 +14,7 @@
 import type { Address } from "./Address";
 import type { RegistryDeploy } from "./RegistryDeploy";
 
+import { mapValues } from "../runtime";
 import { AddressFromJSON, AddressToJSON } from "./Address";
 import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
 
@@ -29,6 +30,12 @@ export interface DeployAgentsTeam {
    * @memberof DeployAgentsTeam
    */
   address: Address;
+  /**
+   *
+   * @type {{ [key: string]: RegistryDeploy; }}
+   * @memberof DeployAgentsTeam
+   */
+  containerDeploys?: { [key: string]: RegistryDeploy };
   /**
    * The registry claim authorizing publication under the target URI.
    * @type {RegistryDeploy}
@@ -83,6 +90,10 @@ export function DeployAgentsTeamFromJSONTyped(
   }
   return {
     address: AddressFromJSON(json.address),
+    containerDeploys:
+      json.container_deploys == null
+        ? undefined
+        : mapValues(json.container_deploys, RegistryDeployFromJSON),
     deploy: RegistryDeployFromJSON(json.deploy),
     id: json.id,
     version: json.version,
@@ -103,6 +114,10 @@ export function DeployAgentsTeamToJSONTyped(
 
   return {
     address: AddressToJSON(value.address),
+    container_deploys:
+      value.containerDeploys == null
+        ? undefined
+        : mapValues(value.containerDeploys, RegistryDeployToJSON),
     deploy: RegistryDeployToJSON(value.deploy),
     id: value.id,
     version: value.version,

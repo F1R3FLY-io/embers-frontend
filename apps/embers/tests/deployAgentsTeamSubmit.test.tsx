@@ -64,6 +64,7 @@ beforeEach(() => {
     version: "version-1",
   };
   deployMutate.mockResolvedValue({
+    prepareResponse: { response: { containers: [] } },
     waitForFinalization: Promise.resolve(),
   });
 });
@@ -78,6 +79,36 @@ async function submit() {
 }
 
 describe("a successful deploy", () => {
+  it("shows container placement for review and the finalized registry URI in the success dialog", async () => {
+    agentsTeam.definition = {
+      deploymentContainers: {
+        review: {
+          id: "review",
+          label: "Engineering review",
+          nodeIds: ["calc"],
+          target: "current",
+        },
+      },
+      nodes: { calc: { label: "Review capacity" } },
+    };
+    deployMutate.mockResolvedValue({
+      prepareResponse: {
+        response: { containers: [{ id: "review", uri: "rho:id:container" }] },
+      },
+      waitForFinalization: Promise.resolve(),
+    });
+    await submit();
+    expect(screen.getByText("Engineering review")).toBeVisible();
+    const calls = openModal.mock.calls as unknown[][];
+    const modal = calls[0][0] as {
+      props: { data: { label: string; value: string }[] };
+    };
+    expect(modal.props.data).toContainEqual({
+      label: "deploy.labels.container",
+      value: "review: rho:id:container",
+    });
+  });
+
   it("deploys the team version currently open", async () => {
     await submit();
 
@@ -138,6 +169,7 @@ describe("a successful deploy", () => {
   it("waits for finalization before recording anything", async () => {
     let finalized = false;
     deployMutate.mockResolvedValue({
+      prepareResponse: { response: { containers: [] } },
       waitForFinalization: Promise.resolve().then(() => {
         finalized = true;
       }),

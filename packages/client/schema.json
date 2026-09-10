@@ -4927,6 +4927,12 @@
                 "description": "The registry claim authorizing publication under the target URI."
               }
             ]
+          },
+          "container_deploys": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RegistryDeploy"
+            }
           }
         }
       },
@@ -4987,8 +4993,14 @@
       "DeployAgentsTeamResp": {
         "type": "object",
         "title": "DeployAgentsTeamResp",
-        "required": ["contract"],
+        "required": ["containers", "contract"],
         "properties": {
+          "containers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreparedContainer"
+            }
+          },
           "contract": {
             "type": "string",
             "format": "bytes",
@@ -5034,6 +5046,12 @@
                 "description": "The registry claim authorizing publication under the target URI."
               }
             ]
+          },
+          "container_deploys": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RegistryDeploy"
+            }
           }
         }
       },
@@ -5071,6 +5089,12 @@
         "title": "DeploySignedAgentsTeamReq",
         "required": ["contract"],
         "properties": {
+          "containers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignedContract"
+            }
+          },
           "contract": {
             "description": "The signed compiled team contract.",
             "allOf": [
@@ -6112,6 +6136,24 @@
           "token": {
             "type": "string",
             "description": "JWT binding the send to exactly this prepare exchange; expires after\none day."
+          }
+        }
+      },
+      "PreparedContainer": {
+        "type": "object",
+        "title": "PreparedContainer",
+        "required": ["id", "uri", "contract"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string",
+            "format": "blockchain-uri"
+          },
+          "contract": {
+            "type": "string",
+            "format": "bytes"
           }
         }
       },

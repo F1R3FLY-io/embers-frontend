@@ -6,6 +6,7 @@ import type { NodeRegistry } from "./nodes.registry";
 import type { NodeTemplateProps } from "./NodeTemplate";
 
 import { DeployContainerNode } from "./DeployContainer";
+import { StateScopeNode } from "./DeployContainer/StateScope";
 import styles from "./nodes.module.scss";
 import { NODE_REGISTRY } from "./nodes.registry";
 import { NodeTemplate } from "./NodeTemplate";
@@ -40,7 +41,8 @@ function makeNodeTypes(registry: NodeRegistry) {
 
 export const nodeTypes = {
   ...makeNodeTypes(NODE_REGISTRY),
-  "deploy-container": DeployContainerNode, // special
+  "deploy-container": DeployContainerNode,
+  "state-scope": StateScopeNode,
 } as const;
 
 export type NodeTypes = typeof nodeTypes;

@@ -52,7 +52,11 @@ type DeployWait = {
 
 export class EmbersEvents {
   private ws!: WebSocket;
-  private deploySubscriptions: Map<string, DeployWait> = new Map();
+  private deploySubscriptions: Map<string, Set<DeployWait>> = new Map();
+  private finalized = new Map<
+    string,
+    { errored: boolean; receivedAt: number }
+  >();
   private subscribers: Map<number, (e: WalletEvent) => void> = new Map();
   private config: EmbersEventsConfig;
   private reconnectDelay = 1000;
@@ -134,45 +138,36 @@ export class EmbersEvents {
 
     const waits = [...this.deploySubscriptions.entries()];
     this.deploySubscriptions.clear();
-    for (const [deployId, wait] of waits) {
-      clearTimeout(wait.timeout);
-      wait.reject(
-        new Error(
-          `deploy ${deployId} was accepted but the event stream was closed ` +
-            `before its finalization was confirmed; the deploy may still ` +
-            `finalize -- verify the record before retrying`,
-        ),
-      );
+    for (const [deployId, subscriptions] of waits) {
+      for (const wait of subscriptions) {
+        clearTimeout(wait.timeout);
+        wait.reject(
+          new Error(
+            `deploy ${deployId} was accepted but the event stream was closed ` +
+              `before its finalization was confirmed; the deploy may still ` +
+              `finalize -- verify the record before retrying`,
+          ),
+        );
+      }
     }
-
+    this.finalized.clear();
     this.subscribers.clear();
   }
 
   private handleMessage(event: MessageEvent<string>) {
     const walletEvent = WalletEvent.parse(JSON.parse(event.data));
     if (walletEvent.node_type === "Observer") {
-      const wait = this.deploySubscriptions.get(walletEvent.deploy_id);
-      if (wait !== undefined) {
+      this.finalized.set(walletEvent.deploy_id, {
+        errored: walletEvent.errored,
+        receivedAt: Date.now(),
+      });
+      this.pruneFinalized();
+      const waits = this.deploySubscriptions.get(walletEvent.deploy_id);
+      this.deploySubscriptions.delete(walletEvent.deploy_id);
+      for (const wait of waits ?? []) {
         clearTimeout(wait.timeout);
-        this.deploySubscriptions.delete(walletEvent.deploy_id);
-
-        // `errored` means the deploy finalized but its execution FAILED on
-        // chain -- insufficient funds at execution time, a contract that threw.
-        // Resolving here would be the worst possible answer: the caller awaits
-        // finalization precisely to learn whether the work happened, and every
-        // caller treats a resolved wait as success. The record would be
-        // reported as saved, deployed, or transferred while nothing changed.
-        // Rejecting says what happened and, unlike the timeout case, says the
-        // opposite about retrying: the deploy is settled and did not take
-        // effect, so retrying is the correct response rather than a duplicate.
         if (walletEvent.errored) {
-          wait.reject(
-            new Error(
-              `deploy ${walletEvent.deploy_id} finalized but its execution ` +
-                `failed on chain; nothing was recorded, so the operation can ` +
-                `be retried`,
-            ),
-          );
+          wait.reject(EmbersEvents.executionError(walletEvent.deploy_id));
         } else {
           wait.resolve();
         }
@@ -185,27 +180,59 @@ export class EmbersEvents {
     deployId: string,
     maxWait: number,
   ): Promise<void> {
+    if (this.closed) {
+      throw new Error(
+        "Cannot wait for deployment finalization on a closed event stream",
+      );
+    }
+    this.pruneFinalized();
+    const finalized = this.finalized.get(deployId);
+    if (finalized !== undefined) {
+      if (finalized.errored) {
+        throw EmbersEvents.executionError(deployId);
+      }
+      return;
+    }
     return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        this.deploySubscriptions.delete(deployId);
-        // The deploy was already accepted by send; only the observer's
-        // confirmation is missing. Say so: a bare "timeout" reads as total
-        // failure and invites a retry that duplicates the record.
-        reject(
-          new Error(
-            `deploy ${deployId} was accepted but its observer finalization ` +
-              `confirmation timed out after ${String(maxWait)}ms; the deploy ` +
-              `may still finalize -- verify the record before retrying`,
-          ),
-        );
-      }, maxWait);
-
-      this.deploySubscriptions.set(deployId, {
+      const wait: DeployWait = {
         reject,
         resolve: () => resolve(undefined),
-        timeout,
-      });
+        timeout: setTimeout(() => {
+          const subscriptions = this.deploySubscriptions.get(deployId);
+          subscriptions?.delete(wait);
+          if (subscriptions?.size === 0) {
+            this.deploySubscriptions.delete(deployId);
+          }
+          reject(
+            new Error(
+              `deploy ${deployId} was accepted but its observer finalization ` +
+                `confirmation timed out after ${String(maxWait)}ms; the deploy ` +
+                `may still finalize -- verify the record before retrying`,
+            ),
+          );
+        }, maxWait),
+      };
+      const subscriptions =
+        this.deploySubscriptions.get(deployId) ?? new Set<DeployWait>();
+      subscriptions.add(wait);
+      this.deploySubscriptions.set(deployId, subscriptions);
     });
+  }
+
+  private static executionError(deployId: string): Error {
+    return new Error(
+      `deploy ${deployId} finalized but its execution failed on chain; ` +
+        `nothing was recorded, so the operation can be retried`,
+    );
+  }
+
+  private pruneFinalized(): void {
+    const cutoff = Date.now() - 10 * DEFAULT_MAX_WAIT_FOR_FINALISATION;
+    for (const [id, result] of this.finalized) {
+      if (result.receivedAt < cutoff || this.finalized.size > 1024) {
+        this.finalized.delete(id);
+      }
+    }
   }
 
   public subscribe(sub: (e: WalletEvent) => void): number {

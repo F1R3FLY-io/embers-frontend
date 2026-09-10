@@ -1,5 +1,5 @@
 import { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
@@ -28,6 +28,9 @@ const formModel = z.object({
 
 export default function DeployAgentsTeam() {
   const { t } = useTranslation();
+  const deploymentAttempt = useRef<{ key: PrivateKey; version: string } | null>(
+    null,
+  );
   const { open } = useModal();
   const navigate = useNavigate();
 
@@ -96,7 +99,16 @@ export default function DeployAgentsTeam() {
             },
           ];
 
-          const registryKey = PrivateKey.new();
+          if (
+            !deploymentAttempt.current ||
+            deploymentAttempt.current.version !== agentsTeam.version
+          ) {
+            deploymentAttempt.current = {
+              key: PrivateKey.new(),
+              version: agentsTeam.version!,
+            };
+          }
+          const registryKey = deploymentAttempt.current.key;
 
           const result = await deployTeamsMutation.mutateAsync({
             agentsTeamId: agentsTeam.id!,
@@ -108,6 +120,13 @@ export default function DeployAgentsTeam() {
           await result.waitForFinalization;
 
           onSuccessfulDeploy(registryKey);
+          deploymentAttempt.current = null;
+          for (const container of result.prepareResponse.response.containers) {
+            appendLog(
+              `Deploy container ${container.id} finalized on current stack: ${container.uri.toString()}`,
+              "info",
+            );
+          }
           update({ hasGraphChanges: false });
           open(
             <SuccessModal
@@ -116,7 +135,15 @@ export default function DeployAgentsTeam() {
                 reset();
                 void navigate("/agents-team/create");
               }}
-              data={modalData}
+              data={[
+                ...modalData,
+                ...result.prepareResponse.response.containers.map(
+                  (container) => ({
+                    label: "deploy.labels.container" as const,
+                    value: `${container.id}: ${container.uri.toString()}`,
+                  }),
+                ),
+              ]}
               viewAgent={toEdit}
               viewAllAgents={() => void navigate("/dashboard")}
             />,
@@ -202,6 +229,45 @@ export default function DeployAgentsTeam() {
               value={agentsTeam.description}
             />
           </div>
+
+          {Object.keys(agentsTeam.definition?.deploymentContainers ?? {})
+            .length > 0 && (
+            <section
+              aria-label={t("deploy.containersTitle")}
+              className={styles["form-section"]}
+            >
+              <Text bold color="primary" type="H5">
+                {t("deploy.containersTitle")}
+              </Text>
+              {Object.values(agentsTeam.definition!.deploymentContainers!).map(
+                (container) => (
+                  <div key={container.id}>
+                    <Text bold color="primary" type="normal">
+                      {container.label}
+                    </Text>
+                    <Text color="secondary" type="small">
+                      {t("deploy.containerTarget")}
+                    </Text>
+                    <Text color="secondary" type="small">
+                      {t("deploy.containerMembers", {
+                        members: [
+                          ...container.nodeIds.map(
+                            (id) =>
+                              agentsTeam.definition?.nodes[id]?.label ?? id,
+                          ),
+                          ...Object.values(
+                            agentsTeam.definition!.deploymentContainers!,
+                          )
+                            .filter((child) => child.parentId === container.id)
+                            .map((child) => child.label),
+                        ].join(", "),
+                      })}
+                    </Text>
+                  </div>
+                ),
+              )}
+            </section>
+          )}
 
           <form.Field name="inputPrompt">
             {(field) => (

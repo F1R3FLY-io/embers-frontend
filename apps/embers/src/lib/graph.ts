@@ -27,7 +27,10 @@ const DAGRE_NODE_HEIGHT = 140;
 export function toApiGraph(nodes: Node[], edges: Edge[]): Graph {
   const groups = groupByDeployContainer(nodes);
   const orphanNodes = nodes.filter(
-    (node) => node.type !== "deploy-container" && !node.parentId,
+    (node) =>
+      node.type !== "deploy-container" &&
+      node.type !== "state-scope" &&
+      !node.parentId,
   );
 
   const subgraphs = buildSubgraphs(groups);
@@ -104,7 +107,9 @@ function connectedEdges(nodes: Node[], edges: Edge[]): Edge[] {
 
 function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
   return nodes
-    .filter((node) => node.type === "deploy-container")
+    .filter(
+      (node) => node.type === "deploy-container" || node.type === "state-scope",
+    )
     .map((container) => ({
       container,
       nodes: nodes.filter((node) => node.parentId === container.id),
@@ -112,22 +117,66 @@ function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
 }
 
 function buildSubgraphs(groups: ContainerGroup[]): Graph {
-  return groups.reduceRight(
-    (acc, group): Graph => ({
-      graph: {
-        graph_1: buildGraphNodes(group.nodes),
-        graph_2: acc,
-        type: "Subgraph",
-        var: group.container.id,
-      },
-      name: {
-        type: "GVar",
-        value: group.container.id,
-      },
-      string: buildNodeContext(group.container),
-      type: "Context",
-    }),
-    NIL,
+  const pending = new Map(groups.map((group) => [group.container.id, group]));
+  const built = new Map<string, Graph>();
+  const combine = (parts: Graph[]): Graph =>
+    parts.reduceRight<Graph>((acc, graph) => {
+      if (graph.type === "Nil") {
+        return acc;
+      }
+      if (acc.type === "Nil") {
+        return graph;
+      }
+      if (graph.type === "Context" && graph.graph.type === "Subgraph") {
+        return { ...graph, graph: { ...graph.graph, graph_2: acc } };
+      }
+      return { graph_1: graph, graph_2: acc, type: "Tensor" };
+    }, NIL);
+  while (pending.size) {
+    let progressed = false;
+    for (const [id, group] of pending) {
+      const childGroups = group.nodes.filter(
+        (node) =>
+          node.type === "deploy-container" || node.type === "state-scope",
+      );
+      if (childGroups.some((node) => !built.has(node.id))) {
+        continue;
+      }
+      built.set(id, {
+        graph: {
+          graph_1: combine([
+            buildGraphNodes(
+              group.nodes.filter(
+                (node) =>
+                  node.type !== "deploy-container" &&
+                  node.type !== "state-scope",
+              ),
+            ),
+            ...childGroups.map((node) => built.get(node.id)!),
+          ]),
+          graph_2: NIL,
+          type: "Subgraph",
+          var: id,
+        },
+        name: { type: "GVar", value: id },
+        string: buildNodeContext(group.container),
+        type: "Context",
+      });
+      pending.delete(id);
+      progressed = true;
+    }
+    if (!progressed) {
+      throw new Error("Container hierarchy contains a cycle");
+    }
+  }
+  const ids = new Set(groups.map((group) => group.container.id));
+  return combine(
+    groups
+      .filter(
+        (group) =>
+          !group.container.parentId || !ids.has(group.container.parentId),
+      )
+      .map((group) => built.get(group.container.id)!),
   );
 }
 
@@ -253,8 +302,9 @@ function buildNodeContext(node: Node) {
     case "wait": {
       return JSON.stringify({ type: "wait", waitFor: node.data.waitFor });
     }
+    case "state-scope":
     case "deploy-container": {
-      return JSON.stringify({ ...node.data, type: "deploy-container" });
+      return JSON.stringify({ ...node.data, type: node.type });
     }
     case "final-node":
     case "foreign-term":
@@ -424,7 +474,9 @@ function buildNodes(flatGraph: FlatGraph): Node[] {
         type: context.type,
       } as Node;
     })
-    .sort((l, _) => (l.type === "deploy-container" ? -1 : 1));
+    .sort((l, _) =>
+      l.type === "deploy-container" || l.type === "state-scope" ? -1 : 1,
+    );
 }
 
 export function makeNodeId() {
@@ -455,7 +507,7 @@ function layoutWithDagre(
   });
 
   nodes.forEach((node) => {
-    if (node.type === "deploy-container") {
+    if (node.type === "deploy-container" || node.type === "state-scope") {
       return;
     }
 
@@ -472,7 +524,7 @@ function layoutWithDagre(
   dagre.layout(g);
 
   const layoutedNodes: Node[] = nodes.map((node) => {
-    if (node.type === "deploy-container") {
+    if (node.type === "deploy-container" || node.type === "state-scope") {
       return node;
     }
 
@@ -499,11 +551,15 @@ type NodeWithParent = Node & {
 
 function normalizeGraphNodes(nodes: Node[]): Node[] {
   return nodes.map((node) => {
-    if (node.type === "deploy-container") {
+    if (node.type === "deploy-container" || node.type === "state-scope") {
       return {
         ...node,
         className: styles["no-node-style"],
-        data: { containerId: "default" },
+        data: {
+          ...node.data,
+          containerId:
+            (node.data as { containerId?: string }).containerId ?? "default",
+        },
       };
     }
 
@@ -540,7 +596,10 @@ export function resizeContainers(nodes: Node[]): Node[] {
 
   for (const [parentId, children] of childrenByParent.entries()) {
     const parent = byId.get(parentId);
-    if (!parent || parent.type !== "deploy-container") {
+    if (
+      !parent ||
+      (parent.type !== "deploy-container" && parent.type !== "state-scope")
+    ) {
       continue;
     }
     if (!children.length) {

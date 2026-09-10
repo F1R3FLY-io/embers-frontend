@@ -84,6 +84,7 @@ function activity(node: Node): ActivityReference {
       };
     case "approval":
     case "deploy-container":
+    case "state-scope":
     case "fan-in-map":
     case "final-node":
     case "gateway":
@@ -169,9 +170,17 @@ function workflowNode(
   scopeId: string,
   childScopeId?: string,
 ): WorkflowNode | undefined {
+  if (node.type === "deploy-container") {
+    return undefined;
+  }
   const base = {
     id: node.id,
     label: nodeLabel(node),
+    ...(typeof (node.data as Record<string, unknown>).outputKey === "string"
+      ? {
+          outputKey: (node.data as Record<string, unknown>).outputKey as string,
+        }
+      : {}),
     policy: executionPolicy(node),
     scopeId,
   };
@@ -194,7 +203,7 @@ function workflowNode(
         join,
         kind: "history",
       };
-    case "deploy-container":
+    case "state-scope":
       return {
         ...base,
         childScopeId: childScopeId ?? node.id,
@@ -347,7 +356,7 @@ export function toWorkflowDefinition(
 
   const scopeByContainer = new Map(
     nodes
-      .filter((node) => node.type === "deploy-container")
+      .filter((node) => node.type === "state-scope")
       .map((node) => {
         const configured = (node.data as { childScopeId?: unknown })
           .childScopeId;
@@ -361,16 +370,52 @@ export function toWorkflowDefinition(
   );
   if (
     scopeByContainer.size !==
-    nodes.filter((node) => node.type === "deploy-container").length
+    nodes.filter((node) => node.type === "state-scope").length
   ) {
     throw new Error(
       "Every state-scope container must own a distinct child scope.",
     );
   }
-  const ownerScope = (node: Node) =>
-    node.parentId === undefined
-      ? rootScopeId
-      : (scopeByContainer.get(node.parentId) ?? node.parentId);
+  const byId = new Map(nodes.map((node) => [node.id, node]));
+  const nearestParent = (node: Node, type: string): Node | undefined => {
+    const seen = new Set<string>();
+    let parent = node.parentId ? byId.get(node.parentId) : undefined;
+    while (parent) {
+      if (seen.has(parent.id)) {
+        throw new Error("Container nesting contains a cycle.");
+      }
+      seen.add(parent.id);
+      if (parent.type === type) {
+        return parent;
+      }
+      parent = parent.parentId ? byId.get(parent.parentId) : undefined;
+    }
+    return undefined;
+  };
+  const ownerScope = (node: Node) => {
+    const scope = nearestParent(node, "state-scope");
+    return scope ? scopeByContainer.get(scope.id)! : rootScopeId;
+  };
+  const deploymentContainers = Object.fromEntries(
+    nodes
+      .filter((node) => node.type === "deploy-container")
+      .map((container) => [
+        container.id,
+        {
+          id: container.id,
+          label: (container.data as { containerId: string }).containerId,
+          nodeIds: nodes
+            .filter(
+              (node) =>
+                node.type !== "deploy-container" &&
+                nearestParent(node, "deploy-container")?.id === container.id,
+            )
+            .map((node) => node.id),
+          target: "current" as const,
+          ...(container.parentId ? { parentId: container.parentId } : {}),
+        },
+      ]),
+  );
 
   const workflowNodes = Object.fromEntries(
     nodes
@@ -405,9 +450,7 @@ export function toWorkflowDefinition(
     },
   };
 
-  for (const container of nodes.filter(
-    (node) => node.type === "deploy-container",
-  )) {
+  for (const container of nodes.filter((node) => node.type === "state-scope")) {
     const childScopeId = scopeByContainer.get(container.id) ?? container.id;
     if (childScopeId === rootScopeId || Object.hasOwn(scopes, childScopeId)) {
       throw new Error(
@@ -442,10 +485,7 @@ export function toWorkflowDefinition(
         (container.data as { scopeKind?: "compound" | "parallel" }).scopeKind ??
         "compound",
       label: nodeLabel(container),
-      parentScopeId:
-        container.parentId === undefined
-          ? rootScopeId
-          : (scopeByContainer.get(container.parentId) ?? container.parentId),
+      parentScopeId: ownerScope(container),
     };
   }
 
@@ -498,6 +538,9 @@ export function toWorkflowDefinition(
   }
 
   return {
+    ...(Object.keys(deploymentContainers).length
+      ? { deploymentContainers }
+      : {}),
     entryScopeId: rootScopeId,
     interface: baseDefinition?.interface ?? {
       inputs: { input: { kind: "string" } },
@@ -563,7 +606,7 @@ function reactFlowType(node: WorkflowNode): Node["type"] {
     case "history":
       return "history";
     case "scope":
-      return "deploy-container";
+      return "state-scope";
   }
 }
 
@@ -756,6 +799,7 @@ export function fromWorkflowDefinition(
       return {
         data: {
           ...reactFlowData(scopeNode),
+          ...(scopeNode.outputKey ? { outputKey: scopeNode.outputKey } : {}),
           childScopeId: scope.id,
           containerId: scope.label,
           entryActivities: scope.entryActivities.join(", "),
@@ -776,7 +820,7 @@ export function fromWorkflowDefinition(
           height: presentation?.height,
           width: presentation?.width,
         },
-        type: "deploy-container",
+        type: "state-scope",
         width: presentation?.width,
       } as Node;
     });
@@ -793,7 +837,10 @@ export function fromWorkflowDefinition(
         );
       }
       return {
-        data: reactFlowData(node),
+        data: {
+          ...reactFlowData(node),
+          ...(node.outputKey ? { outputKey: node.outputKey } : {}),
+        },
         extent: isRoot ? undefined : "parent",
         height: presentation?.height,
         id: node.id,
@@ -806,6 +853,55 @@ export function fromWorkflowDefinition(
         width: presentation?.width,
       } as Node;
     });
+
+  const deploymentNodes: Node[] = Object.values(
+    definition.deploymentContainers ?? {},
+  ).map((container) => {
+    const position = definition.presentation.nodes[container.id];
+    return {
+      data: { containerId: container.label },
+      extent: container.parentId ? "parent" : undefined,
+      height: position?.height,
+      id: container.id,
+      parentId: container.parentId,
+      position: { x: position?.x ?? 0, y: position?.y ?? 0 },
+      style: { height: position?.height, width: position?.width },
+      type: "deploy-container",
+      width: position?.width,
+    };
+  });
+  const allVisualNodes = [...containers, ...nodes, ...deploymentNodes];
+  for (const container of Object.values(
+    definition.deploymentContainers ?? {},
+  )) {
+    for (const node of allVisualNodes) {
+      if (
+        container.nodeIds.includes(node.id) &&
+        (!node.parentId || !container.nodeIds.includes(node.parentId))
+      ) {
+        node.parentId = container.id;
+        node.extent = "parent";
+      }
+    }
+  }
+  const ordered: Node[] = [];
+  const visiting = new Set<string>();
+  const add = (node: Node) => {
+    if (ordered.some((item) => item.id === node.id)) {
+      return;
+    }
+    if (visiting.has(node.id)) {
+      throw new Error("Container nesting contains a cycle.");
+    }
+    visiting.add(node.id);
+    const parent = allVisualNodes.find((item) => item.id === node.parentId);
+    if (parent) {
+      add(parent);
+    }
+    ordered.push(node);
+    visiting.delete(node.id);
+  };
+  allVisualNodes.forEach(add);
 
   const edges = Object.values(definition.transitions).map(
     (transition): Edge => {
@@ -842,5 +938,5 @@ export function fromWorkflowDefinition(
     },
   );
 
-  return [[...containers, ...nodes], edges];
+  return [ordered, edges];
 }

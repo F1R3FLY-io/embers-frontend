@@ -22,6 +22,12 @@ import { SignedContractFromJSON, SignedContractToJSON } from "./SignedContract";
  */
 export interface DeploySignedAgentsTeamReq {
   /**
+   *
+   * @type {Array<SignedContract>}
+   * @memberof DeploySignedAgentsTeamReq
+   */
+  containers?: Array<SignedContract>;
+  /**
    * The signed compiled team contract.
    * @type {SignedContract}
    * @memberof DeploySignedAgentsTeamReq
@@ -62,6 +68,10 @@ export function DeploySignedAgentsTeamReqFromJSONTyped(
     return json;
   }
   return {
+    containers:
+      json.containers == null
+        ? undefined
+        : (json.containers as Array<any>).map(SignedContractFromJSON),
     contract: SignedContractFromJSON(json.contract),
     system:
       json.system == null ? undefined : SignedContractFromJSON(json.system),
@@ -83,6 +93,10 @@ export function DeploySignedAgentsTeamReqToJSONTyped(
   }
 
   return {
+    containers:
+      value.containers == null
+        ? undefined
+        : (value.containers as Array<any>).map(SignedContractToJSON),
     contract: SignedContractToJSON(value.contract),
     system: SignedContractToJSON(value.system),
   };

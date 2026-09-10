@@ -14,6 +14,7 @@
 import type { Graph } from "./Graph";
 import type { RegistryDeploy } from "./RegistryDeploy";
 
+import { mapValues } from "../runtime";
 import { GraphFromJSON, GraphToJSON } from "./Graph";
 import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
 
@@ -23,6 +24,12 @@ import { RegistryDeployFromJSON, RegistryDeployToJSON } from "./RegistryDeploy";
  * @interface DeployGraph
  */
 export interface DeployGraph {
+  /**
+   *
+   * @type {{ [key: string]: RegistryDeploy; }}
+   * @memberof DeployGraph
+   */
+  containerDeploys?: { [key: string]: RegistryDeploy };
   /**
    * The registry claim authorizing publication under the target URI.
    * @type {RegistryDeploy}
@@ -62,6 +69,10 @@ export function DeployGraphFromJSONTyped(
     return json;
   }
   return {
+    containerDeploys:
+      json.container_deploys == null
+        ? undefined
+        : mapValues(json.container_deploys, RegistryDeployFromJSON),
     deploy: RegistryDeployFromJSON(json.deploy),
     graph: GraphFromJSON(json.graph),
   };
@@ -80,6 +91,10 @@ export function DeployGraphToJSONTyped(
   }
 
   return {
+    container_deploys:
+      value.containerDeploys == null
+        ? undefined
+        : mapValues(value.containerDeploys, RegistryDeployToJSON),
     deploy: RegistryDeployToJSON(value.deploy),
     graph: GraphToJSON(value.graph),
   };

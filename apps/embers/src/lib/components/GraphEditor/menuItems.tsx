@@ -30,6 +30,24 @@ export type ContextMenuInput = {
   | { type: "emptySpace" }
 );
 
+function defaultOutputKey(type: string, data: object): string {
+  if (type === "input-node") {
+    return "input";
+  }
+  const values = data as Record<string, unknown>;
+  if (typeof values.outputKey === "string") {
+    return values.outputKey;
+  }
+  const label = values.agentName ?? values.label;
+  const name = typeof label === "string" ? label : type;
+  return name
+    .replace(/^[A-Z]/, (c) => c.toLowerCase())
+    .replace(
+      /[^a-zA-Z0-9]+(.)?/g,
+      (_, c: string | undefined) => c?.toUpperCase() ?? "",
+    );
+}
+
 export function createNodeChange<T extends keyof NodeTypes>(
   type: T,
   position: Node["position"],
@@ -39,7 +57,7 @@ export function createNodeChange<T extends keyof NodeTypes>(
     {
       item: {
         className: styles["no-node-style"],
-        data,
+        data: { ...data, outputKey: defaultOutputKey(type, data) },
         id: makeNodeId(),
         position,
         type,
@@ -51,37 +69,43 @@ export function createNodeChange<T extends keyof NodeTypes>(
 
 function editInputs(node: Node) {
   return node.type === "deploy-container"
-    ? [
-        { name: "containerId", type: "string" as const },
-        { name: "childScopeId", type: "string" as const },
-        {
-          name: "scopeKind",
-          options: [
-            { label: "Compound (one initial region)", value: "compound" },
-            { label: "Parallel (several initial regions)", value: "parallel" },
-          ],
-          type: "string" as const,
-        },
-        {
-          name: "history",
-          options: [
-            { label: "No history", value: "none" },
-            { label: "Shallow history", value: "shallow" },
-            { label: "Deep history", value: "deep" },
-          ],
-          type: "string" as const,
-        },
-        { name: "initialNodeIds", type: "string" as const },
-        { name: "entryActivities", type: "string" as const },
-        { name: "exitActivities", type: "string" as const },
-      ]
-    : [
-        {
-          name: node.type === "agent" ? "agentName" : "label",
-          type: "string" as const,
-        },
-        ...NODE_REGISTRY[node.type].modalInputs,
-      ];
+    ? [{ name: "containerId", type: "string" as const }]
+    : node.type === "state-scope"
+      ? [
+          { name: "containerId", type: "string" as const },
+          { name: "childScopeId", type: "string" as const },
+          {
+            name: "scopeKind",
+            options: [
+              { label: "Compound (one initial region)", value: "compound" },
+              {
+                label: "Parallel (several initial regions)",
+                value: "parallel",
+              },
+            ],
+            type: "string" as const,
+          },
+          {
+            name: "history",
+            options: [
+              { label: "No history", value: "none" },
+              { label: "Shallow history", value: "shallow" },
+              { label: "Deep history", value: "deep" },
+            ],
+            type: "string" as const,
+          },
+          { name: "initialNodeIds", type: "string" as const },
+          { name: "entryActivities", type: "string" as const },
+          { name: "exitActivities", type: "string" as const },
+        ]
+      : [
+          {
+            name: node.type === "agent" ? "agentName" : "label",
+            type: "string" as const,
+          },
+          { name: "outputKey", type: "string" as const },
+          ...NODE_REGISTRY[node.type].modalInputs,
+        ];
 }
 
 function routeGroupIdentity(edge: Edge): string {
@@ -113,7 +137,7 @@ export function buildMenuItems(
   switch (input.type) {
     case "nodesSelected": {
       const deployContainers = input.nodes.filter(
-        (n) => n.type === "deploy-container",
+        (n) => n.type === "deploy-container" || n.type === "state-scope",
       );
       const parentIds = new Set(input.nodes.map((node) => node.parentId));
       const canGroupAsScope = input.nodes.length > 0 && parentIds.size === 1;
@@ -133,8 +157,10 @@ export function buildMenuItems(
                 inputs={selectedInputs}
                 title={
                   node.type === "deploy-container"
-                    ? "Edit state scope"
-                    : `Edit ${NODE_REGISTRY[node.type].displayName}`
+                    ? "Edit deploy container"
+                    : node.type === "state-scope"
+                      ? "Edit state scope"
+                      : `Edit ${NODE_REGISTRY[node.type].displayName}`
                 }
                 onSave={(data) =>
                   onNodesChange([
@@ -161,7 +187,8 @@ export function buildMenuItems(
             input.nodes.length !== 1 ||
             input.nodes[0].type === "input-node" ||
             input.nodes[0].type === "output-node" ||
-            input.nodes[0].type === "final-node",
+            input.nodes[0].type === "final-node" ||
+            input.nodes[0].type === "deploy-container",
           onClick: () => {
             const node = input.nodes[0];
             open(
@@ -189,7 +216,9 @@ export function buildMenuItems(
         {
           content: "Configure fan-in",
           hidden:
-            input.nodes.length !== 1 || input.nodes[0].type === "input-node",
+            input.nodes.length !== 1 ||
+            input.nodes[0].type === "input-node" ||
+            input.nodes[0].type === "deploy-container",
           onClick: () => {
             const node = input.nodes[0];
             const incomingCount = rf
@@ -215,6 +244,73 @@ export function buildMenuItems(
                 maxWidth: 520,
               },
             );
+          },
+          type: "text",
+        },
+        {
+          content: "Add to deploy container",
+          hidden: !canGroupAsScope,
+          onClick: () => {
+            const commonParentId = input.nodes[0].parentId;
+            const minX = Math.min(...input.nodes.map((n) => n.position.x));
+            const maxX = Math.max(
+              ...input.nodes.map(
+                (n) => n.position.x + (n.measured?.width ?? n.width ?? 0),
+              ),
+            );
+
+            const minY = Math.min(...input.nodes.map((n) => n.position.y));
+            const maxY = Math.max(
+              ...input.nodes.map(
+                (n) => n.position.y + (n.measured?.height ?? n.height ?? 0),
+              ),
+            );
+
+            const containerNodeId = makeSubgraphId();
+
+            const subflowNode: Node = {
+              className: styles["no-node-style"],
+              data: { containerId: "Deployment" },
+              ...(commonParentId === undefined
+                ? {}
+                : {
+                    extent: "parent" as const,
+                    parentId: commonParentId,
+                  }),
+              id: containerNodeId,
+              position: { x: minX - 5, y: minY - 5 },
+              style: {
+                height: Math.max(20, maxY - minY + 10),
+                width: Math.max(20, maxX - minX + 10),
+              },
+              type: "deploy-container",
+            };
+
+            const parentIndex =
+              commonParentId === undefined
+                ? -1
+                : rf.getNodes().findIndex(({ id }) => id === commonParentId);
+
+            onNodesChange([
+              {
+                index: parentIndex + 1,
+                item: subflowNode,
+                type: "add",
+              },
+              ...input.nodes.map((n) => ({
+                id: n.id,
+                item: {
+                  ...n,
+                  extent: "parent" as const,
+                  parentId: containerNodeId,
+                  position: {
+                    x: n.position.x - subflowNode.position.x,
+                    y: n.position.y - subflowNode.position.y,
+                  },
+                },
+                type: "replace" as const,
+              })),
+            ]);
           },
           type: "text",
         },
@@ -267,7 +363,7 @@ export function buildMenuItems(
                 height: Math.max(20, maxY - minY + 10),
                 width: Math.max(20, maxX - minX + 10),
               },
-              type: "deploy-container",
+              type: "state-scope",
             };
 
             const parentIndex =
@@ -299,7 +395,10 @@ export function buildMenuItems(
           type: "text",
         },
         {
-          content: "Delete deploy container",
+          content:
+            deployContainers[0]?.type === "state-scope"
+              ? "Unwrap state scope"
+              : "Delete deploy container",
           hidden: deployContainers.length !== 1,
           onClick: () => {
             const container = deployContainers[0];
