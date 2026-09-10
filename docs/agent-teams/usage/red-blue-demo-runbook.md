@@ -86,7 +86,7 @@ A deploy container packages its member code into a separately registered Rholang
 
 ## Run and inspect
 
-Choose **Run**, paste [brief.txt](../../../demo/red-blue/brief.txt), and submit. Allow the model calls and finalized activities to complete. The expected artifact has four sections: **Recommendation**, **Changes after review**, **Remaining risks**, and **Rollout checklist**. Ask what changed after the review, and point to calculator-backed staffing or emergency constraints. Do not promise identical prose between rehearsals.
+Choose **Run**, paste [brief.txt](../../../demo/red-blue/brief.txt), and submit. Allow the model calls and finalized activities to complete. The final response ends with calculator evidence copied directly from both Rholang outputs, alongside four model-written sections: **Recommendation**, **Changes after review**, **Remaining risks**, and **Rollout checklist**. Ask what changed after the review, and point to calculator-backed staffing or emergency constraints. Do not promise identical prose between rehearsals.
 
 Open the run page with the presenter wallet. Unlock the agent history to inspect each executed agent's recorded output; calculator results are structured values. Execution occurrences remain distinct when a workflow contains loops or repeated visits. Reveal the full final response to show the decision brief.
 
@@ -257,12 +257,17 @@ Source: [DecisionWriter.rho](../../../demo/red-blue/agents/DecisionWriter.rho)
 
 ```rholang
 contract main(@input, return) = {
-  new gpt4(`rho:ai:gpt4`) in {
-    gpt4!("Use the brief and calculator results for scenario facts. You may apply general engineering knowledge, clearly distinguishing it from supplied facts and editable scenario assumptions. No live browsing is available: do not claim current web verification or fabricate citations. Label missing information. Do not invent evidence or claim to execute actions. Write a decision brief with exactly these four headings: Recommendation; Changes after review; Remaining risks; Rollout checklist. Preserve all finding labels and their dispositions, unresolved concerns, missing evidence, responsible roles, success measures and rollback. Do not turn accepted risk into a resolved issue. Maximum 240 words and 1900 characters total."
+  new gpt4(`rho:ai:gpt4`), answerCh in {
+    gpt4!("Use the brief and calculator results for scenario facts. You may apply general engineering knowledge, clearly distinguishing it from supplied facts and editable scenario assumptions. No live browsing is available: do not claim current web verification or fabricate citations. Label missing information. Do not invent evidence or claim to execute actions. Write a decision brief with exactly these four headings: Recommendation; Changes after review; Remaining risks; Rollout checklist. Preserve all finding labels and their dispositions, unresolved concerns, missing evidence, responsible roles, success measures and rollback. Do not turn accepted risk into a resolved issue or say there are no unresolved concerns when risks remain. State the calculator assumptions and do not recommend a fallback that the emergency feasibility calculation rules out. Treat any new numerical rollout threshold as a proposal requiring agreement, not a measured fact. Maximum 240 words and 1900 characters total."
       ++ "\nBrief: " ++ input.getOrElse("input", Nil)
       ++ "\nReviewed plan: " ++ input.getOrElse("blueResponder", Nil)
       ++ "\nCapacity calculation: " ++ input.get("reviewCapacity").get("summary")
-      ++ "\nEmergency calculation: " ++ input.get("emergencyReviewPolicy").get("summary"), *return)
+      ++ "\nEmergency calculation: " ++ input.get("emergencyReviewPolicy").get("summary"), *answerCh) |
+    for (@answer <- answerCh) {
+      return!(answer ++ " Calculator evidence (editable scenario assumptions): "
+        ++ input.get("reviewCapacity").get("summary")
+        ++ " " ++ input.get("emergencyReviewPolicy").get("summary"))
+    }
   }
 }
 ```

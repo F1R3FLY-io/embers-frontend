@@ -71,6 +71,10 @@ def main():
         answer = client.agents_teams.run(wallet, args.query, agents_team=state["teamUri"], timeout=600).json
         if not isinstance(answer, str) or not answer.strip():
             raise RuntimeError(f"Expected a non-empty final answer, received: {answer!r}")
+        required = ["Recommendation", "Changes after review", "Remaining risks", "Rollout checklist", "Calculator evidence (editable scenario assumptions):"]
+        missing = [section for section in required if section.lower() not in answer.lower()]
+        if missing:
+            raise RuntimeError(f"The final response omitted required sections: {missing}")
         print(answer, flush=True)
 
 
