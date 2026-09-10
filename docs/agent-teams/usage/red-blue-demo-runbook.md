@@ -17,6 +17,19 @@ uv run python ../../../embers-frontend/demo/red-blue/seed.py --seed \
 
 The deterministic scenarios cover a flawed proposal, an acceptable proposal, missing facts, and execution through nested deployment containers. The seeder uses real model calls and creates backup agents prefixed `RedBlueBackup-`; each `--seed` creates a new team. Later CLI queries can reuse the profile's `red-blue-demo.json` by omitting `--seed`. The default profile is `embers-local-stack/run/profiles/research-desk`; use `--run-dir` to select another.
 
+After a reboot, allow the populated F1r3drive mount several minutes to reconstruct its encrypted files. The stack waits for the unlocked wallet directory, with a configurable ten-minute limit. Both the mount and Java's working files remain under the profile directory on disk. Reads must use the read-only node on port `40411`; port `40401` is the validator and rejects exploratory reads.
+
+Before the presentation, the storage-restart acceptance test verifies that a suspended run retains its checkpoint and resumes with the expected output after F1r3drive and Embers restart. This temporarily interrupts the local backend, so run it before audience queries:
+
+```sh
+EMBERS_SERVICE_UNIT=embers-local-stack-1f3ff321c736-embers.service \
+F1R3DRIVE_SERVICE_UNIT=embers-local-stack-1f3ff321c736-f1r3drive.service \
+uv run pytest tests/api/agents_teams/test_durable_recovery.py \
+  -k storage --strict-services -v
+```
+
+The unit names above belong to the default `research-desk` profile. For a different profile, use its managed service names. If F1r3drive reports a failed read, an ambiguous channel, or an orphaned directory, stop and repair the storage metadata; resetting the chain would discard the demo state.
+
 ## Explain the decision and assumptions
 
 “We want a useful review policy for five engineers. Blue proposes a plan; red challenges it. Two ordinary Rholang contracts supply explicit arithmetic, then blue revises the plan and explains unresolved risks.”
