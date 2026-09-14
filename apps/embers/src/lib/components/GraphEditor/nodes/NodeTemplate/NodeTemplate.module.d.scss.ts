@@ -5,6 +5,7 @@ declare const classNames: {
   readonly "agent-stale": "agent-stale";
   readonly content: "content";
   readonly "agent-badge": "agent-badge";
+  readonly "settings-button": "settings-button";
   readonly "settings-icon": "settings-icon";
   readonly handle: "handle";
 };

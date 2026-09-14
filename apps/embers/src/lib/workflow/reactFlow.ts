@@ -14,6 +14,17 @@ import { conditionFromJson } from "./condition";
 
 const DEFAULT_ROOT_SCOPE_ID = "scope:root";
 
+function callingProtocol(
+  value: unknown,
+  fallback: "simple-v1" | "structured-v1",
+) {
+  if (value === undefined) return fallback;
+  if (value === "simple-v1" || value === "structured-v1") return value;
+  throw new Error(
+    "Choose a supported agent protocol: simple-v1 or structured-v1.",
+  );
+}
+
 function nodeLabel(node: Node): string {
   const labelled = node.data as Record<string, unknown>;
   const label = labelled.agentName ?? labelled.label ?? labelled.containerId;
@@ -31,8 +42,7 @@ function activity(node: Node): ActivityReference {
         agentId,
         agentVersion,
         kind: "agent",
-        protocol:
-          data.protocol === "structured-v1" ? "structured-v1" : "simple-v1",
+        protocol: callingProtocol(data.protocol, "simple-v1"),
       };
     }
     case "compress":
@@ -43,7 +53,7 @@ function activity(node: Node): ActivityReference {
     case "rholang-activity":
       return {
         kind: "rholang",
-        protocol: data.protocol === "simple-v1" ? "simple-v1" : "structured-v1",
+        protocol: callingProtocol(data.protocol, "structured-v1"),
         uri: typeof data.uri === "string" ? data.uri : "",
       };
     case "workflow-activity":

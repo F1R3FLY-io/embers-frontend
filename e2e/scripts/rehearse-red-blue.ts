@@ -56,9 +56,11 @@ try {
       `Live rehearsal did not return all four brief sections: ${JSON.stringify(answer)}`,
     );
   }
-  writeFileSync(`${runDir}/red-blue-live-answer.txt`, `${answer  }\n`);
-  process.stdout.write(`${answer  }\n`);
-  process.stdout.write("PASS: created, connected, deployed and ran six live agents through the UI\n");
+  writeFileSync(`${runDir}/red-blue-live-answer.txt`, `${answer}\n`);
+  process.stdout.write(`${answer}\n`);
+  process.stdout.write(
+    "PASS: created, connected, deployed and ran eight live agents with a bounded review loop through the UI\n",
+  );
 } finally {
   await browser.close();
 }

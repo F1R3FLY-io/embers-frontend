@@ -39,10 +39,12 @@ export function JoinModal({
   incomingCount,
   initial,
   onSave,
+  routeGroups = [],
 }: {
   incomingCount: number;
   initial: Record<string, unknown>;
   onSave: (data: Record<string, unknown>) => void;
+  routeGroups?: { label: string; value: string }[];
 }) {
   const { close } = useModal();
   const [joinMode, setJoinMode] = useState<JoinMode>(
@@ -90,8 +92,9 @@ export function JoinModal({
         Configure fan-in
       </Text>
       <Text>
-        This node currently has {incomingCount} incoming transition(s). Join
-        state is correlated to one root workflow invocation.
+        This node has {incomingCount} incoming transition(s). For repeated
+        parallel reviews, correlate arrivals to the route group that starts each
+        review round.
       </Text>
       {error && (
         <Text className={styles["nim-error"]} role="alert">
@@ -124,19 +127,29 @@ export function JoinModal({
           onChange={setCorrelationMode}
         />
       </div>
-      {correlationMode !== "root" && (
-        <label className={styles["nim-field"]}>
-          <Text bold color="secondary" type="small">
-            {correlationMode === "routeGroup"
-              ? "Route-group id"
-              : "Key path (for example state.orderId)"}
-          </Text>
-          <Input
-            {...validation.props("correlationValue")}
-            value={correlationValue}
-            onChange={(event) => setCorrelationValue(event.target.value)}
-          />
-        </label>
+      {correlationMode === "routeGroup" && routeGroups.length > 0 ? (
+        <Select
+          label="Fork route group"
+          options={routeGroups}
+          value={correlationValue}
+          errorMessage={validation.props("correlationValue").errorMessage}
+          onChange={setCorrelationValue}
+        />
+      ) : (
+        correlationMode !== "root" && (
+          <label className={styles["nim-field"]}>
+            <Text bold color="secondary" type="small">
+              {correlationMode === "routeGroup"
+                ? "Route-group id"
+                : "Key path (for example state.orderId)"}
+            </Text>
+            <Input
+              {...validation.props("correlationValue")}
+              value={correlationValue}
+              onChange={(event) => setCorrelationValue(event.target.value)}
+            />
+          </label>
+        )
       )}
       {joinMode === "quorum" && (
         <label className={styles["nim-field"]}>

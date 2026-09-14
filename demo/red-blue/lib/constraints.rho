@@ -1,0 +1,81 @@
+contract checkConstraints(@state, @index, @checks, @unmet, @summary, ret) = {
+  if (index == state.get("constraints").length()) {
+    returnChecks!(state, checks, unmet, summary, *ret)
+  } else {
+    match state.get("constraints").nth(index) {
+      ["C", id, op, unit, limit, basis, evidence] => {
+        new limitCh, totalCh in {
+          number!(limit, *limitCh) |
+          sumTerms!(state.get("terms"), 0, id, unit, 0, 0, true, false, "", *totalCh) |
+          for (@bound <- limitCh; @total <- totalCh) {
+            if (bound.get("error") != "" or total.get("error") != "") {
+              ret!({"output": state.set("error", "Invalid numeric records: " ++ bound.get("error") ++ total.get("error")), "disposition": "completed"})
+            } else {
+              match bound.get("value") - total.get("value") {
+                headroom => {
+                  new resultCh in {
+                    if (not bound.get("known") or basis == "unknown" or not total.get("known") or total.get("count") == 0) { resultCh!("unknown") }
+                    else {
+                      if ((op == "max" and headroom >= 0) or (op == "min" and headroom <= 0)) { resultCh!("pass") }
+                      else { resultCh!("violated") }
+                    } |
+                    for (@status <- resultCh) {
+                      match {"id": id, "unit": unit, "operator": op, "limitMilli": bound.get("value"), "actualMilli": total.get("value"), "headroomMilli": headroom, "status": status, "estimated": total.get("estimated"), "evidence": evidence} {
+                        check => {
+                          new nextCh in {
+                            if (status == "pass") { nextCh!(unmet) } else { nextCh!(unmet + 1) } |
+                            for (@next <- nextCh) {
+                              if (status == "unknown") {
+                                new unknownCh in {
+                                  if (bound.get("known")) { unknownCh!(check.set("actualMilli", Nil).set("headroomMilli", Nil)) }
+                                  else { unknownCh!(check.set("actualMilli", Nil).set("headroomMilli", Nil).set("limitMilli", Nil)) } |
+                                  for (@unknown <- unknownCh) {
+                                    checkConstraints!(state, index + 1, checks ++ [unknown], next, summary ++ " " ++ id ++ ": unknown; actual and headroom unknown; " ++ op ++ "=" ++ limit ++ " " ++ unit ++ ".", *ret)
+                                  }
+                                }
+                              } else {
+                              checkConstraints!(state, index + 1, checks ++ [check], next,
+                                summary ++ " ${id}: ${status}; actual=${actual}/1000 ${unit}; ${op}=${limit}/1000; headroom(max)/shortfall(min)=${headroom}/1000; estimated=${estimated}." %% {"id": id, "status": status, "actual": total.get("value"), "unit": unit, "op": op, "limit": bound.get("value"), "headroom": headroom, "estimated": total.get("estimated")}, *ret)
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} |
+contract sumTerms(@rows, @index, @id, @unit, @total, @count, @known, @estimated, @error, ret) = {
+  if (index == rows.length()) { ret!({"value": total, "count": count, "known": known, "estimated": estimated, "error": error}) }
+  else {
+    match rows.nth(index) {
+      ["T", constraint, termUnit, quantity, amount, basis, evidence] => {
+        if (constraint != id) { sumTerms!(rows, index + 1, id, unit, total, count, known, estimated, error, *ret) }
+        else {
+          new quantityCh, amountCh in {
+            number!(quantity, *quantityCh) | number!(amount, *amountCh) |
+            for (@q <- quantityCh; @a <- amountCh) {
+              if (q.get("value") * a.get("value") / 1000 * 1000 != q.get("value") * a.get("value")) {
+                ret!({"value": total, "count": count, "known": false, "estimated": estimated, "error": "Product is finer than thousandth-unit precision; use smaller units"})
+              } else {
+              sumTerms!(rows, index + 1, id, unit, total + q.get("value") * a.get("value") / 1000, count + 1,
+                known and q.get("known") and a.get("known") and termUnit == unit and basis != "unknown",
+                estimated or basis == "estimate", error ++ q.get("error") ++ a.get("error"), *ret)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} |
+contract returnChecks(@state, @checks, @unmet, @summary, ret) = {
+  ret!({"output": state.set("checks", checks).set("unmetChecks", unmet).set("constraintSummary", summary), "disposition": "completed"})
+} |

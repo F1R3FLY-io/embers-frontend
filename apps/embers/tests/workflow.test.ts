@@ -19,6 +19,22 @@ function edge(source: string, target: string, data = {}): Edge {
 }
 
 describe("WorkflowDefinition v2", () => {
+  test("rejects unsupported calling protocols instead of silently changing the ABI", () => {
+    const nodes = [
+      node("input", "input-node"),
+      node("agent", "agent", {
+        agentId: "a",
+        agentVersion: "v",
+        protocol: "typo-v1",
+      }),
+      node("output", "output-node"),
+    ];
+    const edges = [edge("input", "agent"), edge("agent", "output")];
+    expect(() => toWorkflowDefinition(nodes, edges)).toThrow(
+      "supported agent protocol",
+    );
+  });
+
   test("keeps deploy placement separate from nested state ownership and bounded cycles", () => {
     const nodes = [
       node("input", "input-node", { outputKey: "input" }),

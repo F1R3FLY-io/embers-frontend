@@ -18,6 +18,7 @@ type ModalInputKind<Value> = Value extends string
 export type ModalInput<T extends Record<string, string | number>> = {
   [K in keyof T]: {
     name: K;
+    helperText?: string;
     /**
      * Present for enumerated string fields: the dialog renders the shared
      * Select over these choices instead of a free-text Input, so a value with
@@ -126,12 +127,13 @@ export function EditModal<T extends Record<string, string | number>>({
         </Text>
       )}
 
-      {inputs.map(({ name, options, type }) =>
+      {inputs.map(({ helperText, name, options, type }) =>
         options ? (
           <div key={String(name)} className={styles["nim-field"]}>
             <Select
               {...validation.props(String(name))}
               label={humanize(String(name))}
+              helperText={helperText}
               options={options}
               value={String(values[name])}
               onChange={(value) =>

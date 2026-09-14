@@ -20,7 +20,7 @@ export const deterministic = JSON.parse(
   readFileSync(`${redBlueDir}fixtures/deterministic.json`, "utf8"),
 ) as {
   agents: Record<string, string>;
-  cases: { brief: string; expected: string; name: string }[];
+  cases: { brief: string; rounds: number; stop: string; name: string }[];
 };
 
 export async function buildRedBlueInBrowser(
@@ -69,42 +69,74 @@ export async function buildRedBlueInBrowser(
   const canvas = page.locator(".react-flow");
   await expect(canvas).toBeVisible();
   const positions: Record<string, { x: number; y: number }> = {
-    BluePlanner: { x: 0.34, y: 0.45 },
-    BlueResponder: { x: 0.67, y: 0.45 },
-    DecisionWriter: { x: 0.81, y: 0.45 },
-    EmergencyReviewPolicy: { x: 0.19, y: 0.7 },
-    Input: { x: 0.04, y: 0.45 },
-    Output: { x: 0.96, y: 0.45 },
-    RedEvidence: { x: 0.5, y: 0.45 },
-    RedLogic: { x: 0.5, y: 0.2 },
-    RedOperations: { x: 0.5, y: 0.7 },
-    ReviewCapacity: { x: 0.19, y: 0.2 },
+    Input: { x: 0.02, y: 0.48 },
+    BluePlanner: { x: 0.18, y: 0.48 },
+    ConstraintCheck: { x: 0.33, y: 0.48 },
+    RedLogic: { x: 0.49, y: 0.28 },
+    RedEvidence: { x: 0.49, y: 0.48 },
+    RedOperations: { x: 0.49, y: 0.7 },
+    ReviewCoverage: { x: 0.65, y: 0.48 },
+    BlueResponder: { x: 0.3, y: 0.82 },
+    DecisionWriter: { x: 0.81, y: 0.48 },
+    Decide: { x: 0.69, y: 0.1 },
+    Limit: { x: 0.83, y: 0.1 },
+    Output: { x: 0.94, y: 0.48 },
   };
   const nodes: Record<string, Locator> = {};
-  for (const name of ["Input", ...redBlueGraph.agents, "Output"]) {
+  const box = (await canvas.boundingBox())!;
+  for (const name of [
+    "Input",
+    ...redBlueGraph.agents,
+    "Output",
+    "Decide",
+    "Limit",
+  ]) {
     const source = page.getByTestId(
       ids[name] === undefined
-        ? `sidebar-node-${name.toLowerCase()}-node`
+        ? name === "Decide" || name === "Limit"
+          ? "sidebar-node-gateway"
+          : `sidebar-node-${name.toLowerCase()}-node`
         : `sidebar-agent-${ids[name]}`,
     );
     await source.scrollIntoViewIfNeeded();
     await dragAndDrop(page, source, canvas, positions[name]);
-    if (ids[name] !== undefined) {
-      const configure = page.getByRole("dialog", { name: "Configure Agent" });
-      await expect(configure.getByRole("textbox")).toHaveValue("simple-v1");
-      await configure.getByRole("button", { name: /^save$/i }).click();
-    }
     await expect(canvas.locator(".react-flow__node")).toHaveCount(
       Object.keys(nodes).length + 1,
     );
+    if (name === "Decide" || name === "Limit") {
+      const gateway = canvas.locator(".react-flow__node-gateway").last();
+      await gateway.click({ button: "right" });
+      await page.getByText("Edit node", { exact: true }).click();
+      const edit = page.getByRole("dialog");
+      await edit
+        .getByRole("textbox", { name: "Label", exact: true })
+        .fill(name);
+      await edit
+        .getByRole("textbox", { name: "Output key", exact: true })
+        .fill(name.toLowerCase());
+      await edit.getByRole("button", { name: /^save$/i }).click();
+    }
     nodes[name] = canvas
       .locator(".react-flow__node")
       .filter({ has: page.getByText(name, { exact: true }) });
-  }
-  await expect(canvas.locator(".react-flow__node")).toHaveCount(10);
-  const box = (await canvas.boundingBox())!;
-  // Move Input last: later palette drops can overlap its initial position.
-  for (const name of [...redBlueGraph.agents, "Output", "Input"]) {
+    if (ids[name] !== undefined) {
+      await expect(
+        page.getByRole("dialog", { name: "Configure Agent" }),
+      ).toHaveCount(0);
+      await nodes[name]
+        .getByRole("button", { name: `Configure ${name}`, exact: true })
+        .click();
+      const edit = page.getByRole("dialog");
+      await edit
+        .getByRole("combobox", { name: "Protocol", exact: true })
+        .click();
+      await edit
+        .getByText("Workflow invocation and result (structured-v1)", {
+          exact: true,
+        })
+        .click();
+      await edit.getByRole("button", { name: /^save$/i }).click();
+    }
     const label = (await nodes[name]
       .getByText(name, { exact: true })
       .boundingBox())!;
@@ -120,12 +152,65 @@ export async function buildRedBlueInBrowser(
     );
     await page.mouse.up();
   }
+  await expect(canvas.locator(".react-flow__node")).toHaveCount(12);
   for (const [index, [from, to]] of redBlueGraph.edges.entries()) {
     const sourceHandle = nodes[from].locator(".react-flow__handle-right");
     const targetHandle = nodes[to].locator(".react-flow__handle-left");
     await sourceHandle.click();
     await targetHandle.click();
     await expect(canvas.locator(".react-flow__edge")).toHaveCount(index + 1);
+  }
+  const select = async (dialog: Locator, label: string, option: string) => {
+    await dialog.getByRole("combobox", { name: label, exact: true }).click();
+    await dialog.getByText(option, { exact: true }).last().click();
+  };
+  for (const name of ["ConstraintCheck", "DecisionWriter", "ReviewCoverage"]) {
+    await nodes[name].click({ button: "right" });
+    await page.getByText("Configure fan-in", { exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "Configure fan-in" });
+    if (name === "ReviewCoverage") {
+      await select(dialog, "Correlation", "Route-group fork epoch");
+      await select(dialog, "Fork route group", "ConstraintCheck · completed");
+    } else {
+      await select(dialog, "Join policy", "Run for each arrival");
+    }
+    await dialog.getByRole("button", { name: /^save$/i }).click();
+  }
+  for (const index of [9, 10, 11]) {
+    await canvas
+      .locator(".react-flow__edge")
+      .nth(index)
+      .dispatchEvent("contextmenu", {
+        clientX: box.x + 900,
+        clientY: box.y + 300,
+      });
+    await page.getByText("Configure transition", { exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "Configure transition" });
+    if (index === 11) {
+      await select(dialog, "Trigger", "iterationLimit");
+      await select(dialog, "Routing", "All matching routes");
+    } else {
+      await select(dialog, "Routing", "First matching route");
+      if (index === 9) {
+        await select(dialog, "Condition", "Compare a value");
+        await dialog
+          .getByPlaceholder("status.approved", { exact: true })
+          .fill("outcome");
+        await select(dialog, "Comparison", "ne");
+        await dialog
+          .getByRole("textbox", { name: "Literal (JSON or text)" })
+          .fill('"revise"');
+      } else {
+        await dialog
+          .getByRole("spinbutton", { name: "Priority", exact: true })
+          .fill("1");
+        await select(dialog, "Cycle progress", "Bounded iterations");
+        await dialog
+          .getByRole("spinbutton", { name: "Maximum iterations" })
+          .fill("2");
+      }
+    }
+    await dialog.getByRole("button", { name: /^save$/i }).click();
   }
   await page.mouse.click(box.x + 5, box.y + 5);
   const agentBoxes = await Promise.all(
@@ -151,11 +236,14 @@ export async function buildRedBlueInBrowser(
   await expect(
     canvas.locator(".react-flow__node-deploy-container"),
   ).toHaveCount(1);
-  await expect(canvas.locator(".react-flow__edge")).toHaveCount(25);
+  await expect(canvas.locator(".react-flow__edge")).toHaveCount(
+    redBlueGraph.edges.length,
+  );
   const preparedDeployment = page.waitForResponse(
     (response) =>
       response.url().includes("/ai-agents-teams/deploy/prepare") &&
       response.request().method() === "POST",
+    { timeout: 180_000 },
   );
   await page.getByRole("button", { name: /^deploy$/i }).click();
   await expect(page.getByRole("button", { name: /^back$/i })).toBeVisible({
@@ -189,7 +277,7 @@ export async function runRedBlueInBrowser(
     (r) =>
       r.url().includes("/ai-agents-teams/run/send") &&
       r.request().method() === "POST",
-    { timeout: 600_000 },
+    { timeout: 900_000 },
   );
   await dialog.getByRole("button", { name: /^run$/i }).click();
   const response = await result;

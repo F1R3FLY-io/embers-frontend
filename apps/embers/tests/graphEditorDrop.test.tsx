@@ -112,9 +112,8 @@ function drop(canvas: HTMLElement, transfer: DataTransfer) {
   });
 }
 
-it("asks how to configure a dropped agent before creating it", () => {
+it("drops an agent immediately with the default protocol and its identity", () => {
   const canvas = renderEditor();
-
   drop(
     canvas,
     sidebarPayload("agent", {
@@ -123,47 +122,19 @@ it("asks how to configure a dropped agent before creating it", () => {
       agentVersion: "v1",
     }),
   );
-
-  // Agent nodes declare a modal input (the protocol), so the drop opens a
-  // dialog rather than creating the node immediately. Worth pinning
-  // explicitly: "I dragged an agent and nothing appeared" is the same thing a
-  // user sees when the drop is REFUSED, and the two must not be confused when
-  // diagnosing a report.
-  expect(openedModals).toHaveLength(1);
-  expect(openedModals[0].title).toContain("Agent");
-  expect(nodeChanges).toHaveLength(0);
-});
-
-it("creates the agent node once the configuration is confirmed", () => {
-  const canvas = renderEditor();
-
-  drop(
-    canvas,
-    sidebarPayload("agent", {
-      agentId: "agent-1",
-      agentName: "Researcher",
-      agentVersion: "v1",
-    }),
-  );
-
-  const dialog = openedModals[0].content as {
-    props: {
-      initial: Record<string, unknown>;
-      onSave: (data: Record<string, unknown>) => void;
-    };
-  };
-
-  // The dialog is seeded with the agent's identity plus the kind's defaults,
-  // so confirming it keeps the identity that made the drop legal.
-  expect(dialog.props.initial).toMatchObject({
-    agentId: "agent-1",
-    agentName: "Researcher",
-    protocol: "simple-v1",
-  });
-
-  dialog.props.onSave(dialog.props.initial);
-
+  expect(openedModals).toHaveLength(0);
   expect(nodeChanges).toHaveLength(1);
+  expect(nodeChanges[0]).toMatchObject([
+    {
+      data: {
+        agentId: "agent-1",
+        agentName: "Researcher",
+        agentVersion: "v1",
+        protocol: "simple-v1",
+      },
+      type: "agent",
+    },
+  ]);
 });
 
 it("refuses an agent drop that carries no identity", () => {
@@ -209,7 +180,8 @@ it("still accepts the drop when the drag offset is unreadable", () => {
 
   // A malformed offset costs a few pixels of placement accuracy; refusing the
   // drop over it would cost the user their action.
-  expect(openedModals).toHaveLength(1);
+  expect(openedModals).toHaveLength(0);
+  expect(nodeChanges).toHaveLength(1);
 });
 
 it("refuses the agent drop when its data is unreadable, rather than guessing", () => {

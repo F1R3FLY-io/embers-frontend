@@ -24,6 +24,7 @@ def main():
     query.add_argument("--query", help="Run a query through the saved team (calls the configured model)")
     query.add_argument("--brief-file", type=Path, help="Read the complete query from a text file")
     parser.add_argument("--api", default="[::1]:8080", help="Embers host:port, without http://")
+    parser.add_argument("--timeout", type=int, default=900, help="Query timeout in seconds")
     parser.add_argument(
         "--run-dir",
         type=Path,
@@ -68,10 +69,13 @@ def main():
 
     if args.query is not None:
         state = json.loads(state_path.read_text())
-        answer = client.agents_teams.run(wallet, args.query, agents_team=state["teamUri"], timeout=600).json
+        from tests.api.agents_teams.test_reveal_output import _run
+        run_id, answer = _run(client, wallet, args.query, state["teamUri"], timeout=args.timeout)
+        state["lastRunId"] = run_id
+        state_path.write_text(json.dumps(state, indent=2) + "\n")
         if not isinstance(answer, str) or not answer.strip():
             raise RuntimeError(f"Expected a non-empty final answer, received: {answer!r}")
-        required = ["Recommendation", "Changes after review", "Remaining risks", "Rollout checklist", "Calculator evidence (editable scenario assumptions):"]
+        required = ["Recommendation", "Changes after review", "Remaining risks", "Rollout checklist", "Local verification:", "Stop reason:"]
         missing = [section for section in required if section.lower() not in answer.lower()]
         if missing:
             raise RuntimeError(f"The final response omitted required sections: {missing}")

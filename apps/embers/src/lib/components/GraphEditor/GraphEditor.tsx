@@ -25,7 +25,8 @@ import type { ContextMenuInput } from "./menuItems";
 import type { NodeKind } from "./nodes/nodes.registry";
 
 import styles from "./GraphEditor.module.scss";
-import { buildMenuItems, createNodeChange } from "./menuItems";
+import { buildMenuItems, createNodeChange, openNodeEditor } from "./menuItems";
+import { NodeEditingContext } from "./NodeEditingContext";
 import { EditModal } from "./nodes/EditModal";
 import { NODE_REGISTRY } from "./nodes/nodes.registry";
 import { WorkflowEdge } from "./WorkflowEdge";
@@ -182,6 +183,17 @@ export function GraphEditor({
     openSelectionContextMenu,
   } = useContextMenu();
 
+  const editNode = useCallback(
+    (id: string) => {
+      const node = rf.getNode(id);
+      if (node) {
+        closeContextMenu();
+        openNodeEditor(node, open, onNodesChange);
+      }
+    },
+    [closeContextMenu, onNodesChange, open, rf],
+  );
+
   const menuItems = useMemo(
     () =>
       contextMenuInput !== undefined
@@ -197,137 +209,144 @@ export function GraphEditor({
   );
 
   return (
-    <div className={styles.container}>
-      <ReactFlow
-        fitView
-        defaultEdgeOptions={{
-          animated: true,
-          className: styles.edge,
-          selectable: true,
-          type: "workflow",
-        }}
-        deleteKeyCode={["Delete", "Backspace"]}
-        edges={edges}
-        edgeTypes={edgeTypes}
-        nodes={nodes}
-        nodeTypes={nodeTypes}
-        onConnect={onConnect}
-        onDragOver={(event) => event.preventDefault()}
-        onDrop={(event) => {
-          event.preventDefault();
-          const type = event.dataTransfer.getData(
-            "application/reactflow",
-          ) as NodeKind;
-
-          if (!(type in NODE_REGISTRY)) {
-            return;
-          }
-
-          let offsetX = 0;
-          let offsetY = 0;
-
-          const rawOffset = event.dataTransfer.getData(
-            "application/reactflow-offset",
-          );
-          if (rawOffset) {
-            try {
-              const parsed = JSON.parse(rawOffset) as {
-                x?: number;
-                y?: number;
-              };
-              offsetX = parsed.x ?? 0;
-              offsetY = parsed.y ?? 0;
-            } catch {
-              offsetX = 0;
-              offsetY = 0;
-            }
-          }
-
-          let dragData: Record<string, string> = {};
-          const rawData = event.dataTransfer.getData(
-            "application/reactflow-data",
-          );
-          if (rawData) {
-            try {
-              dragData = JSON.parse(rawData) as Record<string, string>;
-            } catch {
-              dragData = {};
-            }
-          }
-
-          // An agent node without an identity would compile to an invalid
-          // graph, so refuse the drop rather than create a broken node.
-          if (type === "agent" && typeof dragData.agentId !== "string") {
-            return;
-          }
-
-          const data = { ...NODE_REGISTRY[type].defaultData, ...dragData };
-
-          const position = rf.screenToFlowPosition({
-            x: event.clientX - offsetX,
-            y: event.clientY - offsetY,
-          });
-
-          if (NODE_REGISTRY[type].modalInputs.length === 0) {
-            onNodesChange(createNodeChange(type, position, data));
-          } else {
-            open(
-              <EditModal
-                initial={data}
-                inputs={NODE_REGISTRY[type].modalInputs}
-                title={`Configure ${NODE_REGISTRY[type].displayName}`}
-                onSave={(updatedData) => {
-                  onNodesChange(createNodeChange(type, position, updatedData));
-                }}
-              />,
-              {
-                ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
-                closeOnBlur: true,
-                maxWidth: 520,
-              },
-            );
-          }
-        }}
-        onEdgeContextMenu={openEdgeContextMenu}
-        onEdgesChange={onEdgesChange}
-        onNodeContextMenu={openNodeContextMenu}
-        onNodesChange={onNodesChange}
-        onPaneContextMenu={openEmptySpaceContextMenu}
-        onSelectionContextMenu={openSelectionContextMenu}
-      >
-        {diagnostics.length > 0 && (
-          <div className={styles.diagnostics} role="status">
-            <strong>
-              {
-                diagnostics.filter(({ severity }) => severity === "error")
-                  .length
-              }{" "}
-              publish issue(s)
-            </strong>
-            {diagnostics.slice(0, 4).map((diagnostic) => (
-              <span key={`${diagnostic.code}:${diagnostic.id ?? "workflow"}`}>
-                {diagnostic.message}
-              </span>
-            ))}
-          </div>
-        )}
-        <Background
-          className={styles.background}
-          gap={5}
-          patternClassName={styles.pattern}
-        />
-        <Controls />
-        <ContextMenu
-          items={menuItems}
-          open={contextMenuInput !== undefined}
-          position={{
-            x: contextMenuInput?.x ?? 0,
-            y: contextMenuInput?.y ?? 0,
+    <NodeEditingContext.Provider value={editNode}>
+      <div className={styles.container}>
+        <ReactFlow
+          fitView
+          defaultEdgeOptions={{
+            animated: true,
+            className: styles.edge,
+            selectable: true,
+            type: "workflow",
           }}
-          onClose={closeContextMenu}
-        />
-      </ReactFlow>
-    </div>
+          deleteKeyCode={["Delete", "Backspace"]}
+          edges={edges}
+          edgeTypes={edgeTypes}
+          nodes={nodes}
+          nodeTypes={nodeTypes}
+          onConnect={onConnect}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={(event) => {
+            event.preventDefault();
+            const type = event.dataTransfer.getData(
+              "application/reactflow",
+            ) as NodeKind;
+
+            if (!(type in NODE_REGISTRY)) {
+              return;
+            }
+
+            let offsetX = 0;
+            let offsetY = 0;
+
+            const rawOffset = event.dataTransfer.getData(
+              "application/reactflow-offset",
+            );
+            if (rawOffset) {
+              try {
+                const parsed = JSON.parse(rawOffset) as {
+                  x?: number;
+                  y?: number;
+                };
+                offsetX = parsed.x ?? 0;
+                offsetY = parsed.y ?? 0;
+              } catch {
+                offsetX = 0;
+                offsetY = 0;
+              }
+            }
+
+            let dragData: Record<string, string> = {};
+            const rawData = event.dataTransfer.getData(
+              "application/reactflow-data",
+            );
+            if (rawData) {
+              try {
+                dragData = JSON.parse(rawData) as Record<string, string>;
+              } catch {
+                dragData = {};
+              }
+            }
+
+            // An agent node without an identity would compile to an invalid
+            // graph, so refuse the drop rather than create a broken node.
+            if (type === "agent" && typeof dragData.agentId !== "string") {
+              return;
+            }
+
+            const data = { ...NODE_REGISTRY[type].defaultData, ...dragData };
+
+            const position = rf.screenToFlowPosition({
+              x: event.clientX - offsetX,
+              y: event.clientY - offsetY,
+            });
+
+            if (
+              type === "agent" ||
+              NODE_REGISTRY[type].modalInputs.length === 0
+            ) {
+              onNodesChange(createNodeChange(type, position, data));
+            } else {
+              open(
+                <EditModal
+                  initial={data}
+                  inputs={NODE_REGISTRY[type].modalInputs}
+                  title={`Configure ${NODE_REGISTRY[type].displayName}`}
+                  onSave={(updatedData) => {
+                    onNodesChange(
+                      createNodeChange(type, position, updatedData),
+                    );
+                  }}
+                />,
+                {
+                  ariaLabel: `Configure ${NODE_REGISTRY[type].displayName}`,
+                  closeOnBlur: true,
+                  maxWidth: 520,
+                },
+              );
+            }
+          }}
+          onEdgeContextMenu={openEdgeContextMenu}
+          onEdgesChange={onEdgesChange}
+          onNodeContextMenu={openNodeContextMenu}
+          onNodesChange={onNodesChange}
+          onPaneContextMenu={openEmptySpaceContextMenu}
+          onSelectionContextMenu={openSelectionContextMenu}
+        >
+          {diagnostics.length > 0 && (
+            <div className={styles.diagnostics} role="status">
+              <strong>
+                {
+                  diagnostics.filter(({ severity }) => severity === "error")
+                    .length
+                }{" "}
+                publish issue(s)
+              </strong>
+              {diagnostics.slice(0, 4).map((diagnostic) => (
+                <span key={`${diagnostic.code}:${diagnostic.id ?? "workflow"}`}>
+                  {diagnostic.message}
+                </span>
+              ))}
+            </div>
+          )}
+          <Background
+            className={styles.background}
+            gap={5}
+            patternClassName={styles.pattern}
+          />
+          <Controls />
+          <ContextMenu
+            items={menuItems}
+            open={contextMenuInput !== undefined}
+            position={{
+              x: contextMenuInput?.x ?? 0,
+              y: contextMenuInput?.y ?? 0,
+            }}
+            onClose={closeContextMenu}
+          />
+        </ReactFlow>
+      </div>
+    </NodeEditingContext.Provider>
   );
 }
 

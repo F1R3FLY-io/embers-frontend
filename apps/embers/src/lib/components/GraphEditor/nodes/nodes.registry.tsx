@@ -32,6 +32,20 @@ interface NodeDefinition {
 
 const defineNode = (definition: NodeDefinition) => definition;
 
+const protocolInput: ModalInput<Record<string, string | number>> = {
+  name: "protocol",
+  type: "string",
+  options: [
+    { label: "Direct input and result (simple-v1)", value: "simple-v1" },
+    {
+      label: "Workflow invocation and result (structured-v1)",
+      value: "structured-v1",
+    },
+  ],
+  helperText:
+    "Match the agent's code. Direct agents return their result. Workflow agents read invocation.input and return {output, disposition}.",
+};
+
 export const NODE_REGISTRY = {
   /**
    * A user-defined agent. One generic kind covers every agent the user writes:
@@ -48,7 +62,7 @@ export const NODE_REGISTRY = {
     ],
     iconSrc: defaultNodeIcon,
     labelKey: "agentName",
-    modalInputs: [{ name: "protocol", type: "string" }],
+    modalInputs: [protocolInput],
     title: "Agent",
   }),
   approval: defineNode({
@@ -146,6 +160,7 @@ export const NODE_REGISTRY = {
     className: "data-package",
     defaultData: {},
     displayName: "Gateway",
+    labelKey: "label",
     handlers: [
       { position: Position.Left, type: "target" },
       { position: Position.Right, type: "source" },
@@ -193,10 +208,7 @@ export const NODE_REGISTRY = {
       { position: Position.Right, type: "source" },
     ],
     iconSrc: defaultNodeIcon,
-    modalInputs: [
-      { name: "uri", type: "string" },
-      { name: "protocol", type: "string" },
-    ],
+    modalInputs: [{ name: "uri", type: "string" }, protocolInput],
     title: "Rholang activity",
   }),
   "text-model": defineNode({

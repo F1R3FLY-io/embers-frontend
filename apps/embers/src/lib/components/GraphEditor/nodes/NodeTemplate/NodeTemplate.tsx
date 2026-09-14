@@ -3,11 +3,13 @@ import type { FC, ReactNode } from "react";
 
 import { Handle } from "@xyflow/react";
 import classNames from "classnames";
+import { useContext } from "react";
 
 import { Text } from "@/lib/components/Text";
 import { useAgents } from "@/lib/queries";
 import SettingsIcon from "@/public/icons/settings-icon.svg?react";
 
+import { NodeEditingContext } from "../../NodeEditingContext";
 import { agentNodeStatus } from "../agentNodeStatus";
 import styles from "./NodeTemplate.module.scss";
 
@@ -50,7 +52,8 @@ export function NodeTemplate({
   labelKey,
   title,
 }: NodeTemplateProps) {
-  const Node: FC<NodeProps> = ({ data, selected }) => {
+  const Node: FC<NodeProps> = ({ data, id, selected }) => {
+    const editNode = useContext(NodeEditingContext);
     // One query shared by every node and by the sidebar: react-query dedupes on the
     // key, so marking each node costs a subscription rather than a read.
     const { data: agents } = useAgents();
@@ -88,7 +91,28 @@ export function NodeTemplate({
               {STATUS_BADGE[marking]}
             </span>
           )}
-          <SettingsIcon className={styles["settings-icon"]} />
+          {editNode && (
+            <button
+              aria-label={`Configure ${label}`}
+              className={classNames(
+                styles["settings-button"],
+                "nodrag",
+                "nopan",
+              )}
+              title={`Configure ${label}`}
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                editNode(id);
+              }}
+              onKeyDown={(event) => event.stopPropagation()}
+            >
+              <SettingsIcon
+                aria-hidden="true"
+                className={styles["settings-icon"]}
+              />
+            </button>
+          )}
         </div>
         {handlers?.map(({ position, type }, index) => (
           <Handle

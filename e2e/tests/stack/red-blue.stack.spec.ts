@@ -17,7 +17,7 @@ test("creates eight red/blue agents, wraps them in a deploy container, deploys a
   page,
   signIn,
 }) => {
-  test.setTimeout(15 * 60_000);
+  test.setTimeout(20 * 60_000);
   page.setDefaultTimeout(20_000);
   await signIn();
   const key = PrivateKey.new();
@@ -45,8 +45,9 @@ test("creates eight red/blue agents, wraps them in a deploy container, deploys a
     deterministic.agents,
     uniqueName("RedBlueDecisionReview-test"),
   );
-  const scenario = deterministic.cases.find((c) => c.name === "acceptable")!;
+  const scenario = deterministic.cases.find((c) => c.name === "revision")!;
   const result = await runRedBlueInBrowser(page, scenario.brief);
-  expect(result).toEqual(scenario.expected);
-  await expect(page.getByText(/Recommendation\|/).first()).toBeVisible();
+  expect(result).toContain(`Rounds: ${scenario.rounds}/3`);
+  expect(result).toContain(`Stop reason: ${scenario.stop}`);
+  await expect(page.getByText(/Recommendation:/).first()).toBeVisible();
 });

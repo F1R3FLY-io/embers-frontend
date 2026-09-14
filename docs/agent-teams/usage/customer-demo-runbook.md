@@ -30,7 +30,7 @@ rmdir libtorch-extract && rm libtorch.zip
 
 ### 1.2 Pin and build the compatible node
 
-Use node revision `43692191ce388d3068bcd3ab722fd1ca4c0beed7` in a separate checkout. It retains the legacy deploy protocol and pins its published parser dependency. The older models revision in `embers/packages/firefly-client/Cargo.toml` needs an unpublished parser overlay to build the full node. The current protocol-v6 node requires deploy fields that this demo's Embers and F1r3drive clients do not supply. It also rejects legacy chain databases. A fresh protocol-v6 genesis alone does not resolve client compatibility.
+Use GC-backport revision `628b6bb14ad16a4ad91fc9d91bc3a736cec8aa6d` on local branch `feature/embers-demo-gc` in a separate checkout. Its parent is the original demo pin `43692191ce388d3068bcd3ab722fd1ca4c0beed7`; only GC implementation, scheduling, instrumentation, and tests differ. It retains the legacy deploy protocol and pins its published parser dependency. The older models revision in `embers/packages/firefly-client/Cargo.toml` needs an unpublished parser overlay to build the full node. The current protocol-v6 node requires deploy fields that this demo's Embers and F1r3drive clients do not supply. It also rejects legacy chain databases. A fresh protocol-v6 genesis alone does not resolve client compatibility.
 
 This pinned revision uses libtorch as described above. Newer node revisions use FastEmbed/ONNX, but that does not make them compatible with these clients.
 
@@ -38,14 +38,20 @@ This pinned revision uses libtorch as described above. Newer node revisions use 
 cd ~/Workspace/f1r3fly.io/f1r3node-rust
 # Run once. Reuse this checkout on subsequent builds.
 git worktree add --detach ../embers-local-stack/run/node-demo-source \
-  43692191ce388d3068bcd3ab722fd1ca4c0beed7
+  628b6bb14ad16a4ad91fc9d91bc3a736cec8aa6d
 cd ../embers-local-stack/run/node-demo-source
 # Apply once: remove a duplicate RhoList import in the Chroma feature build.
 git apply ../../../embers-frontend/demo/research-desk/node-chromadb-build.patch
+# Apply once: retain finalized deployment status after its validity window ends.
+git apply ../../../embers-frontend/demo/research-desk/node-finalization-history.patch
+# Unicode-safe character length and slicing for model responses
+git apply ../../../embers-frontend/demo/research-desk/node-unicode-string.patch
 LIBTORCH=$HOME/Workspace/f1r3fly.io/embers-local-stack/run/libtorch-2.4.0-cpu \
 BZIP2_NO_PKG_CONFIG=1 \
 cargo build --release -p node --features rholang/chromadb --locked
 ```
+
+The local GC branch contains one isolated commit. The three patches above remain separate and must still be applied to a fresh checkout. If transferring the base checkout without the branch, `demo/research-desk/node-gc-history.patch` is the exact GC commit diff and may be applied once instead. Do not apply it on top of the GC commit. No Cargo dependency, toolchain, protocol, or database-format upgrade is included. See [GC backport verification and rollback](demo-gc-backport.md).
 
 Both environment variables are load-bearing:
 

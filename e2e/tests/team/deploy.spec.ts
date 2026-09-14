@@ -40,7 +40,7 @@ async function drawMinimalWorkflow(page: Page) {
     canvas,
     {
       x: 0.75,
-      y: 0.4,
+      y: 0.75,
     },
   );
 

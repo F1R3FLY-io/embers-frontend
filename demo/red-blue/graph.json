@@ -1,39 +1,74 @@
 {
   "agents": [
     "BluePlanner",
+    "ConstraintCheck",
     "RedLogic",
     "RedEvidence",
     "RedOperations",
+    "ReviewCoverage",
     "BlueResponder",
-    "DecisionWriter",
-    "ReviewCapacity",
-    "EmergencyReviewPolicy"
+    "DecisionWriter"
   ],
   "edges": [
-    ["Input", "BluePlanner"],
-    ["Input", "RedLogic"],
-    ["Input", "RedEvidence"],
-    ["Input", "RedOperations"],
-    ["Input", "BlueResponder"],
-    ["Input", "DecisionWriter"],
-    ["BluePlanner", "RedLogic"],
-    ["BluePlanner", "RedEvidence"],
-    ["BluePlanner", "RedOperations"],
-    ["BluePlanner", "BlueResponder"],
-    ["RedLogic", "BlueResponder"],
-    ["RedEvidence", "BlueResponder"],
-    ["RedOperations", "BlueResponder"],
-    ["BlueResponder", "DecisionWriter"],
-    ["DecisionWriter", "Output"],
-    ["Input", "ReviewCapacity"],
-    ["ReviewCapacity", "BluePlanner"],
-    ["ReviewCapacity", "RedOperations"],
-    ["ReviewCapacity", "BlueResponder"],
-    ["ReviewCapacity", "DecisionWriter"],
-    ["Input", "EmergencyReviewPolicy"],
-    ["EmergencyReviewPolicy", "BluePlanner"],
-    ["EmergencyReviewPolicy", "RedOperations"],
-    ["EmergencyReviewPolicy", "BlueResponder"],
-    ["EmergencyReviewPolicy", "DecisionWriter"]
+    [
+      "Input",
+      "BluePlanner"
+    ],
+    [
+      "BluePlanner",
+      "ConstraintCheck"
+    ],
+    [
+      "ConstraintCheck",
+      "RedLogic"
+    ],
+    [
+      "ConstraintCheck",
+      "RedEvidence"
+    ],
+    [
+      "ConstraintCheck",
+      "RedOperations"
+    ],
+    [
+      "RedLogic",
+      "ReviewCoverage"
+    ],
+    [
+      "RedEvidence",
+      "ReviewCoverage"
+    ],
+    [
+      "RedOperations",
+      "ReviewCoverage"
+    ],
+    [
+      "ReviewCoverage",
+      "Decide"
+    ],
+    [
+      "Decide",
+      "DecisionWriter"
+    ],
+    [
+      "Decide",
+      "BlueResponder"
+    ],
+    [
+      "Decide",
+      "Limit"
+    ],
+    [
+      "BlueResponder",
+      "ConstraintCheck"
+    ],
+    [
+      "DecisionWriter",
+      "Output"
+    ],
+    [
+      "Limit",
+      "DecisionWriter"
+    ]
   ]
 }

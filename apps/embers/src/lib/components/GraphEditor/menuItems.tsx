@@ -108,6 +108,40 @@ function editInputs(node: Node) {
         ];
 }
 
+export function openNodeEditor(
+  node: Node,
+  open: (content: ReactNode, options?: ModalOptions) => void,
+  onNodesChange: (changes: NodeChange<Node>[]) => void,
+) {
+  open(
+    <EditModal
+      initial={node.data as Record<string, string | number>}
+      inputs={editInputs(node)}
+      title={
+        node.type === "deploy-container"
+          ? "Edit deploy container"
+          : node.type === "state-scope"
+            ? "Edit state scope"
+            : `Edit ${NODE_REGISTRY[node.type].displayName}`
+      }
+      onSave={(data) =>
+        onNodesChange([
+          {
+            id: node.id,
+            item: { ...node, data } as Node,
+            type: "replace",
+          },
+        ])
+      }
+    />,
+    {
+      ariaLabel: "Edit node",
+      closeOnBlur: false,
+      maxWidth: 620,
+    },
+  );
+}
+
 function routeGroupIdentity(edge: Edge): string {
   return (
     edge.data?.routeGroupId ??
@@ -150,34 +184,7 @@ export function buildMenuItems(
           content: "Edit node",
           hidden: selectedNode === undefined || selectedInputs.length === 0,
           onClick: () => {
-            const node = input.nodes[0];
-            open(
-              <EditModal
-                initial={node.data as Record<string, string | number>}
-                inputs={selectedInputs}
-                title={
-                  node.type === "deploy-container"
-                    ? "Edit deploy container"
-                    : node.type === "state-scope"
-                      ? "Edit state scope"
-                      : `Edit ${NODE_REGISTRY[node.type].displayName}`
-                }
-                onSave={(data) =>
-                  onNodesChange([
-                    {
-                      id: node.id,
-                      item: { ...node, data } as Node,
-                      type: "replace",
-                    },
-                  ])
-                }
-              />,
-              {
-                ariaLabel: "Edit node",
-                closeOnBlur: false,
-                maxWidth: 620,
-              },
-            );
+            openNodeEditor(input.nodes[0], open, onNodesChange);
           },
           type: "text",
         },
@@ -228,6 +235,32 @@ export function buildMenuItems(
               <JoinModal
                 incomingCount={incomingCount}
                 initial={node.data}
+                routeGroups={Array.from(
+                  new Map(
+                    rf.getEdges().map((edge) => {
+                      const source = rf
+                        .getNodes()
+                        .find((candidate) => candidate.id === edge.source);
+                      const data = source?.data as
+                        | Record<string, unknown>
+                        | undefined;
+                      const name =
+                        typeof data?.agentName === "string"
+                          ? data.agentName
+                          : typeof data?.label === "string"
+                            ? data.label
+                            : edge.source;
+                      const value = routeGroupIdentity(edge);
+                      return [
+                        value,
+                        {
+                          label: `${name} · ${edge.data?.trigger ?? "completed"}`,
+                          value,
+                        },
+                      ];
+                    }),
+                  ).values(),
+                )}
                 onSave={(data) =>
                   onNodesChange([
                     {

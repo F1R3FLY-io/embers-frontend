@@ -30,17 +30,14 @@ async function openNewTeam(page: Page, name: string) {
   await expect(page.locator(CANVAS)).toBeVisible();
 }
 
-/** Drops a palette agent on the canvas and answers its configuration dialog. */
+/** Drops a palette agent using its default protocol without a dialog. */
 async function placeAgent(page: Page, agentId: string) {
   await dragAndDrop(
     page,
     page.getByTestId(`sidebar-agent-${agentId}`),
     page.locator(CANVAS),
   );
-  await page
-    .getByRole("dialog")
-    .getByRole("button", { name: /^save$/i })
-    .click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
 }
 
 test("offers every saved agent in the team palette", async ({
@@ -78,13 +75,45 @@ test("adds an agent to the canvas by dragging it from the palette", async ({
     page.locator(CANVAS),
   );
 
-  // An agent kind declares modal inputs, so the drop opens a configuration
-  // dialog rather than creating the node outright. Both halves are asserted:
-  // "nothing appeared" would otherwise be indistinguishable from a refused
-  // drop, which is the failure this test exists to catch.
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toContainText(/configure agent/i);
-  await dialog.getByRole("button", { name: /^save$/i }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  const node = page.locator(".react-flow__node-agent");
+  const position = await node.getAttribute("style");
+  const gear = node.getByRole("button", { name: "Configure Researcher" });
+  await gear.click();
+  const dialog = page.getByRole("dialog", { name: "Edit node" });
+  await expect(dialog).toBeVisible();
+  const protocol = dialog.getByRole("combobox", { name: "Protocol" });
+  await expect(protocol).toContainText("simple-v1");
+  await protocol.click();
+  await dialog
+    .getByText("Workflow invocation and result (structured-v1)", {
+      exact: true,
+    })
+    .click();
+  await dialog.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(node).toHaveAttribute("style", position!);
+  await gear.focus();
+  await page.keyboard.press("Enter");
+  await expect(protocol).toContainText("structured-v1");
+  await protocol.click();
+  await dialog
+    .getByText("Direct input and result (simple-v1)", { exact: true })
+    .click();
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await gear.click();
+  await expect(protocol).toContainText("structured-v1");
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await page.getByRole("button", { name: /save as draft/i }).click();
+  await expect.poll(() => backend.store.teams.length).toBe(1);
+  const definition = backend.store.teams[0].definition as {
+    nodes: Record<string, { activity?: { protocol?: string } }>;
+  };
+  expect(
+    Object.values(definition.nodes).some(
+      (member) => member.activity?.protocol === "structured-v1",
+    ),
+  ).toBe(true);
 
   // The node carries the agent's own name, which is how the author recognises
   // it on a canvas of otherwise identical shapes.
