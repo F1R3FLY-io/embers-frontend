@@ -2,6 +2,19 @@
 
 Create **RedBlueDecisionReview-live** during the demonstration: six model agents and two ordinary Rholang agents inside a real deployment container. Ask an engineering decision question in normal English. The local agents calculate proposal constraints and reconcile red findings against blue responses for that question. There are **at most three review rounds: the initial proposal and two revisions**.
 
+## Plan for 5–15 minutes per query
+
+**Budget approximately 5–15 minutes from submitting a query to receiving its final response.** This is a presentation planning estimate from earlier rehearsals, not a guaranteed range or a measured MacBook response time. Three-round runs can approach 15 minutes; fewer rounds may finish sooner, and slower services can take longer. The three-round limit bounds the review work, not elapsed time. Agent creation, deployment and initial service startup require additional time.
+
+Model response times, chain finalization and encrypted history storage all contribute to the wait. **Submit one query at a time.** Rehearse on the actual presentation machine to measure its timing before choosing the agenda.
+
+For the live presentation:
+
+1. Submit the query early, once the team is deployed.
+2. While it runs, explain the team and open the agent history to show progress as executions complete.
+3. Keep a completed rehearsal's run page ready as a backup, especially for a short presentation. Identify it as a previous run when showing it.
+4. Explain the final stop reason. **A completed response may require human review; completion does not guarantee convergence or approval.**
+
 ## Before presenting
 
 Start the supplied demo environment using its setup guide and wait for `Demo ready`. On an Apple Silicon MacBook, follow `MACBOOK-SETUP.md` from the setup bundle first. Import the generated funded wallet and unlock it in Embers before sharing your screen.
@@ -200,6 +213,8 @@ If you already deployed with `simple-v1`, changing the editor alone does not upd
 The container packages member code into a separately registered Rholang contract with its own URI; the team dispatches member activities through it. The current implementation targets the current stack. It does not yet schedule those activities onto arbitrary remote hardware. **Wrap in state scope** remains a separate action for entry/exit, history and lifecycle semantics. Hierarchies and cycles remain supported; nesting a deployment container does not change the round cap.
 
 ## Run and inspect
+
+**Allow approximately 5–15 minutes for this query; MacBook timing is still unmeasured and 15 minutes is not a hard deadline.** Keep the run page open, inspect progress in agent history, and avoid submitting overlapping queries. Use the completed rehearsal backup if the live run exceeds your presentation slot.
 
 Choose **Run**, paste the task, and submit. The final answer has **Recommendation**, **Changes after review**, **Remaining risks** and **Rollout checklist**. Its appended **Local verification** includes the actual constraint checks, number of rounds, stop reason, coverage, accepted risks and round summaries. Those values come from Rholang rather than the final model's recollection.
 
