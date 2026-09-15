@@ -4,25 +4,17 @@ Create **RedBlueDecisionReview-live** during the demonstration: six model agents
 
 ## Before presenting
 
-**Using the Docker image on a MacBook:** complete `MACBOOK-SETUP.md` from the setup bundle, wait for `Demo ready`, and import the generated funded wallet. Then go directly to **Explain the decision** and **Create the eight agents live** below. The host stack/profile commands and source-repository integration commands in this runbook are for the development workstation; they are not prerequisites for manual creation using the published image. All eight complete sources are embedded in this document. Mac container startup is confirmed; the full Mac demo rehearsal is still pending.
+Start the supplied demo environment using its setup guide and wait for `Demo ready`. On an Apple Silicon MacBook, follow `MACBOOK-SETUP.md` from the setup bundle first. Import the generated funded wallet and unlock it in Embers before sharing your screen.
 
-Use the [shared stack runbook](customer-demo-runbook.md). Embers is at <http://localhost:5173>, F1r3sky at <http://localhost:19006>, and the local PDS (Personal Data Server) at <http://localhost:2583>. Unlock the funded presenter wallet before sharing your screen. The stack profile is `embers-local-stack/run/profiles/research-desk`; its drive mount and Java temporary files are on disk, outside `/tmp`.
+| Open | Demo address |
+| --- | --- |
+| Embers | http://localhost:5173 |
+| F1r3sky | http://localhost:19006 |
+| PDS (Personal Data Server), when signing in or publishing | http://localhost:2583 |
 
-Run `./stack.sh status` from `embers-local-stack`. Both nodes, proposer, F1r3drive, Embers and the configured model service must be available. Logs are `embers.log`, `val.log`, `read.log` and `f1r3drive.log` in the profile. After a reboot, drive reconstruction can take several minutes; do not reset the chain to fix a slow mount.
+Create the team live using the steps below, or keep a previously rehearsed team available as a backup. Ask one query at a time and allow it to finish. A response that stops at the review limit or requests human review is a valid outcome to explain, rather than an approval.
 
-Check the [verification report](red-blue-demo-verification.md) before treating a saved team as a rehearsed backup. The September 14 backup completed a real-model rehearsal (`01a0a187-03fc-7413-bc38-577a79901332`): three rounds, no record-validation errors, and a calculated 180 reviewer-minutes/day against the 240-minute limit. It stopped at the review limit with one open blocker and explicitly required human review. This is a verified bounded-review demonstration, not an approval result. All 69 focused Rholang checks pass. The report distinguishes this rehearsal from earlier browser, publication, and restart checks. A seeded team alone does not certify a successful model run.
-
-Run the integration checks and then seed a real-model backup:
-
-```sh
-cd ~/Workspace/f1r3fly.io/embers/packages/embers
-.venv/bin/python -m pytest tests/api/agents_teams/test_red_blue_calculators.py \
-  tests/api/agents_teams/test_red_blue_demo.py -v --strict-services
-.venv/bin/python ../../../embers-frontend/demo/red-blue/seed.py --seed \
-  --brief-file ../../../embers-frontend/demo/red-blue/brief.txt
-```
-
-`--seed` creates new agents, team and deployment, then saves their IDs and URI in the profile's `red-blue-demo.json`. Later queries omit `--seed`. The script prints the run ID before waiting and saves the last completed run ID. Queries allow 900 seconds by default; use `--timeout` to change that limit. Keep the rehearsed backup available if live authoring takes longer than your presentation slot. A real-model run can legitimately stop at the limit or with incomplete review; explain that outcome rather than calling it approval.
+All eight complete agent sources are included below. The presentation flow is: **explain → create agents → draw the bounded loop → deploy the container → run and inspect → publish and query from F1r3sky**. Installation, automated integration checks, and source maintenance are separate from this presentation.
 
 ## Explain the decision
 
@@ -37,6 +29,52 @@ The two-approval demand is 360 reviewer-minutes/day; one approval needs 180. The
 Qualitative decisions work too. With no numeric constraints, the numeric ledger is empty and red review still applies. Missing quantities and incompatible units produce **unknown**, never zero or a passing check. Estimates are labeled and remain assumptions: arithmetic cannot establish that a model's estimate or extracted premise is true. Inspect the extracted ledger and evidence in the history.
 
 General engineering knowledge is allowed. The model channel has no attached browser or retrieval tool, so agents cannot claim current Internet research. Adding a real retrieval service is a separate integration; changing a prompt alone does not supply Internet access.
+
+## F1r3node and Embers example queries
+
+Paste one of these into **Run** after deploying the team. They are planning exercises: the team returns a reviewed recommendation; it does not execute server commands or change your infrastructure. The quantities are illustrative inputs, not F1r3node benchmarks, production requirements, or current supplier prices. Check the extracted assumptions and calculations in the history before interpreting the recommendation.
+
+For a short presentation, start with the upgrade-window or onboarding example. The arithmetic below is a presenter reference, not a promised model outcome.
+
+### 1. Plan a F1r3node upgrade within a maintenance window
+
+> We operate a three-server F1r3node pilot. We have already selected and staged a release artifact, but have not yet verified its state-format compatibility or rollback procedure. One operator estimates 45 minutes of hands-on upgrade and validation work per server, performed sequentially. Only 120 operator-minutes are available in this maintenance window. Propose a staged rollout with preflight checks, a pilot server, stop conditions, ownership and rollback. Can we upgrade all three in this window? If not, state how many fit and what is deferred. Do not assume that stopping a validator preserves quorum; make the order conditional on the actual validator membership and voting weights.
+
+**Show:** three upgrades require 135 operator-minutes, 15 over the limit; two require 90, leaving 30. Splitting windows does not reduce the total work. Red should identify the missing compatibility and quorum evidence. These are labor estimates, not guaranteed downtime.
+
+### 2. Fit a F1r3node and Embers pilot into a monthly budget
+
+> Plan a small F1r3node and Embers pilot within 500 USD/month. Our hypothetical quote includes three node servers at 120 USD/month each, two optional Embers worker servers at 60 USD/month each, and a fixed backup allocation of 40 USD/month. Review the proposed two-worker plan and an alternative with one worker. Preserve the three node servers and the backup allocation. Include monitoring, an owning role, a pilot acceptance check and a rollback plan. Treat prices as supplied estimates and require workload measurements before claiming the smaller worker configuration has enough capacity.
+
+**Show:** the two-worker proposal costs 520 USD/month; the one-worker alternative costs 460, leaving 40. Passing the budget check does not prove performance or availability.
+
+### 3. Schedule Embers customer-team onboarding
+
+> We need to onboard 12 customer teams into Embers. We estimate 20 operator-minutes per team for wallet import, agent-team deployment, a sample query and checking the decrypted response. Today we have a hard cap of 180 operator-minutes. Propose a realistic first-day rollout, including how to prioritize teams, verify success and schedule the remainder. Do not claim all 12 fit unless you identify and justify a change to the supplied estimate. Keep private wallet material out of shared customer records.
+
+**Show:** all 12 need 240 operator-minutes. Nine fit into 180; three require another 60. Red should challenge any proposal that silently reduces the estimate or claims deployment alone verifies a useful response.
+
+### 4. Review an Embers agent-team release plan
+
+> We want to publish a new Embers engineering-decision team to F1r3sky. We have a 24 engineer-hour preparation budget. Our estimates are 8 hours for agent authoring, 6 for integration checks, 4 for publication and wallet-flow checks, and 8 for a customer rehearsal. Review this plan and propose what to change or defer while retaining all 6 hours of integration checks and all 4 hours of publication and wallet checks. Define success criteria for a bounded review loop and decrypted outputs, ownership, and how we would return to a previously verified team if the release fails. Do not assume publication and deployment are the same operation or that an automatic rollback feature exists.
+
+**Show:** the proposed work totals 26 engineer-hours, 2 over budget. A revision must explain its scope or estimate changes; it cannot merely claim the total is 24. The operational review should distinguish creating/deploying the contract from making it reachable through F1r3sky.
+
+### 5. Plan an Embers storage migration with recovery checks
+
+> Plan moving an Embers demo's persistent storage to a new host within a 40 engineer-hour budget. Estimated work is 12 hours for inventory and backup preparation, 8 for transfer, 8 for application validation, and 16 for a restore rehearsal. The data size, measured restore time, and supported migration procedure are still unknown. Review the proposal, identify what evidence must be gathered, and propose a scoped or phased plan without silently dropping the restore rehearsal. Include ownership, a cutover checkpoint, protection of wallet material, and explicit criteria for returning to the old host. Do not treat copying a live database directory as a verified backup.
+
+**Show:** the supplied work totals 44 engineer-hours, 4 over budget. Phasing does not make 44 fit a total budget of 40. A useful answer may request a scope or budget decision and stop for human review; unknown recovery properties must remain unknown.
+
+### 6. Decide whether to resume after a F1r3node interruption
+
+> An Embers team query was interrupted when its F1r3node validator restarted. The UI has no final response yet. We do not know whether the last signed operation finalized. Recommend an investigation and recovery decision: what evidence should we collect from the run history, backend logs and chain status; when should we wait; and when should an operator intervene? Preserve existing wallet and chain data, account for duplicate effects, and assign an owner for the recovery decision. Do not invent a command, API endpoint, or successful recovery that has not been verified in the supplied environment.
+
+**Show:** this is a qualitative review. ConstraintCheck may have an empty numeric ledger; ReviewCoverage still tracks findings, responses, unresolved blockers and the bounded stop. The team should distinguish a missing response from proof that an operation failed.
+
+### Asking about the latest release
+
+Instead of only asking “How can I deploy the latest F1r3node to my servers?”, supply the selected version or commit, release notes, current node roles, operating systems, resources and maintenance constraints. Paste relevant excerpts into the query. This demo has no browser or retrieval tool, so it cannot discover the latest release or verify current installation commands. Use example 1 to review a supplied upgrade plan; current-version discovery requires a separate research step.
 
 ## Create the eight agents live
 
@@ -101,7 +139,7 @@ Connect these routes:
 | Limit | DecisionWriter |
 | DecisionWriter | Output |
 
-**Checkpoint: 12 functional nodes, 15 edges, eight agent nodes.** The authoritative definition is [graph.py](../../../demo/red-blue/graph.py), with connectivity in [graph.json](../../../demo/red-blue/graph.json).
+**Checkpoint: 12 functional nodes, 15 edges, eight agent nodes.**
 
 Configure fan-in by right-clicking the relevant node:
 
@@ -147,37 +185,7 @@ The three terminal outcomes are **converged: no blockers**, **review limit reach
 
 After deployment, publish to F1r3sky. PDS defaults to `http://localhost:2583`; the team handle derives from its name with the required `.test` suffix. Email follows the handle until manually overwritten. Email/password create the team's PDS account; its app password lets Embers publish and reply as that team. These credentials are separate from your wallet.
 
-Use the success popup's F1r3sky link, sign in, and mention the published team with the same ordinary-English decision query. The reply links to its run page and full output. The completed Embers publication form offers **Close**. See [publication and agent history](publication-and-agent-history.md).
-
-## Rehearsal and maintenance
-
-Deterministic integration cases exercise first-round convergence, revision and reevaluation, the three-round limit, malformed model data, accepted risk and nested deployment. They replace only the model channel; the decoder, local calculations, wrappers and writer composition are the real sources.
-
-Additional checks run from `embers/packages/embers`:
-
-```sh
-.venv/bin/python -m pytest tests/api/agents_teams/test_red_blue_channels.py \
-  -m pds -v --strict-services
-EMBERS_RED_BLUE_LIVE=1 .venv/bin/python -m pytest \
-  tests/api/agents_teams/test_red_blue_live.py -v --strict-services
-```
-
-The restart rehearsal in `test_red_blue_channels.py` is opt-in: set `EMBERS_SERVICE_UNIT` to the profile's backend systemd unit and select `-m recovery`. It restarts that backend between rounds, so run it after other rehearsals finish. Execute stack rehearsals sequentially: encrypted checkpoint writes can make a three-round run take close to fifteen minutes under load. Consult the [verification report](red-blue-demo-verification.md) for checks actually completed on this revision.
-
-Run the browser test after building the frontend, with the usual stack-test funded wallet configuration:
-
-```sh
-cd ~/Workspace/f1r3fly.io/embers-frontend
-pnpm --filter @f1r3fly-io/embers-frontend build
-EMBERS_E2E_STACK=1 pnpm --filter @f1r3fly-io/embers-e2e exec playwright test \
-  --project=stack red-blue.stack.spec.ts --workers=1
-```
-
-Set `EMBERS_E2E_STACK_KEY` privately as described in the shared runbook; never paste it into slides or commit it. The browser test creates all eight agents, draws/configures the cycle, wraps the deploy container, deploys and executes a revision case.
-
-Sources are generated from [render.py](../../../demo/red-blue/render.py) and the shared [Rholang helpers](../../../demo/red-blue/lib). After changing them, run `python3 demo/red-blue/render.py`, then `python3 demo/red-blue/fixtures/build.py`. `render.py --check` checks the agent sources and this appendix. The bounded RB1 record protocol is documented in [protocol.md](../../../demo/red-blue/protocol.md).
-
-If the run stalls, check `structured-v1`, canonical output keys, the two **each-arrival** joins, fork correlation, and the loop's maximum of **2**. A model timeout needs the configured model-service logs. Do not repeatedly submit new audience queries while a slow run is still active.
+Use the success popup's F1r3sky link, sign in, and mention the published team with the same ordinary-English decision query. The reply links to its run page and full output. The completed Embers publication form offers **Close**.
 
 ## Agent sources
 

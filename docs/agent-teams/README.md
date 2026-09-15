@@ -6,7 +6,9 @@ Agent Teams Workflow v2 is the typed, cyclic workflow layer for composing Embers
 
 ## Start here
 
-- [Red/blue live-build runbook](usage/red-blue-demo-runbook.md) walks through creating six agents, connecting their team, and presenting an engineering decision brief.
+- [Red/blue customer runbook](usage/red-blue-demo-runbook.md) walks through creating all eight agents, configuring the bounded review loop and deployment container, and presenting F1r3node/Embers decision queries.
+- [Red/blue integration testing](engineering/red-blue-demo-testing.md) covers generated-source checks, deployed workflows, publication, real models, browser authoring and recovery.
+- [Red/blue maintenance and rehearsal](engineering/red-blue-demo-maintenance.md) covers source generation, backup seeding, troubleshooting and customer handoff preparation.
 
 - [Research Desk demo runbook](usage/customer-demo-runbook.md) covers retrieval, bounded revisions, and human approval.
 - [Red-team demo runbook](usage/red-team-demo-runbook.md) covers the six-agent critic committee, seeding, rehearsal, and integration tests.
