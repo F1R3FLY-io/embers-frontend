@@ -1,0 +1,52 @@
+@startuml
+title Gateway run-correlation FSM — one TeamRunRecord from Ack to delivery (or eviction)
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "active: tracking" as tracking #E9F5EA {
+  state "running" as running #E9F5EA
+  state "suspended\n(waits announced once\nper revision)" as suspended #FFF0D9
+  state "resuming" as resuming #FFE0C8
+
+  running --> suspended : poll: status suspended,\nwait_ids nonempty ->\nannounce iff announced_wait_revision\n!= revision (then fence it)
+  suspended --> resuming : team approve/reject\n(initiator-only; deterministic\ndecision_id = author_hash:message_id;\nstale fence -> one retry, same id)
+  resuming --> running : poll: resumed
+  suspended --> suspended : poll: same revision ->\nno re-announcement
+}
+
+state "completed: revealing" as revealing #D9EFDF
+state "delivered\n(output_posted, inactive)" as delivered #D9EFDF
+state "withheld\n(revoked mid-run, inactive)" as withheld #F2F2F2
+state "failed / cancelled\n(inactive)" as failed #F8DADA
+state "refused\n(chain rejected the deploy)" as refused #F8DADA
+state "budget_exceeded\n(evicted; status still works)" as evicted #F2F2F2
+
+[*] --> tracking : prepare ok -> insert record\n(#N handle minted; after Ack)
+tracking --> revealing : poll: status completed
+revealing --> delivered : reveal 200 -> Final message\n(output + backlink, truncation stated)
+revealing --> withheld : reveal 403 (grant revoked) ->\nTeamRunOutputWithheld:\n"owner can view at Run: <url>"
+revealing --> tracking : completed but hashes not yet\nvisible (observer lag) -> stay active;\nnext sweep reveals
+tracking --> failed : poll: status failed/cancelled ->\nTeamRunFailed (status + last event)
+tracking --> evicted : age >= 15 min budget ->\ndeactivate("budget_exceeded") +\n"may yet complete -- team status #N"
+[*] --> refused : send answered grant_revoked /\ngrant_caps_exceeded / deploy_unfunded:\nnothing registered; evict cached grant
+delivered --> [*]
+withheld --> [*]
+failed --> [*]
+evicted --> [*]
+refused --> [*]
+
+note bottom of tracking #FFF0C7
+Restart-safe: the tracker rehydrates from
+RunStore::active_runs() (SQLite, 0600 -- the run_id
+is a capability URL). Send timeouts and 504s leave
+the record here; the 5 s sweeper is the correctness
+path (diagram 54).
+end note
+@enduml

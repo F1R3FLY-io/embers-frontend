@@ -1,6 +1,7 @@
 import type React from "react";
 
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 import { Accordion } from "@/lib/components/Accordion";
 import { Text } from "@/lib/components/Text";
@@ -35,6 +36,11 @@ export const Footer: React.FC = () => {
             <Text color="secondary">{formatTime(log.time)}</Text>
             <Text className={logLevelClassName(log.level)}>[{log.level}]</Text>
             <Text color="primary">{log.text}</Text>
+            {log.link ? (
+              <Link className={styles["log-link"]} to={log.link.href}>
+                {log.link.label}
+              </Link>
+            ) : null}
           </pre>
         ))}
       </Accordion>

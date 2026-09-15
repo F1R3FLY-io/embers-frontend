@@ -1,0 +1,64 @@
+@startuml
+' D2 to scale: a 300px cap against seven 48px rows, and why the defect could not
+' be seen until the seventh agent existed.
+title D2 — why the seventh agent vanished\n<latex>n_{visible} = \lfloor H_{\max} / h_{row} \rfloor = \lfloor 300/48 \rfloor = 6</latex>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam rectangle {
+  BorderThickness 1.5
+  FontColor #263238
+}
+
+rectangle "**Before** — ""max-height: 300px""\n""overflow: hidden""" as BEFORE #line:C62828;back:FFEBEE {
+  rectangle "1  Cavify              <size:10>48px</size>" as b1 #line:2E7D32;back:E8F5E9
+  rectangle "2  Condense            <size:10>96px</size>" as b2 #line:2E7D32;back:E8F5E9
+  rectangle "3  EvidenceCritic     <size:10>144px</size>" as b3 #line:2E7D32;back:E8F5E9
+  rectangle "4  FeasibilityCritic  <size:10>192px</size>" as b4 #line:2E7D32;back:E8F5E9
+  rectangle "5  Hypothesize        <size:10>240px</size>" as b5 #line:2E7D32;back:E8F5E9
+  rectangle "6  LogicCritic        <size:10>288px</size>" as b6 #line:2E7D32;back:E8F5E9
+  rectangle "· · ·  **300px cap**  · · ·" as CAP #line:EF6C00;back:FFF3E0;line.dashed
+  ' Italics are applied per line: PlantUML's <i> does not span \n, which leaks a
+  ' literal closing tag into the rendered label.
+  rectangle "7  **Refine**          <size:10>336px</size>\n//rendered, drawn outside the box,//\n//unreachable — ""overflow:hidden""//\n//removed the scrollbar//" as b7 #line:C62828;back:FFEBEE
+  b1 -[hidden]down- b2
+  b2 -[hidden]down- b3
+  b3 -[hidden]down- b4
+  b4 -[hidden]down- b5
+  b5 -[hidden]down- b6
+  b6 -[hidden]down- CAP
+  CAP -[hidden]down- b7
+}
+
+rectangle "**After** — ""max-height: none""\nsidebar body owns the overflow" as AFTER #line:2E7D32;back:E8F5E9 {
+  rectangle "1 … 6  as before" as a1 #line:2E7D32;back:E8F5E9
+  rectangle "7  **Refine** — visible" as a7 #line:2E7D32;back:E8F5E9
+  rectangle "8, 9, … n  — panel grows,\nand shrinks again on delete" as an #line:2E7D32;back:E8F5E9
+  a1 -[hidden]down- a7
+  a7 -[hidden]down- an
+}
+
+BEFORE -right[#455A64]-> AFTER : ""fitContent""
+
+note bottom of BEFORE #FFF3E0
+  **Row pitch, from the CSS**
+  ""padding: 8px"" around a 24px row → 40px box
+  ""margin: 8px 0"", collapsing between siblings → 8px gap
+  <latex>h_{row} = 40 + 8 = 48\,\textrm{px}</latex>
+
+  Corroborated by measurement: the panel reported
+  354px for seven rows, and
+  <latex>8 + 7(40) + 6(8) + 8 + 10 = 354</latex>
+  (leading margin, rows, gaps, trailing margin, panel padding).
+end note
+
+note bottom of AFTER #E8F5E9
+  **Why a latent threshold fault**
+  Unobservable while <latex>|A| \le 6</latex>; it appears on the
+  transition to <latex>|A| = 7</latex>. No code change activated
+  it — data growth did. A fixture of six or fewer
+  agents can never expose it, which is why every
+  earlier manual check passed.
+end note
+@enduml

@@ -1,5 +1,5 @@
-import type { HTTPHeaders } from "@/api-client";
-import type { PrivateKey } from "@/entities/PrivateKey";
+import type { FetchAPI, HTTPHeaders, Middleware } from "../api-client";
+import type { PrivateKey } from "../entities/PrivateKey";
 
 import { AgentsApiSdk } from "./AgentsApi";
 import { AgentsTeamsApiSdk } from "./AgentsTeamsApi";
@@ -10,7 +10,9 @@ import { WalletsApiSdk } from "./WalletsApi";
 
 export type EmbersConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
   privateKey: PrivateKey;
 };
 

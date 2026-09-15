@@ -1,0 +1,44 @@
+/* Themes @szhsin/react-menu's stock chrome with the app tokens. The library
+ * ships a light default stylesheet; without these overrides every menu (the
+ * canvas context menu and the header's split-button dropdown share this
+ * component) renders as a white box on the dark theme.
+ *
+ * The ControlledMenu `className` prop lands on the menu CONTAINER -- a
+ * wrapper div that stays mounted even while the menu is closed (the header
+ * renders one next to Save as Draft / Deploy at all times). The container
+ * class must therefore carry NO visual declarations of its own: every box
+ * style lives under the nested .szh-menu, which only exists while the menu
+ * is open. Styling the container directly paints a permanent box into the
+ * layout (a gray pill over the header buttons) while leaving the actual
+ * menu on its stock cream skin under app-token text -- white on white. */
+.themed {
+  :global(.szh-menu) {
+    min-width: 180px;
+    padding: 6px;
+    color: var(--text-color-primary);
+    background: var(--background-neutral-surface-primary);
+    border: 1px solid var(--background-neutral-surface-secondary);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  }
+
+  :global(.szh-menu__item) {
+    padding: 10px 14px;
+    color: var(--text-color-primary);
+    border-radius: 6px;
+  }
+
+  :global(.szh-menu__item--hover) {
+    color: var(--text-color-primary);
+    background: var(--background-neutral-hover);
+  }
+
+  :global(.szh-menu__item--focusable):focus-visible {
+    outline: 2px solid var(--border-selected);
+    outline-offset: -2px;
+  }
+
+  :global(.szh-menu__divider) {
+    background: var(--background-neutral-surface-secondary);
+  }
+}

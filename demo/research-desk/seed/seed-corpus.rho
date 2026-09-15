@@ -1,0 +1,44 @@
+// Research Desk demo: seed the on-chain ChromaDB collection.
+//
+// Deployed by seed.mjs --corpus and by the backend demo integration test (via
+// the testnet deploy endpoint). Creates the collection idempotently
+// (ignoreOrUpdateIfExists = true) and upserts the full corpus from
+// ../corpus/corpus.md. Metadata values must be String, Int, or Bool. Success
+// is emitted as EMBERS-DEMO-SEED-OK both to stdout (validator log) and to the
+// on-chain test log contract, whose messages come back in the deploy/send
+// HTTP response.
+new createCollection(`rho:chroma:collection:new`),
+    upsertEntries(`rho:chroma:collection:entries:new`),
+    stdout(`rho:io:stdout`),
+    rl(`rho:registry:lookup`),
+    logCh, createdCh, seededCh in {
+  rl!(`rho:id:ugzm7bbut1gxmcutdeo3minmwfd7qgxcwepeox85gdmy7xatziwrbg`, *logCh) |
+  for (@(_, log) <- logCh) {
+  createCollection!("embers-demo-docs", true, {"purpose": "embers-research-desk-demo"}, *createdCh) |
+  for (_ <- createdCh) {
+    upsertEntries!(
+      "embers-demo-docs",
+      {
+        "rholang-01": ("Rholang is a concurrent programming language built on the rho-calculus. Programs are processes that communicate by sending and receiving messages over named channels. There is no shared mutable state: all coordination happens through message passing, which makes Rholang programs naturally parallel and safe to execute on a blockchain.", {"source": "docs/agent-teams", "topic": "rholang"}),
+        "rholang-02": ("In Rholang, a name is an unforgeable reference to a channel. The new construct creates fresh private names, and only processes that hold a name can send on it or receive from it. Capabilities in the Embers platform are built from this property: possessing a name is the authority to use it, and bundles can restrict a name to send-only or receive-only use.", {"source": "docs/agent-teams", "topic": "rholang"}),
+        "node-01": ("An F1r3fly shard consists of validator nodes and observer nodes. Validators execute deploys, run consensus, and hold the real external services such as the OpenAI integration and the ChromaDB vector store. Observers replicate state for reads and finalization watching but have their AI and vector services disabled by construction, so effectful calls only ever run on validators.", {"source": "docs/agent-teams", "topic": "f1r3node"}),
+        "agents-01": ("An Embers agent is a named, versioned Rholang program. The simple-v1 ABI is a contract main that receives an input and a return channel. The structured-v1 ABI receives an invocation record containing the input value and a context, and returns a record with an output field and a disposition field. Teams pin agents by immutable version, so a deployed team never changes behavior silently.", {"source": "docs/agent-teams", "topic": "agent-abi"}),
+        "teams-01": ("An agent team is a workflow definition: a directed multigraph of nodes such as inputs, activities, gateways, waits, approvals, and outputs. Execution is token based. A token carries the current value and its context between nodes, and transitions route tokens by disposition labels such as completed, failed, rejected, timedOut, and iterationLimit.", {"source": "docs/agent-teams", "topic": "agent-teams"}),
+        "cycles-01": ("Cycles between agents are first class in the Embers workflow model. The one safety rule is the progress boundary: every possible hot cycle must cross a wait node, a bounded transition, or a durable-yield transition. The editor and the backend both verify this with a hot-residual-graph check, and a team whose cycle lacks a progress boundary is rejected at deploy with the diagnostic cycle-without-progress.", {"source": "docs/agent-teams", "topic": "cycles"}),
+        "cycles-02": ("A bounded transition declares loop maxIterations. Its traversal counter lives in the token execution context, so concurrent runs and parallel branches never share a budget. When the bound is exhausted the transition does not fire again: instead the token disposition is rewritten to iterationLimit at the source node, and routing proceeds like any other trigger, for example escalating to a human approval gate.", {"source": "docs/agent-teams", "topic": "cycles"}),
+        "approvals-01": ("An approval node suspends a run until an authorized quorum approves or rejects. Every decision carries a globally unique decision identifier, which blocks replay. An approval with an empty approver list admits any actor holding command authority over the run, with quorum one this behaves as an owner-only gate. Approving with a null payload preserves the token value that was waiting at the gate.", {"source": "docs/agent-teams", "topic": "approvals"}),
+        "security-01": ("A deployed team is published through the registry with an insertSigned operation and exported behind a write-only bundle. Callers can invoke the team but cannot intercept or deconstruct it. The run inspector link is a bearer read capability over owner-scrubbed metadata: prompts and model outputs never appear in the public run ledger, only content hashes.", {"source": "docs/agent-teams", "topic": "capabilities"}),
+        "security-02": ("Every mutation in Embers follows a two-phase protocol: the backend prepares an unsigned contract, the client signs it locally with the wallet key using secp256k1 over a blake2b digest, and the send phase submits the signature. The wallet key never leaves the client. A token binds the send to exactly one prepare exchange, and the only real authority is the wallet signature itself.", {"source": "docs/api", "topic": "signing"}),
+        "runtime-01": ("Calls to external services such as the gpt4 channel and the ChromaDB query channel are replay-cached non-deterministic operations. The first execution records the observed result on chain, and replay validation returns the recorded value instead of calling the service again. This is why validators can re-execute history deterministically even though the services themselves are not deterministic.", {"source": "docs/rholang", "topic": "replay"}),
+        "runtime-02": ("Between macrosteps the Embers run kernel checkpoints encrypted continuations to F1r3drive. A suspended run holds waits with deadlines, and the recovery scheduler resumes due timers through a self-signed timerFired path. The public run state exposes status, revision, waits, and event hashes, while prompt and output contents stay sealed in encrypted artifacts.", {"source": "docs/agent-teams", "topic": "durability"}),
+        "rag-01": ("The ChromaDB integration gives Rholang programs vector search as chain system processes. Contracts can create collections, upsert documents with metadata, and query by similarity. Embeddings are computed inside the node by a local sentence transformer model, all-MiniLM-L6-v2, and the query channel returns the top ten nearest documents, most relevant first.", {"source": "docs/rholang", "topic": "chromadb"})
+      },
+      *seededCh
+    ) |
+    for (@collectionName <- seededCh) {
+      stdout!(["EMBERS-DEMO-SEED-OK", collectionName]) |
+      @log!("info", "EMBERS-DEMO-SEED-OK " ++ collectionName)
+    }
+  }
+  }
+}

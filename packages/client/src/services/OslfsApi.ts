@@ -1,21 +1,29 @@
 import { base16 } from "@scure/base";
 
-import type { CreateOslfReq, HTTPHeaders } from "@/api-client";
+import type {
+  CreateOslfReq,
+  FetchAPI,
+  HTTPHeaders,
+  Middleware,
+} from "../api-client";
+import type { Address } from "../entities/Address";
 import type {
   ContractCallConfig,
   QueryCallConfig,
-} from "@/entities/HttpCallConfigs";
-
-import { Configuration, OslfsApi } from "@/api-client";
-import { signContract } from "@/functions";
-
-import type { Address } from "../entities/Address";
+} from "../entities/HttpCallConfigs";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { Configuration, OslfsApi } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
+import { signContract } from "../functions";
+import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
+
 export type OslfsConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
   privateKey: PrivateKey;
 };
 
@@ -33,7 +41,9 @@ export class OslfsApiSdk {
 
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
 
     this.client = new OslfsApi(configuration);
@@ -43,7 +53,7 @@ export class OslfsApiSdk {
     createOslfReq: CreateOslfReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiOslfsCreatePreparePost(
+    const prepareResponse = await this.client.oslfsPrepareCreate(
       {
         createOslfReq,
       },
@@ -56,10 +66,10 @@ export class OslfsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiOslfsCreateSendPost(
+    const sendResponse = await this.client.oslfsSendCreate(
       {
         sendRequestBodySignedContractCreateOslfReqCreateOslfResp: {
           prepareRequest: createOslfReq,
@@ -75,7 +85,7 @@ export class OslfsApiSdk {
   }
 
   public async get(config?: QueryCallConfig) {
-    return this.client.apiOslfsAddressGet(
+    return this.client.oslfsList(
       {
         address: this.address,
       },
@@ -88,7 +98,7 @@ export class OslfsApiSdk {
     version: string,
     config?: QueryCallConfig,
   ) {
-    return this.client.apiOslfsAddressIdVersionsVersionGet(
+    return this.client.oslfsGetVersion(
       {
         address: this.address,
         id,
@@ -99,7 +109,7 @@ export class OslfsApiSdk {
   }
 
   public async getVersions(id: string, config?: QueryCallConfig) {
-    return this.client.apiOslfsAddressIdVersionsGet(
+    return this.client.oslfsListVersions(
       {
         address: this.address,
         id,
@@ -113,7 +123,7 @@ export class OslfsApiSdk {
     oslfReq: CreateOslfReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiOslfsIdSavePreparePost(
+    const prepareResponse = await this.client.oslfsPrepareSave(
       {
         createOslfReq: oslfReq,
         id,
@@ -127,10 +137,10 @@ export class OslfsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiOslfsIdSaveSendPost(
+    const sendResponse = await this.client.oslfsSendSave(
       {
         id,
         sendRequestBodySignedContractCreateOslfReqSaveOslfResp: {
@@ -147,7 +157,7 @@ export class OslfsApiSdk {
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareResponse = await this.client.apiOslfsIdDeletePreparePost(
+    const prepareResponse = await this.client.oslfsPrepareDelete(
       {
         id,
       },
@@ -160,10 +170,10 @@ export class OslfsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiOslfsIdDeleteSendPost(
+    const sendResponse = await this.client.oslfsSendDelete(
       {
         id,
         signedContract,

@@ -1,0 +1,48 @@
+@startuml
+title Agent Teams Workflow v2 — system context
+skinparam backgroundColor #FFF8F2
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam ArrowColor #5B3A29
+skinparam defaultFontColor #2B1D17
+skinparam component {
+  BackgroundColor #FFFDFB
+  BorderColor #A85C32
+}
+
+actor "F1r3sky author" as author #FFD7C2
+component "F1r3sky\n@-mention interface" as sky #B9DCF7
+component "Embers API\nvalidation, compilation, signing" as api #FFC59F
+component "Embers editor\nWorkflow v2 authoring" as editor #FFE1A8
+database "RSpace\nteam definitions + run metadata" as rspace #C8E6C9
+database "F1r3drive\nencrypted durable artifacts" as drive #BEE5CF
+cloud "Agent/effect services\nLLM, image, audio, Rholang URI" as effects #E1D5F7
+component "Embers run inspector\ncapability-scoped metadata" as inspector #D8EDF8
+rectangle "Protected future adapter" as future #F3E5F5 {
+  component "MeTTaIL FLTs" as flt #EADCF8
+}
+
+author --> sky : publish post with @team
+sky --> api : signed run request
+editor --> api : draft / publish definition
+api --> rspace : deploy persistent Rholang contracts
+api --> drive : encrypt + fsync before ledger advance
+drive --> api : decrypt continuation during recovery
+rspace --> effects : capability-mediated invocation
+effects --> rspace : result / disposition
+api --> sky : terminal reply <= 280 chars + run URL
+author --> inspector : open opaque run capability
+inspector --> api : GET metadata
+api --> rspace : read ledger
+rspace ..> flt : future language terms
+
+legend right
+  |= Color |= Responsibility |
+  |<#B9DCF7>| Social interaction |
+  |<#FFC59F>| Embers control plane |
+  |<#C8E6C9>| Authoritative RSpace state |
+  |<#BEE5CF>| Encrypted durable artifacts |
+  |<#E1D5F7>| Nondeterministic effects |
+  |<#EADCF8>| Protected, not yet executable |
+endlegend
+@enduml

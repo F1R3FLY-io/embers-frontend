@@ -1,0 +1,67 @@
+@startuml
+title The rho-life learning ecology, mapped onto platform surfaces
+skinparam backgroundColor #FFFAF8
+skinparam shadowing false
+skinparam ArrowColor #54413A
+skinparam componentStyle rectangle
+skinparam component {
+  BorderColor #A55B30
+}
+skinparam package {
+  BorderColor #8A6D5C
+}
+
+package "The theory (rho-life corpus)" as Theory #FFF1DD {
+  component "Mortal scientist\nhypothesize, probe,\nread the verdict, revise" as Scientist #FFE0B2
+  component "Learner = namespace\n(population carried by\nquotation-made names)" as Learner #E3D8F5
+  component "Conserved tokens\n<latex>\sigma + \kappa = \sigma_0 = \Theta</latex>\nrefutation is budget-relative" as Tokens #FFF0A8
+  component "OSLF-generated logic\nnamespace-logic hypotheses\n(name predicates on quoted\nprocesses), graded separation" as Logic #D7EAF8
+  component "Assay = receipt\n(where-clause guard)" as Assay #CDEACC
+  component "Environment =\nother computations;\nmedium is a namespace" as Env #FFDFC4
+  component "Engines\ncross-colour conversion,\nadaptive rate" as Engines #F7C7C7
+}
+
+package "The platform (implemented)" as Impl #EAF7EE {
+  component "Agents at activity\nboundaries; bounded\ncritique loops" as Agents #FFE0B2
+  component "Teams: parallel\ncomposition within one\nterm (TOGL Tensor)" as Teams #E3D8F5
+  component "Wallets: conserved\nchain value; metered\ndeploy cost" as Wallets #FFF0A8
+  component "Oslfs API + editor:\nstored, versioned\nOSLF documents" as Oslfs #D7EAF8
+  component "v2 guards: pure,\neffect-free predicates" as Guards #CDEACC
+  component "F1r3sky: published\nteams answering mentions;\nboost along attribution" as Firesky #FFDFC4
+}
+
+package "The meeting points (roadmap / proposals)" as Road #FDECEA {
+  component "Cost, token, and\nauthority budgets —\nexhaustion as disposition" as Budgets #FFF6C9
+  component "OSLF-formula guard kind\n(pinned (id, version) query)" as OslfGuard #FFF6C9
+  component "Team composition with\ngraded namespace overlap\n(TOGL proposal 6)" as Compose #FFF6C9
+}
+
+Scientist --> Agents : the loop, running today
+Learner --> Teams : one layer down:\ncomposition within a team
+Tokens --> Wallets : value layer conserved;\nworkflow layer uncoupled
+Logic --> Oslfs : sentences stored,\nnot yet evaluated
+Assay --> Guards : restricted predicate\nlanguage today
+Env --> Firesky : the ecology,\nsocially instantiated
+
+Tokens --> Budgets : proposal 1:\nground the roadmap item
+Logic --> OslfGuard : proposal 2:\nmake stored queries executable
+Assay --> OslfGuard
+Learner --> Compose : compose-note supplies\nthe overlap grading
+Engines --> Budgets : design basis if budgets\never span colours
+
+note bottom of Impl #EAF7EE
+Workflow tokens are control markers —
+minted at fan-out, collapsed at joins,
+deliberately NOT conserved. The corpus's
+conserved tokens meet them only at the
+budget item.
+end note
+
+note right of Road #FFF6C9
+Kernel semantics unchanged: every
+meeting point is additive, stated in
+the corpus's proposal register in the
+rho-life and TOGL correspondence
+documents.
+end note
+@enduml

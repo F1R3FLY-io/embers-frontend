@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactFlowProvider } from "@xyflow/react";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ProtectedRoute } from "@/lib/components/ProtectedRoute";
+import { ErrorBoundary } from "@/lib/ErrorBoundary";
 import { CurrentAgentProvider } from "@/lib/providers/currentAgent/CurrentAgentProvider";
 import { CurrentAgentsTeamProvider } from "@/lib/providers/currentAgentsTeam/CurrentAgentsTeamProvider";
 import { DockProvider } from "@/lib/providers/dock/DockProvider";
@@ -29,6 +30,9 @@ const Login = lazy(async () => import("@/pages/Login"));
 const EditAgentsTeam = lazy(async () => import("@/pages/EditAgentsTeam"));
 const EditAgent = lazy(async () => import("@/pages/EditAgent"));
 const PublishAgentsTeam = lazy(async () => import("@/pages/PublishAgentsTeam"));
+const PublishToMail = lazy(async () => import("@/pages/PublishToMail"));
+const GrantsManagement = lazy(async () => import("@/pages/GrantsManagement"));
+const AgentTeamRun = lazy(async () => import("@/pages/AgentTeamRun"));
 
 const queryClient = new QueryClient();
 
@@ -43,74 +47,100 @@ export default function App() {
                 <BrowserRouter>
                   <ModalProvider>
                     <div className={styles.background}>
-                      <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Login />} path="/login" />
-                        <Route element={<ProtectedRoute />}>
-                          <Route element={<Dashboard />} path="/dashboard" />
-                          <Route
-                            element={
-                              <CurrentAgentProvider>
-                                <Routes>
-                                  <Route
-                                    element={<CreateAgent />}
-                                    path="create"
-                                  />
-                                  <Route element={<EditAgent />} path="edit" />
-                                  <Route
-                                    element={<DeployAgent />}
-                                    path="deploy"
-                                  />
-                                </Routes>
-                              </CurrentAgentProvider>
-                            }
-                            path="/agent/*"
-                          />
-                          <Route
-                            element={
-                              <CurrentAgentsTeamProvider>
-                                <Routes>
-                                  <Route
-                                    element={<CreateAgentsTeam />}
-                                    path="create"
-                                  />
-                                  <Route
-                                    element={<EditAgentsTeam />}
-                                    path="edit"
-                                  />
-                                  <Route
-                                    element={<DeployAgentsTeam />}
-                                    path="deploy"
-                                  />
-                                  <Route
-                                    element={<PublishAgentsTeam />}
-                                    path="publish"
-                                  />
-                                </Routes>
-                              </CurrentAgentsTeamProvider>
-                            }
-                            path="/agents-team/*"
-                          />
-                          <Route
-                            element={
-                              <OSLFEditorStepperProvider>
-                                <Routes>
-                                  <Route
-                                    element={<CreateOSLF />}
-                                    path="create"
-                                  />
-                                  <Route element={<GraphOSLF />} path="" />
-                                  <Route
-                                    element={<DeployOSLF />}
-                                    path="deploy"
-                                  />
-                                </Routes>
-                              </OSLFEditorStepperProvider>
-                            }
-                            path="/oslf/*"
-                          />
-                        </Route>
-                      </Routes>
+                      {/* The last line of defense: without a boundary above
+                          the routes, any uncaught render or effect error
+                          unmounts the entire application to a bare background
+                          with no message. */}
+                      <ErrorBoundary>
+                        <Suspense fallback={null}>
+                          <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<Login />} path="/login" />
+                            <Route
+                              element={<AgentTeamRun />}
+                              path="/runs/:runId"
+                            />
+                            <Route element={<ProtectedRoute />}>
+                              <Route
+                                element={<Dashboard />}
+                                path="/dashboard"
+                              />
+                              <Route
+                                element={<GrantsManagement />}
+                                path="/grants"
+                              />
+                              <Route
+                                element={
+                                  <CurrentAgentProvider>
+                                    <Routes>
+                                      <Route
+                                        element={<CreateAgent />}
+                                        path="create"
+                                      />
+                                      <Route
+                                        element={<EditAgent />}
+                                        path="edit"
+                                      />
+                                      <Route
+                                        element={<DeployAgent />}
+                                        path="deploy"
+                                      />
+                                    </Routes>
+                                  </CurrentAgentProvider>
+                                }
+                                path="/agent/*"
+                              />
+                              <Route
+                                element={
+                                  <CurrentAgentsTeamProvider>
+                                    <Routes>
+                                      <Route
+                                        element={<CreateAgentsTeam />}
+                                        path="create"
+                                      />
+                                      <Route
+                                        element={<EditAgentsTeam />}
+                                        path="edit"
+                                      />
+                                      <Route
+                                        element={<DeployAgentsTeam />}
+                                        path="deploy"
+                                      />
+                                      <Route
+                                        element={<PublishAgentsTeam />}
+                                        path="publish"
+                                      />
+                                      <Route
+                                        element={<PublishToMail />}
+                                        path="publish-mail"
+                                      />
+                                    </Routes>
+                                  </CurrentAgentsTeamProvider>
+                                }
+                                path="/agents-team/*"
+                              />
+                              <Route
+                                element={
+                                  <OSLFEditorStepperProvider>
+                                    <Routes>
+                                      <Route
+                                        element={<CreateOSLF />}
+                                        path="create"
+                                      />
+                                      <Route element={<GraphOSLF />} path="" />
+                                      <Route
+                                        element={<DeployOSLF />}
+                                        path="deploy"
+                                      />
+                                    </Routes>
+                                  </OSLFEditorStepperProvider>
+                                }
+                                path="/oslf/*"
+                              />
+                            </Route>
+                          </Routes>
+                        </Suspense>
+                      </ErrorBoundary>
                     </div>
                   </ModalProvider>
                 </BrowserRouter>

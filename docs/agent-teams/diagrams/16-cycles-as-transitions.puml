@@ -1,0 +1,52 @@
+@startuml
+title Cycles as statechart transitions: revisit, bound, yield, scope self-loop
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Plain revisit" as Frag1 #E9F5EA {
+  state "Draft" as F1A #DCEEFF
+  state "Critique" as F1B #DCEEFF
+  F1A --> F1B : completed
+  F1B --> F1A : needsWork\n(re-entry, no entry/exit actions)
+}
+
+state "Bounded self-loop" as Frag2 #DCEEFF {
+  state "Refine" as F2A #DCEEFF
+  F2A --> F2A : again [<latex>\kappa_c(e) < b_e</latex>]\n/ <latex>\kappa_c(e){+}{+}</latex>
+  state "Fallback" as F2B #FFE0C8
+  F2A --> F2B : iterationLimit\n(disposition rewritten at the SOURCE node,\nnot a traversal; exactly <latex>b_e</latex> traversals occur)
+}
+
+state "Durable-yield transition" as Frag3 #FFF0D9 {
+  state "Analyze" as F3A #DCEEFF
+  state "Parked at target\nyield:{token}:{transition}\ndueAt = park instant" as F3B #F8DADA
+  F3A --> F3B : loop.durableYield\n/ checkpoint and suspend (durableYield);\ntoken pre-positioned at the target,\nno transitionTaken emitted
+  state "Target (Enter phase)" as F3C #DCEEFF
+  F3B --> F3C : timerFired [exact deadline]\nby the recovery scheduler
+}
+
+state "Scope-node self-loop" as Frag4 #E7DCF5 {
+  state "ReviewScope (composite)" as F4A #FFF0D9
+  F4A --> F4A : rejected\n/ full exit: snapshot history, exit activities;\nfull re-entry: entry activities, restore
+}
+
+note right of Frag3 #EAF7EE
+The yield parks already due, so the recovery
+scheduler resumes it automatically through the
+same self-signed timerFired path as a due timer:
+one ledger round-trip per iteration, Enter-phase
+re-entry at the target.
+end note
+note bottom of Frag2 #EAF7EE
+Counters live in token context, so concurrent branches
+and separate invocations never share a budget, and the
+count survives suspension, checkpointing, and history.
+end note
+@enduml

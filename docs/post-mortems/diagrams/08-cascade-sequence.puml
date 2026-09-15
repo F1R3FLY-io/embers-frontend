@@ -1,0 +1,103 @@
+@startuml
+' Deleting an agent, end to end. The read that names the affected teams happens
+' before the user is asked, and the removals run in an order chosen so that any
+' interruption leaves a recoverable state.
+title Deleting an agent — ask what it would break, then break only what was agreed\n<size:11>restoring <latex>\mathcal{R} \equiv \forall t \in T:\ \mathrm{agents}(t) \subseteq A</latex> without leaving a publication behind</size>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+skinparam sequence {
+  ArrowColor #455A64
+  ArrowThickness 1.3
+  LifeLineBorderColor #90A4AE
+  LifeLineBackgroundColor #ECEFF1
+  ParticipantBorderThickness 1.5
+  ParticipantFontColor #263238
+}
+
+actor "Author" as U #FFF8E1
+box "browser" #F5F5F5
+  participant "Dashboard\n<size:10>AgentsTab</size>" as D #E3F2FD
+end box
+box "embers" #F5F5F5
+  participant "HTTP API" as E #E8EAF6
+end box
+box "systems that each hold part of the fact" #F5F5F5
+  database "F1r3fly\nchain" as C #E0F2F1
+  database "PDS\n(atproto)" as P #FCE4EC
+end box
+
+U -> D ++ #E3F2FD : delete agent **"Refine"**
+
+group#455A64 #E3F2FD 1 · find out what would break
+  D -> E ++ #E8EAF6 : ""GET /referencing/{agent_id}""
+  E -> C ++ #E0F2F1 : list the wallet's teams
+  return team headers
+  E -> C ++ #E0F2F1 : ""get(id, "latest")"" per team\n<size:10>8 reads in flight; 97 s → 50 s</size>
+  return latest graph of each
+  note over E #FFF3E0
+    Keep the teams whose **latest** version
+    references the agent. Latest only: a team
+    that no longer uses it is not broken going
+    forward, and destroying it would trade real
+    work for a historical version nobody deploys.
+  end note
+  E -> C ++ #E0F2F1 : ""publication_of(team)"" for the matches only
+  return publication, or none
+  return ""[{id, name, published, published_handle, version}]""\n<size:10>sorted by name — completion order is arbitrary once the reads overlap</size>
+end
+
+group#455A64 #FFF8E1 2 · ask, naming what is at stake
+  D -> U : **Delete "Refine"?**\n2 teams use it and will be deleted:\n• RedTeam — published **@redteam.test**\n• Experiment 3 — not published\n<size:10>@redteam.test will stop responding to mentions.</size>\n<size:10>The account is kept, so you can publish to it again later.</size>
+  alt#C62828 #FFEBEE the author cancels
+    U -> D : Cancel
+    note right of D #E8F5E9
+      Nothing has been written.
+      The read was the only cost.
+    end note
+  else #E8F5E9 the author confirms
+    U -> D : Delete all
+  end
+end
+
+group#455A64 #FCE4EC 3 · remove, in an order that survives interruption
+  loop for each referencing team, stopping at the first failure
+    alt#EF6C00 #FFF3E0 the team is published
+      D -> E ++ #E8EAF6 : ""POST /{id}/unpublish""
+      E -> C ++ #E0F2F1 : read the stored credential
+      return app password
+      E -> P ++ #FCE4EC : ""deleteRecord""\n""com.f1r3sky.agentsteam.config"" @ rkey ""self""
+      return deleted — account and handle survive
+      return the team no longer answers mentions
+    end
+    D -> C : delete the team\n<size:10>client-signed: prepare, then send</size>
+  end
+  D -> C : delete the agent
+end
+
+D -> D : ""refetchUntil"" the records are **absent**\n<size:10>the observer trails the validator, so a plain refetch can resurrect them</size>
+return the rows are gone, and stay gone
+
+note across #FFEBEE
+  **Why this order, and not the reverse.** Unpublishing needs the credential the publication was made with,
+  and that credential is reached *through* the team record. Delete the team first and a failed unpublish
+  strands a live handle answering for a team that no longer exists, with the means to stop it destroyed
+  alongside it. Unpublish first and the worst interruption leaves a team that is merely unpublished —
+  visible, intact, and republishable. The agent goes last for the same reason: an interruption then leaves
+  teams pointing at an agent that still exists, rather than the dangling references this whole flow exists
+  to prevent.
+end note
+
+legend right
+  |= colour |= meaning |
+  |<#E3F2FD>| browser |
+  |<#E8EAF6>| embers |
+  |<#E0F2F1>| chain — the wallet's team index |
+  |<#FCE4EC>| PDS — the handle and its config record |
+  |<#E8F5E9>| safe outcome |
+  |<#FFF3E0>| conditional step |
+  |<#FFEBEE>| the hazard the ordering avoids |
+endlegend
+@enduml

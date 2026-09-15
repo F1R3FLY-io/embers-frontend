@@ -1,0 +1,101 @@
+@startuml
+' Publication as a state machine, before and after. The transition that did not
+' exist is published -> published: publishing always created a fresh account, so a
+' team could never be published a second time to the handle it already owned.
+title Publishing a team — the transitions that existed, and the two that did not\n<size:11>a publication is the config record at rkey ""self""; the account and handle are separate, and survive it</size>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowThickness 1.3
+skinparam state {
+  BorderThickness 1.5
+  FontColor #263238
+}
+
+state "**BEFORE** — one way in, no way back" as Before #FFF8F8##[bold]C62828 {
+  state "Never published" as B0 #line:455A64;back:ECEFF1
+  B0 : no account, no config record
+  B0 : ""GET …/published"" → 404
+
+  state "Published" as B1 #line:2E7D32;back:E8F5E9
+  B1 : account ""@handle"" exists on the PDS
+  B1 : config record at rkey ""self"" names a **uri**
+  B1 : an @mention triggers a run
+
+  state "Answering, but gone" as B2 #line:C62828;back:FFEBEE
+  B2 : removed from the wallet's team index
+  B2 : config record still present
+  B2 : replies from a dashboard it no longer appears in
+
+  state "Refused" as B3 #line:C62828;back:FFEBEE
+  B3 : ""400 InvalidRequest:""
+  B3 : ""Handle already taken""
+
+  state "Serving an older build" as B4 #line:EF6C00;back:FFF3E0
+  B4 : a later deploy minted a new uri
+  B4 : the config record still names the old one
+  B4 : ""is_latest_deployment: false""
+
+  [*] -[#455A64]-> B0
+  B0 -[#2E7D32]-> B1 : publish\n<size:10>""create_account"" — the only path</size>
+  B1 -[#EF6C00]-> B4 : re-deploy
+  B4 -[#C62828]-> B3 : publish again\n<size:10>**the prescribed remedy**</size>\n<size:10>the account already exists</size>
+  B1 -[#C62828]-> B3 : publish again
+  B1 -[#C62828]-> B2 : delete the team\n<size:10>reaches the chain only</size>
+}
+
+state "**AFTER** — a toggle, and a deletion that reaches both stores" as After #F6FFF7##[bold]2E7D32 {
+  state "Never published" as A0 #line:455A64;back:ECEFF1
+  A0 : no account, no config record
+  A0 : ""GET …/published"" → 404
+
+  state "Published" as A1 #line:2E7D32;back:E8F5E9
+  A1 : ""active: true""
+  A1 : an @mention triggers a run
+
+  state "Dormant" as A2 #line:1565C0;back:E3F2FD
+  A2 : ""active: false""
+  A2 : config record deleted
+  A2 : **account, handle and DID kept**
+  A2 : the handle still resolves
+
+  state "Serving an older build" as A4 #line:EF6C00;back:FFF3E0
+  A4 : ""is_latest_deployment: false""
+  A4 : reported, and now fixable
+
+  state "Gone" as A3 #line:455A64;back:ECEFF1
+  A3 : unpublished **first**, then deleted
+  A3 : nothing left answering
+
+  [*] -[#455A64]-> A0
+  A0 -[#2E7D32]-> A1 : publish\n<size:10>creates the account</size>
+  A1 -[#1565C0]-> A2 : unpublish\n<size:10>""deleteRecord"" of the config record</size>
+  A2 -[#2E7D32]-> A1 : publish again\n<size:10>**signs in** to the existing account,</size>\n<size:10>""put""s the singleton record,</size>\n<size:10>takes the first free ""Embers N"" password</size>
+  A1 -[#EF6C00]-> A4 : re-deploy
+  A4 -[#2E7D32]-> A1 : publish again\n<size:10>re-points the record at the current uri</size>
+  A1 -[#455A64]-> A3 : ""removeTeam""\n<size:10>unpublish, **then** delete</size>
+  A2 -[#455A64]-> A3 : delete
+}
+
+Before -[#455A64]right-> After : ""d938999"" + ""643066d""
+
+note bottom of After #E3F2FD
+  **Why Dormant keeps the account.** Deleting the atproto account would also stop the
+  mentions, and it is the wrong operation: it frees the handle irreversibly, so anyone
+  may take it. "Stop responding" should not mean "surrender your name". The credential
+  on chain is not removed either, because it **cannot** be — the env contract keeps
+  firesky tokens in a stack exposing only ""push"" and ""toList"". A publication is
+  permanent history; what varies is whether the config record is present, and that is
+  exactly what ""active"" reports.
+end note
+
+legend right
+  |= colour |= meaning |
+  |<#E8F5E9>| answering mentions, correctly |
+  |<#E3F2FD>| deliberately silent, reversible |
+  |<#FFF3E0>| answering, but not the current build |
+  |<#FFEBEE>| wrong: a dead end, or a team that outlived itself |
+  |<#ECEFF1>| nothing published |
+endlegend
+@enduml

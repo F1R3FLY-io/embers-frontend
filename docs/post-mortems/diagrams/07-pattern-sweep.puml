@@ -1,0 +1,106 @@
+@startuml
+' Each defect class from the report, the search it was turned into, and what came
+' back. Three searches returned nothing; those are drawn, because a search that was
+' never run and a search that found nothing are indistinguishable after the fact.
+title Turning the report into searches — eight patterns, seven new defects\n<size:11>left: the class established by D1–D6 · centre: the search it becomes · right: what it returned</size>
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #455A64
+skinparam ArrowThickness 1.3
+skinparam rectangle {
+  BorderThickness 1.5
+  FontColor #263238
+}
+
+rectangle "**PATTERN** — what D1–D6 had in common" as P #line:455A64;back:ECEFF1 {
+  rectangle "**D2** fixed cap on\ncontent of unbounded length" as P1 #line:455A64;back:ECEFF1
+  rectangle "**D5** declared,\nnever applied" as P2 #line:455A64;back:ECEFF1
+  rectangle "**§6.4** silent recovery\nat a layer that cannot report" as P3 #line:455A64;back:ECEFF1
+  rectangle "**D6** a stale read\ncached as current" as P4 #line:455A64;back:ECEFF1
+  rectangle "**D1** a bespoke path beside\na framework's own API" as P5 #line:455A64;back:ECEFF1
+  rectangle "**D1** a reference to something\nthat no longer exists" as P6 #line:455A64;back:ECEFF1
+  rectangle "**D4 / §6.6** two systems,\none fact, no comparison" as P7 #line:455A64;back:ECEFF1
+  rectangle "**D2** threshold arithmetic\n(a hard-coded limit)" as P8 #line:455A64;back:ECEFF1
+  P1 -[hidden]down- P2
+  P2 -[hidden]down- P3
+  P3 -[hidden]down- P4
+  P4 -[hidden]down- P5
+  P5 -[hidden]down- P6
+  P6 -[hidden]down- P7
+  P7 -[hidden]down- P8
+}
+
+rectangle "**SEARCH** — what was actually run" as S #line:1565C0;back:E3F2FD {
+  rectangle "every px ""max-height"" / ""height""\nin SCSS, checked against what it bounds" as S1 #line:1565C0;back:E3F2FD
+  rectangle "every ""*Props"" field, checked for a\nreference after its declaration" as S2 #line:1565C0;back:E3F2FD
+  rectangle "empty ""catch"", "".catch(() => {})"",\n""?? []"" on an API result" as S3 #line:1565C0;back:E3F2FD
+  rectangle "mutations that write without\nawaiting finalization" as S4 #line:1565C0;back:E3F2FD
+  rectangle "other React Flow callers,\nother graph serialisers" as S5 #line:1565C0;back:E3F2FD
+  rectangle "who validates ""agentId"" and\n""agentVersion"", and when" as S6 #line:1565C0;back:E3F2FD
+  rectangle "what deletion does **not** undo" as S7 #line:1565C0;back:E3F2FD
+  rectangle """slice(0,"", ""take("",\nevery hard-coded limit" as S8 #line:1565C0;back:E3F2FD
+  S1 -[hidden]down- S2
+  S2 -[hidden]down- S3
+  S3 -[hidden]down- S4
+  S4 -[hidden]down- S5
+  S5 -[hidden]down- S6
+  S6 -[hidden]down- S7
+  S7 -[hidden]down- S8
+}
+
+rectangle "**RESULT**" as R #line:455A64;back:FAFAFA {
+  rectangle "**F6** names unbounded into\na 200px card — **low**" as F6 #line:F9A825;back:FFFDE7
+  rectangle "**clean** — ""className"" was\nthe only instance" as C2 #line:2E7D32;back:E8F5E9
+  rectangle "**F1** a failed delete told\nthe user nothing — **high**" as F1 #line:C62828;back:FFEBEE
+  rectangle "**F2** no delete awaited\nfinalization — **medium**" as F2 #line:EF6C00;back:FFF3E0
+  rectangle "**clean** — one editor exists,\nso the lint rule covers it all" as C5 #line:2E7D32;back:E8F5E9
+  rectangle "**F3** deleting an agent broke\nevery team using it — **high**\n**F4** a team pins a version\nnothing rechecks — **medium**" as F34 #line:C62828;back:FFEBEE
+  rectangle "**F5** a deleted team kept\nanswering mentions — **medium**\n**F7** an Unpublish button that\ndid nothing — **medium**" as F57 #line:EF6C00;back:FFF3E0
+  rectangle "**clean** — every fixed limit\nbounds a bounded thing" as C8 #line:2E7D32;back:E8F5E9
+  F6 -[hidden]down- C2
+  C2 -[hidden]down- F1
+  F1 -[hidden]down- F2
+  F2 -[hidden]down- C5
+  C5 -[hidden]down- F34
+  F34 -[hidden]down- F57
+  F57 -[hidden]down- C8
+}
+
+P1 -[#F9A825]-> S1
+P2 -[#2E7D32]-> S2
+P3 -[#C62828]-> S3
+P4 -[#EF6C00]-> S4
+P5 -[#2E7D32]-> S5
+P6 -[#C62828]-> S6
+P7 -[#EF6C00]-> S7
+P8 -[#2E7D32]-> S8
+
+S1 -[#F9A825]-> F6
+S2 -[#2E7D32]-> C2
+S3 -[#C62828]-> F1
+S4 -[#EF6C00]-> F2
+S5 -[#2E7D32]-> C5
+S6 -[#C62828]-> F34
+S7 -[#EF6C00]-> F57
+S8 -[#2E7D32]-> C8
+
+note bottom of R #E3F2FD
+  **One false positive, recorded so it is not re-raised.** The backend's
+  "".unwrap_or_default()"" on list reads has F1's exact shape — a failure
+  becoming an empty success — and is correct: ""get_data_or_none"" maps only
+  ""ReturnValueMissing"" to ""None"" and propagates every real error, so an
+  empty list can never stand in for a failed read.
+end note
+
+legend right
+  |= colour |= meaning |
+  |<#FFEBEE>| high severity |
+  |<#FFF3E0>| medium severity |
+  |<#FFFDE7>| low severity |
+  |<#E8F5E9>| searched, nothing found |
+  |<#E3F2FD>| the search itself |
+  |<#ECEFF1>| the pattern it came from |
+endlegend
+@enduml

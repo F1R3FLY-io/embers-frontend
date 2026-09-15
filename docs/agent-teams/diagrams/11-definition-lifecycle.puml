@@ -1,0 +1,38 @@
+@startuml
+title Workflow definition lifecycle: draft to pinned run to migration
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Draft" as Draft #DCEEFF
+state "Publishable" as Publishable #E9F5EA
+state "Deployed" as Deployed #D9EFDF
+state "Pinned run" as PinnedRun #FFE0C8
+
+[*] --> Draft : create team
+Draft --> Draft : save\n(permissive: diagnostics shown,\nerrors do not block)
+Draft --> Publishable : assertPublishable\n[zero error-severity diagnostics]
+Publishable --> Draft : edit
+Publishable --> Deployed : deploy\n/ insertSigned (version compare-and-set)\npublishes the team contract and manifest
+Deployed --> Draft : edit (new draft revision;\ndeployed contract unchanged)
+Deployed --> PinnedRun : run prepare/send\n/ pin <latex>H(\mathrm{definition})</latex> in the run register
+PinnedRun --> PinnedRun : migrate command\n[from-hash matches pinned hash]\n/ apply statePatch (set / remove),\nrebind team + definition, runMigrated
+
+note right of Deployed #EAF7EE
+The registry publication is versioned: insertSigned
+rejects a stale version, so deployment is a
+compare-and-set on the team URI.
+end note
+note bottom of PinnedRun #FFF3C9
+Every run pins the exact definition hash it was
+prepared against. Later edits or deployments never
+change a live run; only an authenticated migrate
+command with the matching source hash can rebind it.
+end note
+@enduml

@@ -1,0 +1,57 @@
+// Smoke 02: prove the exact combination the demo agents use, in ONE deploy:
+// a ChromaDB similarity query over the real demo collection feeding a gpt4
+// completion, inside the deploy finalization budget.
+//
+// Requires the corpus to be seeded first (seed.mjs --corpus): querying a
+// missing collection is a hard on-chain error, not an empty result.
+//
+// The query result is List[Map[id -> (text, meta)]], one map per query text.
+// This Rholang has no general toString (it is defined only for deploy-id
+// unforgeables), so the context string is built by a recursive fold over
+// map.toList() extracting each document text. Results are emitted to stdout
+// (validator log) and to the on-chain test log contract, whose messages come
+// back in the deploy/send HTTP response.
+//
+// PASS: a response log message contains EMBERS-SMOKE-02-RESULT followed by a
+// non-empty sentence mentioning the progress boundary.
+new queryEntries(`rho:chroma:collection:entries:query`),
+    gpt4(`rho:ai:gpt4`),
+    stdout(`rho:io:stdout`),
+    rl(`rho:registry:lookup`),
+    concatDocs, logCh, queryCh, contextCh, answerCh in {
+  contract concatDocs(@entries, @index, @acc, ret) = {
+    if (index < entries.length()) {
+      match entries.nth(index) {
+        (_, (text, _)) => {
+          concatDocs!(entries, index + 1, acc ++ "\n- " ++ text, *ret)
+        }
+        _ => {
+          concatDocs!(entries, index + 1, acc, *ret)
+        }
+      }
+    } else {
+      ret!(acc)
+    }
+  } |
+  rl!(`rho:id:ugzm7bbut1gxmcutdeo3minmwfd7qgxcwepeox85gdmy7xatziwrbg`, *logCh) |
+  for (@(_, log) <- logCh) {
+    queryEntries!("embers-demo-docs", ["What is the progress boundary rule for cycles"], *queryCh) |
+    for (@results <- queryCh) {
+      match results.nth(0) {
+        resultMap => {
+          concatDocs!(resultMap.toList(), 0, "", *contextCh)
+        }
+      }
+    } |
+    for (@context <- contextCh) {
+      gpt4!(
+        "Answer in one sentence using only this context: " ++ context,
+        *answerCh
+      ) |
+      for (@answer <- answerCh) {
+        stdout!(["EMBERS-SMOKE-02-RESULT", answer]) |
+        @log!("info", "EMBERS-SMOKE-02-RESULT " ++ answer)
+      }
+    }
+  }
+}

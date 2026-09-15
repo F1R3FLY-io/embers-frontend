@@ -1,3 +1,5 @@
+import type React from "react";
+
 import { Button } from "@/lib/components/Button";
 import { Text } from "@/lib/components/Text";
 import { useModal } from "@/lib/providers/modal/useModal";
@@ -5,9 +7,11 @@ import { useModal } from "@/lib/providers/modal/useModal";
 import styles from "./ConfirmModal.module.scss";
 
 type ConfirmModalProps = {
-  cancelLabel: string;
+  /** Omit to render a single button: an acknowledgement rather than a choice. */
+  cancelLabel?: string;
   confirmLabel: string;
-  message?: string;
+  /** A node, not a string, so a dialog can list what it is about to affect. */
+  message?: React.ReactNode;
   onCancel: () => void;
   onConfirm: () => void;
 };
@@ -40,9 +44,11 @@ export const ConfirmModal = ({
       ) : null}
 
       <div className={styles.actions}>
-        <Button type="secondary" onClick={handleCancel}>
-          {cancelLabel}
-        </Button>
+        {cancelLabel === undefined ? null : (
+          <Button type="secondary" onClick={handleCancel}>
+            {cancelLabel}
+          </Button>
+        )}
         <Button type="primary" onClick={handleConfirm}>
           {confirmLabel}
         </Button>

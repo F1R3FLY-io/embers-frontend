@@ -1,0 +1,72 @@
+@startuml
+title beginDurableRunUnderGrant — the atomic join, branch by branch, each abort to its error code
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+participant "Signed deploy\n(channel wallet)" as Deploy #C8E6DC
+participant "beginDurableRunUnderGrant\nclause" as Clause #FFE4A6
+participant "runsCh + grantsCh\n(joined state)" as State #FFE4A6
+participant "Embers send handler\n(abort classifier)" as API #FFC9A8
+
+Deploy -> Clause : run_id, grant_id, agents_team,\ncreated_at, definition + artifact hashes
+Clause -> Clause : deployData -> (timestamp, deployerId);\nrevAddress(deployerId) -> signer address
+
+Clause -> State : **one join**: for(address; @runs <- runsCh;\n@grants <- grantsCh) -- both states taken\natomically; nothing interleaves until\nboth are put back
+note right of State #FFF0C7
+This is why grants live INSIDE the
+agents-teams env: a separate env would
+reintroduce revocation races and
+split-brain day counters.
+end note
+
+alt grants does not contain grant_id
+Clause --> API : abort "grant not found"
+API --> API : re-read grant -> **404 grant_not_found**
+else runs already contains run_id (resend)
+Clause -> Clause : verify identity: owner == grantor,\ngrant_id, team, created_at, all five hashes
+alt identical
+Clause --> API : acknowledge true -- **idempotent:\nthe day counter is NOT incremented again**
+else any field differs
+Clause --> API : abort "run identity conflict" -> 500
+end
+else grant.revoked
+Clause --> API : abort "grant is revoked"
+API --> API : re-read grant -> **403 grant_revoked**
+else grant.grantee != signer address
+Clause --> API : abort "grant grantee mismatch"\n(the chain checks the SIGNER; the HTTP\nprincipal check is the channel's fail-fast half)
+API --> API : surviving live grant -> 500 internal_error
+else grant.agents_team != agents_team
+Clause --> API : abort "grant team mismatch" -> 500
+else cap check, only now
+Clause -> Clause : match caps.max_runs_per_day:\nNil -> admit untouched;\nelse compare runs_today.day to\n<latex>\lfloor timestamp / 86\,400\,000 \rfloor</latex>
+alt same day, count < cap
+Clause -> State : grants[grant_id].runs_today.count += 1
+else new day, cap > 0
+Clause -> State : runs_today := {day: today, count: 1}
+else exhausted
+Clause --> API : abort "grant daily run cap exhausted"
+API --> API : re-read grant -> **429 grant_caps_exceeded**
+end
+Clause -> State : runs[run_id] := {owner: grant.grantor,\ngrant_id, revision 0, status "running",\nhashes, events [runStarted]}
+Clause -> State : put both states back (join closes)
+Clause --> API : acknowledge true
+API -> API : verify registration on the observer\n(grant_id link, hashes, revision 0), then\nresume the durable kernel
+end
+
+note over Deploy, API #FFF0C7
+The classifier maps aborts honestly by RE-READING the public
+grant record after the deploy errors: absence, revocation, and
+cap exhaustion are knowable without authorization; whatever
+remains is 500. Node-refused unfunded deploys surface earlier
+as **402 deploy_unfunded**; an unobserved finality window is
+**504 deploy_not_finalized** ("poll the run state").
+end note
+@enduml

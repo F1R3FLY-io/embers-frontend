@@ -1,0 +1,66 @@
+contract reviewRecords(@rows, @index, @prefix, @findings, ret) = {
+  if (index == rows.length()) { ret!({"findings": findings, "error": ""}) }
+  else {
+    match rows.nth(index) {
+      ["F", id, severity, status, explanation] => {
+        if (id.length() < 2 or id.length() > 32 or id.slice(0, 1) != prefix or findings.contains(id)) {
+          ret!({"findings": findings, "error": "Invalid or duplicate reviewer ID " ++ id ++ "; IDs must start with " ++ prefix})
+        } else {
+          if (severity != "blocking" and severity != "nonblocking") {
+            ret!({"findings": findings, "error": "Invalid severity " ++ severity ++ " for " ++ id ++ ". Severity must be blocking or nonblocking, preserving the prior severity. Resolved is a status, never a severity."})
+          } else {
+            if ((status != "open" and status != "resolved") or explanation == "?") {
+              ret!({"findings": findings, "error": "Invalid status or missing explanation for " ++ id ++ ". Status must be open or resolved, with an explanation."})
+            } else {
+              reviewRecords!(rows, index + 1, prefix, findings.set(id, {"id": id, "severity": severity, "status": status, "explanation": explanation}), *ret)
+            }
+          }
+        }
+      }
+      _ => { ret!({"findings": findings, "error": "Invalid review record schema at record ${index}: expected F|id|severity|status|explanation, got ${count} fields beginning with ${tag}." %% {"index": index + 1, "count": rows.nth(index).length(), "tag": rows.nth(index).nth(0)}}) }
+    }
+  }
+} |
+contract reviewLedger(@previous, @entries, @index, @prefix, @responses, @review, ret) = {
+  if (review.get("error") != "") { ret!(review) }
+  else {
+    if (index == entries.length()) {
+      reviewNewFindings!(review.get("findings").toList(), 0, previous, review, *ret)
+    } else {
+      match entries.nth(index) {
+        (id, old) => {
+          if (id.slice(0, 1) != prefix) { reviewLedger!(previous, entries, index + 1, prefix, responses, review, *ret) }
+          else {
+            if (not review.get("findings").contains(id)) {
+              ret!(review.set("error", "Reviewer omitted prior finding " ++ id ++ ". Return a separate F record for this ID."))
+            } else {
+              match review.get("findings").get(id) {
+                current => {
+                  if (old.get("severity") == "blocking" and current.get("severity") != "blocking") {
+                    ret!(review.set("error", "Reviewer downgraded blocking finding " ++ id))
+                  } else {
+                    if (old.get("status") == "open" and current.get("status") == "resolved" and not responses.contains(id)) {
+                      ret!(review.set("error", "Finding " ++ id ++ " cannot resolve without a recorded blue response"))
+                    } else { reviewLedger!(previous, entries, index + 1, prefix, responses, review, *ret) }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} |
+contract reviewNewFindings(@entries, @index, @previous, @review, ret) = {
+  if (index == entries.length()) { ret!(review) }
+  else {
+    match entries.nth(index) {
+      (id, finding) => {
+        if (finding.get("status") == "resolved" and not previous.contains(id)) {
+          ret!(review.set("error", "New finding " ++ id ++ " must have status open"))
+        } else { reviewNewFindings!(entries, index + 1, previous, review, *ret) }
+      }
+    }
+  }
+} |

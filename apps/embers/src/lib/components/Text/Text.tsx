@@ -10,6 +10,7 @@ type TextProps = {
   className?: string;
   color?: "primary" | "secondary" | "hover";
   fontSize?: number;
+  role?: React.AriaRole;
   type?: "H1" | "H2" | "H3" | "H4" | "H5" | "large" | "normal" | "small";
 };
 
@@ -19,6 +20,7 @@ export function Text({
   className,
   color,
   fontSize,
+  role,
   type,
 }: TextProps) {
   const textClass = classNames(
@@ -43,6 +45,7 @@ export function Text({
   return (
     <span
       className={textClass}
+      role={role}
       style={{
         fontSize,
       }}

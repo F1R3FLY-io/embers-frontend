@@ -1,5 +1,5 @@
-import { Uri } from "@/entities/Uri";
-export type { Uri } from "@/entities/Uri";
+import { Uri } from "../../entities/Uri";
+export { Uri } from "../../entities/Uri";
 
 export function UriFromJSON(json: any): Uri {
   return UriFromJSONTyped(json, false);

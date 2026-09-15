@@ -1,9 +1,12 @@
 import type { Edge as REdge, Node as RNode } from "@xyflow/react";
 
+import type { WorkflowEdgeData } from "@/lib/workflow";
+
 import type { NodeRegistry } from "./nodes.registry";
 import type { NodeTemplateProps } from "./NodeTemplate";
 
 import { DeployContainerNode } from "./DeployContainer";
+import { StateScopeNode } from "./DeployContainer/StateScope";
 import styles from "./nodes.module.scss";
 import { NODE_REGISTRY } from "./nodes.registry";
 import { NodeTemplate } from "./NodeTemplate";
@@ -12,7 +15,7 @@ export type Node = {
   [K in keyof NodeTypes]: RNode<Parameters<NodeTypes[K]>[0]["data"], K>;
 }[keyof NodeTypes];
 
-export type Edge = REdge;
+export type Edge = REdge<WorkflowEdgeData>;
 export type NodeData<T extends keyof NodeTypes> = Extract<
   Node,
   { type: T }
@@ -25,6 +28,7 @@ function makeNodeTypes(registry: NodeRegistry) {
       displayName: def.displayName,
       handlers: def.handlers,
       icon: <img alt={def.displayName} src={def.iconSrc} />,
+      labelKey: def.labelKey,
       title: def.title,
     };
     return [type, NodeTemplate(props)] as const;
@@ -37,7 +41,8 @@ function makeNodeTypes(registry: NodeRegistry) {
 
 export const nodeTypes = {
   ...makeNodeTypes(NODE_REGISTRY),
-  "deploy-container": DeployContainerNode, // special
+  "deploy-container": DeployContainerNode,
+  "state-scope": StateScopeNode,
 } as const;
 
 export type NodeTypes = typeof nodeTypes;

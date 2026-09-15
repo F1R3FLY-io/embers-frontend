@@ -6,6 +6,7 @@
     "inputPrompt": "Input prompt",
     "saveDraft": "Save as Draft",
     "cancel": "Cancel",
+    "close": "Close",
     "continue": "Continue",
     "run": "Run",
     "description": "Description",
@@ -28,11 +29,9 @@
     "create": "Create Agents Team",
     "tellUsAboutYourTeam": "Tell us about your AI-Agent",
     "teamName": "Agents Team name",
-
     "executionContext": "Execution Context",
     "executionContextHint": "Help us understand your team's task so we can recommend helpful services.",
     "executionType": "Execution type",
-
     "inputType": "Input type",
     "inputTypeHint": "Select the type of input your team will process. This affects parsing methods, service suggestions, and gas estimates.",
     "textualInput": "Textual input",
@@ -41,7 +40,6 @@
     "externalDataHint": "Documents with visual layout (PDFs, web pages, formatted but fuzzy)",
     "mediaInput": "Media input",
     "mediaInputHint": "Well-formed JSON, CSV, table-like format",
-
     "outputType": "Output type",
     "outputTypeHint": "Choose expected output formats. This affects agent behavior, service recommendations, and gas usage.",
     "structuredData": "Structured data",
@@ -50,7 +48,6 @@
     "humanReadableHint": "Natural-language summary of findings",
     "visualization": "Visualization",
     "visualizationHint": "Graphs, charts, or visual elements that help interpret the output data.",
-
     "computeSettings": "Compute Settings",
     "computeSettingsHint": "Help us understand your team's task so we can recommend helpful services.",
     "flowType": "Flow type",
@@ -79,7 +76,9 @@
   "graphEditor": {
     "addCustomComponent": "Add Custom Component"
   },
-  "sort": { "sortBy": "Sort by" },
+  "sort": {
+    "sortBy": "Sort by"
+  },
   "dashboard": {
     "documentation": "Documentation",
     "logout": "Logout"
@@ -89,6 +88,8 @@
     "create": "Create AI Agent"
   },
   "deploy": {
+    "openRunInspector": "Open run inspector",
+    "runLogged": "Run {{runId}}",
     "iconUrl": "Icon URL",
     "iconLoadFailed": "Could not load the image from this URL.",
     "deployAgent": "Deploy {{agentName}} Agent",
@@ -108,6 +109,8 @@
     "notes": "Notes",
     "deploy": "Deploy",
     "deploying": "Deploying",
+    "publishToFiresky": "Publish to F1R3SKY",
+    "moreActions": "More actions",
     "saveAsDraft": "Save as Draft",
     "back": "Back",
     "havingTrouble": "Having trouble?",
@@ -125,14 +128,24 @@
       "agentId": "Agent ID",
       "environment": "Environment",
       "status": "Status",
-      "note": "Note"
+      "note": "Note",
+      "container": "Deploy container"
     },
     "failure": {
       "title": "Deployment Failed",
       "subtitle": "Something went wrong while deploying your agent. Please review the error message below and try again.",
       "tryAgain": "Try again",
       "reviewSettings": "Review agent settings"
-    }
+    },
+    "republishToFiresky": "Re-publish to F1R3SKY",
+    "republishAccountMissing": "Re-publish to F1R3SKY (account missing)",
+    "publishStale": "Re-publish to F1R3SKY (mentions run an older build)",
+    "publishToMail": "Publish to Mail",
+    "manageGrants": "Manage Grants",
+    "interfaces": "Interfaces",
+    "containersTitle": "Deployment containers",
+    "containerTarget": "Target: Current stack",
+    "containerMembers": "Members: {{members}}"
   },
   "publish": {
     "titleSmall": "Publish",
@@ -208,5 +221,80 @@
         "lenient": "Lenient match"
       }
     }
+  },
+  "grants": {
+    "titleSmall": "Grants",
+    "header": "Channel Grants",
+    "subtitle": "Authorize a channel service to start runs owned by you, within the caps and authority you choose. Grants are recorded on chain and revocable at any time.",
+    "team": "Team",
+    "teamPlaceholder": "Select a deployed team",
+    "channel": "Channel",
+    "channelChat": "Chat (bot gateway)",
+    "channelMail": "Mail",
+    "principal": "Channel principal",
+    "principalChatPlaceholder": "Author hash from the bot's 'team whoami'",
+    "principalMailPlaceholder": "sender@example.com",
+    "principalChatHelp": "Paste the principal shown by the chat bot's 'team whoami' command.",
+    "principalMailHelp": "The exact sender address whose mail may start runs.",
+    "grantee": "Channel wallet address",
+    "granteePlaceholder": "Wallet address of the gateway or mail bridge",
+    "granteeHelp": "The channel service's own wallet: it signs and pays the runs, you own them.",
+    "cap": "Max runs per day (empty = uncapped)",
+    "capPlaceholder": "e.g. 20",
+    "authority": "Delegated authority",
+    "reveal": "May reveal run outputs for delivery",
+    "commandApprove": "May approve waits",
+    "commandReject": "May reject waits",
+    "commandCancel": "May cancel runs",
+    "commandSignal": "May send signals",
+    "commandEvent": "May send events",
+    "commandRetry": "May retry waits",
+    "requireToken": "Require a subject bearer token",
+    "minAuth": "Minimum sender authentication",
+    "minAuthNone": "None",
+    "create": "Create grant",
+    "createdTitle": "Grant created",
+    "created": "The channel can now start runs under this grant.",
+    "tokenTitle": "Subject token (shown once)",
+    "tokenOnce": "Give this token to the sender; it must appear in each triggering message. It is never stored and cannot be recovered: {{token}}",
+    "existing": "Your grants",
+    "none": "No grants yet.",
+    "uncapped": "Uncapped",
+    "cappedAt": "Up to {{cap}} runs per day",
+    "revoked": "Revoked",
+    "revoke": "Revoke",
+    "revokeTitle": "Revoke grant",
+    "revokeConfirm": "Revoke the grant for {{principal}}? Runs already in flight finish for you, but the channel immediately loses delivery and command authority."
+  },
+  "publishMail": {
+    "titleSmall": "Publish",
+    "header": "Give the Team a Mail Address",
+    "subtitle": "Bind an address the mail channel recognizes; inbound mail to it can start runs under a grant.",
+    "current": "Current address",
+    "active": "Active",
+    "unpublish": "Unpublish address",
+    "localPart": "Local part",
+    "localPartPlaceholder": "research-crew",
+    "domain": "Mail domain",
+    "domainPlaceholder": "agents.example",
+    "addressHelp": "The address is stored lowercase as local@domain. The binding carries no keys; mailbox keys stay with the mail bridge.",
+    "cancel": "Cancel",
+    "button": "Bind address",
+    "successTitle": "Address bound",
+    "successMessage": "The team is now reachable at {{address}}. Senders still need a grant before their mail starts runs.",
+    "unpublishedTitle": "Address unpublished",
+    "unpublishedMessage": "The binding is deactivated. Publishing again reactivates the same address."
+  },
+  "interfaces": {
+    "title": "Interfaces",
+    "loadFailed": "Reachability could not be loaded.",
+    "notPublished": "Not published",
+    "mail": "Mail",
+    "chat": "Chat",
+    "chatGrants": "{{count}} active grant(s)",
+    "noGrants": "No active grants",
+    "reachable": "Reachable",
+    "unreachable": "Unreachable",
+    "unknown": "Unknown"
   }
 }

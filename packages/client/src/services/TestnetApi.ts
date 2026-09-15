@@ -1,14 +1,16 @@
-import type { HTTPHeaders } from "@/api-client";
-import type { QueryCallConfig } from "@/entities/HttpCallConfigs";
+import type { FetchAPI, HTTPHeaders, Middleware } from "../api-client";
+import type { QueryCallConfig } from "../entities/HttpCallConfigs";
 
-import { Configuration, TestnetApi } from "@/api-client";
-import { signContract } from "@/functions";
-
+import { Configuration, TestnetApi } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
 import { PrivateKey } from "../entities/PrivateKey";
+import { signContract } from "../functions";
 
 export type TestnetConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
 };
 
 export class TestnetApiSdk {
@@ -17,7 +19,9 @@ export class TestnetApiSdk {
   public constructor(config: TestnetConfig) {
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
 
     this.client = new TestnetApi(configuration);
@@ -40,7 +44,7 @@ export class TestnetApiSdk {
       test,
     };
 
-    const prepareResponse = await this.client.apiTestnetDeployPreparePost(
+    const prepareResponse = await this.client.testnetPrepareDeploy(
       {
         deployTestReq: prepareRequest,
       },
@@ -55,7 +59,7 @@ export class TestnetApiSdk {
       prepareResponse.response.envContract &&
       signContract(prepareResponse.response.envContract, testKey);
 
-    return this.client.apiTestnetDeploySendPost(
+    return this.client.testnetSendDeploy(
       {
         sendRequestBodyDeploySignedTestReqDeployTestReqDeployTestResp: {
           prepareRequest,
@@ -76,7 +80,7 @@ export class TestnetApiSdk {
    * @returns Wallet key
    */
   public async getWallet(config?: QueryCallConfig) {
-    const { key } = await this.client.apiTestnetWalletPost({
+    const { key } = await this.client.testnetCreateWallet({
       signal: config?.signal,
     });
     return PrivateKey.tryFromHex(key);

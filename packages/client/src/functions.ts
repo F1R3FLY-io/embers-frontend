@@ -2,10 +2,10 @@ import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { base58 } from "@scure/base";
 import { blake2b } from "blakejs";
 
-import type { PrivateKey } from "@/entities/PrivateKey";
-import type { PublicKey } from "@/entities/PublicKey";
+import type { PrivateKey } from "./entities/PrivateKey";
+import type { PublicKey } from "./entities/PublicKey";
 
-import { ETuple, Expr, Par } from "@/generated/RhoTypes";
+import { ETuple, Expr, Par } from "./generated/RhoTypes";
 
 /**
  * Verifies F1R3Cap an address by checking its checksum.

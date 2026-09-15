@@ -1,0 +1,43 @@
+@startuml
+title Agent Teams Workflow v2 — service-key authority concentration
+skinparam backgroundColor #FFFAF8
+skinparam shadowing false
+skinparam ArrowColor #553C35
+skinparam packageStyle rectangle
+
+package "Embers trust boundary" #FFF0DB {
+  component "One configured service_key\n(EMBERS__..__SERVICE_KEY)" as key #FFD5AC
+}
+
+package "Chain identity" #E7F3E7 {
+  component "serviceAddress\n(env bootstrap)" as ident #B9DCBE
+}
+package "Command authority" #E7F3E7 {
+  component "advanceRun / clearCommand\nself-signed timerFired" as cmd #B9DCBE
+}
+package "Deploy + attestation" #E7F3E7 {
+  component "effect / guard deploys\nobservation ECDSA" as deploy #B9DCBE
+}
+package "Secret custody" #EEE6F8 {
+  component "AES encryption_key" as enc #DDD0F0
+  component "HMAC capability_key\n(config enforces the two differ)" as cap #DDD0F0
+}
+
+key --> ident
+key --> cmd
+key --> deploy
+key --> enc
+key --> cap
+
+note right of key #FAD8D8
+Compromise radius: advance any run through
+arbitrary transitions, forge observations,
+decrypt every artifact, derive any capability,
+fire any timer, claim any command class.
+end note
+note bottom of cmd #FFF6C9
+Outside the radius: finishRun is owner-only;
+cannot sign as an owner wallet; cannot replace
+a registry entry without that team's registry key.
+end note
+@enduml

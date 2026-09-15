@@ -7,10 +7,10 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "typeRoots": ["./types", "./node_modules/@types"],
-    "paths": {
-      "@": ["./src"],
-      "@/*": ["./src/*"]
-    },
+    // No "@" path mapping on purpose — see vite.config.ts. This package is
+    // compiled from source by the app's Vite in dev, where "@" means the APP's
+    // src. Keeping this unset makes a stray "@/" import fail to compile rather
+    // than silently resolve to the wrong package.
 
     /* Bundler mode */
     "moduleResolution": "bundler",

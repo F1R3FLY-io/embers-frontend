@@ -1,20 +1,31 @@
-import classNames from "classnames";
 import { useState } from "react";
 
 import { Button } from "@/lib/components/Button";
+import { Input } from "@/lib/components/Input";
+import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
+import { useFieldValidation } from "@/lib/forms/useFieldValidation";
 import { useModal } from "@/lib/providers/modal/useModal";
 
 import styles from "./EditModal.module.scss";
 
+type ModalInputKind<Value> = Value extends string
+  ? "string"
+  : Value extends number
+    ? "number"
+    : never;
+
 export type ModalInput<T extends Record<string, string | number>> = {
   [K in keyof T]: {
     name: K;
-    type: T[K] extends string
-      ? "string"
-      : T[K] extends number
-        ? "number"
-        : never;
+    helperText?: string;
+    /**
+     * Present for enumerated string fields: the dialog renders the shared
+     * Select over these choices instead of a free-text Input, so a value with
+     * a closed domain (a scope kind, a history mode) can never be mistyped.
+     */
+    options?: { label: string; value: string }[];
+    type: ModalInputKind<T[K]>;
   };
 }[keyof T];
 
@@ -23,57 +34,140 @@ type EditModalProps<T extends Record<string, string | number>> = {
   inputs: ModalInput<T>[];
   onCancel?: () => void;
   onSave: (data: T) => void;
+  title: string;
 };
+
+/** Turns a data key into a readable label: `agentName` -> `Agent name`. */
+function humanize(name: string) {
+  const spaced = name
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .trim();
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1).toLowerCase();
+}
 
 export function EditModal<T extends Record<string, string | number>>({
   initial,
+  inputs,
+  onCancel,
   onSave,
+  title,
 }: EditModalProps<T>) {
   const { close } = useModal();
 
-  const [values] = useState(initial);
+  const [values, setValues] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const validation = useFieldValidation(
+    Object.fromEntries(
+      inputs.map(({ name, options, type }) => [
+        String(name),
+        () => {
+          if (
+            options &&
+            !options.some((option) => option.value === String(values[name]))
+          ) {
+            return "Choose a value from the list.";
+          }
+          if (type === "number" && !Number.isFinite(Number(values[name]))) {
+            return "Enter a valid number.";
+          }
+          return undefined;
+        },
+      ]),
+    ),
+  );
+  const handleChange = (
+    name: keyof T,
+    type: "number" | "string",
+    raw: string,
+  ) =>
+    setValues((old) => ({
+      ...old,
+      // A half-typed number ("", "-") has no numeric value yet, so keep the
+      // previous one rather than writing NaN into the node's data.
+      [name]:
+        type === "number"
+          ? Number.isNaN(Number(raw))
+            ? old[name]
+            : Number(raw)
+          : raw,
+    }));
+
   const handleSubmit = () => {
+    if (!validation.validate()) {
+      return;
+    }
     setError(null);
-
-    //@todo mb we need to add formik or something to work with validations and error states
-
+    setSaving(true);
     try {
-      setSaving(true);
       onSave(values);
       close();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to save.");
     } finally {
-      // catch (e) {
-      //   setError("Failed to save.");
-      // }
       setSaving(false);
     }
   };
 
-  // todo also we need to add an input component!!!
+  const handleCancel = () => {
+    onCancel?.();
+    close();
+  };
+
   return (
     <div className={styles["nim-modal"]}>
       <Text className={styles["nim-title"]} type="H2">
-        Edit Manual Input Node
+        {title}
       </Text>
-      {error && <Text className={styles["nim-error"]}>{error}</Text>}
+      {error && (
+        <Text className={styles["nim-error"]} role="alert">
+          {error}
+        </Text>
+      )}
+
+      {inputs.map(({ helperText, name, options, type }) =>
+        options ? (
+          <div key={String(name)} className={styles["nim-field"]}>
+            <Select
+              {...validation.props(String(name))}
+              label={humanize(String(name))}
+              helperText={helperText}
+              options={options}
+              value={String(values[name])}
+              onChange={(value) =>
+                setValues((old) => ({ ...old, [name]: value }))
+              }
+            />
+          </div>
+        ) : (
+          <label key={String(name)} className={styles["nim-field"]}>
+            <Text bold color="secondary" type="small">
+              {humanize(String(name))}
+            </Text>
+            <Input
+              {...validation.props(String(name))}
+              type={type === "number" ? "number" : "text"}
+              value={values[name]}
+              onChange={(event) =>
+                handleChange(
+                  name,
+                  type === "number" ? "number" : "string",
+                  event.target.value,
+                )
+              }
+            />
+          </label>
+        ),
+      )}
 
       <div className={styles["nim-actions"]}>
-        <Button
-          className={classNames(styles["nim-btn"])}
-          type="primary"
-          onClick={handleSubmit}
-        >
-          {saving ? "Saving…" : "Save"}
-        </Button>
-        <Button
-          className={classNames(styles["nim-btn"], styles["nim-btn-cancel"])}
-          type="subtle"
-          onClick={close}
-        >
+        <Button type="secondary" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button type="primary" onClick={handleSubmit}>
+          {saving ? "Saving…" : "Save"}
         </Button>
       </div>
     </div>

@@ -8,8 +8,8 @@
 - **Monorepo Structure**: Root package.json defines workspaces: `["packages/*", "apps/*"]`
 - The project consists of:
   - Frontend application (`apps/embers/`) - Main UI for agent management
-  - Test UI application (`apps/test-ui/`) - Framework for testing and demo
   - TypeScript client SDK (`packages/client/`) - Wallet and agent deployment operations
+  - OSLF editor (`packages/oslf-editor/`) - Blockly-based visual editor for Operational Semantics in Logical Form
   - Future library packages in `packages/` for shared functionality
 - If the user does not provide enough information with their prompts, ask the user to clarify before executing the task. This should be included in all tasks including writing unit tests, scaffolding the project, as well as implementation of individual modules. In general, follow a test driven development approach whereby unit tests are developed in parallel with the individual components, and features.
 
@@ -17,12 +17,12 @@
 
 - Development: `pnpm dev` (automatically builds client SDK first, then starts frontend)
 - Build: `pnpm build`
-- Test: `pnpm test`
+- Test: `pnpm -r test` (the root package.json defines no `test` script; `-r` runs every workspace's tests)
 - Lint: `pnpm lint` (ESLint with TypeScript rules)
 - Install dependencies: `pnpm install`
 - DO NOT ever `git add`, `git rm` or `git commit, or git push` code. Allow the Claude user to always manually review git changes. `git mv` and `git push` are permitted and inform the developer.
 - DO NOT ever remove tests from eslint or type checks.
-- Run `pnpm test && pnpm build` to test code changes before proceeding to a prompt for more instructions or the next task.
+- Run `pnpm -r test && pnpm build` to test code changes before proceeding to a prompt for more instructions or the next task.
 - **Operating outside of local repository (with .git/ directory root)**: Not permitted and any file or other operations require user approval and notification
 
 ## Code Style
@@ -82,11 +82,16 @@
     - `docs/architecture/decisions/` - ADRs for architectural choices
     - `docs/architecture/diagrams/` - Visual system representations
     - `docs/architecture/patterns/` - Established patterns and conventions
+  - `../embers/docs/api/` - Web API reference: HTTP protocol specification and per-method documentation (moved to the embers backend repo, which implements the API; verified from here by `pnpm docs:check`)
+    - `../embers/docs/api/methods/` - One document per logical operation, each with a sequence diagram
+    - `../embers/docs/api/diagrams/` - PlantUML sources and rendered SVGs for the API docs
+  - `docs/agent-teams/` - Agent Teams Workflow v2 corpus (theory, design, security, formal models)
+  - `docs/post-mortems/` - Incident analyses with diagrams
 - **Applications** in `apps/`:
   - `apps/embers/` - Main frontend application
-  - `apps/test-ui/` - Test UI framework for demo/testing libraries
 - **Packages** in `packages/`:
   - `packages/client/` - TypeScript SDK for wallet and AI agent operations
+  - `packages/oslf-editor/` - Blockly-based OSLF visual editor
   - Future library packages follow structure: `src/`, `dist/`, `tests/`, package-specific configs
 
 ## Key Features
@@ -122,6 +127,7 @@ Required environment variables should be configured appropriately for the fronte
   - Start with `docs/requirements/` for business requirements and user stories
   - Review `docs/specifications/` for technical specifications
   - Check `docs/architecture/` for system design constraints and patterns
+  - Consult `../embers/docs/api/` (sibling embers backend repo) for the HTTP API protocol and per-method reference before touching client or endpoint code
   - Reference directory-level READMEs for source code context
 
 ## Project Specifics

@@ -1,4 +1,3 @@
-import { useForm } from "@tanstack/react-form";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,8 @@ import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import { Select } from "@/lib/components/Select";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 import { useCurrentAgent } from "@/lib/providers/currentAgent/useCurrentAgent";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
@@ -39,7 +40,6 @@ const estimatedCost = 50000;
 
 const formModel = z.object({
   environment: z.string().optional(),
-  rhoLimit: z.string().refine((v) => BigInt(v)),
 });
 
 export default function DeployAgent() {
@@ -57,24 +57,27 @@ export default function DeployAgent() {
   );
 
   const onSubmit = useCallbackWithLoader(
-    async ({ value }: { value: z.infer<typeof formModel> }) => {
+    async ({
+      formApi,
+      value,
+    }: {
+      formApi: { handleSubmit: () => Promise<void> };
+      value: z.infer<typeof formModel>;
+    }) => {
       update({
         environment: value.environment,
-        rhoLimit: BigInt(value.rhoLimit),
       });
 
       const modalData = [
         { label: "deploy.labels.agentId" as const, value: agent.id },
         { label: "deploy.version" as const, value: agent.version },
         { label: "deploy.labels.status" as const, value: "ok" },
-        { label: "deploy.rhoLimit" as const, value: value.rhoLimit },
         { label: "deploy.labels.note" as const, value: agent.description },
       ];
 
       return deployMutation.mutateAsync(
         {
           agentId: agent.id!,
-          rhoLimit: BigInt(value.rhoLimit),
           version: agent.version!,
         },
         {
@@ -84,7 +87,9 @@ export default function DeployAgent() {
               <WarningModal
                 error={e.message}
                 reviewSettings={redirectToEdit}
-                tryAgain={() => {}}
+                tryAgain={() => {
+                  void formApi.handleSubmit();
+                }}
               />,
               {
                 ariaLabel: "Warning",
@@ -119,7 +124,6 @@ export default function DeployAgent() {
   const form = useForm({
     defaultValues: {
       ...agent,
-      rhoLimit: agent.rhoLimit?.toString() ?? "50000",
     },
     onSubmit,
     validators: {
@@ -204,29 +208,6 @@ export default function DeployAgent() {
             </div>
           </div>
 
-          <form.Field name="rhoLimit">
-            {(field) => (
-              <div className={styles["form-section"]}>
-                <div className={styles["form-fields"]}>
-                  <div>
-                    <Text color="secondary" type="small">
-                      {t("deploy.rhoLimit")}
-                    </Text>
-                    <Input
-                      error={
-                        field.state.meta.isTouched && !field.state.meta.isValid
-                      }
-                      placeholder={field.state.value}
-                      type="number"
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </form.Field>
-
           <div className={styles["form-section"]}>
             <div className={styles["estimation-bar"]}>
               <Text color="secondary" type="small">
@@ -247,13 +228,13 @@ export default function DeployAgent() {
             {(field) => (
               <div className={styles["form-section"]}>
                 <Select
-                  error={
-                    field.state.meta.isTouched && !field.state.meta.isValid
-                  }
+                  errorMessage={fieldError(field.state.meta)}
                   label={t("deploy.blockchainShard")}
+                  name={field.name}
                   options={envOptions}
                   placeholder={t("agents.selectEnvironment")}
                   value={field.state.value}
+                  onBlur={field.handleBlur}
                   onChange={field.handleChange}
                 />
                 {field.state.value && (
@@ -285,6 +266,9 @@ export default function DeployAgent() {
           </form.Subscribe>
 
           <LanguageFooter />
+          <form.Subscribe selector={(state) => state.errorMap.onServer}>
+            {(error) => <FormError error={error} />}
+          </form.Subscribe>
         </form>
       </div>
     </div>

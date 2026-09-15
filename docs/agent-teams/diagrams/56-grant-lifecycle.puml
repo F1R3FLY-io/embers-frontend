@@ -1,0 +1,55 @@
+@startuml
+title Grant lifecycle — Active, Revoked, and the UTC-epoch-day counter roll
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Active" as active #E9F5EA {
+  state "runs_today = {day: d, count: c}" as counter #FFF0D9
+  counter : same day, c < cap  -> admit, c := c + 1
+  counter : same day, c >= cap -> abort "grant daily run cap exhausted"
+  counter : new day, cap > 0   -> admit, d := d(t), c := 1
+  counter : cap absent (Nil)   -> admit, counter untouched
+}
+state "Revoked" as revoked #F8DADA
+
+[*] --> active : createGrant (grantor-signed;\ngrantor derived from the deploy's signer;\nrevoked: false, runs_today {day 0, count 0})
+active --> active : createGrant with the same grant_id\nand identical fields -- idempotent re-ack;\nany field differing aborts "grant identity conflict"
+active --> active : beginDurableRunUnderGrant admitted\n(counter transition inside)
+active --> revoked : revokeGrant (grantor-only;\nany other signer aborts\n"grant revocation requires the grantor")
+revoked --> revoked : revokeGrant again --\nidempotent re-acknowledgment
+revoked --> revoked : beginDurableRunUnderGrant\naborts "grant is revoked";\ngrantee reveal / command claims abort
+
+note right of active #FFF6C9
+Day window: <latex>d(t) = \lfloor t / 86\,400\,000 \rfloor</latex>
+over the deploy's own node-validated timestamp
+(milliseconds). O(1) counter state; up to
+<latex>2\times</latex> the cap can land across one midnight
+boundary (yesterday's remainder plus today's
+fresh window). The cap is an abuse throttle,
+not an invariant.
+end note
+
+note right of revoked #FFF0C7
+Revocation is DELIVERY-ONLY for in-flight runs:
+the run completes for its owner; the grantee's
+reveal and command claims fail from the moment
+of revocation; the owner keeps cancel through
+the ordinary command envelope. The record is
+never deleted -- a public audit fact, flagged
+in every listing.
+end note
+
+note bottom of active #FFF0C7
+Idempotent resend never double-counts: a re-registered
+run_id verifies its identity and acknowledges without
+touching runs_today (the same-signed envelope carries
+the same deploy identity anyway).
+end note
+@enduml

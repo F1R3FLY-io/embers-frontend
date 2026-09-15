@@ -1,0 +1,5 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Revise the hypothesis using all three critiques. Address disagreements and preserve uncertainty. Answer the original query. Maximum 240 words." ++ "\nQuery: " ++ input.get("input") ++ "\nHypothesis: " ++ input.get("hypothesize") ++ "\nLogic critique: " ++ input.get("logicCritic") ++ "\nEvidence critique: " ++ input.get("evidenceCritic") ++ "\nFeasibility critique: " ++ input.get("feasibilityCritic"), *return)
+  }
+}

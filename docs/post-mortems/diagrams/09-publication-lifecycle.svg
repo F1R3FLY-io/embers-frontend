@@ -1,0 +1,2158 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  contentStyleType="text/css"
+  data-diagram-type="STATE"
+  height="1102px"
+  preserveAspectRatio="none"
+  style="width: 1800px; height: 1102px; background: #ffffff"
+  version="1.1"
+  viewBox="0 0 1800 1102"
+  width="1800px"
+  zoomAndPan="magnify"
+>
+  <?plantuml $version$?>
+  <defs />
+  <g>
+    <g class="title" data-source-line="4">
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="515.842"
+        x="639.019"
+        y="24.9659"
+      >
+        Publishing a team &#8212; the transitions that existed, and the two that
+        did not
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="11"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="221.9344"
+        x="627.3044"
+        y="40.8268"
+      >
+        a publication is the config record at rkey
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="11"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="26.3998"
+        x="852.0988"
+        y="40.8268"
+      >
+        self
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="11"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="288.077"
+        x="878.4986"
+        y="40.8268"
+      >
+        ; the account and handle are separate, and survive it
+      </text>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="Before"
+      data-source-line="15"
+      id="ent0001"
+    >
+      <path
+        d="M19.5,62.0498 L792.557,62.0498 A12.5,12.5 0 0 1 805.057,74.5498 L805.057,91.1177 L7,91.1177 L7,74.5498 A12.5,12.5 0 0 1 19.5,62.0498"
+        fill="#FFF8F8"
+      />
+      <path
+        d="M7,91.1177 L805.057,91.1177 L805.057,726.5715 A12.5,12.5 0 0 1 792.557,739.0715 L19.5,739.0715 A12.5,12.5 0 0 1 7,726.5715 L7,91.1177"
+        fill="#FFF8F8"
+      />
+      <rect
+        fill="none"
+        height="677.0217"
+        rx="12.5"
+        ry="12.5"
+        style="stroke: #c62828; stroke-width: 2"
+        width="798.057"
+        x="7"
+        y="62.0498"
+      />
+      <line
+        style="stroke: #c62828; stroke-width: 2"
+        x1="7"
+        x2="805.057"
+        y1="91.1177"
+        y2="91.1177"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="52.9338"
+        x="289.416"
+        y="82.0157"
+      >
+        BEFORE
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="176.6513"
+        x="345.9897"
+        y="82.0157"
+      >
+        &#8212; one way in, no way back
+      </text>
+      <g
+        class="entity"
+        data-qualified-name="Before.B0"
+        data-source-line="16"
+        id="ent0002"
+      >
+        <rect
+          fill="#ECEFF1"
+          height="77.2038"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #455a64; stroke-width: 1.5"
+          width="208.8173"
+          x="288.98"
+          y="159.1177"
+        />
+        <line
+          style="stroke: #455a64; stroke-width: 1.5"
+          x1="288.98"
+          x2="497.7973"
+          y1="188.1856"
+          y2="188.1856"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="107.9256"
+          x="339.4258"
+          y="179.0837"
+        >
+          Never published
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="188.8173"
+          x="293.98"
+          y="208.1516"
+        >
+          no account, no config record
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="125.9995"
+          x="293.98"
+          y="227.2195"
+        >
+          GET&#160;&#8230;/published
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="39.3943"
+          x="423.6194"
+          y="227.2195"
+        >
+          &#8594; 404
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="Before.B1"
+        data-source-line="20"
+        id="ent0003"
+      >
+        <rect
+          fill="#E8F5E9"
+          height="96.2717"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #2e7d32; stroke-width: 1.5"
+          width="276.017"
+          x="255.38"
+          y="305.3177"
+        />
+        <line
+          style="stroke: #2e7d32; stroke-width: 1.5"
+          x1="255.38"
+          x2="531.397"
+          y1="334.3856"
+          y2="334.3856"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="64.8197"
+          x="360.9786"
+          y="325.2837"
+        >
+          Published
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="52.1218"
+          x="260.38"
+          y="354.3516"
+        >
+          account
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="58.7997"
+          x="316.1418"
+          y="354.3516"
+        >
+          @handle
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="113.3996"
+          x="378.5815"
+          y="354.3516"
+        >
+          exists on the PDS
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="136.2615"
+          x="260.38"
+          y="373.4195"
+        >
+          config record at rkey
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="33.5999"
+          x="400.2815"
+          y="373.4195"
+        >
+          self
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="55.6918"
+          x="437.5213"
+          y="373.4195"
+        >
+          names a
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          font-weight="700"
+          lengthAdjust="spacing"
+          textLength="19.5439"
+          x="496.8531"
+          y="373.4195"
+        >
+          uri
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="182.0693"
+          x="260.38"
+          y="392.4874"
+        >
+          an @mention triggers a run
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="Before.B2"
+        data-source-line="25"
+        id="ent0004"
+      >
+        <rect
+          fill="#FFEBEE"
+          height="96.2717"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #c62828; stroke-width: 1.5"
+          width="338.7789"
+          x="19"
+          y="470.5877"
+        />
+        <line
+          style="stroke: #c62828; stroke-width: 1.5"
+          x1="19"
+          x2="357.7789"
+          y1="499.6556"
+          y2="499.6556"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="136.8355"
+          x="119.9717"
+          y="490.5537"
+        >
+          Answering, but gone
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="249.773"
+          x="24"
+          y="519.6216"
+        >
+          removed from the wallet's team index
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="168.2514"
+          x="24"
+          y="538.6895"
+        >
+          config record still present
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="318.7789"
+          x="24"
+          y="557.7574"
+        >
+          replies from a dashboard it no longer appears in
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="Before.B3"
+        data-source-line="30"
+        id="ent0005"
+      >
+        <rect
+          fill="#FFEBEE"
+          height="77.2038"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #c62828; stroke-width: 1.5"
+          width="187.9993"
+          x="315.39"
+          y="648.8677"
+        />
+        <line
+          style="stroke: #c62828; stroke-width: 1.5"
+          x1="315.39"
+          x2="503.3893"
+          y1="677.9356"
+          y2="677.9356"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="53.2838"
+          x="382.7477"
+          y="668.8337"
+        >
+          Refused
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="159.5993"
+          x="320.39"
+          y="697.9016"
+        >
+          400&#160;InvalidRequest:
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="167.9993"
+          x="320.39"
+          y="716.9695"
+        >
+          Handle&#160;already&#160;taken
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="Before.B4"
+        data-source-line="34"
+        id="ent0006"
+      >
+        <rect
+          fill="#FFF3E0"
+          height="96.2717"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #ef6c00; stroke-width: 1.5"
+          width="285.327"
+          x="495.73"
+          y="470.5877"
+        />
+        <line
+          style="stroke: #ef6c00; stroke-width: 1.5"
+          x1="495.73"
+          x2="781.057"
+          y1="499.6556"
+          y2="499.6556"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="144.2414"
+          x="566.2728"
+          y="490.5537"
+        >
+          Serving an older build
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="204.5952"
+          x="500.73"
+          y="519.6216"
+        >
+          a later deploy minted a new uri
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="265.327"
+          x="500.73"
+          y="538.6895"
+        >
+          the config record still names the old one
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="226.799"
+          x="500.73"
+          y="557.7574"
+        >
+          is_latest_deployment:&#160;false
+        </text>
+      </g>
+      <g
+        class="start_entity"
+        data-qualified-name="Before..start.Before"
+        data-source-line="39"
+        id="ent0013"
+      >
+        <ellipse
+          cx="393.39"
+          cy="112.1177"
+          fill="#222222"
+          rx="10"
+          ry="10"
+          style="stroke: #222222; stroke-width: 1"
+        />
+      </g>
+      <!--link *start*Before to B0-->
+      <g
+        class="link"
+        data-entity-1="ent0013"
+        data-entity-2="ent0002"
+        data-link-type="dependency"
+        data-source-line="39"
+        id="lnk14"
+      >
+        <path
+          d="M393.39,122.3877 C393.39,131.3077 393.39,140.4177 393.39,153.9577"
+          fill="none"
+          id="*start*Before-to-B0"
+          style="stroke: #455a64; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#455A64"
+          points="393.39,158.9577,397.39,149.9577,393.39,153.9577,389.39,149.9577,393.39,158.9577"
+          style="
+            stroke: #455a64;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+      </g>
+      <!--link B0 to B1-->
+      <g
+        class="link"
+        data-entity-1="ent0002"
+        data-entity-2="ent0003"
+        data-link-type="dependency"
+        data-source-line="40"
+        id="lnk15"
+      >
+        <path
+          d="M393.39,236.7177 C393.39,257.3477 393.39,278.0477 393.39,299.9877"
+          fill="none"
+          id="B0-to-B1"
+          style="stroke: #2e7d32; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#2E7D32"
+          points="393.39,304.9877,397.39,295.9877,393.39,299.9877,389.39,295.9877,393.39,304.9877"
+          style="
+            stroke: #2e7d32;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="44.9931"
+          x="452.5384"
+          y="269.2147"
+        >
+          publish
+        </text>
+        <text
+          fill="#000000"
+          font-family="monospace"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="84"
+          x="394.39"
+          y="283.7137"
+        >
+          create_account
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="74.6899"
+          x="480.99"
+          y="283.7137"
+        >
+          &#8212; the only path
+        </text>
+      </g>
+      <!--link B1 to B4-->
+      <g
+        class="link"
+        data-entity-1="ent0003"
+        data-entity-2="ent0006"
+        data-link-type="dependency"
+        data-source-line="41"
+        id="lnk16"
+      >
+        <path
+          d="M464.58,401.8977 C496.8,423.3677 530.619,445.9154 562.859,467.3954"
+          fill="none"
+          id="B1-to-B4"
+          style="stroke: #ef6c00; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#EF6C00"
+          points="567.02,470.1677,561.748,461.8487,562.859,467.3954,557.3123,468.5064,567.02,470.1677"
+          style="
+            stroke: #ef6c00;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="58.058"
+          x="538.83"
+          y="441.4847"
+        >
+          re-deploy
+        </text>
+      </g>
+      <!--link B4 to B3-->
+      <g
+        class="link"
+        data-entity-1="ent0006"
+        data-entity-2="ent0005"
+        data-link-type="dependency"
+        data-source-line="42"
+        id="lnk17"
+      >
+        <path
+          d="M573.07,567.2877 C537.78,592.9877 498.822,621.3445 465.752,645.4245"
+          fill="none"
+          id="B4-to-B3"
+          style="stroke: #c62828; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#C62828"
+          points="461.71,648.3677,471.3401,646.3036,465.752,645.4245,466.631,639.8364,461.71,648.3677"
+          style="
+            stroke: #c62828;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="82.3421"
+          x="565.2189"
+          y="599.7647"
+        >
+          publish again
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          font-weight="700"
+          lengthAdjust="spacing"
+          textLength="113.2099"
+          x="549.785"
+          y="614.2637"
+        >
+          the prescribed remedy
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="121.9799"
+          x="545.4"
+          y="627.8837"
+        >
+          the account already exists
+        </text>
+      </g>
+      <!--link B1 to B3-->
+      <g
+        class="link"
+        data-entity-1="ent0003"
+        data-entity-2="ent0005"
+        data-link-type="dependency"
+        data-source-line="43"
+        id="lnk18"
+      >
+        <path
+          d="M395.17,401.7077 C396.85,444.7577 399.53,510.0977 402.39,566.8677 C403.77,594.1777 405.2764,619.9969 406.7064,643.5069"
+          fill="none"
+          id="B1-to-B3"
+          style="stroke: #c62828; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#C62828"
+          points="407.01,648.4977,410.4562,639.2715,406.7064,643.5069,402.471,639.7572,407.01,648.4977"
+          style="
+            stroke: #c62828;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="82.3421"
+          x="403.39"
+          y="524.1247"
+        >
+          publish again
+        </text>
+      </g>
+      <!--link B1 to B2-->
+      <g
+        class="link"
+        data-entity-1="ent0003"
+        data-entity-2="ent0004"
+        data-link-type="dependency"
+        data-source-line="44"
+        id="lnk19"
+      >
+        <path
+          d="M297.13,401.9277 C288.49,407.4677 280.1,413.3777 272.39,419.5877 C254.32,434.1577 240.2892,449.1122 226.2192,466.3722"
+          fill="none"
+          id="B1-to-B2"
+          style="stroke: #c62828; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#C62828"
+          points="223.06,470.2477,231.847,465.7992,226.2192,466.3722,225.6462,460.7445,223.06,470.2477"
+          style="
+            stroke: #c62828;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="96.3301"
+          x="277.8649"
+          y="434.4847"
+        >
+          delete the team
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="105.2799"
+          x="273.39"
+          y="448.9837"
+        >
+          reaches the chain only
+        </text>
+      </g>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="After"
+      data-source-line="47"
+      id="ent0007"
+    >
+      <path
+        d="M976.67,62.0498 L1773.3799,62.0498 A12.5,12.5 0 0 1 1785.8799,74.5498 L1785.8799,91.1177 L964.17,91.1177 L964.17,74.5498 A12.5,12.5 0 0 1 976.67,62.0498"
+        fill="#F6FFF7"
+      />
+      <path
+        d="M964.17,91.1177 L1785.8799,91.1177 L1785.8799,726.5715 A12.5,12.5 0 0 1 1773.3799,739.0715 L976.67,739.0715 A12.5,12.5 0 0 1 964.17,726.5715 L964.17,91.1177"
+        fill="#F6FFF7"
+      />
+      <rect
+        fill="none"
+        height="677.0217"
+        rx="12.5"
+        ry="12.5"
+        style="stroke: #2e7d32; stroke-width: 2"
+        width="821.7099"
+        x="964.17"
+        y="62.0498"
+      />
+      <line
+        style="stroke: #2e7d32; stroke-width: 2"
+        x1="964.17"
+        x2="1785.8799"
+        y1="91.1177"
+        y2="91.1177"
+      />
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="42.4758"
+        x="1183.5127"
+        y="82.0157"
+      >
+        AFTER
+      </text>
+      <text
+        fill="#263238"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="336.9087"
+        x="1229.6285"
+        y="82.0157"
+      >
+        &#8212; a toggle, and a deletion that reaches both stores
+      </text>
+      <g
+        class="entity"
+        data-qualified-name="After.A0"
+        data-source-line="48"
+        id="ent0008"
+      >
+        <rect
+          fill="#ECEFF1"
+          height="77.2038"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #455a64; stroke-width: 1.5"
+          width="208.8173"
+          x="1288.27"
+          y="159.1177"
+        />
+        <line
+          style="stroke: #455a64; stroke-width: 1.5"
+          x1="1288.27"
+          x2="1497.0873"
+          y1="188.1856"
+          y2="188.1856"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="107.9256"
+          x="1338.7158"
+          y="179.0837"
+        >
+          Never published
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="188.8173"
+          x="1293.27"
+          y="208.1516"
+        >
+          no account, no config record
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="125.9995"
+          x="1293.27"
+          y="227.2195"
+        >
+          GET&#160;&#8230;/published
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="39.3943"
+          x="1422.9094"
+          y="227.2195"
+        >
+          &#8594; 404
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="After.A1"
+        data-source-line="52"
+        id="ent0009"
+      >
+        <rect
+          fill="#E8F5E9"
+          height="77.2038"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #2e7d32; stroke-width: 1.5"
+          width="202.0693"
+          x="1291.64"
+          y="305.3177"
+        />
+        <line
+          style="stroke: #2e7d32; stroke-width: 1.5"
+          x1="1291.64"
+          x2="1493.7093"
+          y1="334.3856"
+          y2="334.3856"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="64.8197"
+          x="1360.2648"
+          y="325.2837"
+        >
+          Published
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="100.7996"
+          x="1296.64"
+          y="354.3516"
+        >
+          active:&#160;true
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="182.0693"
+          x="1296.64"
+          y="373.4195"
+        >
+          an @mention triggers a run
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="After.A2"
+        data-source-line="56"
+        id="ent0010"
+      >
+        <rect
+          fill="#E3F2FD"
+          height="115.3396"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #1565c0; stroke-width: 1.5"
+          width="226.6112"
+          x="1070.37"
+          y="478.5277"
+        />
+        <line
+          style="stroke: #1565c0; stroke-width: 1.5"
+          x1="1070.37"
+          x2="1296.9812"
+          y1="507.5956"
+          y2="507.5956"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="59.1218"
+          x="1154.1147"
+          y="498.4937"
+        >
+          Dormant
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="109.1995"
+          x="1075.37"
+          y="527.5616"
+        >
+          active:&#160;false
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="140.9935"
+          x="1075.37"
+          y="546.6295"
+        >
+          config record deleted
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          font-weight="700"
+          lengthAdjust="spacing"
+          textLength="206.6112"
+          x="1075.37"
+          y="565.6974"
+        >
+          account, handle and DID kept
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="154.5734"
+          x="1075.37"
+          y="584.7653"
+        >
+          the handle still resolves
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="After.A4"
+        data-source-line="62"
+        id="ent0011"
+      >
+        <rect
+          fill="#FFF3E0"
+          height="77.2038"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #ef6c00; stroke-width: 1.5"
+          width="246.799"
+          x="1334.28"
+          y="497.5877"
+        />
+        <line
+          style="stroke: #ef6c00; stroke-width: 1.5"
+          x1="1334.28"
+          x2="1581.079"
+          y1="526.6556"
+          y2="526.6556"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="144.2414"
+          x="1385.5588"
+          y="517.5537"
+        >
+          Serving an older build
+        </text>
+        <text
+          fill="#263238"
+          font-family="monospace"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="226.799"
+          x="1339.28"
+          y="546.6216"
+        >
+          is_latest_deployment:&#160;false
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="169.8194"
+          x="1339.28"
+          y="565.6895"
+        >
+          reported, and now fixable
+        </text>
+      </g>
+      <g
+        class="entity"
+        data-qualified-name="After.A3"
+        data-source-line="66"
+        id="ent0012"
+      >
+        <rect
+          fill="#ECEFF1"
+          height="77.2038"
+          rx="12.5"
+          ry="12.5"
+          style="stroke: #455a64; stroke-width: 1.5"
+          width="225.7292"
+          x="1312.81"
+          y="648.8677"
+        />
+        <line
+          style="stroke: #455a64; stroke-width: 1.5"
+          x1="1312.81"
+          x2="1538.5392"
+          y1="677.9356"
+          y2="677.9356"
+        />
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="35.2099"
+          x="1408.0697"
+          y="668.8337"
+        >
+          Gone
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="82.2637"
+          x="1317.81"
+          y="697.9016"
+        >
+          unpublished
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          font-weight="700"
+          lengthAdjust="spacing"
+          textLength="28.9659"
+          x="1403.7137"
+          y="697.9016"
+        >
+          first
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="90.8596"
+          x="1432.6796"
+          y="697.9016"
+        >
+          , then deleted
+        </text>
+        <text
+          fill="#263238"
+          font-family="Helvetica"
+          font-size="14"
+          lengthAdjust="spacing"
+          textLength="149.1274"
+          x="1317.81"
+          y="716.9695"
+        >
+          nothing left answering
+        </text>
+      </g>
+      <g
+        class="start_entity"
+        data-qualified-name="After..start.After"
+        data-source-line="70"
+        id="ent0020"
+      >
+        <ellipse
+          cx="1392.68"
+          cy="112.1177"
+          fill="#222222"
+          rx="10"
+          ry="10"
+          style="stroke: #222222; stroke-width: 1"
+        />
+      </g>
+      <!--link *start*After to A0-->
+      <g
+        class="link"
+        data-entity-1="ent0020"
+        data-entity-2="ent0008"
+        data-link-type="dependency"
+        data-source-line="70"
+        id="lnk21"
+      >
+        <path
+          d="M1392.68,122.3877 C1392.68,131.3077 1392.68,140.4177 1392.68,153.9577"
+          fill="none"
+          id="*start*After-to-A0"
+          style="stroke: #455a64; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#455A64"
+          points="1392.68,158.9577,1396.68,149.9577,1392.68,153.9577,1388.68,149.9577,1392.68,158.9577"
+          style="
+            stroke: #455a64;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+      </g>
+      <!--link A0 to A1-->
+      <g
+        class="link"
+        data-entity-1="ent0008"
+        data-entity-2="ent0009"
+        data-link-type="dependency"
+        data-source-line="71"
+        id="lnk22"
+      >
+        <path
+          d="M1392.68,236.6077 C1392.68,257.7177 1392.68,278.9277 1392.68,300.0377"
+          fill="none"
+          id="A0-to-A1"
+          style="stroke: #2e7d32; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#2E7D32"
+          points="1392.68,305.0377,1396.68,296.0377,1392.68,300.0377,1388.68,296.0377,1392.68,305.0377"
+          style="
+            stroke: #2e7d32;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="44.9931"
+          x="1417.2234"
+          y="269.2147"
+        >
+          publish
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="92.0799"
+          x="1393.68"
+          y="283.7137"
+        >
+          creates the account
+        </text>
+      </g>
+      <!--link A1 to A2-->
+      <g
+        class="link"
+        data-entity-1="ent0009"
+        data-entity-2="ent0010"
+        data-link-type="dependency"
+        data-source-line="72"
+        id="lnk23"
+      >
+        <path
+          d="M1291.38,344.4677 C1185.85,346.4077 1030.66,356.8977 992.68,400.5277 C975.17,420.6377 977.64,438.4977 992.68,460.5277 C1010.85,487.1377 1035.3444,502.5399 1065.4944,513.5699"
+          fill="none"
+          id="A1-to-A2"
+          style="stroke: #1565c0; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#1565C0"
+          points="1070.19,515.2877,1063.1121,508.4391,1065.4944,513.5699,1060.3636,515.9521,1070.19,515.2877"
+          style="
+            stroke: #1565c0;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="61.0611"
+          x="1046.8594"
+          y="428.9247"
+        >
+          unpublish
+        </text>
+        <text
+          fill="#000000"
+          font-family="monospace"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="72"
+          x="993.68"
+          y="443.4237"
+        >
+          deleteRecord
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="92.8199"
+          x="1068.28"
+          y="443.4237"
+        >
+          of the config record
+        </text>
+      </g>
+      <!--link A2 to A1-->
+      <g
+        class="link"
+        data-entity-1="ent0010"
+        data-entity-2="ent0009"
+        data-link-type="dependency"
+        data-source-line="73"
+        id="lnk24"
+      >
+        <path
+          d="M1174.96,478.2377 C1174.1,451.8677 1178.07,421.7577 1195.68,400.5277 C1208.75,384.7577 1245.103,373.0197 1286.483,363.6697"
+          fill="none"
+          id="A2-to-A1"
+          style="stroke: #2e7d32; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#2E7D32"
+          points="1291.36,362.5677,1281.6997,360.6497,1286.483,363.6697,1283.4629,368.4529,1291.36,362.5677"
+          style="
+            stroke: #2e7d32;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="82.3421"
+          x="1247.6839"
+          y="415.4247"
+        >
+          publish again
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          font-weight="700"
+          lengthAdjust="spacing"
+          textLength="37.9399"
+          x="1213.775"
+          y="429.9237"
+        >
+          signs in
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="109.6199"
+          x="1254.3149"
+          y="429.9237"
+        >
+          to the existing account,
+        </text>
+        <text
+          fill="#000000"
+          font-family="monospace"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="18"
+          x="1227.175"
+          y="443.5437"
+        >
+          put
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="105.3599"
+          x="1245.175"
+          y="443.5437"
+        >
+          s the singleton record,
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="85.6199"
+          x="1196.68"
+          y="457.1637"
+        >
+          takes the first free
+        </text>
+        <text
+          fill="#000000"
+          font-family="monospace"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="48"
+          x="1284.8999"
+          y="457.1637"
+        >
+          Embers&#160;N
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="45.5299"
+          x="1335.4999"
+          y="457.1637"
+        >
+          password
+        </text>
+      </g>
+      <!--link A1 to A4-->
+      <g
+        class="link"
+        data-entity-1="ent0009"
+        data-entity-2="ent0011"
+        data-link-type="dependency"
+        data-source-line="74"
+        id="lnk25"
+      >
+        <path
+          d="M1386.59,382.8177 C1384.41,405.9877 1384.42,435.8077 1393.68,460.5277 C1398.65,473.7977 1403.9004,482.4907 1413.0804,493.3407"
+          fill="none"
+          id="A1-to-A4"
+          style="stroke: #ef6c00; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#EF6C00"
+          points="1416.31,497.1577,1413.5505,487.7034,1413.0804,493.3407,1407.4432,492.8706,1416.31,497.1577"
+          style="
+            stroke: #ef6c00;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="58.058"
+          x="1394.68"
+          y="435.9247"
+        >
+          re-deploy
+        </text>
+      </g>
+      <!--link A4 to A1-->
+      <g
+        class="link"
+        data-entity-1="ent0011"
+        data-entity-2="ent0009"
+        data-link-type="dependency"
+        data-source-line="75"
+        id="lnk26"
+      >
+        <path
+          d="M1464.22,497.1177 C1467.26,469.1077 1467.59,430.8077 1453.68,400.5277 C1450.81,394.2777 1450.0751,392.2553 1445.5651,386.8553"
+          fill="none"
+          id="A4-to-A1"
+          style="stroke: #2e7d32; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#2E7D32"
+          points="1442.36,383.0177,1445.0591,392.4895,1445.5651,386.8553,1451.1993,387.3613,1442.36,383.0177"
+          style="
+            stroke: #2e7d32;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="82.3421"
+          x="1513.8139"
+          y="428.9247"
+        >
+          publish again
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="176.4898"
+          x="1466.74"
+          y="443.4237"
+        >
+          re-points the record at the current uri
+        </text>
+      </g>
+      <!--link A1 to A3-->
+      <g
+        class="link"
+        data-entity-1="ent0009"
+        data-entity-2="ent0012"
+        data-link-type="dependency"
+        data-source-line="76"
+        id="lnk27"
+      >
+        <path
+          d="M1494.13,354.1277 C1556.55,362.1277 1628.21,376.3477 1647.68,400.5277 C1690.83,454.0977 1606.28,575.4377 1589.68,593.8677 C1569.65,616.0877 1547.3803,631.865 1521.3803,646.035"
+          fill="none"
+          id="A1-to-A3"
+          style="stroke: #455a64; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#455A64"
+          points="1516.99,648.4277,1526.8067,647.6331,1521.3803,646.035,1522.9784,640.6086,1516.99,648.4277"
+          style="
+            stroke: #455a64;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="monospace"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="78"
+          x="1668.1699"
+          y="534.5947"
+        >
+          removeTeam
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="49.6499"
+          x="1653.46"
+          y="549.0937"
+        >
+          unpublish,
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          font-weight="700"
+          lengthAdjust="spacing"
+          textLength="23.31"
+          x="1705.7099"
+          y="549.0937"
+        >
+          then
+        </text>
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="10"
+          lengthAdjust="spacing"
+          textLength="29.26"
+          x="1731.6199"
+          y="549.0937"
+        >
+          delete
+        </text>
+      </g>
+      <!--link A2 to A3-->
+      <g
+        class="link"
+        data-entity-1="ent0010"
+        data-entity-2="ent0012"
+        data-link-type="dependency"
+        data-source-line="77"
+        id="lnk28"
+      >
+        <path
+          d="M1276.21,594.2677 C1305.56,612.3777 1333.035,629.3119 1359.675,645.7519"
+          fill="none"
+          id="A2-to-A3"
+          style="stroke: #455a64; stroke-width: 1.3"
+        />
+        <polygon
+          fill="#455A64"
+          points="1363.93,648.3777,1358.3717,640.2472,1359.675,645.7519,1354.1703,647.0552,1363.93,648.3777"
+          style="
+            stroke: #455a64;
+            stroke-width: 1.3;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 10;
+          "
+        />
+        <text
+          fill="#000000"
+          font-family="Helvetica"
+          font-size="13"
+          lengthAdjust="spacing"
+          textLength="38.038"
+          x="1334.47"
+          y="626.7647"
+        >
+          delete
+        </text>
+      </g>
+    </g>
+    <g
+      class="entity"
+      data-qualified-name="GMN30"
+      data-source-line="83"
+      id="ent0031"
+    >
+      <path
+        d="M1098.88,800.0698 L1098.88,934.0119 A0,0 0 0 0 1098.88,934.0119 L1651.1775,934.0119 A0,0 0 0 0 1651.1775,934.0119 L1651.1775,810.0698 L1641.1775,800.0698 L1379.03,800.0698 L1375.03,739.4198 L1371.03,800.0698 L1098.88,800.0698 A0,0 0 0 0 1098.88,800.0698"
+        fill="#E3F2FD"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <path
+        d="M1641.1775,800.0698 L1641.1775,810.0698 L1651.1775,810.0698 L1641.1775,800.0698"
+        fill="#E3F2FD"
+        style="stroke: #181818; stroke-width: 0.5"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="215.6702"
+        x="1104.88"
+        y="818.9668"
+      >
+        Why Dormant keeps the account.
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="298.5193"
+        x="1323.9302"
+        y="818.9668"
+      >
+        Deleting the atproto account would also stop the
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="500.8254"
+        x="1104.88"
+        y="836.6728"
+      >
+        mentions, and it is the wrong operation: it frees the handle
+        irreversibly, so anyone
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="531.2975"
+        x="1104.88"
+        y="854.3789"
+      >
+        may take it. "Stop responding" should not mean "surrender your name".
+        The credential
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="255.4372"
+        x="1104.88"
+        y="872.0849"
+      >
+        on chain is not removed either, because it
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="45.162"
+        x="1363.6973"
+        y="872.0849"
+      >
+        cannot
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="173.5112"
+        x="1412.2393"
+        y="872.0849"
+      >
+        be &#8212; the env contract keeps
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="233.3372"
+        x="1104.88"
+        y="889.7909"
+      >
+        firesky tokens in a stack exposing only
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="31.2"
+        x="1341.5972"
+        y="889.7909"
+      >
+        push
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="23.322"
+        x="1376.1772"
+        y="889.7909"
+      >
+        and
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="46.8"
+        x="1402.8792"
+        y="889.7909"
+      >
+        toList
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="99.7231"
+        x="1449.6793"
+        y="889.7909"
+      >
+        . A publication is
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="500.6954"
+        x="1104.88"
+        y="907.4969"
+      >
+        permanent history; what varies is whether the config record is present,
+        and that is
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="76.037"
+        x="1104.88"
+        y="925.2029"
+      >
+        exactly what
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="46.8"
+        x="1184.2971"
+        y="925.2029"
+      >
+        active
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="48.334"
+        x="1234.4771"
+        y="925.2029"
+      >
+        reports.
+      </text>
+    </g>
+    <!--link Before to After-->
+    <g
+      class="link"
+      data-entity-1="ent0001"
+      data-entity-2="ent0007"
+      data-link-type="dependency"
+      data-source-line="80"
+      id="lnk29"
+    >
+      <path
+        d="M805.4,400.5598 C857.68,400.5598 906.33,400.5598 958.8,400.5598"
+        fill="none"
+        id="Before-to-After"
+        style="stroke: #455a64; stroke-width: 1.3"
+      />
+      <polygon
+        fill="#455A64"
+        points="963.8,400.5598,954.8,396.5598,958.8,400.5598,954.8,404.5598,963.8,400.5598"
+        style="
+          stroke: #455a64;
+          stroke-width: 1.3;
+          stroke-linejoin: miter;
+          stroke-miterlimit: 10;
+        "
+      />
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="54.6"
+        x="823.12"
+        y="393.4568"
+      >
+        d938999
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="7.436"
+        x="881.1"
+        y="393.4568"
+      >
+        +
+      </text>
+      <text
+        fill="#000000"
+        font-family="monospace"
+        font-size="13"
+        lengthAdjust="spacing"
+        textLength="54.6"
+        x="891.916"
+        y="393.4568"
+      >
+        643066d
+      </text>
+    </g>
+    <g class="legend" data-source-line="92">
+      <rect
+        fill="none"
+        height="128.4075"
+        rx="7.5"
+        ry="7.5"
+        style="stroke: #000000; stroke-width: 1"
+        width="384.9046"
+        x="1396.9754"
+        y="955.0119"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="44.2538"
+        x="1405.6153"
+        y="976.9779"
+      >
+        colour
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        font-weight="700"
+        lengthAdjust="spacing"
+        textLength="61.6278"
+        x="1457.1491"
+        y="976.9779"
+      >
+        meaning
+      </text>
+      <rect
+        fill="#E8F5E9"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1401.9754"
+        y="981.0798"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1401.9754"
+        y="996.0458"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="199.1072"
+        x="1457.1491"
+        y="996.0458"
+      >
+        answering mentions, correctly
+      </text>
+      <rect
+        fill="#E3F2FD"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1401.9754"
+        y="1000.1478"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1401.9754"
+        y="1015.1137"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="189.0413"
+        x="1457.1491"
+        y="1015.1137"
+      >
+        deliberately silent, reversible
+      </text>
+      <rect
+        fill="#FFF3E0"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1401.9754"
+        y="1019.2157"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1401.9754"
+        y="1034.1816"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="238.4471"
+        x="1457.1491"
+        y="1034.1816"
+      >
+        answering, but not the current build
+      </text>
+      <rect
+        fill="#FFEBEE"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1401.9754"
+        y="1038.2836"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1401.9754"
+        y="1053.2495"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="316.0908"
+        x="1457.1491"
+        y="1053.2495"
+      >
+        wrong: a dead end, or a team that outlived itself
+      </text>
+      <rect
+        fill="#ECEFF1"
+        height="19.0679"
+        style="stroke: none; stroke-width: 1"
+        width="51.5338"
+        x="1401.9754"
+        y="1057.3515"
+      />
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="3.64"
+        x="1401.9754"
+        y="1072.3174"
+      >
+        &#160;
+      </text>
+      <text
+        fill="#000000"
+        font-family="Helvetica"
+        font-size="14"
+        lengthAdjust="spacing"
+        textLength="120.3015"
+        x="1457.1491"
+        y="1072.3174"
+      >
+        nothing published
+      </text>
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="962.0119"
+        y2="962.0119"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="981.0798"
+        y2="981.0798"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="1000.1478"
+        y2="1000.1478"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="1019.2157"
+        y2="1019.2157"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="1038.2836"
+        y2="1038.2836"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="1057.3515"
+        y2="1057.3515"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1776.8799"
+        y1="1076.4194"
+        y2="1076.4194"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1401.9754"
+        x2="1401.9754"
+        y1="962.0119"
+        y2="1076.4194"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1453.5092"
+        x2="1453.5092"
+        y1="962.0119"
+        y2="1076.4194"
+      />
+      <line
+        style="stroke: #000000; stroke-width: 1"
+        x1="1776.8799"
+        x2="1776.8799"
+        y1="962.0119"
+        y2="1076.4194"
+      />
+    </g>
+    <?plantuml-src dLVRRjj647tNLopeXm2iu-XcnLPI8xGj9G6AD70Cz24DWfMu4XUYTjdTfMIrBj2dVa3HR-Y7vKjwPfUKACTrtVf99eSpPsVEd9bzmjwNarnEkPDQCMuPPzPn9zYIJpEfn26RY9asWd6LCZvpmXonwqmmPxYoqd_aCkvOAbEcj6izOU96MiUaPGKvjfb8sTEptJ_3-gTKSyRpDTzODZK28U6VpOom6UFJgIwLEsHMCmwNJl0bmwCSCSHA661gU0TYCTM0v-GIm3G02PO1RowOT8W1x-c6wRKIwL7BIOVdxniOWlill_tfFzmTp8QJ-VE8zD1dm5kizTwPVrGlhVnP33kTCnvWLTcKrji3sqpEcG580xIEcONOi2Yo8fz5qGjlKvtOnwYWSoJTYe8Rf2O4jwLPoHKTwkKpYdZMQjc5L6IoP1C-NSmDdAGNEjU67OpzNyCY5JDUvcwibNl7aQat8by91x0D6vlnLAyfBJEUMz5uanYZrzUPd2wKi9PrZdhDppnbVcanTeup2jEqEyPJYbd1wWvwtTv9wrTWznz5SNm-6dz_DOfZNmEj10Cfc5I7IAx_IKUBY9ldWOfqj9FnoS71nudEqqyNW-v9zyH7hro-yoJPCYHyssO7EGWzx1yV9uF-2t8w75sCnkCEmMwp8ONRCW-_z-fMsqJHwz4rWFxrRES-Obz-_uFrs_tM3iBx_U2TAdXtzFoorws2duoFHwVak0F7DGEYw5KW0DnwwbdcUmoSlVnG6pzCAQPGNkhaE2wDZEDj2CLUBOKAJMlaV2uCMPbIDO0dogw50GFG-QLZSzGZ7A5R7I6aEnnXF1wTZqRalml_HYpr2WqvCthf4QzvdWltn8OEaoeLDxNj_WciatdE2ZG_uEtS5Rd4ERmxpb9kiudci4PJepovLZW0uqKXECuXcuUu4hFIrhdlFGYyvulQRxVPMxNYkKoln4-bi6uOHRlNRwgMhAJ4yOLGUByB-46WDKbC50CbIQ5AcLVn-rNyqNXmqMxNySUzKPi2zAamB8SNWmujShrXIwc26YgnPgXWRVQrc8IyXNBJMyIc1ge_Y29fFvDhwpu7trJ-OUZjWFzZ_8az_NWGck8JXFgy7QYEXu6i_Y7HfoByLkxQPr4KbFjpHLxgX4f6jSethE0kgwNASn1EGnQyqxulyjE0B626GIYJD-ZjeZ8-vr8rOiSnXI7AJ8sS85rWdqWtSLm5R9Zk2MnLmj1QTy4z5Fi-8w9fAi1n4IO3QDw8YqZJhAhCD8CBdvKwPbC1a_7rwAeIGCmZFP_dbURpu7yxPskV4-qob1zoQ3tB4XhDKCO1cFMyLiPGm7zJnkH1PKmUeOp9_rV6v45bJ3hUCPywp3qqW2c5RylaqN9sgSsIWva-LYrXdUF1yKNLYQFUk3k-99_TlLXrZrGlzlikr3ojNyRnDZlry4RfBjzUieKed1TWRzTOJ4BdedeQGzW-JacI1vKaUKp7LsQGLcssIutIQpQJDtoIYmQGrxNo9xq7-K6DKghTEXR7CsaiJdr8vrNDNFKybPnVkt8netMd6ZRtIb7I3jpQawBaVYaAGcIRozIkkHFVjw7gtaUtYNbFq0BQArzcq5VFlbRTXj_kFsExHx2id2iQL6ZqQalrAkIhNV7dQ_6AegA4i8QJMTW27mWVeDnZJxCf6Fioq4QDOaQZvOJQuntEL71hr_ldkAFCoLrbJlh_uQ3uiD0OOG75RaVnYIoD0I5fgjqDtwXx6BfXdRY6faPHm_ssReVCpm1APwZQtSBSyHYCI7UhFN9d0lN87Dbv5QNWwMdlvFJq5Edw1lyD-htsO93Io0H_1Qclmr82TbIwkrMHEFuXsx1ATT3-ejZZv170Ndf1Hz7zSrSOxRRoojR-beDkrQJk1Td0QoLpDlIhTFNLOcsm135T2EDl74DwHGMtUtSWf1ogR-KatuGhbTg49M79mow3puwWF1GFYbJWBWLu4Iu3uSgb7G10ZoBhgqUYjD6byNj75Aw3QB-KCF8SRa7FCEw0aZwkzq8XWShGZNBAiPuHs3YUSWKRf0Ltkdfv46f5BOUhsBJA8Ro2pi8k05XZ-Q8s2bVLwG9TL6ZgZB1qKCFO38MZL4MHqz-XnoBWJEvSpk0JYKETY92Pf66wUS7MD6LNtD3c2VphJ13eUtOlkk66XRM-6d8Nl8eRu0OIxwgUA00KLDSUjOGNNN2nbOiv_UFvXozllqMGd7ABNvHpEjKjlNXv48RYsUrED1kq02B0eg2rjISahC5wh4TqYSHBAtEFTqi8KTk7CTBq7lP_gb-pSVqqsdr4MpG-yZmS-cM5eyuAWmLtlUfcxHEZIvTB8e5qT4dPmlHZ11xgiR2R8xUKff2Vlm40?>
+  </g>
+</svg>

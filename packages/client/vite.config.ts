@@ -16,9 +16,9 @@ export default defineConfig({
       tsconfigPath: "tsconfig.lib.json",
     }),
   ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-    },
-  },
+  // No "@" alias on purpose. This package is consumed from source in dev (via the
+  // "f1r3fly-source" export condition), and the app defines its own "@" -> its own
+  // src. Vite's resolve.alias is global/importer-agnostic, so a "@/" import here
+  // would resolve into the APP's src and break. Dropping the alias turns any such
+  // import into a hard compile error instead of a silent mis-resolution.
 });

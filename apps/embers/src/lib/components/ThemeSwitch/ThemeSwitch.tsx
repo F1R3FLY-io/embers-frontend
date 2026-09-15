@@ -9,7 +9,12 @@ export function ThemeSwitch() {
 
   return (
     <label className={styles.switch}>
-      <input checked={theme.isDark} type="checkbox" onChange={theme.toggle} />
+      <input
+        aria-label="Toggle color theme"
+        checked={theme.isDark}
+        type="checkbox"
+        onChange={theme.toggle}
+      />
       <span className={styles.slider}>
         {theme.isDark ? (
           <CrescentMoonIcon key="moon" className={styles.icon} />

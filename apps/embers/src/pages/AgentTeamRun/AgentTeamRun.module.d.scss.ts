@@ -1,0 +1,25 @@
+declare const classNames: {
+  readonly page: "page";
+  readonly card: "card";
+  readonly eyebrow: "eyebrow";
+  readonly started: "started";
+  readonly privacy: "privacy";
+  readonly "title-row": "title-row";
+  readonly status: "status";
+  readonly section: "section";
+  readonly metadata: "metadata";
+  readonly notice: "notice";
+  readonly error: "error";
+  readonly success: "success";
+  readonly timeline: "timeline";
+  readonly waits: "waits";
+  readonly "command-form": "command-form";
+  readonly response: "response";
+  readonly "command-result": "command-result";
+  readonly actions: "actions";
+  readonly raw: "raw";
+  readonly prose: "prose";
+  readonly "table-scroll": "table-scroll";
+  readonly activity: "activity";
+};
+export default classNames;

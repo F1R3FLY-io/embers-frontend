@@ -1,0 +1,51 @@
+// Smoke 00: prove the ChromaDB integration is LIVE end to end.
+//
+// Catches both failure modes:
+//   1. Node built without the chromadb cargo feature: the rho:chroma URNs are
+//      unregistered and this deploy fails outright.
+//   2. Feature present but Chroma server unreachable at node start: the
+//      service silently degrades to NoOp, upserts pretend to succeed and the
+//      query returns an empty list, so the marker line reports EMPTY instead
+//      of the document text.
+//
+// Results are emitted twice: to rho:io:stdout (visible in the validator log
+// for operators) and to the on-chain test log contract, whose messages come
+// back in the testnet deploy/send HTTP response for programmatic assertions.
+//
+// PASS: a response log message contains EMBERS-SMOKE-00-RESULT followed by
+// the purple dragonflies sentence.
+new createCollection(`rho:chroma:collection:new`),
+    upsertEntries(`rho:chroma:collection:entries:new`),
+    queryEntries(`rho:chroma:collection:entries:query`),
+    stdout(`rho:io:stdout`),
+    rl(`rho:registry:lookup`),
+    logCh, createdCh, upsertCh, queryCh in {
+  rl!(`rho:id:ugzm7bbut1gxmcutdeo3minmwfd7qgxcwepeox85gdmy7xatziwrbg`, *logCh) |
+  for (@(_, log) <- logCh) {
+    createCollection!("embers-demo-smoke", true, Nil, *createdCh) |
+    for (_ <- createdCh) {
+      upsertEntries!("embers-demo-smoke", {"smoke-1": ("The Embers smoke document mentions purple dragonflies.", Nil)}, *upsertCh) |
+      for (_ <- upsertCh) {
+        queryEntries!("embers-demo-smoke", ["purple dragonflies"], *queryCh) |
+        for (@results <- queryCh) {
+          stdout!(["EMBERS-SMOKE-00-RESULT", results]) |
+          match results {
+            [] => {
+              @log!("info", "EMBERS-SMOKE-00-EMPTY no results: the ChromaDB service is NoOp")
+            }
+            [entries] => {
+              match entries.toList() {
+                [] => {
+                  @log!("info", "EMBERS-SMOKE-00-EMPTY empty map: the ChromaDB service is NoOp")
+                }
+                [(_, (text, _))] => {
+                  @log!("info", "EMBERS-SMOKE-00-RESULT " ++ text)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

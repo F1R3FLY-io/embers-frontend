@@ -15,6 +15,9 @@ dist-ssr
 *.local
 .tmp
 
+# Emitted by vite-plugin-sass-dts next to each SCSS module on every dev/build run
+*.module.scss.d.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -28,6 +31,7 @@ dist-ssr
 
 # LLM Coding Synth
 .mcp.json
+.pgmcp.toml
 
 # location to store LLM artifacts
 tmp/
@@ -35,3 +39,8 @@ coverage/
 .env
 
 /apps/embers/public/*
+demo/research-desk/seed/.last-deploy.json
+
+# Python demo integration caches
+__pycache__/
+*.py[cod]

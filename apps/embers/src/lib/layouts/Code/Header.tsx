@@ -25,7 +25,20 @@ export const Header: React.FC<HeaderProps> = ({ getCode }) => {
   const isLoading = createMutation.isPending || saveMutation.isPending;
 
   const saveOrCreate = useCallback(async () => {
-    const code = getCode() ?? "";
+    const code = getCode();
+    // `undefined` means the editor has not finished loading and has no text to
+    // give -- which is NOT the same as a document that is genuinely empty, and
+    // conflating them with `?? ""` is data loss. Saving an existing agent
+    // before the editor is ready would append a version whose code is empty,
+    // and that version is the one a team compiles. Refusing is the only safe
+    // answer: the author's work is still on screen, and a retry a moment later
+    // succeeds.
+    if (code === undefined || code === null) {
+      throw new Error(
+        "The editor is still loading, so there is nothing to save yet. " +
+          "Wait for the code to appear and try again.",
+      );
+    }
     update({ code });
     const payload = {
       code,

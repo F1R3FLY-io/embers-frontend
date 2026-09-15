@@ -1,0 +1,75 @@
+@startuml
+title Slow run — the send call fails, the run still lands (correctness never depends on the send)
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+participant "Gateway TeamsRuntime" as GW #C8E6DC
+participant "Sweeper\n(5 s ticker)" as Sweep #C8E6DC
+participant "Embers API" as API #FFC9A8
+participant "Agent-Teams env v3\n(validator)" as Chain #FFE4A6
+participant "Platform channel" as Platform #F8CECC
+
+group The send fails indeterminately
+GW -> API : POST run-under-grant/send (bounded 130 s)
+API -> Chain : deploy
+alt client timeout fires
+GW -> GW : outcome INDETERMINATE: the deploy\nmay have landed; run record STAYS ACTIVE
+else embers answers 504 deploy_not_finalized
+API --> GW : 504 {code: deploy_not_finalized,\n"poll the run state"}
+GW -> GW : same treatment: indeterminate,\nrun stays active
+else chain refused the deploy itself
+API --> GW : 403 grant_revoked / 429 grant_caps_exceeded /\n402 deploy_unfunded
+GW -> GW : nothing registered: evict cached grant,\ndeactivate the record, tell the user
+end
+end
+
+group Recovery loop: the sweeper polls every active run
+loop each 5 s tick, per active run, budget 15 min
+Sweep -> API : GET /runs/{run_id}
+alt run not yet visible
+API --> Sweep : 404 -- keep waiting\n(deploy still finalizing, or lost)
+else suspended with waits
+API --> Sweep : status suspended, wait_ids, revision
+Sweep -> Platform : announce waits ONCE per revision\n(announced_wait_revision fence)
+else completed
+API --> Sweep : status completed, output hashes
+Sweep -> API : reveal prepare + send (grantee authority)
+API --> Sweep : 200 output JSON
+Sweep -> Platform : **Final**: output + "Run: <url>"
+else completed but hashes not yet visible
+API --> Sweep : completed, hashes absent (observer lag)
+Sweep -> Sweep : stay active; next sweep reveals
+else failed / cancelled
+API --> Sweep : terminal failure state
+Sweep -> Platform : TeamRunFailed (status + last event)
+end
+end
+end
+
+group Budget exhaustion (15 min)
+Sweep -> Sweep : deactivate record ("budget_exceeded")
+Sweep -> Platform : "Run #N is still not finished after Ns.\nIt may yet complete -- team status #N."
+note right of Sweep #FFF0C7
+Eviction stops the sweeper, not the run:
+"team status #N" still reads the ledger, and
+the run completes for its owner regardless.
+end note
+end
+
+note over GW, Chain #FFF0C7
+The f1r3sky lesson, generalized: the blocking send is an
+optimization. Every outcome is reachable from
+GET /runs/{run_id} plus a grantee reveal, so a dropped
+connection, a restart, or a 504 loses nothing. A resent
+same-signed envelope carries the same deploy identity and
+re-registers idempotently without a second cap unit.
+end note
+@enduml

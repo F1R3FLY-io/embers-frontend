@@ -1,1 +1,4 @@
 dist
+
+# See .prettierignore: the coverage report is generated output.
+coverage

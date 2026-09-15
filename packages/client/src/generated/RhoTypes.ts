@@ -33,6 +33,7 @@ export interface Par {
   unforgeables: GUnforgeable[];
   bundles: Bundle[];
   connectives: Connective[];
+  conditionals: If[];
   locallyFree: Uint8Array;
   connectiveUsed: boolean;
 }
@@ -41,6 +42,14 @@ export interface Par {
 export interface TaggedContinuation {
   parBody?: ParWithRandom | undefined;
   scalaBodyRef?: bigint | undefined;
+  /**
+   * Optional `where`-clause guard, lifted from `Receive.condition` when the
+   * continuation is registered with rspace. The matcher coordinator evaluates
+   * it (via rho-pure-eval) against the *combined* bindings of all binds after
+   * every spatial pattern has matched, so cross-channel guards see every
+   * bound variable. Empty Par = no guard. See plan §7.12.
+   */
+  guard: Par | undefined;
 }
 
 /**
@@ -135,6 +144,13 @@ export interface Receive {
   bindCount: number;
   locallyFree: Uint8Array;
   connectiveUsed: boolean;
+  /**
+   * Optional `where`-clause guard. When non-empty, the receive only commits
+   * (consumes the matched messages) if every spatial pattern matches AND
+   * the condition evaluates to GBool(true) under the bound variables. An
+   * empty Par means no guard. See plan §3.3 / §3.5.
+   */
+  condition: Par | undefined;
 }
 
 /**
@@ -144,10 +160,16 @@ export interface Receive {
  * up to level+count for the last used variable.
  */
 export interface New {
-  /** Includes any uris listed below. This makes it easier to substitute or walk a term. */
+  /**
+   * Includes any uris listed below. This makes it easier to substitute or walk
+   * a term.
+   */
   bindCount: number;
   p: Par | undefined;
-  /** For normalization, uri-referenced variables come at the end, and in lexicographical order. */
+  /**
+   * For normalization, uri-referenced variables come at the end, and in
+   * lexicographical order.
+   */
   uri: string[];
   injections: { [key: string]: Par };
   locallyFree: Uint8Array;
@@ -162,11 +184,34 @@ export interface MatchCase {
   pattern: Par | undefined;
   source: Par | undefined;
   freeCount: number;
+  /**
+   * Optional per-case `where`-clause guard. When non-empty, the case only
+   * fires if the pattern matches AND the guard evaluates to GBool(true)
+   * under the pattern's bindings. Anything else (false, non-bool, error)
+   * falls through to the next case. An empty Par means no guard. See plan
+   * §3.4 / §3.8.
+   */
+  guard: Par | undefined;
 }
 
 export interface Match {
   target: Par | undefined;
   cases: MatchCase[];
+  locallyFree: Uint8Array;
+  connectiveUsed: boolean;
+}
+
+/**
+ * First-class conditional. Reduction evaluates `condition`'s expression slot;
+ * fires `if_true` when it reduces to GBool(true), `if_false` when it reduces
+ * to GBool(false), and raises InterpreterError::IfConditionTypeError
+ * otherwise. Side effects in `condition` (sends/news/receives) are inert
+ * because the evaluator only walks par.exprs.
+ */
+export interface If {
+  condition: Par | undefined;
+  ifTrue: Par | undefined;
+  ifFalse: Par | undefined;
   locallyFree: Uint8Array;
   connectiveUsed: boolean;
 }
@@ -201,6 +246,8 @@ export interface Expr {
   eSetBody?: ESet | undefined;
   eMapBody?: EMap | undefined;
   eMethodBody?: EMethod | undefined;
+  ePathmapBody?: EPathMap | undefined;
+  eZipperBody?: EZipper | undefined;
   eMatchesBody?: EMatches | undefined;
   /** string interpolation */
   ePercentPercentBody?: EPercentPercent | undefined;
@@ -209,6 +256,31 @@ export interface Expr {
   /** set difference */
   eMinusMinusBody?: EMinusMinus | undefined;
   eModBody?: EMod | undefined;
+  /**
+   * Extended numeric types (Rholang numeric types spec, 2025-11-13)
+   * fixed64 (not protobuf double) to preserve bit-exact IEEE 754 semantics (-0.0 vs 0.0, NaN payloads)
+   */
+  gDouble?: bigint | undefined;
+  /** Arbitrary-precision signed integer (big-endian two's complement) */
+  gBigInt?: Uint8Array | undefined;
+  /** Exact rational number */
+  gBigRat?: GBigRational | undefined;
+  /** Fixed-point decimal */
+  gFixedPoint?: GFixedPoint | undefined;
+}
+
+export interface GBigRational {
+  /** BigInt as big-endian two's complement */
+  numerator: Uint8Array;
+  /** BigInt as big-endian two's complement, always > 0 */
+  denominator: Uint8Array;
+}
+
+export interface GFixedPoint {
+  /** BigInt as big-endian two's complement */
+  unscaled: Uint8Array;
+  /** Number of decimal digits: actual_value = unscaled / 10^scale */
+  scale: number;
 }
 
 export interface EList {
@@ -236,6 +308,33 @@ export interface EMap {
   locallyFree: Uint8Array;
   connectiveUsed: boolean;
   remainder: Var | undefined;
+}
+
+export interface EPathMap {
+  ps: Par[];
+  locallyFree: Uint8Array;
+  connectiveUsed: boolean;
+  remainder: Var | undefined;
+}
+
+/**
+ * Zipper for navigating and modifying PathMaps.
+ * Zippers maintain a focus position within a PathMap structure,
+ * allowing efficient navigation and modification operations.
+ */
+export interface EZipper {
+  /** The underlying PathMap being navigated */
+  pathmap: EPathMap | undefined;
+  /**
+   * Current path position in the zipper (list of path segments as bytes)
+   * Each segment is encoded as bytes representing a Par value
+   */
+  currentPath: Uint8Array[];
+  /** Whether this is a write zipper (true) or read zipper (false) */
+  isWriteZipper: boolean;
+  /** Metadata from the PathMap */
+  locallyFree: Uint8Array;
+  connectiveUsed: boolean;
 }
 
 /** `target.method(arguments)` */
@@ -427,6 +526,7 @@ function createBasePar(): Par {
     unforgeables: [],
     bundles: [],
     connectives: [],
+    conditionals: [],
     locallyFree: new Uint8Array(0),
     connectiveUsed: false,
   };
@@ -460,6 +560,9 @@ export const Par: MessageFns<Par> = {
     }
     for (const v of message.connectives) {
       Connective.encode(v!, writer.uint32(66).fork()).join();
+    }
+    for (const v of message.conditionals) {
+      If.encode(v!, writer.uint32(98).fork()).join();
     }
     if (message.locallyFree.length !== 0) {
       writer.uint32(74).bytes(message.locallyFree);
@@ -544,6 +647,14 @@ export const Par: MessageFns<Par> = {
           message.connectives.push(Connective.decode(reader, reader.uint32()));
           continue;
         }
+        case 12: {
+          if (tag !== 98) {
+            break;
+          }
+
+          message.conditionals.push(If.decode(reader, reader.uint32()));
+          continue;
+        }
         case 9: {
           if (tag !== 74) {
             break;
@@ -595,6 +706,9 @@ export const Par: MessageFns<Par> = {
       connectives: globalThis.Array.isArray(object?.connectives)
         ? object.connectives.map((e: any) => Connective.fromJSON(e))
         : [],
+      conditionals: globalThis.Array.isArray(object?.conditionals)
+        ? object.conditionals.map((e: any) => If.fromJSON(e))
+        : [],
       locallyFree: isSet(object.locallyFree)
         ? bytesFromBase64(object.locallyFree)
         : new Uint8Array(0),
@@ -632,6 +746,9 @@ export const Par: MessageFns<Par> = {
     if (message.connectives?.length) {
       obj.connectives = message.connectives.map((e) => Connective.toJSON(e));
     }
+    if (message.conditionals?.length) {
+      obj.conditionals = message.conditionals.map((e) => If.toJSON(e));
+    }
     if (message.locallyFree.length !== 0) {
       obj.locallyFree = base64FromBytes(message.locallyFree);
     }
@@ -657,6 +774,8 @@ export const Par: MessageFns<Par> = {
     message.bundles = object.bundles?.map((e) => Bundle.fromPartial(e)) || [];
     message.connectives =
       object.connectives?.map((e) => Connective.fromPartial(e)) || [];
+    message.conditionals =
+      object.conditionals?.map((e) => If.fromPartial(e)) || [];
     message.locallyFree = object.locallyFree ?? new Uint8Array(0);
     message.connectiveUsed = object.connectiveUsed ?? false;
     return message;
@@ -664,7 +783,7 @@ export const Par: MessageFns<Par> = {
 };
 
 function createBaseTaggedContinuation(): TaggedContinuation {
-  return { parBody: undefined, scalaBodyRef: undefined };
+  return { parBody: undefined, scalaBodyRef: undefined, guard: undefined };
 }
 
 export const TaggedContinuation: MessageFns<TaggedContinuation> = {
@@ -682,6 +801,9 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
         );
       }
       writer.uint32(16).int64(message.scalaBodyRef);
+    }
+    if (message.guard !== undefined) {
+      Par.encode(message.guard, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -713,6 +835,14 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
           message.scalaBodyRef = reader.int64() as bigint;
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.guard = Par.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -730,6 +860,7 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
       scalaBodyRef: isSet(object.scalaBodyRef)
         ? BigInt(object.scalaBodyRef)
         : undefined,
+      guard: isSet(object.guard) ? Par.fromJSON(object.guard) : undefined,
     };
   },
 
@@ -740,6 +871,9 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
     }
     if (message.scalaBodyRef !== undefined) {
       obj.scalaBodyRef = message.scalaBodyRef.toString();
+    }
+    if (message.guard !== undefined) {
+      obj.guard = Par.toJSON(message.guard);
     }
     return obj;
   },
@@ -758,6 +892,10 @@ export const TaggedContinuation: MessageFns<TaggedContinuation> = {
         ? ParWithRandom.fromPartial(object.parBody)
         : undefined;
     message.scalaBodyRef = object.scalaBodyRef ?? undefined;
+    message.guard =
+      object.guard !== undefined && object.guard !== null
+        ? Par.fromPartial(object.guard)
+        : undefined;
     return message;
   },
 };
@@ -1728,6 +1866,7 @@ function createBaseReceive(): Receive {
     bindCount: 0,
     locallyFree: new Uint8Array(0),
     connectiveUsed: false,
+    condition: undefined,
   };
 }
 
@@ -1756,6 +1895,9 @@ export const Receive: MessageFns<Receive> = {
     }
     if (message.connectiveUsed !== false) {
       writer.uint32(56).bool(message.connectiveUsed);
+    }
+    if (message.condition !== undefined) {
+      Par.encode(message.condition, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -1824,6 +1966,14 @@ export const Receive: MessageFns<Receive> = {
           message.connectiveUsed = reader.bool();
           continue;
         }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.condition = Par.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1852,6 +2002,9 @@ export const Receive: MessageFns<Receive> = {
       connectiveUsed: isSet(object.connectiveUsed)
         ? globalThis.Boolean(object.connectiveUsed)
         : false,
+      condition: isSet(object.condition)
+        ? Par.fromJSON(object.condition)
+        : undefined,
     };
   },
 
@@ -1878,6 +2031,9 @@ export const Receive: MessageFns<Receive> = {
     if (message.connectiveUsed !== false) {
       obj.connectiveUsed = message.connectiveUsed;
     }
+    if (message.condition !== undefined) {
+      obj.condition = Par.toJSON(message.condition);
+    }
     return obj;
   },
 
@@ -1896,6 +2052,10 @@ export const Receive: MessageFns<Receive> = {
     message.bindCount = object.bindCount ?? 0;
     message.locallyFree = object.locallyFree ?? new Uint8Array(0);
     message.connectiveUsed = object.connectiveUsed ?? false;
+    message.condition =
+      object.condition !== undefined && object.condition !== null
+        ? Par.fromPartial(object.condition)
+        : undefined;
     return message;
   },
 };
@@ -2161,7 +2321,12 @@ export const New_InjectionsEntry: MessageFns<New_InjectionsEntry> = {
 };
 
 function createBaseMatchCase(): MatchCase {
-  return { pattern: undefined, source: undefined, freeCount: 0 };
+  return {
+    pattern: undefined,
+    source: undefined,
+    freeCount: 0,
+    guard: undefined,
+  };
 }
 
 export const MatchCase: MessageFns<MatchCase> = {
@@ -2177,6 +2342,9 @@ export const MatchCase: MessageFns<MatchCase> = {
     }
     if (message.freeCount !== 0) {
       writer.uint32(24).int32(message.freeCount);
+    }
+    if (message.guard !== undefined) {
+      Par.encode(message.guard, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -2213,6 +2381,14 @@ export const MatchCase: MessageFns<MatchCase> = {
           message.freeCount = reader.int32();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.guard = Par.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2229,6 +2405,7 @@ export const MatchCase: MessageFns<MatchCase> = {
       freeCount: isSet(object.freeCount)
         ? globalThis.Number(object.freeCount)
         : 0,
+      guard: isSet(object.guard) ? Par.fromJSON(object.guard) : undefined,
     };
   },
 
@@ -2242,6 +2419,9 @@ export const MatchCase: MessageFns<MatchCase> = {
     }
     if (message.freeCount !== 0) {
       obj.freeCount = Math.round(message.freeCount);
+    }
+    if (message.guard !== undefined) {
+      obj.guard = Par.toJSON(message.guard);
     }
     return obj;
   },
@@ -2262,6 +2442,10 @@ export const MatchCase: MessageFns<MatchCase> = {
         ? Par.fromPartial(object.source)
         : undefined;
     message.freeCount = object.freeCount ?? 0;
+    message.guard =
+      object.guard !== undefined && object.guard !== null
+        ? Par.fromPartial(object.guard)
+        : undefined;
     return message;
   },
 };
@@ -2392,6 +2576,152 @@ export const Match: MessageFns<Match> = {
   },
 };
 
+function createBaseIf(): If {
+  return {
+    condition: undefined,
+    ifTrue: undefined,
+    ifFalse: undefined,
+    locallyFree: new Uint8Array(0),
+    connectiveUsed: false,
+  };
+}
+
+export const If: MessageFns<If> = {
+  encode(message: If, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.condition !== undefined) {
+      Par.encode(message.condition, writer.uint32(10).fork()).join();
+    }
+    if (message.ifTrue !== undefined) {
+      Par.encode(message.ifTrue, writer.uint32(18).fork()).join();
+    }
+    if (message.ifFalse !== undefined) {
+      Par.encode(message.ifFalse, writer.uint32(26).fork()).join();
+    }
+    if (message.locallyFree.length !== 0) {
+      writer.uint32(34).bytes(message.locallyFree);
+    }
+    if (message.connectiveUsed !== false) {
+      writer.uint32(40).bool(message.connectiveUsed);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): If {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIf();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.condition = Par.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ifTrue = Par.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.ifFalse = Par.decode(reader, reader.uint32());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.locallyFree = reader.bytes();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.connectiveUsed = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): If {
+    return {
+      condition: isSet(object.condition)
+        ? Par.fromJSON(object.condition)
+        : undefined,
+      ifTrue: isSet(object.ifTrue) ? Par.fromJSON(object.ifTrue) : undefined,
+      ifFalse: isSet(object.ifFalse) ? Par.fromJSON(object.ifFalse) : undefined,
+      locallyFree: isSet(object.locallyFree)
+        ? bytesFromBase64(object.locallyFree)
+        : new Uint8Array(0),
+      connectiveUsed: isSet(object.connectiveUsed)
+        ? globalThis.Boolean(object.connectiveUsed)
+        : false,
+    };
+  },
+
+  toJSON(message: If): unknown {
+    const obj: any = {};
+    if (message.condition !== undefined) {
+      obj.condition = Par.toJSON(message.condition);
+    }
+    if (message.ifTrue !== undefined) {
+      obj.ifTrue = Par.toJSON(message.ifTrue);
+    }
+    if (message.ifFalse !== undefined) {
+      obj.ifFalse = Par.toJSON(message.ifFalse);
+    }
+    if (message.locallyFree.length !== 0) {
+      obj.locallyFree = base64FromBytes(message.locallyFree);
+    }
+    if (message.connectiveUsed !== false) {
+      obj.connectiveUsed = message.connectiveUsed;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<If>, I>>(base?: I): If {
+    return If.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<If>, I>>(object: I): If {
+    const message = createBaseIf();
+    message.condition =
+      object.condition !== undefined && object.condition !== null
+        ? Par.fromPartial(object.condition)
+        : undefined;
+    message.ifTrue =
+      object.ifTrue !== undefined && object.ifTrue !== null
+        ? Par.fromPartial(object.ifTrue)
+        : undefined;
+    message.ifFalse =
+      object.ifFalse !== undefined && object.ifFalse !== null
+        ? Par.fromPartial(object.ifFalse)
+        : undefined;
+    message.locallyFree = object.locallyFree ?? new Uint8Array(0);
+    message.connectiveUsed = object.connectiveUsed ?? false;
+    return message;
+  },
+};
+
 function createBaseExpr(): Expr {
   return {
     gBool: undefined,
@@ -2419,11 +2749,17 @@ function createBaseExpr(): Expr {
     eSetBody: undefined,
     eMapBody: undefined,
     eMethodBody: undefined,
+    ePathmapBody: undefined,
+    eZipperBody: undefined,
     eMatchesBody: undefined,
     ePercentPercentBody: undefined,
     ePlusPlusBody: undefined,
     eMinusMinusBody: undefined,
     eModBody: undefined,
+    gDouble: undefined,
+    gBigInt: undefined,
+    gBigRat: undefined,
+    gFixedPoint: undefined,
   };
 }
 
@@ -2512,6 +2848,12 @@ export const Expr: MessageFns<Expr> = {
     if (message.eMethodBody !== undefined) {
       EMethod.encode(message.eMethodBody, writer.uint32(194).fork()).join();
     }
+    if (message.ePathmapBody !== undefined) {
+      EPathMap.encode(message.ePathmapBody, writer.uint32(258).fork()).join();
+    }
+    if (message.eZipperBody !== undefined) {
+      EZipper.encode(message.eZipperBody, writer.uint32(266).fork()).join();
+    }
     if (message.eMatchesBody !== undefined) {
       EMatches.encode(message.eMatchesBody, writer.uint32(218).fork()).join();
     }
@@ -2532,6 +2874,23 @@ export const Expr: MessageFns<Expr> = {
     }
     if (message.eModBody !== undefined) {
       EMod.encode(message.eModBody, writer.uint32(250).fork()).join();
+    }
+    if (message.gDouble !== undefined) {
+      if (BigInt.asUintN(64, message.gDouble) !== message.gDouble) {
+        throw new globalThis.Error(
+          "value provided for field message.gDouble of type fixed64 too large",
+        );
+      }
+      writer.uint32(273).fixed64(message.gDouble);
+    }
+    if (message.gBigInt !== undefined) {
+      writer.uint32(282).bytes(message.gBigInt);
+    }
+    if (message.gBigRat !== undefined) {
+      GBigRational.encode(message.gBigRat, writer.uint32(290).fork()).join();
+    }
+    if (message.gFixedPoint !== undefined) {
+      GFixedPoint.encode(message.gFixedPoint, writer.uint32(298).fork()).join();
     }
     return writer;
   },
@@ -2744,6 +3103,22 @@ export const Expr: MessageFns<Expr> = {
           message.eMethodBody = EMethod.decode(reader, reader.uint32());
           continue;
         }
+        case 32: {
+          if (tag !== 258) {
+            break;
+          }
+
+          message.ePathmapBody = EPathMap.decode(reader, reader.uint32());
+          continue;
+        }
+        case 33: {
+          if (tag !== 266) {
+            break;
+          }
+
+          message.eZipperBody = EZipper.decode(reader, reader.uint32());
+          continue;
+        }
         case 27: {
           if (tag !== 218) {
             break;
@@ -2785,6 +3160,38 @@ export const Expr: MessageFns<Expr> = {
           }
 
           message.eModBody = EMod.decode(reader, reader.uint32());
+          continue;
+        }
+        case 34: {
+          if (tag !== 273) {
+            break;
+          }
+
+          message.gDouble = reader.fixed64() as bigint;
+          continue;
+        }
+        case 35: {
+          if (tag !== 282) {
+            break;
+          }
+
+          message.gBigInt = reader.bytes();
+          continue;
+        }
+        case 36: {
+          if (tag !== 290) {
+            break;
+          }
+
+          message.gBigRat = GBigRational.decode(reader, reader.uint32());
+          continue;
+        }
+        case 37: {
+          if (tag !== 298) {
+            break;
+          }
+
+          message.gFixedPoint = GFixedPoint.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -2859,6 +3266,12 @@ export const Expr: MessageFns<Expr> = {
       eMethodBody: isSet(object.eMethodBody)
         ? EMethod.fromJSON(object.eMethodBody)
         : undefined,
+      ePathmapBody: isSet(object.ePathmapBody)
+        ? EPathMap.fromJSON(object.ePathmapBody)
+        : undefined,
+      eZipperBody: isSet(object.eZipperBody)
+        ? EZipper.fromJSON(object.eZipperBody)
+        : undefined,
       eMatchesBody: isSet(object.eMatchesBody)
         ? EMatches.fromJSON(object.eMatchesBody)
         : undefined,
@@ -2873,6 +3286,16 @@ export const Expr: MessageFns<Expr> = {
         : undefined,
       eModBody: isSet(object.eModBody)
         ? EMod.fromJSON(object.eModBody)
+        : undefined,
+      gDouble: isSet(object.gDouble) ? BigInt(object.gDouble) : undefined,
+      gBigInt: isSet(object.gBigInt)
+        ? bytesFromBase64(object.gBigInt)
+        : undefined,
+      gBigRat: isSet(object.gBigRat)
+        ? GBigRational.fromJSON(object.gBigRat)
+        : undefined,
+      gFixedPoint: isSet(object.gFixedPoint)
+        ? GFixedPoint.fromJSON(object.gFixedPoint)
         : undefined,
     };
   },
@@ -2954,6 +3377,12 @@ export const Expr: MessageFns<Expr> = {
     if (message.eMethodBody !== undefined) {
       obj.eMethodBody = EMethod.toJSON(message.eMethodBody);
     }
+    if (message.ePathmapBody !== undefined) {
+      obj.ePathmapBody = EPathMap.toJSON(message.ePathmapBody);
+    }
+    if (message.eZipperBody !== undefined) {
+      obj.eZipperBody = EZipper.toJSON(message.eZipperBody);
+    }
     if (message.eMatchesBody !== undefined) {
       obj.eMatchesBody = EMatches.toJSON(message.eMatchesBody);
     }
@@ -2970,6 +3399,18 @@ export const Expr: MessageFns<Expr> = {
     }
     if (message.eModBody !== undefined) {
       obj.eModBody = EMod.toJSON(message.eModBody);
+    }
+    if (message.gDouble !== undefined) {
+      obj.gDouble = message.gDouble.toString();
+    }
+    if (message.gBigInt !== undefined) {
+      obj.gBigInt = base64FromBytes(message.gBigInt);
+    }
+    if (message.gBigRat !== undefined) {
+      obj.gBigRat = GBigRational.toJSON(message.gBigRat);
+    }
+    if (message.gFixedPoint !== undefined) {
+      obj.gFixedPoint = GFixedPoint.toJSON(message.gFixedPoint);
     }
     return obj;
   },
@@ -3064,6 +3505,14 @@ export const Expr: MessageFns<Expr> = {
       object.eMethodBody !== undefined && object.eMethodBody !== null
         ? EMethod.fromPartial(object.eMethodBody)
         : undefined;
+    message.ePathmapBody =
+      object.ePathmapBody !== undefined && object.ePathmapBody !== null
+        ? EPathMap.fromPartial(object.ePathmapBody)
+        : undefined;
+    message.eZipperBody =
+      object.eZipperBody !== undefined && object.eZipperBody !== null
+        ? EZipper.fromPartial(object.eZipperBody)
+        : undefined;
     message.eMatchesBody =
       object.eMatchesBody !== undefined && object.eMatchesBody !== null
         ? EMatches.fromPartial(object.eMatchesBody)
@@ -3085,6 +3534,188 @@ export const Expr: MessageFns<Expr> = {
       object.eModBody !== undefined && object.eModBody !== null
         ? EMod.fromPartial(object.eModBody)
         : undefined;
+    message.gDouble = object.gDouble ?? undefined;
+    message.gBigInt = object.gBigInt ?? undefined;
+    message.gBigRat =
+      object.gBigRat !== undefined && object.gBigRat !== null
+        ? GBigRational.fromPartial(object.gBigRat)
+        : undefined;
+    message.gFixedPoint =
+      object.gFixedPoint !== undefined && object.gFixedPoint !== null
+        ? GFixedPoint.fromPartial(object.gFixedPoint)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseGBigRational(): GBigRational {
+  return { numerator: new Uint8Array(0), denominator: new Uint8Array(0) };
+}
+
+export const GBigRational: MessageFns<GBigRational> = {
+  encode(
+    message: GBigRational,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.numerator.length !== 0) {
+      writer.uint32(10).bytes(message.numerator);
+    }
+    if (message.denominator.length !== 0) {
+      writer.uint32(18).bytes(message.denominator);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GBigRational {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGBigRational();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.numerator = reader.bytes();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.denominator = reader.bytes();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GBigRational {
+    return {
+      numerator: isSet(object.numerator)
+        ? bytesFromBase64(object.numerator)
+        : new Uint8Array(0),
+      denominator: isSet(object.denominator)
+        ? bytesFromBase64(object.denominator)
+        : new Uint8Array(0),
+    };
+  },
+
+  toJSON(message: GBigRational): unknown {
+    const obj: any = {};
+    if (message.numerator.length !== 0) {
+      obj.numerator = base64FromBytes(message.numerator);
+    }
+    if (message.denominator.length !== 0) {
+      obj.denominator = base64FromBytes(message.denominator);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GBigRational>, I>>(
+    base?: I,
+  ): GBigRational {
+    return GBigRational.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GBigRational>, I>>(
+    object: I,
+  ): GBigRational {
+    const message = createBaseGBigRational();
+    message.numerator = object.numerator ?? new Uint8Array(0);
+    message.denominator = object.denominator ?? new Uint8Array(0);
+    return message;
+  },
+};
+
+function createBaseGFixedPoint(): GFixedPoint {
+  return { unscaled: new Uint8Array(0), scale: 0 };
+}
+
+export const GFixedPoint: MessageFns<GFixedPoint> = {
+  encode(
+    message: GFixedPoint,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.unscaled.length !== 0) {
+      writer.uint32(10).bytes(message.unscaled);
+    }
+    if (message.scale !== 0) {
+      writer.uint32(16).uint32(message.scale);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GFixedPoint {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGFixedPoint();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.unscaled = reader.bytes();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.scale = reader.uint32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GFixedPoint {
+    return {
+      unscaled: isSet(object.unscaled)
+        ? bytesFromBase64(object.unscaled)
+        : new Uint8Array(0),
+      scale: isSet(object.scale) ? globalThis.Number(object.scale) : 0,
+    };
+  },
+
+  toJSON(message: GFixedPoint): unknown {
+    const obj: any = {};
+    if (message.unscaled.length !== 0) {
+      obj.unscaled = base64FromBytes(message.unscaled);
+    }
+    if (message.scale !== 0) {
+      obj.scale = Math.round(message.scale);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GFixedPoint>, I>>(base?: I): GFixedPoint {
+    return GFixedPoint.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GFixedPoint>, I>>(
+    object: I,
+  ): GFixedPoint {
+    const message = createBaseGFixedPoint();
+    message.unscaled = object.unscaled ?? new Uint8Array(0);
+    message.scale = object.scale ?? 0;
     return message;
   },
 };
@@ -3571,6 +4202,281 @@ export const EMap: MessageFns<EMap> = {
       object.remainder !== undefined && object.remainder !== null
         ? Var.fromPartial(object.remainder)
         : undefined;
+    return message;
+  },
+};
+
+function createBaseEPathMap(): EPathMap {
+  return {
+    ps: [],
+    locallyFree: new Uint8Array(0),
+    connectiveUsed: false,
+    remainder: undefined,
+  };
+}
+
+export const EPathMap: MessageFns<EPathMap> = {
+  encode(
+    message: EPathMap,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    for (const v of message.ps) {
+      Par.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.locallyFree.length !== 0) {
+      writer.uint32(26).bytes(message.locallyFree);
+    }
+    if (message.connectiveUsed !== false) {
+      writer.uint32(32).bool(message.connectiveUsed);
+    }
+    if (message.remainder !== undefined) {
+      Var.encode(message.remainder, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EPathMap {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEPathMap();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.ps.push(Par.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.locallyFree = reader.bytes();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.connectiveUsed = reader.bool();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.remainder = Var.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EPathMap {
+    return {
+      ps: globalThis.Array.isArray(object?.ps)
+        ? object.ps.map((e: any) => Par.fromJSON(e))
+        : [],
+      locallyFree: isSet(object.locallyFree)
+        ? bytesFromBase64(object.locallyFree)
+        : new Uint8Array(0),
+      connectiveUsed: isSet(object.connectiveUsed)
+        ? globalThis.Boolean(object.connectiveUsed)
+        : false,
+      remainder: isSet(object.remainder)
+        ? Var.fromJSON(object.remainder)
+        : undefined,
+    };
+  },
+
+  toJSON(message: EPathMap): unknown {
+    const obj: any = {};
+    if (message.ps?.length) {
+      obj.ps = message.ps.map((e) => Par.toJSON(e));
+    }
+    if (message.locallyFree.length !== 0) {
+      obj.locallyFree = base64FromBytes(message.locallyFree);
+    }
+    if (message.connectiveUsed !== false) {
+      obj.connectiveUsed = message.connectiveUsed;
+    }
+    if (message.remainder !== undefined) {
+      obj.remainder = Var.toJSON(message.remainder);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EPathMap>, I>>(base?: I): EPathMap {
+    return EPathMap.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<EPathMap>, I>>(object: I): EPathMap {
+    const message = createBaseEPathMap();
+    message.ps = object.ps?.map((e) => Par.fromPartial(e)) || [];
+    message.locallyFree = object.locallyFree ?? new Uint8Array(0);
+    message.connectiveUsed = object.connectiveUsed ?? false;
+    message.remainder =
+      object.remainder !== undefined && object.remainder !== null
+        ? Var.fromPartial(object.remainder)
+        : undefined;
+    return message;
+  },
+};
+
+function createBaseEZipper(): EZipper {
+  return {
+    pathmap: undefined,
+    currentPath: [],
+    isWriteZipper: false,
+    locallyFree: new Uint8Array(0),
+    connectiveUsed: false,
+  };
+}
+
+export const EZipper: MessageFns<EZipper> = {
+  encode(
+    message: EZipper,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.pathmap !== undefined) {
+      EPathMap.encode(message.pathmap, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.currentPath) {
+      writer.uint32(18).bytes(v!);
+    }
+    if (message.isWriteZipper !== false) {
+      writer.uint32(24).bool(message.isWriteZipper);
+    }
+    if (message.locallyFree.length !== 0) {
+      writer.uint32(34).bytes(message.locallyFree);
+    }
+    if (message.connectiveUsed !== false) {
+      writer.uint32(40).bool(message.connectiveUsed);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EZipper {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEZipper();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.pathmap = EPathMap.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.currentPath.push(reader.bytes());
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.isWriteZipper = reader.bool();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.locallyFree = reader.bytes();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.connectiveUsed = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EZipper {
+    return {
+      pathmap: isSet(object.pathmap)
+        ? EPathMap.fromJSON(object.pathmap)
+        : undefined,
+      currentPath: globalThis.Array.isArray(object?.currentPath)
+        ? object.currentPath.map((e: any) => bytesFromBase64(e))
+        : [],
+      isWriteZipper: isSet(object.isWriteZipper)
+        ? globalThis.Boolean(object.isWriteZipper)
+        : false,
+      locallyFree: isSet(object.locallyFree)
+        ? bytesFromBase64(object.locallyFree)
+        : new Uint8Array(0),
+      connectiveUsed: isSet(object.connectiveUsed)
+        ? globalThis.Boolean(object.connectiveUsed)
+        : false,
+    };
+  },
+
+  toJSON(message: EZipper): unknown {
+    const obj: any = {};
+    if (message.pathmap !== undefined) {
+      obj.pathmap = EPathMap.toJSON(message.pathmap);
+    }
+    if (message.currentPath?.length) {
+      obj.currentPath = message.currentPath.map((e) => base64FromBytes(e));
+    }
+    if (message.isWriteZipper !== false) {
+      obj.isWriteZipper = message.isWriteZipper;
+    }
+    if (message.locallyFree.length !== 0) {
+      obj.locallyFree = base64FromBytes(message.locallyFree);
+    }
+    if (message.connectiveUsed !== false) {
+      obj.connectiveUsed = message.connectiveUsed;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EZipper>, I>>(base?: I): EZipper {
+    return EZipper.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<EZipper>, I>>(object: I): EZipper {
+    const message = createBaseEZipper();
+    message.pathmap =
+      object.pathmap !== undefined && object.pathmap !== null
+        ? EPathMap.fromPartial(object.pathmap)
+        : undefined;
+    message.currentPath = object.currentPath?.map((e) => e) || [];
+    message.isWriteZipper = object.isWriteZipper ?? false;
+    message.locallyFree = object.locallyFree ?? new Uint8Array(0);
+    message.connectiveUsed = object.connectiveUsed ?? false;
     return message;
   },
 };

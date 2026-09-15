@@ -1,0 +1,14 @@
+/* The annotation is a passive overlay with no background: pointer events pass
+ * through it to the edge's own interaction band beneath, so click-select and
+ * the right-click transition menu behave exactly as they do on an unannotated
+ * edge. Intercepting instead would swallow those clicks -- the label renderer
+ * portal lives outside the SVG the edge listens on. */
+.annotation {
+  position: absolute;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-color-secondary);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}

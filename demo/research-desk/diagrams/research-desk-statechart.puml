@@ -1,0 +1,89 @@
+@startuml
+title Research Desk team: dispositions, the bounded revise cycle, and the human gate
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Question" as question #DCEEFF
+question : input node
+question : token value: the run prompt (String)
+
+state "Draft" as draft #C9E4F7
+draft : activity: Researcher agent (structured-v1)
+draft : first pass drafts from retrieved context on chain;
+draft : revise passes redraft against the Critic's feedback
+
+state "Critique" as critique #C9E4F7
+critique : activity: Critic agent (structured-v1)
+critique : verdict line mapped to an integer score on chain;
+critique : the sentinel short-circuits to score 5, no model call
+
+state "Decide" as decide #FFF0C2
+decide : gateway: firstMatch route group
+decide : transitions tried in priority order
+
+state "Escalation gate" as gate #FFE0B8
+gate : approval: policy owner, quorum 1, no timeout
+gate : the run suspends here (runSuspended, exactly once);
+gate : encrypted continuation checkpointed to F1r3drive
+
+state "Archive" as archive #C9E4F7
+archive : activity: Archivist agent (structured-v1)
+archive : files human-authored answers into embers-demo-docs;
+archive : the sentinel and unrecognized shapes pass through unarchived
+
+state "Answer" as answer #C8E8D0
+answer : output node: the run completes and the
+answer : caller receives the final token value
+
+state "Refused" as refused #F6BFC0
+refused : final node: the run ends in refusal
+
+[*] --> question : run accepted\n/ token minted at the initial node
+question --> draft : completed
+draft --> critique : completed
+critique --> decide : completed
+decide --> answer : #0 accept: completed\n[<latex>output.score \geq 80</latex>]
+decide --> draft : #1 revise: completed\n[<latex>\kappa < 3</latex>] / <latex>\kappa{+}{+}</latex>
+decide --> gate : iterationLimit\n(disposition rewritten at Decide\nwhen the revise bound is exhausted)
+gate --> archive : completed: approved at quorum 1\n/ null payload preserves the token value;\na non-null payload replaces it
+archive --> answer : completed\n/ adds archived: true iff a\nhuman answer was filed
+gate --> refused : rejected
+answer --> [*]
+refused --> [*]
+
+note bottom of decide #EAF7EE
+A disposition is a token-local label matched against
+transition triggers before guards. firstMatch tries
+#0 accept first; the kernel evaluates its compare guard
+over the JSON observation. #1 revise is unconditional in
+the definition — the bracket shows loop.maxIterations = 3,
+whose counter <latex>\kappa</latex> lives in the token's execution context.
+Up to 3 revise traversals occur; exhaustion is not a
+traversal but a rewrite of the disposition to
+iterationLimit at the source node.
+end note
+
+note right of gate #FFF6C9
+No timeout is declared, so no timedOut route exists:
+the gate waits indefinitely for a signed approve or
+reject command carrying a globally unique decision id.
+end note
+
+note left of archive #EAF7EE
+Only the gate's completed route reaches Archive: the
+#0 accept edge routes Decide straight to Answer, so
+accepted model output can never re-enter the retrieval
+corpus. Combined with the sentinel pass-through, the
+Archivist files exactly the human-authored answers.
+The archive node declares the team's only retry policy
+(3 attempts, backoff 10 s then 30 s) because ChromaDB
+is real infrastructure.
+end note
+@enduml

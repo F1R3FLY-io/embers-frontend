@@ -1,0 +1,71 @@
+@startuml
+title Publish to mail — owner-signed binding, and the binding's own states (incl. Provisioning)
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+actor "Team owner\n(browser wallet)" as Owner #FFD8C2
+participant "PublishToMail page\n+ SDK" as UI #D5EAF7
+participant "Embers API" as API #FFC9A8
+participant "Agent-Teams env v3\n(bindingsCh)" as Chain #FFE4A6
+participant "F1R3Mail bridge\n(directory refresh + keystore)" as Bridge #F7D9E3
+participant "f1r3mta-smtpd\n(RCPT)" as SMTPD #F7D9E3
+
+group Prepare (side-effect light: a render plus a uniqueness read)
+Owner -> UI : local part + domain
+UI -> API : POST {address}/{id}/publish-to-mail/prepare
+API -> API : conservative grammar; lowercase canonical form;\nteam lookup (404 team_not_found);\ndeployed URI required (422 team_not_deployed);\nuniqueness against active mail bindings\n(409 binding_duplicate)
+API --> UI : {address: "crew@agents.example", contract}\n-- NO account creation, NO key material
+end
+
+group Sign and send
+UI -> UI : sign with the owner's wallet key
+UI -> API : POST publish-to-mail/send {echo, signed, token}
+API -> Chain : deploy saveChannelBinding("mail", address,\nteam URI, team_id)
+note right of Chain #FFF0C7
+Owner-adjudicated: the clause visits the
+signer's own team record -- only the address
+the team lives under may bind it. Binding key
+is channel|address. Same team re-publishing
+REACTIVATES the record; a different team
+aborts "binding address already in use".
+end note
+Chain --> API : finalized + acknowledged
+API -> Chain : readback: binding observably active
+API --> UI : 200 {deployId}
+UI --> Owner : success modal with the bound address
+end
+
+group The bridge makes the address answer
+Bridge -> Chain : refresh: listChannelBindings("mail")\n(observer read; replace, never merge)
+Bridge -> Bridge : binding without a mailbox key ->\nmint DEK, wrap under operator KEK,\nstore in TeamsBridgeEnv
+Bridge -> SMTPD : TeamDirectory.replace(bound set)
+SMTPD --> SMTPD : RCPT answers: Ready -> 250;\nProvisioning -> 450 (retry absorbs the\nkey-mint window); unknown -> 550
+end
+
+|||
+
+group Binding states (chain record x bridge view)
+note over Chain, SMTPD #FFF6C9
+  Chain record:      (none) --publish--> active:true --unpublish--> active:false --republish (same team)--> active:true
+  Bridge/RCPT view:  unknown(550) --binding seen, no DEK--> Provisioning(450) --DEK minted--> Ready(250)
+                     active:false -> address leaves the refreshed set -> unknown(550); the record and the DEK survive,
+                     so republishing restores Ready without re-provisioning.
+end note
+end
+
+note over API, Bridge #FFF0C7
+The keystore split is the trust boundary: the on-chain binding
+carries NO key material, and mailbox DEKs are minted and
+custodied by the bridge -- an embers-held DEK would let embers
+read third-party mail sent to the team, which the posting-only
+f1r3sky app-password precedent never allowed.
+end note
+@enduml

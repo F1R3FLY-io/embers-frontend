@@ -15,18 +15,39 @@ import styles from "./SuccessModal.module.scss";
 export type DeploySuccessData = {
   agentName: string;
   data: { label: TranslationKey; value?: string }[];
+  /** The handle the team was published under, used to build its profile link. */
+  handle?: string;
   iconUrl?: string;
+  /** Stops the team answering mentions. Omit to hide the action. */
+  onUnpublish?: () => void;
 };
 
-export function SuccessModal({ agentName, data, iconUrl }: DeploySuccessData) {
+export function SuccessModal({
+  agentName,
+  data,
+  handle,
+  iconUrl,
+  onUnpublish,
+}: DeploySuccessData) {
   const { close } = useModal();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  // Only offered when there is somewhere to go. Both this and Unpublish used to
+  // close the modal and do nothing else, which reads as success: the user believes
+  // the team was unpublished while it carries on answering mentions.
+  const profileUrl =
+    window.FIRESKY_URL && handle
+      ? `${window.FIRESKY_URL}/profile/${handle}`
+      : undefined;
+
   const handleViewOnFiresky = useCallback(() => {
+    if (!profileUrl) {
+      return;
+    }
     close();
-    //http ref?
-  }, [close]);
+    window.open(profileUrl, "_blank", "noopener,noreferrer");
+  }, [close, profileUrl]);
 
   const handleBackToDashboard = useCallback(() => {
     close();
@@ -35,7 +56,8 @@ export function SuccessModal({ agentName, data, iconUrl }: DeploySuccessData) {
 
   const handleUnpublish = useCallback(() => {
     close();
-  }, [close]);
+    onUnpublish?.();
+  }, [close, onUnpublish]);
 
   return (
     <div className={styles.wrap}>
@@ -60,15 +82,19 @@ export function SuccessModal({ agentName, data, iconUrl }: DeploySuccessData) {
       </div>
 
       <div className={styles.actions}>
-        <Button type="primary" onClick={handleViewOnFiresky}>
-          {t("publish.view")}
-        </Button>
+        {profileUrl === undefined ? null : (
+          <Button type="primary" onClick={handleViewOnFiresky}>
+            {t("publish.view")}
+          </Button>
+        )}
         <Button type="secondary" onClick={handleBackToDashboard}>
           {t("publish.backToDashboard")}
         </Button>
-        <Button type="subtle" onClick={handleUnpublish}>
-          {t("publish.unpublish")}
-        </Button>
+        {onUnpublish === undefined ? null : (
+          <Button type="subtle" onClick={handleUnpublish}>
+            {t("publish.unpublish")}
+          </Button>
+        )}
       </div>
     </div>
   );

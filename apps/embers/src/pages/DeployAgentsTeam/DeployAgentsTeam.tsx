@@ -1,6 +1,5 @@
 import { PrivateKey } from "@f1r3fly-io/embers-client-sdk";
-import { useForm } from "@tanstack/react-form";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
@@ -12,6 +11,8 @@ import { SuccessModal } from "@/lib/components/Modal/SuccessModal";
 import { WarningModal } from "@/lib/components/Modal/WarningModal";
 import Stepper from "@/lib/components/Stepper";
 import { Text } from "@/lib/components/Text";
+import { FormError } from "@/lib/forms/FormError";
+import { fieldError, useForm } from "@/lib/forms/useForm";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
 import { useDock } from "@/lib/providers/dock/useDock";
 import { useCallbackWithLoader } from "@/lib/providers/loader/useCallbackWithLoader";
@@ -27,6 +28,9 @@ const formModel = z.object({
 
 export default function DeployAgentsTeam() {
   const { t } = useTranslation();
+  const deploymentAttempt = useRef<{ key: PrivateKey; version: string } | null>(
+    null,
+  );
   const { open } = useModal();
   const navigate = useNavigate();
 
@@ -44,7 +48,7 @@ export default function DeployAgentsTeam() {
 
   const onSuccessfulDeploy = useCallback(
     (key: PrivateKey) => {
-      update({ lastDeployKey: key });
+      update({ lastDeployKey: key, uri: key.getPublicKey().getUri() });
       appendDeploy(true);
     },
     [appendDeploy, update],
@@ -56,14 +60,14 @@ export default function DeployAgentsTeam() {
   );
 
   const onFailedDeploy = useCallback(
-    (err: Error) => {
+    (err: Error, retry: () => void) => {
       appendDeploy(false);
       logError(err);
       open(
         <WarningModal
           error={err.message}
           reviewSettings={toEdit}
-          tryAgain={() => {}}
+          tryAgain={retry}
         />,
         {
           ariaLabel: "Warning",
@@ -78,58 +82,86 @@ export default function DeployAgentsTeam() {
     defaultValues: {
       inputPrompt: agentsTeam.inputPrompt,
     },
-    onSubmit: useCallbackWithLoader(async () => {
-      try {
-        const modalData = [
-          { label: "deploy.labels.agentId" as const, value: agentsTeam.id },
-          { label: "deploy.version" as const, value: agentsTeam.version },
-          { label: "deploy.labels.status" as const, value: "ok" },
-          {
-            label: "deploy.labels.note" as const,
-            value: agentsTeam.description,
-          },
-        ];
+    onSubmit: useCallbackWithLoader(
+      async ({
+        formApi,
+      }: {
+        formApi: { handleSubmit: () => Promise<void> };
+      }) => {
+        try {
+          const modalData = [
+            { label: "deploy.labels.agentId" as const, value: agentsTeam.id },
+            { label: "deploy.version" as const, value: agentsTeam.version },
+            { label: "deploy.labels.status" as const, value: "ok" },
+            {
+              label: "deploy.labels.note" as const,
+              value: agentsTeam.description,
+            },
+          ];
 
-        const registryKey = PrivateKey.new();
+          if (
+            !deploymentAttempt.current ||
+            deploymentAttempt.current.version !== agentsTeam.version
+          ) {
+            deploymentAttempt.current = {
+              key: PrivateKey.new(),
+              version: agentsTeam.version!,
+            };
+          }
+          const registryKey = deploymentAttempt.current.key;
 
-        await deployTeamsMutation.mutateAsync(
-          {
+          const result = await deployTeamsMutation.mutateAsync({
             agentsTeamId: agentsTeam.id!,
             registryKey,
             registryVersion: 1n,
-            rhoLimit: 1_000_000n,
             version: agentsTeam.version!,
-          },
-          {
-            onError: onFailedDeploy,
-            onSuccess: () => {
-              onSuccessfulDeploy(registryKey);
-              update({ hasGraphChanges: false });
-              open(
-                <SuccessModal
-                  agentName={agentsTeam.name!}
-                  createAnother={() => {
-                    reset();
-                    void navigate("/agents-team/create");
-                  }}
-                  data={modalData}
-                  viewAgent={toEdit}
-                  viewAllAgents={() => void navigate("/dashboard")}
-                />,
-                {
-                  ariaLabel: "Success deploy",
-                  closeOnBlur: false,
-                  closeOnEsc: false,
-                  maxWidth: 550,
-                },
-              );
+          });
+
+          await result.waitForFinalization;
+
+          onSuccessfulDeploy(registryKey);
+          deploymentAttempt.current = null;
+          for (const container of result.prepareResponse.response.containers) {
+            appendLog(
+              `Deploy container ${container.id} finalized on current stack: ${container.uri.toString()}`,
+              "info",
+            );
+          }
+          update({ hasGraphChanges: false });
+          open(
+            <SuccessModal
+              agentName={agentsTeam.name!}
+              createAnother={() => {
+                reset();
+                void navigate("/agents-team/create");
+              }}
+              data={[
+                ...modalData,
+                ...result.prepareResponse.response.containers.map(
+                  (container) => ({
+                    label: "deploy.labels.container" as const,
+                    value: `${container.id}: ${container.uri.toString()}`,
+                  }),
+                ),
+              ]}
+              viewAgent={toEdit}
+              viewAllAgents={() => void navigate("/dashboard")}
+            />,
+            {
+              ariaLabel: "Success deploy",
+              closeOnBlur: false,
+              closeOnEsc: false,
+              maxWidth: 550,
             },
-          },
-        );
-      } catch (e) {
-        onFailedDeploy(e as Error);
-      }
-    }),
+          );
+        } catch (e) {
+          onFailedDeploy(e as Error, () => {
+            void formApi.handleSubmit();
+          });
+          throw e;
+        }
+      },
+    ),
     validators: {
       onChange: formModel,
     },
@@ -198,6 +230,45 @@ export default function DeployAgentsTeam() {
             />
           </div>
 
+          {Object.keys(agentsTeam.definition?.deploymentContainers ?? {})
+            .length > 0 && (
+            <section
+              aria-label={t("deploy.containersTitle")}
+              className={styles["form-section"]}
+            >
+              <Text bold color="primary" type="H5">
+                {t("deploy.containersTitle")}
+              </Text>
+              {Object.values(agentsTeam.definition!.deploymentContainers!).map(
+                (container) => (
+                  <div key={container.id}>
+                    <Text bold color="primary" type="normal">
+                      {container.label}
+                    </Text>
+                    <Text color="secondary" type="small">
+                      {t("deploy.containerTarget")}
+                    </Text>
+                    <Text color="secondary" type="small">
+                      {t("deploy.containerMembers", {
+                        members: [
+                          ...container.nodeIds.map(
+                            (id) =>
+                              agentsTeam.definition?.nodes[id]?.label ?? id,
+                          ),
+                          ...Object.values(
+                            agentsTeam.definition!.deploymentContainers!,
+                          )
+                            .filter((child) => child.parentId === container.id)
+                            .map((child) => child.label),
+                        ].join(", "),
+                      })}
+                    </Text>
+                  </div>
+                ),
+              )}
+            </section>
+          )}
+
           <form.Field name="inputPrompt">
             {(field) => (
               <div className={styles["form-section"]}>
@@ -212,11 +283,11 @@ export default function DeployAgentsTeam() {
                     </Text>
                     <Input
                       textarea
-                      error={
-                        field.state.meta.isTouched && !field.state.meta.isValid
-                      }
+                      errorMessage={fieldError(field.state.meta)}
+                      name={field.name}
                       placeholder={t("deploy.enterInputPrompt")}
                       value={field.state.value}
+                      onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                     />
                   </div>
@@ -244,6 +315,9 @@ export default function DeployAgentsTeam() {
 
           <LanguageFooter />
         </div>
+        <form.Subscribe selector={(state) => state.errorMap.onServer}>
+          {(error) => <FormError error={error} />}
+        </form.Subscribe>
       </form>
     </div>
   );

@@ -1,0 +1,13 @@
+diff --git a/rholang/src/rust/interpreter/system_processes.rs b/rholang/src/rust/interpreter/system_processes.rs
+index fac7cbcad..517540c94 100644
+--- a/rholang/src/rust/interpreter/system_processes.rs
++++ b/rholang/src/rust/interpreter/system_processes.rs
+@@ -42,7 +42,7 @@ use crate::rust::interpreter::chromadb_service::SharedChromaDBService;
+ #[cfg(feature = "chromadb")]
+ use crate::rust::interpreter::chromadb_service::{CollectionEntries, Metadata};
+ #[cfg(feature = "chromadb")]
+-use crate::rust::interpreter::rho_type::{Extractor, RhoList, RhoNil};
++use crate::rust::interpreter::rho_type::{Extractor, RhoNil};
+ 
+ // See rholang/src/main/scala/coop/rchain/rholang/interpreter/SystemProcesses.scala
+ // NOTE: Not implementing Logger

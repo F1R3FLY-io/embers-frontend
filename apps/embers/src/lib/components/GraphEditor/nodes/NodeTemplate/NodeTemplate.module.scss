@@ -8,6 +8,22 @@
   &.selected {
     background-color: var(--background-blue-transparent);
   }
+
+  /* An agent this node names no longer exists: the team cannot be deployed at
+   * all until the node is replaced, so it is drawn as an error rather than a
+   * warning. Both markings colour the border, which is otherwise inherited from
+   * the kind's class, and neither touches the background -- `selected` uses that,
+   * and a marked node must still show whether it is selected. */
+  &.agent-missing {
+    border-color: var(--text-danger);
+  }
+
+  /* The agent still exists but has been edited since the team pinned this
+   * version. The team is deployable and does work -- it simply keeps compiling
+   * the older code -- so this is a warning, not an error. */
+  &.agent-stale {
+    border-color: var(--accent-warning);
+  }
 }
 
 .content {
@@ -24,11 +40,53 @@
   }
 }
 
+/* Named rather than only coloured: colour alone is not a signal every author can
+ * read, and the two states differ in what the author must do about them. */
+.agent-badge {
+  padding: 1px 6px;
+  font-size: var(--font-small);
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+
+  .agent-missing & {
+    color: var(--text-danger);
+  }
+
+  .agent-stale & {
+    color: var(--accent-warning);
+  }
+}
+
+.settings-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+  margin-left: auto;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--background-blue-transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--text-color-primary);
+    outline-offset: 2px;
+  }
+}
+
 .settings-icon {
   max-width: 16px;
   max-height: 16px;
-  margin-left: auto;
-  cursor: pointer;
   fill: var(--text-color-primary);
 }
 

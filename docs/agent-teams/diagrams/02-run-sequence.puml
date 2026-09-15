@@ -1,0 +1,47 @@
+@startuml
+title Durable run and terminal reply — causal sequence
+skinparam backgroundColor #F8FBFF
+skinparam shadowing false
+skinparam ArrowColor #294C60
+skinparam sequence {
+  ParticipantBackgroundColor #EAF5FF
+  ParticipantBorderColor #38789E
+  LifeLineBorderColor #6A92AA
+  GroupBackgroundColor #FFF3E8
+  GroupBorderColor #D97638
+}
+
+actor Author #FFD8C2
+participant F1r3sky #D5EAF7
+participant "Embers API" as API #FFC9A8
+participant "RSpace team env" as Env #CDEACC
+participant "Compiled team" as Team #FFE4A6
+participant "Agent/effect" as Effect #DDD2F2
+participant "Run inspector" as Inspector #D5EAF7
+
+Author -> F1r3sky : post @team prompt
+F1r3sky -> API : prepareRun(prompt, replyRef)
+API --> F1r3sky : signed contract + UUIDv7 run capability
+F1r3sky -> API : send(signed contract)
+API -> Env : beginRun(runId, team, createdAt, ack)
+Env -> Env : commit runStarted metadata
+Env --> API : ack
+API -> Team : invoke(prompt)
+Team -> Effect : activity(value, return)
+Effect --> Team : result
+Team --> API : terminal value
+API -> Env : finishRun(runId, ack)
+Env -> Env : commit runReturned
+Env --> API : ack
+API -> F1r3sky : reply truncated to 280 chars\n+ /runs/{runId}
+Author -> Inspector : open run URL
+Inspector -> API : GET /runs/{runId}
+API -> Env : getRun(runId)
+Env --> API : metadata-only event ledger
+API --> Inspector : status + event types
+
+note over API,Env #FFF0C7
+The two acknowledgements establish
+<latex>\mathrm{runStarted} \prec \mathrm{work} \prec \mathrm{runReturned} \prec \mathrm{post}</latex>
+end note
+@enduml

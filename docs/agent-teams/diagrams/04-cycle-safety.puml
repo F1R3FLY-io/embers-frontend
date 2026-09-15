@@ -1,0 +1,32 @@
+@startuml
+title Exact hot-cycle validation by progress-boundary removal
+skinparam backgroundColor #FBFCFF
+skinparam shadowing false
+skinparam ArrowColor #3D5366
+skinparam rectangle {
+  BackgroundColor #EEF6FC
+  BorderColor #4E7B99
+}
+
+rectangle "Published graph <latex>G = (N, E)</latex>" as original #DCEEFF
+rectangle "Remove wait vertices" as waits #DDF2DF
+rectangle "Remove bounded and\ndurable-yield transitions" as boundaries #FFF0C2
+rectangle "Compute strongly connected\ncomponents of residual graph H" as scc #E8DDF5
+rectangle "Any cyclic SCC?" as cyclic #FFD7CC
+rectangle "Reject: a hot subcycle can\nbypass every progress boundary" as reject #F6BFC0
+rectangle "Accept cycle-safety proof" as accept #C8E8D0
+
+original --> waits
+waits --> boundaries
+boundaries --> scc
+scc --> cyclic
+cyclic --> reject : yes
+cyclic --> accept : no
+
+note bottom of accept #EAF7EE
+<latex>H = G[N \setminus N_W] - (E_B \cup E_Y)</latex> is acyclic iff every
+directed cycle in <latex>G</latex> intersects a wait vertex or a
+bounded/yield edge. This catches a smaller bypass
+cycle inside a safe-looking SCC.
+end note
+@enduml

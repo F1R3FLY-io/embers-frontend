@@ -1,0 +1,28 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 320px;
+  padding: 16px;
+}
+
+.row {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border, rgb(128 128 128 / 25%));
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 8px 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,76 @@
+@startuml
+' Why the corruption was permanent rather than a one-off: load re-materialised the
+' phantom edge, so save wrote it back, so every later deploy failed.
+title D1 — the self-perpetuating corruption loop
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam sequenceMessageAlign left
+
+skinparam sequence {
+  ArrowColor #455A64
+  LifeLineBorderColor #90A4AE
+  ParticipantBorderThickness 1.5
+}
+
+actor "Author" as U #ECEFF1
+participant "Context menu\n<size:10>menuItems.tsx</size>" as MENU #FFF3E0
+participant "React Flow\nstate" as RF #ECEFF1
+participant "toApiGraph\n<size:10>graph.ts</size>" as SAVE #FFF3E0
+database "Chain\n<size:10>team versions</size>" as CHAIN #E3F2FD
+participant "fromApiGraph\n<size:10>graph.ts</size>" as LOAD #FFF3E0
+participant "embers parse\n<size:10>Rust</size>" as PARSE #FFEBEE
+
+== Fault introduced ==
+U -> MENU : right-click → "Delete node"\n<size:10>observed: the ""Cavify"" node, wired ""Condense → Cavify → Output""</size>
+MENU -> RF : onNodesChange([{id, type:"remove"}])
+note right of RF #FFEBEE
+  **applyNodeChanges removes the node only.**
+  Its edges remain, now naming a vertex
+  that no longer exists.
+end note
+RF --> U : node disappears — looks correct
+note right of U #FFF3E0
+  React Flow declines to draw an edge to a
+  missing node, so nothing appears wrong.
+  **No signal at the point of failure.**
+end note
+
+== Error committed to storage ==
+U -> SAVE : Save
+SAVE -> CHAIN : graphl with 9 contexts, 10 vertex ids
+note right of CHAIN #FFEBEE
+  Append-only: the ill-formed version is
+  now permanent history.
+end note
+
+== The loop ==
+U -> LOAD : reopen the team
+CHAIN -> LOAD : graphl
+LOAD -> RF : edges **including** the phantom
+note right of LOAD #FFEBEE
+  buildEdges did not check endpoints, so the
+  phantom is read straight back in.
+  <latex>s \circ l</latex> maps ill-formed to ill-formed —
+  the corruption is a **fixed point**.
+end note
+U -> SAVE : Save again
+SAVE -> CHAIN : the same ill-formed graph
+
+== Failure, far from the cause ==
+U -> PARSE : Deploy
+PARSE --> U : ""node aae6cd19… is missing context""
+note right of PARSE #FFEBEE
+  First and only signal. Different process,
+  opaque id, no node label, no hint that a
+  stale edge is the cause.
+end note
+
+note over U, PARSE #E8F5E9
+  **After the fix:** the menu delegates to React Flow's own
+  ""deleteElements"", which removes connected edges with the node;
+  load drops any edge naming an undefined vertex, so reopening and
+  saving repairs the stored graph; and save refuses to emit one.
+end note
+@enduml

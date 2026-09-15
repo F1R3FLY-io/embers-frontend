@@ -1,0 +1,48 @@
+/* Fuses the primary action and its menu caret into one control. The two stay
+ * separate <button>s so each keeps its own accessible name and focus ring -- a
+ * single button with a nested caret cannot express "run" and "open menu" as
+ * distinct targets. Only the seam between them is closed, visually.
+ *
+ * The overrides are qualified by `.split` so they outrank Button's own `.button`
+ * rules regardless of which stylesheet Vite injects first. */
+.split {
+  display: flex;
+  align-items: stretch;
+}
+
+/* The caret Button sits inside an intermediate anchor div (the menu needs a
+ * stable ref). The div stretches with the row, but the button inside it kept
+ * its own min-height and rendered a couple of pixels shorter than the text
+ * half, whose height is driven by its label margins. Making the anchor a flex
+ * container lets its default stretch alignment size the button to the row. */
+.split > div {
+  display: flex;
+}
+
+.split .split-main {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.split .split-caret {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+
+  /* The divider is what makes a split button read as two targets instead of one
+   * over-wide button. The halves abut exactly, so it lands on the seam. */
+  border-left: 1px solid rgb(255 255 255 / 28%);
+}
+
+/* Button's icon wrapper is spaced for a labelled button (10px, plus a -10px
+ * right margin it cancels when textless). A lone caret needs less room. */
+.split .split-caret > div {
+  margin: 0 7px;
+}
+
+/* The glyph occupies only the middle third of its 25x24 canvas, so it has to
+ * render at natural size to look like a caret rather than a speck. This is how
+ * every other chevron in the app is used. */
+.caret-icon {
+  width: 24px;
+  height: 24px;
+}

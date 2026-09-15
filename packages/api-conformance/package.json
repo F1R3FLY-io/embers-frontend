@@ -1,0 +1,26 @@
+{
+  "name": "@f1r3fly-io/embers-api-conformance",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "itest": "jest --config jest.itest.config.js --runInBand",
+    "typecheck": "tsc -b --noEmit",
+    "lint": "eslint --fix .",
+    "ci:lint": "eslint .",
+    "format:code": "prettier --write '**/*.{js,ts,json}'",
+    "ci:check:code": "prettier --check '**/*.{js,ts,json}'"
+  },
+  "devDependencies": {
+    "@f1r3fly-io/embers-client-sdk": "workspace:*",
+    "@jest/globals": "^30.2.0",
+    "@types/node": "^24.10.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
+  }
+}

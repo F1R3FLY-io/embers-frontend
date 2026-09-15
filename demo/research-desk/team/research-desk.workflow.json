@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "2.0",
+  "entryScopeId": "root",
+  "interface": {
+    "inputs": { "input": { "kind": "string" } },
+    "outputs": { "output": { "kind": "legacy" } }
+  },
+  "nodes": {
+    "input": {
+      "id": "input",
+      "kind": "input",
+      "label": "Question",
+      "scopeId": "root"
+    },
+    "draft": {
+      "id": "draft",
+      "kind": "activity",
+      "label": "Draft (Researcher)",
+      "scopeId": "root",
+      "activity": {
+        "kind": "agent",
+        "agentId": "__RESEARCHER_AGENT_ID__",
+        "agentVersion": "__RESEARCHER_AGENT_VERSION__",
+        "protocol": "structured-v1"
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "kind": "activity",
+      "label": "Critique (Critic)",
+      "scopeId": "root",
+      "activity": {
+        "kind": "agent",
+        "agentId": "__CRITIC_AGENT_ID__",
+        "agentVersion": "__CRITIC_AGENT_VERSION__",
+        "protocol": "structured-v1"
+      }
+    },
+    "decide": {
+      "id": "decide",
+      "kind": "gateway",
+      "label": "Decide",
+      "scopeId": "root"
+    },
+    "gate": {
+      "id": "gate",
+      "kind": "approval",
+      "label": "Escalation gate",
+      "scopeId": "root",
+      "policyId": "owner",
+      "approvers": [],
+      "quorum": 1
+    },
+    "archive": {
+      "id": "archive",
+      "kind": "activity",
+      "label": "Archive (Archivist)",
+      "scopeId": "root",
+      "policy": {
+        "retry": {
+          "maxAttempts": 3,
+          "initialDelayMillis": 10000,
+          "backoffMultiplierMillis": 3000,
+          "maxDelayMillis": 90000,
+          "deterministicJitter": false,
+          "retryOn": []
+        }
+      },
+      "activity": {
+        "kind": "agent",
+        "agentId": "__ARCHIVIST_AGENT_ID__",
+        "agentVersion": "__ARCHIVIST_AGENT_VERSION__",
+        "protocol": "structured-v1"
+      }
+    },
+    "out": {
+      "id": "out",
+      "kind": "output",
+      "label": "Answer",
+      "scopeId": "root"
+    },
+    "refused": {
+      "id": "refused",
+      "kind": "final",
+      "label": "Refused",
+      "scopeId": "root"
+    }
+  },
+  "policies": {
+    "defaultExecution": "bounded",
+    "visibility": "private"
+  },
+  "presentation": {
+    "edges": {},
+    "nodes": {
+      "input": { "x": 80, "y": 220 },
+      "draft": { "x": 340, "y": 220 },
+      "critique": { "x": 640, "y": 220 },
+      "decide": { "x": 940, "y": 220 },
+      "gate": { "x": 940, "y": 460 },
+      "archive": { "x": 1080, "y": 340 },
+      "out": { "x": 1220, "y": 220 },
+      "refused": { "x": 1220, "y": 520 }
+    }
+  },
+  "routeGroups": {
+    "input-completed": {
+      "id": "input-completed",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    },
+    "draft-completed": {
+      "id": "draft-completed",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    },
+    "critique-completed": {
+      "id": "critique-completed",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    },
+    "decide-completed": {
+      "id": "decide-completed",
+      "mode": "firstMatch",
+      "noMatch": "fail"
+    },
+    "decide-limit": {
+      "id": "decide-limit",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    },
+    "gate-completed": {
+      "id": "gate-completed",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    },
+    "archive-completed": {
+      "id": "archive-completed",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    },
+    "gate-rejected": {
+      "id": "gate-rejected",
+      "mode": "allMatches",
+      "noMatch": "fail"
+    }
+  },
+  "scopes": {
+    "root": {
+      "id": "root",
+      "label": "Research Desk",
+      "kind": "root",
+      "initialNodeIds": ["input"],
+      "entryActivities": [],
+      "exitActivities": [],
+      "history": "none"
+    }
+  },
+  "transitions": {
+    "input-draft": {
+      "id": "input-draft",
+      "sourceNodeId": "input",
+      "targetNodeId": "draft",
+      "trigger": "completed",
+      "priority": 0,
+      "routeGroupId": "input-completed"
+    },
+    "draft-critique": {
+      "id": "draft-critique",
+      "sourceNodeId": "draft",
+      "targetNodeId": "critique",
+      "trigger": "completed",
+      "priority": 0,
+      "routeGroupId": "draft-completed"
+    },
+    "critique-decide": {
+      "id": "critique-decide",
+      "sourceNodeId": "critique",
+      "targetNodeId": "decide",
+      "trigger": "completed",
+      "priority": 0,
+      "routeGroupId": "critique-completed"
+    },
+    "accept": {
+      "id": "accept",
+      "sourceNodeId": "decide",
+      "targetNodeId": "out",
+      "trigger": "completed",
+      "guard": {
+        "kind": "compare",
+        "left": { "kind": "path", "root": "output", "path": ["score"] },
+        "operator": "ge",
+        "right": { "kind": "literal", "value": 80 }
+      },
+      "priority": 0,
+      "routeGroupId": "decide-completed"
+    },
+    "revise": {
+      "id": "revise",
+      "sourceNodeId": "decide",
+      "targetNodeId": "draft",
+      "trigger": "completed",
+      "priority": 1,
+      "routeGroupId": "decide-completed",
+      "loop": { "maxIterations": 3 }
+    },
+    "escalate": {
+      "id": "escalate",
+      "sourceNodeId": "decide",
+      "targetNodeId": "gate",
+      "trigger": "iterationLimit",
+      "priority": 0,
+      "routeGroupId": "decide-limit"
+    },
+    "approved": {
+      "id": "approved",
+      "sourceNodeId": "gate",
+      "targetNodeId": "archive",
+      "trigger": "completed",
+      "priority": 0,
+      "routeGroupId": "gate-completed"
+    },
+    "archive-out": {
+      "id": "archive-out",
+      "sourceNodeId": "archive",
+      "targetNodeId": "out",
+      "trigger": "completed",
+      "priority": 0,
+      "routeGroupId": "archive-completed"
+    },
+    "refused-route": {
+      "id": "refused-route",
+      "sourceNodeId": "gate",
+      "targetNodeId": "refused",
+      "trigger": "rejected",
+      "priority": 0,
+      "routeGroupId": "gate-rejected"
+    }
+  },
+  "types": {}
+}

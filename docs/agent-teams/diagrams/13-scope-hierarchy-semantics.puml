@@ -1,0 +1,58 @@
+@startuml
+title Scope hierarchy semantics: entry, regions, history, completion
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Root scope" as Root #E9F5EA {
+  state "Intake" as Intake #DCEEFF
+  [*] --> Intake
+  Intake --> ReviewScope : completed
+
+  state "ReviewScope (parallel)" as ReviewScope #FFF0D9 {
+    state "Draft answer" as DraftAnswer #DCEEFF
+    state "Critique loop" as CritiqueLoop #DCEEFF
+    [*] --> DraftAnswer
+    DraftAnswer --> CritiqueLoop : completed
+    CritiqueLoop --> CritiqueLoop : needsWork\n[<latex>\kappa < b</latex>] / <latex>\kappa{+}{+}</latex>
+    [H] --> DraftAnswer
+    --
+    state "Safety screen" as SafetyScreen #E7DCF5
+    state "Escalate" as Escalate #E7DCF5
+    [*] --> SafetyScreen
+    SafetyScreen --> Escalate : flagged
+  }
+  ReviewScope : entry / run entry activities (sequential observed effects)
+  ReviewScope : exit / snapshot history, then run exit activities
+
+  state "Approval" as Approval #FFE0C8
+  ReviewScope --> Approval : completed (all-join of regions)
+  Approval --> ReviewScope[H*] : rejected / deep re-entry\nrestores the remembered configuration
+  state "Publish" as Publish #D9EFDF
+  Approval --> Publish : approved
+  Publish --> [*]
+}
+Root --> [*]
+
+note right of ReviewScope #EAF7EE
+Regions are a modeling view. The kernel realizes
+orthogonality as multiple tokens in one flat scope
+(ScopeInstance, runtime.rs:1561-1576); completion is
+token-count exhaustion, not per-region final states.
+History captures the key set of the active configuration
+at completion: <latex>h(s) = \mathrm{keys}(\mathit{act}_{\sigma})</latex>.
+end note
+note left of Approval #FFF3C9
+After the first completion of a history-declaring
+scope, plain re-entry also restores the remembered
+configuration (no history node required, no mode
+filter): the initial pseudostate becomes a default
+history pseudostate.
+end note
+@enduml

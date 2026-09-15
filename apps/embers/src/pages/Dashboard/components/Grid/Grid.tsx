@@ -90,7 +90,7 @@ export function Grid({
             </div>
           </div>
 
-          <Text color="primary" type="H4">
+          <Text className={styles["agent-name"]} color="primary" type="H4">
             {entry.name}
           </Text>
 

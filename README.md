@@ -110,7 +110,15 @@ embers-frontend/
 ├── docs/                     # Documentation hierarchy
 │   ├── requirements/         # User stories and business requirements
 │   ├── specifications/       # Technical specifications
-│   └── architecture/         # System design and decisions
+│   ├── architecture/         # System design and decisions
+│   ├── api/                  # Web API reference: protocol spec and per-method docs
+│   ├── agent-teams/          # Agent Teams Workflow v2 corpus (theory, design, security, formal)
+│   └── post-mortems/         # Incident analyses with diagrams
+│
+├── demo/                     # Customer demo assets
+│   └── research-desk/        # On-chain RAG research desk: corpus, seed script,
+│                             # agent Rholang, team fixture, smoke tests
+│                             # (runbook: docs/agent-teams/usage/customer-demo-runbook.md)
 │
 ├── packages/
 │   └── client/              # @f1r3fly-io/embers-client-sdk
@@ -195,13 +203,15 @@ Our project follows a documentation-first approach designed for both human contr
 - **[📋 Requirements](docs/requirements/)** - User stories, business requirements, and acceptance criteria
 - **[📐 Specifications](docs/specifications/)** - Technical specifications and design documents
 - **[🏗️ Architecture](docs/architecture/)** - System design and architectural decisions
+- **[🌐 Web API](../embers/docs/api/)** - HTTP API protocol specification and per-method reference with sequence diagrams (maintained in the sibling `embers` backend repository)
+- **[🔥 Agent Teams Workflow v2](docs/agent-teams/)** - Cycles, branching, joins, runtime theory, security, formal model, and operations
 
 ### For LLM Assistance
 
 When using LLM tools, start by providing context from:
 
-1. Relevant requirements from [`docs/requirements/`](./docs/requirements.md)
-2. Technical specifications from [`docs/specifications/`](./docs/requirements/README.md)
+1. Relevant requirements from [`docs/requirements/`](./docs/requirements/README.md)
+2. Technical specifications from [`docs/specifications/`](./docs/specifications/README.md)
 3. Architecture constraints from [`docs/architecture/`](./docs/architecture/README.md)
 4. Source code context from directory-level READMEs
 

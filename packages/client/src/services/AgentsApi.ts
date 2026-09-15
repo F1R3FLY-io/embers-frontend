@@ -1,22 +1,29 @@
 import { base16 } from "@scure/base";
 
-import type { CreateAgentReq, HTTPHeaders } from "@/api-client";
+import type {
+  CreateAgentReq,
+  FetchAPI,
+  HTTPHeaders,
+  Middleware,
+} from "../api-client";
+import type { Address } from "../entities/Address";
 import type {
   ContractCallConfig,
   QueryCallConfig,
-} from "@/entities/HttpCallConfigs";
-
-import { AIAgentsApi, Configuration } from "@/api-client";
-import { signContract } from "@/functions";
-
-import type { Address } from "../entities/Address";
-import type { Amount } from "../entities/Amount";
+} from "../entities/HttpCallConfigs";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { AIAgentsApi, Configuration } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
+import { signContract } from "../functions";
+import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
+
 export type AiAgentConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
   privateKey: PrivateKey;
 };
 
@@ -38,7 +45,9 @@ export class AgentsApiSdk {
 
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
     this.client = new AIAgentsApi(configuration);
   }
@@ -52,7 +61,7 @@ export class AgentsApiSdk {
     createAgentReq: CreateAgentReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsCreatePreparePost(
+    const prepareResponse = await this.client.agentsPrepareCreate(
       {
         createAgentReq,
       },
@@ -65,10 +74,10 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsCreateSendPost(
+    const sendResponse = await this.client.agentsSendCreate(
       {
         sendRequestBodySignedContractCreateAgentReqCreateAgentResp: {
           prepareRequest: createAgentReq,
@@ -83,18 +92,13 @@ export class AgentsApiSdk {
     return { prepareResponse, sendResponse, waitForFinalization };
   }
 
-  public async deployCode(
-    code: string,
-    phloLimit: Amount,
-    config?: ContractCallConfig,
-  ) {
+  public async deployCode(code: string, config?: ContractCallConfig) {
     const prepareRequest = {
       code,
-      phloLimit: phloLimit.value,
       type: "Code" as const,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsDeployPreparePost(
+    const prepareResponse = await this.client.agentsPrepareDeploy(
       {
         deployAgentReq: prepareRequest,
       },
@@ -110,10 +114,10 @@ export class AgentsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsDeploySendPost(
+    const sendResponse = await this.client.agentsSendDeploy(
       {
         sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: {
           prepareRequest,
@@ -136,18 +140,16 @@ export class AgentsApiSdk {
   public async deploy(
     id: string,
     version: string,
-    phloLimit: Amount,
     config?: ContractCallConfig,
   ) {
     const prepareRequest = {
       address: this.address,
       id,
-      phloLimit: phloLimit.value,
       type: "Agent" as const,
       version,
     };
 
-    const prepareResponse = await this.client.apiAiAgentsDeployPreparePost(
+    const prepareResponse = await this.client.agentsPrepareDeploy(
       {
         deployAgentReq: prepareRequest,
       },
@@ -163,10 +165,10 @@ export class AgentsApiSdk {
       signContract(prepareResponse.response.system, this.privateKey);
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(contract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsDeploySendPost(
+    const sendResponse = await this.client.agentsSendDeploy(
       {
         sendRequestBodyDeploySignedAgentReqDeployAgentReqDeployAgentResp: {
           prepareRequest,
@@ -185,7 +187,7 @@ export class AgentsApiSdk {
    * Gets all agents owned by the current address.
    */
   public async get(config?: QueryCallConfig) {
-    return this.client.apiAiAgentsAddressGet(
+    return this.client.agentsList(
       {
         address: this.address,
       },
@@ -203,7 +205,7 @@ export class AgentsApiSdk {
     version: string,
     config?: QueryCallConfig,
   ) {
-    return this.client.apiAiAgentsAddressIdVersionsVersionGet(
+    return this.client.agentsGetVersion(
       {
         address: this.address,
         id,
@@ -218,7 +220,7 @@ export class AgentsApiSdk {
    * @param id The ID of the agent
    */
   public async getVersions(id: string, config?: QueryCallConfig) {
-    return this.client.apiAiAgentsAddressIdVersionsGet(
+    return this.client.agentsListVersions(
       {
         address: this.address,
         id,
@@ -238,7 +240,7 @@ export class AgentsApiSdk {
     agentReq: CreateAgentReq,
     config?: ContractCallConfig,
   ) {
-    const prepareResponse = await this.client.apiAiAgentsIdSavePreparePost(
+    const prepareResponse = await this.client.agentsPrepareSave(
       {
         createAgentReq: agentReq,
         id,
@@ -252,10 +254,10 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsIdSaveSendPost(
+    const sendResponse = await this.client.agentsSendSave(
       {
         id,
         sendRequestBodySignedContractCreateAgentReqSaveAgentResp: {
@@ -272,7 +274,7 @@ export class AgentsApiSdk {
   }
 
   public async delete(id: string, config?: ContractCallConfig) {
-    const prepareResponse = await this.client.apiAiAgentsIdDeletePreparePost(
+    const prepareResponse = await this.client.agentsPrepareDelete(
       {
         id,
       },
@@ -285,10 +287,10 @@ export class AgentsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiAiAgentsIdDeleteSendPost(
+    const sendResponse = await this.client.agentsSendDelete(
       {
         id,
         signedContract,

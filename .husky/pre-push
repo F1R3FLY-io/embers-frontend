@@ -15,4 +15,13 @@ pnpm --filter @f1r3fly-io/embers-frontend ci:lint
 pnpm --filter @f1r3fly-io/embers-frontend typecheck
 pnpm --filter @f1r3fly-io/embers-client-sdk typecheck
 pnpm --filter @f1r3fly-io/embers-client-sdk test
+# The OSLF editor's own workflow only runs when files under its directory
+# change, so a change elsewhere that breaks it reaches CI unnoticed. It is a
+# one-second suite; running it here costs nothing.
+pnpm --filter @f1r3fly-io/oslf-editor test
 pnpm --filter @f1r3fly-io/embers-client-sdk build
+
+# The application's suite is deliberately NOT run here. It takes ten seconds
+# plus a dependency build, and pushing is frequent; CI now runs it on every
+# push, which is where a slow check belongs. The fast checks above are the ones
+# worth paying for at push time.

@@ -1,0 +1,54 @@
+@startuml
+title Durable run lifecycle on the public ledger
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "running" as running #E9F5EA
+state "suspended" as suspended #FFF0D9
+state "resuming" as resuming #FFE0C8
+state "completed" as completed #D9EFDF
+state "failed" as failed #F8DADA
+state "cancelled" as cancelled #E7DCF5
+state "returned" as returned #F2F2F2 ##[dashed]888888
+
+[*] --> running : registerRun + beginDurableRun\n(runStarted)
+running --> suspended : advanceRun\n(runSuspended / durableYield / retryScheduled)
+suspended --> resuming : claimCommand\n(commandClaimed, revision CAS)
+resuming --> running : advanceRun\n(runResumed)
+resuming --> suspended : clearCommand\n(commandRejected)
+running --> completed : advanceRun\n(runCompleted)
+running --> failed : advanceRun\n(runFailed)
+running --> cancelled : advanceRun\n(runCancelled)
+suspended --> cancelled : cancel command\n(cancellationRequested ... runCancelled)
+running --> running : migrate command\n(runMigrated: rebind definition hash)
+suspended --> suspended : migrate command\n(runMigrated)
+completed --> [*]
+failed --> [*]
+cancelled --> [*]
+completed -[#888888,dashed]-> returned : finishRun (legacy run.rho only)\n(runReturned)
+returned -[#888888,dashed]-> [*]
+
+note right of resuming #FFF3C9
+Every advancement is a compare-and-set on the
+run revision: <latex>\nu' = \nu + 1</latex> with the claimed
+command cleared. A replayed advancement is
+acknowledged idempotently by exact readback.
+end note
+note bottom of returned #F2F2F2
+Legacy status: only the non-durable run.rho
+template calls finishRun. Durable runs end at
+completed, failed, or cancelled.
+end note
+note left of suspended #EAF7EE
+The ledger publishes sorted wait ids, the minimum
+due_at, and approval authority grants for every
+suspension; payloads stay encrypted in F1r3drive.
+end note
+@enduml

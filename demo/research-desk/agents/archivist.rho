@@ -1,0 +1,67 @@
+// Research Desk demo: Archivist agent (ABI structured-v1).
+//
+// Sits on the escalation gate's completed route (gate -> archive -> out), so it
+// sees exactly the values a human released: a null-payload approve preserves the
+// team's best-effort record (for an escalated run, the sentinel refusal), and a
+// non-null approve payload REPLACES the released value -- that replacement is the
+// human's own answer. Model output can never reach this node: the accept path
+// (decide -> out) bypasses it by topology.
+//
+// Archive condition, checked structurally (a malformed human payload must never
+// error the deploy, so no method is called on an unvalidated value): the input is
+// a map carrying a non-empty string question and a non-empty string answer whose
+// first 20 characters are not the INSUFFICIENT CONTEXT sentinel. Exactly then a
+// Q&A document is filed into embers-demo-docs (idempotent create, then upsert
+// keyed "qa: " ++ question, so re-answering a question overwrites its entry).
+// Recognized records return with an added "archived": true|false field; anything
+// else passes through unchanged (a non-map has nowhere to carry a flag).
+//
+// Replay note: rho:chroma:collection:entries:new is NOT replay-cached -- it
+// re-executes during replay validation -- and rho:chroma:collection:new is called
+// with ignoreOrUpdateIfExists = true; both are idempotent insert-or-overwrite
+// operations keyed by collection and document id, so replay is result-
+// deterministic. On observer nodes both are NoOp and ack silently.
+//
+// Infra failure (Chroma down on the validator) surfaces as a deploy error ->
+// disposition failed; the archive node's retry policy in the team definition
+// absorbs it with bounded backoff.
+contract main(@invocation, return) = {
+  new createCollection(`rho:chroma:collection:new`),
+      upsertEntries(`rho:chroma:collection:entries:new`),
+      createdCh, seededCh in {
+    match invocation.getOrElse("input", Nil) {
+      record => {
+        match record {
+          {"question": question /\ String, "answer": answer /\ String, ..._} => {
+            if (answer.length() >= 20 and answer.slice(0, 20) == "INSUFFICIENT CONTEXT") {
+              // Null-payload approve preserved the refusal. The desk must not
+              // learn its own refusal.
+              return!({"output": record.set("archived", false), "disposition": "completed"})
+            } else {
+              if (question.length() > 0 and answer.length() > 0) {
+                createCollection!("embers-demo-docs", true, {"purpose": "embers-research-desk-demo"}, *createdCh) |
+                for (_ <- createdCh) {
+                  upsertEntries!(
+                    "embers-demo-docs",
+                    {("qa: " ++ question): ("Q: " ++ question ++ "\nA: " ++ answer, {"source": "human-approval", "topic": "qa"})},
+                    *seededCh
+                  ) |
+                  for (_ <- seededCh) {
+                    return!({"output": record.set("archived", true), "disposition": "completed"})
+                  }
+                }
+              } else {
+                return!({"output": record.set("archived", false), "disposition": "completed"})
+              }
+            }
+          }
+          _ => {
+            // Not the record shape (including non-map payloads): pass through
+            // untouched and unarchived.
+            return!({"output": record, "disposition": "completed"})
+          }
+        }
+      }
+    }
+  }
+}

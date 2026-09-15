@@ -1,0 +1,55 @@
+@startuml
+title History restoration: shallow node, deep node, and implicit re-entry
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+state "Captured snapshot for scope s\nh(s) = (mode: deep, nodes: {Review, Screen})" as Snapshot #E7DCF5
+
+state "Restore through a DEEP history node" as DeepCase #E9F5EA {
+  state "history node (deep)" as DeepNode #E7DCF5
+  state "Review" as ReviewD #DCEEFF
+  state "Screen" as ScreenD #DCEEFF
+  [*] --> DeepNode
+  DeepNode --> ReviewD : accepts any remembered mode
+  DeepNode --> ScreenD : one token per remembered node
+}
+
+state "Restore through a SHALLOW history node" as ShallowCase #FFF0D9 {
+  state "history node (shallow)" as ShallowNode #E7DCF5
+  state "declared initials" as InitialsS #DCEEFF
+  [*] --> ShallowNode
+  ShallowNode --> InitialsS : deep-recorded snapshot REFUSED\n/ fall back to initial nodes
+}
+
+state "Implicit re-entry through the owning scope node" as ImplicitCase #D9EFDF {
+  state "scope node re-entered" as ScopeNode #ECF5FC
+  state "remembered nodes" as RememberedI #DCEEFF
+  [*] --> ScopeNode
+  ScopeNode --> RememberedI : any nonempty history overrides\ninitials, with NO mode filter;\nentry activities re-run first
+}
+
+Snapshot -[#7D478F]-> DeepCase
+Snapshot -[#7D478F]-> ShallowCase
+Snapshot -[#7D478F]-> ImplicitCase
+
+note bottom of ShallowCase #FFF3C9
+Acceptance predicate for a history node of mode
+<latex>m</latex> against snapshot <latex>h(s)</latex>:
+<latex>\mathrm{accept}(m, h(s)) \equiv m = \mathtt{deep} \;\lor\; h(s).\mathrm{mode} = \mathtt{shallow}</latex>
+Rejected, absent, or empty history falls back to the
+scope's declared initial nodes.
+end note
+note right of Snapshot #EAF7EE
+Capture happens only at scope completion and collapses
+multiplicity: <latex>h(s) = \mathrm{keys}(\mathit{act}_{\sigma})</latex>.
+The set holds each token's last recorded non-final
+position, including positions of already-consumed tokens.
+end note
+@enduml

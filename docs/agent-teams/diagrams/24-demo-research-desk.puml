@@ -1,0 +1,53 @@
+@startuml
+title Research Desk demo team: bounded critique cycle with RAG and a human gate
+skinparam backgroundColor #FBFCFF
+skinparam shadowing false
+skinparam ArrowColor #3D5366
+skinparam rectangle {
+  BackgroundColor #EEF6FC
+  BorderColor #4E7B99
+}
+
+rectangle "Question\n(input)" as input #DCEEFF
+rectangle "Draft\nResearcher agent (structured-v1)\nretrieve then draft" as draft #C9E4F7
+rectangle "Critique\nCritic agent (structured-v1)\nfixed-token rubric to integer score" as critique #C9E4F7
+rectangle "Decide\ngateway, firstMatch" as decide #FFF0C2
+rectangle "Escalation gate\napproval: owner, quorum 1, no timeout" as gate #FFE0B8
+rectangle "Archive\nArchivist agent (structured-v1)\nfiles human answers" as archive #C9E4F7
+rectangle "Answer\n(output)" as answer #C8E8D0
+rectangle "Refused\n(final)" as refused #F6BFC0
+
+rectangle "ChromaDB collection\nembers-demo-docs\nrho:chroma:collection:entries:query" as chroma #E8DDF5
+rectangle "OpenAI completion\nrho:ai:gpt4" as gpt4 #E8DDF5
+
+input --> draft : completed
+draft --> critique : completed
+critique --> decide : completed
+decide --> answer : #0 accept\n<latex>output.score \geq 80</latex>
+decide --> draft : #1 revise (unconditional)\nloop maxIterations = 3
+decide --> gate : iterationLimit
+gate --> archive : completed (approve;\nnull preserves, non-null replaces)
+archive --> answer : completed\n(archived flag)
+gate --> refused : rejected
+
+draft ..> chroma : top-10 similarity query
+draft ..> gpt4 : grounded draft / revision
+critique ..> gpt4 : verdict line\nEXCELLENT, GOOD, WEAK, POOR
+archive ..> chroma : idempotent create + upsert\nrho:chroma:collection:entries:new
+
+note bottom of decide #EAF7EE
+The revise back-edge crosses a bounded transition, so every
+hot cycle has a progress boundary. Deploying without the
+bound is rejected with the diagnostic cycle-without-progress;
+exhausting it rewrites the token disposition to iterationLimit
+at the decide node, which routes to the human gate.
+end note
+
+note bottom of chroma #F2ECFA
+Both services are replay-cached non-deterministic system
+processes on the validator: the first execution records the
+observed result on chain and replay returns the recording.
+The Archive edge writes the same collection the Draft edge
+reads: the knowledge loop.
+end note
+@enduml

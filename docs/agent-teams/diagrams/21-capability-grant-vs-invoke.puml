@@ -1,0 +1,47 @@
+@startuml
+title Agent Teams Workflow v2 — capability grant versus invocation
+skinparam backgroundColor #FFFAF8
+skinparam shadowing false
+skinparam ArrowColor #553C35
+skinparam packageStyle rectangle
+
+actor "Author wallet" as author #FFD4BA
+actor "Invoker wallet" as invoker #FFD4BA
+
+package "Public designators" #E2F1FA {
+  component "rho:id: URI" as uri #CDE7F5
+  component "F1r3sky atproto record" as post #CDE7F5
+}
+package "Embers trust boundary" #FFF0DB {
+  component "Rholang compiler" as compiler #FFD5AC
+  component "insertSigned wrapper" as wrapper #FFD5AC
+}
+package "Capability boundary — unforgeable names" #E7F3E7 {
+  component "Team name: bundle+ over\nmanifest / guard / activity / entry" as teamcap #B9DCBE
+  component "Per-run fresh channels" as runchans #B9DCBE
+}
+
+author --> compiler : signed definition (wallet key)
+compiler --> teamcap : new-bind name, install four clauses
+teamcap --> wrapper : bundle+ (send-only) export
+wrapper --> uri : insertSigned\n<latex>\mathrm{sig} = \mathrm{blake2b256}(timestamp, deployerPubKey, version)</latex>\nversion compare-and-set
+uri --> post : publish (URI becomes public)
+
+invoker --> uri : unauthenticated lookup
+uri --> teamcap : knowledge of the URI = authority to send
+teamcap --> runchans : entry clause mints per-run channels
+runchans --> invoker : beginRun records the INVOKER as owner
+
+note right of wrapper #FFF6C9
+GRANT is a signature over the publication tuple:
+only the registry key may replace the entry.
+INVOKE is possession of the URI: lookup is
+unauthenticated, so the designator is public
+while send-authority lives in the bundled name.
+end note
+note bottom of post #FAD8D8
+Publishing hands the entry capability and the
+manifest read to everyone. It confers no
+authority over the publisher's own runs.
+end note
+@enduml

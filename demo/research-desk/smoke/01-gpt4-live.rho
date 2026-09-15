@@ -1,0 +1,22 @@
+// Smoke 01: prove the OpenAI integration is LIVE.
+//
+// A disabled or unconfigured OpenAI service answers with an empty string, so
+// PASS requires the marker to carry PONG (a non-empty completion). Results
+// are emitted to stdout (validator log) and to the on-chain test log
+// contract, whose messages come back in the deploy/send HTTP response.
+//
+// PASS: a response log message contains EMBERS-SMOKE-01-RESULT followed by
+// PONG.
+new gpt4(`rho:ai:gpt4`),
+    stdout(`rho:io:stdout`),
+    rl(`rho:registry:lookup`),
+    logCh, answerCh in {
+  rl!(`rho:id:ugzm7bbut1gxmcutdeo3minmwfd7qgxcwepeox85gdmy7xatziwrbg`, *logCh) |
+  for (@(_, log) <- logCh) {
+    gpt4!("Reply with the single word PONG", *answerCh) |
+    for (@answer <- answerCh) {
+      stdout!(["EMBERS-SMOKE-01-RESULT", answer]) |
+      @log!("info", "EMBERS-SMOKE-01-RESULT " ++ answer)
+    }
+  }
+}

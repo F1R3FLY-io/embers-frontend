@@ -227,7 +227,7 @@ export default defineConfig(
           project: "**/tsconfig.json",
         },
       },
-      react: { version: "detect" },
+      react: { version: "19.2.0" },
     },
   },
   {
@@ -301,6 +301,14 @@ export default defineConfig(
     files: ["**/eslint.config.{js,ts}"],
     languageOptions: {
       globals: globals.node,
+    },
+    rules: {
+      // The typescript resolver (alwaysTryTypes) resolves plugin packages to
+      // their .d.ts, which espree cannot parse, so export-shape analysis of
+      // the imported ESLint plugins fails here — and verifies nothing a
+      // broken config would not already break loudly.
+      "import/default": "off",
+      "import/namespace": "off",
     },
   },
 );

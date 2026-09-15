@@ -1,0 +1,5 @@
+Decision: Introduce a practical code-review policy for six pull requests per day.
+Constraints: Four engineers can each spend 60 minutes per day reviewing, for a maximum of 240 reviewer-minutes per day. Each independent review takes an estimated 30 minutes. No new tooling budget. Urgent production fixes must retain an emergency path. Use existing pull requests and CI.
+Initial proposal to challenge: Require two independent approvals before every merge, including emergencies. Compare that demand with the available review capacity and consider one approval with CI checks.
+Deliverable: Recommend a practical policy, explain changes after red-team review, preserve unresolved risks, and give a short rollout checklist with responsible roles, success measures and rollback.
+Unknowns: The stated review times are planning estimates, not observed measurements. We have not measured review turnaround time or emergency-fix frequency. Do not invent these measurements.

@@ -20,6 +20,12 @@ Decision records documenting important architectural choices and their rationale
   - React 19, TypeScript, Vite, and SCSS Modules integration
   - Component architecture and state management strategy
 
+- **[ADR-003: Graph Invariants and Unbounded Lists](./decisions/003-graph-invariants-and-unbounded-lists.md)**
+  - Well-formedness enforced where a graph is written _and_ where it is read
+  - Framework mutation APIs over hand-built change sets, enforced by lint
+  - No fixed height cap on content whose length is not knowable in advance
+  - Drawn from [a post-mortem](../post-mortems/AGENT_TEAM_EDITOR_GRAPH_CORRUPTION.md)
+
 ### Design Patterns
 
 Established patterns and conventions for consistent development:

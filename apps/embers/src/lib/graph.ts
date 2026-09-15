@@ -26,16 +26,90 @@ const DAGRE_NODE_HEIGHT = 140;
 // this should be stack safe
 export function toApiGraph(nodes: Node[], edges: Edge[]): Graph {
   const groups = groupByDeployContainer(nodes);
+  const orphanNodes = nodes.filter(
+    (node) =>
+      node.type !== "deploy-container" &&
+      node.type !== "state-scope" &&
+      !node.parentId,
+  );
+
+  const subgraphs = buildSubgraphs(groups);
+  const graph_1 =
+    orphanNodes.length > 0
+      ? {
+          graph_1: subgraphs,
+          graph_2: buildGraphNodes(orphanNodes),
+          type: "Tensor" as const,
+        }
+      : subgraphs;
+
   return {
-    graph_1: buildSubgraphs(groups),
-    graph_2: buildGraphEdges(edges),
+    graph_1,
+    graph_2: buildGraphEdges(connectedEdges(nodes, edges)),
     type: "Tensor",
   };
 }
 
+/**
+ * Announces a repair that would otherwise be invisible.
+ *
+ * Dropping a dangling edge is the right correction, but a correction the author
+ * cannot see is the same failure mode that made the original defect expensive: a
+ * connection they once drew disappears and nothing says so. Warning unconditionally
+ * rather than behind a development flag, because there is no environment in which
+ * silently discarding part of a user's graph should pass without a record, and
+ * because `import.meta.env` is unavailable under the CommonJS output the tests run.
+ */
+function reportDroppedEdges(where: string, dropped: Edge[]): void {
+  if (dropped.length === 0) {
+    return;
+  }
+
+  const endpoints = dropped
+    .map((edge) => `${edge.source}->${edge.target}`)
+    .join(", ");
+
+  // Intentional diagnostic, not debug output: this is the notification that a
+  // connection the author drew has been removed. Suppressing it would restore the
+  // silence that made the original defect costly.
+  // eslint-disable-next-line no-console
+  console.warn(
+    `[graph] ${where}: dropped ${dropped.length} edge(s) naming a node that does not exist, repairing a graph that would otherwise fail to deploy. Endpoints: ${endpoints}`,
+  );
+}
+
+/**
+ * Keeps only edges whose endpoints are both being written.
+ *
+ * An edge to a node that no longer exists compiles to a channel read with no
+ * writer, and the backend rejects the whole graph with "node <id> is missing
+ * context" -- permanently, because the editor cannot render such an edge and so
+ * gives no sign that it is there. Filtering, rather than throwing as
+ * `requireString` does for a missing agent id: a dangling edge carries no
+ * information, so dropping it repairs the graph instead of hiding a loss.
+ */
+function connectedEdges(nodes: Node[], edges: Edge[]): Edge[] {
+  // Container ids included: `collectGraphParts` records a subgraph's own var as a
+  // vertex, so an edge naming one is not dangling.
+  const present = new Set(nodes.map((node) => node.id));
+
+  const kept = edges.filter(
+    (edge) => present.has(edge.source) && present.has(edge.target),
+  );
+
+  reportDroppedEdges(
+    "toApiGraph",
+    edges.filter((edge) => !kept.includes(edge)),
+  );
+
+  return kept;
+}
+
 function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
   return nodes
-    .filter((node) => node.type === "deploy-container")
+    .filter(
+      (node) => node.type === "deploy-container" || node.type === "state-scope",
+    )
     .map((container) => ({
       container,
       nodes: nodes.filter((node) => node.parentId === container.id),
@@ -43,22 +117,66 @@ function groupByDeployContainer(nodes: Node[]): ContainerGroup[] {
 }
 
 function buildSubgraphs(groups: ContainerGroup[]): Graph {
-  return groups.reduceRight(
-    (acc, group): Graph => ({
-      graph: {
-        graph_1: buildGraphNodes(group.nodes),
-        graph_2: acc,
-        type: "Subgraph",
-        var: group.container.id,
-      },
-      name: {
-        type: "GVar",
-        value: group.container.id,
-      },
-      string: buildNodeContext(group.container),
-      type: "Context",
-    }),
-    NIL,
+  const pending = new Map(groups.map((group) => [group.container.id, group]));
+  const built = new Map<string, Graph>();
+  const combine = (parts: Graph[]): Graph =>
+    parts.reduceRight<Graph>((acc, graph) => {
+      if (graph.type === "Nil") {
+        return acc;
+      }
+      if (acc.type === "Nil") {
+        return graph;
+      }
+      if (graph.type === "Context" && graph.graph.type === "Subgraph") {
+        return { ...graph, graph: { ...graph.graph, graph_2: acc } };
+      }
+      return { graph_1: graph, graph_2: acc, type: "Tensor" };
+    }, NIL);
+  while (pending.size) {
+    let progressed = false;
+    for (const [id, group] of pending) {
+      const childGroups = group.nodes.filter(
+        (node) =>
+          node.type === "deploy-container" || node.type === "state-scope",
+      );
+      if (childGroups.some((node) => !built.has(node.id))) {
+        continue;
+      }
+      built.set(id, {
+        graph: {
+          graph_1: combine([
+            buildGraphNodes(
+              group.nodes.filter(
+                (node) =>
+                  node.type !== "deploy-container" &&
+                  node.type !== "state-scope",
+              ),
+            ),
+            ...childGroups.map((node) => built.get(node.id)!),
+          ]),
+          graph_2: NIL,
+          type: "Subgraph",
+          var: id,
+        },
+        name: { type: "GVar", value: id },
+        string: buildNodeContext(group.container),
+        type: "Context",
+      });
+      pending.delete(id);
+      progressed = true;
+    }
+    if (!progressed) {
+      throw new Error("Container hierarchy contains a cycle");
+    }
+  }
+  const ids = new Set(groups.map((group) => group.container.id));
+  return combine(
+    groups
+      .filter(
+        (group) =>
+          !group.container.parentId || !ids.has(group.container.parentId),
+      )
+      .map((group) => built.get(group.container.id)!),
   );
 }
 
@@ -124,10 +242,47 @@ function buildGraphEdges(edges: Edge[]): Graph {
   );
 }
 
+/**
+ * Reads a required identifier off a node's data. Throwing here surfaces the
+ * problem through the save mutation's error path instead of writing a graph
+ * that cannot be compiled.
+ */
+function requireString(
+  data: Record<string, unknown>,
+  key: string,
+  nodeId: string,
+): string {
+  const value = data[key];
+  if (typeof value !== "string" || value === "") {
+    throw new Error(`agent node ${nodeId} is missing ${key}`);
+  }
+  return value;
+}
+
 function buildNodeContext(node: Node) {
   switch (node.type) {
+    case "agent": {
+      // The agent is referenced, not inlined, so editing it and redeploying the
+      // team picks up the new code. The name rides along so the canvas can label
+      // the node without a wallet-scoped lookup.
+      return JSON.stringify({
+        agentId: requireString(node.data, "agentId", node.id),
+        agentName: requireString(node.data, "agentName", node.id),
+        agentVersion: requireString(node.data, "agentVersion", node.id),
+        type: "agent",
+      });
+    }
     case "compress": {
       return JSON.stringify({ type: "compress" });
+    }
+    case "fan-in-map": {
+      return JSON.stringify({ type: "fan-in-map" });
+    }
+    case "approval": {
+      return JSON.stringify({ policyId: node.data.policyId, type: "approval" });
+    }
+    case "gateway": {
+      return JSON.stringify({ type: "gateway" });
     }
     case "input-node": {
       return JSON.stringify({ type: "input-node" });
@@ -144,8 +299,19 @@ function buildNodeContext(node: Node) {
     case "tts-model": {
       return JSON.stringify({ type: "tts-model" });
     }
+    case "wait": {
+      return JSON.stringify({ type: "wait", waitFor: node.data.waitFor });
+    }
+    case "state-scope":
     case "deploy-container": {
-      return JSON.stringify({ type: "deploy-container" });
+      return JSON.stringify({ ...node.data, type: node.type });
+    }
+    case "final-node":
+    case "foreign-term":
+    case "history":
+    case "rholang-activity":
+    case "workflow-activity": {
+      return JSON.stringify({ ...node.data, type: node.type });
     }
   }
 }
@@ -256,15 +422,32 @@ function nameToString(name: Name): string {
 }
 
 function buildEdges(flatGraph: FlatGraph): Edge[] {
-  return [...flatGraph.edges]
-    .flatMap(([source, targets]) =>
-      [...targets].map((target) => [source, target]),
-    )
-    .map(([source, target]) => ({
-      id: crypto.randomUUID(),
-      source,
-      target,
-    }));
+  const all = [...flatGraph.edges].flatMap(([source, targets]) =>
+    [...targets].map((target) => ({ source, target })),
+  );
+
+  // Drop edges naming a vertex the graph does not define. This is what repairs an
+  // already-corrupted team: without it the phantom edge is read back into the
+  // editor, which cannot draw it and so shows nothing wrong, then written out
+  // again on the next save -- so every later deploy keeps failing. Opening and
+  // saving now produces a clean graph.
+  const kept = all.filter(
+    ({ source, target }) =>
+      flatGraph.vertexes.has(source) && flatGraph.vertexes.has(target),
+  );
+
+  reportDroppedEdges(
+    "fromApiGraph",
+    all
+      .filter((edge) => !kept.includes(edge))
+      .map((edge) => ({ id: "", ...edge })),
+  );
+
+  return kept.map(({ source, target }) => ({
+    id: crypto.randomUUID(),
+    source,
+    target,
+  }));
 }
 
 function buildNodes(flatGraph: FlatGraph): Node[] {
@@ -291,7 +474,9 @@ function buildNodes(flatGraph: FlatGraph): Node[] {
         type: context.type,
       } as Node;
     })
-    .sort((l, _) => (l.type === "deploy-container" ? -1 : 1));
+    .sort((l, _) =>
+      l.type === "deploy-container" || l.type === "state-scope" ? -1 : 1,
+    );
 }
 
 export function makeNodeId() {
@@ -322,7 +507,7 @@ function layoutWithDagre(
   });
 
   nodes.forEach((node) => {
-    if (node.type === "deploy-container") {
+    if (node.type === "deploy-container" || node.type === "state-scope") {
       return;
     }
 
@@ -339,7 +524,7 @@ function layoutWithDagre(
   dagre.layout(g);
 
   const layoutedNodes: Node[] = nodes.map((node) => {
-    if (node.type === "deploy-container") {
+    if (node.type === "deploy-container" || node.type === "state-scope") {
       return node;
     }
 
@@ -366,11 +551,15 @@ type NodeWithParent = Node & {
 
 function normalizeGraphNodes(nodes: Node[]): Node[] {
   return nodes.map((node) => {
-    if (node.type === "deploy-container") {
+    if (node.type === "deploy-container" || node.type === "state-scope") {
       return {
         ...node,
         className: styles["no-node-style"],
-        data: { containerId: "default" },
+        data: {
+          ...node.data,
+          containerId:
+            (node.data as { containerId?: string }).containerId ?? "default",
+        },
       };
     }
 
@@ -407,7 +596,10 @@ export function resizeContainers(nodes: Node[]): Node[] {
 
   for (const [parentId, children] of childrenByParent.entries()) {
     const parent = byId.get(parentId);
-    if (!parent || parent.type !== "deploy-container") {
+    if (
+      !parent ||
+      (parent.type !== "deploy-container" && parent.type !== "state-scope")
+    ) {
       continue;
     }
     if (!children.length) {

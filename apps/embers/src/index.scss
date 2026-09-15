@@ -13,6 +13,12 @@ body {
   height: 100%;
   overflow: hidden auto;
   background-color: var(--background-color);
+
+  // A themed default so unstyled text tracks the theme. Without it, any bare
+  // <Text> (which sets only a font) inherits the browser default black, which
+  // is invisible on the dark theme's dark background. The `color` transition
+  // below was already declared for exactly this property.
+  color: var(--text-color-primary);
   transition:
     background-color 0.3s ease,
     color 0.3s ease;

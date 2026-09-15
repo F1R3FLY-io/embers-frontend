@@ -37,8 +37,20 @@
 }
 
 .secondary {
-  color: var(--text-white);
-  fill: var(--text-white);
+  /* `--text-color-primary`, not `--text-white`.
+   *
+   * `--text-white` is #f1f3f5 and is defined ONLY in the dark theme block, so
+   * it keeps that value under the light theme -- where
+   * `--background-neutral-hover` is also #f1f3f5. The label was therefore
+   * drawn in exactly its own background colour and was invisible: every
+   * secondary button rendered as a blank rectangle, including the Cancel
+   * button on every confirmation dialog. A user saw "Confirm" beside an empty
+   * shape.
+   *
+   * `--text-color-primary` is redefined per theme (#f1f3f5 dark, #0b0f14
+   * light), so it contrasts with the neutral background in both. */
+  color: var(--text-color-primary);
+  fill: var(--text-color-primary);
   background-color: var(--background-neutral-hover);
 }
 

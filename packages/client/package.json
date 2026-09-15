@@ -7,6 +7,7 @@
   "types": "dist/index.d.ts",
   "exports": {
     "types": "./dist/index.d.ts",
+    "f1r3fly-source": "./src/index.ts",
     "import": "./dist/embers-client-sdk.es.js",
     "require": "./dist/embers-client-sdk.cjs.js"
   },
@@ -36,7 +37,8 @@
     "typecheck": "tsc -b --noEmit",
     "gen-docs": "typedoc",
     "docs": "pnpm run gen-docs && serve -l $npm_package_config_doc_port docs",
-    "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli generate -i /local/schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json",
+    "generate-api-client": "docker run -v $PWD:/local openapitools/openapi-generator-cli:v7.20.0 generate -i /local/schema.json -g typescript-fetch -o /local/src/api-client -c /local/openapitools.json && pnpm normalize-api-client",
+    "normalize-api-client": "node scripts/restore-custom-model-exports.mjs && eslint --fix src/api-client && prettier --write schema.json src/api-client",
     "compile-proto": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts_proto --ts_out=src/generated --ts_opt=esModuleInterop=true,forceLong=bigint -I=./protobuf -I=./protobuf/protobuf_external ./protobuf/RhoTypes.proto",
     "format:code": "prettier --write '**/*.{js,jsx,ts,tsx,html,svg,json}'",
     "ci:lint": "eslint .",
@@ -46,6 +48,7 @@
     "@types/express": "^5.0.6",
     "eslint-plugin-unused-imports": "^4.4.1",
     "express": "^5.2.1",
+    "fast-check": "^4.9.0",
     "serve": "^14.2.5",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
@@ -53,7 +56,7 @@
     "typedoc": "^0.28.16"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^2.11.0",
+    "@bufbuild/protobuf": "^2.13.0",
     "@f1r3fly-io/graphl-parser": "^0.0.40",
     "@noble/curves": "^2.0.1",
     "@scure/base": "^2.0.0",

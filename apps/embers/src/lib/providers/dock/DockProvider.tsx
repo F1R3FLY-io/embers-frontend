@@ -5,9 +5,11 @@ import { useEffect, useMemo, useReducer } from "react";
 import { ActionType, DockContext } from "./useDock";
 
 export type LogLevel = "info" | "error";
+export type LogLink = { href: string; label: string };
 export type LogEntry = {
   id: string;
   level: LogLevel;
+  link?: LogLink;
   text: string;
   time: Date;
 };
@@ -46,8 +48,18 @@ type Action =
     }
   | { type: typeof ActionType.MARK_DEPLOYS_READ };
 
+/**
+ * Keeps the newest `max` entries.
+ *
+ * Entries are PREPENDED, so the newest sits at index 0 and the tail is the
+ * oldest. Slicing from the end -- which this did -- kept the oldest instead:
+ * once the dock reached its cap it discarded every new entry and went on
+ * showing the same stale list. The dock is the only place a deploy failure or
+ * a run link is reported inside the editors, so the effect was that a long
+ * session silently stopped reporting exactly when there was most to report.
+ */
 function clamp<T>(arr: T[], max: number) {
-  return arr.length > max ? arr.slice(arr.length - max) : arr;
+  return arr.length > max ? arr.slice(0, max) : arr;
 }
 
 function reducer(state: State, action: Action): State {
@@ -113,7 +125,7 @@ function loadOpenedFromStorage(): OpenedState {
 
 export type DockAPI = {
   appendDeploy: (success: boolean) => void;
-  appendLog: (text: string, level?: LogLevel) => void;
+  appendLog: (text: string, level?: LogLevel, link?: LogLink) => void;
 
   clearDeploys: () => void;
   clearLogs: () => void;
@@ -160,9 +172,15 @@ export function DockProvider({
           entry: { id: crypto.randomUUID(), success, time: new Date() },
           type: ActionType.ADD_DEPLOY,
         }),
-      appendLog: (text, level = "info") =>
+      appendLog: (text, level, link) =>
         dispatch({
-          entry: { id: crypto.randomUUID(), level, text, time: new Date() },
+          entry: {
+            id: crypto.randomUUID(),
+            level: level ?? "info",
+            link,
+            text,
+            time: new Date(),
+          },
           type: ActionType.ADD_LOG,
         }),
       clearDeploys: () => dispatch({ type: ActionType.CLEAR_DEPLOYS }),

@@ -1,0 +1,46 @@
+@startuml
+title Hierarchical workflow model and executable boundary
+skinparam backgroundColor #FAFCFF
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #ECF5FC
+  BorderColor #477B9B
+  StartColor #2F7C5A
+  EndColor #7D478F
+  ArrowColor #496174
+}
+
+[*] --> Root
+state Root #E9F5EA {
+  [*] --> Intake
+  Intake --> ParallelReview : completed
+  state ParallelReview #FFF0D9 {
+    state "Research region" as Research #DCEEFF
+    [*] --> Research
+    --
+    state "Safety region" as Safety #E7DCF5
+    [*] --> Safety
+  }
+  ParallelReview --> Approval : all join
+  state Approval #FFE0C8
+  Approval --> Publish : approved
+  Approval --> Intake : rejected / bounded retry
+  state Publish #D9EFDF
+  Publish --> [*]
+}
+Root --> [*]
+
+note right of ParallelReview #EAF7EE
+Implemented now: flat canvas projection, parallel
+tokens, typed joins, guarded routes, bounded cycles,
+scope entry/exit activities, completion propagation,
+shallow/deep history, durable resume (scheduler-fired
+timers, retries, approval deadlines, and durable
+yields), compensation, and encrypted snapshots.
+end note
+note right of Approval #FFF3C9
+Reserved next: MeTTaIL Foreign Language Terms,
+run observability dashboards, and a dedicated
+hierarchy-canvas editor (see the roadmap).
+end note
+@enduml

@@ -1,0 +1,74 @@
+// The original constraint ledger is immutable during blue revisions.
+contract planRecords(@rows, @index, @mode, @state, @seen, ret) = {
+  if (index == rows.length()) {
+    if (state.get("error") != "") { ret!(state) }
+    else {
+      if (state.get("proposal") == "") { ret!(state.set("error", "Missing proposal record")) }
+      else { ret!(state) }
+    }
+  } else {
+    match rows.nth(index) {
+      ["P", proposal] => {
+        if (state.get("proposal") != "") { ret!(state.set("error", "Duplicate proposal record")) }
+        else { planRecords!(rows, index + 1, mode, state.set("proposal", proposal), seen, *ret) }
+      }
+      ["C", id, op, unit, limit, basis, evidence] => {
+        if (mode != "planner" or seen.contains(id) or (op != "max" and op != "min") or (basis != "provided" and basis != "unknown")) {
+          ret!(state.set("error", "Invalid, duplicate or revised constraint record"))
+        } else {
+          planRecords!(rows, index + 1, mode, state.set("constraints", state.get("constraints") ++ [rows.nth(index)]), seen.add(id), *ret)
+        }
+      }
+      ["T", id, unit, quantity, amount, basis, evidence] => {
+        if (basis != "provided" and basis != "estimate" and basis != "unknown") {
+          ret!(state.set("error", "Invalid quantity basis"))
+        } else { planRecords!(rows, index + 1, mode, state.set("terms", state.get("terms") ++ [rows.nth(index)]), seen, *ret) }
+      }
+      ["A", id, action, reason, owner, followUp] => {
+        if (mode != "responder" or state.get("responses").contains(id) or (action != "CHANGE" and action != "MITIGATE" and action != "ACCEPT_RISK") or reason == "?" or (action == "ACCEPT_RISK" and (owner == "?" or followUp == "?"))) {
+          ret!(state.set("error", "Invalid or duplicate response; accepted risks need owner and follow-up"))
+        } else {
+          planRecords!(rows, index + 1, mode, state.set("responses", state.get("responses").set(id, rows.nth(index))), seen, *ret)
+        }
+      }
+      _ => { ret!(state.set("error", "Invalid plan record schema")) }
+    }
+  }
+} |
+contract planUnits(@rows, @index, @constraints, @state, ret) = {
+  if (state.get("error") != "" or index == rows.length()) { ret!(state) }
+  else {
+    match rows.nth(index) {
+      ["T", id, unit, _, _, _, _] => {
+        planTermUnit!(constraints, 0, id, unit, rows, index, state, *ret)
+      }
+    }
+  }
+} |
+contract planTermUnit(@constraints, @index, @id, @unit, @rows, @rowIndex, @state, ret) = {
+  if (index == constraints.length()) { ret!(state.set("error", "T refers to unknown constraint " ++ id)) }
+  else {
+    match constraints.nth(index) {
+      ["C", constraintId, _, expectedUnit, _, _, _] => {
+        if (constraintId != id) { planTermUnit!(constraints, index + 1, id, unit, rows, rowIndex, state, *ret) }
+        else {
+          if (unit != expectedUnit) {
+            ret!(state.set("error", "Unit mismatch for " ++ id ++ ": T uses " ++ unit ++ ", but C requires exactly " ++ expectedUnit ++ ". Express the proposal consumption over that same interval; do not add available capacity as consumption."))
+          } else { planUnits!(rows, rowIndex + 1, constraints, state, *ret) }
+        }
+      }
+    }
+  }
+} |
+contract responseLedger(@entries, @index, @state, ret) = {
+  if (state.get("error") != "" or index == entries.length()) { ret!(state) }
+  else {
+    match entries.nth(index) {
+      (id, finding) => {
+        if (finding.get("status") == "open" and not state.get("responses").contains(id)) {
+          ret!(state.set("error", "Blue response omitted open finding " ++ id ++ ". Return a separate A record for this ID."))
+        } else { responseLedger!(entries, index + 1, state, *ret) }
+      }
+    }
+  }
+} |

@@ -14,20 +14,28 @@ import { SearchControl } from "@/lib/components/SearchControl";
 import { Select } from "@/lib/components/Select";
 import { Text } from "@/lib/components/Text";
 import { useCurrentAgentsTeam } from "@/lib/providers/currentAgentsTeam/useCurrentAgentsTeam";
-import { useAgentsTeamVersions } from "@/lib/queries";
+import { useAgents, useAgentsTeamVersions } from "@/lib/queries";
+import defaultNodeIcon from "@/public/icons/placeholder-node.png";
 
 import styles from "./Graph.module.scss";
+import { selectSidebarAgents } from "./selectSidebarAgents";
 
 const NodeAccordion = (props: AccordionProps) => {
   const closeIcon = <i className="fa fa-chevron-right" />;
   const openIcon = <i className="fa fa-chevron-down" />;
   return (
+    // fitContent, and deliberately no `overflow="hidden"`: neither of these lists
+    // has a fixed length, and a capped panel drops whatever does not fit.
+    // `overflow: hidden` is what turned that overflow from scrollable into
+    // unreachable, so it stays off -- if a cap ever returns, the list should
+    // scroll rather than silently clip. The sidebar body already scrolls
+    // (`.body` in Graph.module.scss), so it owns the overflow.
     <Accordion
       {...props}
+      fitContent
       closedIcon={closeIcon}
       iconPosition="end"
       openedIcon={openIcon}
-      overflow="hidden"
     />
   );
 };
@@ -55,8 +63,24 @@ export const Sidebar: React.FC = () => {
     [versions],
   );
 
-  const filteredNodes = Object.entries(NODE_REGISTRY).filter(([, def]) =>
-    def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+  const { data: agentsData } = useAgents();
+
+  // Every saved agent, deployed or not: the team splices an agent's code in, so
+  // its own deploy is irrelevant here, and filtering on it would hide the agent
+  // the user just wrote.
+  const filteredAgents = useMemo(
+    () => selectSidebarAgents(agentsData?.agents ?? [], searchQuery),
+    [agentsData?.agents, searchQuery],
+  );
+
+  const filteredNodes = Object.entries(NODE_REGISTRY).filter(
+    ([key, def]) =>
+      // The generic agent kind is offered per agent below, never bare.
+      key !== "agent" &&
+      // Palette-hidden kinds (e.g. the FIPS-gated foreign-language term) stay
+      // in the registry so existing nodes render, but are not offered here.
+      !def.paletteHidden &&
+      def.displayName.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 
   return (
@@ -78,6 +102,9 @@ export const Sidebar: React.FC = () => {
           />
         </div>
 
+        {/* Curated nodes first: this list is a fixed size, so keeping it above
+            means a growing agent list extends downward into the sidebar's scroll
+            instead of pushing the built-in nodes out of view. */}
         <NodeAccordion defaultOpen title="All Nodes">
           {filteredNodes.map(([key, def]) => (
             <NodeItem
@@ -87,6 +114,32 @@ export const Sidebar: React.FC = () => {
               type={key as NodeKind}
             />
           ))}
+        </NodeAccordion>
+
+        <NodeAccordion defaultOpen title="Your Agents">
+          {filteredAgents.length === 0 ? (
+            <Text color="secondary" type="small">
+              {searchQuery.trim() === ""
+                ? "No agents yet"
+                : "No agents match your search"}
+            </Text>
+          ) : (
+            filteredAgents.map((agent) => (
+              <NodeItem
+                key={agent.id}
+                data={{
+                  agentId: agent.id,
+                  agentName: agent.name,
+                  // Pin the concrete version: a team graph is append-only on
+                  // chain and must keep compiling to the same thing.
+                  agentVersion: agent.version,
+                }}
+                iconSrc={agent.logo ?? defaultNodeIcon}
+                name={agent.name}
+                type="agent"
+              />
+            ))
+          )}
         </NodeAccordion>
       </div>
 

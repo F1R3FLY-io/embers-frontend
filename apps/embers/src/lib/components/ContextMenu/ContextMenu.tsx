@@ -3,6 +3,8 @@ import "@szhsin/react-menu/dist/index.css";
 
 import { Text } from "@/lib/components/Text";
 
+import styles from "./ContextMenu.module.scss";
+
 export type MenuItem = {
   content: string;
   hidden?: boolean;
@@ -11,6 +13,11 @@ export type MenuItem = {
 };
 
 type ContextMenuProps = {
+  /** Which edge of the menu meets the anchor point. The default suits a
+   * pointer-anchored menu (opens rightward of the cursor); a menu hung from a
+   * button corner wants "end" so its right edge tracks the button's. */
+  align?: "start" | "center" | "end";
+  direction?: "right" | "bottom" | "left" | "top";
   items: MenuItem[];
   onClose: () => void;
   open: boolean;
@@ -21,6 +28,8 @@ type ContextMenuProps = {
 };
 
 export function ContextMenu({
+  align = "start",
+  direction = "right",
   items,
   onClose,
   open,
@@ -28,8 +37,10 @@ export function ContextMenu({
 }: ContextMenuProps) {
   return (
     <ControlledMenu
+      align={align}
       anchorPoint={position}
-      direction="right"
+      className={styles.themed}
+      direction={direction}
       state={open ? "open" : "closed"}
       onClose={onClose}
     >

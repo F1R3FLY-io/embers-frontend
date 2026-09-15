@@ -1,0 +1,5 @@
+contract main(@input, return) = {
+  new gpt4(`rho:ai:gpt4`) in {
+    gpt4!("Propose a concise, testable answer to the query. State key assumptions. Maximum 180 words." ++ "\nQuery: " ++ input, *return)
+  }
+}

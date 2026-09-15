@@ -1,22 +1,25 @@
 import { base16 } from "@scure/base";
 
-import type { HTTPHeaders } from "@/api-client";
+import type { FetchAPI, HTTPHeaders, Middleware } from "../api-client";
+import type { Address } from "../entities/Address";
+import type { Amount } from "../entities/Amount";
 import type {
   ContractCallConfig,
   QueryCallConfig,
-} from "@/entities/HttpCallConfigs";
-
-import { Configuration, WalletsApi } from "@/api-client";
-import { signContract } from "@/functions";
-
-import type { Address } from "../entities/Address";
-import type { Amount } from "../entities/Amount";
+} from "../entities/HttpCallConfigs";
 import type { PrivateKey } from "../entities/PrivateKey";
 import type { EmbersEvents } from "./EmbersEvents";
 
+import { Configuration, WalletsApi } from "../api-client";
+import { apiErrorMiddleware } from "../apiErrors";
+import { signContract } from "../functions";
+import { DEFAULT_MAX_WAIT_FOR_FINALISATION } from "./EmbersEvents";
+
 export type WalletConfig = {
   basePath: string;
+  fetchApi?: FetchAPI;
   headers?: HTTPHeaders;
+  middleware?: Middleware[];
   privateKey: PrivateKey;
 };
 
@@ -34,7 +37,9 @@ export class WalletsApiSdk {
 
     const configuration = new Configuration({
       basePath: config.basePath,
+      fetchApi: config.fetchApi,
       headers: config.headers,
+      middleware: [...(config.middleware ?? []), apiErrorMiddleware],
     });
 
     this.client = new WalletsApi(configuration);
@@ -60,7 +65,7 @@ export class WalletsApiSdk {
       to,
     };
 
-    const prepareResponse = await this.client.apiWalletsTransferPreparePost(
+    const prepareResponse = await this.client.walletsPrepareTransfer(
       {
         transferReq: prepareRequest,
       },
@@ -73,10 +78,10 @@ export class WalletsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiWalletsTransferSendPost(
+    const sendResponse = await this.client.walletsSendTransfer(
       {
         sendRequestBodySignedContractTransferReqTransferResp: {
           prepareRequest,
@@ -108,7 +113,7 @@ export class WalletsApiSdk {
       to,
     };
 
-    const prepareResponse = await this.client.apiWalletsBoostPreparePost(
+    const prepareResponse = await this.client.walletsPrepareBoost(
       {
         boostReq: prepareRequest,
       },
@@ -121,10 +126,10 @@ export class WalletsApiSdk {
     );
     const waitForFinalization = this.events.subscribeForDeploy(
       base16.encode(signedContract.sig).toLowerCase(),
-      config?.maxWaitForFinalisation ?? 15_000,
+      config?.maxWaitForFinalisation ?? DEFAULT_MAX_WAIT_FOR_FINALISATION,
     );
 
-    const sendResponse = await this.client.apiWalletsBoostSendPost(
+    const sendResponse = await this.client.walletsSendBoost(
       {
         sendRequestBodySignedContractBoostReqBoostResp: {
           prepareRequest,
@@ -144,7 +149,7 @@ export class WalletsApiSdk {
    * @returns A promise that resolves with the wallet state.
    */
   public async getState(config?: QueryCallConfig) {
-    return this.client.apiWalletsAddressStateGet(
+    return this.client.walletsStateAndHistory(
       {
         address: this.address,
       },
