@@ -4,6 +4,8 @@ Create **RedBlueDecisionReview-live** during the demonstration: six model agents
 
 ## Before presenting
 
+**Using the Docker image on a MacBook:** complete `MACBOOK-SETUP.md` from the setup bundle, wait for `Demo ready`, and import the generated funded wallet. Then go directly to **Explain the decision** and **Create the eight agents live** below. The host stack/profile commands and source-repository integration commands in this runbook are for the development workstation; they are not prerequisites for manual creation using the published image. All eight complete sources are embedded in this document. Mac container startup is confirmed; the full Mac demo rehearsal is still pending.
+
 Use the [shared stack runbook](customer-demo-runbook.md). Embers is at <http://localhost:5173>, F1r3sky at <http://localhost:19006>, and the local PDS (Personal Data Server) at <http://localhost:2583>. Unlock the funded presenter wallet before sharing your screen. The stack profile is `embers-local-stack/run/profiles/research-desk`; its drive mount and Java temporary files are on disk, outside `/tmp`.
 
 Run `./stack.sh status` from `embers-local-stack`. Both nodes, proposer, F1r3drive, Embers and the configured model service must be available. Logs are `embers.log`, `val.log`, `read.log` and `f1r3drive.log` in the profile. After a reboot, drive reconstruction can take several minutes; do not reset the chain to fix a slow mount.
@@ -38,24 +40,50 @@ General engineering knowledge is allowed. The model channel has no attached brow
 
 ## Create the eight agents live
 
-For each name below, choose **Create new agent**, continue to the source editor, replace its entire contents with the corresponding appendix block, then **Save changes**. Sources are standalone and use `contract main(@invocation, return)`. Dragging a saved agent adds it immediately with the `simple-v1` default and no configuration popup. Right-click its node, choose **Edit node** (or click its gear button), and select **Workflow invocation and result (`structured-v1`)** under Protocol for this demo. This dropdown offers only `simple-v1` and `structured-v1`; it does not accept arbitrary text.
+Create all eight agents below before drawing the team. **The final decision agent is named DecisionWriter. Decide is a separate Gateway node**, configured in the team editor; it has no agent source to paste. There is no additional agent named `Decision` in this version of the demo.
 
-| Agent | Role | Output key |
-| --- | --- | --- |
-| BluePlanner | Extract task constraints and propose a plan | `bluePlanner` |
-| ConstraintCheck | Locally sum quantity × unit amount and compare original limits | `constraintCheck` |
-| RedLogic | Review consistency and feasibility; finding IDs L1, L2… | `redLogic` |
-| RedEvidence | Review evidence and assumptions; IDs E1, E2… | `redEvidence` |
-| RedOperations | Review ownership, rollout and failure handling; IDs O1, O2… | `redOperations` |
-| ReviewCoverage | Locally reconcile findings, responses, blockers and accepted risks | `reviewCoverage` |
-| BlueResponder | Revise and respond using CHANGE, MITIGATE or ACCEPT_RISK | `blueResponder` |
-| DecisionWriter | Write the decision brief and append actual local results | `decisionWriter` |
+Repeat these steps for **each row** in the checklist:
+
+1. From the agents dashboard, choose **Create new agent**.
+2. Enter the exact **Agent name** from the row and choose **Continue**.
+3. Follow its **Complete source** link below. Copy the entire Rholang code block, excluding the Markdown fence lines. Click inside the source editor, select all (Cmd+A on Mac), and replace the generated template with that code. Do not paste just a prompt or append the code to the template.
+4. Choose **Save changes**, complete any wallet confirmation, and wait for success. Return to the dashboard and confirm the saved agent is listed before creating the next one.
+
+Every source is included in this document and is standalone, using `contract main(@invocation, return)`. The six model agents call `rho:ai:gpt4` from their source; ConstraintCheck and ReviewCoverage perform their work locally in Rholang. All eight use the same **Create new agent** flow.
+
+| Created | Agent name | Role | Complete source | Team output key |
+| --- | --- | --- | --- | --- |
+| ☐ | BluePlanner | Extract task constraints and propose a plan | [Copy BluePlanner](#blueplanner) | `bluePlanner` |
+| ☐ | ConstraintCheck | Locally sum quantity × unit amount and compare original limits | [Copy ConstraintCheck](#constraintcheck) | `constraintCheck` |
+| ☐ | RedLogic | Review consistency and feasibility; finding IDs L1, L2… | [Copy RedLogic](#redlogic) | `redLogic` |
+| ☐ | RedEvidence | Review evidence and assumptions; IDs E1, E2… | [Copy RedEvidence](#redevidence) | `redEvidence` |
+| ☐ | RedOperations | Review ownership, rollout and failure handling; IDs O1, O2… | [Copy RedOperations](#redoperations) | `redOperations` |
+| ☐ | ReviewCoverage | Locally reconcile findings, responses, blockers and accepted risks | [Copy ReviewCoverage](#reviewcoverage) | `reviewCoverage` |
+| ☐ | BlueResponder | Revise and respond using CHANGE, MITIGATE or ACCEPT_RISK | [Copy BlueResponder](#blueresponder) | `blueResponder` |
+| ☐ | DecisionWriter | Write the decision brief and append actual local results | [Copy DecisionWriter](#decisionwriter) | `decisionWriter` |
+
+When adding these saved agents to the team, dragging adds each immediately with the `simple-v1` default and no configuration popup. For **every agent node**, right-click and choose **Edit node** (or click its gear button), select **Workflow invocation and result (`structured-v1`)** under Protocol, set **Output key** to the exact value in the table, and save. This dropdown offers only `simple-v1` and `structured-v1`; it does not accept arbitrary text. The default `simple-v1` is not the protocol used by these sources.
+
+### Create and configure the final decision agent
+
+To make the DecisionWriter step explicit:
+
+1. Choose **Create new agent**, enter **DecisionWriter**, and choose **Continue**.
+2. Replace the complete editor contents with [the DecisionWriter source below](#decisionwriter), then **Save changes**. Its prompt and its Rholang code that appends local verification are both included in that block.
+3. In the team editor, drag the saved **DecisionWriter** onto the canvas. Open its gear menu, select `structured-v1`, set output key `decisionWriter`, and save.
+4. Connect **Decide → DecisionWriter**, **Limit → DecisionWriter**, and **DecisionWriter → Output**, as shown in the routing tables below.
+5. Right-click DecisionWriter, choose **Configure fan-in**, set **Join policy → Run for each arrival**, and save. The two incoming paths are alternatives: it must not wait for both.
+6. Include DecisionWriter among the eight members of the deployment container.
+
+DecisionWriter writes **Recommendation**, **Changes after review**, **Remaining risks**, and **Rollout checklist**, then appends the actual local verification results. It reports human review when the bounded review is incomplete or exhausted; the Decide gateway routes according to ReviewCoverage's recorded `outcome`.
 
 The public run input is still an ordinary String. Internal activities carry structured records through `invocation.get("input")`. Only ReviewCoverage receives a joined map, using the three canonical reviewer output keys. Keep those keys even if you rename display labels.
 
 ## Draw the team and bounded loop
 
 Create a team named **RedBlueDecisionReview-live**. Add Input, the eight saved agents, Output, and two Gateway nodes. Right-click each gateway, **Edit node**, and label them **Decide** and **Limit**, with output keys `decide` and `limit` respectively. Set Input's output key to `input`. Put the two gateways above the agent region so the agents are easy to select together.
+
+To create **Decide**, drag **Gateway** from the team editor's node palette, then set its label and output key as above. Repeat for **Limit**. Neither gateway uses **Create new agent**, Rholang source, or an agent protocol. Their behavior is configured on their edges below. Input and Output also come from the node palette. These four nodes remain outside the deployment container.
 
 Connect these routes:
 
