@@ -21,7 +21,10 @@ import {
   useUnpublishAgentsTeamMutation,
 } from "@/lib/queries";
 import { SuccessModal } from "@/pages/PublishAgentsTeam/SuccessModal";
-import { teamHandleSlug } from "@/pages/PublishAgentsTeam/teamHandleSlug";
+import {
+  DEMO_USERNAME_MAX_LENGTH,
+  teamHandleSlug,
+} from "@/pages/PublishAgentsTeam/teamHandleSlug";
 import publishImage from "@/public/publish.png";
 
 import styles from "./PublishAgentsTeam.module.scss";
@@ -41,6 +44,20 @@ const formModel = z
       ),
   })
   .superRefine((value, context) => {
+    if (
+      value.accountMode === "create" &&
+      window.FIRESKY_DEMO_PDS_URL?.replace(/\/$/, "") ===
+        value.pdsUrl.replace(/\/$/, "")
+    ) {
+      const username = value.handle.trim().replace(/^@/, "").split(".")[0];
+      if (username.length < 3 || username.length > DEMO_USERNAME_MAX_LENGTH) {
+        context.addIssue({
+          code: "custom",
+          message: "Use 3–18 characters before the demo handle suffix.",
+          path: ["handle"],
+        });
+      }
+    }
     if (
       value.accountMode === "create" &&
       !z.email().safeParse(value.email).success
@@ -64,6 +81,7 @@ export default function PublishAgentsTeam() {
   const [discoveryError, setDiscoveryError] = useState("");
   const [pdsUrl, setPdsUrl] = useState(window.FIRESKY_PDS_URL ?? "");
   const [suffix, setSuffix] = useState("");
+  const [handleEditError, setHandleEditError] = useState("");
   const emailEdited = useRef(false);
   const handleEdited = useRef(false);
   const [published, setPublished] = useState(false);
@@ -191,6 +209,14 @@ export default function PublishAgentsTeam() {
     (listener) => form.store.subscribe(listener),
     () => form.getFieldValue("handle"),
   );
+  const accountMode = useSyncExternalStore(
+    (listener) => form.store.subscribe(listener),
+    () => form.getFieldValue("accountMode"),
+  );
+  const limitDemoUsername =
+    accountMode === "create" &&
+    window.FIRESKY_DEMO_PDS_URL?.replace(/\/$/, "") ===
+      pdsUrl.replace(/\/$/, "");
   useEffect(() => {
     if (
       emailEdited.current ||
@@ -347,7 +373,15 @@ export default function PublishAgentsTeam() {
                   {t("publish.username")}
                 </Text>
                 <Input
-                  errorMessage={fieldError(field.state.meta)}
+                  errorMessage={
+                    (limitDemoUsername && handleEditError) ||
+                    fieldError(field.state.meta)
+                  }
+                  maxLength={
+                    limitDemoUsername
+                      ? DEMO_USERNAME_MAX_LENGTH + suffix.length
+                      : undefined
+                  }
                   name={field.name}
                   placeholder="Username"
                   value={field.state.value}
@@ -364,10 +398,47 @@ export default function PublishAgentsTeam() {
                     field.handleBlur();
                   }}
                   onChange={(e) => {
+                    if (
+                      limitDemoUsername &&
+                      e.target.value.trim().replace(/^@/, "").split(".")[0]
+                        .length > DEMO_USERNAME_MAX_LENGTH
+                    ) {
+                      setHandleEditError(
+                        "Use at most 18 characters before the demo handle suffix.",
+                      );
+                      return;
+                    }
+                    setHandleEditError("");
                     handleEdited.current = true;
                     field.handleChange(e.target.value);
                   }}
+                  onPaste={(event) => {
+                    if (!limitDemoUsername) {
+                      return;
+                    }
+                    const input = event.currentTarget;
+                    const candidate =
+                      input.value.slice(0, input.selectionStart ?? 0) +
+                      event.clipboardData.getData("text") +
+                      input.value.slice(
+                        input.selectionEnd ?? input.value.length,
+                      );
+                    if (
+                      candidate.trim().replace(/^@/, "").split(".")[0].length >
+                      DEMO_USERNAME_MAX_LENGTH
+                    ) {
+                      event.preventDefault();
+                      setHandleEditError(
+                        "Use at most 18 characters before the demo handle suffix.",
+                      );
+                    }
+                  }}
                 />
+                {limitDemoUsername && (
+                  <Text color="secondary" type="small">
+                    Use 3–18 characters before {suffix || "the domain suffix"}.
+                  </Text>
+                )}
               </div>
             )}
           </form.Field>
@@ -508,7 +579,13 @@ export default function PublishAgentsTeam() {
                 {published ? t("basic.close") : t("publish.cancel")}
               </Button>
 
-              <Button submit disabled={isSubmitting} type="primary">
+              <Button
+                submit
+                disabled={
+                  isSubmitting || (limitDemoUsername && !!handleEditError)
+                }
+                type="primary"
+              >
                 {t("publish.button")}
               </Button>
             </div>

@@ -33,9 +33,9 @@ All eight complete agent sources are included below. The presentation flow is: *
 
 “Blue proposes a decision. Red examines logic, evidence and operations. Rholang checks the proposal's quantities and tracks every finding. Blue can revise twice. We stop when the required checks pass and no blockers remain, or hand the decision back for human review.”
 
-Try this task:
+Try this task (copy only the quoted text into **Run**):
 
-> We need to review 6 pull requests per day. Four engineers can each spend 60 minutes per day reviewing. Each independent review takes 30 minutes. Our proposal requires two approvals per PR. Recommend a practical policy within the available 240 reviewer-minutes per day, with an emergency fix path, rollout and rollback. Treat the stated review times as planning estimates, not observed measurements.
+> Review a PR policy: 6 PRs/day, 30 min/review, two approvals/PR; capacity 240 reviewer-min/day (4 engineers x 60). Times are estimates. Propose a feasible policy with an emergency path, rollout and rollback.
 
 The two-approval demand is 360 reviewer-minutes/day; one approval needs 180. The model must extract those quantities, while **ConstraintCheck computes their products and sums**. Changing the task changes the calculation; no source editing is needed. Other useful queries include a migration within an engineer-hour budget, a service plan under a monthly cost limit, or a rollout constrained by support capacity.
 
@@ -49,39 +49,42 @@ Paste one of these into **Run** after deploying the team. They are planning exer
 
 For a short presentation, start with the upgrade-window or onboarding example. The arithmetic below is a presenter reference, not a promised model outcome.
 
+**These queries also fit in F1r3sky posts.** Its limit is **300 characters (graphemes), including the team mention and spaces**. Every quoted query below, and the PR-policy query above, is at most **250 ASCII characters**, leaving room for `@redblue.test ` (14 characters) or any permitted 18-character demo username plus `.test` (25 characters including `@` and the following space). In F1r3sky, type/select the actual team mention, add one space, then paste only the quoted query. In **Run**, omit the mention. Keep the **Show** notes out of the post.
+
+
 ### 1. Plan a F1r3node upgrade within a maintenance window
 
-> We operate a three-server F1r3node pilot. We have already selected and staged a release artifact, but have not yet verified its state-format compatibility or rollback procedure. One operator estimates 45 minutes of hands-on upgrade and validation work per server, performed sequentially. Only 120 operator-minutes are available in this maintenance window. Propose a staged rollout with preflight checks, a pilot server, stop conditions, ownership and rollback. Can we upgrade all three in this window? If not, state how many fit and what is deferred. Do not assume that stopping a validator preserves quorum; make the order conditional on the actual validator membership and voting weights.
+> Plan a staged F1r3node upgrade: 3 pilot servers, 45 operator-min/server, 120 operator-min/window, one operator. Estimates only. Require quorum, compatibility and rollback checks; state what fits now and what is deferred.
 
 **Show:** three upgrades require 135 operator-minutes, 15 over the limit; two require 90, leaving 30. Splitting windows does not reduce the total work. Red should identify the missing compatibility and quorum evidence. These are labor estimates, not guaranteed downtime.
 
 ### 2. Fit a F1r3node and Embers pilot into a monthly budget
 
-> Plan a small F1r3node and Embers pilot within 500 USD/month. Our hypothetical quote includes three node servers at 120 USD/month each, two optional Embers worker servers at 60 USD/month each, and a fixed backup allocation of 40 USD/month. Review the proposed two-worker plan and an alternative with one worker. Preserve the three node servers and the backup allocation. Include monitoring, an owning role, a pilot acceptance check and a rollback plan. Treat prices as supplied estimates and require workload measurements before claiming the smaller worker configuration has enough capacity.
+> Review a F1r3node/Embers pilot budget of 500 USD/month: 3 node servers x 120, 2 optional workers x 60, backups 40. Prices are estimates. Keep nodes and backups; compare one worker. Require capacity checks, ownership and rollback.
 
 **Show:** the two-worker proposal costs 520 USD/month; the one-worker alternative costs 460, leaving 40. Passing the budget check does not prove performance or availability.
 
 ### 3. Schedule Embers customer-team onboarding
 
-> We need to onboard 12 customer teams into Embers. We estimate 20 operator-minutes per team for wallet import, agent-team deployment, a sample query and checking the decrypted response. Today we have a hard cap of 180 operator-minutes. Propose a realistic first-day rollout, including how to prioritize teams, verify success and schedule the remainder. Do not claim all 12 fit unless you identify and justify a change to the supplied estimate. Keep private wallet material out of shared customer records.
+> Plan Embers onboarding for 12 teams at an estimated 20 operator-min/team with 180 operator-min today. Include wallet import, deployment, a query and decrypted-output checks. Prioritize, defer excess teams and protect wallet keys.
 
 **Show:** all 12 need 240 operator-minutes. Nine fit into 180; three require another 60. Red should challenge any proposal that silently reduces the estimate or claims deployment alone verifies a useful response.
 
 ### 4. Review an Embers agent-team release plan
 
-> We want to publish a new Embers engineering-decision team to F1r3sky. We have a 24 engineer-hour preparation budget. Our estimates are 8 hours for agent authoring, 6 for integration checks, 4 for publication and wallet-flow checks, and 8 for a customer rehearsal. Review this plan and propose what to change or defer while retaining all 6 hours of integration checks and all 4 hours of publication and wallet checks. Define success criteria for a bounded review loop and decrypted outputs, ownership, and how we would return to a previously verified team if the release fails. Do not assume publication and deployment are the same operation or that an automatic rollback feature exists.
+> Review an Embers/F1r3sky release: 24 engineer-hours available; authoring 8, integration tests 6, publication/wallet checks 4, rehearsal 8 (estimates). Keep all testing/checks. Propose scope changes, bounded-loop checks, ownership and fallback.
 
 **Show:** the proposed work totals 26 engineer-hours, 2 over budget. A revision must explain its scope or estimate changes; it cannot merely claim the total is 24. The operational review should distinguish creating/deploying the contract from making it reachable through F1r3sky.
 
 ### 5. Plan an Embers storage migration with recovery checks
 
-> Plan moving an Embers demo's persistent storage to a new host within a 40 engineer-hour budget. Estimated work is 12 hours for inventory and backup preparation, 8 for transfer, 8 for application validation, and 16 for a restore rehearsal. The data size, measured restore time, and supported migration procedure are still unknown. Review the proposal, identify what evidence must be gathered, and propose a scoped or phased plan without silently dropping the restore rehearsal. Include ownership, a cutover checkpoint, protection of wallet material, and explicit criteria for returning to the old host. Do not treat copying a live database directory as a verified backup.
+> Plan an Embers storage migration with 40 engineer-hours: backup prep 12, transfer 8, validation 8, restore rehearsal 16 (estimates). Size, restore time and procedure are unknown. Retain restore testing; address the budget gap and rollback.
 
 **Show:** the supplied work totals 44 engineer-hours, 4 over budget. Phasing does not make 44 fit a total budget of 40. A useful answer may request a scope or budget decision and stop for human review; unknown recovery properties must remain unknown.
 
 ### 6. Decide whether to resume after a F1r3node interruption
 
-> An Embers team query was interrupted when its F1r3node validator restarted. The UI has no final response yet. We do not know whether the last signed operation finalized. Recommend an investigation and recovery decision: what evidence should we collect from the run history, backend logs and chain status; when should we wait; and when should an operator intervene? Preserve existing wallet and chain data, account for duplicate effects, and assign an owner for the recovery decision. Do not invent a command, API endpoint, or successful recovery that has not been verified in the supplied environment.
+> A F1r3node validator restarted during an Embers query. No final response; the last operation's finality is unknown. Review evidence from history, logs and chain status. Define wait/intervention criteria, preserve data and avoid duplicate effects.
 
 **Show:** this is a qualitative review. ConstraintCheck may have an empty numeric ledger; ReviewCoverage still tracks findings, responses, unresolved blockers and the bounded stop. The team should distinguish a missing response from proof that an operation failed.
 
@@ -232,6 +235,8 @@ The three terminal outcomes are **converged: no blockers**, **review limit reach
 ## Publish and query from F1r3sky
 
 After deployment, publish to F1r3sky. PDS defaults to `http://localhost:2583`; the team handle derives from its name with the required `.test` suffix. Email follows the handle until manually overwritten. Email/password create the team's PDS account; its app password lets Embers publish and reply as that team. These credentials are separate from your wallet.
+
+**Before clicking Publish, check the username length:** the bundled demo PDS accepts **3–18 characters before `.test`**. For this demonstration, use **`redblue.test`** if available. The image tagged `2026-09-14.1` can generate `redbluedecisionreview.test`, whose 21-character username is too long, and incorrectly suggest adding a suffix even though `.test` is already present. Shorten the Username field, keep the `.test` suffix selected, and retry publication; no team redeployment is needed. If the handle is already registered, use its account credentials or choose another short username.
 
 Use the success popup's F1r3sky link, sign in, and mention the published team with the same ordinary-English decision query. The reply links to its run page and full output. The completed Embers publication form offers **Close**.
 

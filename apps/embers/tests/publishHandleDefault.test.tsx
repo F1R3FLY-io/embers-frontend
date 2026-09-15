@@ -73,14 +73,22 @@ describe("teamHandleSlug", () => {
   });
 
   it("caps the label length without leaving a trailing hyphen", () => {
-    const slug = teamHandleSlug(`${"a".repeat(28)} team of many words`);
-    expect(slug.length).toBeLessThanOrEqual(30);
+    const slug = teamHandleSlug(`${"a".repeat(17)} team of many words`);
+    expect(slug.length).toBeLessThanOrEqual(18);
     expect(slug.endsWith("-")).toBe(false);
   });
 
+  it("keeps the red/blue demo name within the PDS account-name limit", () => {
+    expect(teamHandleSlug("RedBlueDecisionReview")).toBe("redbluedecisionrev");
+  });
+
+  it.each(["A", "AI"])("expands the short team name %s for the PDS", (name) => {
+    expect(teamHandleSlug(name)).toBe(`${name.toLowerCase()}-team`);
+  });
+
   it("falls back to a generic label when nothing survives", () => {
-    expect(teamHandleSlug(undefined)).toBe("team");
-    expect(teamHandleSlug("!!!")).toBe("team");
+    expect(teamHandleSlug(undefined)).toBe("embers-team");
+    expect(teamHandleSlug("!!!")).toBe("embers-team");
   });
 });
 

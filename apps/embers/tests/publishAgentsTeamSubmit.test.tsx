@@ -242,6 +242,85 @@ describe("unpublishing from the success dialog", () => {
 });
 
 describe("publication defaults and field feedback", () => {
+  it("limits demo typing to 18 username characters and preserves the suffix", async () => {
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+    const handle = screen.getByPlaceholderText("Username");
+    expect(handle).toHaveAttribute("maxlength", "23");
+    await user.clear(handle);
+    await user.type(handle, "a".repeat(19));
+    expect(handle).toHaveValue("a".repeat(18));
+    expect(handle).toHaveAccessibleDescription(
+      "Use at most 18 characters before the demo handle suffix.",
+    );
+    await user.type(handle, ".test");
+    expect(handle).toHaveValue(`${"a".repeat(18)}.test`);
+    await user.click(screen.getByRole("combobox", { name: "Handle suffix" }));
+    await user.click(screen.getByText(".example", { exact: true }));
+    expect(handle).toHaveAttribute("maxlength", "26");
+    expect(handle).toHaveValue(`${"a".repeat(18)}.example`);
+  });
+
+  it("rejects an overlong pasted username rather than publishing a truncated handle", async () => {
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+    const handle = screen.getByPlaceholderText("Username");
+    await user.clear(handle);
+    await user.paste("redbluedecisionreview.test");
+    expect(handle).toHaveValue("");
+    expect(handle).toHaveAccessibleDescription(
+      "Use at most 18 characters before the demo handle suffix.",
+    );
+    expect(
+      screen.getByRole("button", { name: "publish.button" }),
+    ).toBeDisabled();
+    expect(publishMutate).not.toHaveBeenCalled();
+    await user.paste("redblue.test");
+    expect(handle).toHaveValue("redblue.test");
+  });
+
+  it("publishes the long demo team name with a shortened default and matching email", async () => {
+    agentsTeam.name = "RedBlueDecisionReview";
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText("Enter password")).toHaveValue(
+        "password123",
+      ),
+    );
+    await user.click(screen.getByRole("button", { name: "publish.button" }));
+    expect(publishMutate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        handle: "redbluedecisionrev.test",
+        email: "redbluedecisionrev@example.com",
+      }),
+      expect.anything(),
+    );
+  });
+
+  it("does not impose the demo username limit on existing-account sign-in", async () => {
+    window.FIRESKY_PDS_URL = "http://localhost:2583";
+    window.FIRESKY_DEMO_PDS_URL = "http://localhost:2583";
+    const user = userEvent.setup();
+    render(<PublishAgentsTeam />);
+    await screen.findByRole("combobox", { name: "Handle suffix" });
+    await user.click(
+      screen.getByRole("combobox", { name: "Team social account" }),
+    );
+    await user.click(screen.getByText("Use existing account"));
+    expect(screen.getByPlaceholderText("Username")).not.toHaveAttribute(
+      "maxlength",
+    );
+  });
   it("appends a discovered suffix once and publishes the complete handle", async () => {
     await fillAndSubmit();
     expect(
@@ -298,7 +377,7 @@ describe("publication defaults and field feedback", () => {
     view.rerender(<PublishAgentsTeam />);
     await waitFor(() =>
       expect(screen.getByPlaceholderText("Username")).toHaveValue(
-        "engineering-decisions.test",
+        "engineering-decisi.test",
       ),
     );
     await user.clear(screen.getByPlaceholderText("Username"));
