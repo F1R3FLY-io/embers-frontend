@@ -100,7 +100,7 @@ Every source is included in this document and is standalone, using `contract mai
 | ☐ | BlueResponder | Revise and respond using CHANGE, MITIGATE or ACCEPT_RISK | [Copy BlueResponder](#blueresponder) | `blueResponder` |
 | ☐ | DecisionWriter | Write the decision brief and append actual local results | [Copy DecisionWriter](#decisionwriter) | `decisionWriter` |
 
-When adding these saved agents to the team, dragging adds each immediately with the `simple-v1` default and no configuration popup. For **every agent node**, right-click and choose **Edit node** (or click its gear button), select **Workflow invocation and result (`structured-v1`)** under Protocol, set **Output key** to the exact value in the table, and save. This dropdown offers only `simple-v1` and `structured-v1`; it does not accept arbitrary text. The default `simple-v1` is not the protocol used by these sources.
+**Creating and saving the source is only the first step.** Each agent must also be configured on the team canvas. Complete [step 2: set the protocol on all eight agents](#2-required-set-structured-v1-on-all-eight-agent-nodes) before connecting or deploying the team.
 
 ### Create and configure the final decision agent
 
@@ -119,9 +119,39 @@ The public run input is still an ordinary String. Internal activities carry stru
 
 ## Draw the team and bounded loop
 
+### 1. Add the saved agents and built-in nodes
+
 Create a team named **RedBlueDecisionReview-live**. Add Input, the eight saved agents, Output, and two Gateway nodes. Right-click each gateway, **Edit node**, and label them **Decide** and **Limit**, with output keys `decide` and `limit` respectively. Set Input's output key to `input`. Put the two gateways above the agent region so the agents are easy to select together.
 
 To create **Decide**, drag **Gateway** from the team editor's node palette, then set its label and output key as above. Repeat for **Limit**. Neither gateway uses **Create new agent**, Rholang source, or an agent protocol. Their behavior is configured on their edges below. Input and Output also come from the node palette. These four nodes remain outside the deployment container.
+
+### 2. Required: set structured-v1 on all eight agent nodes
+
+**Do this immediately after adding the agents to the canvas.** Drag-and-drop silently defaults each agent to `simple-v1`. The source you pasted does not change that setting. This demo requires **`structured-v1` on every agent**, including the two local Rholang agents.
+
+For each agent in the checklist:
+
+1. Click the **gear icon on that agent's node** in the team editor, or right-click it and choose **Edit node**.
+2. Open the **Protocol** dropdown and choose **Workflow invocation and result (`structured-v1`)**.
+3. Set **Output key** to the value shown below, then click **Save** in the node dialog.
+4. Reopen the dialog to verify the protocol was saved, then check off that agent.
+
+| Verified saved | Agent node | Required protocol | Output key |
+| --- | --- | --- | --- |
+| ☐ | BluePlanner | `structured-v1` | `bluePlanner` |
+| ☐ | ConstraintCheck | `structured-v1` | `constraintCheck` |
+| ☐ | RedLogic | `structured-v1` | `redLogic` |
+| ☐ | RedEvidence | `structured-v1` | `redEvidence` |
+| ☐ | RedOperations | `structured-v1` | `redOperations` |
+| ☐ | ReviewCoverage | `structured-v1` | `reviewCoverage` |
+| ☐ | BlueResponder | `structured-v1` | `blueResponder` |
+| ☐ | DecisionWriter | `structured-v1` | `decisionWriter` |
+
+**Checkpoint: all eight rows verified before continuing.** Input, Output, Decide and Limit have no agent protocol to configure.
+
+`simple-v1` sends the query value directly; these sources expect a structured invocation containing `input`. Leaving BluePlanner at the default causes `Method get_or_else is not defined on string`, which can surface as `kernelRejectedState` with “no matching route group”.
+
+### 3. Connect the routes and configure the bounded loop
 
 Connect these routes:
 
@@ -162,7 +192,10 @@ This gives one initial review plus **two** traversals to BlueResponder. At the t
 
 1. Clear the selection, hold **Shift**, and drag a region around all eight agent nodes. Keep Input, Output, Decide and Limit outside that region.
 2. Right-click the selected region and choose **Add to deploy container**. Name it **Engineering decision review**.
-3. Confirm all eight members and 15 edges remain. Save the team, choose **Deploy**, review and confirm. Wait for success before running it.
+3. Confirm all eight members and 15 edges remain, and that **all eight protocol checklist rows above are verified as `structured-v1`**.
+4. **Save the team**, choose **Deploy**, review and confirm. Wait for success before running it.
+
+If you already deployed with `simple-v1`, changing the editor alone does not update that deployed team. Correct all eight nodes, save, **redeploy**, and start a **new run using the updated deployment**. The earlier failed run remains a record of the old configuration.
 
 The container packages member code into a separately registered Rholang contract with its own URI; the team dispatches member activities through it. The current implementation targets the current stack. It does not yet schedule those activities onto arbitrary remote hardware. **Wrap in state scope** remains a separate action for entry/exit, history and lifecycle semantics. Hierarchies and cycles remain supported; nesting a deployment container does not change the round cap.
 
